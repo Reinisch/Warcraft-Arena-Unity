@@ -42,7 +42,7 @@ public class TeleportEffect : IEffect
             targetPosition = targetPosition + target.transform.forward * horizontalValue;
 
 #if UNITY_EDITOR
-        Debug.DrawLine(targetPosition, targetPosition - Vector3.up * topCheck * 2, Color.red, 3f);
+        Debug.DrawLine(targetPosition, targetPosition - Vector3.up * topCheck * 1.5f, Color.red, 3f);
 #endif
 
         if (Physics.Raycast(targetPosition, -Vector3.up, out hitInfo, topCheck * 1.5f, 1 << LayerMask.NameToLayer("Ground")))

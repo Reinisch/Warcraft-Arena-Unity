@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Unit : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Unit : MonoBehaviour
     public Character character;
     public Transform castPoint;
     public Transform centerPoint;
+
 
     public float moveTimer = 0;
     public float castTimer = 0;
@@ -57,7 +59,6 @@ public class Unit : MonoBehaviour
     public CapsuleCollider UnitCollider { get { return unitCollider; } }
     public Character Character { get { return character; } }
     public Animator Animator { get { return animator; } }
-
 
     void Awake()
     {
