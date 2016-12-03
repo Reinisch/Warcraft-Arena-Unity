@@ -31,7 +31,7 @@ public enum DeathState
     JustRespawned = 4
 };
 
-public enum UnitState : long
+public enum UnitState
 {
     None =               0x00000000,
     Died =               0x00000001,

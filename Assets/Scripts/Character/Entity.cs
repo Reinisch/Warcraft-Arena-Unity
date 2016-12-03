@@ -130,31 +130,3 @@ public class ParametersList
         }
     }
 }
-
-/*[Serializable]
-public class Entity
-{
-    public string name;
-
-    public ParametersList parameters;
-    public EntityStatesList states;
-
-    public AttributePair health;
-    public AttributePair mainResourse;
-
-    public Entity(string newName)
-    {
-        name = newName;
-        health = new AttributePair(100,100);
-        mainResourse = new AttributePair(100,100);
-    }
-
-    public void Dispose()
-    {
-        health = null;
-        mainResourse = null;
-        parameters = null;
-        states = null;
-        name = null;
-    }
-}*/
