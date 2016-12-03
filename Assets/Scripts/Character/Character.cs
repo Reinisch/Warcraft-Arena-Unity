@@ -6,8 +6,20 @@ using UnityEngine;
 [Serializable]
 public class Character
 {
-    public Unit target;
+    Dictionary<StatType, Stat> stats = new Dictionary<StatType, Stat>();
+    Dictionary<BaseStatType, Stat> baseStats = new Dictionary<BaseStatType, Stat>();
+    Dictionary<CombatRating, float> baseRatings = new Dictionary<CombatRating, float>();
 
+    int baseSpellCritChance;
+    int baseSpellPower;
+    int baseManaRegen;
+    int baseHealthRegen;
+
+    public UnitState UnitState { get; set; }
+    public DeathState DeathState { get; set; }
+    public UnitMoveType MoveType { get; set; }
+
+    public Unit target;
     public string className;
 
     public ParametersList parameters;
@@ -29,17 +41,16 @@ public class Character
 
     public void Initialize(Unit unit)
     {
-        target = null;
+        if (unit.IsHumanPlayer)
+            StatSystem.InitializePlayerStats(stats);
+        else
+            StatSystem.InitializeCreatureStats(stats);
 
         GlobalCooldown = new Cooldown(1);
         SpellCast = new SpellCast();
 
         Buffs = new Buffs(unit);
         Spells = new SpellStorage();
-
-        //name = newName;
-        //health = new AttributePair(100,100);
-        //mainResourse = new AttributePair(100,100);
 
         PreviousTargets = new List<long>();
         PeriodicEffects = new List<PeriodicEffectAura>();

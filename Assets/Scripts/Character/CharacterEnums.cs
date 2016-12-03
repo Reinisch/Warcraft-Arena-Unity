@@ -10,7 +10,7 @@
     Deflects
 };
 
-enum HitInfo
+public enum HitInfo
 {
     Normalswing =       0x00000000,
     AffectsVictim =     0x00000001,
@@ -22,7 +22,7 @@ enum HitInfo
     RageGain =          0x00000040,
 };
 
-enum DeathState
+public enum DeathState
 {
     Alive = 0,
     JustDied = 1,
@@ -31,7 +31,7 @@ enum DeathState
     JustRespawned = 4
 };
 
-enum UnitState : long
+public enum UnitState : long
 {
     None =               0x00000000,
     Died =               0x00000001,
@@ -60,7 +60,7 @@ enum UnitState : long
     CantMove = Root | Stunned | Died | Distracted,
 };
 
-enum CombatRating
+public enum CombatRating
 {
     None,
     Dodge,
@@ -73,7 +73,7 @@ enum CombatRating
     PvpPower,
 };
 
-enum UnitMoveType
+public enum UnitMoveType
 {
     Run,
     RunBack,

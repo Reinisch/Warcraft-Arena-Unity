@@ -1,70 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public enum BaseStatType
-{
-    Strength,
-    Agility,
-    Stamina,
-    Intellect,
-}
-
-public enum StatType
-{
-    Strength,
-    Agility,
-    Stamina,
-    Intellect,
-
-    Health,
-
-    Mana,
-    Rage,
-    Focus,
-    Energy,
-    Rune,
-    RunicPower,
-    SoulShards,
-    Eclipse,
-    HolyPower,
-    Alternative,
-    Maelstrom,
-    Chi,
-    Insanity,
-    BurningEmbers,
-    DemonicFury,
-    ArcaneCharges,
-    Fury,
-    Pain,
-
-    Armor,
-    ResistanceHoly,
-    ResistanceFire,
-    ResistanceNature,
-    ResistanceFrost,
-    ResistanceShadow,
-    ResistanceArcane,
-
-    AttackPower,
-    AttackPowerRanged,
-    DamageMainhand,
-    DamageOffhand,
-    DamageRanged,
-
-    StatCount
-};
-
-public enum StatModifierType
-{
-    Base,
-    BaseMultExternal,
-    BaseMult,
-    Total,
-    TotalMult,
-
-    StatModifierCount
-};
-
 public class Stat
 {
     Dictionary<StatModifierType, float> modifiers = new Dictionary<StatModifierType, float>();
@@ -107,9 +43,9 @@ public class Stat
         }
     }
 
-    public Stat()
+    public Stat(float initialValue = 0.0f)
     {
-        StatSystem.InitializeStat(modifiers);
+        StatSystem.InitializeStat(modifiers, initialValue);
     }
 }
 
