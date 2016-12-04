@@ -65,7 +65,7 @@ public enum StatModifierType
     StatModifierCount
 };
 
-public static class StatSystem
+public static class StatHelper
 {
     #region Static info
 

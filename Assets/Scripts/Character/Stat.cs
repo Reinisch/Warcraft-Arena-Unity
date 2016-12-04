@@ -45,6 +45,6 @@ public class Stat
 
     public Stat(float initialValue = 0.0f)
     {
-        StatSystem.InitializeStat(modifiers, initialValue);
+        StatHelper.InitializeStat(modifiers, initialValue);
     }
 }
