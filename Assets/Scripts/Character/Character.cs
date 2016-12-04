@@ -159,10 +159,10 @@ public class Character
                 }
 
                 // force minimum speed rate @ aura 437 SPELL_AURA_MOD_MINIMUM_SPEED_RATE
-                int minSpeedMod = /*GetMaxPositiveAuraModifier(SPELL_AURA_MOD_MINIMUM_SPEED_RATE)*/0;
-                if (minSpeedMod != 0)
+                int minSpeedModRate = /*GetMaxPositiveAuraModifier(SPELL_AURA_MOD_MINIMUM_SPEED_RATE)*/0;
+                if (minSpeedModRate != 0)
                     {
-                    float minSpeed = minSpeedMod / StatSystem.BaseMovementSpeed(type);
+                    float minSpeed = minSpeedModRate / StatSystem.BaseMovementSpeed(type);
                     if (speed < minSpeed)
                         speed = minSpeed;
                 }

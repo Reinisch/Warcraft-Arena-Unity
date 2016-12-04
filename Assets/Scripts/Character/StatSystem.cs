@@ -77,7 +77,7 @@ public static class StatSystem
         { UnitMoveType.PitchRate, 3.14f },
     };
 
-    public static List<StatType> UnitStats = new List<StatType>()
+    private static List<StatType> unitStats = new List<StatType>()
     {
         StatType.Strength,
         StatType.Agility,
