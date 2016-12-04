@@ -184,7 +184,7 @@ public class WarcraftController : MonoBehaviour
         float strafeDelta = Time.deltaTime * 2 * Mathf.Sign(strafeTarget - currentStrafe);
         float resultStrafe = Mathf.Clamp(currentStrafe + strafeDelta, 0.0f, 1.0f);
 
-        if (Mathf.Abs(strafeTarget - currentStrafe) > strafeDelta)
+        if (Mathf.Abs(strafeTarget - currentStrafe) > Mathf.Abs(strafeDelta))
             controlledUnit.Animator.SetFloat("Strafe", resultStrafe);
 
 

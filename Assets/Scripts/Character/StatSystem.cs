@@ -69,7 +69,15 @@ public static class StatSystem
 {
     #region Static info
 
-    private static List<StatType> unitStats = new List<StatType>()
+    private static Dictionary<UnitMoveType, float> baseMoveSpeed = new Dictionary<UnitMoveType, float>()
+    {
+        { UnitMoveType.Run, 7.0f },
+        { UnitMoveType.RunBack, 4.5f },
+        { UnitMoveType.TurnRate, 3.14f },
+        { UnitMoveType.PitchRate, 3.14f },
+    };
+
+    public static List<StatType> UnitStats = new List<StatType>()
     {
         StatType.Strength,
         StatType.Agility,
@@ -109,6 +117,7 @@ public static class StatSystem
     };
 
     #endregion
+
 
     public static void InitializeStat(Dictionary<StatModifierType, float> modifiers, float initialValue = 0.0f)
     {
@@ -207,6 +216,19 @@ public static class StatSystem
 
         if (creatureStats.Count != unitStats.Count)
             Debug.LogError("Wrong player stats initialization count!");
+    }
+
+    public static void InitializeSpeedRates(Dictionary<UnitMoveType, float> speedRates)
+    {
+        speedRates.Clear();
+
+        foreach (var speedRate in baseMoveSpeed)
+            speedRates.Add(speedRate.Key, 1.0f);
+    }
+
+    public static float BaseMovementSpeed(UnitMoveType moveType)
+    {
+        return baseMoveSpeed[moveType];
     }
 
 }
