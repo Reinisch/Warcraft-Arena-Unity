@@ -178,7 +178,15 @@ public class WarcraftController : MonoBehaviour
             movementStatus = MovementStatus.Stand;
 
         controlledUnit.Animator.SetBool("Grounded", true);
-        controlledUnit.Animator.SetFloat("Strafe", (Vector3.Normalize(inputVelocity).x + 1) / 2);
+
+        float strafeTarget = (Vector3.Normalize(inputVelocity).x + 1) / 2;
+        float currentStrafe = controlledUnit.Animator.GetFloat("Strafe");
+        float strafeDelta = Time.deltaTime * 2 * Mathf.Sign(strafeTarget - currentStrafe);
+        float resultStrafe = Mathf.Clamp(currentStrafe + strafeDelta, 0.0f, 1.0f);
+
+        if (Mathf.Abs(strafeTarget - currentStrafe) > strafeDelta)
+            controlledUnit.Animator.SetFloat("Strafe", resultStrafe);
+
 
         if(lastStatus == MovementStatus.StrafeLeft || lastStatus == MovementStatus.StrafeRight)
             controlledUnit.Animator.SetFloat("Speed", 1);
