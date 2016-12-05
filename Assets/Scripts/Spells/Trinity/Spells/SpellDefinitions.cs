@@ -250,3 +250,94 @@ public enum SpellRangeFlag
     MELEE = 1,
     RANGED = 2,
 };
+
+
+public struct SpellValue
+{
+    int[] EffectBasePoints;
+    int MaxAffectedTargets;
+    float RadiusMod;
+    int AuraStackAmount;
+};
+
+public enum SpellState
+{
+    NONE = 0,
+    PREPARING = 1,
+    CASTING = 2,
+    FINISHED = 3,
+    IDLE = 4,
+    DELAYED = 5
+};
+
+public enum SpellEffectHandleMode
+{
+    LAUNCH,
+    LAUNCH_TARGET,
+    HIT,
+    HIT_TARGET
+};
+
+
+public enum SpellSchools
+{
+    NORMAL = 0,
+    HOLY = 1,
+    FIRE = 2,
+    NATURE = 3,
+    FROST = 4,
+    SHADOW = 5,
+    ARCANE = 6
+};
+
+[Flags]
+public enum SpellSchoolMask
+{
+    NONE = 0x00,
+    NORMAL = (1 << SpellSchools.NORMAL),
+    HOLY = (1 << SpellSchools.HOLY),
+    FIRE = (1 << SpellSchools.FIRE),
+    NATURE = (1 << SpellSchools.NATURE),
+    FROST = (1 << SpellSchools.FROST),
+    SHADOW = (1 << SpellSchools.SHADOW),
+    ARCANE = (1 << SpellSchools.ARCANE),
+
+    // 124, not include normal and holy damage
+    SPELL = (FIRE | NATURE | FROST | SHADOW | ARCANE),
+    // 126
+    MAGIC = (HOLY | SPELL),
+    // 127
+    ALL = (NORMAL | MAGIC)
+};
+
+public struct PowerCostData
+{
+    Powers Power;
+    int Amount;
+};
+
+public enum Powers
+{
+    MANA = 0,
+    RAGE = 1,
+    FOCUS = 2,
+    ENERGY = 3,
+    COMBO_POINTS = 4,
+    RUNES = 5,
+    RUNIC_POWER = 6,
+    SOUL_SHARDS = 7,
+    LUNAR_POWER = 8,
+    HOLY_POWER = 9,
+    ALTERNATE_POWER = 10,
+    MAELSTROM = 11,
+    CHI = 12,
+    INSANITY = 13,
+    BURNING_EMBERS = 14,
+    DEMONIC_FURY = 15,
+    ARCANE_CHARGES = 16,
+    FURY = 17,
+    PAIN = 18,
+    MAX_POWERS = 19,
+    ALL = 127,
+    HEALTH = 0xFE,
+};
