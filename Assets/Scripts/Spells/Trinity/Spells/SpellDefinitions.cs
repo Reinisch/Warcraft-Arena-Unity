@@ -123,29 +123,49 @@ public enum SpellSpecificType
     BANE = 30
 };
 
-public enum SpellCustomAttributes
+public enum SpellAttributes : uint
 {
-    ENCHANT_PROC = 0x00000001,
-    CONE_BACK = 0x00000002,
-    CONE_LINE = 0x00000004,
-    SHARE_DAMAGE = 0x00000008,
-    NO_INITIAL_THREAT = 0x00000010,
-    IS_TALENT = 0x00000020,
-    DONT_BREAK_STEALTH = 0x00000040,
-    DIRECT_DAMAGE = 0x00000100,
-    CHARGE = 0x00000200,
-    PICKPOCKET = 0x00000400,
-    NEGATIVE_EFF0 = 0x00001000,
-    NEGATIVE_EFF1 = 0x00002000,
-    NEGATIVE_EFF2 = 0x00004000,
-    IGNORE_ARMOR = 0x00008000,
-    REQ_TARGET_FACING_CASTER = 0x00010000,
-    REQ_CASTER_BEHIND_TARGET = 0x00020000,
-    ALLOW_INFLIGHT_TARGET = 0x00040000,
-    NEEDS_AMMO_DATA = 0x00080000,
+    NONE =                          0x00000000,
+    CONE_BACK =                     0x00000001,
+    CONE_LINE =                     0x00000002,
+    CHARGE =                        0x00000004,
+    NEGATIVE_EFF0 =                 0x00000008,
+    NEGATIVE_EFF1 =                 0x00000010,
+    NEGATIVE_EFF2 =                 0x00000020,
+    IGNORE_ARMOR =                  0x00000040,
+    REQ_TARGET_FACING_CASTER =      0x00000080,
+    REQ_CASTER_BEHIND_TARGET =      0x00000100,
+    CANT_CRIT =                     0x00000200,
+    TRIGGERED_CAN_TRIGGER_PROC =    0x00000400,
+    STACK_FOR_DIFF_CASTERS =        0x00000800,
+    ONLY_TARGET_PLAYERS =           0x00001000,
+    IGNORE_HIT_RESULT =             0x00002000,
+    IGNORE_RESISTANCES =            0x00004000,
+    PROC_ONLY_ON_CASTER =           0x00008000,
+    NOT_STEALABLE =                 0x00010000,
+    CAN_CAST_WHILE_CASTING =        0x00020000,
+    FIXED_DAMAGE =                  0x00040000,
+    TRIGGER_ACTIVATE =              0x00080000,
+    DAMAGE_DOESNT_BREAK_AURAS =     0x00100000,
+    USABLE_WHILE_STUNNED =          0x00200000,
+    SINGLE_TARGET_SPELL =           0x00400000,
+    START_PERIODIC_AT_APPLY =       0x00800000,
+    HASTE_AFFECT_DURATION =         0x01000000,
+    USABLE_WHILE_FEARED =           0x02000000,
+    USABLE_WHILE_CONFUSED =         0x04000000,
+    CANT_TARGET_CROWD_CONTROLLED =  0x08000000,
+    CANT_BE_REFLECTED =             0x10000000,
 
-    NEGATIVE = NEGATIVE_EFF0 | NEGATIVE_EFF1 | NEGATIVE_EFF2
+    NEGATIVE = NEGATIVE_EFF0 | NEGATIVE_EFF1 | NEGATIVE_EFF2,
+
+    ALL =                           0xFFFFFFFF,
 };
+
+enum SpellAttr3
+{
+    
+};
+
 
 public struct SpellRadiusEntry
 {
@@ -154,24 +174,6 @@ public struct SpellRadiusEntry
     public float RadiusPerLevel;
     public float RadiusMin;
     public float RadiusMax;
-};
-
-public struct SpellRangeEntry
-{
-    public int Id;
-    public float MinRangeHostile;
-    public float MinRangeFriend;
-    public float MaxRangeHostile;
-    public float MaxRangeFriend;
-    public int Flags;
-};
-
-public struct SpellCastTimesEntry
-{
-    int Id;
-    int CastTime;
-    int MinCastTime;
-    int CastTimePerLevel;
 };
 
 public struct SpellProcsPerMinuteModEntry
@@ -191,33 +193,6 @@ public struct SpellCooldownsEntry
     public int RecoveryTime;
     public int StartRecoveryTime;
     public int DifficultyId;
-};
-
-public struct SpellDurationEntry
-{
-    public int ID;
-    public int Duration;
-    public int MaxDuration;
-    public int DurationPerLevel;
-};
-
-public struct SpellPowerEntry
-{
-    public int SpellId;
-    public int ManaCost;
-    float ManaCostPercentage;
-    float ManaCostPercentagePerSecond;
-    public int RequiredAura;
-    float HealthCostPercentage;
-    public int PowerIndex;
-    public int PowerType;
-    public int Id;
-    public int ManaCostPerLevel;
-    public int ManaCostPerSecond;
-    public int ManaCostAdditional;
-    
-    public int PowerDisplayId;
-    public int UnitPowerBarId;
 };
 
 public enum SpellCastFlags
@@ -690,4 +665,221 @@ public enum SpellCastResult
 
     // ok cast value - here in case a future version removes SUCCESS and we need to use a custom value (not sent to client either way)
     SPELL_CAST_OK = SUCCESS
+};
+
+
+public enum DispelType
+{
+    NONE = 0,
+    MAGIC = 1,
+    CURSE = 2,
+    DISEASE = 3,
+    POISON = 4,
+    STEALTH = 5,
+    INVISIBILITY = 6,
+    ALL = 7,
+    ENRAGE = 9,
+};
+
+public enum AuraStateType
+{
+    NONE = 0,
+    DEFENSE = 1,
+    HEALTHLESS_20_PERCENT = 2,
+    BERSERKING = 3,
+    FROZEN = 4,
+    JUDGEMENT = 5,
+    WARRIOR_VICTORY_RUSH = 10,
+    FAERIE_FIRE = 12,
+    HEALTHLESS_35_PERCENT = 13,
+    CONFLAGRATE = 14,
+    SWIFTMEND = 15,
+    DEADLY_POISON = 16,
+    ENRAGE = 17,
+    BLEEDING = 18,
+    HEALTH_ABOVE_75_PERCENT = 23 
+};
+
+public enum Mechanics
+{
+    NONE = 0,
+    CHARM = 1,
+    DISORIENTED = 2,
+    DISARM = 3,
+    DISTRACT = 4,
+    FEAR = 5,
+    GRIP = 6,
+    ROOT = 7,
+    SLOW_ATTACK = 8,
+    SILENCE = 9,
+    SLEEP = 10,
+    SNARE = 11,
+    STUN = 12,
+    FREEZE = 13,
+    KNOCKOUT = 14,
+    BLEED = 15,
+    BANDAGE = 16,
+    POLYMORPH = 17,
+    BANISH = 18,
+    SHIELD = 19,
+    SHACKLE = 20,
+    MOUNT = 21,
+    INFECTED = 22,
+    TURN = 23,
+    HORROR = 24,
+    INVULNERABILITY = 25,
+    INTERRUPT = 26,
+    DAZE = 27,
+    DISCOVERY = 28,
+    IMMUNE_SHIELD = 29,
+    SAPPED = 30,
+    ENRAGED = 31,
+    WOUNDED = 32,
+    MAX_MECHANIC = 33
+};
+
+public enum Targets
+{
+    TARGET_UNIT_CASTER = 1,
+    TARGET_UNIT_NEARBY_ENEMY = 2,
+    TARGET_UNIT_NEARBY_PARTY = 3,
+    TARGET_UNIT_NEARBY_ALLY = 4,
+    TARGET_UNIT_PET = 5,
+    TARGET_UNIT_TARGET_ENEMY = 6,
+    TARGET_UNIT_SRC_AREA_ENTRY = 7,
+    TARGET_UNIT_DEST_AREA_ENTRY = 8,
+    TARGET_DEST_HOME = 9,
+    TARGET_UNIT_SRC_AREA_UNK_11 = 11,
+    TARGET_UNIT_SRC_AREA_ENEMY = 15,
+    TARGET_UNIT_DEST_AREA_ENEMY = 16,
+    TARGET_DEST_DB = 17,
+    TARGET_DEST_CASTER = 18,
+    TARGET_UNIT_CASTER_AREA_PARTY = 20,
+    TARGET_UNIT_TARGET_ALLY = 21,
+    TARGET_SRC_CASTER = 22,
+    TARGET_GAMEOBJECT_TARGET = 23,
+    TARGET_UNIT_CONE_ENEMY_24 = 24,
+    TARGET_UNIT_TARGET_ANY = 25,
+    TARGET_GAMEOBJECT_ITEM_TARGET = 26,
+    TARGET_UNIT_MASTER = 27,
+    TARGET_DEST_DYNOBJ_ENEMY = 28,
+    TARGET_DEST_DYNOBJ_ALLY = 29,
+    TARGET_UNIT_SRC_AREA_ALLY = 30,
+    TARGET_UNIT_DEST_AREA_ALLY = 31,
+    TARGET_DEST_CASTER_SUMMON = 32,
+    TARGET_UNIT_SRC_AREA_PARTY = 33,
+    TARGET_UNIT_DEST_AREA_PARTY = 34,
+    TARGET_UNIT_TARGET_PARTY = 35,
+    TARGET_DEST_CASTER_UNK_36 = 36,
+    TARGET_UNIT_LASTTARGET_AREA_PARTY = 37,
+    TARGET_UNIT_NEARBY_ENTRY = 38,
+    TARGET_DEST_CASTER_FISHING = 39,
+    TARGET_GAMEOBJECT_NEARBY_ENTRY = 40,
+    TARGET_DEST_CASTER_FRONT_RIGHT = 41,
+    TARGET_DEST_CASTER_BACK_RIGHT = 42,
+    TARGET_DEST_CASTER_BACK_LEFT = 43,
+    TARGET_DEST_CASTER_FRONT_LEFT = 44,
+    TARGET_UNIT_TARGET_CHAINHEAL_ALLY = 45,
+    TARGET_DEST_NEARBY_ENTRY = 46,
+    TARGET_DEST_CASTER_FRONT = 47,
+    TARGET_DEST_CASTER_BACK = 48,
+    TARGET_DEST_CASTER_RIGHT = 49,
+    TARGET_DEST_CASTER_LEFT = 50,
+    TARGET_GAMEOBJECT_SRC_AREA = 51,
+    TARGET_GAMEOBJECT_DEST_AREA = 52,
+    TARGET_DEST_TARGET_ENEMY = 53,
+    TARGET_UNIT_CONE_ENEMY_54 = 54,
+    TARGET_DEST_CASTER_FRONT_LEAP = 55,
+    TARGET_UNIT_CASTER_AREA_RAID = 56,
+    TARGET_UNIT_TARGET_RAID = 57,
+    TARGET_UNIT_NEARBY_RAID = 58,
+    TARGET_UNIT_CONE_ALLY = 59,
+    TARGET_UNIT_CONE_ENTRY = 60,
+    TARGET_UNIT_TARGET_AREA_RAID_CLASS = 61,
+    TARGET_UNK_62 = 62,
+    TARGET_DEST_TARGET_ANY = 63,
+    TARGET_DEST_TARGET_FRONT = 64,
+    TARGET_DEST_TARGET_BACK = 65,
+    TARGET_DEST_TARGET_RIGHT = 66,
+    TARGET_DEST_TARGET_LEFT = 67,
+    TARGET_DEST_TARGET_FRONT_RIGHT = 68,
+    TARGET_DEST_TARGET_BACK_RIGHT = 69,
+    TARGET_DEST_TARGET_BACK_LEFT = 70,
+    TARGET_DEST_TARGET_FRONT_LEFT = 71,
+    TARGET_DEST_CASTER_RANDOM = 72,
+    TARGET_DEST_CASTER_RADIUS = 73,
+    TARGET_DEST_TARGET_RANDOM = 74,
+    TARGET_DEST_TARGET_RADIUS = 75,
+    TARGET_DEST_CHANNEL_TARGET = 76,
+    TARGET_UNIT_CHANNEL_TARGET = 77,
+    TARGET_DEST_DEST_FRONT = 78,
+    TARGET_DEST_DEST_BACK = 79,
+    TARGET_DEST_DEST_RIGHT = 80,
+    TARGET_DEST_DEST_LEFT = 81,
+    TARGET_DEST_DEST_FRONT_RIGHT = 82,
+    TARGET_DEST_DEST_BACK_RIGHT = 83,
+    TARGET_DEST_DEST_BACK_LEFT = 84,
+    TARGET_DEST_DEST_FRONT_LEFT = 85,
+    TARGET_DEST_DEST_RANDOM = 86,
+    TARGET_DEST_DEST = 87,
+    TARGET_DEST_DYNOBJ_NONE = 88,
+    TARGET_DEST_TRAJ = 89,
+    TARGET_UNIT_TARGET_MINIPET = 90,
+    TARGET_DEST_DEST_RADIUS = 91,
+    TARGET_UNIT_SUMMONER = 92,
+    TARGET_CORPSE_SRC_AREA_ENEMY = 93,
+    TARGET_UNIT_VEHICLE = 94,
+    TARGET_UNIT_TARGET_PASSENGER = 95,
+    TARGET_UNIT_PASSENGER_2 = 98,
+    TARGET_UNIT_PASSENGER_3 = 99,
+    TARGET_UNIT_PASSENGER_4 = 100,
+    TARGET_UNIT_PASSENGER_5 = 101,
+    TARGET_UNIT_PASSENGER_6 = 102,
+    TARGET_UNIT_PASSENGER_7 = 103,
+    TARGET_UNIT_CONE_ENEMY_104 = 104,
+    TARGET_DEST_CHANNEL_CASTER = 106,
+    TARGET_GAMEOBJECT_CONE = 108,
+};
+
+public enum SpellDamageClass
+{
+    NONE = 0,
+    MAGIC = 1,
+    MELEE = 2,
+    RANGED = 3
+};
+
+public enum SpellPreventionType
+{
+    NO_ACTIONS = 0,
+    SILENCE = 1,
+    PACIFY = 2,
+};
+
+public enum SpellInterruptFlags
+{
+    NONE = 0x00,
+    MOVEMENT = 0x01,
+    PUSH_BACK = 0x02,
+    INTERRUPT = 0x08,
+    ABORT_ON_DMG = 0x10,
+};
+
+public enum SpellFamilyNames
+{
+    GENERIC = 0,
+    MAGE = 3,
+    WARRIOR = 4,
+    WARLOCK = 5,
+    PRIEST = 6,
+    DRUID = 7,
+    ROGUE = 8,
+    HUNTER = 9,
+    PALADIN = 10,
+    SHAMAN = 11,
+    POTION = 13,
+    DEATHKNIGHT = 15,
+    PET = 17,
+    MONK = 53,
+    WARLOCK_PET = 57,
 };
