@@ -86,6 +86,11 @@ public class ArenaManager: MonoBehaviour
         SpellData newSpellData;
         Buff buff;
 
+        // #TODO !
+        Resources.LoadAll<Sprite>("Icons/Mage/");
+        Resources.LoadAll<AudioClip>("Sound/Spells/Mage/");
+        Resources.LoadAll<GameObject>("Prefabs/Spells/");
+
         //Mage
         #region Fire Blast : Spell Id = 1 / Buff Id = None
         // Fire Blast Spell Data
