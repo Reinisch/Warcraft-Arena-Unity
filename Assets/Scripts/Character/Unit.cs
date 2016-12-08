@@ -94,4 +94,49 @@ public class Unit : MonoBehaviour
         else
             animator.Play("Air", 1);
     }
+
+    #region Spells
+
+    public void CastSpell(SpellCastTargets targets, TrinitySpellInfo spellInfo, TriggerCastFlags triggerFlags, AuraEffect triggeredByAura, Guid originalCaster)
+    {
+        if (spellInfo == null)
+        {
+            Debug.LogError("Unknown spell for unit: " + gameObject.name);
+            return;
+        }
+
+        TrinitySpell spell = new TrinitySpell(this, spellInfo, triggerFlags, originalCaster);
+        spell.Prepare(targets, triggeredByAura);
+    }
+
+    public void CastSpell(Unit target, int spellId, bool triggered, AuraEffect triggeredByAura, Guid originalCaster)
+    {
+        CastSpell(target, spellId, triggered ? TriggerCastFlags.FULL_MASK : TriggerCastFlags.NONE, triggeredByAura, originalCaster);
+    }
+
+    public void CastSpell(Unit target, int spellId, TriggerCastFlags triggerFlags, AuraEffect triggeredByAura, Guid originalCaster)
+    {
+        TrinitySpellInfo spellInfo = WarcraftDatabase.SpellInfos.ContainsKey(spellId) ? WarcraftDatabase.SpellInfos[spellId] : null;
+        if (spellInfo == null)
+        {
+            Debug.LogError("Unknown spell for unit: " + gameObject.name);
+            return;
+        }
+
+        CastSpell(target, spellInfo, triggerFlags, triggeredByAura, originalCaster);
+    }
+
+    public void CastSpell(Unit target, TrinitySpellInfo spellInfo, bool triggered, AuraEffect triggeredByAura, Guid originalCaster)
+    {
+        CastSpell(target, spellInfo, triggered ? TriggerCastFlags.FULL_MASK : TriggerCastFlags.NONE, triggeredByAura, originalCaster);
+    }
+
+    public void CastSpell(Unit target, TrinitySpellInfo spellInfo, TriggerCastFlags triggerFlags, AuraEffect triggeredByAura, Guid originalCaster)
+    {
+        SpellCastTargets targets = new SpellCastTargets();
+        targets.UnitTarget = target;
+        CastSpell(targets, spellInfo, triggerFlags, triggeredByAura, originalCaster);
+    }
+
+    #endregion
 }

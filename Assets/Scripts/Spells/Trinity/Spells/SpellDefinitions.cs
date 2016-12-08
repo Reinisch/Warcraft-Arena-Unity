@@ -155,25 +155,11 @@ public enum SpellAttributes : uint
     USABLE_WHILE_CONFUSED =         0x04000000,
     CANT_TARGET_CROWD_CONTROLLED =  0x08000000,
     CANT_BE_REFLECTED =             0x10000000,
+    PASSIVE =                       0x20000000,
 
     NEGATIVE = NEGATIVE_EFF0 | NEGATIVE_EFF1 | NEGATIVE_EFF2,
 
     ALL =                           0xFFFFFFFF,
-};
-
-enum SpellAttr3
-{
-    
-};
-
-
-public struct SpellRadiusEntry
-{
-    public int Id;
-    public float Radius;
-    public float RadiusPerLevel;
-    public float RadiusMin;
-    public float RadiusMax;
 };
 
 public struct SpellProcsPerMinuteModEntry
@@ -229,10 +215,10 @@ public enum SpellRangeFlag
 
 public struct SpellValue
 {
-    int[] EffectBasePoints;
-    int MaxAffectedTargets;
-    float RadiusMod;
-    int AuraStackAmount;
+    public int[] EffectBasePoints;
+    public int MaxAffectedTargets;
+    public float RadiusMod;
+    public int AuraStackAmount;
 };
 
 public enum SpellState
@@ -882,4 +868,85 @@ public enum SpellFamilyNames
     PET = 17,
     MONK = 53,
     WARLOCK_PET = 57,
+};
+
+public enum SpellEffectType
+{
+    NONE = 0,
+    INSTAKILL = 1,
+    SCHOOL_DAMAGE = 2,
+    DUMMY = 3,
+    APPLY_AURA = 6,
+    ENVIRONMENTAL_DAMAGE = 7,
+    POWER_DRAIN = 8,
+    HEALTH_LEECH = 9,
+    HEAL = 10,
+    BIND = 11,
+    PORTAL = 12,
+    WEAPON_DAMAGE_NOSCHOOL = 17,
+    ADD_EXTRA_ATTACKS = 19,
+    WEAPON = 25,
+    PERSISTENT_AREA_AURA = 27,
+    SUMMON = 28,
+    LEAP = 29,
+    WEAPON_PERCENT_DAMAGE = 31,
+    TRIGGER_MISSILE = 32,
+    SPELL_DEFENSE = 37,
+    DISPEL = 38,
+    TELEPORT_UNITS_FACE_CASTER = 43,
+    STEALTH = 48,
+    FORCE_CRITICAL_HIT = 51,
+    WEAPON_DAMAGE = 58,
+    TRIGGER_SPELL = 64,
+    HEAL_MAX_HEALTH = 67,
+    INTERRUPT_CAST = 68,
+    DISTRACT = 69,
+    PULL = 70,
+    SCRIPT_EFFECT = 77,
+    ADD_COMBO_POINTS = 80,
+    CHARGE = 96,
+    KNOCK_BACK = 98,
+    DISPEL_MECHANIC = 108,
+    APPLY_AREA_AURA_FRIEND = 128,
+    APPLY_AREA_AURA_ENEMY = 129,
+    APPLY_AREA_AURA_OWNER = 143,
+    REMOVE_AURA = 164,
+};
+
+public enum DiminishingLevels
+{
+    LEVEL_1 = 0,
+    LEVEL_2 = 1,
+    LEVEL_3 = 2,
+    LEVEL_4 = 3,
+    IMMUNE = 3,
+    TAUNT_IMMUNE = 4
+};
+
+public enum DiminishingGroup
+{
+    NONE = 0,
+    ROOT = 1,
+    STUN = 2,
+    INCAPACITATE = 3,
+    DISORIENT = 4,
+    SILENCE = 5,
+    AOE_KNOCKBACK = 6,
+    TAUNT = 7,
+    LIMITONLY = 8,
+};
+
+public enum SpellMissInfo
+{
+    NONE = 0,
+    MISS = 1,
+    RESIST = 2,
+    DODGE = 3,
+    PARRY = 4,
+    BLOCK = 5,
+    EVADE = 6,
+    IMMUNE = 7,
+    DEFLECT = 9,
+    ABSORB = 10,
+    REFLECT = 11
 };

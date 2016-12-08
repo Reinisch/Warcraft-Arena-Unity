@@ -32,6 +32,8 @@ public class Character
     public DeathState DeathState { get; set; }
     public UnitMoveType MoveType { get; set; }
 
+    public Guid Id { get; private set; }
+
     #region Deprecated
     public Unit target;
     public string className;
@@ -57,6 +59,7 @@ public class Character
 
     public void Initialize(Unit unit)
     {
+        Id = Guid.NewGuid();
         isPlayerControlled = unit.IsHumanPlayer;
 
         if (unit.IsHumanPlayer)

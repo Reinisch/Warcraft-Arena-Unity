@@ -32,4 +32,20 @@ public class TrinitySpellInfo
 
     public int SpellIconId { get; set; }
     public int ActiveIconId { get; set; }
+    public int VisualId { get; set; }
+
+    public List<TrinitySpellEffectInfo> SpellEffectInfos { get; set; }
+
+    public bool HasAttribute(SpellAttributes attribute)
+    {
+        return (Attributes & attribute) == attribute;
+    }
+    public bool IsPassive()
+    {
+        return HasAttribute(SpellAttributes.PASSIVE);
+    }
+    public bool IsPositive()
+    {
+        return !HasAttribute(SpellAttributes.NEGATIVE);
+    }
 }

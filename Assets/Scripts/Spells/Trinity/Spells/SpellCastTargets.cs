@@ -4,13 +4,43 @@ using System;
 
 public class SpellCastTargets
 {
+    private Unit origTarget;
+    private Unit unitTarget;
+
     public SpellCastTargetFlags TargetMask { get; set; }
-    public Unit OrigTarget { get; set; }
-    public Unit UnitTarget { get; set; }
+
+    public Unit OrigTarget
+    {
+        get
+        {
+            return origTarget;
+        }
+        set
+        {
+            origTarget = value;
+
+            if (origTarget != null)
+                SourceTransform = origTarget.transform;
+        }
+    }
+    public Unit UnitTarget
+    {
+        get
+        {
+            return unitTarget;
+        }
+        set
+        {
+            unitTarget = value;
+
+            if (unitTarget != null)
+                TargetTransform = unitTarget.transform;
+        }
+    }
 
     public Vector3 Source { get; set; }
-    public Transform SourceTransform { get; set; }
-    public Transform TargetTransform { get; set; }
+    public Transform SourceTransform { get; private set; }
+    public Transform TargetTransform { get; private set; }
 
     public float Speed { get; set; }
     public float Pitch { get; set; }
@@ -24,9 +54,13 @@ public class SpellCastTargets
     public bool HasTrajectory { get { return Speed != 0; } }
 
 
-    public SpellCastTargets() { }
+    public SpellCastTargets()
+    {
+    }
 
-    public SpellCastTargets(Unit caster, Unit target) { }
+    public SpellCastTargets(Unit caster, Unit target)
+    {
+    }
 
 
     public void SetTargetFlag(SpellCastTargetFlags flag) { TargetMask |= flag; }

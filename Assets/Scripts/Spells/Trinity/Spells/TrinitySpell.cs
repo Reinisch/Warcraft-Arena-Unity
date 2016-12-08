@@ -2,72 +2,73 @@
 using System.Collections.Generic;
 using System;
 
+public class TargetInfo
+{
+    public Guid TargetId { get; set; }
+    public float Delay { get; set; }
+    public SpellMissInfo MissCondition { get; set; }
+    public SpellMissInfo ReflectResult { get; set; }
+    public int EffectMask { get; set; }
+    public bool Processed { get; set; }
+    public bool Alive { get; set; }
+    public bool Crit { get; set; }
+    public bool ScaleAura { get; set; }
+    public int Damage { get; set; }
+};
+
 public class TrinitySpell
 {
-    public SpellInfo spellInfo;
-    public Guid castId;
-    public Guid originalCastId;
-    public int castFlagsEx;
-    public int SpellVisual;
-    public int preCastSpell;
-    public int comboPointGain;
-    //public UsedSpellMods m_appliedMods;
+    public TrinitySpellInfo SpellInfo { get; private set; }
+    public List<TrinitySpellEffectInfo> SpellEffects { get { return SpellInfo.SpellEffectInfos; } }
 
-    public Unit caster;
-    public SpellValue spellValue;
-
-    public Guid originalCasterGuid;                    // real source of cast (aura caster/etc), used for spell targets selection
-                                                       // e.g. damage around area spell trigered by victim aura and damage enemies of aura caster
-    public Unit originalCaster;                             // cached pointer for m_originalCaster, updated at Spell::UpdatePointers()
-
-    //Spell data
-    public SpellSchoolMask m_spellSchoolMask;                  // Spell school (can be overwrite for some spells (wand shoot for example)
-
-    public List<PowerCostData> powerCost;                  // Calculated spell cost initialized only in Spell::prepare
-    public int casttime;                                   // Calculated spell cast time initialized only in Spell::prepare
-    public int channeledDuration;                          // Calculated channeled spell duration in order to calculate correct pushback.
-    public bool canReflect;                                  // can reflect this spell?
-    public bool autoRepeat;
-    public bool isDelayedInstantCast;                        // whether this is a creature's delayed instant cast
-    public int runesState;
+    public Guid CastId { get; private set; }
+    public Guid OriginalCastId { get; private set; }
+    public bool SkipCheck { get; private set; }
 
     // These vars are used in both delayed spell system and modified immediate spell system
-    public bool referencedFromCurrentSpell;                  // mark as references to prevent deleted and access by dead pointers
-    public bool executedCurrently;                           // mark as executed to prevent deleted and access by dead pointers
-    public bool mneedComboPoints;
-    public int m_applyMultiplierMask;
-    public float[] m_damageMultipliers;
+    public bool ExecutedCurrently { get; set; }
+    public int ApplyMultiplierMask { get; set; }
+    public float[] DamageMultipliers { get; set; }
+    public bool ReferencedFromCurrentSpell { get; set; } // mark as references to prevent deleted and access by dead pointers
+
+    public SpellSchoolMask SpellSchoolMask { get; set; } // Spell school (can be overwrite for some spells (wand shoot for example)
+
+    public Unit Caster { get; private set; }
+    public Guid OriginalCasterGuid { get; set; }        // real source of cast (aura caster/etc), used for spell targets selection
+    public Unit OriginalCaster { get; set; }            // cached pointer for OriginalCaster, updated at UpdatePointers()
+
+    public SpellState SpellState { get; set; }
+    public TriggerCastFlags TriggerCastFlags { get; set; }
 
     // Current targets, to be used in SpellEffects (MUST BE USED ONLY IN SPELL EFFECTS)
-    public Unit unitTarget;
-    public GameObject gameObjTarget;
-    public int damage;
-    public float variance;
-    public SpellEffectHandleMode effectHandleMode;
-    public TrinitySpellEffectInfo effectInfo;
-    // used in effects handlers
-    public Aura spellAura;
+    public Unit UnitTarget { get; set; }
+    public Transform DestTarget { get; set; }
+    public int Damage { get; set; }
+    public float Variance { get; set; }
+    public SpellEffectHandleMode EffectHandleMode { get; set; }
+    public TrinitySpellEffectInfo EffectInfo { get; set; }
 
     // this is set in Spell Hit, but used in Apply Aura handler
-    //DiminishingLevels m_diminishLevel;
-    //DiminishingGroup m_diminishGroup;
-
-    // -------------------------------------------
-    public GameObject focusObject;
+    DiminishingLevels DiminishLevel { get; set; }
+    DiminishingGroup DiminishGroup { get; set; }
 
     // Damage and healing in effects need just calculate
-    public int effectDamage;           // Damage  in effects count here
-    public int effectHealing;          // Healing in effects count here
+    public int EffectDamage { get; set; }       // Damage  in effects count here
+    public int EffectHealing { get; set; }      // Healing in effects count here
+    public Aura SpellAura { get; set; }         // Used in effects handlers
+    public TrinitySpellInfo TriggeredByAuraSpell { get; set; }
 
-    // ******************************************
-    // Spell trigger system
-    // ******************************************
-    public int procAttacker;                // Attacker trigger flags
-    public int procVictim;                  // Victim   trigger flags
-    public int procEx;
+    public List<Aura> UsedSpellMods { get; set; }
+    public SpellValue SpellValue { get; set; }
+    public int SpellVisual { get; set; }
+    public bool CanReflect { get; set; }                            // Can reflect this spell?
 
-    public SpellState spellState;
-    public int timer;
+    public int CastTime { get; set; }                               // Calculated spell cast time initialized only in Spell::prepare
+    public int CastTimeLeft { get; set; }                           // Initialized only in Spell::prepare
+    public List<PowerCostData> PowerCost { get; set; }              // Calculated spell cost initialized only in Spell::prepare
+
+    public List<TargetInfo> UniqueTargets { get; set; }
+    public SpellCastTargets Targets { get; set; }
 
     public void EffectDistract(SpellEffIndex effIndex) { }
     public void EffectPull(SpellEffIndex effIndex) { }
@@ -105,19 +106,84 @@ public class TrinitySpell
     public void EffectSkill(SpellEffIndex effIndex) { }
     public void EffectRemoveAura(SpellEffIndex effIndex) { }
 
-    public List<Aura> UsedSpellMods { get; set; }
 
-    public TrinitySpell(Unit caster, SpellInfo info, TriggerCastFlags triggerFlags, Guid originalCasterGUID, bool skipCheck = false)
+    public TrinitySpell(Unit caster, TrinitySpellInfo info, TriggerCastFlags triggerFlags, Guid originalCasterId, bool skipCheck = false)
     {
+        Caster = caster;
+        SpellInfo = info;
+
+        CastId = Guid.NewGuid();
+        OriginalCastId = CastId;
+        SkipCheck = skipCheck;
+
+        ExecutedCurrently = false;
+        ApplyMultiplierMask = 0;
+        DamageMultipliers = new float[3];
+        ReferencedFromCurrentSpell = false;
+
+        SpellSchoolMask = SpellInfo.SchoolMask;
+
+        if (originalCasterId != Guid.Empty)
+            OriginalCasterGuid = originalCasterId;
+        else
+            OriginalCasterGuid = caster.Character.Id;
+
+        if (OriginalCasterGuid == caster.Character.Id)
+            OriginalCaster = caster;
+        else
+            OriginalCaster = ArenaManager.ArenaUnits.Find(unit => unit.Character.Id == OriginalCasterGuid);
+
+        SpellState = SpellState.NONE;
+        TriggerCastFlags = triggerFlags;
+
+        UnitTarget = null;
+        DestTarget = null;
+        Damage = 0;
+        Variance = 0.0f;
+        EffectHandleMode = SpellEffectHandleMode.LAUNCH;
+        EffectInfo = null;
+
+        DiminishLevel = DiminishingLevels.LEVEL_1;
+        DiminishGroup = DiminishingGroup.NONE;
+
+        EffectDamage = 0;
+        EffectHealing = 0;
+        SpellAura = null;
+
+        SpellVisual = SpellInfo.VisualId;
+        CanReflect = SpellInfo.DamageClass == SpellDamageClass.MAGIC && !SpellInfo.HasAttribute(SpellAttributes.CANT_BE_REFLECTED)
+            && !SpellInfo.IsPassive() && !SpellInfo.IsPositive();
+
+        UniqueTargets = new List<TargetInfo>();
     }
 
-    public void InitiateExplicitTargets(SpellCastTargets targets) { }
+    public void InitiateExplicitTargets(SpellCastTargets targets)
+    {
+        Targets = targets;
+        Targets.OrigTarget = Targets.UnitTarget;
+    }
 
     public void SelectSpellTargets() { }
 
     public void Prepare(SpellCastTargets targets, AuraEffect triggeredByAura = null)
     {
+        InitiateExplicitTargets(targets);
 
+        if(triggeredByAura != null)
+            TriggeredByAuraSpell = triggeredByAura.SpellInfo;
+
+        SpellState = SpellState.PREPARING;
+
+        // #TODO: create and add update event for this spell
+        //SpellEvent* Event = new SpellEvent(this);
+        //m_caster->m_Events.AddEvent(Event, m_caster->m_Events.CalculateTime(1));
+
+        //Prevent casting at cast another spell (ServerSide check)
+        if (!TriggerCastFlags.HasFlag(TriggerCastFlags.IGNORE_CAST_IN_PROGRESS))
+        {
+            Finish(false);
+            return;
+        }
     }
     public void Cancel()
     {

@@ -6,12 +6,14 @@ public class TrinitySpellEffectInfo
     TrinitySpellInfo spellInfo;
 
     public int EffectIndex { get; set; }
-    public int Effect { get; set; }
-    public int ApplyAuraName { get; set; }
+    public SpellEffectType Effect { get; set; }
+    public AuraType AuraType { get; set; }
     public int ApplyAuraPeriod { get; set; }
     public int DieSides { get; set; }
 
-    public float RealPointsPerLevel { get; set; }
+    public Targets TargetA { get; set; }
+    public Targets TargetB { get; set; }
+
     public int BasePoints { get; set; }
     public float PointsPerResource { get; set; }
     public float Amplitude { get; set; }
@@ -23,11 +25,38 @@ public class TrinitySpellEffectInfo
     public Mechanics Mechanic { get; set; }
 
     public float PositionFacing { get; set; }
-    public SpellRadiusEntry RadiusEntry { get; set; }
-    public SpellRadiusEntry MaxRadiusEntry { get; set; }
+    public SpellRadius Radius { get; set; }
 
-    public int ChainTargets { get; set; }
-    public int ItemType { get; set; }
     public int TriggerSpell { get; set; }
     public float BonusCoefficientFromAP { get; set; }
+
+    public TrinitySpellEffectInfo(TrinitySpellInfo info, int effectIndex, TrinitySpellEffectInfoEntry effectEntry)
+    {
+        spellInfo = info;
+        EffectIndex = effectIndex;
+
+        Effect = effectEntry.Effect;
+        AuraType = effectEntry.AuraType;
+        ApplyAuraPeriod = effectEntry.ApplyAuraPeriod;
+        DieSides = effectEntry.DieSides;
+
+        TargetA = effectEntry.TargetA;
+        TargetB = effectEntry.TargetB;
+
+        BasePoints = effectEntry.BasePoints;
+        PointsPerResource = effectEntry.PointsPerResource;
+        Amplitude = effectEntry.Amplitude;
+        ChainAmplitude = effectEntry.ChainAmplitude;
+
+        MiscValue = effectEntry.MiscValue;
+        MiscValueB = effectEntry.MiscValueB;
+        Mechanic = effectEntry.Mechanic;
+
+        PositionFacing = effectEntry.PositionFacing;
+        Radius = effectEntry.RadiusEntryId > 0 ? WarcraftDatabase.SpellRadiuses[effectEntry.RadiusEntryId] : null;
+
+        TriggerSpell = effectEntry.TriggerSpell;
+        BonusCoefficient = effectEntry.BonusCoefficient;
+        BonusCoefficientFromAP = effectEntry.BonusCoefficientFromAP;
+    }
 }

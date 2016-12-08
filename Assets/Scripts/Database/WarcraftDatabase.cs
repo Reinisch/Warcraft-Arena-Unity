@@ -16,12 +16,15 @@ public class WarcraftDatabase : MonoBehaviour
     #region Spell Info
 
     public static Dictionary<int, TrinitySpellInfo> SpellInfos { get; private set; }
-    
+    public static Dictionary<int, TrinitySpellEffectInfoEntry> SpellEffectEntries { get; private set; }
+
     public static Dictionary<int, SpellChargeCategory> SpellChargeCategories { get; private set; }
     public static Dictionary<int, SpellCastTimes> SpellCastTimes { get; private set; }
     public static Dictionary<int, SpellDuration> SpellDurations { get; private set; }
     public static Dictionary<int, SpellRange> SpellRanges { get; private set; }
     public static Dictionary<int, SpellPowerCost> SpellPowerCosts { get; private set; }
+    public static Dictionary<int, SpellRadius> SpellRadiuses { get; private set; }
+
     #endregion
 
     void Awake()
@@ -48,6 +51,8 @@ public class WarcraftDatabase : MonoBehaviour
     // #TODO : Read from json
     void LoadSpells()
     {
+        LoadSpellRadiuses();
+
         LoadSpellPowerCosts();
 
         LoadSpellRanges();
@@ -63,6 +68,25 @@ public class WarcraftDatabase : MonoBehaviour
 
 
     #region Spell Info Loading
+
+    void LoadSpellRadiuses()
+    {
+        SpellRadiuses = new Dictionary<int, SpellRadius>();
+
+        #region Standard Radiuses Id = Meters
+
+        var spellRadius = new SpellRadius()
+        {
+            Id = 12,
+            Radius = 12,
+            RadiusMin = 0,
+            RadiusMax = 12,
+            RadiusPerLevel = 0,
+        };
+        SpellRadiuses.Add(spellRadius.Id, spellRadius);
+
+        #endregion
+    }
 
     void LoadSpellPowerCosts()
     {
@@ -141,11 +165,40 @@ public class WarcraftDatabase : MonoBehaviour
         SpellChargeCategories.Add(spellCategory.Id, spellCategory);
     }
 
+    void LoadSpellEffectInfo()
+    {
+        SpellEffectEntries = new Dictionary<int, TrinitySpellEffectInfoEntry>();
+
+        #region Frost Nova Effects Id: 1, 2
+        var spellEffectEntry = new TrinitySpellEffectInfoEntry()
+        {
+            Id = 1,
+            Effect = SpellEffectType.SCHOOL_DAMAGE,
+            AuraType = AuraType.SPELL_AURA_NONE,
+            BonusCoefficient = 0.17f,
+            RadiusEntryId = 1,
+            TargetA = Targets.TARGET_UNIT_TARGET_ENEMY,
+        };
+        SpellEffectEntries.Add(spellEffectEntry.Id, spellEffectEntry);
+        spellEffectEntry = new TrinitySpellEffectInfoEntry()
+        {
+            Id = 2,
+            Effect = SpellEffectType.APPLY_AURA,
+            AuraType = AuraType.SPELL_AURA_MOD_ROOT,
+            Mechanic = Mechanics.FREEZE,
+            RadiusEntryId = 1,
+            TargetA = Targets.TARGET_UNIT_TARGET_ENEMY,
+        };
+        SpellEffectEntries.Add(spellEffectEntry.Id, spellEffectEntry);
+        #endregion
+    }
+
     void LoadSpellInfo()
     {
         SpellInfos = new Dictionary<int, TrinitySpellInfo>();
 
-        // #1 Frost Nova
+        #region Frost Nova Id : 1, Effects : 1, 2
+
         var spellInfo = new TrinitySpellInfo()
         {
             Id = 1,
@@ -177,7 +230,18 @@ public class WarcraftDatabase : MonoBehaviour
 
             SpellIconId = 1,
             ActiveIconId = 2,
+            VisualId = 1,
         };
+
+        spellInfo.SpellEffectInfos = new List<TrinitySpellEffectInfo>()
+        {
+            new TrinitySpellEffectInfo(spellInfo, 0, SpellEffectEntries[1]),
+            new TrinitySpellEffectInfo(spellInfo, 1, SpellEffectEntries[2]),
+        };
+
+        SpellInfos.Add(spellInfo.Id, spellInfo);
+
+        #endregion
     }
 
     #endregion
