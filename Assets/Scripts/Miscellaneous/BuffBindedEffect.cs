@@ -26,7 +26,7 @@ public class BuffBindedEffect : MonoBehaviour
     void Update()
     {
 
-        if (target == null || target.IsDead || buff.isDisposed)
+        if (target == null || target.IsDead() || buff.isDisposed)
         {
             target = null;
             buff = null;

@@ -7,4 +7,12 @@ public static class SpellExtensions
     {
         return (baseFlags & flag) == flag;
     }
+    public static bool HasFlag(this SpellPreventionType baseFlags, SpellPreventionType flag)
+    {
+        return (baseFlags & flag) == flag;
+    }
+    public static bool HasFlag(this SpellRangeFlag baseFlags, SpellRangeFlag flag)
+    {
+        return (baseFlags & flag) == flag;
+    }
 }

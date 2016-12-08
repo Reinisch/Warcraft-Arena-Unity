@@ -2,6 +2,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum Team { Red, Blue }
+
 public class Unit : MonoBehaviour
 {
     public int id;
@@ -12,7 +14,7 @@ public class Unit : MonoBehaviour
     public Character character;
     public Transform castPoint;
     public Transform centerPoint;
-
+    public Team team;
 
     public float moveTimer = 0;
     public float castTimer = 0;
@@ -35,10 +37,6 @@ public class Unit : MonoBehaviour
     { 
         get { return isHumanPlayer; }
         set { isHumanPlayer = value; }
-    }
-    public bool IsDead
-    { get { return isDead; }
-        set { isDead = value; }
     }
     public bool IsGrounded 
     {
@@ -95,7 +93,49 @@ public class Unit : MonoBehaviour
             animator.Play("Air", 1);
     }
 
+    #region Reputation
+
+    public bool IsHostileTo(Unit unit)
+    {
+        return team != unit.team;
+    }
+
+    #endregion
+
+    #region State Info
+
+    public bool IsAlive() { return (Character.DeathState == DeathState.Alive); }
+
+    public bool IsDying() { return (Character.DeathState == DeathState.JustDied); }
+
+    public bool IsDead() { return (Character.DeathState == DeathState.Dead || Character.DeathState == DeathState.Corpse); }
+
+    #endregion
+
     #region Spells
+
+    public float GetSpellMinRangeForTarget(Unit target, TrinitySpellInfo spellInfo)
+    {
+        if (spellInfo.Range == null)
+            return 0;
+        if (spellInfo.Range.MinRangeFriend == spellInfo.Range.MinRangeHostile)
+            return spellInfo.GetMinRange(false);
+        if (target != null)
+            return spellInfo.GetMinRange(true);
+        return spellInfo.GetMinRange(!IsHostileTo(target));
+    }
+
+    public float GetSpellMaxRangeForTarget(Unit target, TrinitySpellInfo spellInfo)
+    {
+        if (spellInfo.Range == null)
+            return 0;
+        if (spellInfo.Range.MaxRangeFriend == spellInfo.Range.MaxRangeHostile)
+            return spellInfo.GetMaxRange(false);
+        if (!target)
+            return spellInfo.GetMaxRange(true);
+        return spellInfo.GetMaxRange(!IsHostileTo(target));
+    }
+
 
     public void CastSpell(SpellCastTargets targets, TrinitySpellInfo spellInfo, TriggerCastFlags triggerFlags, AuraEffect triggeredByAura, Guid originalCaster)
     {

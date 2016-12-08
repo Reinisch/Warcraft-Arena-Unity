@@ -34,6 +34,8 @@ public class Character
 
     public Guid Id { get; private set; }
 
+    public SpellHistory SpellHistory { get; private set; }
+
     #region Deprecated
     public Unit target;
     public string className;
@@ -69,6 +71,8 @@ public class Character
 
         StatHelper.InitializeSpeedRates(speedRates);
 
+        SpellHistory = new SpellHistory();
+
         GlobalCooldown = new Cooldown(1);
         SpellCast = new SpellCast();
 
@@ -81,6 +85,8 @@ public class Character
         CharacterEvents = new Dictionary<int, List<SpellScriptAura>>();
         for (int i = 0; i < CharacterEventTypes.Count; i++)
             CharacterEvents.Add(i, new List<SpellScriptAura>());
+
+
     }
 
     public void Update(Unit unit, ArenaManager world)

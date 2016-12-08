@@ -48,4 +48,26 @@ public class TrinitySpellInfo
     {
         return !HasAttribute(SpellAttributes.NEGATIVE);
     }
+
+    public float GetMinRange(bool positive)
+    {
+        if (Range == null)
+            return 0.0f;
+        if (positive)
+            return Range.MinRangeFriend;
+        return Range.MinRangeHostile;
+    }
+
+    public float GetMaxRange(bool positive, Unit caster = null, TrinitySpell spell = null)
+    {
+        if (Range == null)
+            return 0.0f;
+        float range;
+        if (positive)
+            range = Range.MaxRangeFriend;
+        else
+            range = Range.MaxRangeHostile;
+        
+        return range;
+    }
 }

@@ -31,7 +31,7 @@ public class TargetedProjectile : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (target == null || target.IsDead)
+        if (target == null || target.IsDead())
         {
             Dispose();
             Destroy(gameObject, 2f);

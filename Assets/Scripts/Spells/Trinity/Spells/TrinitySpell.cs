@@ -63,8 +63,8 @@ public class TrinitySpell
     public int SpellVisual { get; set; }
     public bool CanReflect { get; set; }                            // Can reflect this spell?
 
-    public int CastTime { get; set; }                               // Calculated spell cast time initialized only in Spell::prepare
-    public int CastTimeLeft { get; set; }                           // Initialized only in Spell::prepare
+    public float CastTime { get; set; }                               // Calculated spell cast time initialized only in Spell::prepare
+    public float CastTimeEnd { get; set; }                           // Initialized only in Spell::prepare
     public List<PowerCostData> PowerCost { get; set; }              // Calculated spell cost initialized only in Spell::prepare
 
     public List<TargetInfo> UniqueTargets { get; set; }
@@ -184,6 +184,12 @@ public class TrinitySpell
             Finish(false);
             return;
         }
+
+        SpellCastResult result = CheckCast(true);
+
+        CastTime = SpellInfo.CastTime != null ? SpellInfo.CastTime.CastTime : 0;
+
+        Cast(true);
     }
     public void Cancel()
     {
@@ -206,8 +212,97 @@ public class TrinitySpell
 
     }
 
+    public bool IsIgnoringCooldowns() { return TriggerCastFlags.HasFlag(TriggerCastFlags.IGNORE_SPELL_AND_CATEGORY_CD); }
+    public bool HasGlobalCooldown()
+    { 
+        return Caster.Character.SpellHistory.HasGlobalCooldown();
+    }
+
+    public SpellCastResult CheckRange(bool strict)
+    {
+        // Don't check for instant cast spells
+        if (!strict && CastTime == 0)
+            return SpellCastResult.SPELL_CAST_OK;
+
+        Unit target = Targets.UnitTarget;
+        float minRange = 0.0f;
+        float maxRange = 0.0f;
+        float rangeMod = 0.0f;
+
+        if (SpellInfo.Range != null)
+        {
+            if (SpellInfo.Range.Flags.HasFlag(SpellRangeFlag.MELEE))
+            {
+                rangeMod = 3.0f + 4.0f / 3.0f;
+            }
+            else
+            {
+                float meleeRange = 0.0f;
+                if (SpellInfo.Range.Flags.HasFlag(SpellRangeFlag.RANGED))
+                    meleeRange = 3.0f + 4.0f / 3.0f;
+
+                minRange = Caster.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
+                maxRange = Caster.GetSpellMaxRangeForTarget(target, SpellInfo);
+            }
+        }
+
+        maxRange += rangeMod;
+
+        minRange *= minRange;
+        maxRange *= maxRange;
+
+        if (target != null && target != Caster)
+        {
+            if (Vector3.Distance(Caster.transform.position, target.transform.position) > maxRange)
+                return SpellCastResult.OUT_OF_RANGE;
+
+            if (minRange > 0.0f && Vector3.Distance(Caster.transform.position, target.transform.position) < minRange)
+                return SpellCastResult.OUT_OF_RANGE;
+        }
+
+        return SpellCastResult.SPELL_CAST_OK;
+    }
+
     public SpellCastResult CheckCast(bool strict)
     {
+        // check death state
+        if (!Caster.IsAlive() && !SpellInfo.IsPassive())
+            return SpellCastResult.CASTER_DEAD;
+
+        // check cooldowns to prevent cheating
+        if (!SpellInfo.IsPassive())
+        {
+            if (!Caster.Character.SpellHistory.IsReady(SpellInfo, IsIgnoringCooldowns()))
+            {
+                if (TriggeredByAuraSpell != null)
+                    return SpellCastResult.DONT_REPORT;
+                else
+                    return SpellCastResult.NOT_READY;
+            }
+        }
+
+        // Check global cooldown
+        if (strict && !(TriggerCastFlags.HasFlag(TriggerCastFlags.IGNORE_GCD) && HasGlobalCooldown()))
+            return SpellCastResult.NOT_READY;
+
+        // Check for line of sight for spells with dest
+        /*if (m_targets.HasDst())
+        {
+            float x, y, z;
+            m_targets.GetDstPos()->GetPosition(x, y, z);
+
+            if (!m_spellInfo->HasAttribute(SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS) && !DisableMgr::IsDisabledFor(DISABLE_TYPE_SPELL, m_spellInfo->Id, NULL, SPELL_DISABLE_LOS) && !m_caster->IsWithinLOS(x, y, z))
+                return SPELL_FAILED_LINE_OF_SIGHT;
+        }*/
+
+        SpellCastResult castResult = SpellCastResult.SPELL_CAST_OK;
+
+        // Triggered spells also have range check
+        /// @todo determine if there is some flag to enable/disable the check
+        castResult = CheckRange(strict);
+        if (castResult != SpellCastResult.SPELL_CAST_OK)
+            return castResult;
+
         return SpellCastResult.SUCCESS;
     }
 

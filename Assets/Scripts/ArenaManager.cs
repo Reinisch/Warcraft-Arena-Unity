@@ -613,40 +613,7 @@ public class ArenaManager: MonoBehaviour
 
     public void OnUnitDead(int index)
     {
-        if (arenaUnits[index].character.health.currentValue == 0 && arenaUnits[index].IsDead == false)
-        {
-            arenaUnits[index].IsDead = true;
-            float translateY = ((BoxCollider2D)(arenaUnits[index].GetComponent<Collider2D>())).size.y / 2;
-            arenaUnits[index].GetComponent<Rigidbody2D>().isKinematic = true;
-            arenaUnits[index].GetComponent<Collider2D>().enabled = false;
-
-            GameObject deadCreature = new GameObject();
-            deadCreature.AddComponent<Rigidbody2D>();
-            deadCreature.AddComponent<BoxCollider2D>();
-            deadCreature.GetComponent<Rigidbody2D>().gravityScale = 2.5f;
-            deadCreature.GetComponent<Rigidbody2D>().velocity = new Vector2(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(5, 10));
-            deadCreature.GetComponent<Collider2D>().isTrigger = true;
-            deadCreature.transform.position = arenaUnits[index].transform.position;
-            arenaUnits[index].gameObject.transform.parent = deadCreature.transform;
-
-            arenaUnits[index].transform.Translate(0, -translateY, 0);
-            deadCreature.transform.Translate(0, translateY, 0);
-            deadCreature.transform.parent = Trash.transform;
-            
-            if (PlayerUnit.character.target != null)
-            {
-                if (PlayerUnit.character.target.id == arenaUnits[index].id)
-                    PlayerInterface.CheckTargetUnitDeath(arenaUnits[index].id);
-            }
-
-            for (int i = 0; i < arenaUnits.Count; i++)
-            {
-                if (arenaUnits[i].character.target != null && arenaUnits[i].character.target.id == arenaUnits[index].id)
-                    arenaUnits[i].character.target = null;
-            }
-            arenaUnits.RemoveAt(index);
-
-        }
+        
     }
 
     public void OnPlayerDead()
@@ -877,7 +844,7 @@ public class ArenaManager: MonoBehaviour
         #region If spell not found or caster/target is disposed
         SpellData spellData = SpellLibrary.GetSpell(spellId);
         Spell spell = caster.Character.Spells.GetSpell(spellId);
-        if (caster.IsDead)
+        if (caster.IsDead())
             return false;
         #endregion
 
@@ -1009,7 +976,7 @@ public class ArenaManager: MonoBehaviour
         {
             if (!targeter.character.PreviousTargets.Contains(arenaUnits[i].Id))
             {
-                if (arenaUnits[i].id == targeter.id || arenaUnits[i].IsDead
+                if (arenaUnits[i].id == targeter.id || arenaUnits[i].IsDead()
                     || arenaUnits[i].Character.states[EntityStateType.Invisible].InEffect
                     || Vector2.Distance(targeter.transform.position, arenaUnits[i].transform.position) > distance)
                     continue;
@@ -1021,7 +988,7 @@ public class ArenaManager: MonoBehaviour
         if (!targeter.character.PreviousTargets.Contains(PlayerUnit.id))
         {
             if (!(PlayerUnit.id == targeter.id
-                || PlayerUnit.IsDead
+                || PlayerUnit.IsDead()
                 || PlayerUnit.Character.states[EntityStateType.Invisible].InEffect 
                 || Vector2.Distance(targeter.transform.position, PlayerUnit.transform.position) > distance))
             {
@@ -1044,7 +1011,7 @@ public class ArenaManager: MonoBehaviour
         {
             if (!targeter.character.PreviousTargets.Contains(ArenaUnits[i].Id))
             {
-                if (ArenaUnits[i].id == targeter.id || ArenaUnits[i].IsDead
+                if (ArenaUnits[i].id == targeter.id || ArenaUnits[i].IsDead()
                     || ArenaUnits[i].Character.states[EntityStateType.Invisible].InEffect
                     || Vector2.Distance(targeter.transform.position, ArenaUnits[i].transform.position) > distance)
                     continue;
