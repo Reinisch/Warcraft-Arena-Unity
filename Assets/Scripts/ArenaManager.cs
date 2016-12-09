@@ -886,6 +886,9 @@ public class ArenaManager: MonoBehaviour
         skillUseEvent.GetComponent<SkillUseUIEvent>().Initialize(spellData, caster, PlayerInterface);
 
         ApplySpell(caster, target, spell, spellData);
+
+        caster.CastSpell(target, 1, false, null, caster.Character.Id);
+
         return true;
     }
 

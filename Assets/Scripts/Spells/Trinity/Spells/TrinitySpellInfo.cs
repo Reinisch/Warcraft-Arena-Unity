@@ -36,6 +36,11 @@ public class TrinitySpellInfo
 
     public List<TrinitySpellEffectInfo> SpellEffectInfos { get; set; }
 
+    public TrinitySpellInfo()
+    {
+        SpellEffectInfos = new List<TrinitySpellEffectInfo>();
+    }
+
     public bool HasAttribute(SpellAttributes attribute)
     {
         return (Attributes & attribute) == attribute;

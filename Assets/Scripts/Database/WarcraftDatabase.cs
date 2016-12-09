@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public enum MageSpells
 {
@@ -24,6 +25,10 @@ public class WarcraftDatabase : MonoBehaviour
     public static Dictionary<int, SpellRange> SpellRanges { get; private set; }
     public static Dictionary<int, SpellPowerCost> SpellPowerCosts { get; private set; }
     public static Dictionary<int, SpellRadius> SpellRadiuses { get; private set; }
+
+    public static Dictionary<int, GameObject> SpellVisuals { get; private set; }
+    public static Dictionary<int, AudioClip> SpellCastSounds { get; private set; }
+    public static Dictionary<int, AudioClip> SpellHitSounds { get; private set; }
 
     #endregion
 
@@ -51,6 +56,11 @@ public class WarcraftDatabase : MonoBehaviour
     // #TODO : Read from json
     void LoadSpells()
     {
+        LoadSpellVisuals();
+
+        LoadSpellSounds();
+
+
         LoadSpellRadiuses();
 
         LoadSpellPowerCosts();
@@ -63,11 +73,31 @@ public class WarcraftDatabase : MonoBehaviour
 
         LoadSpellChargeCategories();
 
+        LoadSpellEffectInfo();
+
         LoadSpellInfo();
     }
 
 
     #region Spell Info Loading
+
+    // #TODO : Add references in manager or create <name, id> dictionary or add file
+    void LoadSpellVisuals()
+    {
+        SpellVisuals = new Dictionary<int, GameObject>();
+
+        SpellVisuals.Add(1, Resources.Load<GameObject>("Prefabs/Spells/Frost Nova"));
+    }
+
+    void LoadSpellSounds()
+    {
+        SpellCastSounds = new Dictionary<int, AudioClip>();
+        SpellHitSounds = new Dictionary<int, AudioClip>();
+
+        SpellCastSounds.Add(1, Resources.Load<AudioClip>("Sound/Spells/Mage/FrostNova"));
+        SpellHitSounds.Add(1, Resources.Load<AudioClip>("Sound/Spells/Mage/IceImpact"));
+    }
+
 
     void LoadSpellRadiuses()
     {
@@ -165,6 +195,7 @@ public class WarcraftDatabase : MonoBehaviour
         SpellChargeCategories.Add(spellCategory.Id, spellCategory);
     }
 
+
     void LoadSpellEffectInfo()
     {
         SpellEffectEntries = new Dictionary<int, TrinitySpellEffectInfoEntry>();
@@ -176,7 +207,7 @@ public class WarcraftDatabase : MonoBehaviour
             Effect = SpellEffectType.SCHOOL_DAMAGE,
             AuraType = AuraType.SPELL_AURA_NONE,
             BonusCoefficient = 0.17f,
-            RadiusEntryId = 1,
+            RadiusEntryId = 12,
             TargetA = Targets.TARGET_UNIT_TARGET_ENEMY,
         };
         SpellEffectEntries.Add(spellEffectEntry.Id, spellEffectEntry);
@@ -186,7 +217,7 @@ public class WarcraftDatabase : MonoBehaviour
             Effect = SpellEffectType.APPLY_AURA,
             AuraType = AuraType.SPELL_AURA_MOD_ROOT,
             Mechanic = Mechanics.FREEZE,
-            RadiusEntryId = 1,
+            RadiusEntryId = 12,
             TargetA = Targets.TARGET_UNIT_TARGET_ENEMY,
         };
         SpellEffectEntries.Add(spellEffectEntry.Id, spellEffectEntry);
@@ -233,11 +264,8 @@ public class WarcraftDatabase : MonoBehaviour
             VisualId = 1,
         };
 
-        spellInfo.SpellEffectInfos = new List<TrinitySpellEffectInfo>()
-        {
-            new TrinitySpellEffectInfo(spellInfo, 0, SpellEffectEntries[1]),
-            new TrinitySpellEffectInfo(spellInfo, 1, SpellEffectEntries[2]),
-        };
+        spellInfo.SpellEffectInfos.Add(new TrinitySpellEffectInfo(spellInfo, 0, SpellEffectEntries[1]));
+        spellInfo.SpellEffectInfos.Add(new TrinitySpellEffectInfo(spellInfo, 1, SpellEffectEntries[2]));
 
         SpellInfos.Add(spellInfo.Id, spellInfo);
 

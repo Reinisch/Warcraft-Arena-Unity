@@ -174,17 +174,6 @@ public class TrinitySpell
 
         SpellState = SpellState.PREPARING;
 
-        // #TODO: create and add update event for this spell
-        //SpellEvent* Event = new SpellEvent(this);
-        //m_caster->m_Events.AddEvent(Event, m_caster->m_Events.CalculateTime(1));
-
-        //Prevent casting at cast another spell (ServerSide check)
-        if (!TriggerCastFlags.HasFlag(TriggerCastFlags.IGNORE_CAST_IN_PROGRESS))
-        {
-            Finish(false);
-            return;
-        }
-
         SpellCastResult result = CheckCast(true);
 
         CastTime = SpellInfo.CastTime != null ? SpellInfo.CastTime.CastTime : 0;
@@ -201,7 +190,9 @@ public class TrinitySpell
     }
     public void Cast(bool skipCheck = false)
     {
+        SpellManager.ApplySpellVisuals(Caster, SpellInfo);
 
+        SpellManager.ApplySpellCastSound(Caster, SpellInfo);
     }
     public void Finish(bool ok = true)
     {

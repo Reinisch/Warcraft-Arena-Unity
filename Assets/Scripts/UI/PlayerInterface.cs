@@ -28,6 +28,7 @@ public class PlayerInterface : MonoBehaviour
 
     GameObject humanPlayer;
     Unit lastTarget;
+    RaycastHit hitInfo = new RaycastHit();
     int lastScreenWidth;
     int lastScreenHeight;    
 
@@ -107,6 +108,10 @@ public class PlayerInterface : MonoBehaviour
         CheckActionBarButtons();
 
         if (Input.GetMouseButtonDown(0))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 1 << LayerMask.NameToLayer("Characters")))
+                CheckTargetSelection(hitInfo.transform.GetComponent<Unit>());
+
+        /*if (Input.GetMouseButtonDown(0))
         {
             if (!EventSystem.current.IsPointerOverGameObject())
             {
@@ -118,7 +123,7 @@ public class PlayerInterface : MonoBehaviour
                 else
                     CheckTargetSelection(null);
             }
-        }
+        }*/
 
         playerCastFrameNewUI.UpdateUnit();
         playerFrameNewUI.UpdateFrame();
