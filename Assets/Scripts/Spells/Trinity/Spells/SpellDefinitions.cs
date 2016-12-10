@@ -219,6 +219,19 @@ public struct SpellValue
     public int MaxAffectedTargets;
     public float RadiusMod;
     public int AuraStackAmount;
+
+    public SpellValue(TrinitySpellInfo spellInfo)
+    {
+        EffectBasePoints = new int[SpellHelper.MaxSpellEffects];
+
+        for (int i = 0; i < spellInfo.SpellEffectInfos.Count; i++)
+            if (spellInfo.SpellEffectInfos[i] != null)
+                EffectBasePoints[spellInfo.SpellEffectInfos[i].EffectIndex] = spellInfo.SpellEffectInfos[i].BasePoints;
+
+        MaxAffectedTargets = spellInfo.MaxAffectedTargets;
+        RadiusMod = 1.0f;
+        AuraStackAmount = 1;
+    }
 };
 
 public enum SpellState
@@ -724,7 +737,7 @@ public enum Mechanics
     MAX_MECHANIC = 33
 };
 
-public enum Targets
+public enum TargetTypes
 {
     TARGET_UNIT_CASTER = 1,
     TARGET_UNIT_NEARBY_ENEMY = 2,
@@ -752,7 +765,7 @@ public enum Targets
     TARGET_DEST_DYNOBJ_ALLY = 29,
     TARGET_UNIT_SRC_AREA_ALLY = 30,
     TARGET_UNIT_DEST_AREA_ALLY = 31,
-    TARGET_DEST_CASTER_SUMMON = 32,
+    TARGET_DEST_CASTER_SUMMON = 32, // front left, doesn't use radius
     TARGET_UNIT_SRC_AREA_PARTY = 33,
     TARGET_UNIT_DEST_AREA_PARTY = 34,
     TARGET_UNIT_TARGET_PARTY = 35,
@@ -775,7 +788,7 @@ public enum Targets
     TARGET_GAMEOBJECT_DEST_AREA = 52,
     TARGET_DEST_TARGET_ENEMY = 53,
     TARGET_UNIT_CONE_ENEMY_54 = 54,
-    TARGET_DEST_CASTER_FRONT_LEAP = 55,
+    TARGET_DEST_CASTER_FRONT_LEAP = 55, // for a leap spell
     TARGET_UNIT_CASTER_AREA_RAID = 56,
     TARGET_UNIT_TARGET_RAID = 57,
     TARGET_UNIT_NEARBY_RAID = 58,
@@ -813,9 +826,11 @@ public enum Targets
     TARGET_UNIT_TARGET_MINIPET = 90,
     TARGET_DEST_DEST_RADIUS = 91,
     TARGET_UNIT_SUMMONER = 92,
-    TARGET_CORPSE_SRC_AREA_ENEMY = 93,
+    TARGET_CORPSE_SRC_AREA_ENEMY = 93, // NYI
     TARGET_UNIT_VEHICLE = 94,
     TARGET_UNIT_TARGET_PASSENGER = 95,
+    TARGET_UNIT_PASSENGER_0 = 96,
+    TARGET_UNIT_PASSENGER_1 = 97,
     TARGET_UNIT_PASSENGER_2 = 98,
     TARGET_UNIT_PASSENGER_3 = 99,
     TARGET_UNIT_PASSENGER_4 = 100,
@@ -823,8 +838,50 @@ public enum Targets
     TARGET_UNIT_PASSENGER_6 = 102,
     TARGET_UNIT_PASSENGER_7 = 103,
     TARGET_UNIT_CONE_ENEMY_104 = 104,
+    TARGET_UNIT_UNK_105 = 105, // 1 spell
     TARGET_DEST_CHANNEL_CASTER = 106,
+    TARGET_UNK_DEST_AREA_UNK_107 = 107, // not enough info - only generic spells avalible
     TARGET_GAMEOBJECT_CONE = 108,
+    TARGET_DEST_UNK_110 = 110, // 1 spell
+    TARGET_UNK_111 = 111,
+    TARGET_UNK_112 = 112,
+    TARGET_UNK_113 = 113,
+    TARGET_UNK_114 = 114,
+    TARGET_UNK_115 = 115,
+    TARGET_UNK_116 = 116,
+    TARGET_UNK_117 = 117,
+    TARGET_UNK_118 = 118,
+    TARGET_UNK_119 = 119,
+    TARGET_UNK_120 = 120,
+    TARGET_UNK_121 = 121,
+    TARGET_UNK_122 = 122,
+    TARGET_UNK_123 = 123,
+    TARGET_UNK_124 = 124,
+    TARGET_UNK_125 = 125,
+    TARGET_UNK_126 = 126,
+    TARGET_UNK_127 = 127,
+    TARGET_UNK_128 = 128,
+    TARGET_UNK_129 = 129,
+    TARGET_UNK_130 = 130,
+    TARGET_UNK_131 = 131,
+    TARGET_UNK_132 = 132,
+    TARGET_UNK_133 = 133,
+    TARGET_UNK_134 = 134,
+    TARGET_UNK_135 = 135,
+    TARGET_UNK_136 = 136,
+    TARGET_UNK_137 = 137,
+    TARGET_UNK_138 = 138,
+    TARGET_UNK_139 = 139,
+    TARGET_UNK_140 = 140,
+    TARGET_UNK_141 = 141,
+    TARGET_UNK_142 = 142,
+    TARGET_UNK_143 = 143,
+    TARGET_UNK_144 = 144,
+    TARGET_UNK_145 = 145,
+    TARGET_UNK_146 = 146,
+    TARGET_UNK_147 = 147,
+    TARGET_UNK_148 = 148,
+    TOTAL_SPELL_TARGETS
 };
 
 public enum SpellDamageClass

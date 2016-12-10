@@ -970,6 +970,8 @@ public class ArenaManager: MonoBehaviour
         arenaUnits.Add(enemyUnit);
     }
 
+
+
     public bool GetNearestTarget(Unit targeter, float distance)
     {
         if (targeter.character.PreviousTargets.Count > 10)
@@ -1003,6 +1005,33 @@ public class ArenaManager: MonoBehaviour
         targeter.character.PreviousTargets.Clear();
         targeter.character.target = null;
         return false;
+    }
+
+    public static void SearchTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, SpellTargetCheckTypes checkType)
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(center, radius, 1 << LayerMask.NameToLayer("Characters"));
+        for (int i = 0; i < hitColliders.Length; i++)
+        {
+            var targetUnit = hitColliders[i].gameObject.GetComponent<Unit>();
+            if (targetUnit == null)
+                continue;
+
+            switch (checkType)
+            {
+                case SpellTargetCheckTypes.ALLY:
+                    if (referer.IsHostileTo(targetUnit))
+                        continue;
+                    break;
+                case SpellTargetCheckTypes.ENEMY:
+                    if (!referer.IsHostileTo(targetUnit))
+                        continue;
+                    break;
+                default:
+                    break;
+            }
+
+            targets.Add(targetUnit);
+        }
     }
 
     public static bool GetTargetsForPlayer(Unit targeter, float distance)

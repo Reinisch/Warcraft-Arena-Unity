@@ -7,8 +7,8 @@
     public int ApplyAuraPeriod { get; set; }
     public int DieSides { get; set; }
 
-    public Targets TargetA { get; set; }
-    public Targets TargetB { get; set; }
+    public TargetTypes TargetA { get; set; }
+    public TargetTypes TargetB { get; set; }
 
     public int BasePoints { get; set; }
     public float PointsPerResource { get; set; }

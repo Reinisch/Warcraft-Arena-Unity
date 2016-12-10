@@ -208,7 +208,7 @@ public class WarcraftDatabase : MonoBehaviour
             AuraType = AuraType.SPELL_AURA_NONE,
             BonusCoefficient = 0.17f,
             RadiusEntryId = 12,
-            TargetA = Targets.TARGET_UNIT_TARGET_ENEMY,
+            TargetA = TargetTypes.TARGET_UNIT_TARGET_ENEMY,
         };
         SpellEffectEntries.Add(spellEffectEntry.Id, spellEffectEntry);
         spellEffectEntry = new TrinitySpellEffectInfoEntry()
@@ -218,7 +218,7 @@ public class WarcraftDatabase : MonoBehaviour
             AuraType = AuraType.SPELL_AURA_MOD_ROOT,
             Mechanic = Mechanics.FREEZE,
             RadiusEntryId = 12,
-            TargetA = Targets.TARGET_UNIT_TARGET_ENEMY,
+            TargetA = TargetTypes.TARGET_UNIT_TARGET_ENEMY,
         };
         SpellEffectEntries.Add(spellEffectEntry.Id, spellEffectEntry);
         #endregion
@@ -236,7 +236,7 @@ public class WarcraftDatabase : MonoBehaviour
             Dispel = DispelType.MAGIC,
             Mechanic = Mechanics.FREEZE,
             Attributes = SpellAttributes.DAMAGE_DOESNT_BREAK_AURAS | SpellAttributes.CANT_BE_REFLECTED,
-            Targets = Targets.TARGET_UNIT_SRC_AREA_ENEMY,
+            Targets = TargetTypes.TARGET_UNIT_SRC_AREA_ENEMY,
             SchoolMask = SpellSchoolMask.FROST,
             DamageClass = SpellDamageClass.MAGIC,
             PreventionType = SpellPreventionType.SILENCE | SpellPreventionType.PACIFY,

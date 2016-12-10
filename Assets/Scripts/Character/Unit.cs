@@ -114,6 +114,54 @@ public class Unit : MonoBehaviour
 
     #region Spells
 
+    public SpellMissInfo SpellHitResult(Unit victim, TrinitySpellInfo spellInfo, bool canReflect)
+    {
+        // Check for immune
+        /*if (victim->IsImmunedToSpell(spellInfo))
+            return SPELL_MISS_IMMUNE;*/
+
+        // All positive spells can`t miss
+        /// @todo client not show miss log for this spells - so need find info for this in dbc and use it!
+        if (spellInfo.IsPositive() && !IsHostileTo(victim)) // prevent from affecting enemy by "positive" spell
+            return SpellMissInfo.NONE;
+
+        // Check for immune
+        /*if (victim->IsImmunedToDamage(spellInfo))
+            return SPELL_MISS_IMMUNE;*/
+
+        if (this == victim)
+            return SpellMissInfo.NONE;
+
+        // Try victim reflect spell
+        /*if (CanReflect)
+        {
+            int32 reflectchance = victim->GetTotalAuraModifier(SPELL_AURA_REFLECT_SPELLS);
+                Unit::AuraEffectList const& mReflectSpellsSchool = victim->GetAuraEffectsByType(SPELL_AURA_REFLECT_SPELLS_SCHOOL);
+            for (Unit::AuraEffectList::const_iterator i = mReflectSpellsSchool.begin(); i != mReflectSpellsSchool.end(); ++i)
+                if ((*i)->GetMiscValue() & spellInfo->GetSchoolMask())
+                    reflectchance += (*i)->GetAmount();
+            if (reflectchance > 0 && roll_chance_i(reflectchance))
+            {
+                // Start triggers for remove charges if need (trigger only for victim, and mark as active spell)
+                ProcDamageAndSpell(victim, PROC_FLAG_NONE, PROC_FLAG_TAKEN_SPELL_MAGIC_DMG_CLASS_NEG, PROC_EX_REFLECT, 1, BASE_ATTACK, spellInfo);
+                return SPELL_MISS_REFLECT;
+            }
+        }*/
+
+        /*switch (spellInfo->DmgClass)
+        {
+            case SPELL_DAMAGE_CLASS_RANGED:
+            case SPELL_DAMAGE_CLASS_MELEE:
+                return MeleeSpellHitResult(victim, spellInfo);
+            case SPELL_DAMAGE_CLASS_NONE:
+                return SPELL_MISS_NONE;
+            case SPELL_DAMAGE_CLASS_MAGIC:
+                return MagicSpellHitResult(victim, spellInfo);
+        }*/
+        return SpellMissInfo.NONE;
+    }
+
+
     public float GetSpellMinRangeForTarget(Unit target, TrinitySpellInfo spellInfo)
     {
         if (spellInfo.Range == null)

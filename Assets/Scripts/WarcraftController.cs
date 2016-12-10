@@ -8,6 +8,8 @@ public enum MovementStatus
 public class WarcraftController : MonoBehaviour
 {
     [SerializeField]
+    bool isPlayerControlled = false;
+    [SerializeField]
     float jumpSpeed = 4.0f;
     [SerializeField]
     float rotateSpeed = 250.0f;
@@ -74,6 +76,15 @@ public class WarcraftController : MonoBehaviour
 
     void Update()
     {
+        if (!isPlayerControlled)
+        {
+            if (grounded)
+                ApplyGroundedAnimations();
+            else
+                ApplyFlyingAnimations();
+
+            return;
+        }
         // Only allow movement and jumps while grounded
         ApplyInputVelocity();
 

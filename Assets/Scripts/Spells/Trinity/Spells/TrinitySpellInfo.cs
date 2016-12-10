@@ -7,7 +7,7 @@ public class TrinitySpellInfo
     public DispelType Dispel { get; set; }
     public Mechanics Mechanic { get; set; }
     public SpellAttributes Attributes { get; set; }
-    public Targets Targets { get; set; }
+    public TargetTypes Targets { get; set; }
     public SpellSchoolMask SchoolMask { get; set; }
     public SpellDamageClass DamageClass { get; set; }
     public SpellPreventionType PreventionType { get; set; }

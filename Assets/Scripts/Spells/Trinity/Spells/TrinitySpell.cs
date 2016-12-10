@@ -19,7 +19,6 @@ public class TargetInfo
 public class TrinitySpell
 {
     public TrinitySpellInfo SpellInfo { get; private set; }
-    public List<TrinitySpellEffectInfo> SpellEffects { get { return SpellInfo.SpellEffectInfos; } }
 
     public Guid CastId { get; private set; }
     public Guid OriginalCastId { get; private set; }
@@ -29,13 +28,13 @@ public class TrinitySpell
     public bool ExecutedCurrently { get; set; }
     public int ApplyMultiplierMask { get; set; }
     public float[] DamageMultipliers { get; set; }
-    public bool ReferencedFromCurrentSpell { get; set; } // mark as references to prevent deleted and access by dead pointers
+    public bool ReferencedFromCurrentSpell { get; set; }    // mark as references to prevent deleted and access by dead pointers
 
-    public SpellSchoolMask SpellSchoolMask { get; set; } // Spell school (can be overwrite for some spells (wand shoot for example)
+    public SpellSchoolMask SpellSchoolMask { get; set; }    // Spell school (can be overwrite for some spells (wand shoot for example)
 
     public Unit Caster { get; private set; }
-    public Guid OriginalCasterGuid { get; set; }        // real source of cast (aura caster/etc), used for spell targets selection
-    public Unit OriginalCaster { get; set; }            // cached pointer for OriginalCaster, updated at UpdatePointers()
+    public Guid OriginalCasterGuid { get; set; }            // real source of cast (aura caster/etc), used for spell targets selection
+    public Unit OriginalCaster { get; set; }                // cached pointer for OriginalCaster, updated at UpdatePointers()
 
     public SpellState SpellState { get; set; }
     public TriggerCastFlags TriggerCastFlags { get; set; }
@@ -48,7 +47,7 @@ public class TrinitySpell
     public SpellEffectHandleMode EffectHandleMode { get; set; }
     public TrinitySpellEffectInfo EffectInfo { get; set; }
 
-    // this is set in Spell Hit, but used in Apply Aura handler
+    // This is set in Spell Hit, but used in Apply Aura handler
     DiminishingLevels DiminishLevel { get; set; }
     DiminishingGroup DiminishGroup { get; set; }
 
@@ -62,11 +61,13 @@ public class TrinitySpell
     public SpellValue SpellValue { get; set; }
     public int SpellVisual { get; set; }
     public bool CanReflect { get; set; }                            // Can reflect this spell?
+    public float DelayMoment { get; set; }
 
-    public float CastTime { get; set; }                               // Calculated spell cast time initialized only in Spell::prepare
-    public float CastTimeEnd { get; set; }                           // Initialized only in Spell::prepare
+    public float CastTime { get; set; }                             // Calculated spell cast time initialized only in Spell::prepare
+    public float CastTimeEnd { get; set; }                          // Initialized only in Spell::prepare
     public List<PowerCostData> PowerCost { get; set; }              // Calculated spell cost initialized only in Spell::prepare
 
+    public List<TrinitySpellEffectInfo> SpellEffects { get; private set; }
     public List<TargetInfo> UniqueTargets { get; set; }
     public SpellCastTargets Targets { get; set; }
 
@@ -106,9 +107,18 @@ public class TrinitySpell
     public void EffectSkill(SpellEffIndex effIndex) { }
     public void EffectRemoveAura(SpellEffIndex effIndex) { }
 
+    public TrinitySpellEffectInfo GetEffect(int effIndex)
+    {
+        if (SpellEffects.Count < effIndex)
+            return null;
+
+        return SpellEffects[effIndex];
+    }
 
     public TrinitySpell(Unit caster, TrinitySpellInfo info, TriggerCastFlags triggerFlags, Guid originalCasterId, bool skipCheck = false)
     {
+        SpellValue = new SpellValue(info);
+
         Caster = caster;
         SpellInfo = info;
 
@@ -155,15 +165,397 @@ public class TrinitySpell
             && !SpellInfo.IsPassive() && !SpellInfo.IsPositive();
 
         UniqueTargets = new List<TargetInfo>();
+        SpellEffects = new List<TrinitySpellEffectInfo>(SpellInfo.SpellEffectInfos);
+}
+
+
+    private bool CheckEffectTarget(Unit target, TrinitySpellEffectInfo effect, Vector3 losPosition)
+    {
+        // check for ignore LOS on the effect itself
+
+        /// @todo shit below shouldn't be here, but it's temporary
+        //Check targets for LOS visibility
+        /*if (losPosition)
+            return target->IsWithinLOS(losPosition->GetPositionX(), losPosition->GetPositionY(), losPosition->GetPositionZ());
+        else
+        {
+            // Get GO cast coordinates if original caster -> GO
+            WorldObject* caster = NULL;
+            if (m_originalCasterGUID.IsGameObject())
+                caster = m_caster->GetMap()->GetGameObject(m_originalCasterGUID);
+            if (!caster)
+                caster = m_caster;
+            if (target != m_caster && !target->IsWithinLOSInMap(caster))
+                return false;
+        }*/
+
+        return true;
+    }
+
+    private void AddUnitTarget(Unit target, int effectMask, bool checkIfValid = true, bool isImplicit = true, Vector3 losPosition = default(Vector3))
+    {
+        int validEffectMask = 0;
+        foreach (var effect in SpellEffects)
+            if (effect != null && (effectMask & (1 << effect.EffectIndex)) != 0 && CheckEffectTarget(target, effect, losPosition))
+                validEffectMask |= 1 << effect.EffectIndex;
+
+        effectMask &= validEffectMask;
+
+        // no effects left
+        if (effectMask == 0)
+            return;
+
+        /*// Check for effect immune skip if immuned
+        for (SpellEffectInfo const* effect : GetEffects())
+            if (effect && target->IsImmunedToSpellEffect(m_spellInfo, effect->EffectIndex))
+                effectMask &= ~(1 << effect->EffectIndex);*/
+
+        // Lookup target in already in list
+        var sameTargetInfo = UniqueTargets.Find(unit => unit.TargetId == target.Character.Id);
+        if (sameTargetInfo != null)
+        {
+            sameTargetInfo.EffectMask |= effectMask;             // Immune effects removed from mask
+            return;
+        }
+
+        // This is new target calculate data for him
+
+        // Get spell hit result on target
+        TargetInfo targetInfo = new TargetInfo();
+        targetInfo.TargetId = target.Character.Id;                  // Store target GUID
+        targetInfo.EffectMask = effectMask;                         // Store all effects not immune
+        targetInfo.Processed  = false;                              // Effects not apply on target
+        targetInfo.Alive      = target.IsAlive();
+        targetInfo.Damage     = 0;
+        targetInfo.Crit       = false;
+        targetInfo.ScaleAura  = false;
+
+        // Calculate hit result
+        if (OriginalCaster != null)
+        {
+            targetInfo.MissCondition = OriginalCaster.SpellHitResult(target, SpellInfo, CanReflect);
+            if (SkipCheck && targetInfo.MissCondition != SpellMissInfo.IMMUNE)
+                targetInfo.MissCondition = SpellMissInfo.NONE;
+        }
+        else
+            targetInfo.MissCondition = SpellMissInfo.EVADE; //SPELL_MISS_NONE;
+
+        // Spell have speed - need calculate incoming time
+        // Incoming time is zero for self casts. At least I think so.
+        if (SpellInfo.Speed > 0.0f && Caster != target)
+        {
+            // calculate spell incoming interval
+            /// @todo this is a hack
+            float dist = Vector3.Distance(Caster.transform.position, target.transform.position);
+
+            if (dist < 5.0f)
+                dist = 5.0f;
+
+            targetInfo.Delay = SpellInfo.Speed;
+
+            // Calculate minimum incoming time
+            if (DelayMoment == 0 || DelayMoment > targetInfo.Delay)
+                DelayMoment = targetInfo.Delay;
+        }
+        else
+            targetInfo.Delay = 0.0f;
+
+        // If target reflect spell back to caster
+        /*if (targetInfo.missCondition == SPELL_MISS_REFLECT)
+        {
+            // Calculate reflected spell result on caster
+            targetInfo.reflectResult = m_caster->SpellHitResult(m_caster, m_spellInfo, m_canReflect);
+
+            if (targetInfo.reflectResult == SPELL_MISS_REFLECT)     // Impossible reflect again, so simply deflect spell
+                targetInfo.reflectResult = SPELL_MISS_PARRY;
+
+            // Increase time interval for reflected spells by 1.5
+            targetInfo.timeDelay += targetInfo.timeDelay >> 1;
+        }
+        else
+            targetInfo.reflectResult = SPELL_MISS_NONE;*/
+
+        // Add target to list
+        UniqueTargets.Add(targetInfo);
+    }
+
+    private void SelectSpellTargets()
+    {
+        int processedAreaEffectsMask = 0;
+
+        foreach (var effect in SpellEffects)
+        {
+            if (effect == null)
+                continue;
+
+            SelectEffectImplicitTargets(effect.EffectIndex, effect.TargetA, ref processedAreaEffectsMask);
+            SelectEffectImplicitTargets(effect.EffectIndex, effect.TargetB, ref processedAreaEffectsMask);
+        }
+
+        /*if (m_targets.HasDst())
+        {
+            if (m_targets.HasTraj())
+            {
+                float speed = m_targets.GetSpeedXY();
+                if (speed > 0.0f)
+                    m_delayMoment = uint64(std::floor(m_targets.GetDist2d() / speed * 1000.0f));
+            }
+            else if (m_spellInfo->Speed > 0.0f)
+            {
+                float dist = m_caster->GetDistance(*m_targets.GetDstPos());
+                if (!m_spellInfo->HasAttribute(SPELL_ATTR9_SPECIAL_DELAY_CALCULATION))
+                    m_delayMoment = uint64(std::floor(dist / m_spellInfo->Speed * 1000.0f));
+                else
+                    m_delayMoment = uint64(m_spellInfo->Speed * 1000.0f);
+            }
+        }*/
+    }
+
+    private void SelectEffectImplicitTargets(int effIndex, TargetTypes targetType, ref int processedEffectMask)
+    {
+        int effectMask = (1 << effIndex);
+        // set the same target list for all effects
+        // some spells appear to need this, however this requires more research
+        switch (targetType.Category())
+        {
+            case SpellTargetSelectionCategories.NEARBY:
+            case SpellTargetSelectionCategories.CONE:
+            case SpellTargetSelectionCategories.AREA:
+                // targets for effect already selected
+                if ((effectMask & processedEffectMask) > 0)
+                    return;
+
+                var currentEffect = GetEffect(effIndex);
+                if (currentEffect != null)
+                {
+                    // choose which targets we can select at once
+                    foreach (var effect in SpellEffects)
+                    {
+                        //for (uint32 j = effIndex + 1; j < MAX_SPELL_EFFECTS; ++j)
+                        if (effect == null || effect.EffectIndex <= effIndex)
+                            continue;
+
+                        if (currentEffect.TargetA == effect.TargetA && currentEffect.TargetB == effect.TargetB &&
+                            currentEffect.CalcRadius(Caster, this) == effect.CalcRadius(Caster, this))
+                        {
+                            effectMask |= 1 << effect.EffectIndex;
+                        }
+                    }
+                }
+                processedEffectMask |= effectMask;
+                break;
+            default:
+                break;
+        }
+
+        switch (targetType.Category())
+        {
+            case SpellTargetSelectionCategories.CHANNEL:
+                //SelectImplicitChannelTargets(effIndex, targetType);
+                break;
+            case SpellTargetSelectionCategories.NEARBY:
+                //SelectImplicitNearbyTargets(effIndex, targetType, effectMask);
+                break;
+            case SpellTargetSelectionCategories.CONE:
+                //SelectImplicitConeTargets(effIndex, targetType, effectMask);
+                break;
+            case SpellTargetSelectionCategories.AREA:
+                SelectImplicitAreaTargets(effIndex, targetType, effectMask);
+                break;
+            case SpellTargetSelectionCategories.DEFAULT:
+                #region Default Targets
+                /*switch (targetType.GetObjectType())
+                {
+                    case TARGET_OBJECT_TYPE_SRC:
+                        switch (targetType.GetReferenceType())
+                        {
+                            case TARGET_REFERENCE_TYPE_CASTER:
+                                m_targets.SetSrc(* m_caster);
+                                break;
+                            default:
+                                ASSERT(false && "Spell::SelectEffectImplicitTargets: received not implemented select target reference type for TARGET_TYPE_OBJECT_SRC");
+                                break;
+                        }
+                        break;
+                    case TARGET_OBJECT_TYPE_DEST:
+                         switch (targetType.GetReferenceType())
+                         {
+                             case TARGET_REFERENCE_TYPE_CASTER:
+                                 SelectImplicitCasterDestTargets(effIndex, targetType);
+                                 break;
+                             case TARGET_REFERENCE_TYPE_TARGET:
+                                 SelectImplicitTargetDestTargets(effIndex, targetType);
+                                 break;
+                             case TARGET_REFERENCE_TYPE_DEST:
+                                 SelectImplicitDestDestTargets(effIndex, targetType);
+                                 break;
+                             default:
+                                 ASSERT(false && "Spell::SelectEffectImplicitTargets: received not implemented select target reference type for TARGET_TYPE_OBJECT_DEST");
+                                 break;
+                         }
+                         break;
+                    default:
+                        switch (targetType.GetReferenceType())
+                        {
+                            case TARGET_REFERENCE_TYPE_CASTER:
+                                SelectImplicitCasterObjectTargets(effIndex, targetType);
+                                break;
+                            case TARGET_REFERENCE_TYPE_TARGET:
+                                SelectImplicitTargetObjectTargets(effIndex, targetType);
+                                break;
+                            default:
+                                ASSERT(false && "Spell::SelectEffectImplicitTargets: received not implemented select target reference type for TARGET_TYPE_OBJECT");
+                                break;
+                        }
+                        break;
+                }*/
+                #endregion
+                break;
+            case SpellTargetSelectionCategories.NYI:
+                Debug.LogErrorFormat("SPELL: Target type in spell #{0} is not implemented yet!", SpellInfo.Id);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void SelectImplicitAreaTargets(int effIndex, TargetTypes targetType, int effMask)
+    {
+        Unit referer = null;
+        switch (targetType.ReferenceType())
+        {
+            case SpellTargetReferenceTypes.SRC:
+            case SpellTargetReferenceTypes.DEST:
+            case SpellTargetReferenceTypes.CASTER:
+                referer = Caster;
+                break;
+            case SpellTargetReferenceTypes.TARGET:
+                referer = Targets.UnitTarget;
+                break;
+            case SpellTargetReferenceTypes.LAST:
+            {
+                for (int i = UniqueTargets.Count - 1; i >= 0; i--)
+                {
+                    if ((UniqueTargets[i].EffectMask & (1 << effIndex)) > 0)
+                    {
+                        referer = ArenaManager.ArenaUnits.Find(unit => unit.Character.Id == UniqueTargets[i].TargetId);
+                        break;
+                    }
+                }
+                break;
+            }
+            default:
+                return;
+        }
+
+        if (referer == null)
+            return;
+
+        Vector3 center = Vector3.zero;
+        switch (targetType.ReferenceType())
+        {
+            case SpellTargetReferenceTypes.SRC:
+                center = Targets.Source;
+                break;
+            case SpellTargetReferenceTypes.DEST:
+                center = Targets.Dest;
+                break;
+            case SpellTargetReferenceTypes.CASTER:
+            case SpellTargetReferenceTypes.TARGET:
+            case SpellTargetReferenceTypes.LAST:
+                center = referer.transform.position;
+                break;
+             default:
+                Debug.LogError("SelectImplicitAreaTargets: received not implemented target reference type!");
+                return;
+        }
+
+        List<Unit> targets = new List<Unit>();
+        TrinitySpellEffectInfo effect = GetEffect(effIndex);
+        if (effect == null)
+            return;
+
+        float radius = effect.CalcRadius(Caster, this) * SpellValue.RadiusMod;
+        ArenaManager.SearchTargets(targets, radius, center, referer, targetType.CheckType());
+
+        if (targets.Count > 0)
+        {
+            // #TODO: Other special target selection goes here
+            /*if (uint32 maxTargets = m_spellValue->MaxAffectedTargets)
+                Trinity::Containers::RandomResizeList(targets, maxTargets);*/
+            
+            foreach(var unit in targets)
+                AddUnitTarget(unit, effMask, false, true, center);
+        }
+    }
+
+    private void HandleImmediate()
+    {
+        // process immediate effects (items, ground, etc.) also initialize some variables
+        HandleImmediatePhase();
+
+        /*for (std::vector<TargetInfo>::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
+            DoAllEffectOnTarget(&(*ihit));
+
+        for (std::vector<GOTargetInfo>::iterator ihit = m_UniqueGOTargetInfo.begin(); ihit != m_UniqueGOTargetInfo.end(); ++ihit)
+            DoAllEffectOnTarget(&(*ihit));*/
+
+        // spell is finished, perform some last features of the spell here
+        HandleFinishPhase();
+
+        if (SpellState != SpellState.CASTING)
+            Finish(true);
+    }
+
+    private void HandleImmediatePhase()
+    {
+        SpellAura = null;
+        // initialize Diminishing Returns Data
+        DiminishLevel = DiminishingLevels.LEVEL_1;
+        DiminishGroup = DiminishingGroup.NONE;
+
+        // handle effects with SPELL_EFFECT_HANDLE_HIT mode
+        foreach (var effect in SpellEffects)
+        {
+            // don't do anything for empty effect
+            if (effect == null)
+                continue;
+
+            // #TODO : call effect handlers to handle destination hit
+            //HandleEffects(NULL, NULL, NULL, effect->EffectIndex, SPELL_EFFECT_HANDLE_HIT);
+        }
+    }
+
+    private void HandleFinishPhase()
+    {
+        /*if (m_caster->m_movedPlayer)
+        {
+            // Take for real after all targets are processed
+            if (m_needComboPoints)
+                m_caster->m_movedPlayer->ClearComboPoints();
+
+            // Real add combo points from effects
+            if (m_comboPointGain)
+                m_caster->m_movedPlayer->GainSpellComboPoints(m_comboPointGain);
+        }
+
+        if (m_caster->m_extraAttacks && HasEffect(SPELL_EFFECT_ADD_EXTRA_ATTACKS))
+        {
+            if (Unit * victim = ObjectAccessor::GetUnit(*m_caster, m_targets.GetOrigUnitTargetGUID()))
+                m_caster->HandleProcExtraAttackFor(victim);
+            else
+                m_caster->m_extraAttacks = 0;
+        }*/
     }
 
     public void InitiateExplicitTargets(SpellCastTargets targets)
     {
         Targets = targets;
         Targets.OrigTarget = Targets.UnitTarget;
+        Targets.UnitTarget = Targets.UnitTarget;
+        //Targets.Source = Caster.transform.position;
+        //Targets.Dest = Targets.UnitTarget.transform.position;
     }
-
-    public void SelectSpellTargets() { }
 
     public void Prepare(SpellCastTargets targets, AuraEffect triggeredByAura = null)
     {
@@ -193,6 +585,11 @@ public class TrinitySpell
         SpellManager.ApplySpellVisuals(Caster, SpellInfo);
 
         SpellManager.ApplySpellCastSound(Caster, SpellInfo);
+
+        Caster.Character.SpellHistory.HandleCooldowns(SpellInfo, this);
+
+        if (CastTime == 0)
+            HandleImmediate();
     }
     public void Finish(bool ok = true)
     {
@@ -202,6 +599,7 @@ public class TrinitySpell
     {
 
     }
+    
 
     public bool IsIgnoringCooldowns() { return TriggerCastFlags.HasFlag(TriggerCastFlags.IGNORE_SPELL_AND_CATEGORY_CD); }
     public bool HasGlobalCooldown()

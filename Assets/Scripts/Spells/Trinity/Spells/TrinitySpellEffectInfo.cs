@@ -11,8 +11,8 @@ public class TrinitySpellEffectInfo
     public int ApplyAuraPeriod { get; set; }
     public int DieSides { get; set; }
 
-    public Targets TargetA { get; set; }
-    public Targets TargetB { get; set; }
+    public TargetTypes TargetA { get; set; }
+    public TargetTypes TargetB { get; set; }
 
     public int BasePoints { get; set; }
     public float PointsPerResource { get; set; }
@@ -58,5 +58,18 @@ public class TrinitySpellEffectInfo
         TriggerSpell = effectEntry.TriggerSpell;
         BonusCoefficient = effectEntry.BonusCoefficient;
         BonusCoefficientFromAP = effectEntry.BonusCoefficientFromAP;
+    }
+
+    public float CalcRadius(Unit caster, TrinitySpell spell)
+    {
+        if (Radius == null)
+            return 0.0f;
+
+        float radius = Radius.RadiusMin;
+
+        if (radius == 0.0f)
+            radius = Radius.RadiusMax;
+
+        return radius;
     }
 }
