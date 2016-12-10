@@ -318,9 +318,9 @@ public class TrinitySpell
         // some spells appear to need this, however this requires more research
         switch (targetType.Category())
         {
-            case SpellTargetSelectionCategories.NEARBY:
-            case SpellTargetSelectionCategories.CONE:
-            case SpellTargetSelectionCategories.AREA:
+            case TargetSelections.NEARBY:
+            case TargetSelections.CONE:
+            case TargetSelections.AREA:
                 // targets for effect already selected
                 if ((effectMask & processedEffectMask) > 0)
                     return;
@@ -350,19 +350,19 @@ public class TrinitySpell
 
         switch (targetType.Category())
         {
-            case SpellTargetSelectionCategories.CHANNEL:
+            case TargetSelections.CHANNEL:
                 //SelectImplicitChannelTargets(effIndex, targetType);
                 break;
-            case SpellTargetSelectionCategories.NEARBY:
+            case TargetSelections.NEARBY:
                 //SelectImplicitNearbyTargets(effIndex, targetType, effectMask);
                 break;
-            case SpellTargetSelectionCategories.CONE:
+            case TargetSelections.CONE:
                 //SelectImplicitConeTargets(effIndex, targetType, effectMask);
                 break;
-            case SpellTargetSelectionCategories.AREA:
+            case TargetSelections.AREA:
                 SelectImplicitAreaTargets(effIndex, targetType, effectMask);
                 break;
-            case SpellTargetSelectionCategories.DEFAULT:
+            case TargetSelections.DEFAULT:
                 #region Default Targets
                 /*switch (targetType.GetObjectType())
                 {
@@ -411,7 +411,7 @@ public class TrinitySpell
                 }*/
                 #endregion
                 break;
-            case SpellTargetSelectionCategories.NYI:
+            case TargetSelections.NYI:
                 Debug.LogErrorFormat("SPELL: Target type in spell #{0} is not implemented yet!", SpellInfo.Id);
                 break;
             default:
@@ -424,15 +424,15 @@ public class TrinitySpell
         Unit referer = null;
         switch (targetType.ReferenceType())
         {
-            case SpellTargetReferenceTypes.SRC:
-            case SpellTargetReferenceTypes.DEST:
-            case SpellTargetReferenceTypes.CASTER:
+            case TargetReferences.SRC:
+            case TargetReferences.DEST:
+            case TargetReferences.CASTER:
                 referer = Caster;
                 break;
-            case SpellTargetReferenceTypes.TARGET:
+            case TargetReferences.TARGET:
                 referer = Targets.UnitTarget;
                 break;
-            case SpellTargetReferenceTypes.LAST:
+            case TargetReferences.LAST:
             {
                 for (int i = UniqueTargets.Count - 1; i >= 0; i--)
                 {
@@ -454,15 +454,15 @@ public class TrinitySpell
         Vector3 center = Vector3.zero;
         switch (targetType.ReferenceType())
         {
-            case SpellTargetReferenceTypes.SRC:
+            case TargetReferences.SRC:
                 center = Targets.Source;
                 break;
-            case SpellTargetReferenceTypes.DEST:
+            case TargetReferences.DEST:
                 center = Targets.Dest;
                 break;
-            case SpellTargetReferenceTypes.CASTER:
-            case SpellTargetReferenceTypes.TARGET:
-            case SpellTargetReferenceTypes.LAST:
+            case TargetReferences.CASTER:
+            case TargetReferences.TARGET:
+            case TargetReferences.LAST:
                 center = referer.transform.position;
                 break;
              default:

@@ -25,7 +25,7 @@ public enum SpellCastTargetFlags
     CORPSE_MASK = CORPSE_ALLY | CORPSE_ENEMY,
 };
 
-public enum SpellTargetSelectionCategories
+public enum TargetSelections
 {
     NYI,
     DEFAULT,
@@ -35,7 +35,7 @@ public enum SpellTargetSelectionCategories
     AREA
 };
 
-public enum SpellTargetReferenceTypes
+public enum TargetReferences
 {
     NONE,
     CASTER,
@@ -45,7 +45,7 @@ public enum SpellTargetReferenceTypes
     DEST
 };
 
-public enum SpellTargetObjectTypes
+public enum TargetObjects
 {
     NONE = 0,
     SRC,
@@ -60,7 +60,7 @@ public enum SpellTargetObjectTypes
     CORPSE_ALLY
 };
 
-public enum SpellTargetCheckTypes
+public enum TargetChecks
 {
     DEFAULT,
     ENTRY,
@@ -72,7 +72,7 @@ public enum SpellTargetCheckTypes
     PASSENGER
 };
 
-public enum SpellTargetDirectionTypes
+public enum TargetDirections
 {
     NONE,
     FRONT,

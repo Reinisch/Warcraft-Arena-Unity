@@ -1007,7 +1007,7 @@ public class ArenaManager: MonoBehaviour
         return false;
     }
 
-    public static void SearchTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, SpellTargetCheckTypes checkType)
+    public static void SearchTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, TargetChecks checkType)
     {
         Collider[] hitColliders = Physics.OverlapSphere(center, radius, 1 << LayerMask.NameToLayer("Characters"));
         for (int i = 0; i < hitColliders.Length; i++)
@@ -1018,11 +1018,11 @@ public class ArenaManager: MonoBehaviour
 
             switch (checkType)
             {
-                case SpellTargetCheckTypes.ALLY:
+                case TargetChecks.ALLY:
                     if (referer.IsHostileTo(targetUnit))
                         continue;
                     break;
-                case SpellTargetCheckTypes.ENEMY:
+                case TargetChecks.ENEMY:
                     if (!referer.IsHostileTo(targetUnit))
                         continue;
                     break;
