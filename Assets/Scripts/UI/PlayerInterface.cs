@@ -30,7 +30,7 @@ public class PlayerInterface : MonoBehaviour
     Unit lastTarget;
     RaycastHit hitInfo = new RaycastHit();
     int lastScreenWidth;
-    int lastScreenHeight;    
+    int lastScreenHeight;
 
     public GameObject canvasUiOverlay;
     public ActionBar actionBarNewUI;
@@ -40,7 +40,7 @@ public class PlayerInterface : MonoBehaviour
     public BuffBar playerBuffsNewUI;
     public BuffBar targetBuffsNewUI;
     public CastFrame playerCastFrameNewUI;
-   
+
     public event ScreenResizeEvent ScreenResized;    
     public event TargetChangeEvent TargetLost;
     public event TargetChangeEvent TargetSwitch;
@@ -103,13 +103,14 @@ public class PlayerInterface : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
-            ArenaManager.GetTargetsForPlayer(PlayerUnit, 10);
+            ArenaManager.GetHostileTargets(PlayerUnit, 10);
 
         CheckActionBarButtons();
 
         if (Input.GetMouseButtonDown(0))
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 1 << LayerMask.NameToLayer("Characters")))
-                CheckTargetSelection(hitInfo.transform.GetComponent<Unit>());
+            if (!EventSystem.current.IsPointerOverGameObject())
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 1 << LayerMask.NameToLayer("Characters")))
+                    CheckTargetSelection(hitInfo.transform.GetComponent<Unit>());
 
         /*if (Input.GetMouseButtonDown(0))
         {
@@ -138,30 +139,23 @@ public class PlayerInterface : MonoBehaviour
             lastTarget = PlayerUnit.Character.target;
             PlayerUnit.Character.target = newTarget;
 
-            if (lastTarget != null)
-            {
-                if (lastTarget.id != PlayerUnit.Character.target.id)
-                {
-                    if (TargetSwitch != null)
-                        TargetSwitch(PlayerUnit.Character.target);
-                }
-            }
-            else
-            {
-                if (TargetSet != null)
-                    TargetSet(PlayerUnit.Character.target);
-                lastTarget = PlayerUnit.Character.target;
-            }
-        }
-        else
-        {
-            lastTarget = PlayerUnit.Character.target;
-            PlayerUnit.character.target = null;
-
-            if (TargetLost != null)
-                TargetLost(lastTarget);
+            if (TargetSet != null)
+                TargetSet(PlayerUnit.Character.target);
         }
     }
+    public void ClearTargetSelection()
+    {
+        if (PlayerUnit.Character.target != null)
+        {
+            lastTarget = PlayerUnit.Character.target;
+
+            if (TargetLost != null)
+                TargetLost(PlayerUnit.Character.target);
+
+            PlayerUnit.Character.target = null;
+        }
+    }
+
     public void CheckTargetUnitDeath(int id)
     {
         if (PlayerUnit.character.target != null && PlayerUnit.character.target.id == id)

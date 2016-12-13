@@ -208,7 +208,8 @@ public class WarcraftDatabase : MonoBehaviour
             AuraType = AuraType.SPELL_AURA_NONE,
             BonusCoefficient = 0.17f,
             RadiusEntryId = 12,
-            TargetA = TargetTypes.TARGET_UNIT_TARGET_ENEMY,
+            TargetA = TargetTypes.TARGET_UNIT_SRC_AREA_ENEMY,
+            TargetB = TargetTypes.TARGET_UNIT_SRC_AREA_ENEMY
         };
         SpellEffectEntries.Add(spellEffectEntry.Id, spellEffectEntry);
         spellEffectEntry = new TrinitySpellEffectInfoEntry()
@@ -218,7 +219,8 @@ public class WarcraftDatabase : MonoBehaviour
             AuraType = AuraType.SPELL_AURA_MOD_ROOT,
             Mechanic = Mechanics.FREEZE,
             RadiusEntryId = 12,
-            TargetA = TargetTypes.TARGET_UNIT_TARGET_ENEMY,
+            TargetA = TargetTypes.TARGET_UNIT_SRC_AREA_ENEMY,
+            TargetB = TargetTypes.TARGET_UNIT_SRC_AREA_ENEMY
         };
         SpellEffectEntries.Add(spellEffectEntry.Id, spellEffectEntry);
         #endregion

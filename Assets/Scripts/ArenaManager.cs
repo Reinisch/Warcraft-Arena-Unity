@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class ArenaManager: MonoBehaviour
 {
@@ -608,6 +609,8 @@ public class ArenaManager: MonoBehaviour
         PlayerUnit.Character.Spells.AddSpell(new Spell(101, "Mortal Strike", new Cooldown(SpellLibrary.GetSpell(101).baseCooldown)));
 
         PlayerInterface.Initialize();
+
+        arenaUnits.AddRange(FindObjectsOfType<Unit>());
     }
 
 
@@ -955,7 +958,6 @@ public class ArenaManager: MonoBehaviour
         return true;
     }
 
-
     public void Spawn(GameObject enemy, int id, GameObject spawner)
     {
         GameObject newEnemy = Instantiate(enemy, spawner.transform.position, spawner.transform.rotation) as GameObject;
@@ -971,43 +973,12 @@ public class ArenaManager: MonoBehaviour
     }
 
 
-
-    public bool GetNearestTarget(Unit targeter, float distance)
+    public static Unit FindUnit(Guid id)
     {
-        if (targeter.character.PreviousTargets.Count > 10)
-            targeter.character.PreviousTargets.Clear();
-
-        for (int i = 0; i < arenaUnits.Count; i++)
-        {
-            if (!targeter.character.PreviousTargets.Contains(arenaUnits[i].Id))
-            {
-                if (arenaUnits[i].id == targeter.id || arenaUnits[i].IsDead()
-                    || arenaUnits[i].Character.states[EntityStateType.Invisible].InEffect
-                    || Vector2.Distance(targeter.transform.position, arenaUnits[i].transform.position) > distance)
-                    continue;
-                targeter.character.PreviousTargets.Add(arenaUnits[i].id);
-                targeter.character.target = arenaUnits[i];
-                return true;
-            }
-        }
-        if (!targeter.character.PreviousTargets.Contains(PlayerUnit.id))
-        {
-            if (!(PlayerUnit.id == targeter.id
-                || PlayerUnit.IsDead()
-                || PlayerUnit.Character.states[EntityStateType.Invisible].InEffect 
-                || Vector2.Distance(targeter.transform.position, PlayerUnit.transform.position) > distance))
-            {
-                targeter.character.PreviousTargets.Add(PlayerUnit.id);
-                targeter.character.target = PlayerUnit;
-                return true;
-            }
-        }
-        targeter.character.PreviousTargets.Clear();
-        targeter.character.target = null;
-        return false;
+        return ArenaUnits.Find(unit => unit.Character.Id == id);
     }
 
-    public static void SearchTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, TargetChecks checkType)
+    public static void SearchAreaTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, TargetChecks checkType)
     {
         Collider[] hitColliders = Physics.OverlapSphere(center, radius, 1 << LayerMask.NameToLayer("Characters"));
         for (int i = 0; i < hitColliders.Length; i++)
@@ -1034,38 +1005,29 @@ public class ArenaManager: MonoBehaviour
         }
     }
 
-    public static bool GetTargetsForPlayer(Unit targeter, float distance)
+    public static bool GetHostileTargets(Unit targeter, float distance = 40)
     {
-        if (targeter.character.PreviousTargets.Count > 10)
+        if (targeter.character.PreviousTargets.Count > 20)
             targeter.character.PreviousTargets.Clear();
 
-        for (int i = 0; i < ArenaUnits.Count; i++)
+        var uniqueTarget = ArenaUnits.Find(unit => unit.IsHostileTo(targeter) && Vector3.Distance(targeter.transform.position, unit.transform.position) <= distance
+            && !targeter.character.PreviousTargets.Contains(unit.Character.Id));
+
+        if(uniqueTarget == null)
         {
-            if (!targeter.character.PreviousTargets.Contains(ArenaUnits[i].Id))
-            {
-                if (ArenaUnits[i].id == targeter.id || ArenaUnits[i].IsDead()
-                    || ArenaUnits[i].Character.states[EntityStateType.Invisible].InEffect
-                    || Vector2.Distance(targeter.transform.position, ArenaUnits[i].transform.position) > distance)
-                    continue;
-                targeter.character.PreviousTargets.Add(ArenaUnits[i].id);
-                PlayerInterface.CheckTargetSelection(ArenaUnits[i]);
-                return true;
-            }
+            targeter.character.PreviousTargets.Clear();
+            uniqueTarget = ArenaUnits.Find(unit => unit.IsHostileTo(targeter) && Vector3.Distance(targeter.transform.position, unit.transform.position) <= distance);
         }
-        /*if (!targeter.character.PreviousTargets.Contains(PlayerUnit.id))
+
+        if (uniqueTarget != null)
         {
-            if (!(PlayerUnit.id == targeter.id
-                || PlayerUnit.IsDead
-                || PlayerUnit.Character.states[EntityStateType.Invisible].InEffect
-                || Vector2.Distance(targeter.transform.position, PlayerUnit.transform.position) > distance))
-            {
-                targeter.character.PreviousTargets.Add(PlayerUnit.id);
-                PlayerInterface.CheckTargetSelection(PlayerUnit);
-                return true;
-            }
-        }*/
-        targeter.character.PreviousTargets.Clear();
-        PlayerInterface.CheckTargetSelection(null);
+            targeter.character.PreviousTargets.Add(uniqueTarget.Character.Id);
+            PlayerInterface.CheckTargetSelection(uniqueTarget);
+            return true;
+        }
+        
+
+        PlayerInterface.ClearTargetSelection();
         return false;
     }
 }

@@ -31,4 +31,14 @@ public class SpellManager : MonoBehaviour
         if (WarcraftDatabase.SpellCastSounds.ContainsKey(spellInfo.Id))
             AudioSource.PlayClipAtPoint(WarcraftDatabase.SpellCastSounds[spellInfo.Id], target.transform.position);
     }
+
+    public static void SpellDamageEvent(Unit caster, Unit target, int damage, bool isCrit)
+    {
+        if (caster == ArenaManager.PlayerInterface.PlayerUnit)
+        {
+            GameObject damageEvent = Instantiate(Resources.Load("Prefabs/UI/DamageEvent")) as GameObject;
+            damageEvent.GetComponent<UnitDamageUIEvent>().Initialize(damage, target, isCrit, ArenaManager.PlayerInterface);
+        }
+    }
+
 }

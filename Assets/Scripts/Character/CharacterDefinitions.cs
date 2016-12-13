@@ -80,3 +80,12 @@ public enum UnitMoveType
     TurnRate,
     PitchRate,
 };
+
+public enum UnitFields
+{
+    UNIT_FIELD_TARGET, // Size: 4, Flags: PUBLIC
+    UNIT_FIELD_HEALTH, // Size: 2, Flags: PUBLIC
+    UNIT_FIELD_POWER, // Size: 6, Flags: PUBLIC, URGENT_SELF_ONLY
+    UNIT_FIELD_MAXHEALTH, // Size: 2, Flags: PUBLIC
+    UNIT_FIELD_MAXPOWER, // Size: 6, Flags: PUBLIC
+};

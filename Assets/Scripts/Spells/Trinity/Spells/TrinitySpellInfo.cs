@@ -41,6 +41,16 @@ public class TrinitySpellInfo
         SpellEffectInfos = new List<TrinitySpellEffectInfo>();
     }
 
+
+    public TrinitySpellEffectInfo GetEffect(int index)
+    {
+        if (index >= SpellEffectInfos.Count)
+            return null;
+
+        return SpellEffectInfos[index];
+    }
+
+
     public bool HasAttribute(SpellAttributes attribute)
     {
         return (Attributes & attribute) == attribute;

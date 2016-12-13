@@ -6,9 +6,9 @@ public class Stat
     Dictionary<StatModifierType, float> modifiers = new Dictionary<StatModifierType, float>();
 
     bool isCurrent;
-    float finalValue;
+    int finalValue;
 
-    public float FinalValue
+    public int FinalValue
     {
         get
         {
@@ -17,10 +17,12 @@ public class Stat
             else
             {
                 isCurrent = true;
-                finalValue = modifiers[StatModifierType.Base] * modifiers[StatModifierType.BaseMultExternal];
-                finalValue *= modifiers[StatModifierType.BaseMult];
-                finalValue += modifiers[StatModifierType.Total];
-                finalValue *= modifiers[StatModifierType.TotalMult];
+                float result = modifiers[StatModifierType.Base] * modifiers[StatModifierType.BaseMultExternal];
+                result *= modifiers[StatModifierType.BaseMult];
+                result += modifiers[StatModifierType.Total];
+                result *= modifiers[StatModifierType.TotalMult];
+
+                finalValue = (int)result;
 
                 if (finalValue < 0)
                     finalValue = 0;
@@ -43,7 +45,7 @@ public class Stat
         }
     }
 
-    public Stat(float initialValue = 0.0f)
+    public Stat(int initialValue = 0)
     {
         StatHelper.InitializeStat(modifiers, initialValue);
     }

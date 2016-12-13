@@ -32,9 +32,25 @@ public class Character
     public DeathState DeathState { get; set; }
     public UnitMoveType MoveType { get; set; }
 
+    public int Health
+    {
+        get
+        {
+            return stats[StatType.Health].FinalValue;
+        }
+    }
+
     public Guid Id { get; private set; }
 
     public SpellHistory SpellHistory { get; private set; }
+
+    public float this[StatType type]
+    {
+        get
+        {
+            return stats[type].FinalValue;
+        }
+    }
 
     #region Deprecated
     public Unit target;
@@ -55,7 +71,7 @@ public class Character
     public Dictionary<int, List<SpellScriptAura>> CharacterEvents;
     public List<PeriodicEffectAura> PeriodicEffects;
     public List<AbsorbEffect> AbsorbEffects;
-    public List<long> PreviousTargets;
+    public List<Guid> PreviousTargets;
 
     #endregion
 
@@ -79,7 +95,7 @@ public class Character
         Buffs = new Buffs(unit);
         Spells = new SpellStorage();
 
-        PreviousTargets = new List<long>();
+        PreviousTargets = new List<Guid>();
         PeriodicEffects = new List<PeriodicEffectAura>();
         AbsorbEffects = new List<AbsorbEffect>();
         CharacterEvents = new Dictionary<int, List<SpellScriptAura>>();

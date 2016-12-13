@@ -45,6 +45,7 @@ public enum StatType
     ResistanceShadow,
     ResistanceArcane,
 
+    SpellPower,
     AttackPower,
     AttackPowerRanged,
     DamageMainhand,
@@ -109,6 +110,7 @@ public static class StatHelper
         StatType.ResistanceFrost,
         StatType.ResistanceShadow,
         StatType.ResistanceArcane,
+        StatType.SpellPower,
         StatType.AttackPower,
         StatType.AttackPowerRanged,
         StatType.DamageMainhand,
@@ -119,7 +121,7 @@ public static class StatHelper
     #endregion
 
 
-    public static void InitializeStat(Dictionary<StatModifierType, float> modifiers, float initialValue = 0.0f)
+    public static void InitializeStat(Dictionary<StatModifierType, float> modifiers, int initialValue = 0)
     {
         modifiers.Clear();
 
@@ -127,7 +129,7 @@ public static class StatHelper
         modifiers.Add(StatModifierType.BaseMultExternal, 1.0f);
         modifiers.Add(StatModifierType.BaseMult, 1.0f);
         modifiers.Add(StatModifierType.Total, 0.0f);
-        modifiers.Add(StatModifierType.TotalMult, 0.0f);
+        modifiers.Add(StatModifierType.TotalMult, 1.0f);
     }
 
     public static void InitializePlayerStats(Dictionary<StatType, Stat> playerStats)
@@ -164,6 +166,7 @@ public static class StatHelper
         playerStats.Add(StatType.ResistanceFrost, new Stat(0));
         playerStats.Add(StatType.ResistanceShadow, new Stat(0));
         playerStats.Add(StatType.ResistanceArcane, new Stat(0));
+        playerStats.Add(StatType.SpellPower, new Stat(20));
         playerStats.Add(StatType.AttackPower, new Stat(20));
         playerStats.Add(StatType.AttackPowerRanged, new Stat(20));
         playerStats.Add(StatType.DamageMainhand, new Stat(1));
@@ -208,6 +211,7 @@ public static class StatHelper
         creatureStats.Add(StatType.ResistanceFrost, new Stat(0));
         creatureStats.Add(StatType.ResistanceShadow, new Stat(0));
         creatureStats.Add(StatType.ResistanceArcane, new Stat(0));
+        creatureStats.Add(StatType.SpellPower, new Stat(20));
         creatureStats.Add(StatType.AttackPower, new Stat(0));
         creatureStats.Add(StatType.AttackPowerRanged, new Stat(0));
         creatureStats.Add(StatType.DamageMainhand, new Stat(1));

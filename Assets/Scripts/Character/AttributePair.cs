@@ -39,25 +39,25 @@ public class AttributePair
         maximumValue = maxValue;
     }
 
-    public void Increase(ushort value)
+    public void Increase(int value)
     {
         currentValue += value;
         if (currentValue > maximumValue)
             currentValue = maximumValue;
     }
-    public void Decrease(ushort value)
+    public void Decrease(int value)
     {
         currentValue -= value;
         if (currentValue < 0)
             currentValue = 0;
     }
-    public void SetCurrent(ushort value)
+    public void SetCurrent(int value)
     {
         currentValue = value;
         if (currentValue > maximumValue)
             currentValue = maximumValue;
     }
-    public void SetMaximum(ushort value)
+    public void SetMaximum(int value)
     {
         maximumValue = value;
         if (currentValue > maximumValue)

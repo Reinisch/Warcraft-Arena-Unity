@@ -933,6 +933,8 @@ public enum SpellEffectType
     INSTAKILL = 1,
     SCHOOL_DAMAGE = 2,
     DUMMY = 3,
+    PORTAL_TELEPORT = 4, // Unused (4.3.4)
+    TELEPORT_UNITS_OLD = 5, // Unused (7.0.3)
     APPLY_AURA = 6,
     ENVIRONMENTAL_DAMAGE = 7,
     POWER_DRAIN = 8,
@@ -940,34 +942,218 @@ public enum SpellEffectType
     HEAL = 10,
     BIND = 11,
     PORTAL = 12,
+    RITUAL_BASE = 13, // Unused (4.3.4)
+    INCREASE_CURRENCY_CAP = 14,
+    RITUAL_ACTIVATE_PORTAL = 15, // Unused (4.3.4)
+    QUEST_COMPLETE = 16,
     WEAPON_DAMAGE_NOSCHOOL = 17,
+    RESURRECT = 18,
     ADD_EXTRA_ATTACKS = 19,
+    DODGE = 20,
+    EVADE = 21,
+    PARRY = 22,
+    BLOCK = 23,
+    CREATE_ITEM = 24,
     WEAPON = 25,
+    DEFENSE = 26,
     PERSISTENT_AREA_AURA = 27,
     SUMMON = 28,
     LEAP = 29,
+    ENERGIZE = 30,
     WEAPON_PERCENT_DAMAGE = 31,
     TRIGGER_MISSILE = 32,
+    OPEN_LOCK = 33,
+    SUMMON_CHANGE_ITEM = 34,
+    APPLY_AREA_AURA_PARTY = 35,
+    LEARN_SPELL = 36,
     SPELL_DEFENSE = 37,
     DISPEL = 38,
+    LANGUAGE = 39,
+    DUAL_WIELD = 40,
+    JUMP = 41,
+    JUMP_DEST = 42,
     TELEPORT_UNITS_FACE_CASTER = 43,
+    SKILL_STEP = 44,
+    PLAY_MOVIE = 45,
+    SPAWN = 46,
+    TRADE_SKILL = 47,
     STEALTH = 48,
-    FORCE_CRITICAL_HIT = 51,
+    DETECT = 49,
+    TRANS_DOOR = 50,
+    FORCE_CRITICAL_HIT = 51, // Unused (4.3.4)
+    SET_MAX_BATTLE_PET_COUNT = 52,
+    ENCHANT_ITEM = 53,
+    ENCHANT_ITEM_TEMPORARY = 54,
+    TAMECREATURE = 55,
+    SUMMON_PET = 56,
+    LEARN_PET_SPELL = 57,
     WEAPON_DAMAGE = 58,
+    CREATE_RANDOM_ITEM = 59,
+    PROFICIENCY = 60,
+    SEND_EVENT = 61,
+    POWER_BURN = 62,
+    THREAT = 63,
     TRIGGER_SPELL = 64,
+    APPLY_AREA_AURA_RAID = 65,
+    CREATE_MANA_GEM = 66,
     HEAL_MAX_HEALTH = 67,
     INTERRUPT_CAST = 68,
     DISTRACT = 69,
     PULL = 70,
+    PICKPOCKET = 71,
+    ADD_FARSIGHT = 72,
+    UNTRAIN_TALENTS = 73,
+    APPLY_GLYPH = 74,
+    HEAL_MECHANICAL = 75,
+    SUMMON_OBJECT_WILD = 76,
     SCRIPT_EFFECT = 77,
+    ATTACK = 78,
+    SANCTUARY = 79,
     ADD_COMBO_POINTS = 80,
+    PUSH_ABILITY_TO_ACTION_BAR = 81,
+    BIND_SIGHT = 82,
+    DUEL = 83,
+    STUCK = 84,
+    SUMMON_PLAYER = 85,
+    ACTIVATE_OBJECT = 86,
+    GAMEOBJECT_DAMAGE = 87,
+    GAMEOBJECT_REPAIR = 88,
+    GAMEOBJECT_SET_DESTRUCTION_STATE = 89,
+    KILL_CREDIT = 90,
+    THREAT_ALL = 91,
+    ENCHANT_HELD_ITEM = 92,
+    FORCE_DESELECT = 93,
+    SELF_RESURRECT = 94,
+    SKINNING = 95,
     CHARGE = 96,
+    CAST_BUTTON = 97,
     KNOCK_BACK = 98,
+    DISENCHANT = 99,
+    INEBRIATE = 100,
+    FEED_PET = 101,
+    DISMISS_PET = 102,
+    REPUTATION = 103,
+    SUMMON_OBJECT_SLOT1 = 104,
+    SURVEY = 105,
+    CHANGE_RAID_MARKER = 106,
+    SHOW_CORPSE_LOOT = 107,
     DISPEL_MECHANIC = 108,
+    RESURRECT_PET = 109,
+    DESTROY_ALL_TOTEMS = 110,
+    DURABILITY_DAMAGE = 111,
+    ATTACK_ME = 114,
+    DURABILITY_DAMAGE_PCT = 115,
+    SKIN_PLAYER_CORPSE = 116,
+    SPIRIT_HEAL = 117,
+    SKILL = 118,
+    APPLY_AREA_AURA_PET = 119,
+    TELEPORT_GRAVEYARD = 120,
+    NORMALIZED_WEAPON_DMG = 121,
+    SEND_TAXI = 123,
+    PULL_TOWARDS = 124,
+    MODIFY_THREAT_PERCENT = 125,
+    STEAL_BENEFICIAL_BUFF = 126,
+    PROSPECTING = 127,
     APPLY_AREA_AURA_FRIEND = 128,
     APPLY_AREA_AURA_ENEMY = 129,
+    REDIRECT_THREAT = 130,
+    PLAY_SOUND = 131,
+    PLAY_MUSIC = 132,
+    UNLEARN_SPECIALIZATION = 133,
+    KILL_CREDIT2 = 134,
+    CALL_PET = 135,
+    HEAL_PCT = 136,
+    ENERGIZE_PCT = 137,
+    LEAP_BACK = 138,
+    CLEAR_QUEST = 139,
+    FORCE_CAST = 140,
+    FORCE_CAST_WITH_VALUE = 141,
+    TRIGGER_SPELL_WITH_VALUE = 142,
     APPLY_AREA_AURA_OWNER = 143,
+    KNOCK_BACK_DEST = 144,
+    PULL_TOWARDS_DEST = 145,
+    ACTIVATE_RUNE = 146,
+    QUEST_FAIL = 147,
+    TRIGGER_MISSILE_SPELL_WITH_VALUE = 148,
+    CHARGE_DEST = 149,
+    QUEST_START = 150,
+    TRIGGER_SPELL_2 = 151,
+    SUMMON_RAF_FRIEND = 152,
+    CREATE_TAMED_PET = 153,
+    DISCOVER_TAXI = 154,
+    TITAN_GRIP = 155,
+    ENCHANT_ITEM_PRISMATIC = 156,
+    CREATE_ITEM_2 = 157,
+    MILLING = 158,
+    ALLOW_RENAME_PET = 159,
+    FORCE_CAST_2 = 160,
+    TALENT_SPEC_COUNT = 161,
+    TALENT_SPEC_SELECT = 162,
+    OBLITERATE_ITEM = 163,
     REMOVE_AURA = 164,
+    DAMAGE_FROM_MAX_HEALTH_PCT = 165,
+    GIVE_CURRENCY = 166,
+    UPDATE_PLAYER_PHASE = 167,
+    ALLOW_CONTROL_PET = 168, // NYI
+    DESTROY_ITEM = 169,
+    UPDATE_ZONE_AURAS_AND_PHASES = 170, // NYI
+    RESURRECT_WITH_AURA = 172,
+    UNLOCK_GUILD_VAULT_TAB = 173, // Guild tab unlocked (guild perk)
+    APPLY_AURA_ON_PET = 174, // NYI
+    SANCTUARY_2 = 176, // NYI
+    CREATE_AREATRIGGER = 179,
+    UPDATE_AREATRIGGER = 180, // NYI
+    REMOVE_TALENT = 181,
+    DESPAWN_AREATRIGGER = 182,
+    REPUTATION_2 = 184, // NYI
+    RANDOMIZE_ARCHAEOLOGY_DIGSITES = 187, // NYI
+    LOOT = 189, // NYI, lootid in MiscValue ?
+    TELEPORT_TO_DIGSITE = 191, // NYI
+    UNCAGE_BATTLEPET = 192,
+    START_PET_BATTLE = 193,
+    PLAY_SCENE = 198, // NYI
+    HEAL_BATTLEPET_PCT = 200, // NYI
+    ENABLE_BATTLE_PETS = 201, // NYI
+    CHANGE_BATTLEPET_QUALITY = 204,
+    LAUNCH_QUEST_CHOICE = 205,
+    ALTER_ITEM = 206, // NYI
+    LAUNCH_QUEST_TASK = 207, // Starts one of the "progress bar" quests
+    LEARN_GARRISON_BUILDING = 210,
+    LEARN_GARRISON_SPECIALIZATION = 211,
+    CREATE_GARRISON = 214,
+    UPGRADE_CHARACTER_SPELLS = 215, // Unlocks boosted players' spells (ChrUpgrade*.db2)
+    CREATE_SHIPMENT = 216,
+    UPGRADE_GARRISON = 217,
+    ADD_GARRISON_FOLLOWER = 220,
+    CREATE_HEIRLOOM_ITEM = 222,
+    CHANGE_ITEM_BONUSES = 223,
+    ACTIVATE_GARRISON_BUILDING = 224,
+    GRANT_BATTLEPET_LEVEL = 225,
+    TELEPORT_TO_LFG_DUNGEON = 227,
+    SET_FOLLOWER_QUALITY = 229,
+    INCREASE_FOLLOWER_ITEM_LEVEL = 230,
+    INCREASE_FOLLOWER_EXPERIENCE = 231,
+    REMOVE_PHASE = 232,
+    RANDOMIZE_FOLLOWER_ABILITIES = 233,
+    GIVE_EXPERIENCE = 236, // Increases players XP
+    GIVE_RESTED_EXPERIENCE_BONUS = 237,
+    INCREASE_SKILL = 238,
+    END_GARRISON_BUILDING_CONSTRUCTION = 239, // Instantly finishes building construction
+    GIVE_ARTIFACT_POWER = 240,
+    GIVE_ARTIFACT_POWER_NO_BONUS = 242, // Unaffected by Artifact Knowledge
+    APPLY_ENCHANT_ILLUSION = 243,
+    LEARN_FOLLOWER_ABILITY = 244,
+    UPGRADE_HEIRLOOM = 245,
+    FINISH_GARRISON_MISSION = 246,
+    ADD_GARRISON_MISSION = 247,
+    FINISH_SHIPMENT = 248,
+    FORCE_EQUIP_ITEM = 249,
+    TAKE_SCREENSHOT = 250, // Serverside marker for selfie screenshot - achievement check
+    SET_GARRISON_CACHE_SIZE = 251,
+    TELEPORT_UNITS = 252,
+    GIVE_HONOR = 253,
+    LEARN_TRANSMOG_SET = 255,
+    TOTAL_SPELL_EFFECTS = 256,
 };
 
 public enum DiminishingLevels
@@ -1006,4 +1192,60 @@ public enum SpellMissInfo
     DEFLECT = 9,
     ABSORB = 10,
     REFLECT = 11
+};
+
+public class SpellDamage
+{
+    public Unit Target;
+    public Unit Attacker;
+    public Guid CastId;
+    public int SpellID;
+    public int Damage;
+    public int Absorb;
+    public int Resist;
+    public bool Crit;
+    public bool PeriodicLog;
+
+    public SpellSchoolMask SchoolMask;
+    public HitInfo HitInfo;
+
+    public SpellDamage(Unit attacker, Unit target, int _SpellID, SpellSchoolMask _schoolMask, Guid _castId = default(Guid))
+    {
+        Attacker = attacker;
+        Target = target;
+        CastId = _castId;
+        SpellID = _SpellID;
+
+        SchoolMask = _schoolMask;
+
+        Damage = 0;
+        Absorb = 0;
+        Resist = 0;
+        Crit = false;
+        PeriodicLog = false;
+
+        HitInfo = HitInfo.AffectsVictim;
+    }
+};
+
+public struct CleanDamage
+{
+    public int AbsorbedDamage;
+    public int MitigatedDamage;
+
+    public CleanDamage(int absorb, int mitigated)
+    {
+        AbsorbedDamage = absorb;
+        MitigatedDamage = mitigated;
+    }
+};
+
+public enum DamageEffectType
+{
+    DIRECT_DAMAGE = 0,                            // used for normal weapon damage (not for class abilities or spells)
+    SPELL_DIRECT_DAMAGE = 1,                            // spell/class abilities damage
+    DOT = 2,
+    HEAL = 3,
+    NODAMAGE = 4,                            // used also in case when damage applied to health but not applied to spell channelInterruptFlags/etc
+    SELF_DAMAGE = 5
 };

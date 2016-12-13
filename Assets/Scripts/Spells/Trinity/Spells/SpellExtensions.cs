@@ -220,4 +220,9 @@ public static class SpellExtensions
     {
         return targetTypeData[(int)baseFlags].DirectionType;
     }
+    public static bool IsArea(this TargetTypes baseFlags)
+    {
+        return baseFlags.Category() == TargetSelections.AREA || baseFlags.Category() == TargetSelections.CONE;
+    }
+
 }
