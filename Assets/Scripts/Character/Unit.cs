@@ -93,7 +93,7 @@ public class Unit : MonoBehaviour
             animator.Play("Air", 1);
     }
 
-    #region Reputation
+    #region Relations
 
     public bool IsHostileTo(Unit unit)
     {
@@ -126,16 +126,15 @@ public class Unit : MonoBehaviour
             return SPELL_MISS_IMMUNE;*/
 
         // All positive spells can`t miss
-        /// @todo client not show miss log for this spells - so need find info for this in dbc and use it!
         if (spellInfo.IsPositive() && !IsHostileTo(victim)) // prevent from affecting enemy by "positive" spell
-            return SpellMissInfo.NONE;
+            return SpellMissInfo.None;
 
         // Check for immune
         /*if (victim->IsImmunedToDamage(spellInfo))
             return SPELL_MISS_IMMUNE;*/
 
         if (this == victim)
-            return SpellMissInfo.NONE;
+            return SpellMissInfo.None;
 
         // Try victim reflect spell
         /*if (CanReflect)
@@ -163,7 +162,7 @@ public class Unit : MonoBehaviour
             case SPELL_DAMAGE_CLASS_MAGIC:
                 return MagicSpellHitResult(victim, spellInfo);
         }*/
-        return SpellMissInfo.NONE;
+        return SpellMissInfo.None;
     }
 
 
@@ -204,7 +203,7 @@ public class Unit : MonoBehaviour
 
     public void CastSpell(Unit target, int spellId, bool triggered, AuraEffect triggeredByAura, Guid originalCaster)
     {
-        CastSpell(target, spellId, triggered ? TriggerCastFlags.FULL_MASK : TriggerCastFlags.NONE, triggeredByAura, originalCaster);
+        CastSpell(target, spellId, triggered ? TriggerCastFlags.FullMask : TriggerCastFlags.None, triggeredByAura, originalCaster);
     }
 
     public void CastSpell(Unit target, int spellId, TriggerCastFlags triggerFlags, AuraEffect triggeredByAura, Guid originalCaster)
@@ -221,7 +220,7 @@ public class Unit : MonoBehaviour
 
     public void CastSpell(Unit target, TrinitySpellInfo spellInfo, bool triggered, AuraEffect triggeredByAura, Guid originalCaster)
     {
-        CastSpell(target, spellInfo, triggered ? TriggerCastFlags.FULL_MASK : TriggerCastFlags.NONE, triggeredByAura, originalCaster);
+        CastSpell(target, spellInfo, triggered ? TriggerCastFlags.FullMask : TriggerCastFlags.None, triggeredByAura, originalCaster);
     }
 
     public void CastSpell(Unit target, TrinitySpellInfo spellInfo, TriggerCastFlags triggerFlags, AuraEffect triggeredByAura, Guid originalCaster)
@@ -241,7 +240,7 @@ public class Unit : MonoBehaviour
         return effect != null? effect.CalcValue(this, basePoints, target, variance) : 0;
     }
 
-    public float ApplyEffectModifiers(TrinitySpellInfo spellProto, int effect_index, float value)
+    public float ApplyEffectModifiers(TrinitySpellInfo spellProto, int effectIndex, float value)
     {
         var modOwner = this;
         /*modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_ALL_EFFECTS, value);
@@ -315,7 +314,7 @@ public class Unit : MonoBehaviour
 
         // Call default DealDamage
         CleanDamage cleanDamage = new CleanDamage(damageInfo.Absorb, damageInfo.Damage);
-        DealDamage(victim, damageInfo.Damage, cleanDamage, DamageEffectType.SPELL_DIRECT_DAMAGE, damageInfo.SchoolMask, spellProto);
+        DealDamage(victim, damageInfo.Damage, cleanDamage, DamageEffectType.SpellDirectDamage, damageInfo.SchoolMask, spellProto);
 
         SpellManager.SpellDamageEvent(this, victim, damageInfo.Damage, damageInfo.Crit);
     }

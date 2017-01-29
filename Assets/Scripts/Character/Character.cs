@@ -101,8 +101,6 @@ public class Character
         CharacterEvents = new Dictionary<int, List<SpellScriptAura>>();
         for (int i = 0; i < CharacterEventTypes.Count; i++)
             CharacterEvents.Add(i, new List<SpellScriptAura>());
-
-
     }
 
     public void Update(Unit unit, ArenaManager world)

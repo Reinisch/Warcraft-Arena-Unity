@@ -98,7 +98,6 @@ public class WarcraftDatabase : MonoBehaviour
         SpellHitSounds.Add(1, Resources.Load<AudioClip>("Sound/Spells/Mage/IceImpact"));
     }
 
-
     void LoadSpellRadiuses()
     {
         SpellRadiuses = new Dictionary<int, SpellRadius>();
@@ -144,7 +143,7 @@ public class WarcraftDatabase : MonoBehaviour
         var spellRange = new SpellRange()
         {
             Id = 1,
-            Flags = SpellRangeFlag.DEFAULT,
+            Flags = SpellRangeFlag.Default,
         };
         SpellRanges.Add(spellRange.Id, spellRange);
     }
@@ -204,23 +203,23 @@ public class WarcraftDatabase : MonoBehaviour
         var spellEffectEntry = new TrinitySpellEffectInfoEntry()
         {
             Id = 1,
-            Effect = SpellEffectType.SCHOOL_DAMAGE,
+            Effect = SpellEffectType.SchoolDamage,
             AuraType = AuraType.SPELL_AURA_NONE,
             BonusCoefficient = 0.17f,
             RadiusEntryId = 12,
-            TargetA = TargetTypes.TARGET_UNIT_SRC_AREA_ENEMY,
-            TargetB = TargetTypes.TARGET_UNIT_SRC_AREA_ENEMY
+            TargetA = TargetTypes.TargetUnitSrcAreaEnemy,
+            TargetB = TargetTypes.TargetUnitSrcAreaEnemy
         };
         SpellEffectEntries.Add(spellEffectEntry.Id, spellEffectEntry);
         spellEffectEntry = new TrinitySpellEffectInfoEntry()
         {
             Id = 2,
-            Effect = SpellEffectType.APPLY_AURA,
+            Effect = SpellEffectType.ApplyAura,
             AuraType = AuraType.SPELL_AURA_MOD_ROOT,
-            Mechanic = Mechanics.FREEZE,
+            Mechanic = Mechanics.Freeze,
             RadiusEntryId = 12,
-            TargetA = TargetTypes.TARGET_UNIT_SRC_AREA_ENEMY,
-            TargetB = TargetTypes.TARGET_UNIT_SRC_AREA_ENEMY
+            TargetA = TargetTypes.TargetUnitSrcAreaEnemy,
+            TargetB = TargetTypes.TargetUnitSrcAreaEnemy
         };
         SpellEffectEntries.Add(spellEffectEntry.Id, spellEffectEntry);
         #endregion
@@ -235,16 +234,16 @@ public class WarcraftDatabase : MonoBehaviour
         var spellInfo = new TrinitySpellInfo()
         {
             Id = 1,
-            Dispel = DispelType.MAGIC,
-            Mechanic = Mechanics.FREEZE,
-            Attributes = SpellAttributes.DAMAGE_DOESNT_BREAK_AURAS | SpellAttributes.CANT_BE_REFLECTED,
-            Targets = TargetTypes.TARGET_UNIT_SRC_AREA_ENEMY,
-            SchoolMask = SpellSchoolMask.FROST,
-            DamageClass = SpellDamageClass.MAGIC,
-            PreventionType = SpellPreventionType.SILENCE | SpellPreventionType.PACIFY,
-            ExplicitTargetMask = SpellCastTargetFlags.UNIT_ENEMY,
-            InterruptFlags = SpellInterruptFlags.NONE,
-            FamilyName = SpellFamilyNames.MAGE,
+            Dispel = DispelType.Magic,
+            Mechanic = Mechanics.Freeze,
+            Attributes = SpellAttributes.DamageDoesntBreakAuras | SpellAttributes.CantBeReflected,
+            Targets = TargetTypes.TargetUnitSrcAreaEnemy,
+            SchoolMask = SpellSchoolMask.Frost,
+            DamageClass = SpellDamageClass.Magic,
+            PreventionType = SpellPreventionType.Silence | SpellPreventionType.Pacify,
+            ExplicitTargetMask = SpellCastTargetFlags.UnitEnemy,
+            InterruptFlags = SpellInterruptFlags.None,
+            FamilyName = SpellFamilyNames.Mage,
 
             ChargeCategory = SpellHelper.ZeroChargeCategory,
             CastTime = SpellHelper.InstantCastTime,

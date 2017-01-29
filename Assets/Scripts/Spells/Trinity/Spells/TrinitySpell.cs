@@ -141,25 +141,25 @@ public class TrinitySpell
         else
             OriginalCaster = ArenaManager.ArenaUnits.Find(unit => unit.Character.Id == OriginalCasterGuid);
 
-        SpellState = SpellState.NONE;
+        SpellState = SpellState.None;
         TriggerCastFlags = triggerFlags;
 
         UnitTarget = null;
         DestTarget = null;
         Damage = 0;
         Variance = 0.0f;
-        EffectHandleMode = SpellEffectHandleMode.LAUNCH;
+        EffectHandleMode = SpellEffectHandleMode.Launch;
         EffectInfo = null;
 
-        DiminishLevel = DiminishingLevels.LEVEL_1;
-        DiminishGroup = DiminishingGroup.NONE;
+        DiminishLevel = DiminishingLevels.Level1;
+        DiminishGroup = DiminishingGroup.None;
 
         EffectDamage = 0;
         EffectHealing = 0;
         SpellAura = null;
 
         SpellVisual = SpellInfo.VisualId;
-        CanReflect = SpellInfo.DamageClass == SpellDamageClass.MAGIC && !SpellInfo.HasAttribute(SpellAttributes.CANT_BE_REFLECTED)
+        CanReflect = SpellInfo.DamageClass == SpellDamageClass.Magic && !SpellInfo.HasAttribute(SpellAttributes.CantBeReflected)
             && !SpellInfo.IsPassive() && !SpellInfo.IsPositive();
 
         UniqueTargets = new List<TargetInfo>();
@@ -170,7 +170,7 @@ public class TrinitySpell
     {
         switch(type)
         {
-            case SpellEffectType.SCHOOL_DAMAGE:
+            case SpellEffectType.SchoolDamage:
                 EffectSchoolDMG(index);
                 break;
             default:
@@ -208,7 +208,7 @@ public class TrinitySpell
 
     public bool IsIgnoringCooldowns()
     {
-        return TriggerCastFlags.HasFlag(TriggerCastFlags.IGNORE_SPELL_AND_CATEGORY_CD);
+        return TriggerCastFlags.HasFlag(TriggerCastFlags.IgnoreSpellAndCategoryCd);
     }
 
     public bool HasGlobalCooldown()
@@ -270,9 +270,9 @@ public class TrinitySpell
         // some spells appear to need this, however this requires more research
         switch (targetType.Category())
         {
-            case TargetSelections.NEARBY:
-            case TargetSelections.CONE:
-            case TargetSelections.AREA:
+            case TargetSelections.Nearby:
+            case TargetSelections.Cone:
+            case TargetSelections.Area:
                 // targets for effect already selected
                 if ((effectMask & processedEffectMask) > 0)
                     return;
@@ -302,19 +302,19 @@ public class TrinitySpell
 
         switch (targetType.Category())
         {
-            case TargetSelections.CHANNEL:
+            case TargetSelections.Channel:
                 //SelectImplicitChannelTargets(effIndex, targetType);
                 break;
-            case TargetSelections.NEARBY:
+            case TargetSelections.Nearby:
                 //SelectImplicitNearbyTargets(effIndex, targetType, effectMask);
                 break;
-            case TargetSelections.CONE:
+            case TargetSelections.Cone:
                 //SelectImplicitConeTargets(effIndex, targetType, effectMask);
                 break;
-            case TargetSelections.AREA:
+            case TargetSelections.Area:
                 SelectImplicitAreaTargets(effIndex, targetType, effectMask);
                 break;
-            case TargetSelections.DEFAULT:
+            case TargetSelections.Default:
                 #region Default Targets
                 /*switch (targetType.GetObjectType())
                 {
@@ -363,9 +363,6 @@ public class TrinitySpell
                 }*/
                 #endregion
                 break;
-            case TargetSelections.NYI:
-                Debug.LogErrorFormat("SPELL: Target type in spell #{0} is not implemented yet!", SpellInfo.Id);
-                break;
             default:
                 break;
         }
@@ -376,15 +373,15 @@ public class TrinitySpell
         Unit referer = null;
         switch (targetType.ReferenceType())
         {
-            case TargetReferences.SRC:
-            case TargetReferences.DEST:
-            case TargetReferences.CASTER:
+            case TargetReferences.Source:
+            case TargetReferences.Dest:
+            case TargetReferences.Caster:
                 referer = Caster;
                 break;
-            case TargetReferences.TARGET:
+            case TargetReferences.Target:
                 referer = Targets.UnitTarget;
                 break;
-            case TargetReferences.LAST:
+            case TargetReferences.Last:
             {
                 for (int i = UniqueTargets.Count - 1; i >= 0; i--)
                 {
@@ -406,15 +403,15 @@ public class TrinitySpell
         Vector3 center = Vector3.zero;
         switch (targetType.ReferenceType())
         {
-            case TargetReferences.SRC:
+            case TargetReferences.Source:
                 center = Targets.Source;
                 break;
-            case TargetReferences.DEST:
+            case TargetReferences.Dest:
                 center = Targets.Dest;
                 break;
-            case TargetReferences.CASTER:
-            case TargetReferences.TARGET:
-            case TargetReferences.LAST:
+            case TargetReferences.Caster:
+            case TargetReferences.Target:
+            case TargetReferences.Last:
                 center = referer.transform.position;
                 break;
              default:
@@ -483,11 +480,11 @@ public class TrinitySpell
         if (OriginalCaster != null)
         {
             targetInfo.MissCondition = OriginalCaster.SpellHitResult(target, SpellInfo, CanReflect);
-            if (SkipCheck && targetInfo.MissCondition != SpellMissInfo.IMMUNE)
-                targetInfo.MissCondition = SpellMissInfo.NONE;
+            if (SkipCheck && targetInfo.MissCondition != SpellMissInfo.Immune)
+                targetInfo.MissCondition = SpellMissInfo.None;
         }
         else
-            targetInfo.MissCondition = SpellMissInfo.EVADE; //SPELL_MISS_NONE;
+            targetInfo.MissCondition = SpellMissInfo.Evade; //SPELL_MISS_NONE;
 
         // Spell have speed - need calculate incoming time
         // Incoming time is zero for self casts. At least I think so.
@@ -556,7 +553,7 @@ public class TrinitySpell
     private SpellMissInfo DoSpellHitOnUnit(Unit unit, int effectMask)
     {
         if (unit == null || effectMask == 0)
-            return SpellMissInfo.EVADE;
+            return SpellMissInfo.Evade;
 
         // For delayed spells immunity may be applied between missile launch and hit - check immunity for that case
         /*if (SpellInfo.Speed && (unit->IsImmunedToDamage(m_spellInfo) || unit->IsImmunedToSpell(m_spellInfo)))
@@ -674,9 +671,9 @@ public class TrinitySpell
 
         foreach (var effect in SpellEffects)
         if (effect != null && (effectMask & (1 << effect.EffectIndex)) > 0)
-            HandleEffects(unit, effect.EffectIndex, SpellEffectHandleMode.HIT_TARGET);
+            HandleEffects(unit, effect.EffectIndex, SpellEffectHandleMode.HitTarget);
 
-        return SpellMissInfo.NONE;
+        return SpellMissInfo.None;
     }
 
     private void DoAllEffectsOnTarget(TargetInfo target)
@@ -718,17 +715,17 @@ public class TrinitySpell
 
         Unit spellHitTarget = null;
 
-        if (missInfo == SpellMissInfo.NONE)                     // In case spell hit target, do all effect on that target
+        if (missInfo == SpellMissInfo.None)                     // In case spell hit target, do all effect on that target
             spellHitTarget = unit;
-        else if (missInfo == SpellMissInfo.REFLECT)             // In case spell reflect from target, do all effect on caster (if hit)
-            if (target.ReflectResult == SpellMissInfo.NONE)     // If reflected spell hit caster -> do all effect on him
+        else if (missInfo == SpellMissInfo.Reflect)             // In case spell reflect from target, do all effect on caster (if hit)
+            if (target.ReflectResult == SpellMissInfo.None)     // If reflected spell hit caster -> do all effect on him
                 spellHitTarget = Caster;
 
         if (spellHitTarget)
         {
             SpellMissInfo missInfo2 = DoSpellHitOnUnit(spellHitTarget, mask);
 
-            if (missInfo2 != SpellMissInfo.NONE)
+            if (missInfo2 != SpellMissInfo.None)
             {
                 Damage = 0;
                 spellHitTarget = null;
@@ -792,7 +789,7 @@ public class TrinitySpell
         // spell is finished, perform some last features of the spell here
         HandleFinishPhase();
 
-        if (SpellState != SpellState.CASTING)
+        if (SpellState != SpellState.Casting)
             Finish(true);
     }
 
@@ -800,8 +797,8 @@ public class TrinitySpell
     {
         SpellAura = null;
         // initialize Diminishing Returns Data
-        DiminishLevel = DiminishingLevels.LEVEL_1;
-        DiminishGroup = DiminishingGroup.NONE;
+        DiminishLevel = DiminishingLevels.Level1;
+        DiminishGroup = DiminishingGroup.None;
 
         // handle effects with SPELL_EFFECT_HANDLE_HIT mode
         foreach (var effect in SpellEffects)
@@ -846,7 +843,7 @@ public class TrinitySpell
         if(triggeredByAura != null)
             TriggeredByAuraSpell = triggeredByAura.SpellInfo;
 
-        SpellState = SpellState.PREPARING;
+        SpellState = SpellState.Preparing;
 
         SpellCastResult result = CheckCast(true);
 
@@ -864,7 +861,7 @@ public class TrinitySpell
 
     public void Update(float timeDelta)
     {
-        if (SpellState == SpellState.PREPARING)
+        if (SpellState == SpellState.Preparing)
         {
             if (CastTimer > timeDelta)
                 CastTimer -= timeDelta;
@@ -893,7 +890,7 @@ public class TrinitySpell
 
     public void Finish(bool ok = true)
     {
-        SpellState = SpellState.FINISHED;
+        SpellState = SpellState.Finished;
     }
 
     public void TakePower()
@@ -906,7 +903,7 @@ public class TrinitySpell
     {
         // Don't check for instant cast spells
         if (!strict && CastTime == 0)
-            return SpellCastResult.SPELL_CAST_OK;
+            return SpellCastResult.SpellCastOk;
 
         Unit target = Targets.UnitTarget;
         float minRange = 0.0f;
@@ -915,14 +912,14 @@ public class TrinitySpell
 
         if (SpellInfo.Range != null)
         {
-            if (SpellInfo.Range.Flags.HasFlag(SpellRangeFlag.MELEE))
+            if (SpellInfo.Range.Flags.HasFlag(SpellRangeFlag.Melee))
             {
                 rangeMod = 3.0f + 4.0f / 3.0f;
             }
             else
             {
                 float meleeRange = 0.0f;
-                if (SpellInfo.Range.Flags.HasFlag(SpellRangeFlag.RANGED))
+                if (SpellInfo.Range.Flags.HasFlag(SpellRangeFlag.Ranged))
                     meleeRange = 3.0f + 4.0f / 3.0f;
 
                 minRange = Caster.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
@@ -938,20 +935,20 @@ public class TrinitySpell
         if (target != null && target != Caster)
         {
             if (Vector3.Distance(Caster.transform.position, target.transform.position) > maxRange)
-                return SpellCastResult.OUT_OF_RANGE;
+                return SpellCastResult.OutOfRange;
 
             if (minRange > 0.0f && Vector3.Distance(Caster.transform.position, target.transform.position) < minRange)
-                return SpellCastResult.OUT_OF_RANGE;
+                return SpellCastResult.OutOfRange;
         }
 
-        return SpellCastResult.SPELL_CAST_OK;
+        return SpellCastResult.SpellCastOk;
     }
 
     public SpellCastResult CheckCast(bool strict)
     {
         // check death state
         if (!Caster.IsAlive() && !SpellInfo.IsPassive())
-            return SpellCastResult.CASTER_DEAD;
+            return SpellCastResult.CasterDead;
 
         // check cooldowns to prevent cheating
         if (!SpellInfo.IsPassive())
@@ -959,15 +956,15 @@ public class TrinitySpell
             if (!Caster.Character.SpellHistory.IsReady(SpellInfo, IsIgnoringCooldowns()))
             {
                 if (TriggeredByAuraSpell != null)
-                    return SpellCastResult.DONT_REPORT;
+                    return SpellCastResult.DontReport;
                 else
-                    return SpellCastResult.NOT_READY;
+                    return SpellCastResult.NotReady;
             }
         }
 
         // Check global cooldown
-        if (strict && !(TriggerCastFlags.HasFlag(TriggerCastFlags.IGNORE_GCD) && HasGlobalCooldown()))
-            return SpellCastResult.NOT_READY;
+        if (strict && !(TriggerCastFlags.HasFlag(TriggerCastFlags.IgnoreGcd) && HasGlobalCooldown()))
+            return SpellCastResult.NotReady;
 
         // Check for line of sight for spells with dest
         /*if (m_targets.HasDst())
@@ -979,15 +976,15 @@ public class TrinitySpell
                 return SPELL_FAILED_LINE_OF_SIGHT;
         }*/
 
-        SpellCastResult castResult = SpellCastResult.SPELL_CAST_OK;
+        SpellCastResult castResult = SpellCastResult.SpellCastOk;
 
         // Triggered spells also have range check
         /// @todo determine if there is some flag to enable/disable the check
         castResult = CheckRange(strict);
-        if (castResult != SpellCastResult.SPELL_CAST_OK)
+        if (castResult != SpellCastResult.SpellCastOk)
             return castResult;
 
-        return SpellCastResult.SUCCESS;
+        return SpellCastResult.Success;
     }
 
     public int CalculateDamage(int effectIndex, Unit target, float var = 0)

@@ -57,11 +57,11 @@ public class TrinitySpellInfo
     }
     public bool IsPassive()
     {
-        return HasAttribute(SpellAttributes.PASSIVE);
+        return HasAttribute(SpellAttributes.Passive);
     }
     public bool IsPositive()
     {
-        return !HasAttribute(SpellAttributes.NEGATIVE);
+        return !HasAttribute(SpellAttributes.Negative);
     }
 
     public float GetMinRange(bool positive)

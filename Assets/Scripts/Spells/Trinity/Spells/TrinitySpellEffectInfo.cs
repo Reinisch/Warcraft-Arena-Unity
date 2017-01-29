@@ -62,7 +62,7 @@ public class TrinitySpellEffectInfo
 
     public bool IsAura()
     {
-        return (IsUnitOwnedAuraEffect() || Effect == SpellEffectType.PERSISTENT_AREA_AURA) && AuraType != AuraType.SPELL_AURA_NONE;
+        return (IsUnitOwnedAuraEffect() || Effect == SpellEffectType.PersistentAreaAura) && AuraType != AuraType.SPELL_AURA_NONE;
     }
 
     public bool IsAura(AuraType aura)
@@ -77,32 +77,17 @@ public class TrinitySpellEffectInfo
 
     public bool IsAreaAuraEffect()
     {
-        if (Effect == SpellEffectType.APPLY_AREA_AURA_PARTY    ||
-            Effect == SpellEffectType.APPLY_AREA_AURA_RAID     ||
-            Effect == SpellEffectType.APPLY_AREA_AURA_FRIEND   ||
-            Effect == SpellEffectType.APPLY_AREA_AURA_ENEMY    ||
-            Effect == SpellEffectType.APPLY_AREA_AURA_PET      ||
-            Effect == SpellEffectType.APPLY_AREA_AURA_OWNER)
-            return true;
-        return false;
+        return Effect == SpellEffectType.ApplyAreaAuraFriend || Effect == SpellEffectType.ApplyAreaAuraEnemy || Effect == SpellEffectType.ApplyAreaAuraOwner;
     }
 
     public bool IsFarUnitTargetEffect()
     {
-        return (Effect == SpellEffectType.SUMMON_PLAYER)
-            || (Effect == SpellEffectType.SUMMON_RAF_FRIEND)
-            || (Effect == SpellEffectType.RESURRECT)
-            || (Effect == SpellEffectType.SKIN_PLAYER_CORPSE);
-    }
-
-    public bool IsFarDestTargetEffect()
-    {
-        return Effect == SpellEffectType.TELEPORT_UNITS;
+        return Effect == SpellEffectType.Resurrect;
     }
 
     public bool IsUnitOwnedAuraEffect()
     {
-        return IsAreaAuraEffect() || Effect == SpellEffectType.APPLY_AURA;
+        return IsAreaAuraEffect() || Effect == SpellEffectType.ApplyAura;
     }
 
     public float CalcRadius(Unit caster, TrinitySpell spell)

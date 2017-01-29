@@ -19,8 +19,8 @@ public class SpellCastTargets
     public float SpeedXY { get { return Speed * Mathf.Cos(Pitch); } }
     public float SpeedZ { get { return Speed * Mathf.Sin(Pitch); } }
 
-    public bool HasSource { get { return (TargetMask & SpellCastTargetFlags.SOURCE_LOCATION) != 0; } }
-    public bool HasDest { get { return (TargetMask & SpellCastTargetFlags.DEST_LOCATION) != 0; } }
+    public bool HasSource { get { return (TargetMask & SpellCastTargetFlags.SourceLocation) != 0; } }
+    public bool HasDest { get { return (TargetMask & SpellCastTargetFlags.DestLocation) != 0; } }
     public bool HasTrajectory { get { return Speed != 0; } }
 
 

@@ -989,11 +989,11 @@ public class ArenaManager: MonoBehaviour
 
             switch (checkType)
             {
-                case TargetChecks.ALLY:
+                case TargetChecks.Ally:
                     if (referer.IsHostileTo(targetUnit))
                         continue;
                     break;
-                case TargetChecks.ENEMY:
+                case TargetChecks.Enemy:
                     if (!referer.IsHostileTo(targetUnit))
                         continue;
                     break;
