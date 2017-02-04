@@ -19,8 +19,8 @@ public class WarcraftDatabase : MonoBehaviour
     public static Dictionary<int, TrinitySpellInfo> SpellInfos { get; private set; }
     public static Dictionary<int, TrinitySpellEffectInfoEntry> SpellEffectEntries { get; private set; }
 
-    public static Dictionary<int, SpellChargeCategory> SpellChargeCategories { get; private set; }
     public static Dictionary<int, SpellCastTimes> SpellCastTimes { get; private set; }
+    public static Dictionary<int, SpellChargeCategory> SpellChargeCategories { get; private set; }
     public static Dictionary<int, SpellDuration> SpellDurations { get; private set; }
     public static Dictionary<int, SpellRange> SpellRanges { get; private set; }
     public static Dictionary<int, SpellPowerCost> SpellPowerCosts { get; private set; }

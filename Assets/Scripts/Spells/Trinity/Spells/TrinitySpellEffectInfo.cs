@@ -28,7 +28,7 @@ public class TrinitySpellEffectInfo
     public SpellRadius Radius { get; set; }
 
     public int TriggerSpell { get; set; }
-    public float BonusCoefficientFromAP { get; set; }
+    public float BonusCoefficientFromAp { get; set; }
 
     public TrinitySpellEffectInfo(TrinitySpellInfo info, int effectIndex, TrinitySpellEffectInfoEntry effectEntry)
     {
@@ -57,8 +57,11 @@ public class TrinitySpellEffectInfo
 
         TriggerSpell = effectEntry.TriggerSpell;
         BonusCoefficient = effectEntry.BonusCoefficient;
-        BonusCoefficientFromAP = effectEntry.BonusCoefficientFromAP;
+        BonusCoefficientFromAp = effectEntry.BonusCoefficientFromAP;
     }
+
+
+    #region Info Types and Categories
 
     public bool IsAura()
     {
@@ -89,6 +92,11 @@ public class TrinitySpellEffectInfo
     {
         return IsAreaAuraEffect() || Effect == SpellEffectType.ApplyAura;
     }
+
+    #endregion
+
+
+    #region Effect value calculations
 
     public float CalcRadius(Unit caster, TrinitySpell spell)
     {
@@ -148,4 +156,6 @@ public class TrinitySpellEffectInfo
 
         return (int)value;
     }
+
+    #endregion
 }
