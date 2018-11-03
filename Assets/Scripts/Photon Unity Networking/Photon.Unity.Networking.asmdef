@@ -1,0 +1,8 @@
+{
+    "name": "Photon.Unity.Networking",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

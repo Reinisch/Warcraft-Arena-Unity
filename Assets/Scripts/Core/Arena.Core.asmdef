@@ -1,0 +1,11 @@
+{
+    "name": "Arena.Core",
+    "references": [
+        "Arena.Editor.Definitions",
+        "Photon.Unity.Networking"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true
+}

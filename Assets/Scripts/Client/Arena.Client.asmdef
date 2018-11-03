@@ -1,0 +1,10 @@
+{
+    "name": "Arena.Client",
+    "references": [
+        "Arena.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

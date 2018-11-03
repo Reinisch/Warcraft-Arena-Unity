@@ -1,0 +1,113 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Core
+{
+    public class ThreatManager
+    {
+        public bool IsThreatListEmpty()
+        {
+            return ThreatContainer.IsEmpty;
+        }
+
+        public Unit Owner { get; private set; }
+        public HostileReference CurrentVictim { get; private set; }
+
+        //  Properties to access the lists from the outside to do some dirty manipulation (scripting and such).
+        //  I hope they are used as little as possible.
+        public List<HostileReference> ThreatList => ThreatContainer.ThreatList;
+        public List<HostileReference> OfflineThreatList => ThreatOfflineContainer.ThreatList;
+        public ThreatContainer ThreatContainer { get; private set; }
+        public ThreatContainer ThreatOfflineContainer { get; private set; }
+
+        public ThreatManager(Unit owner)
+        {
+        }
+
+        public void ClearReferences()
+        {
+        }
+
+
+        public void AddThreat(Unit victim, float threat, SpellSchoolMask schoolMask = SpellSchoolMask.Normal, SpellInfo threatSpell = null)
+        {
+        }
+
+        public void DoAddThreat(Unit victim, float threat)
+        {
+        }
+
+        public void ModifyThreatPercent(Unit victim, int percent)
+        {
+        }
+
+        public float GetThreat(Unit victim, bool alsoSearchOfflineList = false)
+        {
+            return 0.0f;
+        }
+
+
+        public void ProcessThreatEvent(ThreatRefStatusChangeEvent threatRefStatusChangeEvent)
+        {
+        }
+
+        public bool IsNeedUpdateToClient(uint time)
+        {
+            return false;
+        }
+
+        public Unit GetHostilTarget()
+        {
+            return null;
+        }
+
+
+        public void TauntApply(Unit taunter)
+        {
+        }
+
+        public void TauntFadeOut(Unit taunter)
+        {
+        }
+
+        public void SetCurrentVictim(HostileReference hostileRef)
+        {
+        }
+
+        public void SetDirty(bool isDirty)
+        {
+            ThreatContainer.IsDirty = isDirty;
+        }
+
+
+        /// <summary>
+        /// Reset all aggro without modifying the threadlist.
+        /// </summary>
+        public void ResetAllAggro()
+        {
+        }
+
+        /// <summary>
+        /// Reset all aggro of unit in threadlist satisfying the predicate.
+        /// </summary>
+        public void ResetAggro(Predicate<Unit> predicate)
+        {
+            if (ThreatContainer.ThreatList.Count == 0)
+                return;
+
+            foreach (var threat in ThreatContainer.ThreatList)
+            {
+                if (predicate(threat.Target))
+                {
+                    threat.SetThreat(0);
+                    SetDirty(true);
+                }
+            }
+        }
+
+
+        private void AddThreat(Unit victim, float threat)
+        {
+        }
+    }
+}

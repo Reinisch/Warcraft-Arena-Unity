@@ -1,0 +1,11 @@
+{
+    "name": "Arena.Server",
+    "references": [
+        "Arena.Core",
+        "Photon.Unity.Networking"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
