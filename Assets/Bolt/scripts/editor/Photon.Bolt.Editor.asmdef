@@ -1,0 +1,13 @@
+{
+    "name": "Photon.Bolt.Editor",
+    "references": [
+        "Photon.Bolt",
+        "Photon.WebGL"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

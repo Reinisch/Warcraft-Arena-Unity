@@ -1,11 +1,14 @@
 {
     "name": "Arena.Server",
     "references": [
-        "Arena.Core",
-        "Photon.Unity.Networking"
+        "Arena.Core"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }

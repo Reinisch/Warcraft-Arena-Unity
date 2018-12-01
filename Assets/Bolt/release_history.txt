@@ -1,0 +1,303 @@
+﻿1.2.0.3
+Added: Property names are now generated into BoltAssets class
+Added: Support to create new AppIds directly from Wizard Window using just an email
+Added: Best Region support when connecting to Photon Cloud
+Added: Single player sample script
+Added: Getting Started Sample
+Added: Exposed Photon Room timeout settings (create and join)
+
+Fixed: Update Photon session info (token or properties) after room creation
+Fixed: Single Player mode
+Fixed: MaxConnection session property always 0
+Fixed: Use BoltLog in all debug messages
+
+Update: Steam sample are now available only on the Bolt Samples repository
+
+1.2.0.2
+Fixed: BoltLauncher selecting the wrong UdpPlatform on Bolt initialization
+Fixed: Bolt Wizard window popup on Play Mode
+Fixed: Bolt naming and version labels
+Fixed: Text coloring on Bolt Wizard window when using Unity Pro
+Fixed: Bolt Single player
+Fixed: Bolt Builds for Android
+Fixed: Bolt Debug Start
+Fixed: BoltInit script and MainMenu scene
+
+Added: Support to China region when connecting to Photon Cloud
+Added: Headless Server sample
+
+1.2.0.1
+Fixed: .NET 4.x issue when dealing with Bolt Assets
+
+1.2.0.0
+Fixed: Issues with IL2CPP using .NET 4.0.
+Fixed: LanBroadcast using PhotonPlatform.
+Fixed: General refactoring on Photon services to improve reliability and performance.
+Fixed: Maintain connection with Photon cloud even when the game is paused.
+Fixed: Support mobile platforms: Android and iOS.
+Fixed: MaxConnection when using PhotonPlatform to use the general Bolt Settings.
+
+Update: Incorporation of all Photon related code to internal DLLs.
+Update: Exposed session type when listing all available sessions from Bolt.
+
+Added: New Wizard window with basic steps to get Bolt running.
+Added: Bolt setting for enabling Client Metrics.
+
+1.1.0.10
+Fixed: Assembly load errors with various thirdparty non-bolt dlls.
+
+1.1.0.9
+Fixed: Some non-Bolt .DLL files would be confused with Bolt .DLL files causing errors.
+
+1.1.0.8
+Fixed: Fixed issue with registering a bolt shutdown callback after BoltStartFailed occured.
+Fixed: NullReferenceException that would happen when sending an event to a specific connection if that connection was disconnected.
+Fixed: Bolt will now check for duplicate asset name during compilation and log an error if duplicates were detected.
+Fixed: Steam Lobby sample.
+
+Added: Exposed BoltConnection.DisconnectReason so user code can inspect the reason a connection was disconnected.
+
+Changed: If an exception is thrown by internal code during event dispatch it's now logged which event caused the exception to make it easier to track down.
+Changed: Exception for missing to register a protocol token and then trying to use it now also shows when Bolt runs in release mode.
+
+1.1.0.7
+Fixed: Latency Simulation.
+Fixed: Scene async load.
+Fixed: Sample game "Level1" scene.
+
+Added: Exposed connection stats from Bolt Connection by type (States, Events and Commands).
+
+1.1.0.6
+Fixed: Debug start for Unity 2018
+Fixed: Exception when LoadBalancingClient is destroyed while joining and Bolt is shutdown.
+Fixed: Inactive GameObject with Animators attached were showing warnings messages about calling of animator functions.
+Fixed: BoltStartFailed callback doesn't working.
+Fixed: Some Property types do not display correct arrow for expanded/collapsed properties.
+Fixed: SetServerInfo() throws a NullReferenceException when called inside BoltStartDone() callback.
+Fixed: SetHostInfo being called but BoltNetwork.SessionList stays at 0.
+Fixed: Error on macOS when using Experimental Scripting Runtime Version (.Net 4.6 Equivalent) and NAT punchthrough enabled.
+Fixed: Building for macOS targets are invalid while attempting to test server/clients using DebugStart.
+
+Added: Exposed the current progress of async scene loading in currentAsyncOperation
+Added: Lobby Manager example to be used with Photon platform. It's possible to create, list and join rooms.
+Added: Missing Regions for Photon Cloud.
+Added: Scroll panel for Bolt Welcome Window. This is useful when dealing with small screens.
+
+Changed: Updated API naming related to the use of "Host" and "Server" names. All references that uses "Host" were replaced with a "Server" version.
+
+Removed: RegisterShutdownDoneCallback (dead code that never did anything)
+
+1.1.0.5
+Fixed: Old DLL files from internal udpkit library replaced to latest version.
+Fixed: Removed hardcoded configuration from Photon Cloud integration with Bolt for PunchThrough.
+
+1.1.0.4
+Changed: Implemented IEquatable<> for structs to avoid boxing costs and memory allocations, specifically when in Dictionaries
+Fixed: Per tick memory allocation in FreezeProxies with a cached List <>
+Changed: IBoltListNode to IBoltListNode, removed the implementation from BoltObject, implemented it on everything that needed it and removed casts in the lists that are no longer needed
+Added: Options for querying IEntityBehaviour, IReplicationFilter, and IPriorityFilter as global options as well as allowing per-prefab overrides
+Changed: Reversed the QueryComponentOptions to have global options that can be overridden by prefabs on a per-prefab basis. This is cleaner.
+
+1.1.0.3
+Added: New PunchThrough code using the Photon Servers as relay. This removes the need of Zeus.
+Removed: Zeus support and settings.
+
+1.1.0.2
+Fixed: Quaternion smoothing fix and version update.
+Fixed: Update Xcode project for proper bitcode support and recompile all iOS libraries.
+Fixed: Wrong ip address conversion.
+Fixed: Issues with Samples
+
+1.1.0.1
+Fixed: Removed JS files to keep compliance with Unity 2017.2
+
+1.1.0.0
+Added: New "Welcome" experience and installer.
+Added: BoltNetwork.SetNetworkSimulation method to change the loss/ping simulation localy on one device.
+
+Fixed: Issue with events sometimes being re-used too early.
+Fixed: Issue with smoothing of quaternion properties
+Fixed: Header text for inspectors should now be readable in the Unity light skin.
+Fixed: Console being toggled on any key when "None" was selected as the toggle key.
+Fixed: Issue with the float number formating in the Bolt compiler on Unity 2017 under certain cultures causing compilation errors.
+
+Changed: "Instantiate Mode" setting has been revamped, you can now
+select between "Per Refab", "Server Only" and "Everyone".
+
+1.0.0.6
+Fixed: 2017.1 compatibility
+Added: State.SetTeleport
+Changed: Samples moved into separate package within main package
+
+1.0.0.5
+Fixed: Photon Cloud reliablity and improvements
+Added: Server Monitor sample
+
+1.0.0.4
+Fixed: Photon Cloud NativePlatform issue
+Added: Photon Cloud support for tokens (see Photon Cloud doc for details)
+
+1.0.0.3
+Removed: Network arrays of transforms
+
+1.0.0.2
+Changed: Internal improvements
+
+1.0.0.1
+Fixed: Issue for Photon Cloud on mobile platforms
+Fixed: Warnings for samples
+
+1.0
+Added: Included support for Photon Cloud and Photon Server
+Changed: Replaced Zeus master-server settings by the new Photon settings
+
+Beta 0.4.4.1
+Changed: Bolt internals for relay and matchmaking
+Fixed: Bolt installation will no longer delete console integrations
+Fixed: State.SetTransforms (transform,null) will no longer cause an error
+Added: Bolt Swarm SDK
+
+Beta 0.4.3.19
+Added: PositionAtFrame which returns the position of a Bolt hitbox at a given frame
+
+Beta 0.4.3.18
+Fixed: Issue with Bolt assets not saving
+Changed: Smoothing for quarternion result smoothing temporarily disabled
+Changed: Improvements for Bolt samples
+
+Beta 0.4.3.17
+Fixed: Event issue introduced in last release
+Fixed: Hitbox issue introduced in last release
+Fixed: Issue for Unity 5.4 on OSX
+Fixed: Render transform
+Fixed: Miscellaneous sample fixes
+
+Beta 0.4.3.16
+Added: New Samples (3rd person sample client and server auth, click to move server auth, rigidbody player server auth)
+Changed: XLM Serialization
+Changed: Miscellanious optimizations
+Fixed: Issue with correction interpolation for commands pooling and initial values compression
+
+Beta 0.4.3.15
+Fixed: Improvements to Bolt physics for lag compensation
+Fixed: Bolt will now import properly when upgrading or switching between debug and release mode
+Fixed: Will no longer lose Global Illumination on Bolt scene load
+Fixed: iOS improvements
+
+Beta 0.4.3.14
+Fixed: Entities instantiating at wrong position
+Fixed: Zeus not updating lobby count when clients connect (was only on disconnect)
+Fixed: Command correction interpolation for Vector3 and Quaternion, and exposed SnapMagnitude in the editor UI
+Added: Smoothing for floats
+
+Beta 0.4.3.13
+Fixed: Bolt will no longer delete Steam integration files when installing Bolt
+Fixed: Entity Events will no longer be discarded when Bolt is not under load
+Fixed: Bolt log issue
+Fixed: Excessive acks for steaming bytes
+Fixed: State property triggers
+Changed: ShutDownImmediate now works so the behvaiour is consistent with a non-immediate shutdown
+Added: New Entity function: RemoveAllCallbacks
+Added: New API Docs http://doc-api.photonengine.com/en/bolt/current/index.html
+
+Beta 0.4.3.12
+Fixed: Bolt Scenes errors due to Unity 5.3
+Fixed: UPNP Button
+Fixed: Control tokens
+Fixed: Help button doc links
+Added: Check to make sure you have installed for the current Bolt you are using
+
+Beta 0.4.3.11
+Fixed: Zeus punchthough issue resolved
+Changed: Removed Pro dependency for async level loading
+Added: API for adding C# delegates as event callbacks
+
+Beta 0.4.3.10
+Fixed: IL2CPP, relevant to iOS and tvOS
+Fixed: BoltInit.cs was out of date
+Added: MainMenu scene with BoltInit.cs included with package
+
+Beta 0.4.3.9
+Fixed: Bolt will no longer call methods on disabled scripts
+Fixed: Bolt will now default to the new Zeus development master server
+Fixed: A couple of entity settings were missing from the new UI, they are now back
+Fixed: Spelling error in the bolt settings window
+Fixed: Bolt will now automatically save the current scene when you click "edit" in Bolt Scenes
+Added: You can now select replication mode + mecanim mode when importing a mecanim state
+Added: Added .isControllerOrOwner to BoltEntity
+Removed: Removed the .mdb files
+
+Beta 0.4.3.8
+Changed: Improved the performance of SetDynamic and GetDynamic substantially.
+Changed: Added proper error reporting to SetDynamic if property queried for does not exist.
+Changed: Deprecated NetworkTransform.SetTransforms, see: IState.SetTransforms and NetworkTransform.ChangeTransforms.
+Changed: Any errors thrown inside Bolt will now always be logged to unitys Debug.LogException no matter if Bolt is in debug mode or if you have 'Unity' logging enbled in Bolt.
+Changed: BoltNetwork.Destroy can now be used when Bolt is not running, it will simply destroy the object normally using Unity's GameObject.Destroy.
+
+Added: TrySetDynamic and TryGetDynamic that does not log errors if properties dont exists, but instead return a bool true/false.
+Added: Added IState.SetTransforms to replace NetworkTransform.SetTransforms, this new methods works around the issue of position snapping for entities when their position updates are delayed.
+Added: NetworkTransform.ChangeTransform to replace the previous NetworkTransform.SetTransforms for changing the transform target for interpolation after it's been set once.
+Added: IState.ForceTransform that lets you over-write all currently received position and rotation values of a transform completely, this is usefull for working around issue #242 when loosing control of an entity and its position will snap back, you can now force it to stay at the correct location in world until proper position updates arrive.
+Added: Bolt.EntityTargets.OnlyControllerAndOwner event target.
+Added: BoltEntity.isControlled property.
+Added: BoltEntityExtensions which contains extensions method for IsAttached, IsOwner, IsControlled, IsSceneObject, IsFrozen and HasControl the methods properly handle the case where Bolt is not running, the entity is null or detached without throwing exceptions.
+
+Fixed: GitHub Issue #224 (see: IState.SetTransforms, NetworkTransform.ChangeTransform)
+Fixed: GitHub Issue #243
+Fixed: GitHub Issue #259
+
+Beta 0.4.3.7
+
+Fixed: Issue causing servers to disconnect from Zeus after a specific interval was resolved.
+
+Beta 0.4.3.6
+
+Added: Bolt Release build to the package. It's a unitypackage in Assets\bolt-release folder. If you want only the release build, please unpack into an empty project and then import the .unitypackage where needed.
+Note: This version is just a re-packaging of 0.4.3.5 to add the Release build. No new features.
+
+Beta 0.4.3.5
+
+Fixed: Entities getting frozen on clients after 10 seconds.
+Fixed: Int compression not being applied.
+Fixed: Delay on Zeus session list request after re-connecting.
+Fixed: ZeusDisconnected callback not being invoked if Zeus times out.
+
+Beta 0.4.3.4
+
+Fixed: Issue with setting Animator to null causing crashes.
+Fixed: Issue with array properties not properly checking if the value actually changed before flagging a value for re-sending.
+Fixed: Issue with entity inspector not showing debug values.
+Fixed: Some smaller performance issues related to garbage generated in various places in code.
+
+Improved the performance of the initial scene object search algorithm.
+
+Beta 0.4.3.3
+
+Fixed: Entity event unreliability issues where too many events would get discarded.
+Fixed: Debug Start will now respect 64 bit windows build settings.
+Fixed: Control of an entity will now be handed over properly in all circumstances.
+Fixed: ‘Proxy When Frozen’ should now work properly.
+Fixed: RemoveCallback will now work properly.
+
+Added: New settings on the Bolt Entity component called ‘Detach Parent On Disconnect’ which if enabled automatically finds nested entities and de-parents them when the parent is detached.
+Added: New overloads to BoltLauncher.StartServer which takes a scene name as last parameter for a scene that will automatically loaded when server has started.
+Added: New method called BoltNetwork.PreLoadPrefabDb() which can be called as soon as the game starts to limit the lag spike that happens when starting Bolt.
+
+Beta 0.4.3.1
+
+Added: Bolt.IEntityReplicationFilter that allows you direct boolean control over if an entity should be written into a packet or not.
+Added: Added the ability to pick between local and world transform replication.
+Added: You can now create IProtocolToken properties on events.
+Added: Added WriteBoltEntity and ReadBoltEntity extension methods for UdpPacket to easily write/read BoltEntity objects in IProtocolToken Read/Write method.
+Added: Added support for Matrix4x4, Color32 and GUID properties.
+Added: Two new Global callbacks exist EntityFrozen and EntityThawed for handling entities being frozen/thawed on a global level.
+
+Fixed: Disconnect tokens are now available on the BoltConnection object.
+Fixed: ProtocolToken passed into BoltNetwork.Attached is not replaced by null by mistake anymore.
+Fixed: Resolved interpolation issues for properties on Commands.
+Fixed: The issues with connecting through Zeus should be solved.
+Fixed: Resolved several issues in related to nesting Bolt entities during run-time and Bolt callback methods such as Attached, etc.
+Fixed: BoltPhysicsHit now contains the approximate distance between the hitbox and sphere overlap origin instead of -Infinity.
+
+Changed: Changed the way priority is accumulated for entities to give smoother data delivery.
+Changed: Changed the editor layout of the ‘Bolt Entity’ script on game objects.

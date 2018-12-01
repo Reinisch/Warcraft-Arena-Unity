@@ -157,11 +157,6 @@ namespace Core
             return (AttributesCustom & attribute) != 0;
         }
 
-        public bool IsAbilityOfSkillType(uint skillType)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool IsAffectingArea()
         {
             return Effects.Exists(effect => effect.IsTargetingArea() && effect.IsEffect(SpellEffectType.PersistentAreaAura) || effect.IsAreaAuraEffect());

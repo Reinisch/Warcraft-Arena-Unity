@@ -1,11 +1,16 @@
 {
     "name": "Arena.Core",
     "references": [
-        "Arena.Editor.Definitions",
-        "Photon.Unity.Networking"
+        "Arena.Editor.Definitions"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [
+        "Photon3DotNet.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": []
 }

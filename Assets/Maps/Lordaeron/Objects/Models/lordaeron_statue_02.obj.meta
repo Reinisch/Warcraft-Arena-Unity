@@ -9,6 +9,7 @@ ModelImporter:
     400002: //RootNode
     2100000: tex_200757
     2100002: tex_200753
+    2100004: LORDAERON_STATUE_02Mat
     2300000: LORDAERON_STATUE_02
     3300000: LORDAERON_STATUE_02
     4300000: LORDAERON_STATUE_02
@@ -56,7 +57,6 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -81,9 +81,6 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
-    blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:

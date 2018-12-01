@@ -9,15 +9,5 @@ namespace Core.Packets
         public override ClientOpCodes OpCode => ClientOpCodes.Connect;
 
         public string PlayerName { get; set; }
-
-        public override void Serialize(StreamBuffer outStream, Protocol16 photonProtocol)
-        {
-            photonProtocol.SerializeString(outStream, PlayerName, false);
-        }
-
-        public override void Deserialize(StreamBuffer inStream, Protocol16 photonProtocol)
-        {
-            PlayerName = (string)photonProtocol.Deserialize(inStream, (byte)Protocol16.GpType.String);
-        }
     }
 }

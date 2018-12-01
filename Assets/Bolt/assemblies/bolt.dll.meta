@@ -1,0 +1,109 @@
+fileFormatVersion: 2
+guid: 5b00bf8b25851d440940a40ec23344f4
+timeCreated: 1500296595
+licenseType: Store
+PluginImporter:
+  serializedVersion: 2
+  iconMap: {}
+  executionOrder:
+    BoltEntity: -2500
+    BoltPoll: -10000
+    BoltSend: 10000
+  isPreloaded: 0
+  isOverridable: 0
+  platformData:
+    data:
+      first:
+        Any: 
+      second:
+        enabled: 1
+        settings: {}
+    data:
+      first:
+        Editor: Editor
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+          DefaultValueInitialized: true
+          OS: AnyOS
+    data:
+      first:
+        Facebook: Win
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Facebook: Win64
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: Linux
+      second:
+        enabled: 1
+        settings:
+          CPU: x86
+    data:
+      first:
+        Standalone: Linux64
+      second:
+        enabled: 1
+        settings:
+          CPU: x86_64
+    data:
+      first:
+        Standalone: LinuxUniversal
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: OSXIntel
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: OSXIntel64
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: OSXUniversal
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: Win
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: Win64
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Windows Store Apps: WindowsStoreApps
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -4,6 +4,7 @@ namespace Core
 {
     public static class PhotonHelper
     {
+        /*
         public static readonly List<CloudRegionCode> FullAvailableRegions = new List<CloudRegionCode>
         {
             CloudRegionCode.eu,
@@ -52,5 +53,6 @@ namespace Core
                     goto case CloudRegionCode.eu;
             }
         }
+        */
     }
 }

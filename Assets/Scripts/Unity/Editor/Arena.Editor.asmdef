@@ -1,9 +1,9 @@
 {
     "name": "Arena.Editor",
     "references": [
-        "Arena.Editor.Definitions",
         "Arena.Core",
-        "Photon.Unity.Networking"
+        "Arena.Client",
+        "Arena.Editor.Definitions"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

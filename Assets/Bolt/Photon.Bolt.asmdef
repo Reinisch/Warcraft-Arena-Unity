@@ -1,0 +1,10 @@
+{
+    "name": "Photon.Bolt",
+    "references": [
+        "Photon.WebGL"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
