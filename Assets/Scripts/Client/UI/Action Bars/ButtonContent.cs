@@ -1,18 +1,17 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Client;
 using Core;
+using JetBrains.Annotations;
+using UnityEngine;
 
 public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IPointerDownHandler
 {
-    public int itemId;
+    [SerializeField, UsedImplicitly]  private int itemId;
     public ButtonSlot.ContentType ContentType;
 
     public ButtonSlot ButtonSlot { get; set; }
     public Image Image { get; set; }
-
-    bool hasCooldown = false;
 
     public void Initialize(ButtonSlot buttonSlot)
     {

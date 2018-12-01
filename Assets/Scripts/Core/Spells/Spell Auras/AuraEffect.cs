@@ -5,22 +5,21 @@ namespace Core
 {
     public class AuraEffect
     {
-        private int m_baseAmount;
+        private int baseAmount;
 
-        private int m_amount;
-        private int m_damage;
-        private float m_critChance;
-        private float m_donePct;
+        private int amount;
+        private int damage;
+        private float critChance;
+        private float donePct;
 
-        private SpellModifier m_spellmod;
+        private SpellModifier spellmod;
 
-        private int m_periodicTimer;
-        private int m_period;
-        private uint m_tickNumber;
+        private int periodicTimer;
+        private uint tickNumber;
 
-        private int m_effIndex;
-        private bool m_canBeRecalculated;
-        private bool m_isPeriodic;
+        private int effIndex;
+        private bool canBeRecalculated;
+        private bool isPeriodic;
 
 
         public SpellInfo SpellInfo { get; private set; }
@@ -37,21 +36,21 @@ namespace Core
             BaseAura = baseAura;
             SpellInfo = baseAura.SpellInfo;
 
-            m_effIndex = effIndex;
-            m_baseAmount = baseAmount > 0 ? baseAmount : BaseAura.GetSpellEffectInfo(effIndex).BasePoints;
-            m_damage = 0;
-            m_critChance = 0;
-            m_donePct = 1.0f;
-            m_spellmod = null;
-            m_periodicTimer = 0;
-            m_tickNumber = 0;
-            m_effIndex = effIndex;
-            m_canBeRecalculated = true;
-            m_isPeriodic = false;
+            this.effIndex = effIndex;
+            this.baseAmount = baseAmount > 0 ? baseAmount : BaseAura.GetSpellEffectInfo(effIndex).BasePoints;
+            damage = 0;
+            critChance = 0;
+            donePct = 1.0f;
+            spellmod = null;
+            periodicTimer = 0;
+            tickNumber = 0;
+            this.effIndex = effIndex;
+            canBeRecalculated = true;
+            isPeriodic = false;
 
-            CalculatePeriodic(caster, true, false);
+            CalculatePeriodic(caster);
 
-            m_amount = CalculateAmount(caster);
+            amount = CalculateAmount(caster);
 
             CalculateSpellMod();
         }
@@ -62,23 +61,22 @@ namespace Core
         public void GetApplicationList(List<AuraApplication> applications)
         {
         }
-        public SpellModifier GetSpellModifier() { return m_spellmod; }
+        public SpellModifier GetSpellModifier() { return spellmod; }
         public SpellEffectInfo GetSpellEffectInfo() { return EffectInfo; }
 
-        public int GetEffIndex() { return m_effIndex; }
-        public int GetBaseAmount() { return m_baseAmount; }
-        public int GetPeriod() { return m_period; }
+        public int GetEffIndex() { return effIndex; }
+        public int GetBaseAmount() { return baseAmount; }
 
         public AuraType GetAuraType() { return GetSpellEffectInfo().AuraType; }
-        public int GetAmount() { return m_amount; }
-        public void SetAmount(int amount) { m_amount = amount; m_canBeRecalculated = false; }
+        public int GetAmount() { return amount; }
+        public void SetAmount(int amount) { this.amount = amount; canBeRecalculated = false; }
         public void UpdateBaseAmount(int baseAmount)
         {
-            m_baseAmount = baseAmount;
+            this.baseAmount = baseAmount;
         }
 
-        public int GetPeriodicTimer() { return m_periodicTimer; }
-        public void SetPeriodicTimer(int periodicTimer) { m_periodicTimer = periodicTimer; }
+        public int GetPeriodicTimer() { return periodicTimer; }
+        public void SetPeriodicTimer(int periodicTimer) { this.periodicTimer = periodicTimer; }
 
         public int CalculateAmount(Unit caster)
         {
@@ -101,28 +99,25 @@ namespace Core
             ChangeAmount(CalculateAmount(caster), false);
         }
 
-        public bool CanBeRecalculated() { return m_canBeRecalculated; }
-        public void SetCanBeRecalculated(bool val) { m_canBeRecalculated = val; }
+        public bool CanBeRecalculated() { return canBeRecalculated; }
+        public void SetCanBeRecalculated(bool val) { canBeRecalculated = val; }
         public void HandleEffect(AuraApplication aurApp, AuraEffectHandleModes mode, bool apply) { }
         public void HandleEffect(Unit target, AuraEffectHandleModes mode, bool apply) { }
         public void ApplySpellMod(Unit target, bool apply) { }
 
-        public void SetDamage(int val) { m_damage = val; }
-        public int GetDamage() { return m_damage; }
-        public void SetCritChance(float val) { m_critChance = val; }
-        public float GetCritChance() { return m_critChance; }
-        public void SetDonePct(float val) { m_donePct = val; }
-        public float GetDonePct() { return m_donePct; }
+        public void SetDamage(int val) { damage = val; }
+        public int GetDamage() { return damage; }
+        public void SetCritChance(float val) { critChance = val; }
+        public float GetCritChance() { return critChance; }
+        public void SetDonePct(float val) { donePct = val; }
+        public float GetDonePct() { return donePct; }
 
         public void Update(uint diff, Unit caster) { }
         public void UpdatePeriodic(Unit caster) { }
 
-        public uint GetTickNumber() { return m_tickNumber; }
-        public int GetTotalTicks() { return m_period > 0? (BaseAura.GetMaxDuration() / m_period) : 1;}
-        public void ResetPeriodic(bool resetPeriodicTimer = false) { if (resetPeriodicTimer) m_periodicTimer = m_period; m_tickNumber = 0; }
-
-        public bool IsPeriodic() { return m_isPeriodic; }
-        public void SetPeriodic(bool isPeriodic) { m_isPeriodic = isPeriodic; }
+        public uint GetTickNumber() { return tickNumber; }
+        public bool IsPeriodic() { return isPeriodic; }
+        public void SetPeriodic(bool isPeriodic) { this.isPeriodic = isPeriodic; }
 
         public bool IsAffectingSpell(SpellInfo spellInfo)
         {

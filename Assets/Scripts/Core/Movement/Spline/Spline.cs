@@ -7,12 +7,11 @@ namespace Core
 {
     public class Spline : SplineBase
     {
-        protected List<int> Lengths;
-
+        private readonly List<int> lengths;
 
         public Spline()
         {
-            Lengths = new List<int>();
+            lengths = new List<int>();
         }
 
         /// <summary>
@@ -56,16 +55,16 @@ namespace Core
         // Initializes lengths in some custom way.
         public void InitLengths(ISplineInitializer cacher)
         {
-            int i = IndexLo;
+            int i = indexLo;
             int prevLength = 0;
 
-            while (i < IndexHi)
+            while (i < indexHi)
             {
                 var newLength = cacher.ComputeSplineTime(this, i);
                 // length overflowed, assign to max positive value
                 if (newLength < 0)
                     newLength = int.MaxValue;
-                Lengths[++i] = newLength;
+                lengths[++i] = newLength;
 
                 Assert.IsTrue(prevLength <= newLength);
                 prevLength = newLength;
@@ -73,12 +72,12 @@ namespace Core
         }
 
         // Returns length of the whole spline.
-        public int Length() { return Lengths[IndexHi];}
+        public int Length() { return lengths[indexHi];}
         // Returns length between given nodes.
-        public int Length(int first, int last) { return Lengths[last] - Lengths[first];}
-        public int Length(int idx) { return Lengths[idx];}
+        public int Length(int first, int last) { return lengths[last] - lengths[first];}
+        public int Length(int idx) { return lengths[idx];}
 
-        public void SetLength(int i, int length) { Lengths[i] = length; }
+        public void SetLength(int i, int length) { lengths[i] = length; }
         public new void Clear() { throw new NotImplementedException(); }
     }
 }

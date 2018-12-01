@@ -15,11 +15,8 @@ namespace Core
         public int WorldPlayerCount => worldPlayers.Count;
         public int WorldPetCount => worldPlayerPets.Count;
 
-        private Map map;
-
         public void Initialize(Map map)
         {
-            this.map = map;
         }
 
         public void Deinitialize()

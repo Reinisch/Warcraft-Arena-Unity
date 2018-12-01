@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DraggingItem : MonoBehaviour
 {
-    public ButtonContent draggingContent;
+    [SerializeField, UsedImplicitly] private ButtonContent draggingContent;
 
     public Image Image { get; set; }
     public RectTransform RectTransform { get; set; } 
 
-    void Awake()
+    [UsedImplicitly]
+    private void Awake()
     {
         Image = GetComponent<Image>();
         RectTransform = GetComponent<RectTransform>();

@@ -55,13 +55,13 @@ public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
 
     public void Click()
     {
-        if (!InterfaceManager.Instance.ButtonController.isDragging && buttonContent != null)
+        if (!InterfaceManager.Instance.ButtonController.IsDragging && buttonContent != null)
             buttonContent.Activate();
     }
 
     public void OnPointerDown(PointerEventData data)
     {
-        if (InterfaceManager.Instance.ButtonController.isDragging)
+        if (InterfaceManager.Instance.ButtonController.IsDragging)
         {
             InterfaceManager.Instance.ButtonController.DropItem(buttonContent);
             buttonContent.Enable();
@@ -70,7 +70,7 @@ public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
 
     public void OnDrop(PointerEventData data)
     {
-        if (InterfaceManager.Instance.ButtonController.isDragging)
+        if (InterfaceManager.Instance.ButtonController.IsDragging)
         {
             InterfaceManager.Instance.ButtonController.DropItem(buttonContent);
             buttonContent.Enable();

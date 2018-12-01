@@ -9,9 +9,9 @@ namespace Core
     {
         private Map currMap;
 
-        protected string EntityName;
-        protected bool IsActive;
-        protected bool IsWorldEntity;
+        protected string entityName;
+        protected bool isActive;
+        protected bool isWorldEntity;
 
         public WorldLocation WorldLocation { get; } = new WorldLocation();
         public MovementInfo MovementInfo { get; } = new MovementInfo();
@@ -28,12 +28,12 @@ namespace Core
         {
             base.Initialize(isWorldEntity, guid);
 
-            IsWorldEntity = isWorldEntity;
+            this.isWorldEntity = isWorldEntity;
         }
 
         public override void Deinitialize()
         {
-            IsWorldEntity = false;
+            isWorldEntity = false;
 
             base.Deinitialize();
         }
@@ -235,21 +235,21 @@ namespace Core
         public void GetRandomPoint(Position srcPos, float distance, ref float randX, ref float randY, ref float randZ) { }
         public Position GetRandomPoint(Position srcPos, float distance) { return null; }
 
-        public string GetName() { return EntityName; }
-        public void SetName(string newname) { EntityName = newname; }
+        public string GetName() { return entityName; }
+        public void SetName(string newname) { entityName = newname; }
     
         public float GetDistance(WorldEntity obj) { return 0.0f; }
         public float GetDistance(Position pos) { return 0.0f; }
         public float GetDistance(float x, float y, float z) { return 0.0f; }
-        public float GetDistance2d(WorldEntity obj) { return 0.0f; }
-        public float GetDistance2d(float x, float y) { return 0.0f; }
+        public float GetDistance2D(WorldEntity obj) { return 0.0f; }
+        public float GetDistance2D(float x, float y) { return 0.0f; }
         public float GetDistanceZ(WorldEntity obj) { return 0.0f; }
 
         public bool IsSelfOrInSameMap(WorldEntity obj) { return false; }
-        public bool IsWithinDist3d(float x, float y, float z, float dist) { return false; }
-        public bool IsWithinDist3d(Position pos, float dist) { return false; }
-        public bool IsWithinDist2d(float x, float y, float dist) { return false; }
-        public bool IsWithinDist2d(Position pos, float dist) { return false; }
+        public bool IsWithinDist3D(float x, float y, float z, float dist) { return false; }
+        public bool IsWithinDist3D(Position pos, float dist) { return false; }
+        public bool IsWithinDist2D(float x, float y, float dist) { return false; }
+        public bool IsWithinDist2D(Position pos, float dist) { return false; }
         // use only if you will sure about placing both object at same map
         public virtual bool IsWithinDist(WorldEntity obj, float dist2Compare, bool is3D = true) { return false; }
         public bool IsWithinDistInMap(WorldEntity obj, float dist2Compare, bool is3D = true) { return false; }
@@ -277,7 +277,7 @@ namespace Core
                 return;
 
             currMap = map;
-            if (IsWorldEntity)
+            if (isWorldEntity)
                 currMap.AddWorldObject(this);
         }
 
@@ -308,10 +308,10 @@ namespace Core
         protected override void AddToEntityUpdate() { }
         protected override void RemoveFromEntityUpdate() { }
 
-        public bool IsActiveObject() { return IsActive; }
+        public bool IsActiveObject() { return isActive; }
         public void SetActive(bool isActiveObject) { }
         public void SetWorldObject(bool apply) { }
-        public bool IsPermanentWorldObject() { return IsWorldEntity; }
+        public bool IsPermanentWorldObject() { return isWorldEntity; }
 
         public void VisitNearbyObject(float radius, ref IEntityVisitor notifier) { if (InWorld) Map.VisitAll(X, Y, radius, ref notifier); }
         public void VisitNearbyGridObject(float radius, ref IGridVisitor notifier) { if (InWorld) Map.VisitGrid(X, Y, radius, ref notifier); }

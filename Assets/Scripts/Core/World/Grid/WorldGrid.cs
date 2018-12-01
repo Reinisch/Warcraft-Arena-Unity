@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine.Assertions;
-using UnityEngine.UI;
 
 namespace Core
 {
     public class WorldGrid
     {
         private GridCell[,] cells;
-        private Map map;
-
-        public bool EntityDataLoaded { get; set; }
-        public GridStateType State { get; set; }
 
         public GridInfo Info { get; private set; }
         public int CellCountX { get; private set; }
@@ -27,13 +21,10 @@ namespace Core
         public void Initialize(Map map, long expiry, bool unload = true)
         {
             Info = new GridInfo(expiry, unload);
-            State = GridStateType.Invalid;
 
-            EntityDataLoaded = false;
             CellCountX = map.Settings.GridLayout.constraintCount;
             CellCountZ = map.Settings.GridCells.Count / CellCountX;
 
-            this.map = map;
             cells = new GridCell[CellCountX, CellCountZ];
             for (int i = 0; i < map.Settings.GridCells.Count; i++)
                 cells[i % CellCountX, i / CellCountX] = map.Settings.GridCells[i];

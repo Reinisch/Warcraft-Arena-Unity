@@ -6,7 +6,7 @@ namespace Core
     {
         public GridReference<Creature> GridRef { get; private set; }
 
-        public new CreatureAI AI => base.AI as CreatureAI;
+        public CreatureAI AI => ai as CreatureAI;
 
         protected ReactStates ReactState { get; set; }
         protected MovementGeneratorType DefaultMovementType { get; set; }

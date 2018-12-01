@@ -1,16 +1,19 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 public class ButtonController : MonoBehaviour
 {
-    public GameObject toolTip;
-    public DraggingItem draggingItem;
+    [SerializeField, UsedImplicitly] private GameObject toolTip;
+    [SerializeField, UsedImplicitly] private DraggingItem draggingItem;
 
-    [HideInInspector]
-    public bool isDragging = false;
-    [HideInInspector]
-    public bool dragReplaced = false;
+    private bool isDragging;
+    private bool dragReplaced;
 
-	void Update ()
+    public bool IsDragging => isDragging;
+    public bool DragReplaced => dragReplaced;
+
+    [UsedImplicitly]
+    private void Update()
     {
         if (isDragging)
         {
@@ -37,25 +40,11 @@ public class ButtonController : MonoBehaviour
         toolTip.SetActive(true);
         if (buttonRect.position.y > (float)Screen.height / 2)
         {
-            if(buttonRect.position.x > (float)Screen.width / 2)
-            {
-                toolTip.GetComponent<RectTransform>().pivot = new Vector2(1,1);
-            }
-            else
-            {
-                toolTip.GetComponent<RectTransform>().pivot = new Vector2(0,1);
-            }
+            toolTip.GetComponent<RectTransform>().pivot = buttonRect.position.x > (float)Screen.width / 2 ? new Vector2(1,1) : new Vector2(0,1);
         }
         else
         {
-            if (buttonRect.position.x > (float)Screen.width / 2)
-            {
-                toolTip.GetComponent<RectTransform>().pivot = new Vector2(1, 0);
-            }
-            else
-            {
-                toolTip.GetComponent<RectTransform>().pivot = new Vector2(0, 0);
-            }
+            toolTip.GetComponent<RectTransform>().pivot = buttonRect.position.x > (float)Screen.width / 2 ? new Vector2(1, 0) : new Vector2(0, 0);
         }
         toolTip.GetComponent<RectTransform>().position = buttonRect.position;
     }

@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-namespace Core
+﻿namespace Core
 {
     public class GridHelper
     {

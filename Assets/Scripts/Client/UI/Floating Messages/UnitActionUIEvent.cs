@@ -1,21 +1,12 @@
-﻿using Core;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
 public abstract class UnitActionUIEffect : MonoBehaviour
 {
-    protected float floatTime;
-
-    public float floatingSpeed;
-    public float duration; 
-    public Unit target;
+    [SerializeField, UsedImplicitly] private float floatingSpeed;
+    [SerializeField, UsedImplicitly] private float duration;
 
     public void Initialize()
     {
-        floatTime = duration;
-    }
-
-    public void Dispose()
-    {
-        target = null;
     }
 }

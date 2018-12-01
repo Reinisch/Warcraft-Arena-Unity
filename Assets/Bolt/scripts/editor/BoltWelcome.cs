@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 // [InitializeOnLoad]
@@ -18,7 +15,7 @@ public class BoltWelcome : EditorWindow
 
     static String FirstStartupKey
     {
-        get { return "$Bolt$First$Startup/" + BoltNetwork.Version.ToString(); }
+        get { return "$Bolt$First$Startup/" + BoltNetwork.Version; }
     }
 
     static String ShowAtStartupKey

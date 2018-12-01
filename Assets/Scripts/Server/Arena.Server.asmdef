@@ -1,14 +1,11 @@
 {
     "name": "Arena.Server",
     "references": [
-        "Arena.Core"
+        "Arena.Core",
+        "Arena.Shared"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": []
+    "allowUnsafeCode": false
 }

@@ -3,20 +3,16 @@ using UnityEngine;
 
 public class SoundManager : SingletonGameObject<SoundManager>
 {
-    public override void Initialize()
+    public void Initialize()
     {
-        base.Initialize();
-
         SpellManager.Instance.EventSpellCast += OnSpellManagerSpellCast;
         SpellManager.Instance.EventSpellHit += OnSpellManagerSpellHit;
     }
 
-    public override void Deinitialize()
+    public void Deinitialize()
     {
         SpellManager.Instance.EventSpellCast -= OnSpellManagerSpellCast;
         SpellManager.Instance.EventSpellHit -= OnSpellManagerSpellHit;
-
-        base.Deinitialize();
     }
 
     private void OnSpellManagerSpellCast(Unit caster, SpellInfo spellInfo)

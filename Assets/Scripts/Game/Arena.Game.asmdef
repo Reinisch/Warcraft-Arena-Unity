@@ -1,0 +1,14 @@
+{
+    "name": "Arena.Game",
+    "references": [
+        "Arena.Client",
+        "Arena.Core",
+        "Arena.Shared",
+        "Arena.Server",
+        "Photon.Bolt"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

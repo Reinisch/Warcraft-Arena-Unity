@@ -5,12 +5,17 @@ using UnityEditor;
 #endif
 
 namespace BoltInternal {
-  public class UnityDebugDrawer : BoltInternal.IDebugDrawer {
-    bool isEditor;
+  public class UnityDebugDrawer : BoltInternal.IDebugDrawer
+    {
+#if UNITY_EDITOR
+        bool isEditor;
+#endif
 
-    void IDebugDrawer.IsEditor(bool isEditor) {
-      this.isEditor = isEditor;
-    }
+        void IDebugDrawer.IsEditor(bool isEditor) {
+#if UNITY_EDITOR
+            this.isEditor = isEditor;
+#endif
+        }
 
     void IDebugDrawer.SelectGameObject(GameObject gameObject) {
 #if UNITY_EDITOR

@@ -22,68 +22,40 @@ namespace Core
 
         #region Unit data
 
-        protected Dictionary<SpellSchools, float> ThreatModifier;
-        protected Dictionary<WeaponAttackType, uint> BaseAttackSpeed;
-        protected Dictionary<WeaponAttackType, float> ModAttackSpeedPct;
-        protected Dictionary<WeaponAttackType, uint> AttackTimer;
-        protected Dictionary<SpellImmunity, List<SpellImmune>> SpellImmune;
-        protected Dictionary<int, List<Aura>> OwnedAuras;
-        protected Dictionary<Guid, AuraApplication> AppliedAuras;
-        protected Dictionary<Stats, float> CreateStats = new Dictionary<Stats, float>();
-        protected Dictionary<UnitMods, Dictionary<UnitModifierType, float>> AuraModifiersGroup;
-        protected Dictionary<WeaponAttackType, Dictionary<WeaponDamageRange, float>> WeaponDamage;
-        protected Dictionary<UnitMoveType, float> SpeedRates;
-        protected Dictionary<CurrentSpellTypes, Spell> CurrentSpells;
-        protected Dictionary<AuraStateType, AuraApplication> AuraStateAuras;    // used for improve performance of aura state checks on aura apply/remove
-        protected Dictionary<AuraType, List<AuraEffect>> ModifierAuras;         // all modifier auras
-        protected List<AuraApplication> InterruptableAuras;                     // auras which have interrupt mask applied on unit
-        protected List<AuraApplication> VisibleAuras;
-        protected List<AuraApplication> VisibleAurasToUpdate;
-        protected List<AuraEffect> ModAuras;
-        protected List<Aura> RemovedAuras;
-        protected List<Aura> SingleCastAuras;                                   // cast singlecast auras
-        protected DynamicEntity DynEntity;
-        protected GameEntity GameEntity;
-        protected List<Unit> Attackers;
+        protected Dictionary<SpellSchools, float> threatModifier;
+        protected Dictionary<WeaponAttackType, uint> baseAttackSpeed;
+        protected Dictionary<WeaponAttackType, float> modAttackSpeedPct;
+        protected Dictionary<WeaponAttackType, uint> attackTimer;
+        protected Dictionary<SpellImmunity, List<SpellImmune>> spellImmune;
+        protected Dictionary<int, List<Aura>> ownedAuras;
+        protected Dictionary<Guid, AuraApplication> appliedAuras;
+        protected Dictionary<Stats, float> createStats = new Dictionary<Stats, float>();
+        protected Dictionary<UnitMods, Dictionary<UnitModifierType, float>> auraModifiersGroup;
+        protected Dictionary<WeaponAttackType, Dictionary<WeaponDamageRange, float>> weaponDamage;
+        protected Dictionary<UnitMoveType, float> speedRates;
+        protected Dictionary<CurrentSpellTypes, Spell> currentSpells;
+        protected Dictionary<AuraStateType, AuraApplication> auraStateAuras;    // used for improve performance of aura state checks on aura apply/remove
+        protected Dictionary<AuraType, List<AuraEffect>> modifierAuras;         // all modifier auras
+        protected List<AuraApplication> interruptableAuras;                     // auras which have interrupt mask applied on unit
+        protected List<AuraApplication> visibleAuras;
+        protected List<AuraApplication> visibleAurasToUpdate;
+        protected List<AuraEffect> modAuras;
+        protected List<Aura> removedAuras;
+        protected List<Aura> singleCastAuras;                                   // cast singlecast auras
+        protected DynamicEntity dynEntity;
+        protected GameEntity gameEntity;
+        protected List<Unit> attackers;
 
-        protected Unit Attacking;
-        protected UnitAI AI;
-        protected UnitAI DisabledAI;
-        protected UnitTypeMask UnitTypeMask;
-        protected bool ShouldReacquireTarget;
-        protected bool AutoRepeatFirstCast;
-        protected uint RegenTimer;
-        protected int ProcDeep;
+        protected Unit attacking;
+        protected UnitAI ai;
+        protected UnitAI disabledAI;
+        protected UnitTypeMask unitTypeMask;
+        protected bool shouldReacquireTarget;
+        protected bool autoRepeatFirstCast;
+        protected uint regenTimer;
+        protected int procDeep;
 
-        private Diminishing diminishing;
-        private bool cleanupDone; // lock made to not add stuff after cleanup before delete
-        private bool duringRemoveFromWorld; // lock made to not add stuff after begining removing from world
-        private uint oldFactionId;             // faction before charm
-        private bool isWalkingBeforeCharm;     // are we walking before we were charmed?
-        private short aiAnimKitId;
-        private short movementAnimKitId;
-        private short meleeAnimKitId;
-        private long lastDamagedTime; // Part of Evade mechanics
-        private EventProcessor events; // Event handler
-        private Guid lastCharmerGUID;
-        private bool isAIEnabled, needChangeAI;
-        private bool controlledByPlayer;
-        private float modMeleeHitChance;
-        private float modRangedHitChance;
-        private float modSpellHitChance;
-        private int baseSpellCritChance;
-        private uint movementCounter;     // incrementing counter used in movement packets
-        private uint lastSanctuaryTime;
-        private UnitState unitState;          // even derived shouldn't modify
-        private uint combatTimer;
-        private TimeTracker movesplineTimer;
-        private bool isPlayerControlled;
-        private int baseSpellPower;
-        private int baseManaRegen;
-        private int baseHealthRegen;
-
-
-        public string Name => EntityName;
+        public string Name => entityName;
         public bool IsMovementBlocked => HasUnitState(UnitState.Root) || HasUnitState(UnitState.Stunned);
 
         public Vector3 Position => transform.position;
@@ -109,13 +81,13 @@ namespace Core
         {
             base.Initialize(isWorldObject, guid);
 
-            SpeedRates = new Dictionary<UnitMoveType, float>();
+            speedRates = new Dictionary<UnitMoveType, float>();
             SpellHistory = new SpellHistory();
 
             TypeId = EntityType.Unit;
 
-            StatHelper.InitializeSpeedRates(SpeedRates);
-            SetMap(World.FindMap(1));
+            StatHelper.InitializeSpeedRates(speedRates);
+            SetMap(WorldManager.FindMap(1));
         }
 
         public override void AddToWorld() { }
@@ -127,7 +99,6 @@ namespace Core
         public void IncrDiminishing(DiminishingGroup group) { }
         public float ApplyDiminishingToDuration(DiminishingGroup group, ref int duration, Unit caster, DiminishingLevels level, int limitduration) { return 1.0f; }
         public void ApplyDiminishingAura(DiminishingGroup group, bool apply) { }
-        public void ClearDiminishings() { diminishing.Clear(); }
 
         // target dependent range checks
         public float GetSpellMinRangeForTarget(Unit target, SpellInfo spellInfo)
@@ -151,10 +122,10 @@ namespace Core
 
         #region Auto attacks
 
-        public void SetAttackTimer(WeaponAttackType type, uint time) { AttackTimer[type] = time; }
+        public void SetAttackTimer(WeaponAttackType type, uint time) { attackTimer[type] = time; }
         public void ResetAttackTimer(WeaponAttackType type = WeaponAttackType.BaseAttack) { }
-        public uint GetAttackTimer(WeaponAttackType type) { return AttackTimer[type]; }
-        public bool IsAttackReady(WeaponAttackType type = WeaponAttackType.BaseAttack) { return AttackTimer[type] == 0; }
+        public uint GetAttackTimer(WeaponAttackType type) { return attackTimer[type]; }
+        public bool IsAttackReady(WeaponAttackType type = WeaponAttackType.BaseAttack) { return attackTimer[type] == 0; }
         public bool HaveOffhandWeapon() { return false; }
         public float GetCombatReach() { return GetFloatValue(EntityFields.CombatReach); }
         public float GetBoundaryRadius() { return GetFloatValue(EntityFields.BoundingRadius); }
@@ -167,18 +138,18 @@ namespace Core
         public void RemoveAttacker(Unit attacker) { }                               // must be called only from Unit::AttackStop()
         public Unit GetAttackerForHelper() { return null; }                         // If someone wants to help, who to give them
         public bool Attack(Unit victim, bool meleeAttack) { return false; }
-        public void MustReacquireTarget() { ShouldReacquireTarget = true; }       // flags the Unit for forced (client displayed) target reacquisition in the next ::Attack call
+        public void MustReacquireTarget() { shouldReacquireTarget = true; }       // flags the Unit for forced (client displayed) target reacquisition in the next ::Attack call
         public void CastStop(uint exceptSpellid = 0) { }
         public bool AttackStop() { return false; }
         public void RemoveAllAttackers() { }
-        public List<Unit> GetAttackers() { return Attackers; }
+        public List<Unit> GetAttackers() { return attackers; }
         public bool IsAttackingPlayer() { return false; }
-        public Unit GetVictim() { return Attacking; }
+        public Unit GetVictim() { return attacking; }
         // Use this only when 100% sure there is a victim
         public Unit EnsureVictim()
         {
-            Assert.IsNotNull(Attacking, "Attacking unit not found in Unit.EnsureVictim!");
-            return Attacking;
+            Assert.IsNotNull(attacking, "Attacking unit not found in Unit.EnsureVictim!");
+            return attacking;
         }
 
         public void CombatStop(bool includingCast = false) { }
@@ -193,19 +164,19 @@ namespace Core
 
         #region Unit info, stats and types
 
-        public void AddUnitState(UnitState f) { unitState |= f; }
-        public bool HasUnitState(UnitState state) { return (unitState & state) != 0; }
-        public void ClearUnitState(UnitState f) { unitState &= ~f; }
+        public void AddUnitState(UnitState f) { UnitState |= f; }
+        public bool HasUnitState(UnitState state) { return (UnitState & state) != 0; }
+        public void ClearUnitState(UnitState f) { UnitState &= ~f; }
         public bool CanFreeMove() { return false; }
 
-        public UnitTypeMask HasUnitTypeMask(UnitTypeMask mask) { return mask & UnitTypeMask; }
-        public void AddUnitTypeMask(UnitTypeMask mask) { UnitTypeMask |= mask; }
-        public bool IsSummon() { return (UnitTypeMask & UnitTypeMask.Summon) != 0; }
-        public bool IsGuardian() { return (UnitTypeMask & UnitTypeMask.Guardian) != 0; }
-        public bool IsPet() { return (UnitTypeMask & UnitTypeMask.Pet) != 0; }
-        public bool IsHunterPet() { return (UnitTypeMask & UnitTypeMask.HunterPet) != 0; }
-        public bool IsTotem() { return (UnitTypeMask & UnitTypeMask.Totem) != 0; }
-        public bool IsVehicle() { return (UnitTypeMask & UnitTypeMask.Vehicle) != 0; }
+        public UnitTypeMask HasUnitTypeMask(UnitTypeMask mask) { return mask & unitTypeMask; }
+        public void AddUnitTypeMask(UnitTypeMask mask) { unitTypeMask |= mask; }
+        public bool IsSummon() { return (unitTypeMask & UnitTypeMask.Summon) != 0; }
+        public bool IsGuardian() { return (unitTypeMask & UnitTypeMask.Guardian) != 0; }
+        public bool IsPet() { return (unitTypeMask & UnitTypeMask.Pet) != 0; }
+        public bool IsHunterPet() { return (unitTypeMask & UnitTypeMask.HunterPet) != 0; }
+        public bool IsTotem() { return (unitTypeMask & UnitTypeMask.Totem) != 0; }
+        public bool IsVehicle() { return (unitTypeMask & UnitTypeMask.Vehicle) != 0; }
         public CreatureType GetCreatureType() { return 0; }
         public uint GetCreatureTypeMask() { return 0; }
 
@@ -594,15 +565,6 @@ namespace Core
         {
         }
 
-        public void ClearInCombat()
-        {
-        }
-
-        public uint GetCombatTimer()
-        {
-            return combatTimer;
-        }
-
         #endregion
 
 
@@ -758,7 +720,7 @@ namespace Core
 
         public Guid CharmGuid => GetGuidValue(EntityFields.UnitCharm);
 
-        public bool IsControlledByPlayer() { return controlledByPlayer; }
+        public bool IsControlledByPlayer() { return false; }
         public Guid GetCharmerOrOwnerGuid() { return default(Guid); }
         public Guid GetCharmerOrOwnerOrOwnGuid() { return default(Guid); }
         public bool IsCharmedOwnedByPlayerOrPlayer() { return false; }
@@ -857,10 +819,10 @@ namespace Core
         public void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
         public Aura GetOwnedAura(int spellId, Guid casterGuid, uint reqEffMask, Aura exceptAura = null)
         {
-            if (!OwnedAuras.ContainsKey(spellId))
+            if (!ownedAuras.ContainsKey(spellId))
                 return null;
 
-            return OwnedAuras[spellId].FirstOrDefault(sameSpellAura => sameSpellAura.CasterGuid == casterGuid && exceptAura != sameSpellAura);
+            return ownedAuras[spellId].FirstOrDefault(sameSpellAura => sameSpellAura.CasterGuid == casterGuid && exceptAura != sameSpellAura);
         }
 
         // AppliedAuras container management
@@ -905,7 +867,7 @@ namespace Core
         public void RemoveAllAuraStatMods() { }
         public void ApplyAllAuraStatMods() { }
 
-        public List<AuraEffect> GetAuraEffectsByType(AuraType type) { return ModAuras.FindAll(aura => aura.GetAuraType() == type); }
+        public List<AuraEffect> GetAuraEffectsByType(AuraType type) { return modAuras.FindAll(aura => aura.GetAuraType() == type); }
         public AuraEffect GetAuraEffect(uint spellId, int effIndex, Guid casterGuid = default(Guid)) { return null; }
         public AuraEffect GetAuraEffectOfRankedSpell(uint spellId, int effIndex, Guid casterGuid = default(Guid)) { return null; }
         public AuraEffect GetAuraEffect(AuraType type, SpellFamilyNames family, uint iconId, int effIndex) { return null; }
@@ -967,7 +929,7 @@ namespace Core
         public void InitStatBuffMods() { }
         public void ApplyStatBuffMod(Stats stat, float val, bool apply) { }
         public void ApplyStatPercentBuffMod(Stats stat, float val, bool apply) { }
-        public void SetCreateStat(Stats stat, float val) { CreateStats[stat] = val; }
+        public void SetCreateStat(Stats stat, float val) { createStats[stat] = val; }
         public void SetCreateHealth(uint val) { SetUintValue(EntityFields.BaseHealth, val); }
         public uint GetCreateHealth() { return GetUintValue(EntityFields.BaseHealth); }
         public void SetCreateMana(uint val) { SetUintValue(EntityFields.BaseMana, val); }
@@ -976,7 +938,7 @@ namespace Core
         public int GetCreatePowers(PowerType power) { return 0; }
         public float GetPosStat(Stats stat) { return GetFloatValue(stat.StatPositiveField()); }
         public float GetNegStat(Stats stat) { return GetFloatValue(stat.StatNegativeField()); }
-        public float GetCreateStat(Stats stat) { return CreateStats[stat]; }
+        public float GetCreateStat(Stats stat) { return createStats[stat]; }
 
         #endregion
 
@@ -990,7 +952,7 @@ namespace Core
         public void InterruptSpell(CurrentSpellTypes spellType, bool withDelayed = true, bool withInstant = true) { }
         public void FinishSpell(CurrentSpellTypes spellType, bool ok = true) { }
 
-        public Spell GetCurrentSpell(CurrentSpellTypes spellType) { return CurrentSpells[spellType]; }
+        public Spell GetCurrentSpell(CurrentSpellTypes spellType) { return currentSpells[spellType]; }
         public Spell FindCurrentSpellBySpellId(uint spellID) { return null; }
         public int GetCurrentSpellCastTime(uint spellID) { return 0; }
         public virtual SpellInfo GetCastSpellInfo(SpellInfo spellInfo) { return null; }
@@ -1013,7 +975,7 @@ namespace Core
         #region Stat system
 
         public bool HandleStatModifier(UnitMods unitMod, UnitModifierType modifierType, float amount, bool apply) { return false; }
-        public void SetModifierValue(UnitMods unitMod, UnitModifierType modifierType, float value) { AuraModifiersGroup[unitMod][modifierType] = value; }
+        public void SetModifierValue(UnitMods unitMod, UnitModifierType modifierType, float value) { auraModifiersGroup[unitMod][modifierType] = value; }
         public float GetModifierValue(UnitMods unitMod, UnitModifierType modifierType) { return 0.0f; }
         public float GetTotalStatValue(Stats stat) { return 0.0f; }
         public float GetTotalAuraModValue(UnitMods unitMod) { return 0.0f; }
@@ -1032,7 +994,7 @@ namespace Core
         public virtual void UpdateDamagePhysical(WeaponAttackType attType) { }
         public float GetTotalAttackPowerValue(WeaponAttackType attType) { return 0.0f; }
         public float GetWeaponDamageRange(WeaponAttackType attType, WeaponDamageRange type) { return 0.0f; }
-        public void SetBaseWeaponDamage(WeaponAttackType attType, WeaponDamageRange damageRange, float value) { WeaponDamage[attType][damageRange] = value; }
+        public void SetBaseWeaponDamage(WeaponAttackType attType, WeaponDamageRange damageRange, float value) { weaponDamage[attType][damageRange] = value; }
         public virtual void CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bool addTotalPct, ref float minDamage, ref float maxDamage) { }
         public uint CalculateDamage(WeaponAttackType attType, bool normalized, bool addTotalPct) { return 0; }
         public float GetApMultiplier(WeaponAttackType attType, bool normalized) { return 0.0f; }
@@ -1042,10 +1004,10 @@ namespace Core
 
         #region Display info
 
-        public List<AuraApplication> GetVisibleAuras() { return VisibleAuras; }
-        public bool HasVisibleAura(AuraApplication aurApp) { return VisibleAuras.Contains(aurApp); }
+        public List<AuraApplication> GetVisibleAuras() { return visibleAuras; }
+        public bool HasVisibleAura(AuraApplication aurApp) { return visibleAuras.Contains(aurApp); }
         public void SetVisibleAura(AuraApplication aurApp) { }
-        public void SetVisibleAuraUpdate(AuraApplication aurApp) { VisibleAurasToUpdate.Add(aurApp); }
+        public void SetVisibleAuraUpdate(AuraApplication aurApp) { visibleAurasToUpdate.Add(aurApp); }
         public void RemoveVisibleAura(AuraApplication aurApp) { }
         public void UpdateInterruptMask() { }
 
@@ -1239,11 +1201,11 @@ namespace Core
         }
         public float GetSpeed(UnitMoveType type)
         {
-            return SpeedRates[type] * StatHelper.BaseMovementSpeed(type);
+            return speedRates[type] * StatHelper.BaseMovementSpeed(type);
         }
         public float GetSpeedRate(UnitMoveType type)
         {
-            return SpeedRates[type];
+            return speedRates[type];
         }
         public void SetSpeed(UnitMoveType type, float newValue)
         {
@@ -1254,7 +1216,7 @@ namespace Core
             if (rate < 0)
                 rate = 0.0f;
 
-            SpeedRates[type] = rate;
+            speedRates[type] = rate;
         }
 
         public bool IsStopped() { return !(HasUnitState(UnitState.Moving)); }
@@ -1289,7 +1251,6 @@ namespace Core
         public virtual float GetFollowAngle() { return Mathf.PI / 2; }
         public void OutDebugInfo() { }
         public virtual bool IsLoading() { return false; }
-        public bool IsDuringRemoveFromWorld() { return duringRemoveFromWorld; }
 
         public Guid GetTarget() { return GetGuidValue(EntityFields.Target); }
         public virtual void SetTarget(Guid guid) { }

@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class UnitRenderer : MonoBehaviour
 {
-    [SerializeField]
-    private Transform castTag;
-    [SerializeField]
-    private Transform centerTag;
-    [SerializeField]
-    private Animator animator;
+    [SerializeField, UsedImplicitly] private Transform castTag;
+    [SerializeField, UsedImplicitly] private Transform centerTag;
+    [SerializeField, UsedImplicitly] private Animator animator;
 
     public Animator Animator => animator;
     public Transform CastTag => castTag ?? transform;

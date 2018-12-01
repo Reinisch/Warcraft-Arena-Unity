@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 
 [InitializeOnLoad]
 public static class BoltExecutionOrderManager
@@ -33,7 +32,10 @@ public static class BoltExecutionOrderManager
                         break;
                 }
             }
-            catch { }
+            catch
+            {
+                // ignored
+            }
         }
 
         foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())

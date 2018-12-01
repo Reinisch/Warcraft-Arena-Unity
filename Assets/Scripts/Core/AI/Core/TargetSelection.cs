@@ -98,7 +98,7 @@ namespace Core
 
             var minRange = 0.0f;
             var maxRange = 0.0f;
-            var rangeMod = 0.0f;
+            float rangeMod;
             if ((SpellInfo.RangedFlags & SpellRangeFlag.Melee) > 0)
             {
                 rangeMod = Caster.GetCombatReach() + 4.0f / 3.0f;

@@ -1,11 +1,13 @@
 ﻿using Core;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class CastFrame : MonoBehaviour
 {
-    public CastBar castBar;
+    [SerializeField, UsedImplicitly] private CastBar castBar;
 
-    void Awake()
+    [UsedImplicitly]
+    private void Awake()
     {
         castBar = transform.Find("Cast Bar").gameObject.GetComponent<CastBar>();
     }
@@ -34,19 +36,18 @@ public class CastFrame : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        castBar.caster = target;
+        castBar.SetCaster(target);
     }
 
     public void OnTargetLost(Unit target)
     {
         gameObject.SetActive(false);
 
-        castBar.caster = null;
+        castBar.SetCaster(null);
     }
 
     public void OnTargetSwitch(Unit target)
     {
-        castBar.caster = target;
+        castBar.SetCaster(target);
     }
-
 }

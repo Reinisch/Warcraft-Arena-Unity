@@ -1,7 +1,6 @@
 ﻿namespace Core
 {
-    public abstract class WorldSession
+    public class WorldSession
     {
-        public abstract int Id { get; }
     }
 }

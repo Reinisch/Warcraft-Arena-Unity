@@ -1,7 +1,8 @@
 {
     "name": "Arena.Client",
     "references": [
-        "Arena.Core"
+        "Arena.Core",
+        "Arena.Shared"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

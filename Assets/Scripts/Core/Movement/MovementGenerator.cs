@@ -50,14 +50,4 @@ namespace Core
         }
         public abstract bool DoUpdate(TUnit u, uint timeDiff);
     }
-
-    public class MovementGeneratorFactory<TRealMovement> : FactoryHolder<MovementGenerator, MovementGeneratorType> where TRealMovement : MovementGenerator, new()
-    {
-        public MovementGeneratorFactory(MovementGeneratorType mgt) : base(mgt) { }
-
-        public override MovementGenerator Create(object data = null)
-        {
-            return new TRealMovement();
-        }
-    }
 }

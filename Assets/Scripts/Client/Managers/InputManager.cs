@@ -6,19 +6,14 @@ namespace Client
     {
         public Player OriginalPlayer { get; private set; }
 
-        public override void Initialize()
+        public void Initialize(WorldManager worldManager)
         {
-            base.Initialize();
-
-            if (GameManager.Instance.IsDebugLogic)
-                OriginalPlayer = MapManager.Instance.FindMap(1).FindMapEntity<Player>(GameManager.Instance.LocalPlayerId);
+            OriginalPlayer = MapManager.Instance.FindMap(1).FindMapEntity<Player>(worldManager.LocalPlayerId);
         }
 
-        public override void Deinitialize()
+        public void Deinitialize()
         {
             OriginalPlayer = null;
-
-            base.Deinitialize();
         }
     }
 }

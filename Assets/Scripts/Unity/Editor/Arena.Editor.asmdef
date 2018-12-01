@@ -3,7 +3,7 @@
     "references": [
         "Arena.Core",
         "Arena.Client",
-        "Arena.Editor.Definitions"
+        "Arena.Shared"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

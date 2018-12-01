@@ -11,28 +11,12 @@ namespace Core
 
     public class Aura
     {
-        private long m_applyTime;
+        private int maxDuration;
+        private bool isSingleTarget;
 
-        private int m_maxDuration;                              // Max aura duration
-        private int m_duration;                                 // Current time
-        private int m_timeCla;                                  // Timer for power per sec calcultion
-        private int m_updateTargetMapInterval;                  // Timer for UpdateTargetMapOfEffect
-
-        private ushort m_procCharges;                           // Aura charges (0 for infinite)
-        private ushort m_stackAmount;                           // Aura stack amount
-
-        private AuraApplicationMap m_applications;
-        private AuraApplicationList m_removedApplications;
-
-        private bool m_isRemoved;
-        private bool m_isSingleTarget;                          // true if it's a single target spell and registered at caster - can change at spell steal for example
-        private bool m_isUsingCharges;
-
-        private long m_lastProcAttemptTime;
-        private long m_lastProcSuccessTime;
-
-        private AuraEffectList _effects;
-        private SpellEffectInfoList _spelEffectInfos;
+        private AuraApplicationMap applications = new AuraApplicationMap();
+        private AuraEffectList effects = new AuraEffectList();
+        private SpellEffectInfoList spelEffectInfos = new SpellEffectInfoList();
 
         public SpellInfo SpellInfo { get; private set; }
         public Guid CastGuid { get; private set; }
@@ -68,12 +52,12 @@ namespace Core
 
         public bool IsRemoved()
         {
-            return m_isRemoved;
+            return false;
         }
 
         public bool IsSingleTarget()
         {
-            return m_isSingleTarget;
+            return isSingleTarget;
         }
 
         public bool IsSingleTargetWith(Aura aura)
@@ -83,7 +67,7 @@ namespace Core
 
         public void SetIsSingleTarget(bool val)
         {
-            m_isSingleTarget = val;
+            isSingleTarget = val;
         }
 
         public void UnregisterSingleTarget()
@@ -97,9 +81,9 @@ namespace Core
 
         //List<AuraScript> m_loadedScripts;
 
-        public AuraEffectList GetAuraEffects() { return _effects; }
+        public AuraEffectList GetAuraEffects() { return effects; }
 
-        public SpellEffectInfoList GetSpellEffectInfos() { return _spelEffectInfos; }
+        public SpellEffectInfoList GetSpellEffectInfos() { return spelEffectInfos; }
 
         public SpellEffectInfo GetSpellEffectInfo(int index)
         {
@@ -211,19 +195,14 @@ namespace Core
 
         #region Time and duration
 
-        public long GetApplyTime()
-        {
-            return m_applyTime;
-        }
-
         public int GetMaxDuration()
         {
-            return m_maxDuration;
+            return maxDuration;
         }
 
         public void SetMaxDuration(int duration)
         {
-            m_maxDuration = duration;
+            maxDuration = duration;
         }
 
         public int CalcMaxDuration()
@@ -234,11 +213,6 @@ namespace Core
         public int CalcMaxDuration(Unit caster)
         {
             return 0;
-        }
-
-        public int GetDuration()
-        {
-            return m_duration;
         }
 
         public void SetDuration(int duration, bool withMods = false)
@@ -253,11 +227,6 @@ namespace Core
         {
         }
 
-        public bool IsExpired()
-        {
-            return GetDuration() <= 0;
-        }
-
         public bool IsPermanent()
         {
             return GetMaxDuration() == -1;
@@ -266,11 +235,6 @@ namespace Core
         #endregion
 
         #region Charges and stacks
-
-        public ushort GetCharges()
-        {
-            return m_procCharges;
-        }
 
         public void SetCharges(ushort charges)
         {
@@ -302,11 +266,6 @@ namespace Core
 
         public void DropChargeDelayed(uint delay, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault)
         {
-        }
-
-        public uint GetStackAmount()
-        {
-            return m_stackAmount;
         }
 
         public void SetStackAmount(uint num)
@@ -356,7 +315,7 @@ namespace Core
 
         public AuraApplicationMap GetApplicationMap()
         {
-            return m_applications;
+            return applications;
         }
 
         public void GetApplicationList(AuraApplicationList applicationList)
@@ -366,13 +325,13 @@ namespace Core
         public AuraApplication GetApplicationOfTarget(Guid guid)
         {
             AuraApplication targetApplication;
-            m_applications.TryGetValue(guid, out targetApplication);
+            applications.TryGetValue(guid, out targetApplication);
             return targetApplication;
         }
 
         public bool IsAppliedOnTarget(Guid guid)
         {
-            return m_applications.ContainsKey(guid);
+            return applications.ContainsKey(guid);
         }
 
         public void SetNeedClientUpdateForTargets()

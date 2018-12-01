@@ -1,15 +1,15 @@
 ﻿using Core;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UnitFrame : MonoBehaviour
 {
-    public Unit unit;
+    [SerializeField, UsedImplicitly] private FillBar health;
+    [SerializeField, UsedImplicitly] private FillBar mainResource;
+    [SerializeField, UsedImplicitly] private Text unitName;
 
-    public FillBar health;
-    public FillBar mainResource;
-
-    Text unitName;
+    private Unit unit;
 
     public void Initialize()
     {
@@ -25,6 +25,7 @@ public class UnitFrame : MonoBehaviour
         health.UpdateBar();
         mainResource.UpdateBar();
     }
+
     public void SetUnit(Unit newUnit)
     {
         unit = newUnit;
@@ -46,6 +47,7 @@ public class UnitFrame : MonoBehaviour
         gameObject.SetActive(true);
         unit = target;
     }
+
     public void OnTargetLost(Unit target)
     {
         gameObject.SetActive(false);
@@ -54,6 +56,7 @@ public class UnitFrame : MonoBehaviour
         mainResource.SetAttribute();
         unitName.text = "";
     }
+
     public void OnTargetSwitch(Unit target)
     {
         unit = target;

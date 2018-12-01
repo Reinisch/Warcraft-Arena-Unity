@@ -26,7 +26,6 @@
             if (worldGrid.WorldPlayerCount == 0)
             {
                 worldGrid.VisitAllGrids(visitor);
-                worldGrid.State = GridStateType.Idle;
             }
         }
     }
@@ -35,7 +34,6 @@
     {
         public override void DoUpdate(Map map, WorldGrid worldGrid, GridInfo gridInfo, int timeDiff)
         {
-            worldGrid.State = GridStateType.Removal;
         }
     }
 

@@ -5,53 +5,34 @@ namespace Core
 {
     public class Player : Unit, IGridEntity<Player>
     {
-        public Dictionary<UnitMoveType, byte> m_forced_speed_changes;
+        protected Team team;
+        protected PlayerExtraFlags extraFlags;
+        protected Dictionary<uint, PlayerSpell> playerSpells;
+        protected SpecializationInfo specializationInfo;
 
-        public PlayerMenu PlayerTalkClass;
-        public PvPInfo pvpInfo;
+        protected Dictionary<SpellModOp, List<SpellModifier>> spellMods;
+        protected Dictionary<BaseModGroup, Dictionary<BaseModType, float>> auraBaseMod;
+        protected Dictionary<CombatRating, short> baseRatingValue;
+        protected Dictionary<byte, ActionButton> actionButtons;
 
-        protected Team m_team;
-        protected Dictionary<uint, PlayerCurrency> _currencyStorage;
-        protected PlayerExtraFlags m_ExtraFlags;
-        protected Dictionary<uint, SkillStatusData> mSkillStatus;
-        protected Dictionary<uint, PlayerSpell> m_spells;
-        protected SpecializationInfo _specializationInfo;
+        protected uint baseSpellPower;
+        protected uint baseManaRegen;
+        protected uint baseHealthRegen;
+        protected int spellPenetrationItemMod;
+        protected ResurrectionData resurrectionData;
 
-        protected Dictionary<SpellModOp, List<SpellModifier>> m_spellMods;
-        protected Dictionary<BaseModGroup, Dictionary<BaseModType, float>> m_auraBaseMod;
-        protected Dictionary<CombatRating, short> m_baseRatingValue;
-        protected Dictionary<byte, ActionButton> m_actionButtons;
-
-        protected uint m_baseSpellPower;
-        protected uint m_baseManaRegen;
-        protected uint m_baseHealthRegen;
-        protected int m_spellPenetrationItemMod;
-
-        protected ResurrectionData _resurrectionData;
-        protected WorldSession m_session;
-
-        protected bool m_canParry;
-        protected bool m_canBlock;
-        protected bool m_canTitanGrip;
-        protected byte m_swingErrorMsg;
-
-        protected Runes m_runes;
-        private Dictionary<PlayedTimeIndex, uint> m_Played_time;
-
-        private List<Guid> m_refundableItems;
-
-        private uint m_lastFallTime;
-        private float m_lastFallZ;
+        protected bool canParry;
+        protected bool canBlock;
+        protected bool canTitanGrip;
+        protected Runes runes;
 
         // Rune type / Rune timer
         private uint[] m_runeGraceCooldown = new uint[PlayerHelper.MaxRunes];
         private uint[] m_lastRuneGraceTimers = new uint[PlayerHelper.MaxRunes];
+
         public GridReference<Player> GridRef { get; private set; }
   
         public string AutoReplyMsg { get; set; }
-        public uint TotalPlayedTime => m_Played_time[PlayedTimeIndex.Total];
-        public uint LevelPlayedTime => m_Played_time[PlayedTimeIndex.Level];
-
         public override DeathState DeathState { get { return base.DeathState; } set { throw new NotImplementedException(); } }
         public override float Scale { get { return base.Scale; } set { throw new NotImplementedException(); } }
 
@@ -59,7 +40,6 @@ namespace Core
         public void AddToGrid(GridReferenceManager<Player> refManager) { throw new NotImplementedException(); }
         public void RemoveFromGrid() { throw new NotImplementedException(); }
 
-        public WorldSession GetSession() { return m_session; }
         public WorldLocation GetStartPosition() { throw new NotImplementedException(); }
 
         public override void AddToWorld() { throw new NotImplementedException(); }
@@ -72,7 +52,7 @@ namespace Core
 
         #region Player flags
 
-        public bool IsGameMaster() { return (m_ExtraFlags & PlayerExtraFlags.GmOn) != 0; }
+        public bool IsGameMaster() { return (extraFlags & PlayerExtraFlags.GmOn) != 0; }
 
         #endregion
 
@@ -101,7 +81,7 @@ namespace Core
         public void SetResurrectRequestData(Unit caster, uint health, uint mana, uint appliedAura) { throw new NotImplementedException(); }
         public void ClearResurrectRequestData()
         {
-            _resurrectionData = null;
+            resurrectionData = null;
         }
 
         public bool IsResurrectRequestedBy(Guid guid)
@@ -109,9 +89,9 @@ namespace Core
             if (!IsResurrectRequested())
                 return false;
 
-            return _resurrectionData.GUID != Guid.Empty && _resurrectionData.GUID == guid;
+            return resurrectionData.GUID != Guid.Empty && resurrectionData.GUID == guid;
         }
-        public bool IsResurrectRequested() { return _resurrectionData != null; }
+        public bool IsResurrectRequested() { return resurrectionData != null; }
         public void ResurrectUsingRequestData() { throw new NotImplementedException(); }
         public void ResurrectUsingRequestDataImpl() { throw new NotImplementedException(); }
 
@@ -203,8 +183,8 @@ namespace Core
         public float GetRatingBonusValue(CombatRating cr) { throw new NotImplementedException(); }
 
         /// Returns base spellpower bonus from spellpower stat on items, without spellpower from intellect stat
-        public uint GetBaseSpellPowerBonus() { return m_baseSpellPower; }
-        public int GetSpellPenetrationItemMod() { return m_spellPenetrationItemMod; }
+        public uint GetBaseSpellPowerBonus() { return baseSpellPower; }
+        public int GetSpellPenetrationItemMod() { return spellPenetrationItemMod; }
 
         public float GetExpertiseDodgeOrParryReduction(WeaponAttackType attType) { throw new NotImplementedException(); }
         public void UpdateBlockPercentage() { throw new NotImplementedException(); }
@@ -229,20 +209,20 @@ namespace Core
         public void UpdateAllRunesRegen() { throw new NotImplementedException(); }
 
         public override uint GetBlockPercent() { return GetUintValue(EntityFields.ShieldBlock); }
-        public bool CanParry() { return m_canParry; }
+        public bool CanParry() { return canParry; }
         public void SetCanParry(bool value) { throw new NotImplementedException(); }
-        public bool CanBlock() { return m_canBlock; }
+        public bool CanBlock() { return canBlock; }
         public void SetCanBlock(bool value) { throw new NotImplementedException(); }
-        public bool CanTitanGrip() { return m_canTitanGrip; }
-        public void SetCanTitanGrip(bool value) { m_canTitanGrip = value; }
+        public bool CanTitanGrip() { return canTitanGrip; }
+        public void SetCanTitanGrip(bool value) { canTitanGrip = value; }
         public bool CanTameExoticPets() { return IsGameMaster() || HasAuraType(AuraType.AllowTamePetType); }
 
         public void SetRegularAttackTime() { throw new NotImplementedException(); }
-        public void SetBaseModValue(BaseModGroup modGroup, BaseModType modType, float value) { m_auraBaseMod[modGroup][modType] = value; }
+        public void SetBaseModValue(BaseModGroup modGroup, BaseModType modType, float value) { auraBaseMod[modGroup][modType] = value; }
         public void HandleBaseModValue(BaseModGroup modGroup, BaseModType modType, float amount, bool apply) { throw new NotImplementedException(); }
         public float GetBaseModValue(BaseModGroup modGroup, BaseModType modType) { throw new NotImplementedException(); }
         public float GetTotalBaseModValue(BaseModGroup modGroup) { throw new NotImplementedException(); }
-        public float GetTotalPercentageModValue(BaseModGroup modGroup) { return m_auraBaseMod[modGroup][BaseModType.FlatMod] + m_auraBaseMod[modGroup][BaseModType.PercentMod]; }
+        public float GetTotalPercentageModValue(BaseModGroup modGroup) { return auraBaseMod[modGroup][BaseModType.FlatMod] + auraBaseMod[modGroup][BaseModType.PercentMod]; }
         public void _ApplyAllStatBonuses() { throw new NotImplementedException(); }
         public void _RemoveAllStatBonuses() { throw new NotImplementedException(); }
         public void ResetAllPowers() { throw new NotImplementedException(); }
@@ -250,8 +230,8 @@ namespace Core
         public bool IsImmuneToEnvironmentalDamage() { throw new NotImplementedException(); }
         public uint EnvironmentalDamage(EnviromentalDamage type, int damage) { throw new NotImplementedException(); }
 
-        public byte GetRunesState() { return m_runes.RuneState; }
-        public uint GetRuneCooldown(byte index) { return m_runes.Cooldown[index]; }
+        public byte GetRunesState() { return runes.RuneState; }
+        public uint GetRuneCooldown(byte index) { return runes.Cooldown[index]; }
         public uint GetRuneBaseCooldown() { throw new NotImplementedException(); }
         public void SetRuneCooldown(byte index, uint cooldown, bool casted = false) { throw new NotImplementedException(); }
         public void ResyncRunes() { throw new NotImplementedException(); }
