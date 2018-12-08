@@ -5,27 +5,35 @@ namespace Core
 {
     public class BalanceManager : SingletonGameObject<BalanceManager>
     {
-        public static Dictionary<int, MapEntry> MapEntries { get; } = new Dictionary<int, MapEntry>();
-        public static Dictionary<int, SpellInfo> SpellInfos { get; } = new Dictionary<int, SpellInfo>();
+        public static List<MapDefinition> Maps { get; } = new List<MapDefinition>();
+        public static List<SpellInfo> SpellInfos { get; } = new List<SpellInfo>();
+        public static Dictionary<int, MapDefinition> MapsById { get; } = new Dictionary<int, MapDefinition>();
+        public static Dictionary<int, SpellInfo> SpellInfosById { get; } = new Dictionary<int, SpellInfo>();
 
         [SerializeField] private BalanceDefinition balanceDefinition;
 
         public void Initialize()
         {
-            balanceDefinition.SpellInfos.ForEach(spellInfo => SpellInfos.Add(spellInfo.Id, spellInfo));
-            balanceDefinition.MapEntries.ForEach(mapEntry => MapEntries.Add(mapEntry.Id, mapEntry));
+            Maps.AddRange(balanceDefinition.MapEntries);
+            SpellInfos.AddRange(balanceDefinition.SpellInfos);
 
-            foreach (var spellInfoEntry in SpellInfos)
+            balanceDefinition.SpellInfos.ForEach(spellInfo => SpellInfosById.Add(spellInfo.Id, spellInfo));
+            balanceDefinition.MapEntries.ForEach(mapEntry => MapsById.Add(mapEntry.Id, mapEntry));
+
+            foreach (var spellInfoEntry in SpellInfosById)
                 spellInfoEntry.Value.Initialize();
         }
 
         public void Deinitialize()
         {
-            foreach (var spellInfoEntry in SpellInfos)
+            foreach (var spellInfoEntry in SpellInfosById)
                 spellInfoEntry.Value.Deinitialize();
 
+            SpellInfosById.Clear();
+            MapsById.Clear();
+
+            Maps.Clear();
             SpellInfos.Clear();
-            MapEntries.Clear();
         }
     }
 }

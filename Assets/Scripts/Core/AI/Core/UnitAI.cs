@@ -89,7 +89,7 @@ namespace Core
                 return null;
 
             if (targetType == SelectAggroTarget.Nearest || targetType == SelectAggroTarget.Farthest)
-                targetList.Sort((x, y) => Me.GetDistanceOrder(x, y) ? 1 : -1);
+                targetList.Sort((x, y) => Me.DistanceSortOrder(x, y));
 
             switch (targetType)
             {
@@ -125,9 +125,9 @@ namespace Core
                 return;
 
             if (targetType == SelectAggroTarget.Nearest || targetType == SelectAggroTarget.Farthest)
-                targetList.Sort((x, y) => Me.GetDistanceOrder(x, y) ? 1 : -1);
+                targetList.Sort((x, y) => Me.DistanceSortOrder(x, y));
             else if (targetType == SelectAggroTarget.Farthest || targetType == SelectAggroTarget.BottomAggro)
-                targetList.Sort((x, y) => Me.GetDistanceOrder(x, y) ? -1 : 1);
+                targetList.Sort((x, y) => -Me.DistanceSortOrder(x, y));
             else if (targetType == SelectAggroTarget.Random)
                 targetList.Sort((x, y) => Math.Sign(RandomHelper.NextDouble() - 0.5d));
 

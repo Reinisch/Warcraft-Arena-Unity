@@ -219,13 +219,11 @@ namespace Core
 
         private static readonly Dictionary<EntityFields, FieldTypes> EntityFieldTypes = new Dictionary<EntityFields, FieldTypes>(new EntityFieldsEqualityComparer())
         {
-            {EntityFields.Guid, FieldTypes.Guid},
-            {EntityFields.Type, FieldTypes.Int},
             {EntityFields.Entry, FieldTypes.Int},
-            {EntityFields.ScaleX, FieldTypes.Float},
+            {EntityFields.Scale, FieldTypes.Float},
             {EntityFields.DynamicFlags, FieldTypes.Long},
 
-            {EntityFields.GameEntityCreatedBy, FieldTypes.Guid},
+            {EntityFields.GameEntityCreatedBy, FieldTypes.Ulong},
             {EntityFields.GameEntityDisplayId, FieldTypes.Uint},
             {EntityFields.GameEntityFlags, FieldTypes.Uint},
             {EntityFields.ParentRotation0, FieldTypes.Float},
@@ -241,23 +239,23 @@ namespace Core
             {EntityFields.StateAnimKitID, FieldTypes.Uint},
             {EntityFields.StateWorldEffectID, FieldTypes.Uint},
 
-            {EntityFields.DynamicCaster, FieldTypes.Guid},
+            {EntityFields.DynamicCaster, FieldTypes.Ulong},
             {EntityFields.DynamicEntityType, FieldTypes.Uint},
             {EntityFields.DynamicSpellVisualID, FieldTypes.Uint},
             {EntityFields.DynamicSpellid, FieldTypes.Uint},
             {EntityFields.DynamicRadius, FieldTypes.Float},
             {EntityFields.DynamicCasttime, FieldTypes.Uint},
 
-            {EntityFields.UnitCharm, FieldTypes.Guid},
-            {EntityFields.UnitSummon, FieldTypes.Guid},
-            {EntityFields.UnitCritter, FieldTypes.Guid},
-            {EntityFields.UnitCharmedBy, FieldTypes.Guid},
-            {EntityFields.UnitSummonedBy, FieldTypes.Guid},
-            {EntityFields.UnitCreatedBy, FieldTypes.Guid},
-            {EntityFields.DemonCreator, FieldTypes.Guid},
-            {EntityFields.Target, FieldTypes.Guid},
-            {EntityFields.BattlePetCompanionGuid, FieldTypes.Guid},
-            {EntityFields.ChannelObject, FieldTypes.Guid},
+            {EntityFields.UnitCharm, FieldTypes.Ulong},
+            {EntityFields.UnitSummon, FieldTypes.Ulong},
+            {EntityFields.UnitCritter, FieldTypes.Ulong},
+            {EntityFields.UnitCharmedBy, FieldTypes.Ulong},
+            {EntityFields.UnitSummonedBy, FieldTypes.Ulong},
+            {EntityFields.UnitCreatedBy, FieldTypes.Ulong},
+            {EntityFields.DemonCreator, FieldTypes.Ulong},
+            {EntityFields.Target, FieldTypes.Ulong},
+            {EntityFields.BattlePetCompanionGuid, FieldTypes.Ulong},
+            {EntityFields.ChannelObject, FieldTypes.Ulong},
             {EntityFields.ChannelSpell, FieldTypes.Uint},
             {EntityFields.ChannelSpellVisual, FieldTypes.Uint},
             {EntityFields.Info, FieldTypes.Int},
@@ -441,10 +439,10 @@ namespace Core
             {EntityFields.CombatRating9, FieldTypes.Uint},
             {EntityFields.CombatRating10, FieldTypes.Uint},
 
-            {EntityFields.ItemOwner, FieldTypes.Guid},
-            {EntityFields.ItemContained, FieldTypes.Guid},
-            {EntityFields.ItemCreator, FieldTypes.Guid},
-            {EntityFields.ItemGiftcreator, FieldTypes.Guid},
+            {EntityFields.ItemOwner, FieldTypes.Ulong},
+            {EntityFields.ItemContained, FieldTypes.Ulong},
+            {EntityFields.ItemCreator, FieldTypes.Ulong},
+            {EntityFields.ItemGiftcreator, FieldTypes.Ulong},
             {EntityFields.ItemStackCount, FieldTypes.Uint},
             {EntityFields.ItemDuration, FieldTypes.Uint},
             {EntityFields.ItemSpellCharges, FieldTypes.Int},
@@ -540,8 +538,8 @@ namespace Core
             {EntityFields.ContainerFieldSlot36, FieldTypes.Uint},
             {EntityFields.ContainerFieldNumSlots, FieldTypes.Uint},
 
-            {EntityFields.CorpseOwner, FieldTypes.Guid},
-            {EntityFields.CorpseParty, FieldTypes.Guid},
+            {EntityFields.CorpseOwner, FieldTypes.Ulong},
+            {EntityFields.CorpseParty, FieldTypes.Ulong},
             {EntityFields.CorpseDisplayID, FieldTypes.Uint},
             {EntityFields.CorpseItem, FieldTypes.Uint},
             {EntityFields.CorpseItem1, FieldTypes.Uint},
@@ -573,10 +571,8 @@ namespace Core
         private static readonly Dictionary<EntityFields, FieldFlags> EntityFieldFlags =
             new Dictionary<EntityFields, FieldFlags>(new EntityFieldsEqualityComparer())
             {
-                {EntityFields.Guid, FieldFlags.Public},
-                {EntityFields.Type, FieldFlags.Public},
                 {EntityFields.Entry, FieldFlags.Dynamic},
-                {EntityFields.ScaleX, FieldFlags.Public},
+                {EntityFields.Scale, FieldFlags.Public},
                 {EntityFields.DynamicFlags, FieldFlags.Dynamic | FieldFlags.Urgent},
 
                 {EntityFields.GameEntityCreatedBy, FieldFlags.Public},

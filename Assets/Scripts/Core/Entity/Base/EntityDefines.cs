@@ -20,21 +20,6 @@ namespace Core
     }
 
     [Flags]
-    public enum UpdateFlags
-    {
-        None = 0x0000,
-        Self = 0x0001,
-        Transport = 0x0002,
-        HasTarget = 0x0004,
-        Living = 0x0008,
-        StationaryPosition = 0x0010,
-        Vehicle = 0x0020,
-        TransportPosition = 0x0040,
-        Rotation = 0x0080,
-        Animkits = 0x0100,
-    }
-
-    [Flags]
     public enum UnitFlags
     {
         ServerControlled = 1 << 0,

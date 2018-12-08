@@ -29,7 +29,7 @@ namespace Core
             if (target.HasUnitState(UnitState.Confused | UnitState.Stunned | UnitState.Fleeing))
                 return;
 
-            target.SetFacingTo(target.GetAngle(DestTarget));
+            target.SetFacingTo(DestTarget);
             target.ClearUnitState(UnitState.Moving);
 
             if (target.TypeId == EntityType.Unit)

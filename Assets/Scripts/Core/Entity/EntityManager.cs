@@ -1,61 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
-using UnityEngine;
-using UnityEngine.Assertions;
+using Bolt;
 
 namespace Core
 {
-    public class EntityManager : SingletonGameObject<EntityManager>
+    public class EntityManager<T> where T : Entity
     {
-        [Serializable]
-        private class DefaultPrototypeDefinition
-        {
-            [UsedImplicitly] public EntityType EntityType;
-            [UsedImplicitly] public GameObject Prototype;
-        }
+        private readonly Dictionary<ulong, T> entitiesById = new Dictionary<ulong, T>();
+        private readonly List<T> entities = new List<T>();
 
-        [SerializeField] private List<DefaultPrototypeDefinition> defaultPrototypes;
+        public event Action<T> EventEntityAttached;
+        public event Action<T> EventEntityDetach;
 
-        private Dictionary<EntityType, GameObject> DefaultPrototypes { get; } = new Dictionary<EntityType, GameObject>();
-        private Dictionary<Guid, WorldEntity> SpawnedEntities { get; } = new Dictionary<Guid, WorldEntity>();
-        
         public void Initialize()
         {
-            defaultPrototypes.ForEach(protoDefinition => DefaultPrototypes.Add(protoDefinition.EntityType, protoDefinition.Prototype));
-
-            foreach (var spawnedEntity in SpawnedEntities)
-                spawnedEntity.Value.Deinitialize();
-
-            SpawnedEntities.Clear();
         }
 
         public void Deinitialize()
         {
-            defaultPrototypes.Clear();
+            while (entities.Count > 0)
+                Destroy(entities[0]);
         }
 
-        public T SpawnEntity<T>(EntityType type, EntitySpawnData spawnData) where T : WorldEntity
+        public void Attach(T entity)
         {
-            GameObject prototype = DefaultPrototypes.LookupEntry(type);
-            Assert.IsNotNull(prototype, $"Missing prototype for entity: {type}");
+            entities.Add(entity);
+            entitiesById.Add(entity.NetworkId, entity);
 
-            T entity = Instantiate(prototype, spawnData.Position, spawnData.Rotation).GetComponent<T>();
-            Guid spawnGuid = Guid.NewGuid();
-            Assert.IsFalse(SpawnedEntities.ContainsKey(spawnGuid), $"Same Guid generated for entity: {type} Guid: {spawnGuid}");
-
-            entity.Initialize(true, spawnGuid);
-            SpawnedEntities.Add(spawnGuid, entity);
-            return entity;
+            EventEntityAttached?.Invoke(entity);
         }
 
-        public void DespawnEntity(WorldEntity entity)
+        public void Detach(T entity)
         {
-            Assert.IsTrue(SpawnedEntities.ContainsKey(entity.Guid), $"Attempted to despawn missing entity: {entity.TypeId} Guid: {entity.Guid}");
+            EventEntityDetach?.Invoke(entity);
 
-            entity.Deinitialize();
-            SpawnedEntities.Remove(entity.Guid);
-            Destroy(entity.gameObject);
+            entities.Remove(entity);
+            entitiesById.Remove(entity.NetworkId);
+        }
+
+        public void Destroy(T entity)
+        {
+            if (entity.BoltEntity.isAttached)
+                Detach(entity);
+
+            BoltNetwork.Destroy(entity.gameObject);
+        }
+
+        public TEntity Create<TEntity>(PrefabId prefabId, Entity.CreateInfo createInfo) where TEntity : T
+        {
+            return BoltNetwork.Instantiate(prefabId, createInfo).GetComponent<TEntity>();
+        }
+
+        public T Find(ulong networkId)
+        {
+            return entitiesById.LookupEntry(networkId);
         }
     }
 }

@@ -2,7 +2,8 @@
     "name": "Arena.Client",
     "references": [
         "Arena.Core",
-        "Arena.Shared"
+        "Arena.Shared",
+        "Unity.TextMeshPro"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

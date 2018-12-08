@@ -21,16 +21,6 @@ namespace Core
         public bool PlayerOnly { get; }
         public int Aura { get; }
 
-        /// <param name="unit">The reference unit.</param>
-        /// <param name="dist">
-        ///     If 0: ignored, if more then 0: maximum distance to the reference unit, if less then 0: minimum
-        ///     distance to the reference unit.
-        /// </param>
-        /// <param name="playerOnly">Only for players.</param>
-        /// <param name="aura">
-        ///     If 0: ignored, if more then 0: the target shall have the aura, if less then 0, the target shall NOT
-        ///     have the aura.
-        /// </param>
         public DefaultTargetSelector(Unit unit, float dist, bool playerOnly, int aura)
         {
             Me = unit;
@@ -48,12 +38,6 @@ namespace Core
                 return false;
 
             if (PlayerOnly && target.TypeId != EntityType.Player)
-                return false;
-
-            if (Dist > 0.0f && !Me.IsWithinCombatRange(target, Dist))
-                return false;
-
-            if (Dist < 0.0f && Me.IsWithinCombatRange(target, -Dist))
                 return false;
 
             if (Aura == 0)
@@ -85,7 +69,7 @@ namespace Core
         public SpellTargetSelector(Unit caster, int spellId)
         {
             Caster = caster;
-            SpellInfo = BalanceManager.SpellInfos[spellId];
+            SpellInfo = BalanceManager.SpellInfosById[spellId];
         }
 
         public bool TargetSelector(Unit target)
@@ -101,8 +85,8 @@ namespace Core
             float rangeMod;
             if ((SpellInfo.RangedFlags & SpellRangeFlag.Melee) > 0)
             {
-                rangeMod = Caster.GetCombatReach() + 4.0f / 3.0f;
-                rangeMod += target.GetCombatReach();
+                rangeMod = Caster.CombatReach + 4.0f / 3.0f;
+                rangeMod += target.CombatReach;
                 rangeMod = Mathf.Max(rangeMod, UnitHelper.NominalMeleeRange);
             }
             else
@@ -110,16 +94,16 @@ namespace Core
                 var meleeRange = 0.0f;
                 if ((SpellInfo.RangedFlags & SpellRangeFlag.Ranged) > 0)
                 {
-                    meleeRange = Caster.GetCombatReach() + 4.0f / 3.0f;
-                    meleeRange += target.GetCombatReach();
+                    meleeRange = Caster.CombatReach + 4.0f / 3.0f;
+                    meleeRange += target.CombatReach;
                     meleeRange = Mathf.Max(meleeRange, UnitHelper.NominalMeleeRange);
                 }
 
                 minRange = Caster.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
                 maxRange = Caster.GetSpellMaxRangeForTarget(target, SpellInfo);
 
-                rangeMod = Caster.GetCombatReach();
-                rangeMod += target.GetCombatReach();
+                rangeMod = Caster.CombatReach;
+                rangeMod += target.CombatReach;
 
                 if (minRange > 0.0f && (SpellInfo.RangedFlags & SpellRangeFlag.Ranged) == 0)
                     minRange += rangeMod;
@@ -136,10 +120,10 @@ namespace Core
 
             if (target != Caster)
             {
-                if (Caster.GetExactDistSq(target.WorldLocation) > maxRange)
+                if (Caster.DistanceTo(target.Position) > maxRange)
                     return false;
 
-                if (minRange > 0.0f && Caster.GetExactDistSq(target.WorldLocation) < minRange)
+                if (minRange > 0.0f && Caster.DistanceTo(target.Position) < minRange)
                     return false;
             }
 
@@ -171,9 +155,9 @@ namespace Core
 
             var currentVictim = Source.ThreatManager.CurrentVictim;
             if (currentVictim != null)
-                return target.Guid != currentVictim.UnitGuid;
+                return target.NetworkId != currentVictim.UnitId;
 
-            return target != Source.GetVictim();
+            return target.NetworkId != Source.GetTarget();
         }
     }
 }

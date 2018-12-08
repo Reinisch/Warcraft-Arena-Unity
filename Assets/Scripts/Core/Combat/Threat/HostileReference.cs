@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core
 {
@@ -10,7 +9,7 @@ namespace Core
         public bool IsAccessible { get; private set; }
         public bool IsOnline { get; private set; }
 
-        public Guid UnitGuid { get; private set; }
+        public ulong UnitId { get; private set; }
         public Unit SourceUnit { get; private set; }
 
         public float TempThreatModifier { get; private set; } // used for taunt
@@ -87,7 +86,7 @@ namespace Core
             if (ReferenceEquals(b, null))
                 return false;
 
-            return a.UnitGuid == b.UnitGuid;
+            return a.UnitId == b.UnitId;
         }
 
         public static bool operator !=(HostileReference a, HostileReference b)
@@ -104,12 +103,12 @@ namespace Core
             if (obj.GetType() != GetType())
                 return false;
 
-            return UnitGuid.Equals(((HostileReference) obj).UnitGuid);
+            return UnitId.Equals(((HostileReference) obj).UnitId);
         }
 
         public override int GetHashCode()
         {
-            return UnitGuid.GetHashCode();
+            return UnitId.GetHashCode();
         }
 
 

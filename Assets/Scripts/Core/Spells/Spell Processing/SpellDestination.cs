@@ -1,18 +1,16 @@
-﻿using System;
-
-namespace Core
+﻿namespace Core
 {
     public struct SpellDestination
     {
         public WorldLocation Position { get; private set; }
         public Position TransportOffset { get; private set; }
-        public Guid TransportGUID { get; set; }
+        public ulong TransportId { get; set; }
 
 
         public SpellDestination(float x, float y, float z, float orientation = 0.0f, int mapId = GridHelper.MapIdInvalid) : this()
         {
             Position = new WorldLocation(x, y, z, orientation, mapId);
-            TransportGUID = Guid.Empty;
+            TransportId = 0;
             TransportOffset = new Position();
         }
 
@@ -20,21 +18,21 @@ namespace Core
         {
             Position = new WorldLocation();
             Position.Relocate(pos);
-            TransportGUID = Guid.Empty;
+            TransportId = 0;
             TransportOffset = new Position();
         }
 
         public SpellDestination(WorldEntity entity) : this()
         {
             Position = new WorldLocation();
-            Position.Relocate(entity.WorldLocation);
-            TransportGUID = Guid.Empty;
+            Position.Relocate(entity.Position);
+            TransportId = 0;
             TransportOffset = new Position();
         }
 
         public void Relocate(Position pos)
         {
-            if (TransportGUID != Guid.Empty)
+            if (TransportId != 0)
             {
                 Position offset = new Position();
                 Position.GetPositionOffsetTo(pos, offset);
@@ -45,7 +43,7 @@ namespace Core
 
         public void RelocateOffset(Position offset)
         {
-            if (TransportGUID != Guid.Empty)
+            if (TransportId != 0)
                 TransportOffset.RelocateOffset(offset);
 
             Position.RelocateOffset(offset);

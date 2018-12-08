@@ -1,9 +1,8 @@
-﻿using Bolt;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core
 {
-    public class PhotonBoltSharedListener : GlobalEventListener
+    public class PhotonBoltSharedListener : PhotonBoltBaseListener
     {
         public override void Connected(BoltConnection boltConnection)
         {

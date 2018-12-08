@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SoundManager : SingletonGameObject<SoundManager>
 {
-    public void Initialize()
+    public void Initialize(WorldManager worldManager)
     {
         SpellManager.Instance.EventSpellCast += OnSpellManagerSpellCast;
         SpellManager.Instance.EventSpellHit += OnSpellManagerSpellHit;

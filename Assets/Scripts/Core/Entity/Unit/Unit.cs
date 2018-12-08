@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
+
 using Debug = UnityEngine.Debug;
 using Assert = UnityEngine.Assertions.Assert;
 using Mathf = UnityEngine.Mathf;
 using Vector3 = UnityEngine.Vector3;
-
 using AuraApplicationList = System.Collections.Generic.List<Core.AuraApplication>;
-using Diminishing = System.Collections.Generic.List<Core.DiminishingReturn>;
 using DispelChargesList = System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<Core.Aura, short>>;
 
 namespace Core
 {
     public class Unit : WorldEntity
     {
-        [SerializeField, UsedImplicitly] private CapsuleCollider unitCollider;
+        [SerializeField, UsedImplicitly, Header("Unit"), Space(10)] private CapsuleCollider unitCollider;
 
+        public override EntityType TypeId => EntityType.Unit;
         public CapsuleCollider UnitCollider => unitCollider;
 
         #region Unit data
@@ -26,13 +26,12 @@ namespace Core
         protected Dictionary<WeaponAttackType, uint> baseAttackSpeed;
         protected Dictionary<WeaponAttackType, float> modAttackSpeedPct;
         protected Dictionary<WeaponAttackType, uint> attackTimer;
-        protected Dictionary<SpellImmunity, List<SpellImmune>> spellImmune;
         protected Dictionary<int, List<Aura>> ownedAuras;
         protected Dictionary<Guid, AuraApplication> appliedAuras;
         protected Dictionary<Stats, float> createStats = new Dictionary<Stats, float>();
         protected Dictionary<UnitMods, Dictionary<UnitModifierType, float>> auraModifiersGroup;
         protected Dictionary<WeaponAttackType, Dictionary<WeaponDamageRange, float>> weaponDamage;
-        protected Dictionary<UnitMoveType, float> speedRates;
+        protected Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
         protected Dictionary<CurrentSpellTypes, Spell> currentSpells;
         protected Dictionary<AuraStateType, AuraApplication> auraStateAuras;    // used for improve performance of aura state checks on aura apply/remove
         protected Dictionary<AuraType, List<AuraEffect>> modifierAuras;         // all modifier auras
@@ -55,10 +54,8 @@ namespace Core
         protected uint regenTimer;
         protected int procDeep;
 
-        public string Name => entityName;
         public bool IsMovementBlocked => HasUnitState(UnitState.Root) || HasUnitState(UnitState.Stunned);
 
-        public Vector3 Position => transform.position;
         public Player MovedPlayer { get; set; }
         public MotionMaster MotionMaster { get; protected set; }
         public ThreatManager ThreatManager { get; protected set; }
@@ -68,39 +65,36 @@ namespace Core
         public UnitState UnitState { get; set; }
         public UnitMoveType MoveType { get; set; }
         public MoveSpline MoveSpline { get; set; }
-
-        public virtual bool CanDualWield { get; set; }
-        public bool CanModifyStats { get; set; }
-        public uint ExtraAttacks { get; set; }
-        public uint SpellTransform { get; set; }
-        public int InterruptMask { get; set; }
+        public float CombatReach { get; private set; }
 
         #endregion
 
-        public override void Initialize(bool isWorldObject, Guid guid)
+        protected override void Awake()
         {
-            base.Initialize(isWorldObject, guid);
-
-            speedRates = new Dictionary<UnitMoveType, float>();
-            SpellHistory = new SpellHistory();
-
-            TypeId = EntityType.Unit;
+            base.Awake();
 
             StatHelper.InitializeSpeedRates(speedRates);
+        }
+
+        public override void Attached()
+        {
+            base.Attached();
+
             SetMap(WorldManager.FindMap(1));
         }
 
-        public override void AddToWorld() { }
-        public override void RemoveFromWorld() { }
-        public override void CleanupsBeforeDelete(bool finalCleanup = true) { }
-        public void CleanupBeforeRemoveFromMap(bool finalCleanup) { }
+        public override void Detached()
+        {
+            ResetMap();
+
+            base.Detached();
+        }
 
         public DiminishingLevels GetDiminishing(DiminishingGroup group) { return default(DiminishingLevels); }
         public void IncrDiminishing(DiminishingGroup group) { }
         public float ApplyDiminishingToDuration(DiminishingGroup group, ref int duration, Unit caster, DiminishingLevels level, int limitduration) { return 1.0f; }
         public void ApplyDiminishingAura(DiminishingGroup group, bool apply) { }
 
-        // target dependent range checks
         public float GetSpellMinRangeForTarget(Unit target, SpellInfo spellInfo)
         {
             if (Mathf.Approximately(spellInfo.MinRangeFriend, spellInfo.MinRangeHostile))
@@ -109,6 +103,7 @@ namespace Core
                 return spellInfo.GetMinRange(true);
             return spellInfo.GetMinRange(!IsHostileTo(target));
         }
+
         public float GetSpellMaxRangeForTarget(Unit target, SpellInfo spellInfo)
         {
             if (Mathf.Approximately(spellInfo.MaxRangeFriend, spellInfo.MaxRangeHostile))
@@ -118,49 +113,10 @@ namespace Core
             return spellInfo.GetMaxRange(!IsHostileTo(target));
         }
 
-        public override void DoUpdate(uint time) { }
-
-        #region Auto attacks
-
-        public void SetAttackTimer(WeaponAttackType type, uint time) { attackTimer[type] = time; }
-        public void ResetAttackTimer(WeaponAttackType type = WeaponAttackType.BaseAttack) { }
-        public uint GetAttackTimer(WeaponAttackType type) { return attackTimer[type]; }
-        public bool IsAttackReady(WeaponAttackType type = WeaponAttackType.BaseAttack) { return attackTimer[type] == 0; }
-        public bool HaveOffhandWeapon() { return false; }
-        public float GetCombatReach() { return GetFloatValue(EntityFields.CombatReach); }
-        public float GetBoundaryRadius() { return GetFloatValue(EntityFields.BoundingRadius); }
-        public bool IsWithinCombatRange(Unit target, float dist2Compare) { return false; }
-        public bool IsWithinMeleeRange(Unit target) { return false; }
-        public bool IsWithinBoundaryRadius(Unit target) { return false; }
-        public void GetRandomContactPoint(Unit target, ref float x, ref float y, ref float z, float distance2DMin, float distance2DMax) { }
-
-        public void AddAttacker(Unit attacker) { }                                  // must be called only from Unit::Attack(Unit*)
-        public void RemoveAttacker(Unit attacker) { }                               // must be called only from Unit::AttackStop()
-        public Unit GetAttackerForHelper() { return null; }                         // If someone wants to help, who to give them
-        public bool Attack(Unit victim, bool meleeAttack) { return false; }
-        public void MustReacquireTarget() { shouldReacquireTarget = true; }       // flags the Unit for forced (client displayed) target reacquisition in the next ::Attack call
-        public void CastStop(uint exceptSpellid = 0) { }
-        public bool AttackStop() { return false; }
-        public void RemoveAllAttackers() { }
-        public List<Unit> GetAttackers() { return attackers; }
-        public bool IsAttackingPlayer() { return false; }
-        public Unit GetVictim() { return attacking; }
-        // Use this only when 100% sure there is a victim
-        public Unit EnsureVictim()
+        public override void DoUpdate(int timeDelta)
         {
-            Assert.IsNotNull(attacking, "Attacking unit not found in Unit.EnsureVictim!");
-            return attacking;
+
         }
-
-        public void CombatStop(bool includingCast = false) { }
-        public void CombatStopWithPets(bool includingCast = false) { }
-        public void StopAttackFaction(uint factionID) { }
-        public Unit SelectNearbyTarget(Unit exclude = null, float dist = UnitHelper.NominalMeleeRange) { return null; }
-        public void SendMeleeAttackStop(Unit victim = null) { }
-        public void SendMeleeAttackStart(Unit victim) { }
-
-        #endregion
-
 
         #region Unit info, stats and types
 
@@ -262,7 +218,6 @@ namespace Core
         public bool IsInPartyWith(Unit unit) { return false; }
         public bool IsInRaidWith(Unit unit) { return false; }
         public void GetPartyMembers(List<Unit> units) { }
-        public bool IsContestedGuard() { return false; }
 
         #endregion
 
@@ -369,7 +324,7 @@ namespace Core
             if (!victim.IsAlive)
                 return;
 
-            SpellInfo spellProto = BalanceManager.SpellInfos.ContainsKey(damageInfo.SpellId) ? BalanceManager.SpellInfos[damageInfo.SpellId] : null;
+            SpellInfo spellProto = BalanceManager.SpellInfosById.ContainsKey(damageInfo.SpellId) ? BalanceManager.SpellInfosById[damageInfo.SpellId] : null;
             if (spellProto == null)
             {
                 Debug.LogErrorFormat("Unit.DealSpellDamage has wrong damageInfo->SpellID: {0}", damageInfo.SpellId);
@@ -451,96 +406,6 @@ namespace Core
         #endregion
 
 
-        #region NPC Type Checks
-
-        public bool IsVendor()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.Vendor);
-        }
-
-        public bool IsTrainer()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.Trainer);
-        }
-
-        public bool IsQuestGiver()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.Questgiver);
-        }
-
-        public bool IsGossip()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.Gossip);
-        }
-
-        public bool IsTaxi()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.FlightMaster);
-        }
-
-        public bool IsGuildMaster()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.Petitioner);
-        }
-
-        public bool IsBattleMaster()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.BattleMaster);
-        }
-
-        public bool IsBanker()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.Banker);
-        }
-
-        public bool IsInnkeeper()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.Innkeeper);
-        }
-
-        public bool IsSpiritHealer()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.SpiritHealer);
-        }
-
-        public bool IsSpiritGuide()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.SpiritGuide);
-        }
-
-        public bool IsTabardDesigner()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.TabardDesigner);
-        }
-
-        public bool IsAuctioner()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.Auctioneer);
-        }
-
-        public bool IsArmorer()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.Repair);
-        }
-
-        public bool IsServiceProvider()
-        {
-            return false;
-        }
-
-        public bool IsSpiritService()
-        {
-            return HasLongFlag(EntityFields.UnitNpcFlags, (long)NpcFlags.SpiritHealer | (long)NpcFlags.SpiritGuide);
-        }
-
-        public bool IsCritter()
-        {
-            return GetCreatureType() == CreatureType.Critter;
-        }
-
-        #endregion
-
-
         #region Combat State
 
         public bool IsInCombat()
@@ -603,7 +468,7 @@ namespace Core
         public void EnergizeBySpell(Unit victim, uint spellId, int damage, PowerType powertype) { }
 
 
-        public void CastSpell(SpellCastTargets targets, SpellInfo spellInfo, TriggerCastFlags triggerFlags = TriggerCastFlags.None, AuraEffect triggeredByAura = null, Guid originalCaster = default(Guid))
+        public void CastSpell(SpellCastTargets targets, SpellInfo spellInfo, TriggerCastFlags triggerFlags = TriggerCastFlags.None, AuraEffect triggeredByAura = null, ulong originalCaster = 0)
         {
             new Spell(this, spellInfo, triggerFlags, originalCaster).Prepare(targets, triggeredByAura);
         }
@@ -664,10 +529,6 @@ namespace Core
         public bool SetDoubleJump(bool enable) { return false; }
         public void SendSetVehicleRecId(uint vehicleId) { }
 
-        public void SetInFront(WorldEntity target) { }
-        public void SetFacingTo(float ori) { }
-        public void SetFacingToObject(WorldEntity obj) { }
-
         #endregion
 
 
@@ -682,40 +543,40 @@ namespace Core
         public bool IsDying => DeathState == DeathState.JustDied;
         public bool IsDead => DeathState == DeathState.Dead || DeathState == DeathState.Corpse;
 
-        public Guid OwnerGuid
+        public ulong OwnerGuid
         {
-            get { return GetGuidValue(EntityFields.UnitSummonedBy); }
-            set { SetGuidValue(EntityFields.UnitSummonedBy, value); }
+            get { return GetULongValue(EntityFields.UnitSummonedBy); }
+            set { SetULongValue(EntityFields.UnitSummonedBy, value); }
         }
 
-        public Guid CreatorGuid
+        public ulong CreatorGuid
         {
-            get { return GetGuidValue(EntityFields.UnitCreatedBy); }
-            set { SetGuidValue(EntityFields.UnitCreatedBy, value); }
+            get { return GetULongValue(EntityFields.UnitCreatedBy); }
+            set { SetULongValue(EntityFields.UnitCreatedBy, value); }
         }
 
-        public Guid MinionGuid
+        public ulong MinionGuid
         {
-            get { return GetGuidValue(EntityFields.UnitSummon); }
-            set { SetGuidValue(EntityFields.UnitSummon, value); }
+            get { return GetULongValue(EntityFields.UnitSummon); }
+            set { SetULongValue(EntityFields.UnitSummon, value); }
         }
 
-        public Guid CharmerGuid
+        public ulong CharmerGuid
         {
-            get { return GetGuidValue(EntityFields.UnitCharmedBy); }
-            set { SetGuidValue(EntityFields.UnitCharmedBy, value); }
+            get { return GetULongValue(EntityFields.UnitCharmedBy); }
+            set { SetULongValue(EntityFields.UnitCharmedBy, value); }
         }
 
-        public Guid PetGuid
+        public ulong PetGuid
         {
             get { return SummonSlots[UnitHelper.SummonSlotPet]; }
             set { SummonSlots[UnitHelper.SummonSlotPet] = value; }
         }
 
-        public Guid CritterGuid
+        public ulong CritterGuid
         {
-            get { return GetGuidValue(EntityFields.UnitCritter); }
-            set { SetGuidValue(EntityFields.UnitCritter, value); }
+            get { return GetULongValue(EntityFields.UnitCritter); }
+            set { SetULongValue(EntityFields.UnitCritter, value); }
         }
 
         public Guid CharmGuid => GetGuidValue(EntityFields.UnitCharm);
@@ -755,7 +616,7 @@ namespace Core
         public Unit GetFirstControlled() { throw new NotImplementedException(); }
         public void RemoveAllControlled() { throw new NotImplementedException(); }
 
-        public bool IsCharmed() { return CharmerGuid != Guid.Empty; }
+        public bool IsCharmed() { return CharmerGuid != 0; }
         public bool IsPossessed() { return HasUnitState(UnitState.Possessed); }
         public bool IsPossessedByPlayer() { throw new NotImplementedException(); }
         public bool IsPossessing() { throw new NotImplementedException(); }
@@ -771,16 +632,16 @@ namespace Core
         #region Aura helpers
 
         // aura apply/remove helpers - you should better not use these
-        public Aura TryStackingOrRefreshingExistingAura(SpellInfo newAuraSpellInfo, Unit caster, List<int> baseAmount = null, Guid casterGuid = default(Guid))
+        public Aura TryStackingOrRefreshingExistingAura(SpellInfo newAuraSpellInfo, Unit caster, List<int> baseAmount = null, ulong casterId = 0)
         {
-            Assert.IsTrue(casterGuid != Guid.Empty || caster != null);
+            Assert.IsTrue(casterId != 0 || caster != null);
 
             // check if these can stack anyway
-            if (casterGuid == Guid.Empty && !newAuraSpellInfo.IsStackableOnOneSlotWithDifferentCasters())
-                casterGuid = caster.Guid;
+            if (casterId == 0 && !newAuraSpellInfo.IsStackableOnOneSlotWithDifferentCasters())
+                casterId = caster.NetworkId;
 
             // find current aura from spell and change it's stackamount, or refresh it's duration
-            var foundAura = GetOwnedAura(newAuraSpellInfo.Id, casterGuid, 0);
+            var foundAura = GetOwnedAura(newAuraSpellInfo.Id, casterId, 0);
             if (foundAura == null)
                 return null;
 
@@ -817,12 +678,12 @@ namespace Core
         public void RemoveOwnedAura(AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
         public void RemoveOwnedAura(uint spellId, Guid casterGuid = default(Guid), uint reqEffMask = 0, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
         public void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
-        public Aura GetOwnedAura(int spellId, Guid casterGuid, uint reqEffMask, Aura exceptAura = null)
+        public Aura GetOwnedAura(int spellId, ulong casterId, uint reqEffMask, Aura exceptAura = null)
         {
             if (!ownedAuras.ContainsKey(spellId))
                 return null;
 
-            return ownedAuras[spellId].FirstOrDefault(sameSpellAura => sameSpellAura.CasterGuid == casterGuid && exceptAura != sameSpellAura);
+            return ownedAuras[spellId].FirstOrDefault(sameSpellAura => sameSpellAura.CasterId == casterId && exceptAura != sameSpellAura);
         }
 
         // AppliedAuras container management
@@ -957,11 +818,11 @@ namespace Core
         public int GetCurrentSpellCastTime(uint spellID) { return 0; }
         public virtual SpellInfo GetCastSpellInfo(SpellInfo spellInfo) { return null; }
 
-        public SpellHistory SpellHistory { get; private set; }
+        public SpellHistory SpellHistory { get; } = new SpellHistory();
 
         private DeathState deathState;
-        public Guid[] SummonSlots { get; } = new Guid[UnitHelper.MaxSummonSlot];
-        public Guid[] ObjectSlots { get; } = new Guid[UnitHelper.MaxGameEntitySlot];
+        public ulong[] SummonSlots { get; } = new ulong[UnitHelper.MaxSummonSlot];
+        public ulong[] ObjectSlots { get; } = new ulong[UnitHelper.MaxGameEntitySlot];
 
         public ShapeshiftForm GetShapeshiftForm() { return (ShapeshiftForm)GetByteValue(EntityFields.BaseFlags, 3); }
         public void SetShapeshiftForm(ShapeshiftForm form) { }
@@ -1245,36 +1106,10 @@ namespace Core
         public bool IsTurning() { return MovementInfo.HasMovementFlag(MovementFlags.MaskTurning); }
         public bool IsFlying() { return MovementInfo.HasMovementFlag(MovementFlags.Flying | MovementFlags.DisableGravity); }
         public bool IsFalling() { return false; }
-        public virtual bool CanFly() { return false; }
-        public void RewardRage(uint baseRage) { }
 
-        public virtual float GetFollowAngle() { return Mathf.PI / 2; }
-        public void OutDebugInfo() { }
-        public virtual bool IsLoading() { return false; }
+        public ulong GetTarget() { return GetULongValue(EntityFields.Target); }
+        public virtual void SetTarget(ulong targetNetworkId) { }
 
-        public Guid GetTarget() { return GetGuidValue(EntityFields.Target); }
-        public virtual void SetTarget(Guid guid) { }
-
-        protected void _UpdateSpells(uint time) { }
-        protected void _DeleteRemovedAuras() { }
-        protected void _UpdateAutoRepeatSpell() { }
-        protected void DisableSpline() { }
-
-        private bool IsTriggeredAtSpellProcEvent(Unit victim, Aura aura, SpellInfo procSpell, uint procFlag,
-            uint procExtra, WeaponAttackType attType, bool isVictim, bool active, SpellProcEventEntry spellProcEvent)
-        { return false; }
-        private bool RollProcResult(Unit victim, Aura aura, WeaponAttackType attType, bool isVictim, SpellProcEventEntry spellProcEvent) { return false; }
-        private bool HandleDummyAuraProc(Unit victim, uint damage, AuraEffect triggeredByAura, SpellInfo procSpell, uint procFlag, uint procEx, uint cooldown) { return false; }
-        private bool HandleAuraProc(Unit victim, uint damage, Aura triggeredByAura, SpellInfo procSpell, uint procFlag, uint procEx, uint cooldown, ref bool handled) { return false; }
-        private bool HandleProcTriggerSpell(Unit victim, uint damage, AuraEffect triggeredByAura, SpellInfo procSpell, uint procFlag, uint procEx, uint cooldown) { return false; }
-        private bool HandleOverrideClassScriptAuraProc(Unit victim, uint damage, AuraEffect triggeredByAura, SpellInfo procSpell, uint cooldown) { return false; }
-        private bool HandleAuraRaidProcFromChargeWithValue(AuraEffect triggeredByAura) { return false; }
-        private bool HandleAuraRaidProcFromCharge(AuraEffect triggeredByAura) { return false; }
-
-        private void UpdateSplineMovement(uint timeDiff) { }
-        private void UpdateSplinePosition() { }
-
-        // player or player's pet
         private float GetCombatRatingReduction(CombatRating cr) { return 0.0f; }
         private uint GetCombatRatingDamageReduction(CombatRating cr, float rate, float cap, uint damage) { return 0; }
     }

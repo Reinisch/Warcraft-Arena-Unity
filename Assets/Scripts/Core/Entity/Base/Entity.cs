@@ -1,162 +1,181 @@
 ﻿using System;
 using System.Collections.Generic;
+using Bolt;
+using JetBrains.Annotations;
+using UdpKit;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Core
 {
-    public abstract class Entity : MonoBehaviour
+    public abstract class Entity : EntityBehaviour
     {
-        private Dictionary<EntityFields, bool> ChangesMask { get; set; }
-        private Dictionary<EntityFields, dynamic> UpdateFields { get; set; }
+        public abstract class CreateInfo : IProtocolToken
+        {
+            public abstract void Read(UdpPacket packet);
 
-        protected bool EntityUpdated { get; set; }
-        protected UpdateFlags UpdateFlag { get; set; }
-        protected FieldFlags FieldNotifyFlags { get; set; }
+            public abstract void Write(UdpPacket packet);
+        }
 
-        public bool InWorld { get; protected set; }
-        public EntityType TypeId { get; protected set; }
-        public EntityTypeMask TypeMask { get; protected set; }
-        public Guid Guid { get { return GetGuidValue(EntityFields.Guid); } protected set { SetGuidValue(EntityFields.Guid, value); } }
-        public uint Entry { get { return GetUintValue(EntityFields.Entry); } set { SetUintValue(EntityFields.Entry, value); } }
-        public virtual float Scale { get { return GetFloatValue(EntityFields.ScaleX); } set { SetFloatValue(EntityFields.ScaleX, value); } }
+        [SerializeField] private List<EntityField> entityFieldList = new List<EntityField>();
+
+        private readonly Dictionary<EntityFields, EntityField> entityFields = new Dictionary<EntityFields, EntityField>(new EntityFieldsEqualityComparer());
+        protected WorldManager worldManager;
+
+        public bool IsOwner => entity.isOwner;
+        public bool IsController => entity.hasControl;
+        public ulong NetworkId => entity.networkId.PackedValue;
+        public BoltEntity BoltEntity => entity;
+
+        public abstract EntityType TypeId { get; }
+        public bool InWorld { get; private set; }
 
         public Unit AsUnit => this as Unit;
         public Player AsPlayer => this as Player;
         public GameEntity AsGameEntity => this as GameEntity;
 
-        public virtual void SendUpdateToPlayer(Player player) { }
-        public virtual void DestroyForPlayer(Player target) { }
+        [UsedImplicitly]
+        protected virtual void Awake()
+        {
+            foreach (var entityField in entityFieldList)
+                entityFields.Add(entityField.Field, entityField);
+        }
+
+        public void TakenFromPool(WorldManager worldManager)
+        {
+            this.worldManager = worldManager;
+        }
+
+        public void ReturnedToPool()
+        {
+            worldManager = null;
+        }
 
         #region Field getters/setters and modifiers
 
         public int GetIntValue(EntityFields field)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
-            return UpdateFields[field];
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            return entityFields[field].Int;
         }
         public uint GetUintValue(EntityFields field)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
-            return UpdateFields[field];
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            return entityFields[field].UInt;
         }
         public long GetLongValue(EntityFields field)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
-            return UpdateFields[field];
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            return entityFields[field].Long;
+        }
+        public ulong GetULongValue(EntityFields field)
+        {
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            return entityFields[field].ULong;
         }
         public float GetFloatValue(EntityFields field)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
-            return UpdateFields[field];
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            return entityFields[field].Float;
         }
         public byte GetByteValue(EntityFields field, byte offset)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
             Assert.IsTrue(offset < 4, "Trying to use wrong offset in WorldEntity.GetByteValue! Offset: " + offset);
 
-            return BitConverter.GetBytes((uint)UpdateFields[field])[offset];
-        }
-        public short GetShortValue(EntityFields field, byte offset)
-        {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
-            Assert.IsTrue(offset < 2, "Trying to use wrong offset in WorldEntity.GetShortValue! Offset: " + offset);
+            if (offset == 0)
+            {
+                return entityFields[field].Byte0;
+            }
 
-            return BitConverter.ToInt16(BitConverter.GetBytes((uint)UpdateFields[field]), offset);
+            if (offset == 1)
+            {
+                return entityFields[field].Byte1;
+            }
+
+            if (offset == 2)
+            {
+                return entityFields[field].Byte2;
+            }
+
+            return entityFields[field].Byte3;
+        }
+        public short GetShortValue(EntityFields field)
+        {
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+
+            return entityFields[field].Short;
         }
         public Guid GetGuidValue(EntityFields field)
         {
-            //Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
-            return UpdateFields[field];
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+
+            return Guid.Empty;
         }
 
         public void SetIntValue(EntityFields field, int value)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
 
-            if (UpdateFields[field] != value)
-            {
-                UpdateFields[field] = value;
-                ChangesMask[field] = true;
-
-                AddToEntityUpdateIfNeeded();
-            }
+            entityFields[field].Int = value;
         }
         public void SetUintValue(EntityFields field, uint value)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
 
-            if (UpdateFields[field] != value)
-            {
-                UpdateFields[field] = value;
-                ChangesMask[field] = true;
-
-                AddToEntityUpdateIfNeeded();
-            }
+            entityFields[field].UInt = value;
         }
         public void SetLongValue(EntityFields field, long value)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
 
-            if (UpdateFields[field] != value)
-            {
-                UpdateFields[field] = value;
-                ChangesMask[field] = true;
+            entityFields[field].Long = value;
+        }
+        public void SetULongValue(EntityFields field, ulong value)
+        {
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
 
-                AddToEntityUpdateIfNeeded();
-            }
+            entityFields[field].ULong = value;
         }
         public void SetFloatValue(EntityFields field, float value)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
 
-            if (!Mathf.Approximately((float)UpdateFields[field], value))
-            {
-                UpdateFields[field] = value;
-                ChangesMask[field] = true;
-
-                AddToEntityUpdateIfNeeded();
-            }
+            entityFields[field].Float = value;
         }
         public void SetByteValue(EntityFields field, byte offset, byte value)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
-            Assert.IsFalse(offset > 3, "Trying to use wrong offset in WorldEntity.SetByteValue! Offset: " + offset);
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
+            Assert.IsTrue(offset < 4, "Trying to use wrong offset in WorldEntity.SetByteValue! Offset: " + offset);
 
-            if ((byte)(UpdateFields[field] >> (offset * 8)) != value)
+            if (offset == 0)
             {
-                UpdateFields[field] &= ~((uint)0xFF << (offset * 8));
-                UpdateFields[field] |= (uint)value << (offset * 8);
-                ChangesMask[field] = true;
-
-                AddToEntityUpdateIfNeeded();
+                entityFields[field].Byte0 = value;
+            }
+            else if (offset == 1)
+            {
+                entityFields[field].Byte1 = value;
+            }
+            else if (offset == 2)
+            {
+                entityFields[field].Byte2 = value;
+            }
+            else
+            {
+                entityFields[field].Byte3 = value;
             }
         }
         public void SetShortValue(EntityFields field, byte offset, short value)
         {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
+            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
             Assert.IsFalse(offset > 1, "Trying to use wrong offset in WorldEntity.SetShortValue! Offset: " + offset);
 
-            if ((byte)(UpdateFields[field] >> (offset * 16)) != value)
-            {
-                UpdateFields[field] &= ~((uint)0xFFFF << (offset * 16));
-                UpdateFields[field] |= (uint)value << (offset * 16);
-                ChangesMask[field] = true;
-
-                AddToEntityUpdateIfNeeded();
-            }
+            entityFields[field].Short = value;
         }
+
         public void SetGuidValue(EntityFields field, Guid value)
         {
-            //Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
-
-            if (UpdateFields[field] != value)
-            {
-                UpdateFields[field] = value;
-                ChangesMask[field] = true;
-
-                AddToEntityUpdateIfNeeded();
-            }
+            //Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
         }
         public void SetStatFloatValue(EntityFields field, float value)
         {
@@ -171,37 +190,6 @@ namespace Core
                 value = 0;
 
             SetUintValue(field, (uint)value);
-        }
-
-        public bool AddGuidValue(EntityFields field, Guid value)
-        {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
-
-            if (value != Guid.Empty && UpdateFields[field] == Guid.Empty)
-            {
-                UpdateFields[field] = value;
-                ChangesMask[field] = true;
-
-                AddToEntityUpdateIfNeeded();
-                return true;
-            }
-
-            return false;
-        }
-        public bool RemoveGuidValue(EntityFields field, Guid value)
-        {
-            Assert.IsTrue(UpdateFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
-
-            if (value != Guid.Empty && UpdateFields[field] == value)
-            {
-                UpdateFields[field] = Guid.Empty;
-                ChangesMask[field] = true;
-
-                AddToEntityUpdateIfNeeded();
-                return true;
-            }
-
-            return false;
         }
 
         public void ApplyModUInt32Value(EntityFields field, int val, bool apply) { }
@@ -229,108 +217,10 @@ namespace Core
 
         #endregion
 
-        #region Creation and update methods
-
-        public virtual void Initialize(bool isWorldEntity, Guid guid)
-        {
-            Create();
-
-            SetGuidValue(EntityFields.Guid, guid);
-            TypeId = EntityType.Entity;
-            TypeMask = EntityTypeMask.Object;
-            UpdateFlag = UpdateFlags.None;
-            FieldNotifyFlags = FieldFlags.Dynamic;
-        }
-
-        public virtual void Deinitialize()
-        {
-            InWorld = false;
-            EntityUpdated = false;
-        }
-
-        private void Create()
-        {
-            if (UpdateFields != null)
-                return;
-
-            ChangesMask = new Dictionary<EntityFields, bool>(new EntityFieldsEqualityComparer());
-            UpdateFields = new Dictionary<EntityFields, dynamic>(new EntityFieldsEqualityComparer());
-
-            foreach (var field in EntityFieldHelper.GetEntityFields(TypeId))
-            {
-                switch (field.GetFieldType())
-                {
-                    case FieldTypes.Int:
-                    case FieldTypes.Uint:
-                    case FieldTypes.Long:
-                        UpdateFields.Add(field, 0);
-                        break;
-                    case FieldTypes.Float:
-                        UpdateFields.Add(field, 0.0f);
-                        break;
-                    case FieldTypes.Guid:
-                        UpdateFields.Add(field, Guid.Empty);
-                        break;
-                    default:
-                        throw new NotImplementedException("EntityField: " + field + " has type: " + field.GetFieldType() + " that is not implemented yet!");
-                }
-
-                ChangesMask.Add(field, false);
-            }
-
-            SetIntValue(EntityFields.Type, (int)TypeMask);
-        }
-        
-        public virtual void AddToWorld()
-        {
-            if (InWorld)
-                return;
-
-            Assert.IsTrue(UpdateFields.Count != 0, "Adding non-initialized object in the world! Type: " + TypeId);
-
-            InWorld = true;
-
-            ClearUpdateMask(false);
-        }
-
-        public virtual void RemoveFromWorld()
-        {
-            if (!InWorld)
-                return;
-
-            InWorld = false;
-            ClearUpdateMask(true);
-        }
-
-        protected void AddToEntityUpdateIfNeeded()
-        {
-            if (InWorld && !EntityUpdated)
-            {
-                AddToEntityUpdate();
-                EntityUpdated = true;
-            }
-        }
-
-        protected abstract void AddToEntityUpdate();
-
-        protected abstract void RemoveFromEntityUpdate();
-
-        private void ClearUpdateMask(bool remove)
-        {
-            if (EntityUpdated)
-            {
-                if (remove)
-                    RemoveFromEntityUpdate();
-                EntityUpdated = false;
-            }
-        }
-
-        #endregion
-
         private string EntityFieldErrorMessage(EntityFields field, bool set)
         {
             var errorAction = set ? "to set value to" : "to get value from";
-            return $"Attempted {errorAction} non-existing field: {field} for entity with type: {TypeId} and mask: {TypeMask}";
+            return $"Attempted {errorAction} non-existing field: {field} for entity with type: {TypeId}";
         }
     }
 }

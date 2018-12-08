@@ -59,10 +59,6 @@
         public override void DoReset(TUnit unit) { }
         public void MovementInform(TUnit unit) { }
 
-        public bool EnableWalking() { return false;}
-        public bool LostTarget(TUnit unit) { return unit.GetVictim() != Target; }
-        public void ReachTarget(TUnit unit) { }
-
         protected static void ClearUnitStateMove(TUnit unit) { unit.ClearUnitState(UnitState.ChaseMove); }
         protected static void AddUnitStateMove(TUnit unit) { unit.AddUnitState(UnitState.ChaseMove); }
     }

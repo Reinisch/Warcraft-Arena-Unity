@@ -22,25 +22,24 @@ namespace Core
     {
         Int,
         Uint,
-        Guid,
+        Ulong,
         Long,
         Float,
+        Double,
+        Short,
+        UShort
     }
 
     public enum EntityFields
     {
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
-        Guid = BaseEntityFields.Guid,
-        /// <summary> Type: int, Flags: PUBLIC </summary>
-        Type = BaseEntityFields.Type,
         /// <summary> Type: int, Flags: DYNAMIC </summary>
         Entry = BaseEntityFields.Entry,
         /// <summary> Type: float, Flags: PUBLIC </summary>
-        ScaleX = BaseEntityFields.ScaleX,
+        Scale = BaseEntityFields.Scale,
         /// <summary> Type: long, Flags: DYNAMIC, URGENT </summary>
         DynamicFlags = BaseEntityFields.DynamicFlags,
 
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         GameEntityCreatedBy = GameEntityFields.CreatedBy,
         /// <summary> Type: uint, Flags: DYNAMIC, URGENT </summary>
         GameEntityDisplayId = GameEntityFields.DisplayId,
@@ -71,7 +70,7 @@ namespace Core
         /// <summary> Type: uint, Flags: DYNAMIC, URGENT </summary>
         StateWorldEffectID = GameEntityFields.StateWorldEffectID,
 
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         DynamicCaster = DynamicEntityFields.DynamicCaster,
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
         DynamicEntityType = DynamicEntityFields.DynamicEntityType,
@@ -82,27 +81,27 @@ namespace Core
         /// <summary> Type: Float, Flags: PUBLIC </summary>
         DynamicRadius = DynamicEntityFields.DynamicRadius,
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
-        DynamicCasttime = DynamicEntityFields.DynamicCasttime,
+        DynamicCasttime = DynamicEntityFields.DynamicCastTime,
 
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         UnitCharm = UnitFields.Charm,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         UnitSummon = UnitFields.Summon,
-        /// <summary> Type: Guid, Flags: PRIVATE </summary>
+        /// <summary> Type: NetworkId, Flags: PRIVATE </summary>
         UnitCritter = UnitFields.Critter,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         UnitCharmedBy = UnitFields.CharmedBy,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         UnitSummonedBy = UnitFields.SummonedBy,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         UnitCreatedBy = UnitFields.CreatedBy,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         DemonCreator = UnitFields.DemonCreator,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         Target = UnitFields.Target,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         BattlePetCompanionGuid = UnitFields.BattlePetCompanionGuid,
-        /// <summary> Type: Guid, Flags: PUBLIC, URGENT </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC, URGENT </summary>
         ChannelObject = UnitFields.ChannelObject,
         /// <summary> Type: Uint, Flags: PUBLIC, URGENT </summary>
         ChannelSpell = UnitFields.ChannelSpell,
@@ -468,13 +467,13 @@ namespace Core
         /// <summary> Type: Uint, Flags: PRIVATE </summary>
         CombatRating10 = PlayerFields.CombatRating10,
 
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ItemOwner = ItemFields.ItemOwner,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ItemContained = ItemFields.ItemContained,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ItemCreator = ItemFields.ItemCreator,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ItemGiftcreator = ItemFields.ItemGiftcreator,
         /// <summary> Type: Uint, Flags: OWNER </summary>
         ItemStackCount = ItemFields.ItemStackCount,
@@ -589,84 +588,84 @@ namespace Core
         /// <summary> Type: Uint, Flags: OWNER </summary>
         ItemAppearanceModID = ItemFields.ItemAppearanceModID,
 
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot1 = ContainerFields.ContainerFieldSlot1,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot2 = ContainerFields.ContainerFieldSlot2,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot3 = ContainerFields.ContainerFieldSlot3,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot4 = ContainerFields.ContainerFieldSlot4,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot5 = ContainerFields.ContainerFieldSlot5,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot6 = ContainerFields.ContainerFieldSlot6,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot7 = ContainerFields.ContainerFieldSlot7,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot8 = ContainerFields.ContainerFieldSlot8,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot9 = ContainerFields.ContainerFieldSlot9,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot10 = ContainerFields.ContainerFieldSlot10,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot11 = ContainerFields.ContainerFieldSlot11,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot12 = ContainerFields.ContainerFieldSlot12,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot13 = ContainerFields.ContainerFieldSlot13,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot14 = ContainerFields.ContainerFieldSlot14,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot15 = ContainerFields.ContainerFieldSlot15,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot16 = ContainerFields.ContainerFieldSlot16,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot17 = ContainerFields.ContainerFieldSlot17,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot18 = ContainerFields.ContainerFieldSlot18,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot19 = ContainerFields.ContainerFieldSlot19,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot20 = ContainerFields.ContainerFieldSlot20,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot21 = ContainerFields.ContainerFieldSlot21,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot22 = ContainerFields.ContainerFieldSlot22,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot23 = ContainerFields.ContainerFieldSlot23,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot24 = ContainerFields.ContainerFieldSlot24,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot25 = ContainerFields.ContainerFieldSlot25,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot26 = ContainerFields.ContainerFieldSlot26,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot27 = ContainerFields.ContainerFieldSlot27,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot28 = ContainerFields.ContainerFieldSlot28,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot29 = ContainerFields.ContainerFieldSlot29,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot30 = ContainerFields.ContainerFieldSlot30,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot31 = ContainerFields.ContainerFieldSlot31,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot32 = ContainerFields.ContainerFieldSlot32,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot33 = ContainerFields.ContainerFieldSlot33,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot34 = ContainerFields.ContainerFieldSlot34,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot35 = ContainerFields.ContainerFieldSlot35,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot36 = ContainerFields.ContainerFieldSlot36,
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
         ContainerFieldNumSlots = ContainerFields.ContainerFieldNumSlots,
 
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         CorpseOwner = CorpseFields.CorpseOwner,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         CorpseParty = CorpseFields.CorpseParty,
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
         CorpseDisplayID = CorpseFields.CorpseDisplayID,
@@ -725,24 +724,18 @@ namespace Core
 
     public enum BaseEntityFields
     {
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
-        Guid = 0,
-        /// <summary> Type: int, Flags: PUBLIC </summary>
-        Type = 1,
         /// <summary> Type: int, Flags: DYNAMIC </summary>
-        Entry = 2,
+        Entry = 1,
         /// <summary> Type: float, Flags: PUBLIC </summary>
-        ScaleX = 3,
+        Scale = 2,
         /// <summary> Type: long, Flags: DYNAMIC, URGENT </summary>
-        DynamicFlags = 4,
-
-        Max
+        DynamicFlags = 3,
     }
 
     public enum GameEntityFields
     {
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
-        CreatedBy = BaseEntityFields.Max,
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
+        CreatedBy = BaseEntityFields.DynamicFlags + 1,
         /// <summary> Type: uint, Flags: DYNAMIC, URGENT </summary>
         DisplayId,
         /// <summary> Type: uint, Flags: DYNAMIC, URGENT </summary>
@@ -771,14 +764,12 @@ namespace Core
         StateAnimKitID,
         /// <summary> Type: uint, Flags: DYNAMIC, URGENT </summary>
         StateWorldEffectID,
-
-        Max
     }
 
     public enum DynamicEntityFields
     {
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
-        DynamicCaster = GameEntityFields.Max,
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
+        DynamicCaster = GameEntityFields.StateWorldEffectID + 1,
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
         DynamicEntityType,
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
@@ -788,32 +779,30 @@ namespace Core
         /// <summary> Type: Float, Flags: PUBLIC </summary>
         DynamicRadius,
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
-        DynamicCasttime,
-
-        Max
+        DynamicCastTime,
     }
 
     public enum UnitFields
     {
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
-        Charm = DynamicEntityFields.Max,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
+        Charm = DynamicEntityFields.DynamicCastTime + 1,
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         Summon,
-        /// <summary> Type: Guid, Flags: PRIVATE </summary>
+        /// <summary> Type: NetworkId, Flags: PRIVATE </summary>
         Critter,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         CharmedBy,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         SummonedBy,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         CreatedBy,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         DemonCreator,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         Target,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         BattlePetCompanionGuid,
-        /// <summary> Type: Guid, Flags: PUBLIC, URGENT </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC, URGENT </summary>
         ChannelObject,
         /// <summary> Type: Uint, Flags: PUBLIC, URGENT </summary>
         ChannelSpell,
@@ -1065,14 +1054,12 @@ namespace Core
         PowerCostMultiplier5,
         /// <summary> Type: Float, Flags: PRIVATE, OWNER </summary>
         PowerCostMultiplier6,
-
-        Max
     }
 
     public enum PlayerFields
     {
         /// <summary> Type: Long - PlayerFlags, Flags: PUBLIC </summary>
-        PlayerFlags = UnitFields.Max,
+        PlayerFlags = UnitFields.PowerCostMultiplier6 + 1,
         /// <summary> Type: Int - ArenaTeam, Flags: PUBLIC </summary>
         ArenaTeam,
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
@@ -1183,19 +1170,17 @@ namespace Core
         CombatRating9,
         /// <summary> Type: Uint, Flags: PRIVATE </summary>
         CombatRating10,
-
-        Max
     }
 
     public enum ItemFields
     {
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
-        ItemOwner = PlayerFields.Max,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
+        ItemOwner = PlayerFields.CombatRating10 + 1,
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ItemContained,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ItemCreator,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ItemGiftcreator,
         /// <summary> Type: Uint, Flags: OWNER </summary>
         ItemStackCount,
@@ -1309,95 +1294,91 @@ namespace Core
         ItemArtifactXP,
         /// <summary> Type: Uint, Flags: OWNER </summary>
         ItemAppearanceModID,
-
-        Max
     }
 
     public enum ContainerFields
     {
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
-        ContainerFieldSlot1 = ItemFields.Max,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
+        ContainerFieldSlot1 = ItemFields.ItemAppearanceModID + 1,
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot2,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot3,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot4,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot5,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot6,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot7,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot8,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot9,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot10,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot11,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot12,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot13,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot14,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot15,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot16,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot17,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot18,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot19,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot20,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot21,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot22,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot23,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot24,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot25,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot26,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot27,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot28,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot29,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot30,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot31,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot32,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot33,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot34,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot35,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         ContainerFieldSlot36,
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
         ContainerFieldNumSlots,
-
-        Max
     }
 
     public enum CorpseFields
     {
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
-        CorpseOwner = ContainerFields.Max,
-        /// <summary> Type: Guid, Flags: PUBLIC </summary>
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
+        CorpseOwner = ContainerFields.ContainerFieldNumSlots + 1,
+        /// <summary> Type: NetworkId, Flags: PUBLIC </summary>
         CorpseParty,
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
         CorpseDisplayID,
@@ -1451,7 +1432,5 @@ namespace Core
         CorpseFactiontemplate, 
         /// <summary> Type: Uint, Flags: PUBLIC </summary>
         CorpseCustomDisplayOption,
-
-        Max
     }
 }

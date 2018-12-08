@@ -18,7 +18,7 @@ public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHand
         Image = gameObject.GetComponent<Image>();
 
         ButtonSlot = buttonSlot;
-        Image.sprite = BalanceManager.SpellInfos.LookupEntry(itemId)?.VisualSettings.SpellIcon ?? RenderManager.Instance.DefaultSpellIcon;
+        Image.sprite = BalanceManager.SpellInfosById.LookupEntry(itemId)?.VisualSettings.SpellIcon ?? RenderManager.Instance.DefaultSpellIcon;
     }
 
     public void UpdateButton()
@@ -71,8 +71,8 @@ public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void Activate()
     {
-        if (enabled && BalanceManager.SpellInfos.ContainsKey(itemId))
-            InputManager.Instance.OriginalPlayer?.CastSpell(new SpellCastTargets(), BalanceManager.SpellInfos[itemId]);
+        if (enabled && BalanceManager.SpellInfosById.ContainsKey(itemId))
+            InputManager.Instance.OriginalPlayer?.CastSpell(new SpellCastTargets(), BalanceManager.SpellInfosById[itemId]);
     }
 
     public void Remove()

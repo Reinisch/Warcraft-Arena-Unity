@@ -4,6 +4,7 @@ namespace Core
 {
     public class Corpse : WorldEntity, IGridEntity<Corpse>
     {
+        public override EntityType TypeId => EntityType.Corpse;
         public GridReference<Corpse> GridRef { get; private set; }
         public CorpseType CorpseType { get; private set; }
 
@@ -16,9 +17,6 @@ namespace Core
         public bool IsInGrid() { throw new NotImplementedException(); }
         public void AddToGrid(GridReferenceManager<Corpse> refManager) { throw new NotImplementedException(); }
         public void RemoveFromGrid() { throw new NotImplementedException(); }
-
-        public override void AddToWorld() { throw new NotImplementedException(); }
-        public override void RemoveFromWorld() { throw new NotImplementedException(); }
 
         public bool Create(Guid guidlow, Map map) { throw new NotImplementedException(); }
         public bool Create(Guid guidlow, Player owner) { throw new NotImplementedException(); }

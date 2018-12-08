@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Core
+﻿namespace Core
 {
     public class Creature : Unit, IGridEntity<Creature>
     {
@@ -8,19 +6,23 @@ namespace Core
 
         public CreatureAI AI => ai as CreatureAI;
 
-        protected ReactStates ReactState { get; set; }
-        protected MovementGeneratorType DefaultMovementType { get; set; }
+        public bool IsInGrid()
+        {
+            return false;
+        }
 
-        protected CreatureData CreatureData { get; set; }
-        protected CreatureTemplate CreatureInfo { get; set; }
+        public void AddToGrid(GridReferenceManager<Creature> refManager)
+        {
 
-        public bool IsInGrid() { throw new NotImplementedException(); }
-        public void AddToGrid(GridReferenceManager<Creature> refManager) { throw new NotImplementedException(); }
-        public void RemoveFromGrid() { throw new NotImplementedException(); }
+        }
 
-        public override void DoUpdate(uint time) { throw new NotImplementedException(); }
-        public override void AddToWorld() { throw new NotImplementedException(); }
-        public override void RemoveFromWorld() { throw new NotImplementedException(); }
-        public override void SetDisplayId(uint modelId) { throw new NotImplementedException(); }
+        public void RemoveFromGrid()
+        {
+
+        }
+
+        public override void DoUpdate(int timeDelta)
+        {
+        }
     }
 }

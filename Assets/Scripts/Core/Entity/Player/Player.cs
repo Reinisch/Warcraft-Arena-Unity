@@ -26,99 +26,30 @@ namespace Core
         protected bool canTitanGrip;
         protected Runes runes;
 
-        // Rune type / Rune timer
-        private uint[] m_runeGraceCooldown = new uint[PlayerHelper.MaxRunes];
-        private uint[] m_lastRuneGraceTimers = new uint[PlayerHelper.MaxRunes];
+        private uint[] runeGraceCooldown = new uint[PlayerHelper.MaxRunes];
+        private uint[] lastRuneGraceTimers = new uint[PlayerHelper.MaxRunes];
 
         public GridReference<Player> GridRef { get; private set; }
   
-        public string AutoReplyMsg { get; set; }
         public override DeathState DeathState { get { return base.DeathState; } set { throw new NotImplementedException(); } }
-        public override float Scale { get { return base.Scale; } set { throw new NotImplementedException(); } }
 
         public bool IsInGrid() { throw new NotImplementedException(); }
         public void AddToGrid(GridReferenceManager<Player> refManager) { throw new NotImplementedException(); }
         public void RemoveFromGrid() { throw new NotImplementedException(); }
 
-        public WorldLocation GetStartPosition() { throw new NotImplementedException(); }
+        public override void DoUpdate(int timeDelta)
+        {
+            throw new NotImplementedException();
+        }
 
-        public override void AddToWorld() { throw new NotImplementedException(); }
-        public override void RemoveFromWorld() { throw new NotImplementedException(); }
-        public override void CleanupsBeforeDelete(bool finalCleanup = true) { throw new NotImplementedException(); }
-
-        public override void DestroyForPlayer(Player target) { throw new NotImplementedException(); }
-        public override void DoUpdate(uint time) { throw new NotImplementedException(); }
-        public override bool IsImmunedToSpellEffect(SpellInfo spellInfo, int index) { throw new NotImplementedException(); }
+        public override bool IsImmunedToSpellEffect(SpellInfo spellInfo, int index)
+        {
+            return false;
+        }
 
         #region Player flags
 
         public bool IsGameMaster() { return (extraFlags & PlayerExtraFlags.GmOn) != 0; }
-
-        #endregion
-
-        #region Movement
-
-        public void SetHomebind(WorldLocation loc, uint areaId) { throw new NotImplementedException(); }
-        public void SendBindPointUpdate() { throw new NotImplementedException(); }
-
-        public bool TeleportTo(uint mapid, float x, float y, float z, float orientation, uint options = 0) { throw new NotImplementedException(); }
-        public bool TeleportTo(WorldLocation loc, uint options = 0) { throw new NotImplementedException(); }
-        public bool TeleportToBGEntryPoint() { throw new NotImplementedException(); }
-
-        public void SetClientControl(Unit target, bool allowMove) { throw new NotImplementedException(); }
-        public void SetMover(Unit target) { throw new NotImplementedException(); }
-
-        public void ValidateMovementInfo(MovementInfo mi) { throw new NotImplementedException(); }
-        public void SendMovementSetCollisionHeight(float height) { throw new NotImplementedException(); }
-
-        public override bool CanFly() { return MovementInfo.HasMovementFlag(MovementFlags.CanFly); }
-        public float GetCollisionHeight(bool mounted) { throw new NotImplementedException(); }
-
-        #endregion
-
-        #region Resurrect
-
-        public void SetResurrectRequestData(Unit caster, uint health, uint mana, uint appliedAura) { throw new NotImplementedException(); }
-        public void ClearResurrectRequestData()
-        {
-            resurrectionData = null;
-        }
-
-        public bool IsResurrectRequestedBy(Guid guid)
-        {
-            if (!IsResurrectRequested())
-                return false;
-
-            return resurrectionData.GUID != Guid.Empty && resurrectionData.GUID == guid;
-        }
-        public bool IsResurrectRequested() { return resurrectionData != null; }
-        public void ResurrectUsingRequestData() { throw new NotImplementedException(); }
-        public void ResurrectUsingRequestDataImpl() { throw new NotImplementedException(); }
-
-        #endregion
-
-        #region Gossip system
-
-        public void PrepareGossipMenu(WorldEntity source, uint menuId = 0, bool showQuests = false) { throw new NotImplementedException(); }
-        public void SendPreparedGossip(WorldEntity source) { throw new NotImplementedException(); }
-        public void OnGossipSelect(WorldEntity source, uint gossipListId, uint menuId) { throw new NotImplementedException(); }
-
-        public uint GetGossipTextId(uint menuId, WorldEntity source) { throw new NotImplementedException(); }
-        public uint GetGossipTextId(WorldEntity source) { throw new NotImplementedException(); }
-        public static uint GetDefaultGossipMenuForSource(WorldEntity source) { throw new NotImplementedException(); }
-
-        #endregion
-
-        #region Regeneration and combo
-
-        public void RegenerateAll() { throw new NotImplementedException(); }
-        public void Regenerate(PowerType power) { throw new NotImplementedException(); }
-        public void RegenerateHealth() { throw new NotImplementedException(); }
-
-        public int GetComboPoints() { return GetPower(PowerType.ComboPoints); }
-        public void AddComboPoints(byte count, Spell spell = null) { throw new NotImplementedException(); }
-        public void GainSpellComboPoints(byte count) { throw new NotImplementedException(); }
-        public void ClearComboPoints() { throw new NotImplementedException(); }
 
         #endregion
 
@@ -127,8 +58,8 @@ namespace Core
         public Unit GetSelectedUnit() { throw new NotImplementedException(); }
         public Player GetSelectedPlayer() { throw new NotImplementedException(); }
 
-        public override void SetTarget(Guid guid) { } // Used for serverside target changes, does not apply to players
-        public void SetSelection(Guid guid) { SetGuidValue(EntityFields.Target, guid); }
+        public override void SetTarget(ulong targetId) { } // Used for serverside target changes, does not apply to players
+        public void SetSelection(ulong targetId) { SetULongValue(EntityFields.Target, targetId); }
 
         #endregion
 
@@ -143,17 +74,6 @@ namespace Core
         public void RestoreAllSpellMods(uint ownerAuraId = 0, Aura aura = null) { throw new NotImplementedException(); }
         public void DropModCharge(SpellModifier mod, Spell spell) { throw new NotImplementedException(); }
         public void SetSpellModTakingSpell(Spell spell, bool apply) { throw new NotImplementedException(); }
-
-        #endregion
-
-        #region Action buttons
-
-        ActionButton AddActionButton(byte button, uint action, byte type) { throw new NotImplementedException(); }
-        void RemoveActionButton(byte button) { throw new NotImplementedException(); }
-        ActionButton  GetActionButton(byte button) { throw new NotImplementedException(); }
-        void SendInitialActionButtons() { SendActionButtons(0); }
-        void SendActionButtons(uint state) { throw new NotImplementedException(); }
-        bool IsActionButtonDataValid(byte button, uint action, byte type) { throw new NotImplementedException(); }
 
         #endregion
 
@@ -202,10 +122,10 @@ namespace Core
         public void ApplyManaRegenBonus(int amount, bool apply) { throw new NotImplementedException(); }
         public void ApplyHealthRegenBonus(int amount, bool apply) { throw new NotImplementedException(); }
         public void UpdateManaRegen() { throw new NotImplementedException(); }
-        public uint GetRuneTimer(byte index) { return m_runeGraceCooldown[index]; }
-        public void SetRuneTimer(byte index, uint timer) { m_runeGraceCooldown[index] = timer; }
-        public uint GetLastRuneGraceTimer(byte index) { return m_lastRuneGraceTimers[index]; }
-        public void SetLastRuneGraceTimer(byte index, uint timer) { m_lastRuneGraceTimers[index] = timer; }
+        public uint GetRuneTimer(byte index) { return runeGraceCooldown[index]; }
+        public void SetRuneTimer(byte index, uint timer) { runeGraceCooldown[index] = timer; }
+        public uint GetLastRuneGraceTimer(byte index) { return lastRuneGraceTimers[index]; }
+        public void SetLastRuneGraceTimer(byte index, uint timer) { lastRuneGraceTimers[index] = timer; }
         public void UpdateAllRunesRegen() { throw new NotImplementedException(); }
 
         public override uint GetBlockPercent() { return GetUintValue(EntityFields.ShieldBlock); }

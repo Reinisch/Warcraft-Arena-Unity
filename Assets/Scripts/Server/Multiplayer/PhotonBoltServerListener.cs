@@ -1,8 +1,8 @@
-﻿using Bolt;
+﻿using Core;
 
 namespace Server
 {
-    public class PhotonBoltServerListener : GlobalEventListener
+    public class PhotonBoltServerListener : PhotonBoltBaseListener
     {
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Core
 {
@@ -26,7 +25,7 @@ namespace Core
         public Aura BaseAura { get; private set; }
         public int Id => SpellInfo.Id;
         public Unit Caster => BaseAura.Caster;
-        public Guid CasterGuid => BaseAura.CasterGuid;
+        public ulong CasterGuid => BaseAura.CasterId;
 
         private SpellEffectInfo EffectInfo { get; set; }
 

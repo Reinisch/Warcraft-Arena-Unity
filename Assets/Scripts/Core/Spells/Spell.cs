@@ -14,8 +14,8 @@ namespace Core
         public Unit Caster { get; private set; }
         public Unit OriginalCaster { get; set; }
 
-        public Guid CastId { get; private set; }
-        public Guid OriginalCasterGuid { get; set; } // real source of cast (aura caster/etc), used for spell targets selection
+        public ulong CastId { get; private set; }
+        public ulong OriginalCasterGuid { get; set; } // real source of cast (aura caster/etc), used for spell targets selection
    
         public bool SkipCheck { get; private set; }
         public bool ExecutedCurrently { get; set; }
@@ -30,7 +30,7 @@ namespace Core
 
         // Current targets, to be used in SpellEffects (MUST BE USED ONLY IN SPELL EFFECTS)
         public GameEntity GameEntityTarget { get; set; }
-        public WorldLocation DestTarget { get; set; }
+        public Vector3 DestTarget { get; set; }
         public int SpellDamage { get; set; }
         public int SpellHealing { get; set; }
 
@@ -82,7 +82,7 @@ namespace Core
         public List<HitTriggerSpell> HitTriggerSpells { get; private set; }
         private bool HasGlobalCooldown => Caster.SpellHistory.HasGlobalCooldown();
 
-        public Spell(Unit caster, SpellInfo info, TriggerCastFlags triggerFlags, Guid originalCasterId, bool skipCheck = false)
+        public Spell(Unit caster, SpellInfo info, TriggerCastFlags triggerFlags, ulong originalCasterId, bool skipCheck = false)
         {
             SpellInfo = info;
             Caster = caster;
@@ -96,8 +96,8 @@ namespace Core
             DelayAtDamageCount = 0;
             SpellSchoolMask = info.SchoolMask;
 
-            OriginalCasterGuid = originalCasterId != Guid.Empty ? originalCasterId : caster.Guid;
-            OriginalCaster = OriginalCasterGuid == caster.Guid ? caster : EntityAccessor.FindUnitOnSameMap(Caster, OriginalCasterGuid);
+            OriginalCasterGuid = originalCasterId != 0 ? originalCasterId : caster.NetworkId;
+            OriginalCaster = OriginalCasterGuid == caster.NetworkId ? caster : EntityAccessor.FindUnitOnSameMap(Caster, OriginalCasterGuid);
 
             if (OriginalCaster != null && !OriginalCaster.InWorld)
                 OriginalCaster = null;
@@ -108,7 +108,7 @@ namespace Core
                 TriggerCastFlags = TriggerCastFlags | TriggerCastFlags.IgnoreCastInProgress | TriggerCastFlags.CastDirectly;
 
             GameEntityTarget = null;
-            DestTarget = null;
+            DestTarget = Vector3.zero;
             Variance = 0.0f;
             DiminishLevel = DiminishingLevels.Level1;
             DiminishGroup = DiminishingGroup.None;
@@ -116,7 +116,7 @@ namespace Core
             SpellHealing = 0;
             ProcAttacker = 0;
             ProcVictim = 0;
-            CastId = Guid.NewGuid();
+            CastId = 0;
             PreCastSpell = 0;
             TriggeredByAuraSpell = null;
             SpellAura = null;
@@ -253,9 +253,6 @@ namespace Core
                         if (selectedUnit != null && SpellInfo.CheckExplicitTarget(Caster, selectedUnit) == SpellCastResult.SpellCastOk)
                             unit = selectedUnit;
                     }
-                    // try to use attacked unit as a target
-                    else if (Caster.TypeId == EntityType.Unit && neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitEnemy | SpellCastTargetFlags.Unit))
-                        unit = Caster.GetVictim();
 
                     // didn't find anything - let's use self as target
                     if (unit == null && neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitAlly))
@@ -296,9 +293,6 @@ namespace Core
 
                 SelectEffectImplicitTargets(effect, effect.MainTargeting, ref processedAreaEffectsMask);
                 SelectEffectImplicitTargets(effect, effect.SecondaryTargeting, ref processedAreaEffectsMask);
-
-                // select targets of effect based on effect type
-                // those are used when no valid target could be added for spell effect based on spell target type
                 SelectEffectTypeImplicitTargets(effect);
 
                 if (Targets.HasDest)
@@ -314,19 +308,10 @@ namespace Core
 
             if (Targets.HasDest)
             {
-                if (Targets.HasTrajectory)
-                {
-                    float speed = Targets.SpeedXY;
-                    if (speed > 0.0f)
-                        DelayMoment = Mathf.FloorToInt(Targets.Distance2D / speed * TimeHelper.InMilliseconds);
-                }
-                else if (SpellInfo.Speed > 0.0f)
-                {
-                    float dist = Caster.GetDistance(Targets.DestPos);
-                    DelayMoment = !SpellInfo.HasAttribute(SpellExtraAttributes.SpecialDelayCalculation) ?
-                        Mathf.FloorToInt(dist / SpellInfo.Speed * TimeHelper.InMilliseconds) :
-                        Mathf.Round(SpellInfo.Speed * TimeHelper.InMilliseconds);
-                }
+                float speed = Targets.SpeedXY;
+                if (speed > 0.0f)
+                    DelayMoment = Mathf.FloorToInt(Targets.Distance2D / speed * TimeHelper.InMilliseconds);
+                
             }
         }
 
@@ -336,8 +321,6 @@ namespace Core
             if (target == null)
                 return;
 
-            // here go all explicit target changes made to explicit targets after spell prepare phase is finished
-            // check for explicit target redirection, for Grounding Totem for example
             if (SpellInfo.ExplicitTargetMask.HasAnyFlag(SpellCastTargetFlags.UnitEnemy) || SpellInfo.ExplicitTargetMask.HasFlag(SpellCastTargetFlags.Unit) && !Caster.IsFriendlyTo(target))
             {
                 Unit redirect;
@@ -464,7 +447,7 @@ namespace Core
                     {
                         if ((UniqueTargetInfo[i].EffectMask & (1 << effect.Index)) > 0)
                         {
-                            referer = Caster.Map.FindMapEntity<Unit>(unit => unit.Guid == UniqueTargetInfo[i].TargetGuid && unit.IsAlive);
+                            referer = Caster.Map.FindMapEntity<Unit>(unit => unit.NetworkId == UniqueTargetInfo[i].TargetId && unit.IsAlive);
                             break;
                         }
                     }
@@ -553,7 +536,10 @@ namespace Core
                 AddGameEntityTarget(target.AsGameEntity, 1 << effect.Index);
         }
 
-        private void SearchTargets(IWorldEntityTargetCheck searcher, int containerMask, Unit referer, Position pos, float radius) { throw new NotImplementedException(); }
+        private void SearchTargets(IWorldEntityTargetCheck searcher, int containerMask, Unit referer, Position pos, float radius)
+        {
+            throw new NotImplementedException();
+        }
 
         private void SearchAreaTargets(List<WorldEntity> targets, float range, Position position, Unit referer, TargetEntities entityType, TargetChecks selectType, List<Condition> condList) { throw new NotImplementedException(); }
 
@@ -582,7 +568,7 @@ namespace Core
                 effectMask &= ~(1 << effect->EffectIndex);*/
 
             // Lookup target in already in list
-            var sameTargetInfo = UniqueTargetInfo.Find(unit => unit.TargetGuid == target.Guid);
+            var sameTargetInfo = UniqueTargetInfo.Find(unit => unit.TargetId == target.NetworkId);
             if (sameTargetInfo != null)
             {
                 sameTargetInfo.EffectMask |= effectMask;             // Immune effects removed from mask
@@ -593,7 +579,7 @@ namespace Core
 
             // Get spell hit result on target
             TargetInfo targetInfo = new TargetInfo();
-            targetInfo.TargetGuid = target.Guid;                          // Store target GUID
+            targetInfo.TargetId = target.NetworkId;                          // Store target GUID
             targetInfo.EffectMask = effectMask;                         // Store all effects not immune
             targetInfo.Processed = false;                               // Effects not apply on target
             targetInfo.Alive = target.IsAlive;
@@ -803,7 +789,7 @@ namespace Core
             target.Processed = true;
             int mask = target.EffectMask;
 
-            Unit unit = Caster.Guid == target.TargetGuid ? Caster : Caster.Map.FindMapEntity<Unit>(target.TargetGuid);
+            Unit unit = Caster.NetworkId == target.TargetId ? Caster : Caster.Map.FindMapEntity<Unit>(target.TargetId);
             if (unit?.IsAlive != target.Alive)
                 return;
 

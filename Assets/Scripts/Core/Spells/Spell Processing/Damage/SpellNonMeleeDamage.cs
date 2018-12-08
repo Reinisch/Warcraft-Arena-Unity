@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace Core
+﻿namespace Core
 {
     public class SpellNonMeleeDamage
     {
         public Unit Target { get; set; }
         public Unit Attacker { get; set; }
-        public Guid CastId { get; set; }
+        public ulong CastId { get; set; }
         public int SpellId { get; set; }
         public SpellSchoolMask SchoolMask { get; set; }
 
@@ -21,7 +19,7 @@ namespace Core
         public long PreHitHealth { get; set; }
 
 
-        public SpellNonMeleeDamage(Unit attacker, Unit target, int spellId, SpellSchoolMask schoolMask, Guid castId = default(Guid))
+        public SpellNonMeleeDamage(Unit attacker, Unit target, int spellId, SpellSchoolMask schoolMask, ulong castId = 0)
         {
             Target = target;
             Attacker = attacker;

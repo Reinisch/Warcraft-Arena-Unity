@@ -21,17 +21,17 @@ namespace Client
             this.worldManager = worldManager;
 
             SpellManager.Instance.EventSpellCast += OnSpellCast;
-            SpellManager.Instance.EventSpellDamageDone += OnSpellDamageDone;
+            SpellManager.Instance.EventSpellDamageDone += OnSpellDamageDone;          
 
-            Player localPlayer = MapManager.Instance.FindMap(1).FindMapEntity<Player>(worldManager.LocalPlayerId);
-            localPlayer.GetComponentInChildren<UnitRenderer>().Initialize(localPlayer);
-            localPlayer.GetComponent<WarcraftController>().Initialize(localPlayer);
-            FindObjectOfType<WarcraftCamera>().Target = localPlayer.transform;
-            UnitRenderers.Add(localPlayer, localPlayer.GetComponentInChildren<UnitRenderer>());
+            worldManager.WorldEntityManager.EventEntityAttached += OnEventEntityAttached;
+            worldManager.WorldEntityManager.EventEntityDetach += OnEventEntityDetach;
         }
 
         public void Deinitialize()
         {
+            worldManager.WorldEntityManager.EventEntityAttached -= OnEventEntityAttached;
+            worldManager.WorldEntityManager.EventEntityDetach -= OnEventEntityDetach;
+
             SpellManager.Instance.EventSpellDamageDone -= OnSpellDamageDone;
             SpellManager.Instance.EventSpellCast -= OnSpellCast;
 
@@ -52,7 +52,7 @@ namespace Client
             if (!UnitRenderers.ContainsKey(target))
                 return;
 
-            if (caster.Guid == worldManager.LocalPlayerId)
+            if (caster.NetworkId == worldManager.LocalPlayerId)
             {
                 GameObject damageEvent = Instantiate(Resources.Load("Prefabs/UI/DamageEvent")) as GameObject;
                 Assert.IsNotNull(damageEvent, "damageEvent != null");
@@ -67,5 +67,29 @@ namespace Client
             if (spellRenderer != null)
                 Instantiate(spellRenderer, target.Position, Quaternion.identity);
         }
+
+        private void OnEventEntityAttached(WorldEntity worldEntity)
+        {
+            var unitEntity = worldEntity as Unit;
+            if (unitEntity == null)
+                return;
+
+            unitEntity.GetComponentInChildren<UnitRenderer>().Initialize(unitEntity);
+            UnitRenderers.Add(unitEntity, unitEntity.GetComponentInChildren<UnitRenderer>());
+        }
+
+        private void OnEventEntityDetach(WorldEntity worldEntity)
+        {
+            var unitEntity = worldEntity as Unit;
+            if (unitEntity == null)
+                return;
+
+            if(UnitRenderers.ContainsKey(unitEntity))
+            {
+                UnitRenderers[unitEntity].Deinitialize();
+                UnitRenderers.Remove(unitEntity);
+            }
+        }
+
     }
 }

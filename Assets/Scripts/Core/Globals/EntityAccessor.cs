@@ -1,69 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Core
 {
     public static class EntityAccessor
     {
         private static readonly object PlayerLock = new object();
-        private static readonly Dictionary<Guid, Player> Players = new Dictionary<Guid, Player>(1000);
+        private static readonly Dictionary<ulong, Player> Players = new Dictionary<ulong, Player>(100);
 
-        public static WorldEntity FindWorldEntityOnSameMap(WorldEntity worldEntity, Guid findEntityGuid)
+        public static WorldEntity FindWorldEntityOnSameMap(WorldEntity worldEntity, ulong networkId)
         {
-            return worldEntity.Map.FindMapEntity<WorldEntity>(findEntityGuid);
+            return worldEntity.Map.FindMapEntity<WorldEntity>(networkId);
         }
 
-        public static Corpse FindCorpseOnSameMap(WorldEntity worldEntity, Guid findEntityGuid)
+        public static Corpse FindCorpseOnSameMap(WorldEntity worldEntity, ulong networkId)
         {
-            return worldEntity.Map.FindMapEntity<Corpse>(findEntityGuid);
+            return worldEntity.Map.FindMapEntity<Corpse>(networkId);
         }
 
-        public static GameEntity FindGameEntityOnSameMap(WorldEntity worldEntity, Guid findEntityGuid)
+        public static GameEntity FindGameEntityOnSameMap(WorldEntity worldEntity, ulong networkId)
         {
-            return worldEntity.Map.FindMapEntity<GameEntity>(findEntityGuid);
+            return worldEntity.Map.FindMapEntity<GameEntity>(networkId);
         }
 
-        public static DynamicEntity FindDynamicEntityOnSameMap(WorldEntity worldEntity, Guid findEntityGuid)
+        public static DynamicEntity FindDynamicEntityOnSameMap(WorldEntity worldEntity, ulong networkId)
         {
-            return worldEntity.Map.FindMapEntity<DynamicEntity>(findEntityGuid);
+            return worldEntity.Map.FindMapEntity<DynamicEntity>(networkId);
         }
 
-        public static AreaTrigger FindAreaTriggerOnSameMap(WorldEntity worldEntity, Guid findEntityGuid)
+        public static AreaTrigger FindAreaTriggerOnSameMap(WorldEntity worldEntity, ulong networkId)
         {
-            return worldEntity.Map.FindMapEntity<AreaTrigger>(findEntityGuid);
+            return worldEntity.Map.FindMapEntity<AreaTrigger>(networkId);
         }
 
-        public static Unit FindUnitOnSameMap(WorldEntity worldEntity, Guid findEntityGuid)
+        public static Unit FindUnitOnSameMap(WorldEntity worldEntity, ulong networkId)
         {
-            return worldEntity.Map.FindMapEntity<Unit>(findEntityGuid) ?? FindPlayerOnSameMap(worldEntity.Map, findEntityGuid);
+            return worldEntity.Map.FindMapEntity<Unit>(networkId) ?? FindPlayerOnSameMap(worldEntity.Map, networkId);
         }
 
-        public static Creature FindCreatureOnSameMap(WorldEntity worldEntity, Guid findEntityGuid)
+        public static Creature FindCreatureOnSameMap(WorldEntity worldEntity, ulong networkId)
         {
-            return worldEntity.Map.FindMapEntity<Creature>(findEntityGuid);
+            return worldEntity.Map.FindMapEntity<Creature>(networkId);
         }
 
-        public static Pet FindPetOnSameMap(WorldEntity worldEntity, Guid findEntityGuid)
+        public static Pet FindPetOnSameMap(WorldEntity worldEntity, ulong networkId)
         {
-            return worldEntity.Map.FindMapEntity<Pet>(findEntityGuid);
+            return worldEntity.Map.FindMapEntity<Pet>(networkId);
         }
 
-        public static Player FindPlayerOnSameMap(WorldEntity worldEntity, Guid findEntityGuid)
+        public static Player FindPlayerOnSameMap(WorldEntity worldEntity, ulong networkId)
         {
-            return FindPlayerOnSameMap(worldEntity.Map, findEntityGuid);
+            return FindPlayerOnSameMap(worldEntity.Map, networkId);
         }
 
-        public static Player FindPlayerOnSameMap(Map map, Guid findEntityGuid)
+        public static Player FindPlayerOnSameMap(Map map, ulong networkId)
         {
-            Player player = Players.LookupEntry(findEntityGuid);
+            Player player = Players.LookupEntry(networkId);
             return player != null && player.InWorld && player.Map == map ? player : null;
         }
 
-        public static Player FindPlayerInWorld(Guid guid)
+        public static Player FindPlayerInWorld(ulong networkId)
         {
             lock (PlayerLock)
             {
-                Player player = Players.LookupEntry(guid);
+                Player player = Players.LookupEntry(networkId);
                 return player != null && player.InWorld ? player : null;
             }
         }
@@ -74,7 +73,7 @@ namespace Core
             {
                 string lowerName = name.ToLower();
                 foreach (var playerEntry in Players)
-                    if (playerEntry.Value.InWorld && playerEntry.Value.GetName().ToLower() == lowerName)
+                    if (playerEntry.Value.InWorld && playerEntry.Value.Name.ToLower() == lowerName)
                         return playerEntry.Value;
 
                 return null;
@@ -82,10 +81,10 @@ namespace Core
         }
 
 
-        public static Player FindConnectedPlayer(Guid guid)
+        public static Player FindConnectedPlayer(ulong networkId)
         {
             lock (PlayerLock)
-                return Players.LookupEntry(guid);
+                return Players.LookupEntry(networkId);
         }
 
         public static Player FindConnectedPlayerByName(string name)
@@ -94,7 +93,7 @@ namespace Core
             {
                 string lowerName = name.ToLower();
                 foreach (var playerEntry in Players)
-                    if (playerEntry.Value.GetName().ToLower() == lowerName)
+                    if (playerEntry.Value.Name.ToLower() == lowerName)
                         return playerEntry.Value;
 
                 return null;
@@ -105,13 +104,13 @@ namespace Core
         public static void AddEntity(Player player)
         {
             lock (PlayerLock)
-                Players.Add(player.Guid, player);
+                Players.Add(player.NetworkId, player);
         }
 
         public static void RemoveEntity(Player player)
         {
             lock (PlayerLock)
-                Players.Remove(player.Guid);
+                Players.Remove(player.NetworkId);
         }
     }
 }

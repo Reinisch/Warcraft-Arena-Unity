@@ -11,7 +11,6 @@
                 creatureRef.Value.Source.RemoveAllDynObjects();
                 if (creatureRef.Value.Source.IsInCombat())
                 {
-                    creatureRef.Value.Source.CombatStop();
                     creatureRef.Value.Source.AI.EnterEvadeMode();
                 }
                 creatureRef = creatureRef.Next;

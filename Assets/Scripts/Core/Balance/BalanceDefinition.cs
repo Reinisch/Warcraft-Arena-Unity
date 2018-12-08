@@ -9,9 +9,9 @@ namespace Core
         [SerializeField]
         private List<SpellInfo> spellInfos = new List<SpellInfo>();
         [SerializeField]
-        private List<MapEntry> mapEntries;
+        private List<MapDefinition> mapEntries;
 
         public List<SpellInfo> SpellInfos => spellInfos;
-        public List<MapEntry> MapEntries => mapEntries;
+        public List<MapDefinition> MapEntries => mapEntries;
     }
 }

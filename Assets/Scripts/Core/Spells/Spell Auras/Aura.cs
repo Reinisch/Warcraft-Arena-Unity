@@ -19,8 +19,8 @@ namespace Core
         private SpellEffectInfoList spelEffectInfos = new SpellEffectInfoList();
 
         public SpellInfo SpellInfo { get; private set; }
-        public Guid CastGuid { get; private set; }
-        public Guid CasterGuid { get; private set; }
+        public ulong CastId { get; private set; }
+        public ulong CasterId { get; private set; }
         public int SpellVisualId { get; private set; }
 
         public int Id => SpellInfo.Id;
@@ -28,7 +28,7 @@ namespace Core
         public Unit Owner { get; private set; }
 
 
-        public Aura(SpellInfo spellproto, Guid castId, Unit owner, Unit caster)
+        public Aura(SpellInfo spellproto, ulong castId, Unit owner, Unit caster)
         {
 
         }
@@ -94,16 +94,16 @@ namespace Core
 
         #region Application, updates and removal
 
-        public static Aura TryRefreshStackOrCreate(SpellInfo spellProto, Guid castId, Unit owner, Unit caster, ref bool refresh, List<int> baseAmount, Guid casterGuid)
+        public static Aura TryRefreshStackOrCreate(SpellInfo spellProto, ulong castId, Unit owner, Unit caster, ref bool refresh, List<int> baseAmount, ulong casterId)
         {
             Assert.IsNotNull(spellProto);
             Assert.IsNotNull(owner);
-            Assert.IsTrue(caster != null || casterGuid != Guid.Empty);
+            Assert.IsTrue(caster != null || casterId != 0);
 
             if (refresh)
                 refresh = false;
 
-            var foundAura = owner.TryStackingOrRefreshingExistingAura(spellProto, caster, baseAmount, casterGuid);
+            var foundAura = owner.TryStackingOrRefreshingExistingAura(spellProto, caster, baseAmount, casterId);
             if (foundAura != null)
             {
                 // we've here aura, which script triggered removal after modding stack amount
@@ -114,21 +114,21 @@ namespace Core
                 refresh = true;
                 return foundAura;
             }
-            return Create(spellProto, castId, owner, caster, baseAmount, casterGuid);
+            return Create(spellProto, castId, owner, caster, baseAmount, casterId);
         }
 
-        public static Aura Create(SpellInfo spellProto, Guid castId, Unit owner, Unit caster, List<int> baseAmount, Guid casterGuid)
+        public static Aura Create(SpellInfo spellProto, ulong castId, Unit owner, Unit caster, List<int> baseAmount, ulong casterId)
         {
             Assert.IsNotNull(spellProto);
             Assert.IsNotNull(owner);
-            Assert.IsTrue(caster != null || casterGuid != Guid.Empty);
+            Assert.IsTrue(caster != null || casterId != 0);
 
-            if (casterGuid != Guid.Empty)
-                caster = owner.Guid == casterGuid ? owner : owner.Map.FindMapEntity<Unit>(casterGuid);
+            if (casterId != 0)
+                caster = owner.NetworkId == casterId ? owner : owner.Map.FindMapEntity<Unit>(casterId);
             else
-                casterGuid = caster.Guid;
+                casterId = caster.NetworkId;
 
-            Aura aura = new UnitAura(spellProto, castId, owner, caster, baseAmount, casterGuid);
+            Aura aura = new UnitAura(spellProto, castId, owner, caster, baseAmount, casterId);
             // aura can be removed in Unit.AddAura call
             return aura.IsRemoved() ? null : aura;
         }

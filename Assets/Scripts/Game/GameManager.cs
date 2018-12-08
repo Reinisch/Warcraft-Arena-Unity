@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Client;
 using Core;
 using JetBrains.Annotations;
 using Server;
+using UdpKit;
 using UnityEngine;
 
 namespace Game
@@ -15,19 +17,18 @@ namespace Game
             FixedTimeDelta
         }
 
-        private enum NetworkingMode
+        public enum NetworkingMode
         {
+            None,
             Both,
             Server,
             Client,
         }
 
-        [SerializeField, UsedImplicitly] private NetworkingMode mode;
         [SerializeField, UsedImplicitly] private UpdatePolicy updatePolicy;
         [SerializeField, UsedImplicitly] private long updateTimeMilliseconds = 20;
 
         [SerializeField, UsedImplicitly] private BalanceManager balanceManager;
-        [SerializeField, UsedImplicitly] private EntityManager entityManager;
         [SerializeField, UsedImplicitly] private PhysicsManager physicsManager;
         [SerializeField, UsedImplicitly] private MultiplayerManager multiplayerManager;
 
@@ -47,9 +48,6 @@ namespace Game
         [UsedImplicitly]
         private void Awake()
         {
-            HasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
-            HasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;
-
             Initialize();
         }
 
@@ -60,22 +58,33 @@ namespace Game
             int worldTimeDiff = (int)(elapsedTime - lastWorldUpdateTime);
             int gameTimeDiff = (int)(elapsedTime - lastGameUpdateTime);
 
-            switch (updatePolicy)
+            if (worldManager != null)
             {
-                case UpdatePolicy.EveryUpdateCall:
-                    lastWorldUpdateTime = elapsedTime;
-                    worldManager.DoUpdate(worldTimeDiff);
-                    break;
-                case UpdatePolicy.FixedTimeDelta:
-                    if (worldTimeDiff >= updateTimeMilliseconds)
-                        goto case UpdatePolicy.EveryUpdateCall;
-                    break;
+                switch (updatePolicy)
+                {
+                    case UpdatePolicy.EveryUpdateCall:
+                        lastWorldUpdateTime = elapsedTime;
+                        worldManager.DoUpdate(worldTimeDiff);
+                        break;
+                    case UpdatePolicy.FixedTimeDelta:
+                        if (worldTimeDiff >= updateTimeMilliseconds)
+                            goto case UpdatePolicy.EveryUpdateCall;
+                        break;
                     default:
                         goto case UpdatePolicy.EveryUpdateCall;
+                }
+            }
+            else
+            {
+                lastWorldUpdateTime = elapsedTime;
             }
 
             lastGameUpdateTime = elapsedTime;
-            DoUpdate(gameTimeDiff);
+            if (HasClientLogic)
+            {
+                renderManager.DoUpdate(gameTimeDiff);
+                interfaceManager.DoUpdate(gameTimeDiff);
+            }
         }
 
         [UsedImplicitly]
@@ -86,23 +95,20 @@ namespace Game
 
         private void Initialize()
         {
+            DontDestroyOnLoad(gameObject);
+
             gameTimer.Start();
 
             balanceManager.Initialize();
             physicsManager.Initialize();
-            entityManager.Initialize();
             multiplayerManager.Initialize();
+            interfaceManager.Initialize(multiplayerManager);
 
-            worldManager = HasClientLogic ? (WorldManager) new WorldClientManager() : new WorldServerManager();
-            worldManager.Initialize();
+            multiplayerManager.EventGameMapLoaded += OnGameMapLoaded;
+            multiplayerManager.EventDisconnectedFromServer += OnEventDisconnectedFromServer;
 
-            if (HasClientLogic)
-            {
-                inputManager.Initialize(worldManager);
-                interfaceManager.Initialize();
-                soundManager.Initialize();
-                renderManager.Initialize(worldManager);
-            }
+            interfaceManager.HideBattleScreen();
+            interfaceManager.ShowLobbyScreen(true);
         }
 
         private void Deinitialize()
@@ -111,27 +117,52 @@ namespace Game
             {
                 renderManager.Deinitialize();
                 soundManager.Deinitialize();
-                interfaceManager.Deinitialize();
                 inputManager.Deinitialize();
             }
 
-            worldManager.Deinitialize();
+            multiplayerManager.EventGameMapLoaded -= OnGameMapLoaded;
+            multiplayerManager.EventDisconnectedFromServer -= OnEventDisconnectedFromServer;
 
+            worldManager?.Deinitialize();
+
+            interfaceManager.Deinitialize();
             multiplayerManager.Deinitialize();
-            entityManager.Deinitialize();
             physicsManager.Deinitialize();
             balanceManager.Deinitialize();
         }
 
-        private void DoUpdate(int deltaTime)
+        private void OnGameMapLoaded(string map, NetworkingMode mode)
         {
-            multiplayerManager.DoUpdate(deltaTime);
+            if (mode == NetworkingMode.None)
+                throw new ArgumentOutOfRangeException(nameof(mode), mode, "Game loaded with invalid networking state!");
+
+            HasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
+            HasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;
+            worldManager = HasServerLogic ? (WorldManager) new WorldServerManager() : new WorldClientManager();
+            worldManager.Initialize();
+            interfaceManager.HideLobbyScreen();
+            interfaceManager.ShowBattleScreen();
 
             if (HasClientLogic)
             {
-                renderManager.DoUpdate(deltaTime);
-                interfaceManager.DoUpdate(deltaTime);
+                renderManager.Initialize(worldManager);
+                soundManager.Initialize(worldManager);
+                inputManager.Initialize(worldManager);
             }
+
+            multiplayerManager.InitializeWorld(worldManager, HasServerLogic, HasClientLogic);
+        }
+
+        private void OnEventDisconnectedFromServer(UdpConnectionDisconnectReason reason)
+        {
+            multiplayerManager.DeinitializeWorld(HasServerLogic, HasClientLogic);
+            HasServerLogic = false;
+            HasClientLogic = false;
+            worldManager = null;
+
+            interfaceManager.HideBattleScreen();
+            interfaceManager.ShowLobbyScreen(false);
+            interfaceManager.LobbyScreen.SetStatusDisconnectDescription(reason);
         }
     }
 }

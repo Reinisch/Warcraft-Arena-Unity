@@ -2,6 +2,7 @@
 {
     public class AreaTrigger : WorldEntity, IGridEntity<AreaTrigger>
     {
+        public override EntityType TypeId => EntityType.AreaTrigger;
         public GridReference<AreaTrigger> GridRef { get; private set; }
 
 

@@ -14,17 +14,10 @@
             NextMoveTime = new TimeTracker(0);
         }
 
-
         public override void DoInitialize(TUnit unit)
         {
             unit.AddUnitState(UnitState.Confused);
             unit.SetFlag(EntityFields.UnitFlags, (uint)UnitFlags.Confused);
-
-            float x, y, z;
-            unit.GetPosition(out x, out y, out z);
-            X = x;
-            Y = y;
-            Z = z;
 
             if (!unit.IsAlive || unit.IsStopped())
                 return;
@@ -59,32 +52,10 @@
             }
             else
             {
-                // waiting for next move
                 NextMoveTime.Update(timeDiff);
                 if (NextMoveTime.Passed)
                 {
-                    // start moving
                     unit.AddUnitState(UnitState.ConfusedMove);
-
-                    //float dest = 4.0f * (float)RandomSolver.NextDouble() - 2.0f;
-                    //
-                    //Position pos;
-                    //pos.Relocate(X, Y, Z);
-                    //unit.MovePositionToFirstCollision(pos, dest, 0.0f);
-
-                    //PathGenerator path(unit);
-                    //path.SetPathLengthLimit(30.0f);
-                    //bool result = path.CalculatePath(pos.m_positionX, pos.m_positionY, pos.m_positionZ);
-                    //if (!result || (path.GetPathType() & PATHFIND_NOPATH))
-                    //{
-                    //    NextMoveTime.Reset(100);
-                    //    return true;
-                    //}
-
-                    //Movement::MoveSplineInit init(unit);
-                    //init.MovebyPath(path.GetPath());
-                    //init.SetWalk(true);
-                    //init.Launch();
                 }
             }
 
@@ -108,8 +79,6 @@
         {
             creature.RemoveFlag(EntityFields.UnitFlags, (uint)UnitFlags.Confused);
             creature.ClearUnitState(UnitState.Confused | UnitState.ConfusedMove);
-            if (creature.GetVictim() != null)
-                creature.SetTarget(creature.EnsureVictim().Guid);
         }
     }
 }

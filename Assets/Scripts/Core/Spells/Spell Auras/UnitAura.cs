@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Core
 {
@@ -7,7 +6,7 @@ namespace Core
     {
         public DiminishingGroup AuraDiminishingGroup { get; set; }      // diminishing, allow ApplyAuraHandler to modify and access it
 
-        public UnitAura(SpellInfo spellProto, Guid castId, Unit owner, Unit caster, List<int> baseAmount, Guid casterGuid)
+        public UnitAura(SpellInfo spellProto, ulong castId, Unit owner, Unit caster, List<int> baseAmount, ulong casterId)
             : base(spellProto, castId, owner, caster)
         {
             AuraDiminishingGroup = DiminishingGroup.None;

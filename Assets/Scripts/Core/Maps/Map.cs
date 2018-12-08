@@ -11,7 +11,7 @@ namespace Core
         private readonly WorldGrid mapGrid = new WorldGrid();
         private readonly List<WorldEntity> worldEntities = new List<WorldEntity>();
 
-        public MapEntry Entry { get; private set; }
+        public MapDefinition Definition { get; private set; }
         public MapSettings Settings { get; private set; }
 
         protected float VisibleDistance { get; set; }
@@ -19,7 +19,7 @@ namespace Core
 
         public Map(int id, long expiry , uint instanceId, Map parent = null)
         {
-            Entry = BalanceManager.MapEntries.LookupEntry(id);
+            Definition = BalanceManager.MapsById.LookupEntry(id);
         }
 
         public void Initialize(Scene mapScene)
@@ -32,9 +32,9 @@ namespace Core
                     break;
             }
 
-            Assert.IsNotNull(Settings, $"Map settings are missing in map: {Entry.MapName} Id: {Entry.Id}");
-            Assert.IsTrue(Settings.GridCells.Count % Settings.GridLayout.constraintCount == 0, $"Grid in map: {Entry.MapName} Id: {Entry.Id} should be filled rect!");
-            mapGrid.Initialize(this, GridHelper.MinUnloadDelay, Entry.MapType != MapTypes.Common);
+            Assert.IsNotNull(Settings, $"Map settings are missing in map: {Definition.MapName} Id: {Definition.Id}");
+            Assert.IsTrue(Settings.GridCells.Count % Settings.GridLayout.constraintCount == 0, $"Grid in map: {Definition.MapName} Id: {Definition.Id} should be filled rect!");
+            mapGrid.Initialize(this, GridHelper.MinUnloadDelay, Definition.MapType != MapTypes.Common);
         }
 
         public void Deinitialize()
@@ -92,9 +92,9 @@ namespace Core
         public void VisitWorld(float x, float y, float radius, ref IWorldVisitor notifier) { throw new NotImplementedException(); }
         public void VisitGrid(float x, float y, float radius, ref IGridVisitor notifier) { throw new NotImplementedException(); }
 
-        public TEntity FindMapEntity<TEntity>(Guid guid) where TEntity : Entity
+        public TEntity FindMapEntity<TEntity>(ulong networkId) where TEntity : Entity
         {
-            return worldEntities.Find(entity => entity.Guid == guid) as TEntity;
+            return worldEntities.Find(entity => entity.NetworkId == networkId) as TEntity;
         }
 
         public TEntity FindMapEntity<TEntity>(Predicate<TEntity> predicate) where TEntity : WorldEntity

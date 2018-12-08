@@ -155,12 +155,12 @@ namespace Core
 
         public static bool IsValidMap(int mapId, bool startUp)
         {
-            MapEntry mapEntry = BalanceManager.MapEntries.LookupEntry(mapId);
+            MapDefinition mapDefinition = BalanceManager.MapsById.LookupEntry(mapId);
 
             if (startUp)
-                return mapEntry != null;
+                return mapDefinition != null;
 
-            return mapEntry != null && !mapEntry.IsDungeon();
+            return mapDefinition != null && !mapDefinition.IsDungeon();
         }
 
         public void DoForAllMaps(Action<Map> mapAction)

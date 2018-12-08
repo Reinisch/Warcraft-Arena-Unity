@@ -2,15 +2,16 @@
 
 namespace Core
 {
-    public enum DynamicObjectType
+    public enum DynamicEntityType
     {
-        Portal = 0x0,
-        AreaSpell = 0x1,
-        FarsightFocus = 0x2
+        Portal,
+        AreaSpell,
+        FarsightFocus
     }
 
     public class DynamicEntity : WorldEntity, IGridEntity<DynamicEntity>
     {
+        public override EntityType TypeId => EntityType.DynamicEntity;
         public GridReference<DynamicEntity> GridRef { get; private set; }
 
         protected Aura Aura { get; set; }
@@ -25,11 +26,8 @@ namespace Core
         public void AddToGrid(GridReferenceManager<DynamicEntity> refManager) { throw new NotImplementedException(); }
         public void RemoveFromGrid() { throw new NotImplementedException(); }
 
-        public override void AddToWorld() { }
-        public override void RemoveFromWorld() { }
-
-        public bool CreateDynamicObject(Guid guidlow, Unit caster, SpellInfo spell, Position pos, float radius, DynamicObjectType type, uint spellXSpellVisualId) { return false; }
-        public override void DoUpdate(uint timeDiff) { }
+        public bool CreateDynamicObject(Guid guidlow, Unit caster, SpellInfo spell, Position pos, float radius, DynamicEntityType type, uint spellXSpellVisualId) { return false; }
+        public override void DoUpdate(int timeDelta) { }
         public void Remove() { }
         public void SetDuration(int newDuration) { }
         public int GetDuration() { return 0; }
@@ -44,8 +42,5 @@ namespace Core
         public uint GetSpellId() { return GetUintValue(EntityFields.DynamicSpellid); }
         public Guid GetCasterGUID() { return GetGuidValue(EntityFields.DynamicCaster); }
         public float GetRadius() { return GetFloatValue(EntityFields.DynamicRadius); }
-
-        protected override void AddToEntityUpdate() { throw new NotImplementedException(); }
-        protected override void RemoveFromEntityUpdate() { throw new NotImplementedException(); }
     }
 }

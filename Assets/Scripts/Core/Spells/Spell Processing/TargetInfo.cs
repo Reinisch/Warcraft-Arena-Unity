@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Core
+﻿namespace Core
 {
     public class TargetInfo
     {
-        public Guid TargetGuid { get; set; }
+        public ulong TargetId { get; set; }
         public float Delay { get; set; }
         public SpellMissInfo MissCondition { get; set; }
         public SpellMissInfo ReflectResult { get; set; }
