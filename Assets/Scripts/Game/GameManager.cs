@@ -105,7 +105,7 @@ namespace Game
             interfaceManager.Initialize(multiplayerManager);
 
             multiplayerManager.EventGameMapLoaded += OnGameMapLoaded;
-            multiplayerManager.EventDisconnectedFromServer += OnEventDisconnectedFromServer;
+            multiplayerManager.EventDisconnectedFromHost += OnDisconnectedFromHost;
 
             interfaceManager.HideBattleScreen();
             interfaceManager.ShowLobbyScreen(true);
@@ -121,7 +121,7 @@ namespace Game
             }
 
             multiplayerManager.EventGameMapLoaded -= OnGameMapLoaded;
-            multiplayerManager.EventDisconnectedFromServer -= OnEventDisconnectedFromServer;
+            multiplayerManager.EventDisconnectedFromHost -= OnDisconnectedFromHost;
 
             worldManager?.Deinitialize();
 
@@ -153,7 +153,7 @@ namespace Game
             multiplayerManager.InitializeWorld(worldManager, HasServerLogic, HasClientLogic);
         }
 
-        private void OnEventDisconnectedFromServer(UdpConnectionDisconnectReason reason)
+        private void OnDisconnectedFromHost(UdpConnectionDisconnectReason reason)
         {
             multiplayerManager.DeinitializeWorld(HasServerLogic, HasClientLogic);
             HasServerLogic = false;

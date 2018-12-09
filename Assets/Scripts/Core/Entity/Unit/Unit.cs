@@ -1012,7 +1012,7 @@ namespace Core
                     nonStackBonus += /*GetMaxPositiveAuraModifier(SPELL_AURA_MOD_SPEED_NOT_STACK) / 100.0f*/0;
                     break;
                 default:
-                    Debug.LogErrorFormat("Character::UpdateSpeed: Unsupported move type - {0}", type);
+                    Debug.LogErrorFormat("Characters::UpdateSpeed: Unsupported move type - {0}", type);
                     return;
             }
 

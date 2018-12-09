@@ -9,6 +9,8 @@ namespace Core
         public EntityManager<WorldEntity> WorldEntityManager { get; } = new EntityManager<WorldEntity>();
 
         public virtual ulong LocalPlayerId => 0;
+        public abstract bool HasServerLogic { get; }
+        public abstract bool HasClientLogic { get; }
 
         public virtual void Initialize()
         {

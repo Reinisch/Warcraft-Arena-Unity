@@ -31,7 +31,7 @@ namespace Game
         private State state;
 
         public event Action<string, GameManager.NetworkingMode> EventGameMapLoaded;
-        public event Action<UdpConnectionDisconnectReason> EventDisconnectedFromServer;
+        public event Action<UdpConnectionDisconnectReason> EventDisconnectedFromHost;
 
         public void Initialize()
         {
@@ -137,7 +137,7 @@ namespace Game
             base.Connected(connection);
 
             if (networkingMode == GameManager.NetworkingMode.Client)
-                EventDisconnectedFromServer?.Invoke(connection.DisconnectReason);
+                EventDisconnectedFromHost?.Invoke(connection.DisconnectReason);
         }
 
         public override void ConnectAttempt(UdpEndPoint endpoint, IProtocolToken token)
@@ -185,7 +185,7 @@ namespace Game
         {
             boltSharedListener.enabled = shared;
             boltServerListener.enabled = server;
-            boltServerListener.enabled = client;
+            boltClientListener.enabled = client;
 
             if (server && client)
             {

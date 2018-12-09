@@ -9,14 +9,28 @@ namespace Client
         {
             base.SceneLoadLocalDone(map);
 
-            Map mainMap = MapManager.Instance.FindMap(1);
-            Transform spawnPoint = RandomHelper.GetRandomElement(mainMap.Settings.FindSpawnPoints(Team.Alliance));
-            WorldEntity.CreateInfo playerCreateInfo = new WorldEntity.CreateInfo {Position = spawnPoint.position, Rotation = spawnPoint.rotation};
-            Player localPlayer = worldManager.WorldEntityManager.Create<Player>(BoltPrefabs.PlayerMage, playerCreateInfo);
-            localPlayer.SetMap(mainMap);
+            if (worldManager.HasServerLogic)
+            {
+                Map mainMap = MapManager.Instance.FindMap(1);
+                Transform spawnPoint = RandomHelper.GetRandomElement(mainMap.Settings.FindSpawnPoints(Team.Alliance));
+                WorldEntity.CreateInfo playerCreateInfo = new WorldEntity.CreateInfo { Position = spawnPoint.position, Rotation = spawnPoint.rotation };
+                Player localPlayer = worldManager.WorldEntityManager.Create<Player>(BoltPrefabs.PlayerMage, playerCreateInfo);
+                localPlayer.SetMap(mainMap);
+                localPlayer.BoltEntity.TakeControl();
 
-            localPlayer.GetComponent<WarcraftController>().Initialize(localPlayer);
-            FindObjectOfType<WarcraftCamera>().Target = localPlayer.transform;
+                FindObjectOfType<WarcraftCamera>().Target = localPlayer.transform;
+            }
+        }
+
+        public override void ControlOfEntityGained(BoltEntity entity)
+        {
+            base.ControlOfEntityGained(entity);
+
+            if (!worldManager.HasServerLogic)
+            {
+                Player localPlayer = (Player)worldManager.WorldEntityManager.Find(entity.networkId.PackedValue);
+                FindObjectOfType<WarcraftCamera>().Target = localPlayer.transform;
+            }
         }
     }
 }

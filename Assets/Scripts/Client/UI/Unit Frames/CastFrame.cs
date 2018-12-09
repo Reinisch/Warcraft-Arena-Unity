@@ -16,17 +16,17 @@ public class CastFrame : MonoBehaviour
     {
         /*if (gameObject.activeSelf)
         {
-            if (castBar.caster == null || castBar.caster.Character.SpellCast.HasCast == false)
+            if (castBar.caster == null || castBar.caster.Characters.SpellCast.HasCast == false)
             {
                 gameObject.SetActive(false);
             }
         }
         else
         {
-            if (castBar.caster != null && castBar.caster.Character.SpellCast.HasCast == true)
+            if (castBar.caster != null && castBar.caster.Characters.SpellCast.HasCast == true)
             {
                 gameObject.SetActive(true);
-                spellText.text = castBar.caster.Character.SpellCast.spell.name;
+                spellText.text = castBar.caster.Characters.SpellCast.spell.name;
             }
         }*/
         castBar.UpdateCastBar();
