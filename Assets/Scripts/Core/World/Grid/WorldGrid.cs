@@ -56,17 +56,17 @@ namespace Core
         public void UpdateTimeTracker(long diff) { Info.UpdateTimeTracker(diff); }
 
     
-        public void VisitAllGrids(IEntityVisitor visitor)
+        public void VisitAllGrids(IEntityGridVisitor gridVisitor)
         {
             for (int i = 0; i < CellCountX; i++)
                 for (int j = 0; j < CellCountZ; j++)
-                    GetGridType(i, j).Visit(visitor);
+                    GetGridType(i, j).Visit(gridVisitor);
         }
 
-        public void VisitGrid(int x, int y, IEntityVisitor visitor)
+        public void VisitGrid(int x, int y, IEntityGridVisitor gridVisitor)
         {
             Assert.IsTrue(x < CellCountX && y < CellCountZ);
-            GetGridType(x, y).Visit(visitor);
+            GetGridType(x, y).Visit(gridVisitor);
         }
     }
 

@@ -65,7 +65,7 @@ namespace Core
 
         public GameEntity GameEntityTarget
         {
-            get { return entityTarget.AsGameEntity; }
+            get { return entityTarget as GameEntity; }
             set
             {
                 if (value == null)

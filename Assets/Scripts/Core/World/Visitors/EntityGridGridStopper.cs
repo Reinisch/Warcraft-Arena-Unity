@@ -1,6 +1,6 @@
 ﻿namespace Core
 {
-    public class EntityGridStopper : IGridVisitor
+    public class EntityGridGridStopper : IGridGridVisitor
     {
         public void Visit(GridReferenceManager<Creature> creatureContainer)
         {

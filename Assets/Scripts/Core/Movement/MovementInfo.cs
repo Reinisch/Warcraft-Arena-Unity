@@ -79,17 +79,45 @@ namespace Core
             Jump = new JumpInfo();
         }
 
-        public void AddMovementFlag(MovementFlags flag) { Flags |= flag; }
+        public void AddMovementFlag(MovementFlags flag)
+        {
+            Flags |= flag;
+        }
 
-        public void RemoveMovementFlag(MovementFlags flag) { Flags &= ~flag; }
+        public void RemoveMovementFlag(MovementFlags flag)
+        {
+            Flags &= ~flag;
+        }
 
-        public bool HasMovementFlag(MovementFlags flag) { return (Flags & flag) != 0; }
+        public bool HasMovementFlag(MovementFlags flag)
+        {
+            return (Flags & flag) != 0;
+        }
 
-        public MovementExtraFlags GetExtraMovementFlags() { return ExtraFlags; }
-        public void SetExtraMovementFlags(MovementExtraFlags flag) { ExtraFlags = flag; }
-        public void AddExtraMovementFlag(MovementExtraFlags flag) { ExtraFlags |= flag; }
-        public void RemoveExtraMovementFlag(MovementExtraFlags flag) { ExtraFlags &= ~flag; }
-        public bool HasExtraMovementFlag(MovementExtraFlags flag) { return (ExtraFlags & flag) != 0; }
+        public MovementExtraFlags GetExtraMovementFlags()
+        {
+            return ExtraFlags;
+        }
+
+        public void SetExtraMovementFlags(MovementExtraFlags flag)
+        {
+            ExtraFlags = flag;
+        }
+
+        public void AddExtraMovementFlag(MovementExtraFlags flag)
+        {
+            ExtraFlags |= flag;
+        }
+
+        public void RemoveExtraMovementFlag(MovementExtraFlags flag)
+        {
+            ExtraFlags &= ~flag;
+        }
+
+        public bool HasExtraMovementFlag(MovementExtraFlags flag)
+        {
+            return (ExtraFlags & flag) != 0;
+        }
 
         public long GetFallTime() { return Jump.FallTime; }
         public void SetFallTime(long fallTime) { Jump.FallTime = fallTime; }

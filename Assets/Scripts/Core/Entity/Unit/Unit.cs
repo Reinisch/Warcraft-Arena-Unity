@@ -13,11 +13,11 @@ using DispelChargesList = System.Collections.Generic.List<System.Collections.Gen
 
 namespace Core
 {
-    public class Unit : WorldEntity
+    public abstract class Unit : WorldEntity
     {
         [SerializeField, UsedImplicitly, Header("Unit"), Space(10)] private CapsuleCollider unitCollider;
 
-        public override EntityType TypeId => EntityType.Unit;
+        public override EntityType EntityType => EntityType.Unit;
         public CapsuleCollider UnitCollider => unitCollider;
 
         #region Unit data
@@ -69,7 +69,7 @@ namespace Core
 
         #endregion
 
-        protected override void Awake()
+        internal override void Awake()
         {
             base.Awake();
 
@@ -80,11 +80,17 @@ namespace Core
         {
             base.Attached();
 
+            worldEntityState.SetTransforms(worldEntityState.Transform, transform);
+
+            WorldManager.UnitManager.Attach(this);
+
             SetMap(WorldManager.FindMap(1));
         }
 
         public override void Detached()
         {
+            WorldManager.UnitManager.Detach(this);
+
             ResetMap();
 
             base.Detached();
@@ -579,8 +585,6 @@ namespace Core
             set { SetULongValue(EntityFields.UnitCritter, value); }
         }
 
-        public Guid CharmGuid => GetGuidValue(EntityFields.UnitCharm);
-
         public bool IsControlledByPlayer() { return false; }
         public Guid GetCharmerOrOwnerGuid() { return default(Guid); }
         public Guid GetCharmerOrOwnerOrOwnGuid() { return default(Guid); }
@@ -805,9 +809,6 @@ namespace Core
 
 
         #region Spell helpers
-
-        public Guid GetChannelGuid() { return GetGuidValue(EntityFields.ChannelObject); }
-        public void SetChannelGuid(Guid guid) { SetGuidValue(EntityFields.ChannelObject, guid); }
 
         public void SetCurrentCastSpell(Spell spell) { }
         public void InterruptSpell(CurrentSpellTypes spellType, bool withDelayed = true, bool withInstant = true) { }
@@ -1112,5 +1113,7 @@ namespace Core
 
         private float GetCombatRatingReduction(CombatRating cr) { return 0.0f; }
         private uint GetCombatRatingDamageReduction(CombatRating cr, float rate, float cap, uint damage) { return 0; }
+
+        public abstract void Accept(IUnitVisitor unitVisitor);
     }
 }

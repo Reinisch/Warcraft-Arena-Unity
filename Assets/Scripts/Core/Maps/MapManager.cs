@@ -10,83 +10,79 @@ namespace Core
 {
     public class MapManager
     {
-        public static MapManager Instance { get; } = new MapManager();
+        private readonly Dictionary<GridStateType, GridState> gridStates = new Dictionary<GridStateType, GridState>(4);
+        private readonly Dictionary<int, Map> baseMaps = new Dictionary<int, Map>();
+        private readonly Mutex mapsLock = new Mutex(true);
+        private readonly BitArray instanceIds = new BitArray(255);
+        private readonly MapUpdater mapUpdater = new MapUpdater();
 
-        private static readonly Dictionary<GridStateType, GridState> GridStates = new Dictionary<GridStateType, GridState>(4);
-        private static readonly Dictionary<int, Map> BaseMaps = new Dictionary<int, Map>();
-        private static readonly Mutex MapsLock = new Mutex(true);
-        private static readonly BitArray InstanceIds = new BitArray(255);
-        private static readonly MapUpdater MapUpdater = new MapUpdater();
-
-        private static int scheduledScripts;
-        private static int gridCleanUpDelay;
+        private int gridCleanUpDelay;
+        private WorldManager worldManager;
 
         private int NextInstanceId { get; set; }
 
-        public bool IsScriptScheduled => scheduledScripts > 0;
-
-        private MapManager() { }
-
-        public static void Initialize()
+        public MapManager(WorldManager worldManager)
         {
-            gridCleanUpDelay = 1000; // TODO: add config
+            this.worldManager = worldManager;
 
-            GridStates[GridStateType.Invalid] = new InvalidState();
-            GridStates[GridStateType.Active] = new ActiveState();
-            GridStates[GridStateType.Idle] = new IdleState();
-            GridStates[GridStateType.Removal] = new RemovalState();
+            gridCleanUpDelay = 1000;
 
-            int numThreads = 8;
-            if (numThreads > 0)
-                MapUpdater.Activate(numThreads);
+            gridStates[GridStateType.Invalid] = new InvalidState();
+            gridStates[GridStateType.Active] = new ActiveState();
+            gridStates[GridStateType.Idle] = new IdleState();
+            gridStates[GridStateType.Removal] = new RemovalState();
+
+            if (!worldManager.HasClientLogic)
+                mapUpdater.Activate(8);
         }
 
-        public static void Deinitialize()
+        public void Dispose()
         {
-            foreach (var mapEntry in BaseMaps)
+            foreach (var mapEntry in baseMaps)
             {
                 mapEntry.Value.UnloadAll();
                 mapEntry.Value.Deinitialize();
             }
-            BaseMaps.Clear();
+            baseMaps.Clear();
 
-            if (MapUpdater.Activated)
-                MapUpdater.Deactivate();
+            if (!worldManager.HasClientLogic)
+                mapUpdater.Deactivate();
 
-            GridStates.Clear();
+            gridStates.Clear();
+
+            worldManager = null;
         }
 
         public void DoUpdate(int timeDiff)
         {
-            foreach (var map in BaseMaps)
+            foreach (var map in baseMaps)
             {
-                if (MapUpdater.Activated)
-                    MapUpdater.ScheduleUpdate(map.Value, timeDiff);
+                if (mapUpdater.Activated)
+                    mapUpdater.ScheduleUpdate(map.Value, timeDiff);
                 else
                     map.Value.DoUpdate(timeDiff);
             }
         
-            if (MapUpdater.Activated)
-                MapUpdater.Wait();
+            if (mapUpdater.Activated)
+                mapUpdater.Wait();
 
-            foreach (var mapEntry in BaseMaps)
+            foreach (var mapEntry in baseMaps)
                 mapEntry.Value.DelayedUpdate(timeDiff);
         }
 
-
         public Map CreateBaseMap(int mapId)
         {
-            Map map = BaseMaps.LookupEntry(mapId);
+            Map map = baseMaps.LookupEntry(mapId);
 
             if (map == null)
             {
-                MapsLock.WaitOne();
+                mapsLock.WaitOne();
 
                 map = new Map(mapId, gridCleanUpDelay, 0);
-                BaseMaps[mapId] = map;
+                baseMaps[mapId] = map;
                 map.Initialize(SceneManager.GetActiveScene());
 
-                MapsLock.ReleaseMutex();
+                mapsLock.ReleaseMutex();
             }
 
             Assert.IsNotNull(map);
@@ -95,7 +91,7 @@ namespace Core
 
         public Map FindMap(int mapId)
         {
-            return BaseMaps.LookupEntry(mapId);
+            return baseMaps.LookupEntry(mapId);
         }
 
         public int GenerateInstanceId()
@@ -104,7 +100,7 @@ namespace Core
 
             for (int i = ++NextInstanceId; i < int.MaxValue; ++i)
             {
-                if (i < InstanceIds.Length && !InstanceIds.Get(i) || i >= InstanceIds.Length)
+                if (i < instanceIds.Length && !instanceIds.Get(i) || i >= instanceIds.Length)
                 {
                     NextInstanceId = i;
                     break;
@@ -118,10 +114,10 @@ namespace Core
             }
 
             // allocate space if necessary
-            if (newInstanceId >= InstanceIds.Length)
-                InstanceIds.Length = newInstanceId + 1;
+            if (newInstanceId >= instanceIds.Length)
+                instanceIds.Length = newInstanceId + 1;
 
-            InstanceIds[newInstanceId] = true;
+            instanceIds[newInstanceId] = true;
 
             return newInstanceId;
         }
@@ -132,13 +128,13 @@ namespace Core
 
             int result = 255;
             if (result > 0)
-                InstanceIds.Length = result;
+                instanceIds.Length = result;
         }
 
         public void RegisterInstanceId(int instanceId)
         {
             // allocation and sizing was done in InitInstanceIds()
-            InstanceIds[instanceId] = true;
+            instanceIds[instanceId] = true;
         }
 
         public void FreeInstanceId(int instanceId)
@@ -147,7 +143,7 @@ namespace Core
             if (instanceId < NextInstanceId)
                 NextInstanceId = instanceId;
 
-            InstanceIds[instanceId] = false;
+            instanceIds[instanceId] = false;
         }
 
         public EnterState PlayerCannotEnter(uint mapId, Player player, bool loginCheck = false) { throw new NotImplementedException(); }
@@ -165,32 +161,25 @@ namespace Core
 
         public void DoForAllMaps(Action<Map> mapAction)
         {
-            MapsLock.WaitOne();
+            mapsLock.WaitOne();
 
-            foreach (var mapEntry in BaseMaps)
+            foreach (var mapEntry in baseMaps)
                 mapAction(mapEntry.Value);
            
-            MapsLock.ReleaseMutex();
+            mapsLock.ReleaseMutex();
         }
 
         public void DoForAllMapsWithMapId(int mapId, Action<Map> mapAction)
         {
-            MapsLock.WaitOne();
+            mapsLock.WaitOne();
 
-            var map = BaseMaps.LookupEntry(mapId);
+            var map = baseMaps.LookupEntry(mapId);
             if (map != null)
             {
                 mapAction(map);
             }
 
-            MapsLock.ReleaseMutex();
+            mapsLock.ReleaseMutex();
         }
-
-
-        public void IncreaseScheduledScriptsCount() { Interlocked.Increment(ref scheduledScripts); }
-
-        public void DecreaseScheduledScriptCount() { Interlocked.Decrement(ref scheduledScripts); }
-
-        public void DecreaseScheduledScriptCount(int count) { Interlocked.Add(ref scheduledScripts, -count); }
     }
 }

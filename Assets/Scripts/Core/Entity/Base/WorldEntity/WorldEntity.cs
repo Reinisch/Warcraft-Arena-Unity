@@ -25,7 +25,7 @@ namespace Core
         }
 
         private Map currMap;
-        private IWorldEntityState worldEntityState;
+        protected IWorldEntityState worldEntityState;
 
         public MovementInfo MovementInfo { get; } = new MovementInfo();
         public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
@@ -37,10 +37,9 @@ namespace Core
 
         public override void Attached()
         {
-            worldManager.WorldEntityManager.Attach(this);
+            base.Attached();
 
             worldEntityState = entity.GetState<IWorldEntityState>();
-            worldEntityState.SetTransforms(worldEntityState.Transform, transform);
 
             var createInfo = entity.attachToken as CreateInfo;
             if (createInfo != null)
@@ -52,9 +51,9 @@ namespace Core
 
         public override void Detached()
         {
-            worldManager.WorldEntityManager.Detach(this);
-
             worldEntityState = null;
+
+            base.Detached();
         }
 
         public virtual void DoUpdate(int timeDelta)
@@ -65,7 +64,7 @@ namespace Core
         public virtual void SetMap(Map map)
         {
             Assert.IsNotNull(map);
-            Assert.IsFalse(InWorld);
+            Assert.IsTrue(IsValid);
 
             if (currMap == map)
                 return;
@@ -78,7 +77,7 @@ namespace Core
         {
             currMap = null;
         }
-
+       
         public bool CanSeeOrDetect(WorldEntity target, bool ignoreStealth = false, bool distanceCheck = false, bool checkAlert = false)
         {
             return false;

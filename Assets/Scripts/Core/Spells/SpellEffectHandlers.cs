@@ -32,7 +32,7 @@ namespace Core
             target.SetFacingTo(DestTarget);
             target.ClearUnitState(UnitState.Moving);
 
-            if (target.TypeId == EntityType.Unit)
+            if (target.EntityType == EntityType.Unit)
                 target.MotionMaster.MoveDistract(SpellDamage * TimeHelper.InMilliseconds);
         }
 
@@ -53,7 +53,7 @@ namespace Core
             int resist = 0;
             Caster.CalcAbsorbResist(target, SpellInfo.SchoolMask, DamageEffectType.DirectDamage, SpellDamage, ref absorb, ref resist, SpellInfo);
 
-            if (target.TypeId == EntityType.Player)
+            if (target.EntityType == EntityType.Player)
                 ((Player)target).EnvironmentalDamage(EnviromentalDamage.Fire, SpellDamage);
 
             var log = new SpellNonMeleeDamage(Caster, target, SpellInfo.Id, SpellInfo.SchoolMask, CastId)

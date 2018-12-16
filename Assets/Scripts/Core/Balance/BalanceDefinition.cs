@@ -7,11 +7,14 @@ namespace Core
     public class BalanceDefinition : ScriptableObject
     {
         [SerializeField]
+        private NetworkMovementType networkMovementType;
+        [SerializeField]
         private List<SpellInfo> spellInfos = new List<SpellInfo>();
         [SerializeField]
         private List<MapDefinition> mapEntries;
 
         public List<SpellInfo> SpellInfos => spellInfos;
         public List<MapDefinition> MapEntries => mapEntries;
+        public NetworkMovementType NetworkMovementType => networkMovementType;
     }
 }

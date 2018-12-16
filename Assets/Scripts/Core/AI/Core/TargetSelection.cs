@@ -37,7 +37,7 @@ namespace Core
             if (target == null)
                 return false;
 
-            if (PlayerOnly && target.TypeId != EntityType.Player)
+            if (PlayerOnly && target.EntityType != EntityType.Player)
                 return false;
 
             if (Aura == 0)
@@ -110,7 +110,7 @@ namespace Core
             }
 
             if (Caster.IsMoving() && target.IsMoving() && !Caster.IsWalking() && !target.IsWalking() &&
-                ((SpellInfo.RangedFlags & SpellRangeFlag.Melee) > 0 || target.TypeId == EntityType.Player))
+                ((SpellInfo.RangedFlags & SpellRangeFlag.Melee) > 0 || target.EntityType == EntityType.Player))
                 rangeMod += 5.0f / 3.0f;
 
             maxRange += rangeMod;
@@ -150,7 +150,7 @@ namespace Core
             if (target == null)
                 return false;
 
-            if (PlayerOnly && target.TypeId != EntityType.Player)
+            if (PlayerOnly && target.EntityType != EntityType.Player)
                 return false;
 
             var currentVictim = Source.ThreatManager.CurrentVictim;

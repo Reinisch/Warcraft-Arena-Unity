@@ -99,7 +99,7 @@ namespace Core
             OriginalCasterGuid = originalCasterId != 0 ? originalCasterId : caster.NetworkId;
             OriginalCaster = OriginalCasterGuid == caster.NetworkId ? caster : EntityAccessor.FindUnitOnSameMap(Caster, OriginalCasterGuid);
 
-            if (OriginalCaster != null && !OriginalCaster.InWorld)
+            if (OriginalCaster != null && !OriginalCaster.IsValid)
                 OriginalCaster = null;
 
             SpellState = SpellState.None;
@@ -178,7 +178,7 @@ namespace Core
                     triggeredByAura.BaseAura.SetDuration(0);
                 }
 
-                if (Caster.TypeId == EntityType.Player)
+                if (Caster.EntityType == EntityType.Player)
                 {
                     var player = (Player)Caster;
                     player.RestoreSpellMods(this);
@@ -233,9 +233,9 @@ namespace Core
             {
                 // check if object target is valid with needed target flags
                 // for unit case allow corpse target mask because player with not released corpse is a unit target
-                if (target.AsUnit != null && !neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
+                if (target is Unit && !neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
                     targets.RemoveEntityTarget();
-                if (target.AsGameEntity != null && !neededTargets.HasAnyFlag(SpellCastTargetFlags.GameEntity))
+                if (target is GameEntity && !neededTargets.HasAnyFlag(SpellCastTargetFlags.GameEntity))
                     targets.RemoveEntityTarget();
             }
             else
@@ -244,7 +244,7 @@ namespace Core
                 if (neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
                 {
                     Unit unit = null;
-                    Player playerCaster = Caster.AsPlayer;
+                    var playerCaster = Caster as Player;
                     // try to use player selection as a target
                     if (playerCaster != null)
                     {
@@ -531,9 +531,9 @@ namespace Core
             }
 
             if (target is Unit)
-                AddUnitTarget(target.AsUnit, 1 << effect.Index, false);
+                AddUnitTarget((Unit)target, 1 << effect.Index, false);
             else if (target is GameEntity)
-                AddGameEntityTarget(target.AsGameEntity, 1 << effect.Index);
+                AddGameEntityTarget((GameEntity)target, 1 << effect.Index);
         }
 
         private void SearchTargets(IWorldEntityTargetCheck searcher, int containerMask, Unit referer, Position pos, float radius)

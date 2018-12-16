@@ -2,18 +2,22 @@
 
 namespace Core
 {
-    public class PhotonBoltBaseListener : GlobalEventListener
+    public abstract class PhotonBoltBaseListener : GlobalEventListener
     {
         protected WorldManager worldManager;
 
-        public virtual void Initialize(WorldManager worldManager)
+        protected void Initialize(WorldManager worldManager)
         {
             this.worldManager = worldManager;
         }
 
-        public virtual void Deinitialize()
+        protected void Deinitialize()
         {
             worldManager = null;
+        }
+
+        public virtual void DoUpdate(int deltaTime)
+        {
         }
 
         public override bool PersistBetweenStartupAndShutdown()

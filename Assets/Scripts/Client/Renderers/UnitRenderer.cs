@@ -29,7 +29,6 @@ public class UnitRenderer : MonoBehaviour
         Unit = null;
     }
 
-
     private void UpdateAnimations(int deltaTime)
     {
         if (Unit.DeathState != DeathState.Alive)

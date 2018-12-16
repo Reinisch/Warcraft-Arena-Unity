@@ -5,7 +5,9 @@ namespace Core
 {
     public class GameEntity : WorldEntity, IGridEntity<GameEntity>
     {
-        public override EntityType TypeId => EntityType.GameEntity;
+        public override EntityType EntityType => EntityType.GameEntity;
+        public override bool AutoScoped => true;
+
         public GridReference<GameEntity> GridRef { get; private set; }
 
         public int Usetimes { get; protected set; }

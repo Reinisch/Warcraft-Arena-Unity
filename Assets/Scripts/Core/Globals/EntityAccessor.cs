@@ -5,7 +5,7 @@ namespace Core
     public static class EntityAccessor
     {
         private static readonly object PlayerLock = new object();
-        private static readonly Dictionary<ulong, Player> Players = new Dictionary<ulong, Player>(100);
+        private static readonly Dictionary<ulong, Player> Players = new Dictionary<ulong, Player>(10);
 
         public static WorldEntity FindWorldEntityOnSameMap(WorldEntity worldEntity, ulong networkId)
         {
@@ -55,31 +55,8 @@ namespace Core
         public static Player FindPlayerOnSameMap(Map map, ulong networkId)
         {
             Player player = Players.LookupEntry(networkId);
-            return player != null && player.InWorld && player.Map == map ? player : null;
+            return player != null && player.Map == map ? player : null;
         }
-
-        public static Player FindPlayerInWorld(ulong networkId)
-        {
-            lock (PlayerLock)
-            {
-                Player player = Players.LookupEntry(networkId);
-                return player != null && player.InWorld ? player : null;
-            }
-        }
-
-        public static Player FindPlayerInWorldByName(string name)
-        {
-            lock (PlayerLock)
-            {
-                string lowerName = name.ToLower();
-                foreach (var playerEntry in Players)
-                    if (playerEntry.Value.InWorld && playerEntry.Value.Name.ToLower() == lowerName)
-                        return playerEntry.Value;
-
-                return null;
-            }
-        }
-
 
         public static Player FindConnectedPlayer(ulong networkId)
         {

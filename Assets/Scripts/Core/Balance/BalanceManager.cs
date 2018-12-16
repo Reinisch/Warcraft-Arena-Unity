@@ -5,6 +5,7 @@ namespace Core
 {
     public class BalanceManager : SingletonGameObject<BalanceManager>
     {
+        public static NetworkMovementType NetworkMovementType => Instance.balanceDefinition.NetworkMovementType;
         public static List<MapDefinition> Maps { get; } = new List<MapDefinition>();
         public static List<SpellInfo> SpellInfos { get; } = new List<SpellInfo>();
         public static Dictionary<int, MapDefinition> MapsById { get; } = new Dictionary<int, MapDefinition>();

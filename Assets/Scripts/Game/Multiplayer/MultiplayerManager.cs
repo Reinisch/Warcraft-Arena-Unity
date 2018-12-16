@@ -48,7 +48,7 @@ namespace Game
             boltSharedListener.Initialize(worldManager);
 
             if(serverLogic)
-                boltServerListener.Initialize(worldManager);
+                boltServerListener.Initialize((WorldServerManager)worldManager);
             if (clientLogic)
                 boltClientListener.Initialize(worldManager);
         }
@@ -61,6 +61,16 @@ namespace Game
                 boltServerListener.Deinitialize();
             if (clientLogic)
                 boltClientListener.Deinitialize();
+        }
+
+        public void DoUpdate(int deltaTime)
+        {
+            if(boltSharedListener.enabled)
+                boltSharedListener.DoUpdate(deltaTime);
+            if (boltServerListener.enabled)
+                boltServerListener.DoUpdate(deltaTime);
+            if (boltClientListener.enabled)
+                boltClientListener.DoUpdate(deltaTime);
         }
 
         public override void StartServer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail)
@@ -136,6 +146,7 @@ namespace Game
         {
             base.Connected(connection);
 
+            Debug.Log("Disconnected: reason: " + connection.DisconnectReason);
             if (networkingMode == GameManager.NetworkingMode.Client)
                 EventDisconnectedFromHost?.Invoke(connection.DisconnectReason);
         }
@@ -183,6 +194,10 @@ namespace Game
 
         private void SetListeners(bool shared, bool server, bool client)
         {
+            boltSharedListener.enabled = false;
+            boltServerListener.enabled = false;
+            boltClientListener.enabled = false;
+
             boltSharedListener.enabled = shared;
             boltServerListener.enabled = server;
             boltClientListener.enabled = client;
@@ -213,7 +228,7 @@ namespace Game
         {
             if (BoltNetwork.isRunning && !BoltNetwork.isServer)
             {
-                BoltNetwork.ShutdownImmediate();
+                BoltLauncher.Shutdown();
 
                 yield return new WaitUntil(NetworkIsInactive);
             }
@@ -240,7 +255,7 @@ namespace Game
         {
             if (BoltNetwork.isRunning && !BoltNetwork.isClient)
             {
-                BoltNetwork.ShutdownImmediate();
+                BoltLauncher.Shutdown();
 
                 yield return new WaitUntil(NetworkIsInactive);
             }
@@ -267,7 +282,7 @@ namespace Game
         {
             if (BoltNetwork.isRunning && !BoltNetwork.isClient)
             {
-                BoltNetwork.ShutdownImmediate();
+                BoltLauncher.Shutdown();
 
                 yield return new WaitUntil(NetworkIsInactive);
             }

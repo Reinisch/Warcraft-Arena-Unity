@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Client;
+using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Core
 {
     public class Player : Unit, IGridEntity<Player>
     {
+        [SerializeField, UsedImplicitly, Header("Player"), Space(10)] private WarcraftController controller;
+
         protected Team team;
         protected PlayerExtraFlags extraFlags;
         protected Dictionary<uint, PlayerSpell> playerSpells;
@@ -29,9 +34,12 @@ namespace Core
         private uint[] runeGraceCooldown = new uint[PlayerHelper.MaxRunes];
         private uint[] lastRuneGraceTimers = new uint[PlayerHelper.MaxRunes];
 
-        public GridReference<Player> GridRef { get; private set; }
-  
+        public override EntityType EntityType => EntityType.Player;
+        public override bool AutoScoped => true;
+
+        public WarcraftController Controller => controller;
         public override DeathState DeathState { get { return base.DeathState; } set { throw new NotImplementedException(); } }
+        public GridReference<Player> GridRef { get; private set; }
 
         public bool IsInGrid() { throw new NotImplementedException(); }
         public void AddToGrid(GridReferenceManager<Player> refManager) { throw new NotImplementedException(); }
@@ -39,12 +47,17 @@ namespace Core
 
         public override void DoUpdate(int timeDelta)
         {
-            throw new NotImplementedException();
+
         }
 
         public override bool IsImmunedToSpellEffect(SpellInfo spellInfo, int index)
         {
             return false;
+        }
+
+        public override void Accept(IUnitVisitor visitor)
+        {
+            visitor.Visit(this);
         }
 
         #region Player flags

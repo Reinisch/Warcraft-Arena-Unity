@@ -80,6 +80,9 @@ namespace Game
             }
 
             lastGameUpdateTime = elapsedTime;
+
+            multiplayerManager.DoUpdate(gameTimeDiff);
+
             if (HasClientLogic)
             {
                 renderManager.DoUpdate(gameTimeDiff);
@@ -113,17 +116,22 @@ namespace Game
 
         private void Deinitialize()
         {
-            if (HasClientLogic)
-            {
-                renderManager.Deinitialize();
-                soundManager.Deinitialize();
-                inputManager.Deinitialize();
-            }
-
             multiplayerManager.EventGameMapLoaded -= OnGameMapLoaded;
             multiplayerManager.EventDisconnectedFromHost -= OnDisconnectedFromHost;
 
-            worldManager?.Deinitialize();
+            if (worldManager != null)
+            {
+                if (HasClientLogic)
+                {
+                    renderManager.Deinitialize();
+                    soundManager.Deinitialize();
+                    inputManager.Deinitialize();
+                }
+                
+                worldManager.Dispose();
+            }
+
+            worldManager = null;
 
             interfaceManager.Deinitialize();
             multiplayerManager.Deinitialize();
@@ -139,7 +147,6 @@ namespace Game
             HasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
             HasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;
             worldManager = HasServerLogic ? (WorldManager) new WorldServerManager() : new WorldClientManager();
-            worldManager.Initialize();
             interfaceManager.HideLobbyScreen();
             interfaceManager.ShowBattleScreen();
 
@@ -156,8 +163,17 @@ namespace Game
         private void OnDisconnectedFromHost(UdpConnectionDisconnectReason reason)
         {
             multiplayerManager.DeinitializeWorld(HasServerLogic, HasClientLogic);
+
+            if (HasClientLogic)
+            {
+                renderManager.Deinitialize();
+                soundManager.Deinitialize();
+                inputManager.Deinitialize();
+            }
+
             HasServerLogic = false;
             HasClientLogic = false;
+            worldManager.Dispose();
             worldManager = null;
 
             interfaceManager.HideBattleScreen();

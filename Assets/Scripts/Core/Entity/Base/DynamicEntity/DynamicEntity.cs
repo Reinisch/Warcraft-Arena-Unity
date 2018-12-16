@@ -11,7 +11,9 @@ namespace Core
 
     public class DynamicEntity : WorldEntity, IGridEntity<DynamicEntity>
     {
-        public override EntityType TypeId => EntityType.DynamicEntity;
+        public override EntityType EntityType => EntityType.DynamicEntity;
+        public override bool AutoScoped => true;
+
         public GridReference<DynamicEntity> GridRef { get; private set; }
 
         protected Aura Aura { get; set; }
@@ -40,7 +42,6 @@ namespace Core
         public void BindToCaster() { }
         public void UnbindFromCaster() { }
         public uint GetSpellId() { return GetUintValue(EntityFields.DynamicSpellid); }
-        public Guid GetCasterGUID() { return GetGuidValue(EntityFields.DynamicCaster); }
         public float GetRadius() { return GetFloatValue(EntityFields.DynamicRadius); }
     }
 }

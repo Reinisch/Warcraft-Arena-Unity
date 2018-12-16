@@ -5,42 +5,40 @@ namespace Core
     public abstract class WorldManager
     {
         private readonly EntityPool entityPool = new EntityPool();
+        private readonly IPrefabPool defaultPool = new DefaultPrefabPool();
 
-        public EntityManager<WorldEntity> WorldEntityManager { get; } = new EntityManager<WorldEntity>();
+        public UnitManager UnitManager { get; }
+        public MapManager MapManager { get; }
 
-        public virtual ulong LocalPlayerId => 0;
         public abstract bool HasServerLogic { get; }
         public abstract bool HasClientLogic { get; }
 
-        public virtual void Initialize()
+        protected WorldManager()
         {
             entityPool.Initialize(this);
             BoltNetwork.SetPrefabPool(entityPool);
 
-            MapManager.Initialize();
-            MapManager.Instance.CreateBaseMap(1);
-
-            WorldEntityManager.Initialize();
+            MapManager = new MapManager(this);
+            UnitManager = new UnitManager(this);
         }
 
-        public virtual void Deinitialize()
+        public void Dispose()
         {
-            WorldEntityManager.Deinitialize();
+            UnitManager.Dispose();
+            MapManager.Dispose();
 
-            MapManager.Deinitialize();
-
+            BoltNetwork.SetPrefabPool(defaultPool);
             entityPool.Deinitialize();
-            BoltNetwork.SetPrefabPool(new DefaultPrefabPool());
         }
 
         public void DoUpdate(int deltaTime)
         {
-            MapManager.Instance.DoUpdate(deltaTime);
+            MapManager.DoUpdate(deltaTime);
         }
 
-        public static Map FindMap(int mapId)
+        public Map FindMap(int mapId)
         {
-            return MapManager.Instance.FindMap(mapId);
+            return MapManager.FindMap(mapId);
         }
     }
 }

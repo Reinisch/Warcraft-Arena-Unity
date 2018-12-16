@@ -4,12 +4,11 @@ namespace Core
 {
     public class Corpse : WorldEntity, IGridEntity<Corpse>
     {
-        public override EntityType TypeId => EntityType.Corpse;
+        public override EntityType EntityType => EntityType.Corpse;
+        public override bool AutoScoped => true;
+
         public GridReference<Corpse> GridRef { get; private set; }
         public CorpseType CorpseType { get; private set; }
-
-        public Guid OwnerGUID => GetGuidValue(EntityFields.CorpseOwner);
-        public Player LootRecipient { get; set; }
 
         public bool LootForBody { get; set; }
         public long GhostTime { get; private set; }

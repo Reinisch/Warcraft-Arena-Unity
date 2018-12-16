@@ -20,20 +20,20 @@ namespace Client
         {
             this.worldManager = worldManager;
 
+            worldManager.UnitManager.EventEntityAttached += OnEventEntityAttached;
+            worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
+
             SpellManager.Instance.EventSpellCast += OnSpellCast;
             SpellManager.Instance.EventSpellDamageDone += OnSpellDamageDone;          
-
-            worldManager.WorldEntityManager.EventEntityAttached += OnEventEntityAttached;
-            worldManager.WorldEntityManager.EventEntityDetach += OnEventEntityDetach;
         }
 
         public void Deinitialize()
         {
-            worldManager.WorldEntityManager.EventEntityAttached -= OnEventEntityAttached;
-            worldManager.WorldEntityManager.EventEntityDetach -= OnEventEntityDetach;
-
             SpellManager.Instance.EventSpellDamageDone -= OnSpellDamageDone;
             SpellManager.Instance.EventSpellCast -= OnSpellCast;
+
+            worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
+            worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
 
             foreach (var unitRendererRecord in UnitRenderers)
                 unitRendererRecord.Value.Deinitialize();
@@ -52,7 +52,7 @@ namespace Client
             if (!UnitRenderers.ContainsKey(target))
                 return;
 
-            if (caster.NetworkId == worldManager.LocalPlayerId)
+            if (caster.IsController)
             {
                 GameObject damageEvent = Instantiate(Resources.Load("Prefabs/UI/DamageEvent")) as GameObject;
                 Assert.IsNotNull(damageEvent, "damageEvent != null");
@@ -90,6 +90,5 @@ namespace Client
                 UnitRenderers.Remove(unitEntity);
             }
         }
-
     }
 }

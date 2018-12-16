@@ -12,14 +12,14 @@ namespace Client
         {
             this.worldManager = worldManager;
 
-            worldManager.WorldEntityManager.EventEntityAttached += OnEventEntityAttached;
-            worldManager.WorldEntityManager.EventEntityDetach += OnEventEntityDetach;
+            worldManager.UnitManager.EventEntityAttached += OnEventEntityAttached;
+            worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
         }
 
         public void Deinitialize()
         {
-            worldManager.WorldEntityManager.EventEntityAttached -= OnEventEntityAttached;
-            worldManager.WorldEntityManager.EventEntityDetach -= OnEventEntityDetach;
+            worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
+            worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
 
             worldManager = null;
         }

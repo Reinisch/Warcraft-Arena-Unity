@@ -2,7 +2,9 @@
 {
     public class AreaTrigger : WorldEntity, IGridEntity<AreaTrigger>
     {
-        public override EntityType TypeId => EntityType.AreaTrigger;
+        public override EntityType EntityType => EntityType.AreaTrigger;
+        public override bool AutoScoped => true;
+
         public GridReference<AreaTrigger> GridRef { get; private set; }
 
 

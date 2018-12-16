@@ -71,7 +71,7 @@ namespace Core
             }
         }
 
-        public void Visit(GridCell cell, IEntityVisitor visitor) { throw new NotImplementedException(); }
+        public void Visit(GridCell cell, IEntityGridVisitor gridVisitor) { throw new NotImplementedException(); }
         public bool UnloadGrid(WorldGrid worldGrid, bool pForce) { throw new NotImplementedException(); }
         public virtual void UnloadAll() {  }
 
@@ -88,9 +88,9 @@ namespace Core
             worldEntities.Remove(obj);
         }
 
-        public void VisitAll(float x, float y, float radius, ref IEntityVisitor notifier) { throw new NotImplementedException(); }
-        public void VisitWorld(float x, float y, float radius, ref IWorldVisitor notifier) { throw new NotImplementedException(); }
-        public void VisitGrid(float x, float y, float radius, ref IGridVisitor notifier) { throw new NotImplementedException(); }
+        public void VisitAll(float x, float y, float radius, ref IEntityGridVisitor notifier) { throw new NotImplementedException(); }
+        public void VisitWorld(float x, float y, float radius, ref IWorldGridVisitor notifier) { throw new NotImplementedException(); }
+        public void VisitGrid(float x, float y, float radius, ref IGridGridVisitor notifier) { throw new NotImplementedException(); }
 
         public TEntity FindMapEntity<TEntity>(ulong networkId) where TEntity : Entity
         {

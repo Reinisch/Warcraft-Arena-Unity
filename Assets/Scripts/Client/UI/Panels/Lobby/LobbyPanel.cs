@@ -80,6 +80,8 @@ namespace Client
         {
             gameObject.SetActive(true);
 
+            ResetSessions();
+
             if (autoStartClient)
                 OnClientButtonClicked();
         }
@@ -196,6 +198,12 @@ namespace Client
 
             for (int i = currentSlotIndex; i < sessionSlots.Count; i++)
                 sessionSlots[i].SetSession(null);
+        }
+
+        private void ResetSessions()
+        {
+            foreach (var session in sessionSlots)
+                session.SetSession(null);
         }
     }
 }

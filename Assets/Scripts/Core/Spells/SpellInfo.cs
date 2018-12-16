@@ -279,11 +279,11 @@ namespace Core
             {
                 if (caster != unitTarget)
                 {
-                    if (caster.TypeId == EntityType.Player)
+                    if (caster.EntityType == EntityType.Player)
                     {
                         if (HasAttribute(SpellCustomAttributes.Pickpocket))
                         {
-                            if (unitTarget.TypeId == EntityType.Player)
+                            if (unitTarget.EntityType == EntityType.Player)
                                 return SpellCastResult.BadTargets;
                             if ((unitTarget.GetCreatureTypeMask() & UnitHelper.CreatureTypemaskHumanoidOrUndead) == 0)
                                 return SpellCastResult.TargetNoPockets;
@@ -296,14 +296,14 @@ namespace Core
                 return SpellCastResult.SpellCastOk;
 
             // corpseOwner and unit specific target checks
-            if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && unitTarget.TypeId != EntityType.Player)
+            if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && unitTarget.EntityType != EntityType.Player)
                 return SpellCastResult.TargetNotPlayer;
 
             if (!CheckTargetCreatureType(unitTarget))
-                return target.TypeId == EntityType.Player ? SpellCastResult.TargetIsPlayer : SpellCastResult.BadTargets;
+                return target.EntityType == EntityType.Player ? SpellCastResult.TargetIsPlayer : SpellCastResult.BadTargets;
 
             // check GM mode and GM invisibility - only for player casts (npc casts are controlled by AI) and negative spells
-            if (unitTarget != caster && (caster.IsControlledByPlayer() || !IsPositive()) && unitTarget.TypeId == EntityType.Player)
+            if (unitTarget != caster && (caster.IsControlledByPlayer() || !IsPositive()) && unitTarget.EntityType == EntityType.Player)
             {
                 var playerTarget = (Player) unitTarget ;
                 if (!playerTarget.IsVisible || playerTarget.IsGameMaster())
@@ -633,7 +633,7 @@ namespace Core
 
         public static float CalcPPMCritMod(SpellProcsPerMinuteModifier mod, Unit caster)
         {
-            if (caster.TypeId != EntityType.Player)
+            if (caster.EntityType != EntityType.Player)
                 return 0.0f;
 
             float crit = caster.GetFloatValue(EntityFields.CritPercentage);

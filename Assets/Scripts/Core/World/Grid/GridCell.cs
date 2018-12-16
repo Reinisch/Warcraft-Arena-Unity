@@ -66,20 +66,20 @@ namespace Core
         public void AddGridEntity<TNotGridEntity>(TNotGridEntity entity) where TNotGridEntity : Entity { }
 
 
-        public void Visit(IGridVisitor visitor)
+        public void Visit(IGridGridVisitor gridVisitor)
         {
-            visitor.Visit(gridGameEntities);
-            visitor.Visit(gridDynamics);
-            visitor.Visit(gridAreaTriggers);
+            gridVisitor.Visit(gridGameEntities);
+            gridVisitor.Visit(gridDynamics);
+            gridVisitor.Visit(gridAreaTriggers);
         }
 
-        public void Visit(IWorldVisitor visitor)
+        public void Visit(IWorldGridVisitor gridVisitor)
         {
-            visitor.Visit(worldPlayers);
-            visitor.Visit(worldPlayerPets);
+            gridVisitor.Visit(worldPlayers);
+            gridVisitor.Visit(worldPlayerPets);
         }
 
-        public void Visit<TEntityVisitor>(TEntityVisitor visitor) where TEntityVisitor : IEntityVisitor
+        public void Visit<TEntityVisitor>(TEntityVisitor visitor) where TEntityVisitor : IEntityGridVisitor
         {
             visitor.Visit(worldPlayers);
             visitor.Visit(worldPlayerPets);

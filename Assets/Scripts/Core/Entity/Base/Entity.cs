@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Bolt;
 using JetBrains.Annotations;
 using UdpKit;
@@ -20,67 +20,95 @@ namespace Core
         [SerializeField] private List<EntityField> entityFieldList = new List<EntityField>();
 
         private readonly Dictionary<EntityFields, EntityField> entityFields = new Dictionary<EntityFields, EntityField>(new EntityFieldsEqualityComparer());
-        protected WorldManager worldManager;
 
         public bool IsOwner => entity.isOwner;
         public bool IsController => entity.hasControl;
         public ulong NetworkId => entity.networkId.PackedValue;
         public BoltEntity BoltEntity => entity;
 
-        public abstract EntityType TypeId { get; }
-        public bool InWorld { get; private set; }
+        internal WorldManager WorldManager { get; private set; }
 
-        public Unit AsUnit => this as Unit;
-        public Player AsPlayer => this as Player;
-        public GameEntity AsGameEntity => this as GameEntity;
+        public abstract EntityType EntityType { get; }
+        public abstract bool AutoScoped { get; }
+        public bool IsValid { get; private set; }
 
         [UsedImplicitly]
-        protected virtual void Awake()
+        internal virtual void Awake()
         {
             foreach (var entityField in entityFieldList)
                 entityFields.Add(entityField.Field, entityField);
         }
 
-        public void TakenFromPool(WorldManager worldManager)
+        public override void Attached()
         {
-            this.worldManager = worldManager;
+            base.Attached();
+
+            IsValid = true;
         }
 
-        public void ReturnedToPool()
+        public override void Detached()
         {
-            worldManager = null;
+            IsValid = false;
+
+            base.Detached();
         }
 
-        #region Field getters/setters and modifiers
+        internal void TakenFromPool(WorldManager worldManager)
+        {
+            WorldManager = worldManager;
+        }
+
+        internal void ReturnedToPool()
+        {
+            WorldManager = null;
+        }
+
+        #region Field Accessors
 
         public int GetIntValue(EntityFields field)
         {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            ValidateField(field, -1);
             return entityFields[field].Int;
         }
+
         public uint GetUintValue(EntityFields field)
         {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            ValidateField(field, -1);
             return entityFields[field].UInt;
         }
+
         public long GetLongValue(EntityFields field)
         {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            ValidateField(field, -1);
             return entityFields[field].Long;
         }
+
         public ulong GetULongValue(EntityFields field)
         {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            ValidateField(field, -1);
             return entityFields[field].ULong;
         }
+
         public float GetFloatValue(EntityFields field)
         {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            ValidateField(field, -1);
             return entityFields[field].Float;
         }
+
+        public short GetShortValue(EntityFields field)
+        {
+            ValidateField(field, -1);
+            return entityFields[field].Short;
+        }
+
+        public bool HasFlag(EntityFields field, uint flag)
+        {
+            return false;
+        }
+
         public byte GetByteValue(EntityFields field, byte offset)
         {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
+            ValidateField(field, -1);
             Assert.IsTrue(offset < 4, "Trying to use wrong offset in WorldEntity.GetByteValue! Offset: " + offset);
 
             if (offset == 0)
@@ -100,52 +128,40 @@ namespace Core
 
             return entityFields[field].Byte3;
         }
-        public short GetShortValue(EntityFields field)
+
+        internal void SetIntValue(EntityFields field, int value)
         {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
-
-            return entityFields[field].Short;
-        }
-        public Guid GetGuidValue(EntityFields field)
-        {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, false));
-
-            return Guid.Empty;
-        }
-
-        public void SetIntValue(EntityFields field, int value)
-        {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
-
+            ValidateField(field, 1);
             entityFields[field].Int = value;
         }
-        public void SetUintValue(EntityFields field, uint value)
-        {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
 
+        internal void SetUintValue(EntityFields field, uint value)
+        {
+            ValidateField(field, 1);
             entityFields[field].UInt = value;
         }
-        public void SetLongValue(EntityFields field, long value)
-        {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
 
+        internal void SetLongValue(EntityFields field, long value)
+        {
+            ValidateField(field, 1);
             entityFields[field].Long = value;
         }
-        public void SetULongValue(EntityFields field, ulong value)
-        {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
 
+        internal void SetULongValue(EntityFields field, ulong value)
+        {
+            ValidateField(field, 1);
             entityFields[field].ULong = value;
         }
-        public void SetFloatValue(EntityFields field, float value)
-        {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
 
+        internal void SetFloatValue(EntityFields field, float value)
+        {
+            ValidateField(field, 1);
             entityFields[field].Float = value;
         }
-        public void SetByteValue(EntityFields field, byte offset, byte value)
+
+        internal void SetByteValue(EntityFields field, byte offset, byte value)
         {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
+            ValidateField(field, 1);
             Assert.IsTrue(offset < 4, "Trying to use wrong offset in WorldEntity.SetByteValue! Offset: " + offset);
 
             if (offset == 0)
@@ -165,62 +181,60 @@ namespace Core
                 entityFields[field].Byte3 = value;
             }
         }
-        public void SetShortValue(EntityFields field, byte offset, short value)
+
+        internal void SetShortValue(EntityFields field, byte offset, short value)
         {
-            Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
+            ValidateField(field, 1);
             Assert.IsFalse(offset > 1, "Trying to use wrong offset in WorldEntity.SetShortValue! Offset: " + offset);
 
             entityFields[field].Short = value;
         }
 
-        public void SetGuidValue(EntityFields field, Guid value)
-        {
-            //Assert.IsTrue(entityFields.ContainsKey(field), EntityFieldErrorMessage(field, true));
-        }
-        public void SetStatFloatValue(EntityFields field, float value)
+        internal void SetStatFloatValue(EntityFields field, float value)
         {
             if (value < 0)
                 value = 0.0f;
 
             SetFloatValue(field, value);
         }
-        public void SetStatIntValue(EntityFields field, int value)
+
+        internal void SetStatIntValue(EntityFields field, int value)
         {
             if (value < 0)
                 value = 0;
 
-            SetUintValue(field, (uint)value);
+            SetUintValue(field, (uint) value);
         }
 
-        public void ApplyModUInt32Value(EntityFields field, int val, bool apply) { }
-        public void ApplyModInt32Value(EntityFields field, int val, bool apply) { }
-        public void ApplyModPositiveFloatValue(EntityFields field, float val, bool apply) { }
-        public void ApplyModSignedFloatValue(EntityFields field, float val, bool apply) { }
-        public void ApplyPercentModFloatValue(EntityFields field, float val, bool apply) { }
+        internal void SetFlag(EntityFields field, uint newFlag)
+        {
+        }
 
-        public void SetFlag(EntityFields field, uint newFlag) { }
-        public void RemoveFlag(EntityFields field, uint oldFlag) { }
-        public void ToggleFlag(EntityFields field, uint flag) { }
-        public bool HasFlag(EntityFields field, uint flag) { return false; }
-        public void ApplyModFlag(EntityFields field, uint flag, bool apply) { }
+        internal void RemoveFlag(EntityFields field, uint oldFlag)
+        {
+        }
 
-        public void SetByteFlag(EntityFields field, byte offset, byte newFlag) { }
-        public void RemoveByteFlag(EntityFields field, byte offset, byte newFlag) { }
-        public void ToggleByteFlag(EntityFields field, byte offset, byte flag) { }
-        public bool HasByteFlag(EntityFields field, byte offset, byte flag) { return false; }
-
-        public void SetLongFlag(EntityFields field, long newFlag) { }
-        public void RemoveLongFlag(EntityFields field, long oldFlag) { }
-        public void ToggleLongFlag(EntityFields field, long flag) { }
-        public bool HasLongFlag(EntityFields field, long flag) { return false; }
-        public void ApplyLongModFlag(EntityFields field, long flag, bool apply) { }
+        internal void ToggleFlag(EntityFields field, uint flag)
+        {
+        }
+        
+        internal void ApplyModFlag(EntityFields field, uint flag, bool apply)
+        {
+        }
 
         #endregion
 
-        private string EntityFieldErrorMessage(EntityFields field, bool set)
+        public virtual void Accept(IVisitor visitor)
         {
-            var errorAction = set ? "to set value to" : "to get value from";
-            return $"Attempted {errorAction} non-existing field: {field} for entity with type: {TypeId}";
+            visitor.Visit(this);
+        }
+
+        [Conditional("UNITY_ASSERTIONS")]
+        private void ValidateField(EntityFields field, int set)
+        {
+            string message = $"Attempted {set:\"to set value to\",\"to get value from\"} non-existing field: {field} for entity with type: {EntityType}";
+
+            Assert.IsTrue(entityFields.ContainsKey(field), message);
         }
     }
 }

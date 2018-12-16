@@ -1,17 +1,22 @@
-﻿using UnityEngine;
-
-namespace Core
+﻿namespace Core
 {
     public class PhotonBoltSharedListener : PhotonBoltBaseListener
     {
-        public override void Connected(BoltConnection boltConnection)
+        public new void Initialize(WorldManager worldManager)
         {
-            Debug.Log($"Player with ConnectionId: {boltConnection.ConnectionId} joined the game!");
+            base.Initialize(worldManager);
         }
 
-        public override void Disconnected(BoltConnection boltConnection)
+        public new void Deinitialize()
         {
-            Debug.Log($"Player with ConnectionId: {boltConnection.ConnectionId} left the game!");
+            base.Deinitialize();
+        }
+
+        public override void SceneLoadLocalDone(string map)
+        {
+            base.SceneLoadLocalDone(map);
+
+            worldManager.MapManager.CreateBaseMap(1);
         }
     }
 }

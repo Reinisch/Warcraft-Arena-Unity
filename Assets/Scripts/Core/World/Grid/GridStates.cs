@@ -14,7 +14,7 @@
 
     public class ActiveState : GridState
     {
-        private readonly EntityGridStopper visitor = new EntityGridStopper();
+        private readonly EntityGridGridStopper visitor = new EntityGridGridStopper();
 
         public override void DoUpdate(Map map, WorldGrid worldGrid, GridInfo gridInfo, int timeDiff)
         {
