@@ -15,7 +15,8 @@ namespace Core
 {
     public abstract class Unit : WorldEntity
     {
-        [SerializeField, UsedImplicitly, Header("Unit"), Space(10)] private CapsuleCollider unitCollider;
+        [SerializeField, UsedImplicitly, Header("Unit"), Space(10)]
+        private CapsuleCollider unitCollider;
 
         public override EntityType EntityType => EntityType.Unit;
         public CapsuleCollider UnitCollider => unitCollider;
@@ -44,6 +45,8 @@ namespace Core
         protected DynamicEntity dynEntity;
         protected GameEntity gameEntity;
         protected List<Unit> attackers;
+
+        protected IUnitState unitState;
 
         protected Unit attacking;
         protected UnitAI ai;
@@ -78,23 +81,27 @@ namespace Core
         {
             base.Attached();
 
-            worldEntityState.SetTransforms(worldEntityState.Transform, transform);
+            unitState = entity.GetState<IUnitState>();
 
+            MovementInfo.Attached(unitState, this);
             WorldManager.UnitManager.Attach(this);
 
             SetMap(WorldManager.FindMap(1));
         }
-
+        
         public override void Detached()
         {
-            WorldManager.UnitManager.Detach(this);
-
             ResetMap();
+
+            WorldManager.UnitManager.Detach(this);
+            MovementInfo.Detached();
+
+            unitState = null;
 
             base.Detached();
         }
 
-        public DiminishingLevels GetDiminishing(DiminishingGroup group) { return default(DiminishingLevels); }
+        public DiminishingLevels GetDiminishing(DiminishingGroup group) { return default; }
         public void IncrDiminishing(DiminishingGroup group) { }
         public float ApplyDiminishingToDuration(DiminishingGroup group, ref int duration, Unit caster, DiminishingLevels level, int limitduration) { return 1.0f; }
         public void ApplyDiminishingAura(DiminishingGroup group, bool apply) { }
@@ -119,7 +126,6 @@ namespace Core
 
         public override void DoUpdate(int timeDelta)
         {
-
         }
 
         #region Unit info, stats and types
@@ -503,8 +509,6 @@ namespace Core
 
         public void NearTeleportTo(float x, float y, float z, float orientation, bool casting = false) { }
         public void SendTeleportPacket(Vector3 pos) { }
-        public virtual bool UpdatePosition(float x, float y, float z, float ang, bool teleport = false) { return false; }
-        public virtual bool UpdatePosition(Position pos, bool teleport = false) { return false; }
         public void UpdateOrientation(float orientation) { }
         public void UpdateHeight(float newZ) { }
 
@@ -516,9 +520,7 @@ namespace Core
 
 
         public void SendSetPlayHoverAnim(bool enable) { }
-        public bool IsLevitating() { return MovementInfo.HasMovementFlag(MovementFlags.DisableGravity); }
         public bool IsWalking() { return MovementInfo.HasMovementFlag(MovementFlags.Walking); }
-        public bool IsHovering() { return MovementInfo.HasMovementFlag(MovementFlags.Hover); }
         public bool SetWalk(bool enable) { return false; }
         public bool SetDisableGravity(bool disable) { return false; }
         public bool SetFall(bool enable) { return false; }
@@ -540,8 +542,8 @@ namespace Core
 
         public virtual DeathState DeathState
         {
-            get { return deathState; }
-            set { deathState = value; }
+            get => deathState;
+            set => deathState = value;
         }
         public bool IsAlive => DeathState == DeathState.Alive;
         public bool IsDying => DeathState == DeathState.JustDied;
@@ -549,43 +551,43 @@ namespace Core
 
         public ulong OwnerGuid
         {
-            get { return GetULongValue(EntityFields.UnitSummonedBy); }
-            set { SetULongValue(EntityFields.UnitSummonedBy, value); }
+            get => GetULongValue(EntityFields.UnitSummonedBy);
+            set => SetULongValue(EntityFields.UnitSummonedBy, value);
         }
 
         public ulong CreatorGuid
         {
-            get { return GetULongValue(EntityFields.UnitCreatedBy); }
-            set { SetULongValue(EntityFields.UnitCreatedBy, value); }
+            get => GetULongValue(EntityFields.UnitCreatedBy);
+            set => SetULongValue(EntityFields.UnitCreatedBy, value);
         }
 
         public ulong MinionGuid
         {
-            get { return GetULongValue(EntityFields.UnitSummon); }
-            set { SetULongValue(EntityFields.UnitSummon, value); }
+            get => GetULongValue(EntityFields.UnitSummon);
+            set => SetULongValue(EntityFields.UnitSummon, value);
         }
 
         public ulong CharmerGuid
         {
-            get { return GetULongValue(EntityFields.UnitCharmedBy); }
-            set { SetULongValue(EntityFields.UnitCharmedBy, value); }
+            get => GetULongValue(EntityFields.UnitCharmedBy);
+            set => SetULongValue(EntityFields.UnitCharmedBy, value);
         }
 
         public ulong PetGuid
         {
-            get { return SummonSlots[UnitHelper.SummonSlotPet]; }
-            set { SummonSlots[UnitHelper.SummonSlotPet] = value; }
+            get => SummonSlots[UnitHelper.SummonSlotPet];
+            set => SummonSlots[UnitHelper.SummonSlotPet] = value;
         }
 
         public ulong CritterGuid
         {
-            get { return GetULongValue(EntityFields.UnitCritter); }
-            set { SetULongValue(EntityFields.UnitCritter, value); }
+            get => GetULongValue(EntityFields.UnitCritter);
+            set => SetULongValue(EntityFields.UnitCritter, value);
         }
 
         public bool IsControlledByPlayer() { return false; }
-        public Guid GetCharmerOrOwnerGuid() { return default(Guid); }
-        public Guid GetCharmerOrOwnerOrOwnGuid() { return default(Guid); }
+        public Guid GetCharmerOrOwnerGuid() { return default; }
+        public Guid GetCharmerOrOwnerOrOwnGuid() { return default; }
         public bool IsCharmedOwnedByPlayerOrPlayer() { return false; }
 
         public Player SpellModOwner => null;
@@ -678,7 +680,7 @@ namespace Core
 
         // OwnedAuras container management
         public void RemoveOwnedAura(AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
-        public void RemoveOwnedAura(uint spellId, Guid casterGuid = default(Guid), uint reqEffMask = 0, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
+        public void RemoveOwnedAura(uint spellId, Guid casterGuid = default, uint reqEffMask = 0, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
         public void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
         public Aura GetOwnedAura(int spellId, ulong casterId, uint reqEffMask, Aura exceptAura = null)
         {
@@ -690,7 +692,7 @@ namespace Core
 
         // AppliedAuras container management
         public void RemoveAura(AuraRemoveMode mode = AuraRemoveMode.AuraRemoveByDefault) { }
-        public void RemoveAura(uint spellId, Guid casterGuid = default(Guid), uint reqEffMask = 0, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
+        public void RemoveAura(uint spellId, Guid casterGuid = default, uint reqEffMask = 0, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
         public void RemoveAura(AuraApplication aurApp, AuraRemoveMode mode = AuraRemoveMode.AuraRemoveByDefault) { }
         public void RemoveAura(Aura aur, AuraRemoveMode mode = AuraRemoveMode.AuraRemoveByDefault) { }
 
@@ -704,12 +706,12 @@ namespace Core
 
 
         public void RemoveAurasByType(AuraType auraType, Predicate<AuraApplication> check) { }
-        public void RemoveAurasDueToSpell(uint spellId, Guid casterGuid = default(Guid), uint reqEffMask = 0, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
-        public void RemoveAuraFromStack(uint spellId, Guid casterGuid = default(Guid), AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
+        public void RemoveAurasDueToSpell(uint spellId, Guid casterGuid = default, uint reqEffMask = 0, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
+        public void RemoveAuraFromStack(uint spellId, Guid casterGuid = default, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
         public void RemoveAurasDueToSpellByDispel(uint spellId, uint dispellerSpellId, Guid casterGuid, Unit dispeller, byte chargesRemoved = 1) { }
         public void RemoveAurasDueToSpellBySteal(uint spellId, Guid casterGuid, Unit stealer) { }
         public void RemoveAurasDueToItemSpell(uint spellId, Guid castItemGuid) { }
-        public void RemoveAurasByType(AuraType auraType, Guid casterGuid = default(Guid), Aura except = null, bool negative = true, bool positive = true) { }
+        public void RemoveAurasByType(AuraType auraType, Guid casterGuid = default, Aura except = null, bool negative = true, bool positive = true) { }
         public void RemoveNotOwnSingleTargetAuras(uint newPhase = 0x0, bool phaseid = false) { }
         public void RemoveAurasWithInterruptFlags(uint flag, uint except = 0) { }
         public void RemoveAurasWithAttribute(uint flags) { }
@@ -731,30 +733,30 @@ namespace Core
         public void ApplyAllAuraStatMods() { }
 
         public List<AuraEffect> GetAuraEffectsByType(AuraType type) { return modAuras.FindAll(aura => aura.GetAuraType() == type); }
-        public AuraEffect GetAuraEffect(uint spellId, int effIndex, Guid casterGuid = default(Guid)) { return null; }
-        public AuraEffect GetAuraEffectOfRankedSpell(uint spellId, int effIndex, Guid casterGuid = default(Guid)) { return null; }
+        public AuraEffect GetAuraEffect(uint spellId, int effIndex, Guid casterGuid = default) { return null; }
+        public AuraEffect GetAuraEffectOfRankedSpell(uint spellId, int effIndex, Guid casterGuid = default) { return null; }
         public AuraEffect GetAuraEffect(AuraType type, SpellFamilyNames family, uint iconId, int effIndex) { return null; }
-        public AuraEffect GetAuraEffect(AuraType type, SpellFamilyNames family, Flag128 familyFlag, Guid casterGuid = default(Guid)) { return null; }
+        public AuraEffect GetAuraEffect(AuraType type, SpellFamilyNames family, Flag128 familyFlag, Guid casterGuid = default) { return null; }
         public AuraEffect GetDummyAuraEffect(SpellFamilyNames family, uint iconId, int effIndex) { return null; }
 
-        public AuraApplication GetAuraApplication(uint spellId, Guid casterGuid = default(Guid), uint reqEffMask = 0, AuraApplication except = null) { return null; }
-        public Aura GetAura(uint spellId, Guid casterGuid = default(Guid), uint reqEffMask = 0) { return null; }
+        public AuraApplication GetAuraApplication(uint spellId, Guid casterGuid = default, uint reqEffMask = 0, AuraApplication except = null) { return null; }
+        public Aura GetAura(uint spellId, Guid casterGuid = default, uint reqEffMask = 0) { return null; }
 
-        public AuraApplication GetAuraApplicationOfRankedSpell(uint spellId, Guid casterGuid = default(Guid), uint reqEffMask = 0, AuraApplication except = null) { return null; }
-        public Aura GetAuraOfRankedSpell(uint spellId, Guid casterGuid = default(Guid), uint reqEffMask = 0) { return null; }
+        public AuraApplication GetAuraApplicationOfRankedSpell(uint spellId, Guid casterGuid = default, uint reqEffMask = 0, AuraApplication except = null) { return null; }
+        public Aura GetAuraOfRankedSpell(uint spellId, Guid casterGuid = default, uint reqEffMask = 0) { return null; }
 
         public void GetDispellableAuraList(Unit caster, uint dispelMask, DispelChargesList dispelList) { }
 
-        public bool HasAuraEffect(uint spellId, int effIndex, Guid caster = default(Guid)) { return false; }
+        public bool HasAuraEffect(uint spellId, int effIndex, Guid caster = default) { return false; }
         public uint GetAuraCount(uint spellId) { return 0; }
-        public bool HasAura(uint spellId, Guid casterGuid = default(Guid), uint reqEffMask = 0) { return false; }
+        public bool HasAura(uint spellId, Guid casterGuid = default, uint reqEffMask = 0) { return false; }
         public bool HasAuraType(AuraType auraType) { return false; }
         public bool HasAuraTypeWithCaster(AuraType auratype, Guid caster) { return false; }
         public bool HasAuraTypeWithMiscvalue(AuraType auratype, int miscvalue) { return false; }
         public bool HasAuraTypeWithAffectMask(AuraType auratype, SpellInfo affectedSpell) { return false; }
         public bool HasAuraTypeWithValue(AuraType auratype, int value) { return false; }
-        public bool HasNegativeAuraWithInterruptFlag(uint flag, Guid guid = default(Guid)) { return false; }
-        public bool HasNegativeAuraWithAttribute(uint flag, Guid guid = default(Guid)) { return false; }
+        public bool HasNegativeAuraWithInterruptFlag(uint flag, Guid guid = default) { return false; }
+        public bool HasNegativeAuraWithAttribute(uint flag, Guid guid = default) { return false; }
         public bool HasAuraWithMechanic(uint mechanicMask) { return false; }
 
         public AuraEffect IsScriptOverriden(SpellInfo spell, int script) { return null; }
@@ -1102,7 +1104,6 @@ namespace Core
 
         public bool IsMoving() { return MovementInfo.HasMovementFlag(MovementFlags.MaskMoving); }
         public bool IsTurning() { return MovementInfo.HasMovementFlag(MovementFlags.MaskTurning); }
-        public bool IsFlying() { return MovementInfo.HasMovementFlag(MovementFlags.Flying | MovementFlags.DisableGravity); }
         public bool IsFalling() { return false; }
 
         public ulong GetTarget() { return GetULongValue(EntityFields.Target); }

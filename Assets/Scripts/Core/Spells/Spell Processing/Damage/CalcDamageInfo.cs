@@ -21,7 +21,7 @@ namespace Core
         public uint CleanDamage { get; set; }
         public MeleeHitOutcome MeleeHitOutcome { get; set; }
 
-        public CalcDamageInfo(Unit attacker, Unit target, uint spellId, uint schoolMask, Guid castId = default(Guid))
+        public CalcDamageInfo(Unit attacker, Unit target, uint spellId, uint schoolMask, Guid castId = default)
         {
 
         }

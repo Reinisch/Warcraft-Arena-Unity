@@ -22,7 +22,6 @@ namespace Core
         protected uint baseManaRegen;
         protected uint baseHealthRegen;
         protected int spellPenetrationItemMod;
-        protected ResurrectionData resurrectionData;
 
         protected bool canParry;
         protected bool canBlock;
@@ -36,7 +35,7 @@ namespace Core
         public override bool AutoScoped => true;
 
         public WarcraftController Controller => controller;
-        public override DeathState DeathState { get { return base.DeathState; } set { throw new NotImplementedException(); } }
+        public override DeathState DeathState { get => base.DeathState; set => throw new NotImplementedException(); }
         public GridReference<Player> GridRef { get; private set; }
 
         public bool IsInGrid() { throw new NotImplementedException(); }
@@ -168,20 +167,6 @@ namespace Core
         public void ResyncRunes() { throw new NotImplementedException(); }
         public void AddRunePower(byte index) { throw new NotImplementedException(); }
         public void InitRunes() { throw new NotImplementedException(); }
-
-        #endregion
-
-        #region Notifiers and update position
-
-        public override bool UpdatePosition(float x, float y, float z, float orientation, bool teleport = false)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool UpdatePosition(Position pos, bool teleport = false)
-        {
-            return UpdatePosition(pos.X, pos.Y, pos.Z, pos.Orientation, teleport);
-        }
 
         #endregion
     }

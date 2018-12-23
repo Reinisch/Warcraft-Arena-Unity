@@ -678,7 +678,7 @@ namespace Core
 
         private SpellCastTargetFlags CalculateExplicitTargetMask(TargetingType targetingType)
         {
-            if (targetingType == default(TargetingType))
+            if (targetingType == default)
                 return 0;
 
             SpellCastTargetFlags targetMask = 0;

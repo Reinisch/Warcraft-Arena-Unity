@@ -1,38 +1,33 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Core
 {
     public class SpellCastTargets
     {
-        // entities (can be used at spell creating and after Update at casting)
-        private WorldEntity entityTarget;
+        private WorldEntity target;
+        private WorldEntity source;
+        private WorldEntity destination;
 
-        // entity NetworkId/etc, can be used always
-        private ulong origEntityTargetGuid;
-        private ulong entityTargetGuid;
-
-        private SpellDestination src;
-        private SpellDestination dst;
+        private ulong origEntityTargetId;
+        private ulong entityTargetId;
 
         public SpellCastTargetFlags TargetMask { get; set; }
         public float Speed { get; set; }
         public float Pitch { get; set; }
 
-        public SpellDestination Source => src;
-        public Position SourcePos => src.Position;
-        public SpellDestination Dest => dst;
-        public Position DestPos => dst.Position;
+        public ulong OrigUnitTargetId => origEntityTargetId;
+        public ulong EntityTargetId => entityTargetId;
 
-        public ulong OrigUnitTargetGuid => origEntityTargetGuid;
-        public ulong EntityTargetGuid => entityTargetGuid;
+        public WorldEntity Destination => destination;
+        public WorldEntity Source => source;
+        public WorldEntity Target => target;
 
         public bool HasSource => TargetMask.HasFlag(SpellCastTargetFlags.SourceLocation);
         public bool HasDest => TargetMask.HasFlag(SpellCastTargetFlags.DestLocation);
         public bool HasTrajectory => !Mathf.Approximately(Speed, 0);
-        public float Distance2D => src.Position.GetExactDist2D(dst.Position);
         public float SpeedXY => Speed * Mathf.Cos(Pitch);
         public float SpeedZ => Speed * Mathf.Sin(Pitch);
+        public float Distance2D => Source.DistanceTo(Destination);
 
         public Unit OrigUnitTarget
         {
@@ -41,49 +36,44 @@ namespace Core
                 if (value == null)
                     return;
 
-                origEntityTargetGuid = value.NetworkId;
+                origEntityTargetId = value.NetworkId;
             }
         }
 
         public Unit UnitTarget
         {
-            get { return entityTarget as Unit; }
+            get => target as Unit;
             set
             {
                 if (value == null)
                     return;
 
-                entityTarget = value;
-                entityTargetGuid = value.NetworkId;
+                target = value;
+                entityTargetId = value.NetworkId;
                 TargetMask |= SpellCastTargetFlags.Unit;
             }
         }
 
-        public Corpse CorpseTarget => entityTarget as Corpse;
-
-        public WorldEntity EntityTarget => entityTarget;
-
         public GameEntity GameEntityTarget
         {
-            get { return entityTarget as GameEntity; }
+            get => target as GameEntity;
             set
             {
                 if (value == null)
                     return;
 
-                entityTarget = value;
-                entityTargetGuid = value.NetworkId;
+                target = value;
+                entityTargetId = value.NetworkId;
                 TargetMask |= SpellCastTargetFlags.GameEntity;
             }
         }
-    
 
         public SpellCastTargets()
         {
             TargetMask = 0;
             Pitch = 0.0f;
             Speed = 0.0f;
-            entityTarget = null;
+            target = null;
         }
 
         public SpellCastTargets(Unit caster/*, ref SpellCastRequest spellCastRequest*/)
@@ -92,8 +82,8 @@ namespace Core
             Pitch = 0.0f;
             Speed = 0.0f;
 
-            entityTarget = null;
-            entityTargetGuid = spellCastRequest.Target.Unit;
+            target = null;
+            entityTargetId = spellCastRequest.Target.Unit;
 
             if (spellCastRequest.Target.SrcLocation != null)
             {
@@ -123,33 +113,15 @@ namespace Core
 
         public void RemoveEntityTarget()
         {
-            entityTarget = null;
-            entityTargetGuid = 0;
+            target = null;
+            entityTargetId = 0;
             TargetMask &= ~SpellCastTargetFlags.UnitMask;
-        }
-
-        public void SetSrc(float x, float y, float z)
-        {
-            src = new SpellDestination(x, y, z);
-            TargetMask |= SpellCastTargetFlags.SourceLocation;
-        }
-
-        public void SetSrc(Position pos)
-        {
-            src = new SpellDestination(pos);
-            TargetMask |= SpellCastTargetFlags.SourceLocation;
         }
 
         public void SetSrc(WorldEntity entity)
         {
-            src = new SpellDestination(entity);
+            source = entity;
             TargetMask |= SpellCastTargetFlags.SourceLocation;
-        }
-
-        public void ModSrc(Position pos)
-        {
-            Assert.IsTrue(TargetMask.HasFlag(SpellCastTargetFlags.SourceLocation));
-            src.Relocate(pos);
         }
 
         public void RemoveSrc()
@@ -157,46 +129,10 @@ namespace Core
             TargetMask &= ~SpellCastTargetFlags.SourceLocation;
         }
 
-        public void SetDst(float x, float y, float z, float orientation, int mapId = GridHelper.MapIdInvalid)
-        {
-            dst = new SpellDestination(x, y, z, orientation, mapId);
-            TargetMask |= SpellCastTargetFlags.DestLocation;
-        }
-
-        public void SetDst(Position pos)
-        {
-            dst = new SpellDestination(pos);
-            TargetMask |= SpellCastTargetFlags.DestLocation;
-        }
-
         public void SetDst(WorldEntity entity)
         {
-            dst = new SpellDestination(entity);
+            destination = entity;
             TargetMask |= SpellCastTargetFlags.DestLocation;
-        }
-
-        public void SetDst(SpellDestination spellDest)
-        {
-            dst = spellDest;
-            TargetMask |= SpellCastTargetFlags.DestLocation;
-        }
-
-        public void SetDst(SpellCastTargets spellTargets)
-        {
-            dst = spellTargets.Dest;
-            TargetMask |= SpellCastTargetFlags.DestLocation;
-        }
-
-        public void ModDst(Position pos)
-        {
-            Assert.IsTrue(TargetMask.HasFlag(SpellCastTargetFlags.DestLocation));
-            dst.Relocate(pos);
-        }
-
-        public void ModDst(SpellDestination spellDest)
-        {
-            Assert.IsTrue(TargetMask.HasFlag(SpellCastTargetFlags.DestLocation));
-            dst = spellDest;
         }
 
         public void RemoveDst()
@@ -206,27 +142,27 @@ namespace Core
 
         public void DoUpdate(Unit caster)
         {
-            entityTarget = entityTargetGuid != 0 ? (entityTargetGuid == caster.NetworkId ? caster : caster.WorldManager.UnitManager.Find(entityTargetGuid)) : null;
+            target = entityTargetId != 0 ? (entityTargetId == caster.NetworkId ? caster : caster.WorldManager.UnitManager.Find(entityTargetId)) : null;
 
-            if (HasSource && src.TransportId != 0)
+            /*if (HasSource && source.TransportId != 0)
             {
-                WorldEntity transport = caster.WorldManager.UnitManager.Find(src.TransportId);
+                WorldEntity transport = caster.WorldManager.UnitManager.Find(source.TransportId);
                 if (transport != null)
                 {
-                    src.Position.Relocate(transport.Position);
-                    src.Position.RelocateOffset(src.TransportOffset);
+                    //source.Relocate(transport.Position);
+                    //source.RelocateOffset(src.TransportOffset);
                 }
             }
 
-            if (HasDest && dst.TransportId != 0)
+            if (HasDest && destination.TransportId != 0)
             {
-                WorldEntity transport = caster.WorldManager.UnitManager.Find(dst.TransportId);
+                WorldEntity transport = caster.WorldManager.UnitManager.Find(destination.TransportId);
                 if (transport != null)
                 {
-                    dst.Position.Relocate(transport.Position);
-                    dst.Position.RelocateOffset(dst.TransportOffset);
+                    //destination.Relocate(transport.Position);
+                    //destination.RelocateOffset(destination.TransportOffset);
                 }
-            }
+            }*/
         }
     }
 }

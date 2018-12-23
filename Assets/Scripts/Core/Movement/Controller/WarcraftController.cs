@@ -156,6 +156,7 @@ namespace Client
         public void AttachClientSideMoveState(BoltEntity moveEntity)
         {
             var localPlayerMoveState = moveEntity.GetState<IMoveState>();
+            unit.MovementInfo.AttachedMoveState(localPlayerMoveState);
             localPlayerMoveState.SetTransforms(localPlayerMoveState.LocalTransform, moveEntity.transform);
 
             clientMoveState = moveEntity;
@@ -172,6 +173,7 @@ namespace Client
                     BoltNetwork.Destroy(moveStateEntity.gameObject);
             }
 
+            unit.MovementInfo.DetachedMoveState();
             clientMoveState = null;
         }
 

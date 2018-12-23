@@ -28,8 +28,8 @@ namespace Core
         protected IWorldEntityState worldEntityState;
 
         public MovementInfo MovementInfo { get; } = new MovementInfo();
-        public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
-        public Quaternion Rotation { get { return transform.rotation; } set { transform.rotation = value; } }
+        public Vector3 Position { get => transform.position; set => transform.position = value; }
+        public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
 
         public bool IsVisible { get; } = true;
         public string Name => name;
@@ -40,6 +40,7 @@ namespace Core
             base.Attached();
 
             worldEntityState = entity.GetState<IWorldEntityState>();
+            worldEntityState.SetTransforms(worldEntityState.Transform, transform);
 
             var createInfo = entity.attachToken as CreateInfo;
             if (createInfo != null)

@@ -17,7 +17,7 @@ namespace Core
             public abstract void Write(UdpPacket packet);
         }
 
-        [SerializeField] private List<EntityField> entityFieldList = new List<EntityField>();
+        [SerializeField, UsedImplicitly] private List<EntityField> entityFieldList = new List<EntityField>();
 
         private readonly Dictionary<EntityFields, EntityField> entityFields = new Dictionary<EntityFields, EntityField>(new EntityFieldsEqualityComparer());
 

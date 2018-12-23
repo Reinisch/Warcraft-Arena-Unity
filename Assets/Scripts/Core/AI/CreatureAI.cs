@@ -1,8 +1,10 @@
-﻿namespace Core
+﻿using UnityEngine;
+
+namespace Core
 {
     public class CreatureAI : UnitAI
     {
-        protected new Creature Me { get { return base.Me as Creature; } set { base.Me = value; } }
+        protected new Creature Me { get => base.Me as Creature; set => base.Me = value; }
 
         private bool MoveInLineOfSightLocked { get; set; }
 
@@ -214,7 +216,7 @@
         {
         }
 
-        protected Creature DoSummon(uint entry, Position pos, uint despawnTime = 30000,
+        protected Creature DoSummon(uint entry, Vector3 pos, uint despawnTime = 30000,
             TempSummonType summonType = TempSummonType.TimedDespawn)
         {
             return null;

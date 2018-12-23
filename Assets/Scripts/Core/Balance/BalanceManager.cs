@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core
@@ -11,7 +12,7 @@ namespace Core
         public static Dictionary<int, MapDefinition> MapsById { get; } = new Dictionary<int, MapDefinition>();
         public static Dictionary<int, SpellInfo> SpellInfosById { get; } = new Dictionary<int, SpellInfo>();
 
-        [SerializeField] private BalanceDefinition balanceDefinition;
+        [SerializeField, UsedImplicitly] private BalanceDefinition balanceDefinition;
 
         public void Initialize()
         {

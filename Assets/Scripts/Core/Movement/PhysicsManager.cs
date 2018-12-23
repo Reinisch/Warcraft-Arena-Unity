@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Core
 {
@@ -18,9 +19,9 @@ namespace Core
             public static int NoCollision;
         }
 
-        [SerializeField]
+        [SerializeField, UsedImplicitly]
         private PhysicMaterial groundedUnitMaterial;
-        [SerializeField]
+        [SerializeField, UsedImplicitly]
         private PhysicMaterial slidingUnitMaterial;
 
         public static PhysicMaterial GroundedMaterial => Instance.groundedUnitMaterial;

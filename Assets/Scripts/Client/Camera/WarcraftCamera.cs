@@ -1,38 +1,39 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 public class WarcraftCamera : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private float targetHeight = 1.7f;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private float distance = 5.0f;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private float offsetFromWall = 0.1f;
 
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private float maxDistance = 20;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private float minDistance = 0.6f;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private float speedDistance = 5;
 
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private float xSpeed = 200.0f;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private float ySpeed = 200.0f;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private int yMinLimit = -40;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private int yMaxLimit = 80;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private int zoomRate = 40;
 
     private float rotationDampening = 3.0f;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private float zoomDampening = 5.0f;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private LayerMask collisionLayers = -1;
-    [SerializeField]
+    [SerializeField, UsedImplicitly]
     private Transform target;
 
     private float xDeg;
@@ -43,17 +44,12 @@ public class WarcraftCamera : MonoBehaviour
 
     public Transform Target
     {
-        get
-        {
-            return target;
-        }
-        set
-        {
-            target = value;
-        }
+        get => target;
+        set => target = value;
     }
 
-    protected void Start()
+    [UsedImplicitly]
+    private void Start()
     {
         Vector3 angles = transform.eulerAngles;
         xDeg = angles.x;
@@ -64,7 +60,8 @@ public class WarcraftCamera : MonoBehaviour
         correctedDistance = distance;
     }
 
-    protected void LateUpdate()
+    [UsedImplicitly]
+    private void LateUpdate()
     {
         if (!target)
             return;

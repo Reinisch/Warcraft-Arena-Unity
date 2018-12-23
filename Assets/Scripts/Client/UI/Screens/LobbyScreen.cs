@@ -1,4 +1,5 @@
 ﻿using Core;
+using JetBrains.Annotations;
 using UdpKit;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Client
 {
     public class LobbyScreen : MonoBehaviour
     {
-        [SerializeField] private LobbyPanel lobbyPanel;
+        [SerializeField, UsedImplicitly] private LobbyPanel lobbyPanel;
 
         public void Initialize(PhotonBoltManager photonManager)
         {

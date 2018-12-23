@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Core
 {
@@ -28,7 +29,7 @@ namespace Core
         public void AddToGrid(GridReferenceManager<DynamicEntity> refManager) { throw new NotImplementedException(); }
         public void RemoveFromGrid() { throw new NotImplementedException(); }
 
-        public bool CreateDynamicObject(Guid guidlow, Unit caster, SpellInfo spell, Position pos, float radius, DynamicEntityType type, uint spellXSpellVisualId) { return false; }
+        public bool CreateDynamicObject(Guid guidlow, Unit caster, SpellInfo spell, Vector3 pos, float radius, DynamicEntityType type, uint spellXSpellVisualId) { return false; }
         public override void DoUpdate(int timeDelta) { }
         public void Remove() { }
         public void SetDuration(int newDuration) { }

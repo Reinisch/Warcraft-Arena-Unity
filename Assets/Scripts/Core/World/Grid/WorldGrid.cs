@@ -12,8 +12,8 @@ namespace Core
         public int CellCountZ { get; private set; }
 
         public bool UnloadLock => Info.UnloadLock;
-        public bool UnloadExplicitLock { get { return Info.UnloadExplicitLock; } set { Info.UnloadExplicitLock = value; } }
-        public bool UnloadReferenceLock { get { return Info.UnloadReferenceLock; } set { Info.UnloadReferenceLock = value; } }
+        public bool UnloadExplicitLock { get => Info.UnloadExplicitLock; set => Info.UnloadExplicitLock = value; }
+        public bool UnloadReferenceLock { get => Info.UnloadReferenceLock; set => Info.UnloadReferenceLock = value; }
         public int WorldPlayerCount { get { return cells.EntityCount(CellCountX, CellCountZ, cell => cell.WorldPlayerCount); } }
         public int WorldPetCount { get { return cells.EntityCount(CellCountX, CellCountZ, cell => cell.WorldPetCount); } }
         public TimeTracker TimeTracker => Info.Timer;

@@ -42,7 +42,7 @@ namespace Core
 
         public static T GetRandomElement<T>(List<T> elements)
         {
-            return elements.Count == 0 ? default(T) : elements[Next(elements.Count)];
+            return elements.Count == 0 ? default : elements[Next(elements.Count)];
         }
     }
 }

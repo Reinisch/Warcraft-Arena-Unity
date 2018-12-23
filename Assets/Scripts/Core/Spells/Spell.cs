@@ -63,14 +63,14 @@ namespace Core
         public PathGenerator PregeneratedPath { get; private set; }
         public SpellCustomErrors CustomError { get; private set; }
 
-        public bool IsNextMeleeSwingSpell { get { throw new NotImplementedException(); } }
+        public bool IsNextMeleeSwingSpell => throw new NotImplementedException();
         public bool IsTriggered => (TriggerCastFlags & TriggerCastFlags.FullMask) != 0;
         public bool IsIgnoringCooldowns => (TriggerCastFlags & TriggerCastFlags.IgnoreSpellAndCategoryCd) != 0;
         public bool IsChannelActive => Caster.GetUintValue(EntityFields.ChannelSpell) != 0;
-        public bool IsAutoActionResetSpell { get { throw new NotImplementedException(); } }
+        public bool IsAutoActionResetSpell => throw new NotImplementedException();
         public bool IsInterruptable => !ExecutedCurrently;
-        public bool IsNeedSendToClient { get { throw new NotImplementedException(); } }
-        public CurrentSpellTypes CurrentContainer { get { throw new NotImplementedException(); } }
+        public bool IsNeedSendToClient => throw new NotImplementedException();
+        public CurrentSpellTypes CurrentContainer => throw new NotImplementedException();
 
         public List<SpellScript> LoadedScripts { get; private set; }
         public List<HitTriggerSpell> HitTriggerSpells { get; private set; }
@@ -222,7 +222,7 @@ namespace Core
             // this function tries to correct spell explicit targets for spell
             // client doesn't send explicit targets correctly sometimes - we need to fix such spells serverside
             SpellCastTargetFlags neededTargets = SpellInfo.ExplicitTargetMask;
-            WorldEntity target = Targets.EntityTarget;
+            WorldEntity target = Targets.Target;
             if (target != null)
             {
                 // check if object target is valid with needed target flags
@@ -261,7 +261,7 @@ namespace Core
             if (neededTargets.HasFlag(SpellCastTargetFlags.DestLocation))
             {
                 if (!Targets.HasDest)
-                    Targets.SetDst(targets.EntityTarget ?? Caster);
+                    Targets.SetDst(targets.Target ?? Caster);
             }
             else
                 Targets.RemoveDst();
@@ -290,7 +290,7 @@ namespace Core
                 SelectEffectTypeImplicitTargets(effect);
 
                 if (Targets.HasDest)
-                    AddDestTarget(Targets.Dest, effect.Index);
+                    AddDestTarget(Targets.Destination, effect.Index);
 
                 if (SpellInfo.IsChanneled())
                 {
@@ -305,7 +305,6 @@ namespace Core
                 float speed = Targets.SpeedXY;
                 if (speed > 0.0f)
                     DelayMoment = Mathf.FloorToInt(Targets.Distance2D / speed * TimeHelper.InMilliseconds);
-                
             }
         }
 
@@ -458,10 +457,10 @@ namespace Core
             switch (targetingType.ReferenceType)
             {
                 case TargetReferences.Source:
-                    center = new Vector3(Targets.Source.Position.X, Targets.Source.Position.Y, Targets.Source.Position.Z);
+                    center = new Vector3(Targets.Source.Position.x, Targets.Source.Position.y, Targets.Source.Position.z);
                     break;
                 case TargetReferences.Dest:
-                    center = new Vector3(Targets.Dest.Position.X, Targets.Dest.Position.Y, Targets.Dest.Position.Z);
+                    center = new Vector3(Targets.Destination.Position.x, Targets.Destination.Position.y, Targets.Destination.Position.z);
                     break;
                 case TargetReferences.Caster:
                 case TargetReferences.Target:
@@ -477,7 +476,7 @@ namespace Core
             Caster.Map.SearchAreaTargets(targets, radius, center, referer, targetingType.SelectionCheckType);
 
             foreach (var unit in targets)
-                AddUnitTarget(unit, effMask, false, true, new Position(center.x, center.y, center.z));
+                AddUnitTarget(unit, effMask, false, true, new Vector3(center.x, center.y, center.z));
         }
 
         private void SelectImplicitCasterDestTargets(SpellEffectInfo effect, TargetingType targetingType)
@@ -530,12 +529,12 @@ namespace Core
                 AddGameEntityTarget((GameEntity)target, 1 << effect.Index);
         }
 
-        private void SearchTargets(IWorldEntityTargetCheck searcher, int containerMask, Unit referer, Position pos, float radius)
+        private void SearchTargets(IWorldEntityTargetCheck searcher, int containerMask, Unit referer, Vector3 pos, float radius)
         {
             throw new NotImplementedException();
         }
 
-        private void SearchAreaTargets(List<WorldEntity> targets, float range, Position position, Unit referer, TargetEntities entityType, TargetChecks selectType) { throw new NotImplementedException(); }
+        private void SearchAreaTargets(List<WorldEntity> targets, float range, Vector3 position, Unit referer, TargetEntities entityType, TargetChecks selectType) { throw new NotImplementedException(); }
 
         private void SearchChainTargets(List<WorldEntity> targets, int chainTargets, WorldEntity target, TargetEntities entityType, TargetChecks selectType, bool isChainHeal) { throw new NotImplementedException(); }
 
@@ -543,7 +542,7 @@ namespace Core
 
         private GameEntity SearchSpellFocus() { throw new NotImplementedException(); }
 
-        private void AddUnitTarget(Unit target, int effectMask, bool checkIfValid = true, bool implicitTarget = true, Position losPosition = null)
+        private void AddUnitTarget(Unit target, int effectMask, bool checkIfValid = true, bool implicitTarget = true, Vector3 losPosition = default)
         {
             int validEffectMask = 0;
             foreach (var effect in Effects)
@@ -631,7 +630,7 @@ namespace Core
 
         private void AddGameEntityTarget(GameEntity target, int effectMask) { throw new NotImplementedException(); }
 
-        private void AddDestTarget(SpellDestination dest, int effIndex) { throw new NotImplementedException(); }
+        private void AddDestTarget(WorldEntity destination, int effIndex) { throw new NotImplementedException(); }
 
         #endregion
 
@@ -724,7 +723,7 @@ namespace Core
 
         private SpellCastResult CheckPetCast(Unit target) { throw new NotImplementedException(); }
 
-        private bool CheckEffectTarget(Unit target, SpellEffectInfo effect, Position losPosition) { throw new NotImplementedException(); }
+        private bool CheckEffectTarget(Unit target, SpellEffectInfo effect, Vector3 losPosition) { throw new NotImplementedException(); }
 
         private bool CheckEffectTarget(GameEntity target, SpellEffectInfo effect) { throw new NotImplementedException(); }
 
