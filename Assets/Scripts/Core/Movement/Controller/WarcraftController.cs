@@ -23,7 +23,6 @@ namespace Client
         private Vector3 hostPosition = Vector3.zero;
         private Vector3 hostVelocity = Vector3.zero;
         private Quaternion lastRotation;
-        private BoltEntity clientMoveState;
         private bool wasFlying;
 
         private Unit Unit => unit;
@@ -31,6 +30,8 @@ namespace Client
         private bool OnEdge => Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && TouchingGround;
         private bool TooSteep => groundNormal.y <= Mathf.Cos(45 * Mathf.Deg2Rad);
         private bool TouchingGround => groundChecker.GroundCollisions > 0;
+
+        internal BoltEntity ClientMoveState { get; private set; }
 
         [UsedImplicitly]
         private void Awake()
@@ -66,10 +67,10 @@ namespace Client
             if (!Unit.IsController && BalanceManager.NetworkMovementType == NetworkMovementType.ServerSide)
                 ProcessMovement();
 
-            if (BalanceManager.NetworkMovementType == NetworkMovementType.ClientSide && clientMoveState != null)
+            if (BalanceManager.NetworkMovementType == NetworkMovementType.ClientSide && ClientMoveState != null)
             {
-                Unit.Position = clientMoveState.transform.position;
-                Unit.Rotation = clientMoveState.transform.rotation;
+                Unit.Position = ClientMoveState.transform.position;
+                Unit.Rotation = ClientMoveState.transform.rotation;
             }
         }
 
@@ -88,10 +89,10 @@ namespace Client
                 entity.QueueInput(moveCommand);
             }
 
-            if (clientMoveState != null)
+            if (ClientMoveState != null)
             {
-                clientMoveState.transform.position = Unit.Position;
-                clientMoveState.transform.rotation = Unit.Rotation;
+                ClientMoveState.transform.position = Unit.Position;
+                ClientMoveState.transform.rotation = Unit.Rotation;
             }
         }
 
@@ -104,6 +105,7 @@ namespace Client
             if (!Unit.IsOwner && Unit.IsController && BalanceManager.NetworkMovementType == NetworkMovementType.ClientSide)
             {
                 BoltEntity localClientMoveState = BoltNetwork.Instantiate(BoltPrefabs.MoveState);
+                localClientMoveState.SetScopeAll(false);
                 localClientMoveState.SetScope(BoltNetwork.Server, true);
                 localClientMoveState.AssignControl(BoltNetwork.Server);
 
@@ -159,12 +161,12 @@ namespace Client
             unit.MovementInfo.AttachedMoveState(localPlayerMoveState);
             localPlayerMoveState.SetTransforms(localPlayerMoveState.LocalTransform, moveEntity.transform);
 
-            clientMoveState = moveEntity;
+            ClientMoveState = moveEntity;
         }
 
         public void DetachClientSideMovementState(bool destroyObject)
         {
-            BoltEntity moveStateEntity = clientMoveState;
+            BoltEntity moveStateEntity = ClientMoveState;
             if (moveStateEntity != null && destroyObject)
             {
                 if (!moveStateEntity.isOwner || !moveStateEntity.isAttached)
@@ -174,7 +176,7 @@ namespace Client
             }
 
             unit.MovementInfo.DetachedMoveState();
-            clientMoveState = null;
+            ClientMoveState = null;
         }
 
         private void ApplyControllerInputVelocity()

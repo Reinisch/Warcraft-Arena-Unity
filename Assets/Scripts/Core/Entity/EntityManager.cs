@@ -60,7 +60,7 @@ namespace Core
             BoltNetwork.Destroy(entity.gameObject);
         }
 
-        public void SetScope(BoltConnection connection, bool inScope)
+        public virtual void SetScope(BoltConnection connection, bool inScope)
         {
             foreach (T entity in entities)
                 entity.BoltEntity.SetScope(connection, inScope);

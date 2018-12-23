@@ -88,6 +88,8 @@ namespace Server
             if (entity.prefabId == BoltPrefabs.MoveState)
             {
                 Player player = playerInfosByConnection.LookupEntry(entity.source)?.Player;
+                entity.SetScopeAll(false);
+
                 if (player == null)
                     Destroy(entity.gameObject);
                 else

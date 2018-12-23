@@ -33,6 +33,14 @@ namespace Core
                 players.Remove((Player)entity);
         }
 
+        public override void SetScope(BoltConnection connection, bool inScope)
+        {
+            base.SetScope(connection, inScope);
+
+            foreach (Player player in players)
+                player.Controller.ClientMoveState?.SetScope(connection, false);
+        }
+
         public void Accept(IUnitVisitor visitor)
         {
             foreach (var entity in entities)
