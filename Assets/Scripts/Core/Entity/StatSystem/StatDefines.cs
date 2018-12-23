@@ -73,7 +73,7 @@
     public enum UnitModifierType
     {
         BaseValue = 0,
-        BasePercentExcludeCreate = 1,   // percent modifier affecting all stat values from auras and gear but not player base for level
+        BasePercentExcludeCreate = 1,
         BasePercent = 2,
         TotalValue = 3,
         TotalPercent = 4,

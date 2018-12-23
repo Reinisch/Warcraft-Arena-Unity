@@ -31,9 +31,6 @@ namespace Core
 
             target.SetFacingTo(DestTarget);
             target.ClearUnitState(UnitState.Moving);
-
-            if (target.EntityType == EntityType.Unit)
-                target.MotionMaster.MoveDistract(SpellDamage * TimeHelper.InMilliseconds);
         }
 
         public void EffectPull(SpellEffectInfo effect)

@@ -16,7 +16,7 @@
         {
             base.SceneLoadLocalDone(map);
 
-            worldManager.MapManager.CreateBaseMap(1);
+            worldManager.MapManager.InitializeLoadedMap(1);
         }
     }
 }

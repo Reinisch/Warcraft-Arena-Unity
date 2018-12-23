@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 [ExecuteInEditMode]
@@ -67,8 +68,8 @@ public class BoltPOI : Bolt.EntityBehaviour {
   }
 
   void BoltSceneObject() {
-    if (BoltNetwork.isClient) {
-      GameObject.Destroy(gameObject);
+    if (BoltNetwork.IsClient) {
+            Destroy(gameObject);
     }
   }
 

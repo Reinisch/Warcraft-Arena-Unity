@@ -10,7 +10,6 @@ namespace Core
         public HostileReference MostHated => ThreatList.Count == 0 ? null : ThreatList[0];
         public List<HostileReference> ThreatList { get; }
 
-
         public ThreatContainer()
         {
             ThreatList = new List<HostileReference>();
@@ -20,7 +19,6 @@ namespace Core
         public void ModifyThreatPercent(Unit victim, int percent)
         {
         }
-
 
         public HostileReference AddThreat(Unit victim, float threat)
         {
@@ -37,7 +35,6 @@ namespace Core
             return null;
         }
 
-
         private void ClearReferences()
         {
         }
@@ -52,10 +49,6 @@ namespace Core
             ThreatList.Add(hostileRef);
         }
 
-
-        /// <summary>
-        /// Sort the list if necessary.
-        /// </summary>
         private void Update()
         {
         }

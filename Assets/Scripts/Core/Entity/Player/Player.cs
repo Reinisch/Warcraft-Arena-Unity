@@ -12,13 +12,11 @@ namespace Core
 
         protected Team team;
         protected PlayerExtraFlags extraFlags;
-        protected Dictionary<uint, PlayerSpell> playerSpells;
         protected SpecializationInfo specializationInfo;
 
         protected Dictionary<SpellModOp, List<SpellModifier>> spellMods;
         protected Dictionary<BaseModGroup, Dictionary<BaseModType, float>> auraBaseMod;
         protected Dictionary<CombatRating, short> baseRatingValue;
-        protected Dictionary<byte, ActionButton> actionButtons;
 
         protected uint baseSpellPower;
         protected uint baseManaRegen;

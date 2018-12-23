@@ -60,11 +60,9 @@ namespace Core
         public MotionMaster MotionMaster { get; protected set; }
         public ThreatManager ThreatManager { get; protected set; }
         public HostileReferenceManager HostileRefManager { get; private set; }
-        public FollowerReferenceManager FollowingRefManager { get; private set; }
 
         public UnitState UnitState { get; set; }
         public UnitMoveType MoveType { get; set; }
-        public MoveSpline MoveSpline { get; set; }
         public float CombatReach { get; private set; }
 
         #endregion
@@ -1061,18 +1059,22 @@ namespace Core
 
             SetSpeedRate(type, speed);
         }
+
         public float GetSpeed(UnitMoveType type)
         {
             return speedRates[type] * StatHelper.BaseMovementSpeed(type);
         }
+
         public float GetSpeedRate(UnitMoveType type)
         {
             return speedRates[type];
         }
+
         public void SetSpeed(UnitMoveType type, float newValue)
         {
             SetSpeedRate(type, newValue / StatHelper.BaseMovementSpeed(type));
         }
+
         public void SetSpeedRate(UnitMoveType type, float rate)
         {
             if (rate < 0)
@@ -1082,6 +1084,7 @@ namespace Core
         }
 
         public bool IsStopped() { return !(HasUnitState(UnitState.Moving)); }
+
         public void StopMoving() { }
 
         public void AddMovementFlag(MovementFlags f) { MovementInfo.AddMovementFlag(f); }
@@ -1090,14 +1093,8 @@ namespace Core
 
         public bool HasMovementFlag(MovementFlags f) { return MovementInfo.HasMovementFlag(f); }
 
-        public void AddExtraUnitMovementFlag(MovementExtraFlags f) { MovementInfo.AddExtraMovementFlag(f); }
-        public void RemoveExtraUnitMovementFlag(MovementExtraFlags f) { MovementInfo.RemoveExtraMovementFlag(f); }
-        public bool HasExtraUnitMovementFlag(MovementExtraFlags f) { return MovementInfo.HasExtraMovementFlag(f); }
-        public MovementExtraFlags GetExtraUnitMovementFlags() { return MovementInfo.GetExtraMovementFlags(); }
-        public void SetExtraUnitMovementFlags(MovementExtraFlags f) { MovementInfo.SetExtraMovementFlags(f); }
-        public bool IsSplineEnabled() { return false; }
-
         public float GetPositionZMinusOffset() { return 0.0f; }
+
         public void SetControlled(bool apply, UnitState state) { }
 
         #endregion

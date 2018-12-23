@@ -33,7 +33,7 @@
             Blocked = 0;
             CleanDamage = 0;
             PeriodicLog = false;
-            HitInfo = HitInfo.Normalswing;
+            HitInfo = HitInfo.NormalSwing;
             PreHitHealth = target.GetHealth();
         }
     }

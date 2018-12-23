@@ -1,4 +1,25 @@
-﻿1.2.0.3
+1.2.5
+Fixed: Connect Token null on the host when using Accept Mode Manual.
+Fixed: Issues with Bolt IDs when using Unity 2018.3 with the new Prefabs Workflow.
+Fixed: DLLs naming collisions.
+
+1.2.4
+Added: Command can now be marked as Instant. This forces immediate execution of all its inputs upon reaching server.
+Added: Optional Enable Frame Limit for command. This allows to queue only one input per command per frame, preventing speed hacks.
+Added: Delta Compression for command inputs and results.
+Added: Link to license terms
+Update: Public API Naming. Several methods and functions were refactored to agree  with the C# Coding Guidelines. The old symbols are still present, but with a obsolete marking and will be removed in a future version.
+Update: Semantic versioning (1.2.4 instead of 1.2.0.4)
+Fixed: Exception in Debug Start
+Fixed: Initial position issue
+Fixed: Samples are now compatible with both Unity 2017 and 2018
+Fixed: Bolt Wizard shows current App ID correctly
+Fixed: Exception in A2SManager when restarting Bolt server
+Fixed: Issue on UI when running Client using BoltInit
+Fixed: Failed Punch not fallback to Relay connection
+Removed: Custom Hosted (OnPremise Photon Server) is no longer supported
+
+1.2.0.3
 Added: Property names are now generated into BoltAssets class
 Added: Support to create new AppIds directly from Wizard Window using just an email
 Added: Best Region support when connecting to Photon Cloud

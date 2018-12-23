@@ -1,82 +1,93 @@
 ﻿using UnityEngine;
+using System.Diagnostics;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace BoltInternal {
-  public class UnityDebugDrawer : BoltInternal.IDebugDrawer
+namespace BoltInternal
+{
+    public class UnityDebugDrawer : IDebugDrawer
     {
-#if UNITY_EDITOR
         bool isEditor;
-#endif
 
-        void IDebugDrawer.IsEditor(bool isEditor) {
-#if UNITY_EDITOR
+        void IDebugDrawer.IsEditor(bool isEditor)
+        {
             this.isEditor = isEditor;
+        }
+
+        void IDebugDrawer.SelectGameObject(GameObject gameObject)
+        {
+#if UNITY_EDITOR
+            if (!isEditor)
+            {
+                Selection.activeGameObject = gameObject;
+            }
 #endif
         }
 
-    void IDebugDrawer.SelectGameObject(GameObject gameObject) {
+        void IDebugDrawer.Indent(int level)
+        {
 #if UNITY_EDITOR
-      if (!isEditor) {
-        UnityEditor.Selection.activeGameObject = gameObject;
-      }
+            if (isEditor)
+            {
+                EditorGUI.indentLevel = level;
+                return;
+            }
 #endif
-    }
+        }
 
-    void BoltInternal.IDebugDrawer.Indent(int level) {
+        void IDebugDrawer.Label(string text)
+        {
 #if UNITY_EDITOR
-      if (isEditor) {
-        UnityEditor.EditorGUI.indentLevel = level;
-        return;
-      }
-#endif
-    }
-
-    void BoltInternal.IDebugDrawer.Label(string text) {
-#if UNITY_EDITOR
-      if (isEditor) {
-        GUILayout.Label(text);
-        return;
-      }
+            if (isEditor)
+            {
+                GUILayout.Label(text);
+                return;
+            }
 #endif
 
-      Bolt.DebugInfo.Label(text);
-    }
+            Bolt.DebugInfo.Label(text);
+        }
 
-    void BoltInternal.IDebugDrawer.LabelBold(string text) {
+        void IDebugDrawer.LabelBold(string text)
+        {
 #if UNITY_EDITOR
-      if (isEditor) {
-        GUILayout.Label(text, EditorStyles.boldLabel);
-        return;
-      }
+            if (isEditor)
+            {
+                GUILayout.Label(text, EditorStyles.boldLabel);
+                return;
+            }
 #endif
 
-      Bolt.DebugInfo.LabelBold(text);
-    }
+            Bolt.DebugInfo.LabelBold(text);
+        }
 
-    void BoltInternal.IDebugDrawer.LabelField(string text, object value) {
+        void IDebugDrawer.LabelField(string text, object value)
+        {
 #if UNITY_EDITOR
-      if (isEditor) {
-        UnityEditor.EditorGUILayout.LabelField(text, value.ToString());
-        return;
-      }
+            if (isEditor)
+            {
+                EditorGUILayout.LabelField(text, value.ToString());
+                return;
+            }
 #endif
 
-      Bolt.DebugInfo.LabelField(text, value);
-    }
+            Bolt.DebugInfo.LabelField(text, value);
+        }
 
-    void BoltInternal.IDebugDrawer.Separator() {
+        void IDebugDrawer.Separator()
+        {
 #if UNITY_EDITOR
-      if (isEditor) {
-        UnityEditor.EditorGUILayout.Separator();
-        return;
-      }
+            if (isEditor)
+            {
+                EditorGUILayout.Separator();
+                return;
+            }
 #endif
 
-      GUILayout.Space(2);
-    }
+            GUILayout.Space(2);
+        }
 
-  }
+    }
 }

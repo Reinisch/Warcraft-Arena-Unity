@@ -206,11 +206,11 @@ namespace Core
 
         public void DoUpdate(Unit caster)
         {
-            entityTarget = entityTargetGuid != 0 ? (entityTargetGuid == caster.NetworkId ? caster : EntityAccessor.FindWorldEntityOnSameMap(caster, entityTargetGuid)) : null;
+            entityTarget = entityTargetGuid != 0 ? (entityTargetGuid == caster.NetworkId ? caster : caster.WorldManager.UnitManager.Find(entityTargetGuid)) : null;
 
             if (HasSource && src.TransportId != 0)
             {
-                WorldEntity transport = EntityAccessor.FindWorldEntityOnSameMap(caster, src.TransportId);
+                WorldEntity transport = caster.WorldManager.UnitManager.Find(src.TransportId);
                 if (transport != null)
                 {
                     src.Position.Relocate(transport.Position);
@@ -220,7 +220,7 @@ namespace Core
 
             if (HasDest && dst.TransportId != 0)
             {
-                WorldEntity transport = EntityAccessor.FindWorldEntityOnSameMap(caster, dst.TransportId);
+                WorldEntity transport = caster.WorldManager.UnitManager.Find(dst.TransportId);
                 if (transport != null)
                 {
                     dst.Position.Relocate(transport.Position);

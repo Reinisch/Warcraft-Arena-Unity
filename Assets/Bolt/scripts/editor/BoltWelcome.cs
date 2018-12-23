@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 // [InitializeOnLoad]
@@ -15,7 +18,7 @@ public class BoltWelcome : EditorWindow
 
     static String FirstStartupKey
     {
-        get { return "$Bolt$First$Startup/" + BoltNetwork.Version; }
+        get { return "$Bolt$First$Startup/" + BoltNetwork.CurrentVersion; }
     }
 
     static String ShowAtStartupKey
@@ -161,7 +164,7 @@ public class BoltWelcome : EditorWindow
         GUILayout.FlexibleSpace();
         GUILayout.BeginHorizontal();
 
-        GUILayout.Label(string.Format("Version: {0} v{1}", BoltNetwork.VersionDescription, BoltNetwork.Version), _textLabel);
+        GUILayout.Label(BoltNetwork.CurrentVersion, _textLabel);
 
         GUILayout.FlexibleSpace();
         EditorPrefs.SetBool(ShowAtStartupKey, GUILayout.Toggle(EditorPrefs.GetBool(ShowAtStartupKey, SHOW_AT_STARTUP_DEFAULT), "Always Show This On Startup"));
@@ -410,7 +413,7 @@ public class BoltWelcome : EditorWindow
 
         if (!AssetDatabase.LoadAssetAtPath(SETTINGS_PATH, typeof(BoltRuntimeSettings)))
         {
-            BoltRuntimeSettings settings = BoltRuntimeSettings.CreateInstance<BoltRuntimeSettings>();
+            BoltRuntimeSettings settings = CreateInstance<BoltRuntimeSettings>();
             settings.masterServerGameId = Guid.NewGuid().ToString().ToUpperInvariant();
 
             AssetDatabase.CreateAsset(settings, SETTINGS_PATH);
@@ -419,7 +422,7 @@ public class BoltWelcome : EditorWindow
 
         if (!AssetDatabase.LoadAssetAtPath(PREFABDB_PATH, typeof(Bolt.PrefabDatabase)))
         {
-            AssetDatabase.CreateAsset(Bolt.PrefabDatabase.CreateInstance<Bolt.PrefabDatabase>(), PREFABDB_PATH);
+            AssetDatabase.CreateAsset(CreateInstance<Bolt.PrefabDatabase>(), PREFABDB_PATH);
             AssetDatabase.ImportAsset(PREFABDB_PATH, ImportAssetOptions.Default);
         }
 

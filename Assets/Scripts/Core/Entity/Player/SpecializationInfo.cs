@@ -9,13 +9,10 @@ namespace Core
         public uint PrimarySpecialization;
         public byte ActiveGroup;
 
-        public List<Dictionary<uint, PlayerSpellState>> Talents;
         public List<List<uint>> Glyphs;
-
 
         public SpecializationInfo()
         {
-            Talents = new List<Dictionary<uint, PlayerSpellState>>(UnitHelper.MaxSpecializations);
             Glyphs = new List<List<uint>>(UnitHelper.MaxSpecializations);
         }
     }

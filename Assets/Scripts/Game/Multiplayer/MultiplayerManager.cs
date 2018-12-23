@@ -107,7 +107,7 @@ namespace Game
         {
             base.BoltStartDone();
 
-            SetListeners(true, BoltNetwork.isServer, BoltNetwork.isClient || BoltNetwork.isServer);
+            SetListeners(true, BoltNetwork.IsServer, BoltNetwork.IsClient || BoltNetwork.IsServer);
         }
 
         public override void BoltStartFailed()
@@ -166,7 +166,7 @@ namespace Game
             if (state == State.Connecting)
             {
                 connectionAttemptInfo.IsFailed = true;
-                state = BoltNetwork.isRunning ? State.Active : State.Inactive;
+                state = BoltNetwork.IsRunning ? State.Active : State.Inactive;
             }
         }
 
@@ -177,7 +177,7 @@ namespace Game
             if (state == State.Connecting)
             {
                 connectionAttemptInfo.IsFailed = true;
-                state = BoltNetwork.isRunning ? State.Active : State.Inactive;
+                state = BoltNetwork.IsRunning ? State.Active : State.Inactive;
             }
         }
 
@@ -188,7 +188,7 @@ namespace Game
             if (state == State.Connecting)
             {
                 connectionAttemptInfo.IsFailed = true;
-                state = BoltNetwork.isRunning ? State.Active : State.Inactive;
+                state = BoltNetwork.IsRunning ? State.Active : State.Inactive;
             }
         }
 
@@ -226,7 +226,7 @@ namespace Game
 
         private IEnumerator StartServerRoutine(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail)
         {
-            if (BoltNetwork.isRunning && !BoltNetwork.isServer)
+            if (BoltNetwork.IsRunning && !BoltNetwork.IsServer)
             {
                 BoltLauncher.Shutdown();
 
@@ -238,7 +238,7 @@ namespace Game
             BoltLauncher.StartServer();
             yield return new WaitUntil(NetworkIsIdle);
 
-            if (BoltNetwork.isServer)
+            if (BoltNetwork.IsServer)
             {
                 onStartSuccess?.Invoke();
 
@@ -253,14 +253,14 @@ namespace Game
 
         private IEnumerator StartClientRoutine(Action onStartSuccess, Action onStartFail)
         {
-            if (BoltNetwork.isRunning && !BoltNetwork.isClient)
+            if (BoltNetwork.IsRunning && !BoltNetwork.IsClient)
             {
                 BoltLauncher.Shutdown();
 
                 yield return new WaitUntil(NetworkIsInactive);
             }
 
-            if (!BoltNetwork.isClient)
+            if (!BoltNetwork.IsClient)
             {
                 state = State.Starting;
 
@@ -268,7 +268,7 @@ namespace Game
                 yield return new WaitUntil(NetworkIsIdle);
             }
 
-            if (BoltNetwork.isClient)
+            if (BoltNetwork.IsClient)
             {
                 onStartSuccess?.Invoke();
             }
@@ -280,14 +280,14 @@ namespace Game
 
         private IEnumerator ConnectClientRoutine(UdpSession session, Action onConnectSuccess, Action onConnectFail)
         {
-            if (BoltNetwork.isRunning && !BoltNetwork.isClient)
+            if (BoltNetwork.IsRunning && !BoltNetwork.IsClient)
             {
                 BoltLauncher.Shutdown();
 
                 yield return new WaitUntil(NetworkIsInactive);
             }
 
-            if (!BoltNetwork.isClient)
+            if (!BoltNetwork.IsClient)
             {
                 state = State.Starting;
 
@@ -295,7 +295,7 @@ namespace Game
                 yield return new WaitUntil(NetworkIsIdle);
             }
 
-            if (!BoltNetwork.isClient)
+            if (!BoltNetwork.IsClient)
             {
                 onConnectFail?.Invoke();
                 yield break;
@@ -313,7 +313,7 @@ namespace Game
                 {
                     onConnectFail?.Invoke();
 
-                    state = BoltNetwork.isRunning ? State.Active : State.Inactive;
+                    state = BoltNetwork.IsRunning ? State.Active : State.Inactive;
 
                     yield break;
                 }
@@ -336,7 +336,7 @@ namespace Game
 
         private bool NetworkIsInactive()
         {
-            return !BoltNetwork.isRunning;
+            return !BoltNetwork.IsRunning;
         }
 
         private bool NetworkIsIdle()

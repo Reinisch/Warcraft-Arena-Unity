@@ -25,36 +25,6 @@ namespace Core
         Accessory = 1 << 9,
     }
 
-    [Flags]
-    public enum FactionTemplateFlags : short
-    {
-        EnemySpar = 1 << 0,             // guessed, sparring with enemies?
-        Pvp = 1 << 1,                   // flagged for PvP
-        ContestedGuard = 1 << 2,        // faction will attack players that were involved in PvP combats
-        HostileByDefault = 1 << 3
-    }
-
-    [Flags]
-    public enum FactionMasks : short
-    {                               // if none flags set then non-aggressive creature
-        Player = 1 << 0,            // any player
-        Alliance = 1 << 1,          // player or creature from alliance team
-        Horde = 1 << 2,             // player or creature from horde team
-        Monster = 1 << 3            // aggressive creature from monster team
-    }
-
-    public enum ReputationRank
-    {
-        Hated = 0,
-        Hostile = 1,
-        Unfriendly = 2,
-        Neutral = 3,
-        Friendly = 4,
-        Honored = 5,
-        Revered = 6,
-        Exalted = 7
-    }
-
     public enum MeleeHitOutcome
     {
         Evade,
@@ -76,7 +46,6 @@ namespace Core
         Convert
     }
 
-    // high byte (3 from 0..3) of EntityFields.BaseFlags
     public enum ShapeshiftForm : byte
     {
         None = 0,
@@ -113,22 +82,6 @@ namespace Core
         MoonkinForm = 31,
         SpiritOfRedemption = 32,
         GladiatorStance = 33
-    }
-
-    // low byte (0 from 0..3) of EntityFields.BaseFlags
-    public enum SheathState : byte
-    {
-        Unarmed = 0,                            // non prepared weapon
-        Melee = 1,                              // prepared melee weapon
-        Ranged = 2                              // prepared ranged weapon
-    }
-
-    // byte (1 from 0..3) of EntityFields.BaseFlags
-    public enum UnitPvpStateFlags : byte
-    {
-        Pvp = 0x01,
-        FfaPvp = 0x04,
-        Sanctuary = 0x08
     }
 
     public enum WeaponDamageRange
@@ -182,7 +135,7 @@ namespace Core
 
     public enum HitInfo
     {
-        Normalswing = 0x00000000,
+        NormalSwing = 0x00000000,
         AffectsVictim = 0x00000001,
         Offhand = 0x00000002,
         Miss = 0x00000004,
@@ -262,41 +215,5 @@ namespace Core
         RunBack,
         TurnRate,
         PitchRate,
-    }
-
-    [Flags]
-    public enum ActiveStates
-    {
-        Passive = 0x01,                 // 0x01 - passive
-        Disabled = 0x81,                // 0x80 - castable
-        Enabled = 0xC1,                 // 0x40 | 0x80 - auto cast + castable
-        Command = 0x07,                 // 0x01 | 0x02 | 0x04
-        Reaction = 0x06,                // 0x02 | 0x04
-        Decide = 0x00                   // custom
-    }
-
-    public enum ReactStates
-    {
-        Passive = 0,
-        Defensive = 1,
-        Aggressive = 2,
-        Assist = 3
-    }
-
-    public enum CommandStates : byte
-    {
-        Stay = 0,
-        Follow = 1,
-        Attack = 2,
-        Abandon = 3,
-        MoveTo = 4
-    }
-
-    public enum ActionBarIndex
-    {
-        Start = 0,
-        PetSpellStart = 3,
-        PetSpellEnd = 7,
-        End = 10
     }
 }

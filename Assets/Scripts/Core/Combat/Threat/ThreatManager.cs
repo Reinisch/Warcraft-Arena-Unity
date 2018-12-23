@@ -5,16 +5,9 @@ namespace Core
 {
     public class ThreatManager
     {
-        public bool IsThreatListEmpty()
-        {
-            return ThreatContainer.IsEmpty;
-        }
-
         public Unit Owner { get; private set; }
         public HostileReference CurrentVictim { get; private set; }
 
-        //  Properties to access the lists from the outside to do some dirty manipulation (scripting and such).
-        //  I hope they are used as little as possible.
         public List<HostileReference> ThreatList => ThreatContainer.ThreatList;
         public List<HostileReference> OfflineThreatList => ThreatOfflineContainer.ThreatList;
         public ThreatContainer ThreatContainer { get; private set; }
@@ -27,7 +20,6 @@ namespace Core
         public void ClearReferences()
         {
         }
-
 
         public void AddThreat(Unit victim, float threat, SpellSchoolMask schoolMask = SpellSchoolMask.Normal, SpellInfo threatSpell = null)
         {
@@ -46,11 +38,6 @@ namespace Core
             return 0.0f;
         }
 
-
-        public void ProcessThreatEvent(ThreatRefStatusChangeEvent threatRefStatusChangeEvent)
-        {
-        }
-
         public bool IsNeedUpdateToClient(uint time)
         {
             return false;
@@ -60,7 +47,6 @@ namespace Core
         {
             return null;
         }
-
 
         public void TauntApply(Unit taunter)
         {
@@ -79,17 +65,10 @@ namespace Core
             ThreatContainer.IsDirty = isDirty;
         }
 
-
-        /// <summary>
-        /// Reset all aggro without modifying the threadlist.
-        /// </summary>
         public void ResetAllAggro()
         {
         }
 
-        /// <summary>
-        /// Reset all aggro of unit in threadlist satisfying the predicate.
-        /// </summary>
         public void ResetAggro(Predicate<Unit> predicate)
         {
             if (ThreatContainer.ThreatList.Count == 0)
@@ -103,11 +82,6 @@ namespace Core
                     SetDirty(true);
                 }
             }
-        }
-
-
-        private void AddThreat(Unit victim, float threat)
-        {
         }
     }
 }

@@ -9,20 +9,20 @@ namespace Core
         [SerializeField, UsedImplicitly] private int id;
         [SerializeField, UsedImplicitly] private string mapName;
         [SerializeField, UsedImplicitly] private int maxPlayers = 10;
-        [SerializeField, UsedImplicitly] private MapTypes mapType;
+        [SerializeField, UsedImplicitly] private MapType mapType;
         [SerializeField, UsedImplicitly] private Expansions expansion;
         [SerializeField, UsedImplicitly] private Sprite slotBackground;
 
         public int Id => id;
         public string MapName => mapName;
         public int MaxPlayers => maxPlayers;
-        public MapTypes MapType => mapType;
+        public MapType MapType => mapType;
         public Expansions Expansion => expansion;
         public Sprite SlotBackground => slotBackground;
 
         public bool IsDungeon()
         {
-            return MapType == MapTypes.Instance || MapType == MapTypes.Raid;
+            return MapType == MapType.Instance || MapType == MapType.Raid;
         }
     }
 }

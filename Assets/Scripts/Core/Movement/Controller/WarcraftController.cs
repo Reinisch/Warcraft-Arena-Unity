@@ -81,7 +81,7 @@ namespace Client
             {
                 ProcessMovementCorrection();
 
-                var moveCommand = PlayerControllerMoveCommand.Create();
+                var moveCommand = PlayerMoveCommand.Create();
                 moveCommand.InputVector = inputVelocity;
                 moveCommand.Rotation = lastRotation;
                 moveCommand.Position = Unit.Position;
@@ -103,9 +103,9 @@ namespace Client
 
             if (!Unit.IsOwner && Unit.IsController && BalanceManager.NetworkMovementType == NetworkMovementType.ClientSide)
             {
-                BoltEntity localClientMoveState = BoltNetwork.Instantiate(BoltPrefabs.PlayerMoveState);
-                localClientMoveState.SetScope(BoltNetwork.server, true);
-                localClientMoveState.AssignControl(BoltNetwork.server);
+                BoltEntity localClientMoveState = BoltNetwork.Instantiate(BoltPrefabs.MoveState);
+                localClientMoveState.SetScope(BoltNetwork.Server, true);
+                localClientMoveState.AssignControl(BoltNetwork.Server);
 
                 AttachClientSideMoveState(localClientMoveState);
             }
@@ -125,7 +125,7 @@ namespace Client
             if (BalanceManager.NetworkMovementType == NetworkMovementType.ClientSide)
                 return;
 
-            var moveCommand = (PlayerControllerMoveCommand) command;
+            var moveCommand = (PlayerMoveCommand) command;
             if (resetState)
             {
                 hostPosition = moveCommand.Result.Position;
@@ -139,8 +139,7 @@ namespace Client
                 {
                     if (moveCommand.Input.InputVector.y > 0)
                     {
-                        Unit.MovementInfo.Jump.SpeedXZ = inputVelocity.magnitude;
-                        Unit.MovementInfo.Jump.SpeedY = controllerDefinition.JumpSpeed;
+                        Unit.MovementInfo.Jumping = true;
                         Unit.MovementInfo.AddMovementFlag(MovementFlags.Flying);
                         Unit.MovementInfo.AddMovementFlag(MovementFlags.Ascending);
                         unitRigidbody.velocity = inputVelocity;
@@ -156,7 +155,7 @@ namespace Client
 
         public void AttachClientSideMoveState(BoltEntity moveEntity)
         {
-            var localPlayerMoveState = moveEntity.GetState<ILocalPlayerMovementState>();
+            var localPlayerMoveState = moveEntity.GetState<IMoveState>();
             localPlayerMoveState.SetTransforms(localPlayerMoveState.LocalTransform, moveEntity.transform);
 
             clientMoveState = moveEntity;
@@ -203,8 +202,7 @@ namespace Client
 
                 if (Input.GetButton("Jump"))
                 {
-                    Unit.MovementInfo.Jump.SpeedXZ = inputVelocity.magnitude;
-                    Unit.MovementInfo.Jump.SpeedY = controllerDefinition.JumpSpeed;
+                    Unit.MovementInfo.Jumping = true;
                     inputVelocity = new Vector3(inputVelocity.x, controllerDefinition.JumpSpeed, inputVelocity.z);
                 }
 
@@ -261,13 +259,13 @@ namespace Client
                     if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && inputVelocity.y <= 0)
                     {
                         unitRigidbody.AddForce(Vector3.down * unitRigidbody.velocity.magnitude, ForceMode.VelocityChange);
-                        Unit.MovementInfo.Pitch = Mathf.Asin(hitInfo.normal.y);
+                        Mathf.Asin(hitInfo.normal.y);
                         groundNormal = hitInfo.normal;
                     }
                     else
                     {
                         groundNormal = Vector3.up;
-                        Unit.MovementInfo.Pitch = Mathf.Asin(Vector3.up.y);
+                        Mathf.Asin(Vector3.up.y);
 
                         if (Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
                         {
@@ -279,7 +277,7 @@ namespace Client
                 else
                 {
                     groundNormal = hitInfo.normal;
-                    Unit.MovementInfo.Pitch = Mathf.Asin(hitInfo.normal.y);
+                    Mathf.Asin(hitInfo.normal.y);
 
                     if (Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
                     {
@@ -292,7 +290,7 @@ namespace Client
             {
                 Unit.MovementInfo.AddMovementFlag(MovementFlags.Flying);
                 groundNormal = Vector3.up;
-                Unit.MovementInfo.Pitch = Mathf.Asin(Vector3.up.y);
+                Mathf.Asin(Vector3.up.y);
             }
 
             if (TooSteep || OnEdge)
@@ -307,18 +305,17 @@ namespace Client
 
             if (Unit.MovementInfo.HasMovementFlag(MovementFlags.Ascending) && unitRigidbody.velocity.y <= 0)
             {
-                Unit.MovementInfo.Jump.FallTime = TimeHelper.NowInMilliseconds;
                 Unit.MovementInfo.RemoveMovementFlag(MovementFlags.Ascending);
                 Unit.MovementInfo.AddMovementFlag(MovementFlags.Descending);
             }
 
-            if (Unit.MovementInfo.Jump.SpeedY > 0)
+            if (Unit.MovementInfo.Jumping)
             {
                 unitRigidbody.velocity = inputVelocity;
                 groundCheckDistance = 0.05f;
                 Unit.MovementInfo.AddMovementFlag(MovementFlags.Ascending);
                 Unit.MovementInfo.AddMovementFlag(MovementFlags.Flying);
-                Unit.MovementInfo.Jump.Reset();
+                Unit.MovementInfo.Jumping = false;
             }
             else if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
             {

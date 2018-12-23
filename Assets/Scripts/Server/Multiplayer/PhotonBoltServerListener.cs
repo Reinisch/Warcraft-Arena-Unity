@@ -85,7 +85,7 @@ namespace Server
         {
             base.EntityAttached(entity);
 
-            if (entity.prefabId == BoltPrefabs.PlayerMoveState)
+            if (entity.prefabId == BoltPrefabs.MoveState)
             {
                 Player player = playerInfosByConnection.LookupEntry(entity.source)?.Player;
                 if (player == null)
@@ -99,7 +99,7 @@ namespace Server
         {
             base.EntityDetached(entity);
 
-            if (entity.prefabId == BoltPrefabs.PlayerMoveState)
+            if (entity.prefabId == BoltPrefabs.MoveState)
             {
                 Player player = playerInfosByConnection.LookupEntry(entity.source)?.Player;
                 if (player == null)

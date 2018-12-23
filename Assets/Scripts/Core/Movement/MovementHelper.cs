@@ -4,19 +4,17 @@ namespace Core
 {
     public static class MovementHelper
     {
-        // assume it is 25 yard per 0.6 second
         public const float SpeedCharge = 42.0f;
         public const int SplineStepsPerSegment = 3;
 
         public const float Gravity = 19.29110527038574f;
-        // velocity bounds that makes fall speed limited
         public const float TerminalVelocity = 60.148003f;
         public const float TerminalSafefallVelocity = 7.0f;
 
         public const float TerminalLength = TerminalVelocity * TerminalVelocity / (2.0f * Gravity);
         public const float TerminalSafeFallLength = TerminalSafefallVelocity * TerminalSafefallVelocity / (2.0f * Gravity);
-        public const float TerminalFallTime = TerminalVelocity / Gravity; // the time that needed to reach TerminalVelocity
-        public const float TerminalSafeFallFallTime = TerminalSafefallVelocity / Gravity; // the time that needed to reach TerminalVelocity with safefall
+        public const float TerminalFallTime = TerminalVelocity / Gravity;
+        public const float TerminalSafeFallFallTime = TerminalSafefallVelocity / Gravity;
 
         public const float SmoothPathStepSize = 4.0f;
         public const float SmoothPathSlop = 0.3f;
@@ -25,7 +23,6 @@ namespace Core
         public const int MaxPointPathLength = 74;
         public const int VertexSize = 3;
         public const int InvalidPolyref = 0;
-
 
         public static float ComputeFallTime(float pathLength, bool isSafeFall)
         {

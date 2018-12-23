@@ -260,7 +260,7 @@ Please, feel free to click on the Next button, and get started.";
 
         if (!AssetDatabase.LoadAssetAtPath(SETTINGS_PATH, typeof(BoltRuntimeSettings)))
         {
-            BoltRuntimeSettings settings = BoltRuntimeSettings.CreateInstance<BoltRuntimeSettings>();
+            BoltRuntimeSettings settings = CreateInstance<BoltRuntimeSettings>();
             settings.masterServerGameId = Guid.NewGuid().ToString().ToUpperInvariant();
 
             AssetDatabase.CreateAsset(settings, SETTINGS_PATH);
@@ -269,7 +269,7 @@ Please, feel free to click on the Next button, and get started.";
 
         if (!AssetDatabase.LoadAssetAtPath(PREFABDB_PATH, typeof(Bolt.PrefabDatabase)))
         {
-            AssetDatabase.CreateAsset(Bolt.PrefabDatabase.CreateInstance<Bolt.PrefabDatabase>(), PREFABDB_PATH);
+            AssetDatabase.CreateAsset(CreateInstance<Bolt.PrefabDatabase>(), PREFABDB_PATH);
             AssetDatabase.ImportAsset(PREFABDB_PATH, ImportAssetOptions.Default);
         }
 
@@ -280,7 +280,9 @@ Please, feel free to click on the Next button, and get started.";
     {
         try
         {
+#pragma warning disable RECS0026 // Possible unassigned object created by 'new'
             new Guid(val);
+#pragma warning restore RECS0026 // Possible unassigned object created by 'new'
         }
         catch
         {

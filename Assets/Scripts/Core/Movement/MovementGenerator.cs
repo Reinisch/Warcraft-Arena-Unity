@@ -10,10 +10,6 @@ namespace Core
         public abstract void Deinitialize(Unit unit);
         public abstract void Reset(Unit unit);
         public abstract bool Update(Unit unit, uint timeDiff);
-
-        public virtual void UnitSpeedChanged() { }
-        // used by Evade code for select point to evade with expected restart default movement
-        public virtual bool GetResetPosition(Unit unit, ref float x, ref float y, ref float z) { return false; }
     }
 
     public abstract class MovementGeneratorMedium<TUnit,TMove> : MovementGenerator where TMove : MovementGeneratorMedium<TUnit, TMove> where TUnit : Unit

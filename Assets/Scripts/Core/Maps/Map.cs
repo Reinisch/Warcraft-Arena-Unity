@@ -17,7 +17,7 @@ namespace Core
         protected float VisibleDistance { get; set; }
         protected int UnloadTimer { get; set; }
 
-        public Map(int id, long expiry , uint instanceId, Map parent = null)
+        public Map(int id, Map parent = null)
         {
             Definition = BalanceManager.MapsById.LookupEntry(id);
         }
@@ -34,7 +34,7 @@ namespace Core
 
             Assert.IsNotNull(Settings, $"Map settings are missing in map: {Definition.MapName} Id: {Definition.Id}");
             Assert.IsTrue(Settings.GridCells.Count % Settings.GridLayout.constraintCount == 0, $"Grid in map: {Definition.MapName} Id: {Definition.Id} should be filled rect!");
-            mapGrid.Initialize(this, GridHelper.MinUnloadDelay, Definition.MapType != MapTypes.Common);
+            mapGrid.Initialize(this, GridHelper.MinUnloadDelay, Definition.MapType != MapType.Common);
         }
 
         public void Deinitialize()

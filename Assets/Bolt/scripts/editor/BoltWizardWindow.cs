@@ -371,6 +371,12 @@ public partial class BoltWizardWindow : EditorWindow
             }
         };
 
+        // App ID
+        if (IsAppId(BoltRuntimeSettings.instance.photonAppId))
+        {
+            AppIdOrEmail = BoltRuntimeSettings.instance.photonAppId;
+        }
+
         ready = true;
     }
 
@@ -524,27 +530,10 @@ public partial class BoltWizardWindow : EditorWindow
 
         }, false, true, 300);
 
-        DrawInputWithLabel("Connection Mode", () =>
+        DrawInputWithLabel("Region", () =>
         {
-            settings.photonUseOnPremise = BoltEditorGUI.ToggleDropdown("Custom Hosted", "Photon Cloud", settings.photonUseOnPremise);
+            settings.photonCloudRegionIndex = EditorGUILayout.Popup(settings.photonCloudRegionIndex, BoltRuntimeSettings.photonCloudRegions);
         }, true, true);
-
-        if (settings.photonUseOnPremise)
-        {
-            DrawInputWithLabel("Master Server IP Address", () =>
-            {
-                GUILayout.BeginVertical();
-                settings.photonOnPremiseIpAddress = EditorGUILayout.TextField(settings.photonOnPremiseIpAddress);
-                GUILayout.EndVertical();
-            }, true, true);
-        }
-        else
-        {
-            DrawInputWithLabel("Region", () =>
-            {
-                settings.photonCloudRegionIndex = EditorGUILayout.Popup(settings.photonCloudRegionIndex, BoltRuntimeSettings.photonCloudRegions);
-            }, true, true);
-        }
 
         DrawInputWithLabel("NAT Punchthrough Enabled", () =>
         {
@@ -636,7 +625,7 @@ public partial class BoltWizardWindow : EditorWindow
                        active: currentStage == BoltSetupStage.SetupSupport); // callback: () => currentStage = BoltSetupStage.SetupSupport
 
         GUILayout.FlexibleSpace();
-        GUILayout.Label(string.Format("Bolt {0} v{1}", BoltNetwork.VersionDescription, BoltNetwork.Version), textLabel);
+        GUILayout.Label(BoltNetwork.CurrentVersion, textLabel);
         GUILayout.Space(5);
     }
 

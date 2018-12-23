@@ -46,17 +46,13 @@
             {
                 // currently moving, update location
                 unit.AddUnitState(UnitState.ConfusedMove);
-
-                if (unit.MoveSpline.Finalized())
-                    NextMoveTime.Reset(RandomHelper.Next(800, 1500));
+                NextMoveTime.Reset(RandomHelper.Next(800, 1500));
             }
             else
             {
                 NextMoveTime.Update(timeDiff);
                 if (NextMoveTime.Passed)
-                {
                     unit.AddUnitState(UnitState.ConfusedMove);
-                }
             }
 
             return true;

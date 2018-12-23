@@ -7,59 +7,53 @@ namespace Core
 {
     public partial class Spell
     {
-        private float variance;
-
         public List<SpellEffectInfo> Effects { get; private set; }
         public SpellInfo SpellInfo { get; private set; }
         public Unit Caster { get; private set; }
         public Unit OriginalCaster { get; set; }
 
         public ulong CastId { get; private set; }
-        public ulong OriginalCasterGuid { get; set; } // real source of cast (aura caster/etc), used for spell targets selection
+        public ulong OriginalCasterGuid { get; set; }
    
         public bool SkipCheck { get; private set; }
         public bool ExecutedCurrently { get; set; }
 
-        public SpellSchoolMask SpellSchoolMask { get; set; }   // Spell school (can be overwrite for some spells (wand shoot for example)
-        public WeaponAttackType AttackType { get; set; }    // For weapon based attack
+        public SpellSchoolMask SpellSchoolMask { get; set; }
+        public WeaponAttackType AttackType { get; set; }
         public SpellState SpellState { get; set; }
         public TriggerCastFlags TriggerCastFlags { get; set; }
-        // This is set in Spell Hit, but used in Apply Aura handler
         public DiminishingLevels DiminishLevel { get; set; }
         public DiminishingGroup DiminishGroup { get; set; }
 
-        // Current targets, to be used in SpellEffects (MUST BE USED ONLY IN SPELL EFFECTS)
         public GameEntity GameEntityTarget { get; set; }
         public Vector3 DestTarget { get; set; }
         public int SpellDamage { get; set; }
         public int SpellHealing { get; set; }
-
-        public float Variance { get { return variance; } set { variance = value; } }
+        public float Variance { get; set; }
 
         public ProcFlags ProcAttacker { get; set; }
         public ProcFlags ProcVictim { get; set; }
 
-        // Damage and healing in effects need just calculate
-        public int EffectDamage { get; set; }       // Damage  in effects count here
-        public int EffectHealing { get; set; }      // Healing in effects count here
-        public Aura SpellAura { get; set; }         // Used in effects handlers
+        public int EffectDamage { get; set; }
+        public int EffectHealing { get; set; }
+        public Aura SpellAura { get; set; }
         public SpellInfo TriggeredByAuraSpell { get; private set; }
 
         public List<Aura> UsedSpellMods { get; set; }
         public uint SpellVisual { get; set; }
         public uint PreCastSpell { get; set; }
-        public bool CanReflect { get; private set; }                            // Can reflect this spell ?
+        public bool CanReflect { get; private set; }
         public bool IsDelayedInstantCast { get; set; }
         public float DelayMoment { get; private set; }
         public long DelayStart { get; set; }
         public byte DelayAtDamageCount { get; set; }
 
         public byte RuneState { get; set; }
-        public float CastTime { get; private set; }                             // Calculated spell cast time initialized only in Spell::prepare
-        public float CastTimer { get; private set; }                            // Initialized only in Spell::prepare
+        public float CastTime { get; private set; }
+        public float CastTimer { get; private set; }
         public float ChanneledDuration { get; set; }
         public bool ImmediateHandled { get; set; }
-        public List<PowerCostData> PowerCost { get; set; }                      // Calculated spell cost initialized only in Spell::prepare
+        public List<PowerCostData> PowerCost { get; set; }
 
         public int ChannelTargetEffectMask { get; set; }
         public List<TargetInfo> UniqueTargetInfo { get; set; }
@@ -97,7 +91,7 @@ namespace Core
             SpellSchoolMask = info.SchoolMask;
 
             OriginalCasterGuid = originalCasterId != 0 ? originalCasterId : caster.NetworkId;
-            OriginalCaster = OriginalCasterGuid == caster.NetworkId ? caster : EntityAccessor.FindUnitOnSameMap(Caster, OriginalCasterGuid);
+            OriginalCaster = OriginalCasterGuid == caster.NetworkId ? caster : caster.WorldManager.UnitManager.Find(OriginalCasterGuid);
 
             if (OriginalCaster != null && !OriginalCaster.IsValid)
                 OriginalCaster = null;
@@ -132,7 +126,7 @@ namespace Core
             ChannelTargetEffectMask = 0;
 
             CanReflect = SpellInfo.DamageClass == SpellDamageClass.Magic && !SpellInfo.HasAttribute(SpellAttributes.CantBeReflected) &&
-                         !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive() && !SpellInfo.IsPositive();
+                !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive() && !SpellInfo.IsPositive();
 
             UniqueTargetInfo = new List<TargetInfo>();
             UniqueGameEntityTargetInfo = new List<GameEntityTargetInfo>();
@@ -249,7 +243,7 @@ namespace Core
                     if (playerCaster != null)
                     {
                         // selection has to be found and to be valid target for the spell
-                        Unit selectedUnit = EntityAccessor.FindUnitOnSameMap(Caster, playerCaster.GetTarget());
+                        Unit selectedUnit = playerCaster.WorldManager.UnitManager.Find(playerCaster.GetTarget());
                         if (selectedUnit != null && SpellInfo.CheckExplicitTarget(Caster, selectedUnit) == SpellCastResult.SpellCastOk)
                             unit = selectedUnit;
                     }
@@ -541,11 +535,11 @@ namespace Core
             throw new NotImplementedException();
         }
 
-        private void SearchAreaTargets(List<WorldEntity> targets, float range, Position position, Unit referer, TargetEntities entityType, TargetChecks selectType, List<Condition> condList) { throw new NotImplementedException(); }
+        private void SearchAreaTargets(List<WorldEntity> targets, float range, Position position, Unit referer, TargetEntities entityType, TargetChecks selectType) { throw new NotImplementedException(); }
 
-        private void SearchChainTargets(List<WorldEntity> targets, int chainTargets, WorldEntity target, TargetEntities entityType, TargetChecks selectType, List<Condition> condList, bool isChainHeal) { throw new NotImplementedException(); }
+        private void SearchChainTargets(List<WorldEntity> targets, int chainTargets, WorldEntity target, TargetEntities entityType, TargetChecks selectType, bool isChainHeal) { throw new NotImplementedException(); }
 
-        private WorldEntity SearchNearbyTarget(float range, TargetEntities entityType, TargetChecks selectionType, List<Condition> condList = null) { throw new NotImplementedException(); }
+        private WorldEntity SearchNearbyTarget(float range, TargetEntities entityType, TargetChecks selectionType) { throw new NotImplementedException(); }
 
         private GameEntity SearchSpellFocus() { throw new NotImplementedException(); }
 
