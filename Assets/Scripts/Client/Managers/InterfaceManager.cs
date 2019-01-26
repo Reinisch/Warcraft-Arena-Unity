@@ -16,13 +16,13 @@ public class InterfaceManager : SingletonGameObject<InterfaceManager>
     public ButtonController ButtonController => buttonController;
     public LobbyScreen LobbyScreen => lobbyScreen;
 
-    public void Initialize(PhotonBoltManager photonManager)
+    public void Initialize(PhotonBoltManager photonManager, PhotonBoltClientListener clientListener)
     {
         defaultActionBars.ForEach(actionBar => loadedBehaviours.Add(actionBar));
         loadedBehaviours.ForEach(behaviour => behaviour.Initialize());
 
         lobbyScreen.Initialize(photonManager);
-        battleScreen.Initialize(photonManager);
+        battleScreen.Initialize(photonManager, clientListener);
     }
 
     public void Deinitialize()
@@ -34,8 +34,19 @@ public class InterfaceManager : SingletonGameObject<InterfaceManager>
         defaultActionBars.ForEach(actionBar => loadedBehaviours.Remove(actionBar));
     }
 
+    public void InitializeWorld(WorldManager worldManager)
+    {
+        battleScreen.InitializeWorld(worldManager);
+    }
+
+    public void DeinitializeWorld()
+    {
+        battleScreen.DeinitializeWorld();
+    }
+
     public void DoUpdate(int deltaTime)
     {
+        battleScreen.DoUpdate(deltaTime);
     }
 
     public void ShowLobbyScreen(bool autoStartClient)

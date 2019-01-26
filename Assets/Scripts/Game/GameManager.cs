@@ -105,7 +105,7 @@ namespace Game
             balanceManager.Initialize();
             physicsManager.Initialize();
             multiplayerManager.Initialize();
-            interfaceManager.Initialize(multiplayerManager);
+            interfaceManager.Initialize(multiplayerManager, multiplayerManager.ClientListener);
 
             multiplayerManager.EventGameMapLoaded += OnGameMapLoaded;
             multiplayerManager.EventDisconnectedFromHost += OnDisconnectedFromHost;
@@ -147,17 +147,19 @@ namespace Game
             HasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
             HasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;
             worldManager = HasServerLogic ? (WorldManager) new WorldServerManager() : new WorldClientManager();
-            interfaceManager.HideLobbyScreen();
-            interfaceManager.ShowBattleScreen();
 
             if (HasClientLogic)
             {
                 renderManager.Initialize(worldManager);
                 soundManager.Initialize(worldManager);
                 inputManager.Initialize(worldManager);
+                interfaceManager.InitializeWorld(worldManager);
             }
 
             multiplayerManager.InitializeWorld(worldManager, HasServerLogic, HasClientLogic);
+
+            interfaceManager.HideLobbyScreen();
+            interfaceManager.ShowBattleScreen();
         }
 
         private void OnDisconnectedFromHost(UdpConnectionDisconnectReason reason)
@@ -166,6 +168,7 @@ namespace Game
 
             if (HasClientLogic)
             {
+                interfaceManager.DeinitializeWorld();
                 renderManager.Deinitialize();
                 soundManager.Deinitialize();
                 inputManager.Deinitialize();

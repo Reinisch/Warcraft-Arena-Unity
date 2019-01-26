@@ -5,60 +5,54 @@ using UnityEngine.UI;
 
 public class UnitFrame : MonoBehaviour
 {
-    [SerializeField, UsedImplicitly] private FillBar health;
-    [SerializeField, UsedImplicitly] private FillBar mainResource;
+    [SerializeField, UsedImplicitly] private AttributeBar health;
+    [SerializeField, UsedImplicitly] private AttributeBar mainResource;
     [SerializeField, UsedImplicitly] private Text unitName;
 
     private Unit unit;
 
     public void Initialize()
     {
-        health = transform.Find("HealthBar").gameObject.GetComponent<FillBar>();
-        unitName = transform.Find("Top Panel").Find("Unit Name").GetComponent<Text>();
         health.Initialize();
-        mainResource = transform.Find("ResourceBar").gameObject.GetComponent<FillBar>();
         mainResource.Initialize();
+
+        gameObject.SetActive(false);
     }
 
-    public void UpdateFrame()
+    public void Deinitialize()
     {
-        health.UpdateBar();
-        mainResource.UpdateBar();
+        health.Deinitialize();
+        mainResource.Deinitialize();
+    }
+
+    public void DoUpdate(int deltaTime)
+    {
+        if (unit != null)
+        {
+            health.Ratio = unit.HealthRatio;
+            mainResource.Ratio = (float) unit.GetPower(PowerType.Mana) / unit.GetMaxPower(PowerType.Mana);
+        }
     }
 
     public void SetUnit(Unit newUnit)
     {
-        unit = newUnit;
         if (unit != null)
-        {
-            gameObject.SetActive(true);
-        }
-        else
-        {
-            gameObject.SetActive(false);
-            health.SetAttribute();
-            mainResource.SetAttribute();
-            unitName.text = "";
-        }
+            DeinitializeUnit();
+
+        if (newUnit != null)
+            InitializeUnit(newUnit);
+
+        gameObject.SetActive(unit != null);
     }
 
-    public void OnTargetSet(Unit target)
+    private void InitializeUnit(Unit unit)
     {
-        gameObject.SetActive(true);
-        unit = target;
+        this.unit = unit;
+        unitName.text = unit.Name;
     }
 
-    public void OnTargetLost(Unit target)
+    private void DeinitializeUnit()
     {
-        gameObject.SetActive(false);
         unit = null;
-        health.SetAttribute();
-        mainResource.SetAttribute();
-        unitName.text = "";
-    }
-
-    public void OnTargetSwitch(Unit target)
-    {
-        unit = target;
     }
 }

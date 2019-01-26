@@ -1,9 +1,19 @@
-﻿using Core;
+﻿using System;
+using Core;
+using JetBrains.Annotations;
+
+using Assert = UnityEngine.Assertions.Assert;
 
 namespace Client
 {
+    [UsedImplicitly]
     public class PhotonBoltClientListener : PhotonBoltBaseListener
     {
+        public Player LocalPlayer { get; private set; }
+
+        public event Action EventPlayerControlGained;
+        public event Action EventPlayerControlLost;
+
         public new void Initialize(WorldManager worldManager)
         {
             base.Initialize(worldManager);
@@ -18,9 +28,28 @@ namespace Client
         {
             base.ControlOfEntityGained(entity);
 
-            var localPlayer = worldManager.UnitManager.Find(entity.networkId.PackedValue) as Player;
-            if (localPlayer != null)
-                FindObjectOfType<WarcraftCamera>().Target = localPlayer.transform;
+            if (entity.StateIs<IPlayerState>())
+            {
+                Assert.IsNull(LocalPlayer, "Gained control of another player while already controlling one!");
+
+                LocalPlayer = (Player)worldManager.UnitManager.Find(entity.networkId.PackedValue);
+                EventPlayerControlGained?.Invoke();
+
+                FindObjectOfType<WarcraftCamera>().Target = LocalPlayer.transform;
+            }
+        }
+
+        public override void ControlOfEntityLost(BoltEntity entity)
+        {
+            base.ControlOfEntityGained(entity);
+
+            if (entity.StateIs<IPlayerState>())
+            {
+                Assert.IsTrue(LocalPlayer.BoltEntity == entity, "Lost control of non-local player!");
+
+                EventPlayerControlLost?.Invoke();
+                LocalPlayer = null;
+            }
         }
     }
 }

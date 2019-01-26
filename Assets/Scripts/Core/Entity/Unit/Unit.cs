@@ -21,6 +21,10 @@ namespace Core
         public override EntityType EntityType => EntityType.Unit;
         public CapsuleCollider UnitCollider => unitCollider;
 
+        public long Health => GetLongValue(EntityFields.Health);
+        public long MaxHealth => GetLongValue(EntityFields.MaxHealth);
+        public float HealthRatio => (float) GetLongValue(EntityFields.Health) / GetLongValue(EntityFields.MaxHealth);
+
         #region Unit data
 
         protected Dictionary<SpellSchools, float> threatModifier;
@@ -149,11 +153,6 @@ namespace Core
         public byte GetLevel() { return (byte)GetUintValue(EntityFields.Level); }
         public byte GetLevelForTarget() { return GetLevel(); }
         public void SetLevel(byte lvl) { }
-        public byte GetRace() { return GetByteValue(EntityFields.Info, (byte)UnitInfoOffsets.Race); }
-        public uint GetRaceMask() { return (uint)1 << (GetRace() - 1); }
-        public byte GetClass() { return GetByteValue(EntityFields.Info, (byte)UnitInfoOffsets.Class); }
-        public uint GetClassMask() { return (uint)1 << (GetClass() - 1); }
-        public byte GetGender() { return GetByteValue(EntityFields.Info, (byte)UnitInfoOffsets.Gender); }
 
         public float GetStat(Stats stat) { return GetUintValue(stat.StatField()); }
         public void SetStat(Stats stat, int val) { SetStatIntValue(stat.StatField(), val); }
@@ -169,21 +168,18 @@ namespace Core
 
         #region Health and powers
 
-        public long GetHealth() { return GetLongValue(EntityFields.Health); }
-        public long GetMaxHealth() { return GetLongValue(EntityFields.MaxHealth); }
-
-        public bool IsFullHealth() { return GetHealth() == GetMaxHealth(); }
-        public bool HealthBelowPct(int pct) { return GetHealth() < CountPctFromMaxHealth(pct); }
-        public bool HealthBelowPctDamaged(int pct, uint damage) { return GetHealth() - damage < CountPctFromMaxHealth(pct); }
-        public bool HealthAbovePct(int pct) { return GetHealth() > CountPctFromMaxHealth(pct); }
-        public bool HealthAbovePctHealed(int pct, uint heal) { return GetHealth() + heal > CountPctFromMaxHealth(pct); }
-        public float GetHealthPct() { return GetMaxHealth() > 0 ? 100.0f * GetHealth() / GetMaxHealth() : 0.0f; }
-        public long CountPctFromMaxHealth(int pct) { return GetMaxHealth().CalculatePercentage(pct); }
-        public long CountPctFromCurHealth(int pct) { return GetHealth().CalculatePercentage(pct); }
+        public bool IsFullHealth() { return Health== MaxHealth; }
+        public bool HealthBelowPct(int pct) { return Health< CountPctFromMaxHealth(pct); }
+        public bool HealthBelowPctDamaged(int pct, uint damage) { return Health- damage < CountPctFromMaxHealth(pct); }
+        public bool HealthAbovePct(int pct) { return Health> CountPctFromMaxHealth(pct); }
+        public bool HealthAbovePctHealed(int pct, uint heal) { return Health+ heal > CountPctFromMaxHealth(pct); }
+        public float GetHealthPct() { return MaxHealth> 0 ? 100.0f * Health/ MaxHealth: 0.0f; }
+        public long CountPctFromMaxHealth(int pct) { return MaxHealth.CalculatePercentage(pct); }
+        public long CountPctFromCurHealth(int pct) { return Health.CalculatePercentage(pct); }
 
         public void SetHealth(long val) { }
         public void SetMaxHealth(long val) { }
-        public void SetFullHealth() { SetHealth(GetMaxHealth()); }
+        public void SetFullHealth() { SetHealth(MaxHealth); }
         public long ModifyHealth(long val) { return 0; }
         public long GetHealthGain(long dVal) { return 0; }
 
@@ -217,12 +213,12 @@ namespace Core
 
         public bool IsHostileTo(Unit unit)
         {
-            return GetUintValue(EntityFields.GameEntityFaction) != unit.GetUintValue(EntityFields.GameEntityFaction);
+            return GetUintValue(EntityFields.FactionTemplate) != unit.GetUintValue(EntityFields.FactionTemplate);
         }
         public bool IsHostileToPlayers() { return false; }
         public bool IsFriendlyTo(Unit unit)
         {
-            return GetUintValue(EntityFields.GameEntityFaction) == unit.GetUintValue(EntityFields.GameEntityFaction);
+            return GetUintValue(EntityFields.FactionTemplate) == unit.GetUintValue(EntityFields.FactionTemplate);
         }
         public bool IsNeutralToAll() { return false; }
         public bool IsInPartyWith(Unit unit) { return false; }
@@ -244,7 +240,7 @@ namespace Core
             if (damage < 1)
                 return 0;
 
-            long health = victim.GetHealth();
+            long health = victim.Health;
             if (health <= damage)
             {
                 Debug.Log("DealDamage: Victim just died");
@@ -263,7 +259,7 @@ namespace Core
         public void Kill(Unit victim, bool durabilityLoss = true)
         {
             // Prevent killing unit twice (and giving reward from kill twice)
-            if (victim.GetHealth() <= 0)
+            if (victim.Health<= 0)
                 return;
 
             Debug.Log("Killed unit!");
@@ -824,12 +820,6 @@ namespace Core
         private DeathState deathState;
         public ulong[] SummonSlots { get; } = new ulong[UnitHelper.MaxSummonSlot];
         public ulong[] ObjectSlots { get; } = new ulong[UnitHelper.MaxGameEntitySlot];
-
-        public ShapeshiftForm GetShapeshiftForm() { return (ShapeshiftForm)GetByteValue(EntityFields.BaseFlags, 3); }
-        public void SetShapeshiftForm(ShapeshiftForm form) { }
-
-        public bool IsInFeralForm() { return false; }
-        public bool IsInDisallowedMountForm() { return false; }
 
         #endregion
 

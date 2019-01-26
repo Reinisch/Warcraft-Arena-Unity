@@ -34,7 +34,7 @@
             CleanDamage = 0;
             PeriodicLog = false;
             HitInfo = HitInfo.NormalSwing;
-            PreHitHealth = target.GetHealth();
+            PreHitHealth = target.Health;
         }
     }
 }

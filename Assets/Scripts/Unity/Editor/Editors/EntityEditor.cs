@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEditorInternal;
 using Core;
+using JetBrains.Annotations;
 
 [CustomEditor(typeof(Entity))]
 public class EntityEditor : Editor
@@ -16,16 +17,17 @@ public class EntityEditor : Editor
     private int entityIndex = -1;
     private ReorderableList entityValuesList;
 
+    [UsedImplicitly]
     private void OnEnable()
     {
-        FieldInfo field = typeof(Entity).GetField("entityFieldList", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+        FieldInfo field = typeof(Entity).GetField("defaultFieldValues", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
         entity = (Entity)target;
         entityFieldList = (List<EntityField>)field.GetValue(entity);
 
         entityValuesList = new ReorderableList(entityFieldList, typeof(EntityField), true, true, true, true);
         entityValuesList.drawHeaderCallback += delegate(Rect rect)
         {
-            GUI.Label(rect, "Entity Fields");
+            GUI.Label(rect, "Default Values");
         };
 
         entityValuesList.drawElementCallback += delegate (Rect rect, int index, bool active, bool focused)
@@ -74,7 +76,7 @@ public class EntityEditor : Editor
                 break;
 
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Populate default fields"))
+            if (GUILayout.Button("Populate all default fields"))
             {
                 entityIndex = -1;
                 entityFieldList.Clear();
@@ -102,37 +104,37 @@ public class EntityEditor : Editor
 
             EditorGUILayout.BeginVertical();
 
-            var entityFieldsProperty = serializedObject.FindProperty("entityFieldList").GetArrayElementAtIndex(entityIndex);
+            var entityFieldsProperty = serializedObject.FindProperty("defaultFieldValues").GetArrayElementAtIndex(entityIndex);
             foreach (var serializedProperty in EditorSerializationHelper.GetVisibleChildren(entityFieldsProperty))
             {
                 EntityField selectedEntity = entityFieldList[entityIndex];
-                if (serializedProperty.name == "Long")
+                if (serializedProperty.name == "FieldValue")
                 {
                     switch (selectedEntity.FieldType)
                     {
                         case FieldTypes.Int:
-                            selectedEntity.Int = EditorGUILayout.IntField("Value", selectedEntity.Int);
+                            selectedEntity.FieldValue = (EntityFieldValue)EditorGUILayout.IntField("Value", selectedEntity.FieldValue.Int);
                             break;
                         case FieldTypes.Uint:
-                            selectedEntity.UInt = (uint)Mathf.Clamp(EditorGUILayout.LongField("Value", selectedEntity.UInt), uint.MinValue, uint.MaxValue);
+                            selectedEntity.FieldValue = (EntityFieldValue)(uint)Mathf.Clamp(EditorGUILayout.LongField("Value", selectedEntity.FieldValue.UInt), uint.MinValue, uint.MaxValue);
                             break;
                         case FieldTypes.Ulong:
-                            selectedEntity.ULong = (ulong)Mathf.Clamp(EditorGUILayout.LongField("Value", selectedEntity.Long), ulong.MinValue, ulong.MaxValue);
+                            selectedEntity.FieldValue = (EntityFieldValue)(ulong)Mathf.Clamp(EditorGUILayout.LongField("Value", selectedEntity.FieldValue.Long), ulong.MinValue, ulong.MaxValue);
                             break;
                         case FieldTypes.Long:
-                            selectedEntity.Long = EditorGUILayout.LongField("Value", selectedEntity.Long);
+                            selectedEntity.FieldValue = (EntityFieldValue)EditorGUILayout.LongField("Value", selectedEntity.FieldValue.Long);
                             break;
                         case FieldTypes.Float:
-                            selectedEntity.Float = EditorGUILayout.FloatField("Value", selectedEntity.Float);
+                            selectedEntity.FieldValue = (EntityFieldValue)EditorGUILayout.FloatField("Value", selectedEntity.FieldValue.Float);
                             break;
                         case FieldTypes.Double:
-                            selectedEntity.Double = EditorGUILayout.DoubleField("Value", selectedEntity.Double);
+                            selectedEntity.FieldValue = (EntityFieldValue)EditorGUILayout.DoubleField("Value", selectedEntity.FieldValue.Double);
                             break;
                         case FieldTypes.Short:
-                            selectedEntity.Short = (short)Mathf.Clamp(EditorGUILayout.LongField("Value", selectedEntity.Short), short.MinValue, short.MaxValue);
+                            selectedEntity.FieldValue = (EntityFieldValue)(short)Mathf.Clamp(EditorGUILayout.LongField("Value", selectedEntity.FieldValue.Short), short.MinValue, short.MaxValue);
                             break;
                         case FieldTypes.UShort:
-                            selectedEntity.UShort = (ushort)Mathf.Clamp(EditorGUILayout.LongField("Value", selectedEntity.UShort), ushort.MinValue, ushort.MaxValue);
+                            selectedEntity.FieldValue = (EntityFieldValue)(ushort)Mathf.Clamp(EditorGUILayout.LongField("Value", selectedEntity.FieldValue.UShort), ushort.MinValue, ushort.MaxValue);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -149,7 +151,7 @@ public class EntityEditor : Editor
             break;
         }
 
-        DrawPropertiesExcluding(serializedObject, "entityFieldList", "m_Script");
+        DrawPropertiesExcluding(serializedObject, "defaultFieldValues", "m_Script");
 
         serializedObject.ApplyModifiedProperties();
     }

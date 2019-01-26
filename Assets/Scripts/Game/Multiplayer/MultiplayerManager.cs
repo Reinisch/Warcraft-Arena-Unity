@@ -30,6 +30,8 @@ namespace Game
         private GameManager.NetworkingMode networkingMode;
         private State state;
 
+        public PhotonBoltClientListener ClientListener => boltClientListener;
+
         public event Action<string, GameManager.NetworkingMode> EventGameMapLoaded;
         public event Action<UdpConnectionDisconnectReason> EventDisconnectedFromHost;
 

@@ -73,7 +73,7 @@ namespace Core
             if (Caster == target)
                 Finish();
 
-            Caster.DealDamage(target, target.GetHealth(), null, DamageEffectType.NoDamage, SpellSchoolMask.Normal, null, false);
+            Caster.DealDamage(target, target.Health, null, DamageEffectType.NoDamage, SpellSchoolMask.Normal, null, false);
         }
 
         public void EffectDummy(int effIndex) { throw new NotImplementedException(); }

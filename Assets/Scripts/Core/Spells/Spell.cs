@@ -60,7 +60,6 @@ namespace Core
         public List<GameEntityTargetInfo> UniqueGameEntityTargetInfo { get; set; }
         public SpellCastTargets Targets { get; set; }
 
-        public PathGenerator PregeneratedPath { get; private set; }
         public SpellCustomErrors CustomError { get; private set; }
 
         public bool IsNextMeleeSwingSpell => throw new NotImplementedException();
@@ -80,7 +79,6 @@ namespace Core
         {
             SpellInfo = info;
             Caster = caster;
-            PregeneratedPath = new PathGenerator();
             Effects = info.Effects;
 
             CustomError = SpellCustomErrors.None;
@@ -343,7 +341,7 @@ namespace Core
                 if ((effectMask & processedEffectMask) > 0)
                     return;
 
-                // avoid recalculating similiar effects
+                // avoid recalculating similar effects
                 foreach (var otherEffect in Effects)
                     if (effect.MainTargeting == otherEffect.MainTargeting && effect.SecondaryTargeting == otherEffect.SecondaryTargeting)
                         if (Mathf.Approximately(effect.CalcRadius(Caster, this), otherEffect.CalcRadius(Caster, this)))

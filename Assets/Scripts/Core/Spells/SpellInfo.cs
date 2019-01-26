@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Core
 {
-    [Serializable, UsedImplicitly]
-    public class SpellInfo
+    [UsedImplicitly, CreateAssetMenu(fileName = "Spell Info", menuName = "Game Data/Spells/Spell Info", order = 1)]
+    public class SpellInfo : ScriptableObject
     {
         [SerializeField, UsedImplicitly] private int id;
         [SerializeField, UsedImplicitly] private string spellName;
@@ -501,7 +501,7 @@ namespace Core
                     {
                         // health as power used
                         case PowerType.Health:
-                            powerCost += (int)caster.GetMaxHealth().CalculatePercentage(power.PowerCostPercentage);
+                            powerCost += (int)caster.MaxHealth.CalculatePercentage(power.PowerCostPercentage);
                             break;
                         case PowerType.Mana:
                             powerCost += (int)caster.GetCreateMana().CalculatePercentage(power.PowerCostPercentage);
@@ -575,24 +575,12 @@ namespace Core
                         ppm *= 1.0f + CalcPPMCritMod(mod, caster);
                         break;
                     }
-                    case SpellProcsPerMinuteModType.Class:
-                    {
-                        if ((caster.GetClassMask() & mod.Parameter) != 0)
-                            ppm *= 1.0f + mod.Value;
-                        break;
-                    }
                     case SpellProcsPerMinuteModType.Spec:
                     {
                         Player playerCaster = caster as Player;
                         if(playerCaster != null)
                             if (playerCaster.GetUintValue(EntityFields.CurrentSpecId) == mod.Parameter)
                                 ppm *= 1.0f + mod.Value;
-                        break;
-                    }
-                    case SpellProcsPerMinuteModType.Race:
-                    {
-                        if ((caster.GetRaceMask() & mod.Parameter) != 0)
-                            ppm *= 1.0f + mod.Value;
                         break;
                     }
                     case SpellProcsPerMinuteModType.Battleground:
