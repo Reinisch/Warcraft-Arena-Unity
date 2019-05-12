@@ -100,20 +100,5 @@ namespace Core
         {
             return UnitId.GetHashCode();
         }
-
-        // Tell our refTo (target) object that we have a link
-        protected override void TargetObjectBuildLink()
-        {
-        }
-
-        // Tell our refTo (taget) object, that the link is cut
-        protected override void TargetObjectDestroyLink()
-        {
-        }
-
-        // Tell our refFrom (source) object, that the link is cut (Target destroyed)
-        protected override void SourceObjectDestroyLink()
-        {
-        }
     }
 }

@@ -28,7 +28,6 @@
         public const int QuestRewardCurrencyCount = 4;
         public const int QuestRewardDisplaySpellCount = 3;
 
-        public const int MaxCUFProfiles = 5;
         public const int MaxRunes = 5;
         public const int MaxRechargingRunes = 5;
         public const int MaxDrunken = 4;

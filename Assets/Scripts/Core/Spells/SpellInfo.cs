@@ -583,12 +583,6 @@ namespace Core
                                 ppm *= 1.0f + mod.Value;
                         break;
                     }
-                    case SpellProcsPerMinuteModType.Battleground:
-                    {
-                        if (caster.Map.IsBattlegroundOrArena())
-                            ppm *= 1.0f + mod.Value;
-                        break;
-                    }
                 }
             }
 

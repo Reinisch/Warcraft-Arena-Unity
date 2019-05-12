@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Core
 {
     public class MapSettings : MonoBehaviour
     {
         [Serializable]
-        public class ArenaSpawnInfo
+        private class ArenaSpawnInfo
         {
             [SerializeField, UsedImplicitly] private Team team;
             [SerializeField, UsedImplicitly] private List<Transform> spawnPoints;
@@ -18,24 +17,27 @@ namespace Core
             public List<Transform> SpawnPoints => spawnPoints;
         }
 
+        [SerializeField, UsedImplicitly, Range(2.0f, 50.0f)] private float gridCellSize;
+        [SerializeField, UsedImplicitly] private Transform defaultSpawnPoint;
         [SerializeField, UsedImplicitly] private BoxCollider boundingBox;
-        [SerializeField, UsedImplicitly] private GridLayoutGroup gridLayout;
-        [SerializeField, UsedImplicitly] private List<GridCell> gridCells;
         [SerializeField, UsedImplicitly] private List<ArenaSpawnInfo> spawnInfos;
+        [SerializeField, UsedImplicitly] private List<ScenarioAction> scenarioActions;
 
-        public GridLayoutGroup GridLayout => gridLayout;
-        public List<GridCell> GridCells => gridCells;
+        internal float GridCellSize => gridCellSize;
+        internal BoxCollider BoundingBox => boundingBox;
+        internal Transform DefaultSpawnPoint => defaultSpawnPoint;
+        internal IReadOnlyList<ScenarioAction> ScenarioActions => scenarioActions;
 
-        public List<Transform> FindSpawnPoints(Team team)
+        public IReadOnlyList<Transform> FindSpawnPoints(Team team)
         {
             return spawnInfos.Find(spawnInfo => spawnInfo.Team == team).SpawnPoints;
         }
 
 #if UNITY_EDITOR
-        [ContextMenu("Collect grid cells")]
-        private void CollectCells()
+        [UsedImplicitly, ContextMenu("Collect scenario actions")]
+        private void CollectScenario()
         {
-            gridCells = new List<GridCell>(gridLayout.GetComponentsInChildren<GridCell>());
+            scenarioActions = new List<ScenarioAction>(GetComponentsInChildren<ScenarioAction>());
         }
 #endif
     }

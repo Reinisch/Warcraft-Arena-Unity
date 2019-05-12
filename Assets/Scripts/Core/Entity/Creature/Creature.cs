@@ -1,29 +1,14 @@
 ﻿namespace Core
 {
-    public class Creature : Unit, IGridEntity<Creature>
+    public class Creature : Unit
     {
         public override EntityType EntityType => EntityType.Creature;
         public override bool AutoScoped => true;
 
-        public GridReference<Creature> GridRef { get; private set; }
         public CreatureAI AI => ai as CreatureAI;
+        public GridReference<Creature> GridRef { get; } = new GridReference<Creature>();
 
-        public bool IsInGrid()
-        {
-            return false;
-        }
-
-        public void AddToGrid(GridReferenceManager<Creature> refManager)
-        {
-
-        }
-
-        public void RemoveFromGrid()
-        {
-
-        }
-
-        public override void DoUpdate(int timeDelta)
+        internal override void DoUpdate(int timeDelta)
         {
         }
 

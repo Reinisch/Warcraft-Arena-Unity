@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Core
 {
     public class UnitManager : EntityManager<Unit>
     {
         protected readonly List<Player> players = new List<Player>();
+        protected readonly Dictionary<Collider, Unit> unitsByColliders = new Dictionary<Collider, Unit>();
 
         public UnitManager(WorldManager worldManager) : base(worldManager)
         {
@@ -21,6 +23,8 @@ namespace Core
         {
             base.EntityAttached(entity);
 
+            unitsByColliders[entity.UnitCollider] = entity;
+
             if (entity.EntityType == EntityType.Player)
                 players.Add((Player)entity);
         }
@@ -28,6 +32,8 @@ namespace Core
         protected override void EntityDetached(Unit entity)
         {
             base.EntityDetached(entity);
+
+            unitsByColliders.Remove(entity.UnitCollider);
 
             if (entity.EntityType == EntityType.Player)
                 players.Remove((Player)entity);
@@ -45,6 +51,11 @@ namespace Core
         {
             foreach (var entity in entities)
                 entity.Accept(visitor);
+        }
+
+        public Unit Find(Collider unitCollider)
+        {
+            return unitsByColliders.LookupEntry(unitCollider);
         }
     }
 }

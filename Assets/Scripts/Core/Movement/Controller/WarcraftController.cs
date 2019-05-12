@@ -59,7 +59,7 @@ namespace Client
             unitRigidbody.isKinematic = true;
             unitRigidbody.useGravity = false;
 
-            DetachClientSideMovementState(true);
+            DetachClientSideMoveState(true);
         }
 
         public override void SimulateOwner()
@@ -119,7 +119,7 @@ namespace Client
 
             UpdateOwnership();
 
-            DetachClientSideMovementState(true);
+            DetachClientSideMoveState(true);
         }
 
         public override void ExecuteCommand(Command command, bool resetState)
@@ -164,7 +164,7 @@ namespace Client
             ClientMoveState = moveEntity;
         }
 
-        public void DetachClientSideMovementState(bool destroyObject)
+        public void DetachClientSideMoveState(bool destroyObject)
         {
             BoltEntity moveStateEntity = ClientMoveState;
             if (moveStateEntity != null && destroyObject)
@@ -251,10 +251,9 @@ namespace Client
 
         private void ProcessGroundState()
         {
-            RaycastHit hitInfo;
             wasFlying = Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying);
 
-            if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Ascending) && IsTouchingGround(out hitInfo))
+            if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Ascending) && IsTouchingGround(out RaycastHit hitInfo))
             {
                 var distanceToGround = hitInfo.distance;
 

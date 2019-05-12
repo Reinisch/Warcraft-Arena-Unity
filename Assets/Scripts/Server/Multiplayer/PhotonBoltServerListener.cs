@@ -107,7 +107,7 @@ namespace Server
                 if (player == null)
                     Destroy(entity.gameObject);
                 else
-                    player.Controller.DetachClientSideMovementState(false);
+                    player.Controller.DetachClientSideMoveState(false);
             }
 
             if (playerInfosByPlayerId.ContainsKey(entity.networkId.PackedValue))

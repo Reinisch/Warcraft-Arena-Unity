@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Core
 {
-    public class Player : Unit, IGridEntity<Player>
+    public class Player : Unit
     {
         [SerializeField, UsedImplicitly, Header("Player"), Space(10)] private WarcraftController controller;
 
@@ -34,18 +34,9 @@ namespace Core
         public override EntityType EntityType => EntityType.Player;
         public override bool AutoScoped => true;
 
+        public GridReference<Player> GridRef { get; } = new GridReference<Player>();
         public WarcraftController Controller => controller;
         public override DeathState DeathState { get => base.DeathState; set => throw new NotImplementedException(); }
-        public GridReference<Player> GridRef { get; private set; }
-
-        public bool IsInGrid() { throw new NotImplementedException(); }
-        public void AddToGrid(GridReferenceManager<Player> refManager) { throw new NotImplementedException(); }
-        public void RemoveFromGrid() { throw new NotImplementedException(); }
-
-        public override void DoUpdate(int timeDelta)
-        {
-
-        }
 
         public override bool IsImmunedToSpellEffect(SpellInfo spellInfo, int index)
         {

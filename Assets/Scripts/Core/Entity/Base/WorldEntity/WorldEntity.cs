@@ -24,16 +24,17 @@ namespace Core
             }
         }
 
-        private Map currMap;
-        protected IWorldEntityState worldEntityState;
+        private IWorldEntityState worldEntityState;
 
         public MovementInfo MovementInfo { get; } = new MovementInfo();
         public Vector3 Position { get => transform.position; set => transform.position = value; }
         public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
 
-        public bool IsVisible { get; } = true;
         public string Name => name;
-        public Map Map => currMap;
+        public bool IsVisible { get; } = true;
+
+        public Map Map { get; private set; }
+        public GridCell CurrentCell { get; internal set; }
 
         public override void Attached()
         {
@@ -42,8 +43,7 @@ namespace Core
             worldEntityState = entity.GetState<IWorldEntityState>();
             worldEntityState.SetTransforms(worldEntityState.Transform, transform);
 
-            var createInfo = entity.attachToken as CreateInfo;
-            if (createInfo != null)
+            if (entity.attachToken is CreateInfo createInfo)
             {
                 Position = createInfo.Position;
                 Rotation = createInfo.Rotation;
@@ -57,28 +57,30 @@ namespace Core
             base.Detached();
         }
 
-        public virtual void DoUpdate(int timeDelta)
+        internal virtual void DoUpdate(int timeDelta)
         {
 
         }
 
-        public virtual void SetMap(Map map)
+        internal void SetMap(Map map)
         {
             Assert.IsNotNull(map);
             Assert.IsTrue(IsValid);
 
-            if (currMap == map)
+            if (Map == map)
                 return;
 
-            currMap = map;
-            currMap.AddWorldObject(this);
+            Map = map;
+            Map.AddWorldEntity(this);
         }
 
-        public virtual void ResetMap()
+        internal void ResetMap()
         {
-            currMap = null;
+            Map.RemoveWorldEntity(this);
+
+            Map = null;
         }
-       
+
         public bool CanSeeOrDetect(WorldEntity target, bool ignoreStealth = false, bool distanceCheck = false, bool checkAlert = false)
         {
             return false;

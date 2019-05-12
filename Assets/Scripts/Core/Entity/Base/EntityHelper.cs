@@ -7,7 +7,6 @@
         public const float AttackDistance = 5.0f;
         public const float InspectDistance = 28.0f;
         public const float TradeDistance = 11.11f;
-        public const float MaxVisibilityDistance = GridHelper.SizeOfGrids;          // max distance for visible objects
         public const float SightRangeUnit = 50.0f;
         public const float DefaultVisibilityDistance = 90.0f;                       // default visible distance, 90 yards on continents
         public const float DefaultVisibilityInstance = 170.0f;                      // default visible distance in instances, 170 yards

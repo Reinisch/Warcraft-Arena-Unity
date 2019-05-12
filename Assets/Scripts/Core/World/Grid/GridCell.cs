@@ -1,92 +1,87 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Core
 {
-    public class GridCell : MonoBehaviour
+    public class GridCell
     {
         private readonly GridReferenceManager<Player> worldPlayers = new GridReferenceManager<Player>();
-        private readonly GridReferenceManager<Creature> worldPlayerPets = new GridReferenceManager<Creature>();
+        private readonly GridReferenceManager<Creature> worldCreatures = new GridReferenceManager<Creature>();
 
-        private readonly GridReferenceManager<GameEntity> gridGameEntities = new GridReferenceManager<GameEntity>();
-        private readonly GridReferenceManager<DynamicEntity> gridDynamics = new GridReferenceManager<DynamicEntity>();
-        private readonly GridReferenceManager<AreaTrigger> gridAreaTriggers = new GridReferenceManager<AreaTrigger>();
+        private Map map;
+        private int xIndex;
+        private int zIndex;
+        private Bounds bounds;
 
-        public int WorldPlayerCount => worldPlayers.Count;
-        public int WorldPetCount => worldPlayerPets.Count;
+        public Bounds Bounds => bounds;
 
-        public void Initialize(Map map)
+        internal void Initialize(Map map, int xIndex, int zIndex, Bounds bounds)
         {
+            this.map = map;
+            this.xIndex = xIndex;
+            this.zIndex = zIndex;
+            this.bounds = bounds;
         }
 
-        public void Deinitialize()
+        internal void Deinitialize()
         {
-            worldPlayers.Invalidate();
-            worldPlayerPets.Invalidate();
+            worldPlayers.Clear();
+            worldCreatures.Clear();
 
-            gridGameEntities.Invalidate();
-            gridDynamics.Invalidate();
-            gridAreaTriggers.Invalidate();
+            map = null;
         }
 
-
-        public void AddWorldEntity(Player player)
+        internal void AddWorldEntity(WorldEntity worldEntity)
         {
-            player.AddToGrid(worldPlayers);
-            Assert.IsTrue(player.IsInGrid());
+            worldEntity.CurrentCell = this;
+            Debug.Log($"Entity {worldEntity.NetworkId} moved to {this}");
+
+            switch (worldEntity)
+            {
+                case Creature creature:
+                    creature.GridRef.Link(creature, worldCreatures);
+                    break;
+                case Player player:
+                    player.GridRef.Link(player, worldPlayers);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(worldEntity));
+            }
         }
 
-        public void AddWorldEntity(Pet creature)
+        internal void RemoveWorldEntity(WorldEntity worldEntity)
         {
-            creature.AddToGrid(worldPlayerPets);
-            Assert.IsTrue(creature.IsInGrid());
-        }
-
-        public void AddWorldEntity<TNotWorldEntity>(TNotWorldEntity entity) where TNotWorldEntity : Entity { }
-
-
-        public void AddGridEntity(GameEntity gameEntity)
-        {
-            gameEntity.AddToGrid(gridGameEntities);
-            Assert.IsTrue(gameEntity.IsInGrid());
-        }
-
-        public void AddGridEntity(DynamicEntity dynamicEntity)
-        {
-            dynamicEntity.AddToGrid(gridDynamics);
-            Assert.IsTrue(dynamicEntity.IsInGrid());
-        }
-
-        public void AddGridEntity(AreaTrigger areaTrigger)
-        {
-            areaTrigger.AddToGrid(gridAreaTriggers);
-            Assert.IsTrue(areaTrigger.IsInGrid());
-        }
-
-        public void AddGridEntity<TNotGridEntity>(TNotGridEntity entity) where TNotGridEntity : Entity { }
-
-
-        public void Visit(IGridGridVisitor gridVisitor)
-        {
-            gridVisitor.Visit(gridGameEntities);
-            gridVisitor.Visit(gridDynamics);
-            gridVisitor.Visit(gridAreaTriggers);
-        }
-
-        public void Visit(IWorldGridVisitor gridVisitor)
-        {
-            gridVisitor.Visit(worldPlayers);
-            gridVisitor.Visit(worldPlayerPets);
+            switch (worldEntity)
+            {
+                case Creature creature:
+                    Assert.IsTrue(worldCreatures.Contains(creature.GridRef));
+                    creature.GridRef.Invalidate();
+                    break;
+                case Player player:
+                    Assert.IsTrue(worldPlayers.Contains(player.GridRef));
+                    player.GridRef.Invalidate();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(worldEntity));
+            }
         }
 
         public void Visit<TEntityVisitor>(TEntityVisitor visitor) where TEntityVisitor : IEntityGridVisitor
         {
             visitor.Visit(worldPlayers);
-            visitor.Visit(worldPlayerPets);
+            visitor.Visit(worldCreatures);
+        }
 
-            visitor.Visit(gridGameEntities);
-            visitor.Visit(gridDynamics);
-            visitor.Visit(gridAreaTriggers);
+        public void Visit(IWorldEntityGridVisitor visitor)
+        {
+            visitor.Visit(worldPlayers);
+            visitor.Visit(worldCreatures);
+        }
+
+        public override string ToString()
+        {
+            return $"X:{xIndex} Z:{zIndex} Bounds:{bounds}";
         }
     }
 }

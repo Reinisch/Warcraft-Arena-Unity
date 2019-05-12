@@ -26,8 +26,7 @@ namespace Client
 
         private void OnEventEntityAttached(WorldEntity worldEntity)
         {
-            var player = worldEntity as Player;
-            if (player != null && player.IsOwner)
+            if (worldEntity is Player player && player.IsOwner)
                 OriginalPlayer = player;
         }
 

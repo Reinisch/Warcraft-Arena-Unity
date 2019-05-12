@@ -40,7 +40,7 @@ namespace Core
             random = new Random(seed);
         }
 
-        public static T GetRandomElement<T>(List<T> elements)
+        public static T GetRandomElement<T>(IReadOnlyList<T> elements)
         {
             return elements.Count == 0 ? default : elements[Next(elements.Count)];
         }

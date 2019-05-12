@@ -3,11 +3,8 @@ using UnityEngine.Assertions;
 
 namespace Core
 {
-    public abstract class Reference<TRefTo, TRefFrom> where TRefTo : class where TRefFrom : class
+    public abstract class Reference<TRefTo, TRefFrom> where TRefTo : class where TRefFrom : ReferenceManager<TRefTo, TRefFrom>
     {
-        /// <summary>
-        ///  Should be set only in TargetObjectBuildLink.
-        /// </summary>
         protected LinkedListNode<Reference<TRefTo, TRefFrom>> Node { get; set; }
 
         public Reference<TRefTo, TRefFrom> Next { get { return Node != null && Node.Next != null ? Node.Next.Value : null; } }
@@ -16,24 +13,10 @@ namespace Core
         public TRefTo Target { get; private set; }
         public TRefFrom Source { get; private set; }
 
-        /// <summary>
-        ///  Check if target still exists.
-        /// </summary>
         public bool IsValid { get { return Target != null; } }
         public bool HasNext { get { return Next != null; } }
         public bool HasPrev { get { return Prev != null; } }
         public bool IsInList { get { return Node != null; } }
-
-
-        public virtual void Initialize()
-        {
-        
-        }
-
-        public virtual void Deinitialize()
-        {
-        
-        }
 
         /// <summary>
         /// Create new link to target for source collection.
@@ -52,6 +35,7 @@ namespace Core
                 TargetObjectBuildLink();
             }
         }
+
         /// <summary>
         /// We don't need the reference anymore.
         /// Call comes from the source object.
@@ -61,9 +45,11 @@ namespace Core
         {
             TargetObjectDestroyLink();
             Delink();
+
             Target = null;
             Source = null;
         }
+
         /// <summary>
         /// Link is invalid due to destruction of referenced target object.
         /// Call comes from the target object.
@@ -73,9 +59,10 @@ namespace Core
         {
             SourceObjectDestroyLink();
             Delink();
+
             Target = null;
-            // source MUST remain !!!
         }
+
         /// <summary>
         /// Remove from linked list.
         /// </summary>
@@ -88,12 +75,17 @@ namespace Core
             }
         }
 
+        protected void TargetObjectBuildLink()
+        {
+            Node = Source.Add(this);
+        }
 
-        // Tell our target object that we have a link
-        protected abstract void TargetObjectBuildLink();
-        // Tell our target object, that the link is cut
-        protected abstract void TargetObjectDestroyLink();
-        // Tell our source object, that the link is cut (target destroyed)
-        protected abstract void SourceObjectDestroyLink();
+        protected void TargetObjectDestroyLink()
+        {
+        }
+
+        protected void SourceObjectDestroyLink()
+        {
+        }
     }
 }

@@ -11,19 +11,20 @@ namespace Core
         private readonly WorldGrid mapGrid = new WorldGrid();
         private readonly List<WorldEntity> worldEntities = new List<WorldEntity>();
 
-        public MapDefinition Definition { get; private set; }
+        private WorldManager WorldManager { get; set; }
+        private MapDefinition Definition { get; }
+
         public MapSettings Settings { get; private set; }
 
-        protected float VisibleDistance { get; set; }
-        protected int UnloadTimer { get; set; }
-
-        public Map(int id, Map parent = null)
+        internal Map(int id, Map parent = null)
         {
             Definition = BalanceManager.MapsById.LookupEntry(id);
         }
 
-        public void Initialize(Scene mapScene)
+        internal void Initialize(WorldManager worldManager, Scene mapScene)
         {
+            WorldManager = worldManager;
+
             foreach (var rootObject in mapScene.GetRootGameObjects())
             {
                 Settings = rootObject.GetComponentInChildren<MapSettings>();
@@ -33,25 +34,54 @@ namespace Core
             }
 
             Assert.IsNotNull(Settings, $"Map settings are missing in map: {Definition.MapName} Id: {Definition.Id}");
-            Assert.IsTrue(Settings.GridCells.Count % Settings.GridLayout.constraintCount == 0, $"Grid in map: {Definition.MapName} Id: {Definition.Id} should be filled rect!");
-            mapGrid.Initialize(this, GridHelper.MinUnloadDelay, Definition.MapType != MapType.Common);
+            mapGrid.Initialize(this);
+
+            foreach (var scenarioAction in Settings.ScenarioActions)
+                scenarioAction.Initialize(this);
         }
 
-        public void Deinitialize()
+        internal void Deinitialize()
         {
+            foreach (var scenarioAction in Settings.ScenarioActions)
+                scenarioAction.DeInitialize();
+
             mapGrid.Deinitialize();
+
             Settings = null;
+            WorldManager = null;
         }
 
-        public virtual void DoUpdate(int deltaTime) { }
-        public virtual void DelayedUpdate(int deltaTime) { }
+        internal void DoUpdate(int deltaTime)
+        {
+            mapGrid.DoUpdate(deltaTime);
+
+            foreach (var scenarioAction in Settings.ScenarioActions)
+                scenarioAction.DoUpdate(deltaTime);
+        }
+
+        internal void DelayedUpdate(int deltaTime)
+        {
+
+        }
+
+        internal void AddWorldEntity(WorldEntity entity)
+        {
+            worldEntities.Add(entity);
+            mapGrid.AddEntity(entity);
+        }
+
+        internal void RemoveWorldEntity(WorldEntity entity)
+        {
+            worldEntities.Remove(entity);
+            mapGrid.RemoveEntity(entity);
+        }
 
         public void SearchAreaTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, TargetChecks checkType)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(center, radius, 1 << LayerMask.NameToLayer("Characters"));
-            for (int i = 0; i < hitColliders.Length; i++)
+            Collider[] hitColliders = Physics.OverlapSphere(center, radius, PhysicsManager.Mask.Characters);
+            foreach (var hitCollider in hitColliders)
             {
-                var targetUnit = hitColliders[i].gameObject.GetComponent<Unit>();
+                var targetUnit = WorldManager.UnitManager.Find(hitCollider);
                 if (targetUnit == null || targetUnit.Map != this)
                     continue;
 
@@ -70,27 +100,6 @@ namespace Core
                 targets.Add(targetUnit);
             }
         }
-
-        public void Visit(GridCell cell, IEntityGridVisitor gridVisitor) { throw new NotImplementedException(); }
-        public bool UnloadGrid(WorldGrid worldGrid, bool pForce) { throw new NotImplementedException(); }
-        public virtual void UnloadAll() {  }
-
-        public bool IsBattlegroundOrArena() { throw new NotImplementedException(); }
-  
-
-        public void AddWorldObject(WorldEntity obj)
-        {
-            worldEntities.Add(obj);
-        }
-
-        public void RemoveWorldObject(WorldEntity obj)
-        {
-            worldEntities.Remove(obj);
-        }
-
-        public void VisitAll(float x, float y, float radius, ref IEntityGridVisitor notifier) { throw new NotImplementedException(); }
-        public void VisitWorld(float x, float y, float radius, ref IWorldGridVisitor notifier) { throw new NotImplementedException(); }
-        public void VisitGrid(float x, float y, float radius, ref IGridGridVisitor notifier) { throw new NotImplementedException(); }
 
         public TEntity FindMapEntity<TEntity>(ulong networkId) where TEntity : Entity
         {

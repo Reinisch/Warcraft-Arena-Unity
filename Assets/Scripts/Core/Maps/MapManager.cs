@@ -14,7 +14,7 @@ namespace Core
 
         private WorldManager worldManager;
 
-        public MapManager(WorldManager worldManager)
+        internal MapManager(WorldManager worldManager)
         {
             this.worldManager = worldManager;
 
@@ -22,7 +22,7 @@ namespace Core
                 mapUpdater.Activate(8);
         }
 
-        public void Dispose()
+        internal void Dispose()
         {
             foreach (var mapEntry in baseMaps)
                 mapEntry.Value.Deinitialize();
@@ -34,7 +34,7 @@ namespace Core
             worldManager = null;
         }
 
-        public void DoUpdate(int timeDiff)
+        internal void DoUpdate(int timeDiff)
         {
             foreach (var map in baseMaps)
             {
@@ -51,7 +51,7 @@ namespace Core
                 mapEntry.Value.DelayedUpdate(timeDiff);
         }
 
-        public void InitializeLoadedMap(int mapId)
+        internal void InitializeLoadedMap(int mapId)
         {
             Map map = baseMaps.LookupEntry(mapId);
 
@@ -61,7 +61,7 @@ namespace Core
 
                 map = new Map(mapId);
                 baseMaps[mapId] = map;
-                map.Initialize(SceneManager.GetActiveScene());
+                map.Initialize(worldManager, SceneManager.GetActiveScene());
 
                 mapsLock.ReleaseMutex();
             }
@@ -69,12 +69,7 @@ namespace Core
             Assert.IsNotNull(map);
         }
 
-        public Map FindMap(int mapId)
-        {
-            return baseMaps.LookupEntry(mapId);
-        }
-
-        public void DoForAllMaps(Action<Map> mapAction)
+        internal void DoForAllMaps(Action<Map> mapAction)
         {
             mapsLock.WaitOne();
 
@@ -84,7 +79,7 @@ namespace Core
             mapsLock.ReleaseMutex();
         }
 
-        public void DoForAllMapsWithMapId(int mapId, Action<Map> mapAction)
+        internal void DoForAllMapsWithMapId(int mapId, Action<Map> mapAction)
         {
             mapsLock.WaitOne();
 
@@ -95,6 +90,11 @@ namespace Core
             }
 
             mapsLock.ReleaseMutex();
+        }
+
+        public Map FindMap(int mapId)
+        {
+            return baseMaps.LookupEntry(mapId);
         }
     }
 }

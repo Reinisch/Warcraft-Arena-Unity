@@ -1,84 +1,180 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Core
 {
     public class WorldGrid
     {
-        private GridCell[,] cells;
-
-        public GridInfo Info { get; private set; }
-        public int CellCountX { get; private set; }
-        public int CellCountZ { get; private set; }
-
-        public bool UnloadLock => Info.UnloadLock;
-        public bool UnloadExplicitLock { get => Info.UnloadExplicitLock; set => Info.UnloadExplicitLock = value; }
-        public bool UnloadReferenceLock { get => Info.UnloadReferenceLock; set => Info.UnloadReferenceLock = value; }
-        public int WorldPlayerCount { get { return cells.EntityCount(CellCountX, CellCountZ, cell => cell.WorldPlayerCount); } }
-        public int WorldPetCount { get { return cells.EntityCount(CellCountX, CellCountZ, cell => cell.WorldPetCount); } }
-        public TimeTracker TimeTracker => Info.Timer;
-
-        public void Initialize(Map map, long expiry, bool unload = true)
+        private class GridCellRelocator : IWorldEntityGridVisitor
         {
-            Info = new GridInfo(expiry, unload);
+            private readonly WorldGrid worldGrid;
 
-            CellCountX = map.Settings.GridLayout.constraintCount;
-            CellCountZ = map.Settings.GridCells.Count / CellCountX;
+            public GridCellRelocator(WorldGrid worldGrid)
+            {
+                this.worldGrid = worldGrid;
+            }
+            
+            private bool IsOutOfCellBounds(Vector3 position, GridCell cell)
+            {
+                if (position.x + GridHelper.GridCellSwitchDifference < cell.Bounds.min.x)
+                {
+                    return true;
+                }
 
-            cells = new GridCell[CellCountX, CellCountZ];
-            for (int i = 0; i < map.Settings.GridCells.Count; i++)
-                cells[i % CellCountX, i / CellCountX] = map.Settings.GridCells[i];
+                if (position.x > cell.Bounds.max.x + GridHelper.GridCellSwitchDifference)
+                {
+                    return true;
+                }
 
-            for (int i = 0; i < CellCountX; i++)
-                for(int j = 0; j < CellCountZ; j++)
-                    cells[i, j].Initialize(map);
+                if (position.z + GridHelper.GridCellSwitchDifference < cell.Bounds.min.z)
+                {
+                    return true;
+                }
+
+                if (position.z > cell.Bounds.max.z + GridHelper.GridCellSwitchDifference)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            public void Visit<TEntity>(GridReferenceManager<TEntity> container) where TEntity : WorldEntity
+            {
+                GridReference<TEntity> reference = container.FirstReference;
+                while (reference != null)
+                {
+                    if (reference.Target.Position.y > GridHelper.MaxHeight || reference.Target.Position.y < GridHelper.MinHeight)
+                    {
+                        reference.Target.Position = worldGrid.map.Settings.DefaultSpawnPoint.position;
+                    }
+
+                    if (IsOutOfCellBounds(reference.Target.Position, reference.Target.CurrentCell))
+                    {
+                        worldGrid.relocatableEntities.Add(reference.Target);
+                    }
+
+                    reference = reference.Next;
+                }
+            }
         }
 
-        public void Deinitialize()
+        private readonly List<WorldEntity> relocatableEntities = new List<WorldEntity>();
+        private GridCellRelocator gridCellRelocator;
+        private GridCell[,] cells;
+        private GridCell invalidCell;
+        private int cellCountX;
+        private int cellCountZ;
+        private Map map;
+
+        internal void Initialize(Map map)
         {
-            for (int i = 0; i < CellCountX; i++)
-                for (int j = 0; j < CellCountZ; j++)
+            this.map = map;
+            gridCellRelocator = new GridCellRelocator(this);
+            float gridCellSize = map.Settings.GridCellSize;
+
+            cellCountX = Mathf.CeilToInt(map.Settings.BoundingBox.bounds.size.x / gridCellSize);
+            cellCountZ = Mathf.CeilToInt(map.Settings.BoundingBox.bounds.size.z / gridCellSize);
+
+            cells = new GridCell[cellCountX, cellCountZ];
+            for (int i = 0; i < cellCountX; i++)
+                for (int j = 0; j < cellCountZ; j++)
+                    cells[i, j] = new GridCell();
+
+            Vector3 origin = map.Settings.BoundingBox.bounds.min;
+            Vector3 cellSize = new Vector3(gridCellSize, map.Settings.BoundingBox.size.y, gridCellSize);
+            for (int i = 0; i < cellCountX; i++)
+            {
+                float xOffset = (i + 0.5f) * gridCellSize;
+                for (int j = 0; j < cellCountZ; j++)
+                {
+                    float zOffset = (j + 0.5f) * gridCellSize;
+                    Vector3 cellCenter = origin + new Vector3(xOffset, 0.0f, zOffset);
+                    cells[i, j].Initialize(map, i, j, new Bounds(cellCenter, cellSize));
+                }
+            }
+
+            invalidCell = new GridCell();
+            invalidCell.Initialize(map, -1, -1, new Bounds(Vector3.zero, Vector3.positiveInfinity));
+        }
+
+        internal void Deinitialize()
+        {
+            invalidCell.Deinitialize();
+
+            for (int i = 0; i < cellCountX; i++)
+                for (int j = 0; j < cellCountZ; j++)
                     cells[i, j].Deinitialize();
         }
 
-        public GridCell GetGridType(int x, int z)
+        internal void DoUpdate(int deltaTime)
         {
-            Assert.IsTrue(x < CellCountX && z < CellCountZ);
-            return cells[x, z];
+            for (int i = 0; i < cellCountX; i++)
+                for (int j = 0; j < cellCountZ; j++)
+                    cells[i, j].Visit(gridCellRelocator);
+
+            foreach (WorldEntity relocatableEntity in relocatableEntities)
+            {
+                relocatableEntity.CurrentCell.RemoveWorldEntity(relocatableEntity);
+                GridCell nextCell = FindCell(relocatableEntity.Position);
+                if (nextCell == null)
+                {
+                    relocatableEntity.Position = map.Settings.DefaultSpawnPoint.position;
+                    nextCell = FindCell(relocatableEntity.Position);
+                }
+
+                nextCell.AddWorldEntity(relocatableEntity);
+            }
+
+            relocatableEntities.Clear();
         }
 
-        public void IncUnloadActiveLock() { Info.IncUnloadActiveLock(); }
+        internal void AddEntity(WorldEntity entity)
+        {
+            GridCell startingCell = FindCell(entity.Position);
+            Assert.IsNotNull(startingCell, $"Starting cell is not found for {entity.GetType()} at {entity.Position}");
 
-        public void DecUnloadActiveLock() { Info.DecUnloadActiveLock(); }
+            if (startingCell == null)
+            {
+                entity.Position = map.Settings.DefaultSpawnPoint.position;
+                startingCell = FindCell(entity.Position);
+            }
 
-        public void ResetTimeTracker(long interval) { Info.ResetTimeTracker(interval); }
+            startingCell.AddWorldEntity(entity);
+        }
 
-        public void UpdateTimeTracker(long diff) { Info.UpdateTimeTracker(diff); }
+        internal void RemoveEntity(WorldEntity entity)
+        {
+            Assert.IsNotNull(entity.CurrentCell, $"Cell is missing on removal for {entity.GetType()} at {entity.Position}");
+            entity.CurrentCell.RemoveWorldEntity(entity);
+        }
 
-    
         public void VisitAllGrids(IEntityGridVisitor gridVisitor)
         {
-            for (int i = 0; i < CellCountX; i++)
-                for (int j = 0; j < CellCountZ; j++)
-                    GetGridType(i, j).Visit(gridVisitor);
+            for (int i = 0; i < cellCountX; i++)
+                for (int j = 0; j < cellCountZ; j++)
+                    cells[i, j].Visit(gridVisitor);
         }
 
-        public void VisitGrid(int x, int y, IEntityGridVisitor gridVisitor)
+        public void VisitGrid(int x, int z, IEntityGridVisitor gridVisitor)
         {
-            Assert.IsTrue(x < CellCountX && y < CellCountZ);
-            GetGridType(x, y).Visit(gridVisitor);
+            Assert.IsTrue(x < cellCountX && z < cellCountZ);
+            cells[x, z].Visit(gridVisitor);
         }
-    }
 
-    public static class GridCellExtensions
-    {
-        public static int EntityCount(this GridCell[,] cells, int cellSizeX, int cellSizeZ, Func<GridCell, int> selector)
+        private GridCell FindCell(Vector3 position)
         {
-            int count = 0;
-            for (int x = 0; x < cellSizeX; ++x)
-                for (int z = 0; z < cellSizeZ; ++z)
-                    count += selector(cells[x, z]);
-            return count;
+            Vector3 offset = position - cells[0, 0].Bounds.min;
+            int xCell = Mathf.FloorToInt(offset.x / map.Settings.GridCellSize);
+            int zCell = Mathf.FloorToInt(offset.z / map.Settings.GridCellSize);
+
+            if (xCell < 0 || xCell > cellCountX - 1 || zCell < 0 || zCell > cellCountZ - 1)
+            {
+                return null;
+            }
+
+            return cells[xCell, zCell];
         }
     }
 }

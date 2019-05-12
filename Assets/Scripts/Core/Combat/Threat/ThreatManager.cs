@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Core
 {
-    public class ThreatManager
+    public class ThreatManager : ReferenceManager<Unit, ThreatManager>
     {
         public Unit Owner { get; private set; }
         public HostileReference CurrentVictim { get; private set; }

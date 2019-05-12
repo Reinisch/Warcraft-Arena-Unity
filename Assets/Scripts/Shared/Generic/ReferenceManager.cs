@@ -2,14 +2,21 @@
 
 namespace Core
 {
-    public abstract class ReferenceManager<TRefTo, TRefFrom> : LinkedList<Reference<TRefTo, TRefFrom>> where TRefTo : class where TRefFrom : class
+    public abstract class ReferenceManager<TRefTo, TRefFrom> where TRefTo : class where TRefFrom : ReferenceManager<TRefTo, TRefFrom>
     {
-        public Reference<TRefTo, TRefFrom> FirstReference => First?.Value;
-        public Reference<TRefTo, TRefFrom> LastReference => Last?.Value;
+        private readonly LinkedList<Reference<TRefTo, TRefFrom>> referenceList = new LinkedList<Reference<TRefTo, TRefFrom>>();
 
-        public void Invalidate()
+        public Reference<TRefTo, TRefFrom> FirstReference => referenceList.First?.Value;
+        public Reference<TRefTo, TRefFrom> LastReference => referenceList.Last?.Value;
+
+        public LinkedListNode<Reference<TRefTo, TRefFrom>> Add(Reference<TRefTo, TRefFrom> reference)
         {
-            var node = First;
+            return referenceList.AddFirst(reference);
+        }
+
+        public void Clear()
+        {
+            var node = referenceList.First;
 
             while (node != null)
             {
@@ -17,6 +24,11 @@ namespace Core
                 node.Value.Invalidate();
                 node = next;
             }
+        }
+
+        public bool Contains(Reference<TRefTo, TRefFrom> reference)
+        {
+            return referenceList.Contains(reference);
         }
     }
 }

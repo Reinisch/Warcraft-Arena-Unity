@@ -51,15 +51,7 @@ namespace Core
         protected List<Unit> attackers;
 
         protected IUnitState unitState;
-
-        protected Unit attacking;
         protected UnitAI ai;
-        protected UnitAI disabledAI;
-        protected UnitTypeMask unitTypeMask;
-        protected bool shouldReacquireTarget;
-        protected bool autoRepeatFirstCast;
-        protected uint regenTimer;
-        protected int procDeep;
 
         public bool IsMovementBlocked => HasUnitState(UnitState.Root) || HasUnitState(UnitState.Stunned);
 
@@ -105,10 +97,9 @@ namespace Core
             base.Detached();
         }
 
-        public DiminishingLevels GetDiminishing(DiminishingGroup group) { return default; }
-        public void IncrDiminishing(DiminishingGroup group) { }
-        public float ApplyDiminishingToDuration(DiminishingGroup group, ref int duration, Unit caster, DiminishingLevels level, int limitduration) { return 1.0f; }
-        public void ApplyDiminishingAura(DiminishingGroup group, bool apply) { }
+        internal override void DoUpdate(int timeDelta)
+        {
+        }
 
         public float GetSpellMinRangeForTarget(Unit target, SpellInfo spellInfo)
         {
@@ -128,26 +119,11 @@ namespace Core
             return spellInfo.GetMaxRange(!IsHostileTo(target));
         }
 
-        public override void DoUpdate(int timeDelta)
-        {
-        }
-
         #region Unit info, stats and types
 
         public void AddUnitState(UnitState f) { UnitState |= f; }
         public bool HasUnitState(UnitState state) { return (UnitState & state) != 0; }
         public void ClearUnitState(UnitState f) { UnitState &= ~f; }
-        public bool CanFreeMove() { return false; }
-
-        public UnitTypeMask HasUnitTypeMask(UnitTypeMask mask) { return mask & unitTypeMask; }
-        public void AddUnitTypeMask(UnitTypeMask mask) { unitTypeMask |= mask; }
-        public bool IsSummon() { return (unitTypeMask & UnitTypeMask.Summon) != 0; }
-        public bool IsGuardian() { return (unitTypeMask & UnitTypeMask.Guardian) != 0; }
-        public bool IsPet() { return (unitTypeMask & UnitTypeMask.Pet) != 0; }
-        public bool IsHunterPet() { return (unitTypeMask & UnitTypeMask.HunterPet) != 0; }
-        public bool IsTotem() { return (unitTypeMask & UnitTypeMask.Totem) != 0; }
-        public bool IsVehicle() { return (unitTypeMask & UnitTypeMask.Vehicle) != 0; }
-        public CreatureType GetCreatureType() { return 0; }
         public uint GetCreatureTypeMask() { return 0; }
 
         public byte GetLevel() { return (byte)GetUintValue(EntityFields.Level); }
@@ -468,31 +444,13 @@ namespace Core
 
         #region Spell casting
 
-        public void SendHealSpellLog(Unit victim, uint spellId, uint health, uint overHeal, uint absorbed, bool crit = false) { }
         public int HealBySpell(Unit victim, SpellInfo spellInfo, int addHealth, bool critical = false) { return 0; }
-        public void SendEnergizeSpellLog(Unit victim, uint spellId, int damage, PowerType powertype) { }
-        public void EnergizeBySpell(Unit victim, uint spellId, int damage, PowerType powertype) { }
-
 
         public void CastSpell(SpellCastTargets targets, SpellInfo spellInfo, TriggerCastFlags triggerFlags = TriggerCastFlags.None, AuraEffect triggeredByAura = null, ulong originalCaster = 0)
         {
             new Spell(this, spellInfo, triggerFlags, originalCaster).Prepare(targets, triggeredByAura);
         }
 
-        public Aura AddAura(uint spellId, Unit target) { return null; }
-        public Aura AddAura(SpellInfo spellInfo, uint effMask, Unit target) { return null; }
-        public void SetAuraStack(uint spellId, Unit target, uint stack) { }
-        public void SendPlaySpellVisualKit(uint kitId, uint type) { }
-
-        public virtual bool IsInWater() { throw new NotImplementedException(); }
-        public virtual bool IsUnderWater() { throw new NotImplementedException(); }
-        public virtual void UpdateUnderwaterState(Map m, float x, float y, float z) { throw new NotImplementedException(); }
-        public void DeMorph() { throw new NotImplementedException(); }
-
-        public void SendAttackStateUpdate(CalcDamageInfo damageInfo) { }
-        public void SendAttackStateUpdate(uint hitInfo, Unit target, byte swingType, SpellSchoolMask damageSchoolMask,
-            uint damage, uint absorbDamage, uint resist, VictimState targetState, uint blockedAmount)
-        { }
         public void SendSpellNonMeleeDamageLog(ref SpellNonMeleeDamage log) { }
         public void SendSpellMiss(Unit target, uint spellId, SpellMissInfo missInfo) { }
         public void SendSpellDamageResist(Unit target, uint spellId) { }
@@ -514,23 +472,8 @@ namespace Core
         public void JumpTo(WorldEntity obj, float speedZ, bool withOrientation = false) { }
         public void MonsterMoveWithSpeed(float x, float y, float z, float speed, bool generatePath = false, bool forceDestination = false) { }
 
-
-        public void SendSetPlayHoverAnim(bool enable) { }
         public bool IsWalking() { return MovementInfo.HasMovementFlag(MovementFlags.Walking); }
-        public bool SetWalk(bool enable) { return false; }
-        public bool SetDisableGravity(bool disable) { return false; }
-        public bool SetFall(bool enable) { return false; }
-        public bool SetSwim(bool enable) { return false; }
-        public bool SetCanFly(bool enable) { return false; }
-        public bool SetWaterWalking(bool enable) { return false; }
-        public bool SetFeatherFall(bool enable) { return false; }
-        public bool SetHover(bool enable) { return false; }
-        public bool SetCollision(bool disable) { return false; }
-        public bool SetCanTransitionBetweenSwimAndFly(bool enable) { return false; }
-        public bool SetCanTurnWhileFalling(bool enable) { return false; }
-        public bool SetDoubleJump(bool enable) { return false; }
-        public void SendSetVehicleRecId(uint vehicleId) { }
-
+        
         #endregion
 
 
