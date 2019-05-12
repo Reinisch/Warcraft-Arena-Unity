@@ -71,7 +71,6 @@ namespace Core
         public bool IsNeedSendToClient => throw new NotImplementedException();
         public CurrentSpellTypes CurrentContainer => throw new NotImplementedException();
 
-        public List<SpellScript> LoadedScripts { get; private set; }
         public List<HitTriggerSpell> HitTriggerSpells { get; private set; }
         private bool HasGlobalCooldown => Caster.SpellHistory.HasGlobalCooldown();
 

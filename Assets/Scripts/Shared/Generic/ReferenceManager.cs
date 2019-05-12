@@ -6,8 +6,7 @@ namespace Core
     {
         private readonly LinkedList<Reference<TRefTo, TRefFrom>> referenceList = new LinkedList<Reference<TRefTo, TRefFrom>>();
 
-        public Reference<TRefTo, TRefFrom> FirstReference => referenceList.First?.Value;
-        public Reference<TRefTo, TRefFrom> LastReference => referenceList.Last?.Value;
+        protected Reference<TRefTo, TRefFrom> FirstReference => referenceList.First?.Value;
 
         public LinkedListNode<Reference<TRefTo, TRefFrom>> Add(Reference<TRefTo, TRefFrom> reference)
         {

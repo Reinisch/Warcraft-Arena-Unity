@@ -9,7 +9,6 @@ namespace Core
         private readonly GridReferenceManager<Player> worldPlayers = new GridReferenceManager<Player>();
         private readonly GridReferenceManager<Creature> worldCreatures = new GridReferenceManager<Creature>();
 
-        private Map map;
         private int xIndex;
         private int zIndex;
         private Bounds bounds;
@@ -18,7 +17,6 @@ namespace Core
 
         internal void Initialize(Map map, int xIndex, int zIndex, Bounds bounds)
         {
-            this.map = map;
             this.xIndex = xIndex;
             this.zIndex = zIndex;
             this.bounds = bounds;
@@ -28,14 +26,11 @@ namespace Core
         {
             worldPlayers.Clear();
             worldCreatures.Clear();
-
-            map = null;
         }
 
         internal void AddWorldEntity(WorldEntity worldEntity)
         {
             worldEntity.CurrentCell = this;
-            Debug.Log($"Entity {worldEntity.NetworkId} moved to {this}");
 
             switch (worldEntity)
             {
@@ -52,6 +47,8 @@ namespace Core
 
         internal void RemoveWorldEntity(WorldEntity worldEntity)
         {
+            worldEntity.CurrentCell = null;
+
             switch (worldEntity)
             {
                 case Creature creature:
@@ -65,12 +62,6 @@ namespace Core
                 default:
                     throw new ArgumentOutOfRangeException(nameof(worldEntity));
             }
-        }
-
-        public void Visit<TEntityVisitor>(TEntityVisitor visitor) where TEntityVisitor : IEntityGridVisitor
-        {
-            visitor.Visit(worldPlayers);
-            visitor.Visit(worldCreatures);
         }
 
         public void Visit(IWorldEntityGridVisitor visitor)

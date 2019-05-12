@@ -4,19 +4,19 @@ namespace Core
 {
     public abstract class PhotonBoltBaseListener : GlobalEventListener
     {
-        protected WorldManager worldManager;
+        protected WorldManager WorldManager;
 
         protected void Initialize(WorldManager worldManager)
         {
-            this.worldManager = worldManager;
+            WorldManager = worldManager;
         }
 
         protected void Deinitialize()
         {
-            worldManager = null;
+            WorldManager = null;
         }
 
-        public virtual void DoUpdate(int deltaTime)
+        public void DoUpdate(int deltaTime)
         {
         }
 

@@ -32,7 +32,7 @@ namespace Client
             {
                 Assert.IsNull(LocalPlayer, "Gained control of another player while already controlling one!");
 
-                LocalPlayer = (Player)worldManager.UnitManager.Find(entity.networkId.PackedValue);
+                LocalPlayer = (Player)WorldManager.UnitManager.Find(entity.networkId.PackedValue);
                 EventPlayerControlGained?.Invoke();
 
                 FindObjectOfType<WarcraftCamera>().Target = LocalPlayer.transform;

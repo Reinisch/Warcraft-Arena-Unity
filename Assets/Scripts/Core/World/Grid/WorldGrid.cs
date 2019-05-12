@@ -150,17 +150,11 @@ namespace Core
             entity.CurrentCell.RemoveWorldEntity(entity);
         }
 
-        public void VisitAllGrids(IEntityGridVisitor gridVisitor)
+        public void VisitAll(IWorldEntityGridVisitor gridVisitor)
         {
             for (int i = 0; i < cellCountX; i++)
                 for (int j = 0; j < cellCountZ; j++)
                     cells[i, j].Visit(gridVisitor);
-        }
-
-        public void VisitGrid(int x, int z, IEntityGridVisitor gridVisitor)
-        {
-            Assert.IsTrue(x < cellCountX && z < cellCountZ);
-            cells[x, z].Visit(gridVisitor);
         }
 
         private GridCell FindCell(Vector3 position)

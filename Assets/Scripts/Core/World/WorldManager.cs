@@ -22,7 +22,7 @@ namespace Core
             UnitManager = new UnitManager(this);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             UnitManager.Dispose();
             MapManager.Dispose();
@@ -31,7 +31,7 @@ namespace Core
             entityPool.Deinitialize();
         }
 
-        public void DoUpdate(int deltaTime)
+        public virtual void DoUpdate(int deltaTime)
         {
             MapManager.DoUpdate(deltaTime);
         }
