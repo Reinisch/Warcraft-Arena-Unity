@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Client.Spells;
+using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -9,14 +11,31 @@ namespace Client
     public class RenderManager : SingletonGameObject<RenderManager>
     {
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
+        [SerializeField, UsedImplicitly] private List<SpellVisualSettings> spellVisualSettings;
 
         private WorldManager worldManager;
+        private readonly Dictionary<int, SpellVisualSettings> spellVisualSettingsById = new Dictionary<int, SpellVisualSettings>();
+        private readonly Dictionary<Unit, UnitRenderer> unitRenderers = new Dictionary<Unit, UnitRenderer>();
 
         public Sprite DefaultSpellIcon => defaultSpellIcon;
+        public IReadOnlyDictionary<int, SpellVisualSettings> SpellVisualSettingsById => spellVisualSettingsById;
 
-        private Dictionary<Unit, UnitRenderer> UnitRenderers { get; } = new Dictionary<Unit, UnitRenderer>();
+        public new void Initialize()
+        {
+            base.Initialize();
 
-        public void Initialize(WorldManager worldManager)
+            foreach (SpellVisualSettings spellVisualSetting in spellVisualSettings)
+                spellVisualSettingsById.Add(spellVisualSetting.SpellInfo.Id, spellVisualSetting);
+        }
+
+        public new void Deinitialize()
+        {
+            spellVisualSettingsById.Clear();
+
+            base.Deinitialize();
+        }
+
+        public void InitializeWorld(WorldManager worldManager)
         {
             this.worldManager = worldManager;
 
@@ -24,10 +43,10 @@ namespace Client
             worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
 
             SpellManager.Instance.EventSpellCast += OnSpellCast;
-            SpellManager.Instance.EventSpellDamageDone += OnSpellDamageDone;          
+            SpellManager.Instance.EventSpellDamageDone += OnSpellDamageDone;
         }
 
-        public void Deinitialize()
+        public void DeinitializeWorld()
         {
             SpellManager.Instance.EventSpellDamageDone -= OnSpellDamageDone;
             SpellManager.Instance.EventSpellCast -= OnSpellCast;
@@ -35,37 +54,37 @@ namespace Client
             worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
             worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
 
-            foreach (var unitRendererRecord in UnitRenderers)
+            foreach (var unitRendererRecord in unitRenderers)
                 unitRendererRecord.Value.Deinitialize();
 
-            UnitRenderers.Clear();
+            unitRenderers.Clear();
         }
 
         public void DoUpdate(int deltaTime)
         {
-            foreach (var unitEntry in UnitRenderers)
+            foreach (var unitEntry in unitRenderers)
                 unitEntry.Value.DoUpdate(deltaTime);
         }
 
         private void OnSpellDamageDone(Unit caster, Unit target, int damage, bool isCrit)
         {
-            if (!UnitRenderers.ContainsKey(target))
+            if (!unitRenderers.ContainsKey(target))
                 return;
 
             if (caster.IsController)
             {
                 GameObject damageEvent = Instantiate(Resources.Load("Prefabs/UI/DamageEvent")) as GameObject;
                 Assert.IsNotNull(damageEvent, "damageEvent != null");
-                // damageEvent.GetComponent<UnitDamageUIEvent>().Initialize(damage, UnitRenderers[target], isCrit, ArenaManager.PlayerInterface);
+                // damageEvent.GetComponent<UnitDamageUIEvent>().Initialize(damage, unitRenderers[target], isCrit, ArenaManager.PlayerInterface);
             }
         }
 
         private void OnSpellCast(Unit target, SpellInfo spellInfo)
         {
-            GameObject spellRenderer = spellInfo.VisualSettings.FindEffect(SpellVisualEntry.UsageType.Cast);
-
-            if (spellRenderer != null)
-                Instantiate(spellRenderer, target.Position, Quaternion.identity);
+            if (SpellVisualSettingsById.TryGetValue(spellInfo.Id, out SpellVisualSettings spellVisuals))
+            {
+                spellVisuals.FindEffect(SpellVisualEffect.UsageType.Cast)?.PlayEffect(target.Position, target.Rotation, null);
+            }
         }
 
         private void OnEventEntityAttached(WorldEntity worldEntity)
@@ -75,7 +94,7 @@ namespace Client
                 return;
 
             unitEntity.GetComponentInChildren<UnitRenderer>().Initialize(unitEntity);
-            UnitRenderers.Add(unitEntity, unitEntity.GetComponentInChildren<UnitRenderer>());
+            unitRenderers.Add(unitEntity, unitEntity.GetComponentInChildren<UnitRenderer>());
         }
 
         private void OnEventEntityDetach(WorldEntity worldEntity)
@@ -84,10 +103,10 @@ namespace Client
             if (unitEntity == null)
                 return;
 
-            if(UnitRenderers.ContainsKey(unitEntity))
+            if(unitRenderers.ContainsKey(unitEntity))
             {
-                UnitRenderers[unitEntity].Deinitialize();
-                UnitRenderers.Remove(unitEntity);
+                unitRenderers[unitEntity].Deinitialize();
+                unitRenderers.Remove(unitEntity);
             }
         }
     }

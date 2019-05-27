@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Common;
+using Core;
 
 namespace Client
 {
@@ -8,7 +9,17 @@ namespace Client
 
         private WorldManager worldManager;
 
-        public void Initialize(WorldManager worldManager)
+        public new void Initialize()
+        {
+            base.Initialize();
+        }
+
+        public new void Deinitialize()
+        {
+            base.Deinitialize();
+        }
+
+        public void InitializeWorld(WorldManager worldManager)
         {
             this.worldManager = worldManager;
 
@@ -16,7 +27,7 @@ namespace Client
             worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
         }
 
-        public void Deinitialize()
+        public void DeinitializeWorld()
         {
             worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
             worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;

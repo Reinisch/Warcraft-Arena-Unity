@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Client;
+using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 using Core;
@@ -18,6 +19,8 @@ public class InterfaceManager : SingletonGameObject<InterfaceManager>
 
     public void Initialize(PhotonBoltManager photonManager, PhotonBoltClientListener clientListener)
     {
+        base.Initialize();
+
         defaultActionBars.ForEach(actionBar => loadedBehaviours.Add(actionBar));
         loadedBehaviours.ForEach(behaviour => behaviour.Initialize());
 
@@ -25,13 +28,15 @@ public class InterfaceManager : SingletonGameObject<InterfaceManager>
         battleScreen.Initialize(photonManager, clientListener);
     }
 
-    public void Deinitialize()
+    public new void Deinitialize()
     {
         battleScreen.Deinitialize();
         lobbyScreen.Deinitialize();
 
         loadedBehaviours.ForEach(behaviour => behaviour.Deinitialize());
         defaultActionBars.ForEach(actionBar => loadedBehaviours.Remove(actionBar));
+
+        base.Deinitialize();
     }
 
     public void InitializeWorld(WorldManager worldManager)

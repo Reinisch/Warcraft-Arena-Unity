@@ -18,7 +18,9 @@ public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHand
         Image = gameObject.GetComponent<Image>();
 
         ButtonSlot = buttonSlot;
-        Image.sprite = BalanceManager.SpellInfosById.LookupEntry(itemId)?.VisualSettings.SpellIcon ?? RenderManager.Instance.DefaultSpellIcon;
+        Image.sprite = RenderManager.Instance.SpellVisualSettingsById.ContainsKey(itemId) 
+            ? RenderManager.Instance.SpellVisualSettingsById[itemId].SpellIcon 
+            : RenderManager.Instance.DefaultSpellIcon;
     }
 
     public void UpdateButton()

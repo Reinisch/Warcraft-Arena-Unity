@@ -3,12 +3,16 @@
     "references": [
         "Arena.Core",
         "Arena.Client",
-        "Arena.Shared"
+        "Arena.Common"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }

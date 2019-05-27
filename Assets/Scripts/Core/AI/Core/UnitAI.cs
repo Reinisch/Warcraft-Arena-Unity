@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common;
 
 namespace Core
 {
@@ -100,7 +101,7 @@ namespace Core
                 case SelectAggroTarget.BottomAggro:
                     return targetList[targetList.Count - (int) position];
                 case SelectAggroTarget.Random:
-                    return targetList[RandomHelper.Next((int) position, targetList.Count)];
+                    return targetList[RandomUtils.Next((int) position, targetList.Count)];
             }
 
             return null;
@@ -129,7 +130,7 @@ namespace Core
             else if (targetType == SelectAggroTarget.Farthest || targetType == SelectAggroTarget.BottomAggro)
                 targetList.Sort((x, y) => -Me.DistanceSortOrder(x, y));
             else if (targetType == SelectAggroTarget.Random)
-                targetList.Sort((x, y) => Math.Sign(RandomHelper.NextDouble() - 0.5d));
+                targetList.Sort((x, y) => Math.Sign(RandomUtils.NextDouble() - 0.5d));
 
             targetList.RemoveRange(0, targetList.Count - (int) maxTargets);
         }

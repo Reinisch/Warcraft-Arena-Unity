@@ -18,7 +18,7 @@ namespace Core
 
         internal Map(int id, Map parent = null)
         {
-            Definition = BalanceManager.MapsById.LookupEntry(id);
+            Definition = BalanceManager.MapsById[id];
         }
 
         internal void Initialize(WorldManager worldManager, Scene mapScene)

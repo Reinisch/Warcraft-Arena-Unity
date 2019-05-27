@@ -1,4 +1,6 @@
-﻿namespace Core
+﻿using Common;
+
+namespace Core
 {
     public class SpellModifier
     {
@@ -8,7 +10,6 @@
 
         public short Charges { get; set; }
         public int Value { get; set; }
-        public Flag128 Mask { get; set; }
         public uint SpellId { get; set; }
 
         public SpellModifier(Aura ownerAura)

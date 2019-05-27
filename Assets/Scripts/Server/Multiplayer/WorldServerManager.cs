@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Common;
 using Core;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -94,7 +95,7 @@ namespace Server
         internal void CreatePlayer(BoltConnection boltConnection = null)
         {
             Map mainMap = MapManager.FindMap(1);
-            Transform spawnPoint = RandomHelper.GetRandomElement(mainMap.Settings.FindSpawnPoints(Team.Alliance));
+            Transform spawnPoint = RandomUtils.GetRandomElement(mainMap.Settings.FindSpawnPoints(Team.Alliance));
             WorldEntity.CreateInfo playerCreateInfo = new WorldEntity.CreateInfo { Position = spawnPoint.position, Rotation = spawnPoint.rotation };
             Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.PlayerMage, playerCreateInfo);
 

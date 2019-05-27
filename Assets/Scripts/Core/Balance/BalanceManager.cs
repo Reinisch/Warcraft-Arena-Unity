@@ -1,41 +1,51 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using Common;
 
 namespace Core
 {
     public class BalanceManager : SingletonGameObject<BalanceManager>
     {
-        public static NetworkMovementType NetworkMovementType => Instance.balanceDefinition.NetworkMovementType;
-        public static List<MapDefinition> Maps { get; } = new List<MapDefinition>();
-        public static List<SpellInfo> SpellInfos { get; } = new List<SpellInfo>();
-        public static Dictionary<int, MapDefinition> MapsById { get; } = new Dictionary<int, MapDefinition>();
-        public static Dictionary<int, SpellInfo> SpellInfosById { get; } = new Dictionary<int, SpellInfo>();
-
         [SerializeField, UsedImplicitly] private BalanceDefinition balanceDefinition;
 
-        public void Initialize()
-        {
-            Maps.AddRange(balanceDefinition.MapEntries);
-            SpellInfos.AddRange(balanceDefinition.SpellInfos);
+        private readonly List<MapDefinition> maps = new List<MapDefinition>();
+        private readonly List<SpellInfo> spellInfos = new List<SpellInfo>();
+        private readonly Dictionary<int, MapDefinition> mapsById = new Dictionary<int, MapDefinition>();
+        private readonly Dictionary<int, SpellInfo> spellInfosById = new Dictionary<int, SpellInfo>();
 
-            balanceDefinition.SpellInfos.ForEach(spellInfo => SpellInfosById.Add(spellInfo.Id, spellInfo));
-            balanceDefinition.MapEntries.ForEach(mapEntry => MapsById.Add(mapEntry.Id, mapEntry));
+        public static NetworkMovementType NetworkMovementType => Instance.balanceDefinition.NetworkMovementType;
+        public static IReadOnlyList<MapDefinition> Maps => Instance.maps;
+        public static IReadOnlyList<SpellInfo> SpellInfos => Instance.spellInfos;
+        public static IReadOnlyDictionary<int, MapDefinition> MapsById => Instance.mapsById;
+        public static IReadOnlyDictionary<int, SpellInfo> SpellInfosById => Instance.spellInfosById;
+
+        public new void Initialize()
+        {
+            base.Initialize();
+
+            maps.AddRange(balanceDefinition.MapEntries);
+            spellInfos.AddRange(balanceDefinition.SpellInfos);
+
+            balanceDefinition.SpellInfos.ForEach(spellInfo => spellInfosById.Add(spellInfo.Id, spellInfo));
+            balanceDefinition.MapEntries.ForEach(mapEntry => mapsById.Add(mapEntry.Id, mapEntry));
 
             foreach (var spellInfoEntry in SpellInfosById)
                 spellInfoEntry.Value.Initialize();
         }
 
-        public void Deinitialize()
+        public new void Deinitialize()
         {
             foreach (var spellInfoEntry in SpellInfosById)
                 spellInfoEntry.Value.Deinitialize();
 
-            SpellInfosById.Clear();
-            MapsById.Clear();
+            spellInfosById.Clear();
+            mapsById.Clear();
 
-            Maps.Clear();
-            SpellInfos.Clear();
+            maps.Clear();
+            spellInfos.Clear();
+
+            base.Deinitialize();
         }
     }
 }

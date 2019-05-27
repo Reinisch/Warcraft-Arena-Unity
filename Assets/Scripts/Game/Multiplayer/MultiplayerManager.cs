@@ -2,11 +2,14 @@
 using System.Collections;
 using Bolt;
 using Client;
+using Common;
 using Core;
 using Server;
 using UnityEngine;
 using JetBrains.Annotations;
 using UdpKit;
+
+using EventHandler = Common.EventHandler;
 
 namespace Game
 {
@@ -31,9 +34,6 @@ namespace Game
         private State state;
 
         public PhotonBoltClientListener ClientListener => boltClientListener;
-
-        public event Action<string, GameManager.NetworkingMode> EventGameMapLoaded;
-        public event Action<UdpConnectionDisconnectReason> EventDisconnectedFromHost;
 
         public void Initialize()
         {
@@ -130,7 +130,7 @@ namespace Game
         {
             base.SceneLoadLocalDone(map);
 
-            EventGameMapLoaded?.Invoke(map, networkingMode);
+            EventHandler.ExecuteEvent(this, GameEvents.GameMapLoaded, map, networkingMode);
         }
 
         public override void Connected(BoltConnection connection)
@@ -150,7 +150,7 @@ namespace Game
 
             Debug.Log("Disconnected: reason: " + connection.DisconnectReason);
             if (networkingMode == GameManager.NetworkingMode.Client)
-                EventDisconnectedFromHost?.Invoke(connection.DisconnectReason);
+                EventHandler.ExecuteEvent(this, GameEvents.DisconnectedFromHost, connection.DisconnectReason);
         }
 
         public override void ConnectAttempt(UdpEndPoint endpoint, IProtocolToken token)

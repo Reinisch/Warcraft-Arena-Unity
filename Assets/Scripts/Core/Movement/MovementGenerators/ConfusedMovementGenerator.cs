@@ -1,4 +1,6 @@
-﻿namespace Core
+﻿using Common;
+
+namespace Core
 {
     public abstract class ConfusedMovementGenerator<TUnit> : MovementGeneratorMedium<TUnit, ConfusedMovementGenerator<TUnit>> where TUnit : Unit
     {
@@ -46,7 +48,7 @@
             {
                 // currently moving, update location
                 unit.AddUnitState(UnitState.ConfusedMove);
-                NextMoveTime.Reset(RandomHelper.Next(800, 1500));
+                NextMoveTime.Reset(RandomUtils.Next(800, 1500));
             }
             else
             {

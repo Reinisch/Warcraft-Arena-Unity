@@ -1,15 +1,26 @@
-﻿using Core;
+﻿using Common;
+using Core;
 using UnityEngine;
 
 public class SoundManager : SingletonGameObject<SoundManager>
 {
-    public void Initialize(WorldManager worldManager)
+    public new void Initialize()
+    {
+        base.Initialize();
+    }
+
+    public new void Deinitialize()
+    {
+        base.Deinitialize();
+    }
+
+    public void InitializeWorld(WorldManager worldManager)
     {
         SpellManager.Instance.EventSpellCast += OnSpellManagerSpellCast;
         SpellManager.Instance.EventSpellHit += OnSpellManagerSpellHit;
     }
 
-    public void Deinitialize()
+    public void DeinitializeWorld()
     {
         SpellManager.Instance.EventSpellCast -= OnSpellManagerSpellCast;
         SpellManager.Instance.EventSpellHit -= OnSpellManagerSpellHit;

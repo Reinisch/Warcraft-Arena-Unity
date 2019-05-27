@@ -2,11 +2,16 @@
     "name": "Arena.Client",
     "references": [
         "Arena.Core",
-        "Arena.Shared",
-        "Unity.TextMeshPro"
+        "Arena.Common",
+        "Unity.TextMeshPro",
+        "Arena.Client.Effects"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }

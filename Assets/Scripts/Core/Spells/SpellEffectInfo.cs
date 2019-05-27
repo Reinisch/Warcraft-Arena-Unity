@@ -1,4 +1,5 @@
 ﻿using System;
+using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -107,7 +108,7 @@ namespace Core
             if (Mathf.Abs(RandomPoints) <= 1)
                 basePoints += RandomPoints;
             else
-                basePoints += RandomPoints > 0 ? RandomHelper.Next(1, RandomPoints + 1) : RandomHelper.Next(RandomPoints, 1);
+                basePoints += RandomPoints > 0 ? RandomUtils.Next(1, RandomPoints + 1) : RandomUtils.Next(RandomPoints, 1);
 
             float value = basePoints;
             if (caster != null)

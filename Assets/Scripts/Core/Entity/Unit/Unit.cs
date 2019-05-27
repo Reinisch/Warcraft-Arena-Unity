@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -675,7 +676,6 @@ namespace Core
         public AuraEffect GetAuraEffect(uint spellId, int effIndex, Guid casterGuid = default) { return null; }
         public AuraEffect GetAuraEffectOfRankedSpell(uint spellId, int effIndex, Guid casterGuid = default) { return null; }
         public AuraEffect GetAuraEffect(AuraType type, SpellFamilyNames family, uint iconId, int effIndex) { return null; }
-        public AuraEffect GetAuraEffect(AuraType type, SpellFamilyNames family, Flag128 familyFlag, Guid casterGuid = default) { return null; }
         public AuraEffect GetDummyAuraEffect(SpellFamilyNames family, uint iconId, int effIndex) { return null; }
 
         public AuraApplication GetAuraApplication(uint spellId, Guid casterGuid = default, uint reqEffMask = 0, AuraApplication except = null) { return null; }

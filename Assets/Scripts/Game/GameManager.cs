@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using Client;
+using Client.Effects;
+using Common;
 using Core;
 using JetBrains.Annotations;
 using Server;
 using UdpKit;
 using UnityEngine;
+
+using EventHandler = Common.EventHandler;
 
 namespace Game
 {
@@ -28,6 +32,8 @@ namespace Game
         [SerializeField, UsedImplicitly] private UpdatePolicy updatePolicy;
         [SerializeField, UsedImplicitly] private long updateTimeMilliseconds = 20;
 
+        [SerializeField, UsedImplicitly] private GameObjectPool gameObjectPool;
+        [SerializeField, UsedImplicitly] private EffectManager effectManager;
         [SerializeField, UsedImplicitly] private BalanceManager balanceManager;
         [SerializeField, UsedImplicitly] private PhysicsManager physicsManager;
         [SerializeField, UsedImplicitly] private MultiplayerManager multiplayerManager;
@@ -86,6 +92,7 @@ namespace Game
             if (HasClientLogic)
             {
                 renderManager.DoUpdate(gameTimeDiff);
+                effectManager.DoUpdate(gameTimeDiff);
                 interfaceManager.DoUpdate(gameTimeDiff);
             }
         }
@@ -100,43 +107,73 @@ namespace Game
         {
             DontDestroyOnLoad(gameObject);
 
-            gameTimer.Start();
-
+            gameObjectPool.Initialize();
             balanceManager.Initialize();
+            effectManager.Initialize();
             physicsManager.Initialize();
             multiplayerManager.Initialize();
+            renderManager.Initialize();
+            soundManager.Initialize();
+            inputManager.Initialize();
             interfaceManager.Initialize(multiplayerManager, multiplayerManager.ClientListener);
 
-            multiplayerManager.EventGameMapLoaded += OnGameMapLoaded;
-            multiplayerManager.EventDisconnectedFromHost += OnDisconnectedFromHost;
+            gameTimer.Start();
 
             interfaceManager.HideBattleScreen();
             interfaceManager.ShowLobbyScreen(true);
+
+            EventHandler.RegisterEvent<string, NetworkingMode>(multiplayerManager, GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(multiplayerManager, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
         }
 
         private void Deinitialize()
         {
-            multiplayerManager.EventGameMapLoaded -= OnGameMapLoaded;
-            multiplayerManager.EventDisconnectedFromHost -= OnDisconnectedFromHost;
+            EventHandler.UnregisterEvent<string, NetworkingMode>(multiplayerManager, GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(multiplayerManager, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
 
             if (worldManager != null)
-            {
-                if (HasClientLogic)
-                {
-                    renderManager.Deinitialize();
-                    soundManager.Deinitialize();
-                    inputManager.Deinitialize();
-                }
-                
-                worldManager.Dispose();
-            }
-
-            worldManager = null;
+                DeinitializeWorld();
 
             interfaceManager.Deinitialize();
+            inputManager.Deinitialize();
+            soundManager.Deinitialize();
+            renderManager.Deinitialize();
             multiplayerManager.Deinitialize();
             physicsManager.Deinitialize();
+            effectManager.Deinitialize();
             balanceManager.Deinitialize();
+            gameObjectPool.Deinitialize();
+        }
+
+        private void InitializeWorld()
+        {
+            worldManager = HasServerLogic ? (WorldManager) new WorldServerManager() : new WorldClientManager();
+
+            if (HasClientLogic)
+            {
+                soundManager.InitializeWorld(worldManager);
+                inputManager.InitializeWorld(worldManager);
+                renderManager.InitializeWorld(worldManager);
+                interfaceManager.InitializeWorld(worldManager);
+            }
+
+            multiplayerManager.InitializeWorld(worldManager, HasServerLogic, HasClientLogic);
+        }
+
+        private void DeinitializeWorld()
+        {
+            multiplayerManager.DeinitializeWorld(HasServerLogic, HasClientLogic);
+
+            if (HasClientLogic)
+            {
+                interfaceManager.DeinitializeWorld();
+                renderManager.DeinitializeWorld();
+                soundManager.DeinitializeWorld();
+                inputManager.DeinitializeWorld();
+            }
+
+            worldManager.Dispose();
+            worldManager = null;
         }
 
         private void OnGameMapLoaded(string map, NetworkingMode mode)
@@ -146,17 +183,8 @@ namespace Game
 
             HasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
             HasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;
-            worldManager = HasServerLogic ? (WorldManager) new WorldServerManager() : new WorldClientManager();
 
-            if (HasClientLogic)
-            {
-                renderManager.Initialize(worldManager);
-                soundManager.Initialize(worldManager);
-                inputManager.Initialize(worldManager);
-                interfaceManager.InitializeWorld(worldManager);
-            }
-
-            multiplayerManager.InitializeWorld(worldManager, HasServerLogic, HasClientLogic);
+            InitializeWorld();
 
             interfaceManager.HideLobbyScreen();
             interfaceManager.ShowBattleScreen();
@@ -164,20 +192,10 @@ namespace Game
 
         private void OnDisconnectedFromHost(UdpConnectionDisconnectReason reason)
         {
-            multiplayerManager.DeinitializeWorld(HasServerLogic, HasClientLogic);
-
-            if (HasClientLogic)
-            {
-                interfaceManager.DeinitializeWorld();
-                renderManager.Deinitialize();
-                soundManager.Deinitialize();
-                inputManager.Deinitialize();
-            }
+            DeinitializeWorld();
 
             HasServerLogic = false;
             HasClientLogic = false;
-            worldManager.Dispose();
-            worldManager = null;
 
             interfaceManager.HideBattleScreen();
             interfaceManager.ShowLobbyScreen(false);

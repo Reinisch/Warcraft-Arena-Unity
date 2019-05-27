@@ -3,12 +3,17 @@
     "references": [
         "Arena.Client",
         "Arena.Core",
-        "Arena.Shared",
+        "Arena.Common",
         "Arena.Server",
-        "Photon.Bolt"
+        "Photon.Bolt",
+        "Arena.Client.Effects"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }

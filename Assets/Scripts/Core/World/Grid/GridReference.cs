@@ -1,4 +1,6 @@
-﻿namespace Core
+﻿using Common;
+
+namespace Core
 {
     public class GridReference<TGridEntity> : Reference<TGridEntity, GridReferenceManager<TGridEntity>> where TGridEntity : class
     {

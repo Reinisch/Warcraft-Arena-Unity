@@ -10,7 +10,6 @@ namespace Core
     {
         [SerializeField, UsedImplicitly, Header("Player"), Space(10)] private WarcraftController controller;
 
-        protected Team team;
         protected PlayerExtraFlags extraFlags;
         protected SpecializationInfo specializationInfo;
 

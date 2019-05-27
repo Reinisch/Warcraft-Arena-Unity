@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Common;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core
@@ -27,8 +28,10 @@ namespace Core
         public static PhysicMaterial GroundedMaterial => Instance.groundedUnitMaterial;
         public static PhysicMaterial SlidingMaterial => Instance.slidingUnitMaterial;
 
-        public void Initialize()
+        public new void Initialize()
         {
+            base.Initialize();
+
             Layer.Characters = LayerMask.NameToLayer("Characters");
             Layer.Ground = LayerMask.NameToLayer("Ground");
             Layer.NoCollision = LayerMask.NameToLayer("NoCollision");
@@ -38,9 +41,11 @@ namespace Core
             Mask.NoCollision = 1 << Layer.NoCollision;
         }
 
-        public void Deinitialize()
+        public new void Deinitialize()
         {
             Mask.Ground = 0;
+            
+            base.Deinitialize();
         }
     }
 }

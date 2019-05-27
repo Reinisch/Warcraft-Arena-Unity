@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Common;
+using UnityEngine;
 
 namespace Core
 {
@@ -58,7 +59,7 @@ namespace Core
         public const int AttackDisplayDelay = 200;
         public const float MaxPlayerStealthDetectRange = 30.0f;
 
-        public const int CreatureRegenInterval = 2 * TimeHelper.InMilliseconds;
+        public const int CreatureRegenInterval = 2 * TimeUtils.InMilliseconds;
         public const int MaxKillCredit = 2;
         public const int MaxCreatureModels = 4;
         public const int MaxCreatureNames = 4;

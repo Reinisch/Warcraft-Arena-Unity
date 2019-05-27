@@ -1,4 +1,6 @@
-﻿namespace Core
+﻿using Common;
+
+namespace Core
 {
     public static class PlayerHelper
     {
@@ -12,7 +14,7 @@
         public const int VisibleItemEntryOffset = 0;
         public const int VisibleItemEnchantmentOffset = 1;
         public const int MaxEquipmentSetIndex = 20;
-        public const int MaxPlayerSummonDelay = 2 * TimeHelper.Minute;  // Player summoning auto-decline time (in secs)
+        public const int MaxPlayerSummonDelay = 2 * TimeUtils.Minute;  // Player summoning auto-decline time (in secs)
         public const int BattlePetSpeciesMaxID = 1986;
 
         public const int MaxTalentTiers = 7;

@@ -1,4 +1,6 @@
-﻿namespace Core
+﻿using Common;
+
+namespace Core
 {
     public class HostileReferenceManager : ReferenceManager<Unit, ThreatManager>
     {

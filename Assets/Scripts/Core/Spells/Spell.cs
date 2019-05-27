@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common;
 using UnityEngine;
 
 namespace Core
@@ -301,7 +302,7 @@ namespace Core
             {
                 float speed = Targets.SpeedXY;
                 if (speed > 0.0f)
-                    DelayMoment = Mathf.FloorToInt(Targets.Distance2D / speed * TimeHelper.InMilliseconds);
+                    DelayMoment = Mathf.FloorToInt(Targets.Distance2D / speed * TimeUtils.InMilliseconds);
             }
         }
 
