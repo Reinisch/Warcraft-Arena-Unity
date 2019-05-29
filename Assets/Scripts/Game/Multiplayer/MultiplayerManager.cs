@@ -31,6 +31,7 @@ namespace Game
 
         private readonly ConnectionAttemptInfo connectionAttemptInfo = new ConnectionAttemptInfo();
         private GameManager.NetworkingMode networkingMode;
+        private WorldManager worldManager;
         private State state;
 
         public PhotonBoltClientListener ClientListener => boltClientListener;
@@ -45,24 +46,30 @@ namespace Game
             SetListeners(false, false, false);
         }
 
-        public void InitializeWorld(WorldManager worldManager, bool serverLogic, bool clientLogic)
+        public void InitializeWorld(WorldManager worldManager)
         {
+            this.worldManager = worldManager;
+
             boltSharedListener.Initialize(worldManager);
 
-            if(serverLogic)
+            if(worldManager.HasServerLogic)
                 boltServerListener.Initialize((WorldServerManager)worldManager);
-            if (clientLogic)
+            if (worldManager.HasClientLogic)
                 boltClientListener.Initialize(worldManager);
         }
 
-        public void DeinitializeWorld(bool serverLogic, bool clientLogic)
+        public void DeinitializeWorld()
         {
+            SetListeners(false, false, false);
+
             boltSharedListener.Deinitialize();
 
-            if (serverLogic)
+            if (worldManager.HasServerLogic)
                 boltServerListener.Deinitialize();
-            if (clientLogic)
+            if (worldManager.HasServerLogic)
                 boltClientListener.Deinitialize();
+
+            worldManager = null;
         }
 
         public void DoUpdate(int deltaTime)
@@ -123,7 +130,8 @@ namespace Game
         {
             base.BoltShutdownBegin(registerDoneCallback);
 
-            SetListeners(false, false, false);
+            if (worldManager != null && worldManager.HasServerLogic)
+                EventHandler.ExecuteEvent(this, GameEvents.DisconnectedFromMaster);
         }
 
         public override void SceneLoadLocalDone(string map)
@@ -148,7 +156,7 @@ namespace Game
         {
             base.Connected(connection);
 
-            Debug.Log("Disconnected: reason: " + connection.DisconnectReason);
+            Debug.LogError("Disconnected: reason: " + connection.DisconnectReason);
             if (networkingMode == GameManager.NetworkingMode.Client)
                 EventHandler.ExecuteEvent(this, GameEvents.DisconnectedFromHost, connection.DisconnectReason);
         }

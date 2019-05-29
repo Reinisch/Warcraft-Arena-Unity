@@ -24,12 +24,13 @@ namespace Client
         {
             base.Initialize();
 
-            foreach (SpellVisualSettings spellVisualSetting in spellVisualSettings)
-                spellVisualSettingsById.Add(spellVisualSetting.SpellInfo.Id, spellVisualSetting);
+            spellVisualSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
+            spellVisualSettings.ForEach(visual => visual.Initialize());
         }
 
         public new void Deinitialize()
         {
+            spellVisualSettings.ForEach(visual => visual.Deinitialize());
             spellVisualSettingsById.Clear();
 
             base.Deinitialize();
@@ -75,37 +76,37 @@ namespace Client
             {
                 GameObject damageEvent = Instantiate(Resources.Load("Prefabs/UI/DamageEvent")) as GameObject;
                 Assert.IsNotNull(damageEvent, "damageEvent != null");
-                // damageEvent.GetComponent<UnitDamageUIEvent>().Initialize(damage, unitRenderers[target], isCrit, ArenaManager.PlayerInterface);
+                // damageEvent.GetComponent<UnitDamageUIEvent>().Initialize(damage, unitRenderers[caster], isCrit, ArenaManager.PlayerInterface);
             }
         }
 
-        private void OnSpellCast(Unit target, SpellInfo spellInfo)
+        private void OnSpellCast(Unit caster, SpellInfo spellInfo)
         {
-            if (SpellVisualSettingsById.TryGetValue(spellInfo.Id, out SpellVisualSettings spellVisuals))
-            {
-                spellVisuals.FindEffect(SpellVisualEffect.UsageType.Cast)?.PlayEffect(target.Position, target.Rotation, null);
-            }
+            if (!SpellVisualSettingsById.TryGetValue(spellInfo.Id, out SpellVisualSettings spellVisuals))
+                return;
+
+            if (!spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Cast, out EffectSpellSettings spellVisualEffect))
+                return;
+
+            if (unitRenderers.TryGetValue(caster, out UnitRenderer casterRenderer))
+                spellVisualEffect.EffectSettings.PlayEffect(caster.Position, caster.Rotation)?.ApplyPositioning(casterRenderer.EffectTagPositioner, spellVisualEffect);
         }
 
         private void OnEventEntityAttached(WorldEntity worldEntity)
         {
-            var unitEntity = worldEntity as Unit;
-            if (unitEntity == null)
-                return;
-
-            unitEntity.GetComponentInChildren<UnitRenderer>().Initialize(unitEntity);
-            unitRenderers.Add(unitEntity, unitEntity.GetComponentInChildren<UnitRenderer>());
+            if (worldEntity is Unit unitEntity)
+            {
+                var unitRenderer = unitEntity.GetComponentInChildren<UnitRenderer>();
+                unitRenderer.Initialize(unitEntity);
+                unitRenderers.Add(unitEntity, unitRenderer);
+            }
         }
 
         private void OnEventEntityDetach(WorldEntity worldEntity)
         {
-            var unitEntity = worldEntity as Unit;
-            if (unitEntity == null)
-                return;
-
-            if(unitRenderers.ContainsKey(unitEntity))
+            if (worldEntity is Unit unitEntity && unitRenderers.TryGetValue(unitEntity, out UnitRenderer unitRenderer))
             {
-                unitRenderers[unitEntity].Deinitialize();
+                unitRenderer.Deinitialize();
                 unitRenderers.Remove(unitEntity);
             }
         }

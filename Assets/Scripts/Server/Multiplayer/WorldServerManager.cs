@@ -13,8 +13,11 @@ namespace Server
         private readonly Dictionary<ulong, PlayerServerInfo> playerInfosByPlayerId = new Dictionary<ulong, PlayerServerInfo>();
         private const int DisconnectedPlayerDestroyTime = 10000;
 
-        public override bool HasServerLogic => true;
-        public override bool HasClientLogic => true;
+        public WorldServerManager(bool hasClientLogic)
+        {
+            HasServerLogic = true;
+            HasClientLogic = hasClientLogic;
+        }
 
         public override void Dispose()
         {

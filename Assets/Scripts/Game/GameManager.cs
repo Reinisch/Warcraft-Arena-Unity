@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Client;
-using Client.Effects;
 using Common;
 using Core;
 using JetBrains.Annotations;
@@ -124,10 +123,12 @@ namespace Game
 
             EventHandler.RegisterEvent<string, NetworkingMode>(multiplayerManager, GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(multiplayerManager, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
+            EventHandler.RegisterEvent(multiplayerManager, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
         }
 
         private void Deinitialize()
         {
+            EventHandler.UnregisterEvent(multiplayerManager, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
             EventHandler.UnregisterEvent<string, NetworkingMode>(multiplayerManager, GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(multiplayerManager, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
 
@@ -147,7 +148,7 @@ namespace Game
 
         private void InitializeWorld()
         {
-            worldManager = HasServerLogic ? (WorldManager) new WorldServerManager() : new WorldClientManager();
+            worldManager = HasServerLogic ? (WorldManager) new WorldServerManager(HasClientLogic) : new WorldClientManager(HasServerLogic);
 
             if (HasClientLogic)
             {
@@ -157,12 +158,12 @@ namespace Game
                 interfaceManager.InitializeWorld(worldManager);
             }
 
-            multiplayerManager.InitializeWorld(worldManager, HasServerLogic, HasClientLogic);
+            multiplayerManager.InitializeWorld(worldManager);
         }
 
         private void DeinitializeWorld()
         {
-            multiplayerManager.DeinitializeWorld(HasServerLogic, HasClientLogic);
+            multiplayerManager.DeinitializeWorld();
 
             if (HasClientLogic)
             {
@@ -190,7 +191,19 @@ namespace Game
             interfaceManager.ShowBattleScreen();
         }
 
+        private void OnDisconnectedFromMaster()
+        {
+            ProcessDisconnect(false);
+        }
+
         private void OnDisconnectedFromHost(UdpConnectionDisconnectReason reason)
+        {
+            ProcessDisconnect(true);
+
+            interfaceManager.LobbyScreen.SetStatusDisconnectDescription(reason);
+        }
+
+        private void ProcessDisconnect(bool forClient)
         {
             DeinitializeWorld();
 
@@ -198,8 +211,7 @@ namespace Game
             HasClientLogic = false;
 
             interfaceManager.HideBattleScreen();
-            interfaceManager.ShowLobbyScreen(false);
-            interfaceManager.LobbyScreen.SetStatusDisconnectDescription(reason);
+            interfaceManager.ShowLobbyScreen(forClient);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Core
             this.worldManager = worldManager;
 
             if (!worldManager.HasClientLogic)
-                mapUpdater.Activate(8);
+                mapUpdater.Activate(0);
         }
 
         internal void Dispose()

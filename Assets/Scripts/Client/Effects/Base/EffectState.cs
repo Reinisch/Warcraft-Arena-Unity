@@ -1,6 +1,6 @@
-﻿namespace Client.Effects
+﻿namespace Client
 {
-    public enum EffectState
+    internal enum EffectState
     {
         Unused,
         Idle,

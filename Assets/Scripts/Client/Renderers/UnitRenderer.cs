@@ -1,23 +1,16 @@
-﻿using Core;
+﻿using Client;
+using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
 public class UnitRenderer : MonoBehaviour
 {
-    [SerializeField, UsedImplicitly] private Transform castTag;
-    [SerializeField, UsedImplicitly] private Transform centerTag;
+    [SerializeField, UsedImplicitly] private EffectTagPositioner effectTagPositioner;
     [SerializeField, UsedImplicitly] private Animator animator;
 
     public Animator Animator => animator;
-    public Transform CastTag => castTag ?? transform;
-    public Transform CenterTag => centerTag ?? transform;
-
+    public EffectTagPositioner EffectTagPositioner => effectTagPositioner;
     public Unit Unit { get; private set; }
-
-    public void DoUpdate(int deltaTime)
-    {
-        UpdateAnimations(deltaTime);
-    }
 
     public void Initialize(Unit unit)
     {
@@ -27,6 +20,11 @@ public class UnitRenderer : MonoBehaviour
     public void Deinitialize()
     {
         Unit = null;
+    }
+
+    public void DoUpdate(int deltaTime)
+    {
+        UpdateAnimations(deltaTime);
     }
 
     private void UpdateAnimations(int deltaTime)

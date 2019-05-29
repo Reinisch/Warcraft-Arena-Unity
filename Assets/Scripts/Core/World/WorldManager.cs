@@ -10,8 +10,8 @@ namespace Core
         public UnitManager UnitManager { get; }
         public MapManager MapManager { get; }
 
-        public abstract bool HasServerLogic { get; }
-        public abstract bool HasClientLogic { get; }
+        public bool HasServerLogic { get; protected set; }
+        public bool HasClientLogic { get; protected set; }
 
         protected WorldManager()
         {

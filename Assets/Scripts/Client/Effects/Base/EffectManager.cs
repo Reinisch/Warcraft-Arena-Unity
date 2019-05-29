@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Common;
 
-namespace Client.Effects
+namespace Client
 {
     public class EffectManager : MonoBehaviour
     {
@@ -68,7 +68,7 @@ namespace Client.Effects
                 return effectToPlay;
             }
 
-            internal void StopEffect(EffectEntity effectEntity, bool isDestroyed)
+            internal void Stop(EffectEntity effectEntity, bool isDestroyed)
             {
                 if (isDestroyed)
                 {
@@ -87,13 +87,12 @@ namespace Client.Effects
                     {
                         activeEffects.Remove(effectEntity);
                         idleEffects.Add(effectEntity);
-                        effectEntity.State = EffectState.Idle;
                     }
 
                     effectEntity.gameObject.SetActive(false);
                 }
             }
-
+            
             private void AddEffect()
             {
                 EffectEntity newEffect = GameObjectPool.Take(effectSettings.Prototype, Vector3.zero, Quaternion.identity, effectManager.effectOrigin);

@@ -1,12 +1,11 @@
 ﻿using System;
-using Client.Effects;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client.Spells
 {
     [Serializable]
-    public class SpellVisualEffect
+    public class EffectSpellSettings : IEffectPositionerSettings
     {
         public enum UsageType
         {
@@ -16,10 +15,14 @@ namespace Client.Spells
             Aura,
         }
 
+        [SerializeField, UsedImplicitly] private bool attachToTag;
         [SerializeField, UsedImplicitly] private UsageType visualUsageType;
+        [SerializeField, UsedImplicitly] private EffectTagType tagType;
         [SerializeField, UsedImplicitly] private EffectSettings effectSettings;
 
+        public bool AttachToTag => attachToTag;
         public UsageType VisualUsageType => visualUsageType;
+        public EffectTagType EffectTagType => tagType;
         public EffectSettings EffectSettings => effectSettings;
     }
 }

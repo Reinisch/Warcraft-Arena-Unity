@@ -2,7 +2,10 @@
 {
     public class WorldClientManager : WorldManager
     {
-        public override bool HasServerLogic => false;
-        public override bool HasClientLogic => true;
+        public WorldClientManager(bool hasServerLogic)
+        {
+            HasServerLogic = hasServerLogic;
+            HasClientLogic = true;
+        }
     }
 }

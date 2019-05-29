@@ -1,53 +1,61 @@
-﻿using Client.Effects;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client
 {
-    public class EffectEntity : MonoBehaviour
+    internal class EffectEntity : MonoBehaviour, IEffectEntity
     {
         [SerializeField, UsedImplicitly] private ParticleSystem mainParticleSystem;
 
-        public long PlayId { get; private set; }
-        public EffectState State { get; internal set; }
-        public EffectSettings EffectSettings { get; private set; }
+        private EffectSettings effectSettings;
+
+        internal EffectState State { get; private set; }
+        internal long PlayId { get; private set; }
+
+        public Transform Transform => transform;
 
         internal void Initialize(EffectSettings effectSettings)
         {
             State = EffectState.Idle;
-            EffectSettings = effectSettings;
+            this.effectSettings = effectSettings;
         }
 
         internal void Deinitialize()
         {
             State = EffectState.Unused;
-            EffectSettings = null;
+            effectSettings = null;
         }
 
         internal void DoUpdate()
         {
             if (State == EffectState.Active && !mainParticleSystem.IsAlive(true))
-                Stop();
+                Stop(PlayId, false);
         }
 
         internal void Play(long playId)
         {
+            PlayId = playId;
+
             mainParticleSystem.Stop(true);
             mainParticleSystem.Play(true);
 
-            PlayId = playId;
             State = EffectState.Active;
         }
 
-        private void Stop()
+        private void Stop(long playId, bool isDestroyed)
         {
-            EffectSettings?.StopEffect(this, false);
+            if (PlayId == playId || isDestroyed)
+            {
+                effectSettings?.StopEffect(this, isDestroyed);
+
+                State = isDestroyed ? EffectState.Unused : EffectState.Idle;
+            }
         }
 
         [UsedImplicitly]
         private void OnDestroy()
         {
-            EffectSettings?.StopEffect(this, true);
+            Stop(PlayId, true);
         }
     }
 }

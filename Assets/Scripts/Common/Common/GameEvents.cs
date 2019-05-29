@@ -4,5 +4,6 @@
     {
         GameMapLoaded,
         DisconnectedFromHost,
+        DisconnectedFromMaster,
     }
 }

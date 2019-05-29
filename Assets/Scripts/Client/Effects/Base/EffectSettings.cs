@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Client.Effects
+namespace Client
 {
     [UsedImplicitly, CreateAssetMenu(fileName = "Effect Settings", menuName = "Game Data/Visual Effects/Effect Settings", order = 1)]
     public class EffectSettings : ScriptableObject
@@ -27,14 +27,27 @@ namespace Client.Effects
 
         internal void StopEffect(EffectEntity effectEntity, bool isDestroyed)
         {
-            EffectContainer.StopEffect(effectEntity, isDestroyed);
+            EffectContainer.Stop(effectEntity, isDestroyed);
         }
 
-        public EffectEntity PlayEffect(Vector3 position, Quaternion rotation, Transform parent)
+        public IEffectEntity PlayEffect(Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            return PlayEffect(position, rotation, parent, out _);
+        }
+
+        public IEffectEntity PlayEffect(Vector3 position, Quaternion rotation, Transform parent, out long playId)
         {
             Assert.IsNotNull(EffectContainer, $"Effect {name} is not initialized and won't play!");
 
-            return EffectContainer?.Play(position, rotation, parent);
+            if (EffectContainer != null)
+            {
+                EffectEntity newEffect = EffectContainer.Play(position, rotation, parent);
+                playId = newEffect?.PlayId ?? -1;
+                return newEffect;
+            }
+
+            playId = -1;
+            return null;
         }
     }
 }
