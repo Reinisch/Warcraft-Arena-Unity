@@ -54,8 +54,7 @@ namespace Core
 
         public void Destroy(T entity)
         {
-            if (entity.BoltEntity.isAttached)
-                Detach(entity);
+            entity.Detached();
 
             BoltNetwork.Destroy(entity.gameObject);
         }

@@ -70,6 +70,10 @@ namespace Core
         
         public override void Detached()
         {
+            // for instant manual client detach without waiting for Photon
+            if (!IsValid)
+                return;
+
             ResetMap();
 
             ThreatManager.Dispose();

@@ -26,9 +26,9 @@ namespace Core
         internal float GridCellSize => gridCellSize;
         internal BoxCollider BoundingBox => boundingBox;
         internal Transform DefaultSpawnPoint => defaultSpawnPoint;
-        internal IReadOnlyList<ScenarioAction> ScenarioActions => scenarioActions;
+        internal List<ScenarioAction> ScenarioActions => scenarioActions;
 
-        public IReadOnlyList<Transform> FindSpawnPoints(Team team)
+        public List<Transform> FindSpawnPoints(Team team)
         {
             return spawnInfos.Find(spawnInfo => spawnInfo.Team == team).SpawnPoints;
         }

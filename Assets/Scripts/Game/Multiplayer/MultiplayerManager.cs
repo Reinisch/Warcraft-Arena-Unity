@@ -154,11 +154,13 @@ namespace Game
 
         public override void Disconnected(BoltConnection connection)
         {
-            base.Connected(connection);
+            base.Disconnected(connection);
 
-            Debug.LogError("Disconnected: reason: " + connection.DisconnectReason);
             if (networkingMode == GameManager.NetworkingMode.Client)
+            {
+                Debug.LogError("Disconnected: reason: " + connection.DisconnectReason + " from " + connection);
                 EventHandler.ExecuteEvent(this, GameEvents.DisconnectedFromHost, connection.DisconnectReason);
+            }
         }
 
         public override void ConnectAttempt(UdpEndPoint endpoint, IProtocolToken token)

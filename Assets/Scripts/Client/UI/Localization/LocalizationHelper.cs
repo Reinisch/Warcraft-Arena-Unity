@@ -2,7 +2,7 @@
 {
     public static class LocalizationHelper
     {
-        public static string LobbyDisconnectedReasonStringFormat = "Disconnected! Reason: {0}";
+        public static string LobbyDisconnectedReasonStringFormat = "Session ended! Reason: {0}";
         public static string LobbyClientConnectFailedString = "Failed to connect";
         public static string LobbyClientConnectSuccessString = "Connected!";
         public static string LobbyClientStartFailedString = "Client failed to start";
