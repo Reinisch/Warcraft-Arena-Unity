@@ -4,7 +4,8 @@
         "Arena.Core",
         "Arena.Common",
         "Unity.TextMeshPro",
-        "Arena.Client.Effects"
+        "Arena.Client.Effects",
+        "Arena.Client.UI"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
@@ -13,5 +14,6 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": []
 }

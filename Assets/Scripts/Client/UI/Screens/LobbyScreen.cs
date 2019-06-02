@@ -1,10 +1,11 @@
 ﻿using Core;
 using JetBrains.Annotations;
 using UnityEngine;
+using Client.UI;
 
 namespace Client
 {
-    public class LobbyScreen : MonoBehaviour
+    public class LobbyScreen : UIWindowController<LobbyPanelType>
     {
         [SerializeField, UsedImplicitly] private LobbyPanel lobbyPanel;
 
@@ -12,33 +13,14 @@ namespace Client
         {
             gameObject.SetActive(false);
 
-            lobbyPanel.Initialize(photonManager, this);
+            RegisterPanel(lobbyPanel, new LobbyPanel.InitData(photonManager, this));
         }
 
         public void Deinitialize()
         {
-            gameObject.SetActive(false);
-
-            lobbyPanel.Deinitialize();
-        }
-
-        public void Show(bool autoStartClient)
-        {
-            gameObject.SetActive(true);
-
-            lobbyPanel.Show(autoStartClient);
-        }
-
-        public void Hide()
-        {
-            lobbyPanel.Hide();
+            UnregisterPanel(lobbyPanel, new UIWindow<LobbyPanelType>.DefaultDeinitData());
 
             gameObject.SetActive(false);
-        }
-
-        public void SetStatusDisconnectDescription(DisconnectReason reason)
-        {
-            lobbyPanel.SetStatusDisconnectDescription(reason);
         }
     }
 }

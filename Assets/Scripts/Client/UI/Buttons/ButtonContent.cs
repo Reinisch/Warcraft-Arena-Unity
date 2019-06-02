@@ -66,11 +66,6 @@ public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHand
         }*/
     }
 
-    public void Enable()
-    {
-        enabled = true;
-    }
-
     public void Activate()
     {
         if (enabled && BalanceManager.SpellInfosById.ContainsKey(itemId))

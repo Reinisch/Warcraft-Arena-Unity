@@ -5,7 +5,7 @@ using Common;
 
 namespace Core
 {
-    public class BalanceManager : SingletonGameObject<BalanceManager>
+    public class BalanceManager : SingletonBehaviour<BalanceManager>
     {
         [SerializeField, UsedImplicitly] private BalanceDefinition balanceDefinition;
 

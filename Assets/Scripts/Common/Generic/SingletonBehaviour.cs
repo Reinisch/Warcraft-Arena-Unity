@@ -2,7 +2,7 @@
 
 namespace Common
 {
-    public abstract class SingletonGameObject<T> : MonoBehaviour where T: MonoBehaviour
+    public abstract class SingletonBehaviour<T> : MonoBehaviour where T: MonoBehaviour
     {
         public static T Instance { get; private set; }
 

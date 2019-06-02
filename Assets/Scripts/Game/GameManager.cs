@@ -120,7 +120,7 @@ namespace Game
             gameTimer.Start();
 
             interfaceManager.HideBattleScreen();
-            interfaceManager.ShowLobbyScreen(true);
+            interfaceManager.ShowLobbyScreen(new LobbyPanel.ShowData(true));
 
             EventHandler.RegisterEvent<string, NetworkingMode>(multiplayerManager, GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(multiplayerManager, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
@@ -194,19 +194,15 @@ namespace Game
 
         private void OnDisconnectedFromMaster()
         {
-            ProcessDisconnect(false);
-
-            interfaceManager.LobbyScreen.SetStatusDisconnectDescription(DisconnectReason.DisconnectedFromMaster);
+            ProcessDisconnect(false, DisconnectReason.DisconnectedFromMaster);
         }
 
         private void OnDisconnectedFromHost(UdpConnectionDisconnectReason reason)
         {
-            ProcessDisconnect(true);
-
-            interfaceManager.LobbyScreen.SetStatusDisconnectDescription(reason.ToDisconnectReason());
+            ProcessDisconnect(true, reason.ToDisconnectReason());
         }
 
-        private void ProcessDisconnect(bool forClient)
+        private void ProcessDisconnect(bool forClient, DisconnectReason reason)
         {
             DeinitializeWorld();
 
@@ -214,7 +210,7 @@ namespace Game
             HasClientLogic = false;
 
             interfaceManager.HideBattleScreen();
-            interfaceManager.ShowLobbyScreen(forClient);
+            interfaceManager.ShowLobbyScreen(new LobbyPanel.ShowData(forClient, reason));
         }
     }
 }

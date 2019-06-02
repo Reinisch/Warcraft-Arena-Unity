@@ -2,7 +2,7 @@
 using Core;
 using UnityEngine;
 
-public class SoundManager : SingletonGameObject<SoundManager>
+public class SoundManager : SingletonBehaviour<SoundManager>
 {
     public new void Initialize()
     {

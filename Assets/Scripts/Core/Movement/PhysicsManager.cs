@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Core
 {
-    public class PhysicsManager : SingletonGameObject<PhysicsManager>
+    public class PhysicsManager : SingletonBehaviour<PhysicsManager>
     {
         public static class Mask
         {

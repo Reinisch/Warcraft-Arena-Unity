@@ -1,13 +1,7 @@
 {
-    "name": "Arena.Game",
+    "name": "Arena.Client.UI",
     "references": [
-        "Arena.Client",
-        "Arena.Core",
-        "Arena.Common",
-        "Arena.Server",
-        "Photon.Bolt",
-        "Arena.Client.Effects",
-        "Arena.Client.UI"
+        "GUID:a284d292de88366448b0c312a762d5b3"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

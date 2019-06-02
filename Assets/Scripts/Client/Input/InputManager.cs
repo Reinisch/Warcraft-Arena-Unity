@@ -3,7 +3,7 @@ using Core;
 
 namespace Client
 {
-    public class InputManager : SingletonGameObject<InputManager>
+    public class InputManager : SingletonBehaviour<InputManager>
     {
         public Player OriginalPlayer { get; private set; }
 

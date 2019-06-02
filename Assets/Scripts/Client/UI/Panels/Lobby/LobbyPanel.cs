@@ -1,14 +1,67 @@
 ﻿using System.Collections.Generic;
+using Client.UI;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Common;
 
 namespace Client
 {
-    public class LobbyPanel : Panel
+    public class LobbyPanel : UIWindow<LobbyPanelType>
     {
+        public struct InitData : IPanelInitData
+        {
+            private readonly PhotonBoltManager photonManager;
+            private readonly LobbyScreen lobbyScreen;
+
+            public InitData(PhotonBoltManager photonManager, LobbyScreen lobbyScreen)
+            {
+                this.photonManager = photonManager;
+                this.lobbyScreen = lobbyScreen;
+            }
+
+            public void Process<TPanelType>(UIPanel<TPanelType> panel)
+            {
+                Assert.IsTrue(panel is LobbyPanel);
+
+                if (panel is LobbyPanel lobbyPanel)
+                {
+                    lobbyPanel.photonManager = photonManager;
+                    lobbyPanel.lobbyScreen = lobbyScreen;
+                }
+            }
+        }
+
+        public struct ShowData : IPanelShowData<LobbyPanelType>
+        {
+            private bool AutoStartClient { get; }
+            private DisconnectReason? DisconnectReason { get; }
+
+            public LobbyPanelType PanelType => LobbyPanelType.LobbyPanel;
+
+            public ShowData(bool autoStartClient, DisconnectReason? disconnectReason = null)
+            {
+                AutoStartClient = autoStartClient;
+                DisconnectReason = disconnectReason;
+            }
+
+            public void Process(IPanel panel)
+            {
+                Assert.IsTrue(panel is LobbyPanel);
+
+                if (panel is LobbyPanel lobbyPanel)
+                {
+                    if (DisconnectReason.HasValue)
+                        lobbyPanel.statusLabel.text = string.Format(LocalizationHelper.LobbyDisconnectedReasonStringFormat, DisconnectReason.Value);
+
+                    if (AutoStartClient)
+                        lobbyPanel.OnClientButtonClicked();
+                }
+            }
+        }
+
         [SerializeField, UsedImplicitly] private Button startServerButton;
         [SerializeField, UsedImplicitly] private Button clientServerButton;
         [SerializeField, UsedImplicitly] private Transform mapsContentHolder;
@@ -30,10 +83,11 @@ namespace Client
         private LobbyMapSlot selectedMapSlot;
         private PhotonBoltManager photonManager;
 
-        public void Initialize(PhotonBoltManager photonManager, LobbyScreen lobbyScreen)
+        public override LobbyPanelType PanelType => LobbyPanelType.LobbyPanel;
+
+        protected override void PanelInitialized()
         {
-            this.photonManager = photonManager;
-            this.lobbyScreen = lobbyScreen;
+            base.PanelInitialized();
 
             startServerButton.onClick.AddListener(OnServerButtonClicked);
             clientServerButton.onClick.AddListener(OnClientButtonClicked);
@@ -58,7 +112,7 @@ namespace Client
             mapSlots[0].Select();
         }
 
-        public void Deinitialize()
+        protected override void PanelDeinitialized()
         {
             photonManager.EventSessionListUpdated -= OnPhotonManagerSessionListUpdated;
 
@@ -76,28 +130,30 @@ namespace Client
 
             startServerButton.onClick.RemoveListener(OnServerButtonClicked);
             clientServerButton.onClick.RemoveListener(OnClientButtonClicked);
+
+            base.PanelDeinitialized();
         }
 
-        public void Show(bool autoStartClient)
+        protected override void PanelShown()
         {
+            base.PanelShown();
+
             gameObject.SetActive(true);
             startClientTooltip.SetActive(true);
             noSessionsFoundTooltip.SetActive(false);
 
             ResetSessions();
-
-            if (autoStartClient)
-                OnClientButtonClicked();
         }
 
-        public void Hide()
+        protected override void PanelHidden()
         {
             gameObject.SetActive(false);
-        }
+            startClientTooltip.SetActive(false);
+            noSessionsFoundTooltip.SetActive(false);
 
-        public void SetStatusDisconnectDescription(DisconnectReason reason)
-        {
-            statusLabel.text = string.Format(LocalizationHelper.LobbyDisconnectedReasonStringFormat, reason);
+            ResetSessions();
+
+            base.PanelHidden();
         }
 
         private void OnLobbyMapSlotSelected(LobbyMapSlot lobbyMapSlot)
@@ -113,7 +169,7 @@ namespace Client
         {
             statusLabel.text = LocalizationHelper.LobbyConnectionStartString;
 
-            SetInputState(false);
+            UpdateInputState(false);
 
             photonManager.StartConnection(lobbySessionSlot.UdpSession, OnConnectSuccess, OnConnectFail);
         }
@@ -122,7 +178,7 @@ namespace Client
         {
             statusLabel.text = LocalizationHelper.LobbyServerStartString;
 
-            SetInputState(false);
+            UpdateInputState(false);
 
             photonManager.StartServer(new ServerRoomToken(serverNameInput.text, selectedMapSlot.MapDefinition.MapName), OnServerStartSuccess, OnServerStartFail);
         }
@@ -131,7 +187,7 @@ namespace Client
         {
             statusLabel.text = LocalizationHelper.LobbyClientStartString;
 
-            SetInputState(false);
+            UpdateInputState(false);
 
             photonManager.StartClient(OnClientStartSuccess, OnClientStartFail);
         }
@@ -140,14 +196,14 @@ namespace Client
         {
             statusLabel.text = LocalizationHelper.LobbyServerStartFailedString;
 
-            SetInputState(true);
+            UpdateInputState(true);
         }
 
         private void OnServerStartSuccess()
         {
             statusLabel.text = LocalizationHelper.LobbyServerStartSuccessString;
 
-            SetInputState(true);
+            UpdateInputState(true);
 
             lobbyScreen.Hide();
         }
@@ -157,7 +213,7 @@ namespace Client
             statusLabel.text = LocalizationHelper.LobbyClientStartFailedString;
             startClientTooltip.SetActive(true);
 
-            SetInputState(true);
+            UpdateInputState(true);
         }
 
         private void OnClientStartSuccess()
@@ -166,21 +222,21 @@ namespace Client
             startClientTooltip.SetActive(false);
             noSessionsFoundTooltip.SetActive(photonManager.Sessions.Count == 0);
 
-            SetInputState(true);
+            UpdateInputState(true);
         }
 
         private void OnConnectFail()
         {
             statusLabel.text = LocalizationHelper.LobbyClientConnectFailedString;
 
-            SetInputState(true);
+            UpdateInputState(true);
         }
 
         private void OnConnectSuccess()
         {
             statusLabel.text = LocalizationHelper.LobbyClientConnectSuccessString;
 
-            SetInputState(true);
+            UpdateInputState(true);
 
             lobbyScreen.Hide();
         }

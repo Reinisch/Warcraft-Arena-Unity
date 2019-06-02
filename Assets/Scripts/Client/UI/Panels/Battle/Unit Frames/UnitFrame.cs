@@ -1,13 +1,13 @@
 ﻿using Core;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class UnitFrame : MonoBehaviour
 {
     [SerializeField, UsedImplicitly] private AttributeBar health;
     [SerializeField, UsedImplicitly] private AttributeBar mainResource;
-    [SerializeField, UsedImplicitly] private Text unitName;
+    [SerializeField, UsedImplicitly] private TextMeshProUGUI unitName;
 
     private Unit unit;
 

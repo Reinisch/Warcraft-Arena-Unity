@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Client
 {
-    public class RenderManager : SingletonGameObject<RenderManager>
+    public class RenderManager : SingletonBehaviour<RenderManager>
     {
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
         [SerializeField, UsedImplicitly] private List<SpellVisualSettings> spellVisualSettings;

@@ -1,15 +1,14 @@
 ﻿using Client;
+using Client.UI;
 using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 using Core;
 
-public class InterfaceManager : SingletonGameObject<InterfaceManager>
+public class InterfaceManager : SingletonBehaviour<InterfaceManager>
 {
     [SerializeField, UsedImplicitly] private LobbyScreen lobbyScreen;
     [SerializeField, UsedImplicitly] private BattleScreen battleScreen;
-
-    public LobbyScreen LobbyScreen => lobbyScreen;
 
     public void Initialize(PhotonBoltManager photonManager, PhotonBoltClientListener clientListener)
     {
@@ -42,9 +41,9 @@ public class InterfaceManager : SingletonGameObject<InterfaceManager>
         battleScreen.DoUpdate(deltaTime);
     }
 
-    public void ShowLobbyScreen(bool autoStartClient)
+    public void ShowLobbyScreen<TData>(TData showData) where TData : struct, IPanelShowData<LobbyPanelType> 
     {
-        lobbyScreen.Show(autoStartClient);
+        lobbyScreen.Show(showData);
     }
 
     public void HideLobbyScreen()
