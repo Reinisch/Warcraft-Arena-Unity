@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine.Assertions;
+using Common;
 
 namespace Core
 {
@@ -94,42 +94,37 @@ namespace Core
 
         #region Application, updates and removal
 
-        public static Aura TryRefreshStackOrCreate(SpellInfo spellProto, ulong castId, Unit owner, Unit caster, ref bool refresh, List<int> baseAmount, ulong casterId)
+        public static Aura TryRefreshStackOrCreate(SpellInfo spellProto, Unit owner, ref bool refresh, List<int> baseAmount, ulong castId, ulong targetCasterId, ulong originalCasterId)
         {
             Assert.IsNotNull(spellProto);
             Assert.IsNotNull(owner);
-            Assert.IsTrue(caster != null || casterId != 0);
+            Assert.IsTrue(originalCasterId != 0 || targetCasterId != 0);
 
             if (refresh)
                 refresh = false;
 
-            var foundAura = owner.TryStackingOrRefreshingExistingAura(spellProto, caster, baseAmount, casterId);
-            if (foundAura != null)
-            {
-                // we've here aura, which script triggered removal after modding stack amount
-                // check the state here, so we won't create new Aura object
-                if (foundAura.IsRemoved())
-                    return null;
+            var foundAura = owner.TryStackingOrRefreshingExistingAura(spellProto, originalCasterId, targetCasterId, baseAmount);
+            if (foundAura == null)
+                return Create(spellProto, owner, baseAmount, castId, originalCasterId, targetCasterId);
 
-                refresh = true;
-                return foundAura;
-            }
-            return Create(spellProto, castId, owner, caster, baseAmount, casterId);
+            if (foundAura.IsRemoved())
+                return null;
+
+            refresh = true;
+            return foundAura;
         }
 
-        public static Aura Create(SpellInfo spellProto, ulong castId, Unit owner, Unit caster, List<int> baseAmount, ulong casterId)
+        public static Aura Create(SpellInfo spellProto, Unit owner, List<int> baseAmount, ulong castId, ulong originalCasterId, ulong targetCasterId)
         {
             Assert.IsNotNull(spellProto);
             Assert.IsNotNull(owner);
-            Assert.IsTrue(caster != null || casterId != 0);
+            Assert.IsTrue(originalCasterId != 0 || targetCasterId != 0);
 
-            if (casterId != 0)
-                caster = owner.NetworkId == casterId ? owner : owner.Map.FindMapEntity<Unit>(casterId);
-            else
-                casterId = caster.NetworkId;
+            if (originalCasterId == 0)
+                originalCasterId = targetCasterId;
 
-            Aura aura = new UnitAura(spellProto, castId, owner, caster, baseAmount, casterId);
-            // aura can be removed in Unit.AddAura call
+            Unit caster = owner.NetworkId == originalCasterId ? owner : owner.Map.FindMapEntity<Unit>(originalCasterId);
+            Aura aura = new UnitAura(spellProto, owner, caster, baseAmount, castId);
             return aura.IsRemoved() ? null : aura;
         }
 

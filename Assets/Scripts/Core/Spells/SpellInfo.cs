@@ -305,7 +305,7 @@ namespace Core
             if (unitTarget != caster && (caster.IsControlledByPlayer() || !IsPositive()) && unitTarget.EntityType == EntityType.Player)
             {
                 var playerTarget = (Player) unitTarget ;
-                if (!playerTarget.IsVisible || playerTarget.IsGameMaster())
+                if (!playerTarget.IsVisible)
                     return SpellCastResult.BmOrInvisgod;
             }
 

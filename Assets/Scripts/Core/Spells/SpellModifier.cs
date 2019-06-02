@@ -1,12 +1,10 @@
-﻿using Common;
-
-namespace Core
+﻿namespace Core
 {
     public class SpellModifier
     {
-        public Aura OwnerAura { get; private set; }
-        public SpellModOp Mod { get; set; }
-        public SpellModType Type { get; set; }
+        private Aura OwnerAura { get; set; }
+        private SpellModOp Mod { get; set; }
+        private SpellModType Type { get; set; }
 
         public short Charges { get; set; }
         public int Value { get; set; }

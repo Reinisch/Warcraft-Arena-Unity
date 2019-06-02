@@ -2,7 +2,6 @@
 using Common;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Core
 {

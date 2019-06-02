@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Client;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -10,31 +9,11 @@ namespace Core
     {
         [SerializeField, UsedImplicitly, Header("Player"), Space(10)] private WarcraftController controller;
 
-        protected PlayerExtraFlags extraFlags;
-        protected SpecializationInfo specializationInfo;
-
-        protected Dictionary<SpellModOp, List<SpellModifier>> spellMods;
-        protected Dictionary<BaseModGroup, Dictionary<BaseModType, float>> auraBaseMod;
-        protected Dictionary<CombatRating, short> baseRatingValue;
-
-        protected uint baseSpellPower;
-        protected uint baseManaRegen;
-        protected uint baseHealthRegen;
-        protected int spellPenetrationItemMod;
-
-        protected bool canParry;
-        protected bool canBlock;
-        protected bool canTitanGrip;
-        protected Runes runes;
-
-        private uint[] runeGraceCooldown = new uint[PlayerHelper.MaxRunes];
-        private uint[] lastRuneGraceTimers = new uint[PlayerHelper.MaxRunes];
-
-        public override EntityType EntityType => EntityType.Player;
-        public override bool AutoScoped => true;
-
-        public GridReference<Player> GridRef { get; } = new GridReference<Player>();
+        public GridReference<Player> GridReference { get; } = new GridReference<Player>();
         public WarcraftController Controller => controller;
+        
+        public override bool AutoScoped => true;
+        public override EntityType EntityType => EntityType.Player;
         public override DeathState DeathState { get => base.DeathState; set => throw new NotImplementedException(); }
 
         public override bool IsImmunedToSpellEffect(SpellInfo spellInfo, int index)
@@ -46,12 +25,6 @@ namespace Core
         {
             visitor.Visit(this);
         }
-
-        #region Player flags
-
-        public bool IsGameMaster() { return (extraFlags & PlayerExtraFlags.GmOn) != 0; }
-
-        #endregion
 
         #region Target methods
 
@@ -85,7 +58,6 @@ namespace Core
         public override void UpdateArmor() { throw new NotImplementedException(); }
         public override void UpdateMaxHealth() { throw new NotImplementedException(); }
         public override void UpdateMaxPower(PowerType power) { throw new NotImplementedException(); }
-        public override void UpdateAttackPowerAndDamage(bool ranged = false) { throw new NotImplementedException(); }
 
         public void ApplySpellPowerBonus(int amount, bool apply) { throw new NotImplementedException(); }
         public void UpdateSpellDamageAndHealingBonus() { throw new NotImplementedException(); }
@@ -95,26 +67,10 @@ namespace Core
         public void UpdateMastery() { throw new NotImplementedException(); }
         public bool CanUseMastery() { throw new NotImplementedException(); }
 
-        public override void CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bool addTotalPct, ref float minDamage, ref float maxDamage) { throw new NotImplementedException(); }
-
         public void RecalculateRating(CombatRating cr) { ApplyRatingMod(cr, 0, true); }
         public void GetDodgeFromAgility(ref float diminishing, ref float nondiminishing) { throw new NotImplementedException(); }
         public float GetRatingMultiplier(CombatRating cr) { throw new NotImplementedException(); }
         public float GetRatingBonusValue(CombatRating cr) { throw new NotImplementedException(); }
-
-        /// Returns base spellpower bonus from spellpower stat on items, without spellpower from intellect stat
-        public uint GetBaseSpellPowerBonus() { return baseSpellPower; }
-        public int GetSpellPenetrationItemMod() { return spellPenetrationItemMod; }
-
-        public float GetExpertiseDodgeOrParryReduction(WeaponAttackType attType) { throw new NotImplementedException(); }
-        public void UpdateBlockPercentage() { throw new NotImplementedException(); }
-        public void UpdateCritPercentage(WeaponAttackType attType) { throw new NotImplementedException(); }
-        public void UpdateAllCritPercentages() { throw new NotImplementedException(); }
-        public void UpdateParryPercentage() { throw new NotImplementedException(); }
-        public void UpdateDodgePercentage() { throw new NotImplementedException(); }
-        public void UpdateMeleeHitChances() { throw new NotImplementedException(); }
-        public void UpdateRangedHitChances() { throw new NotImplementedException(); }
-        public void UpdateSpellHitChances() { throw new NotImplementedException(); }
 
         public void UpdateSpellCritChance() { throw new NotImplementedException(); }
         public void UpdateArmorPenetration(int amount) { throw new NotImplementedException(); }
@@ -122,41 +78,17 @@ namespace Core
         public void ApplyManaRegenBonus(int amount, bool apply) { throw new NotImplementedException(); }
         public void ApplyHealthRegenBonus(int amount, bool apply) { throw new NotImplementedException(); }
         public void UpdateManaRegen() { throw new NotImplementedException(); }
-        public uint GetRuneTimer(byte index) { return runeGraceCooldown[index]; }
-        public void SetRuneTimer(byte index, uint timer) { runeGraceCooldown[index] = timer; }
-        public uint GetLastRuneGraceTimer(byte index) { return lastRuneGraceTimers[index]; }
-        public void SetLastRuneGraceTimer(byte index, uint timer) { lastRuneGraceTimers[index] = timer; }
-        public void UpdateAllRunesRegen() { throw new NotImplementedException(); }
-
-        public override uint GetBlockPercent() { return GetUintValue(EntityFields.ShieldBlock); }
-        public bool CanParry() { return canParry; }
-        public void SetCanParry(bool value) { throw new NotImplementedException(); }
-        public bool CanBlock() { return canBlock; }
-        public void SetCanBlock(bool value) { throw new NotImplementedException(); }
-        public bool CanTitanGrip() { return canTitanGrip; }
-        public void SetCanTitanGrip(bool value) { canTitanGrip = value; }
-        public bool CanTameExoticPets() { return IsGameMaster() || HasAuraType(AuraType.AllowTamePetType); }
 
         public void SetRegularAttackTime() { throw new NotImplementedException(); }
-        public void SetBaseModValue(BaseModGroup modGroup, BaseModType modType, float value) { auraBaseMod[modGroup][modType] = value; }
         public void HandleBaseModValue(BaseModGroup modGroup, BaseModType modType, float amount, bool apply) { throw new NotImplementedException(); }
         public float GetBaseModValue(BaseModGroup modGroup, BaseModType modType) { throw new NotImplementedException(); }
         public float GetTotalBaseModValue(BaseModGroup modGroup) { throw new NotImplementedException(); }
-        public float GetTotalPercentageModValue(BaseModGroup modGroup) { return auraBaseMod[modGroup][BaseModType.FlatMod] + auraBaseMod[modGroup][BaseModType.PercentMod]; }
         public void _ApplyAllStatBonuses() { throw new NotImplementedException(); }
         public void _RemoveAllStatBonuses() { throw new NotImplementedException(); }
         public void ResetAllPowers() { throw new NotImplementedException(); }
 
         public bool IsImmuneToEnvironmentalDamage() { throw new NotImplementedException(); }
         public uint EnvironmentalDamage(EnviromentalDamage type, int damage) { throw new NotImplementedException(); }
-
-        public byte GetRunesState() { return runes.RuneState; }
-        public uint GetRuneCooldown(byte index) { return runes.Cooldown[index]; }
-        public uint GetRuneBaseCooldown() { throw new NotImplementedException(); }
-        public void SetRuneCooldown(byte index, uint cooldown, bool casted = false) { throw new NotImplementedException(); }
-        public void ResyncRunes() { throw new NotImplementedException(); }
-        public void AddRunePower(byte index) { throw new NotImplementedException(); }
-        public void InitRunes() { throw new NotImplementedException(); }
 
         #endregion
     }

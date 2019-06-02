@@ -6,22 +6,22 @@ namespace Core
 {
     public class EntityManager<T> where T : Entity
     {
-        protected readonly Dictionary<ulong, T> entitiesById = new Dictionary<ulong, T>();
-        protected readonly List<T> entities = new List<T>();
-        protected readonly WorldManager worldManager;
+        protected readonly Dictionary<ulong, T> EntitiesById = new Dictionary<ulong, T>();
+        protected readonly List<T> Entities = new List<T>();
+        protected readonly WorldManager WorldManager;
 
         public event Action<T> EventEntityAttached;
         public event Action<T> EventEntityDetach;
 
         protected EntityManager(WorldManager worldManager)
         {
-            this.worldManager = worldManager;
+            WorldManager = worldManager;
         }
 
         public virtual void Dispose()
         {
-            while (entities.Count > 0)
-                Destroy(entities[0]);
+            while (Entities.Count > 0)
+                Destroy(Entities[0]);
         }
 
         public TEntity Create<TEntity>(PrefabId prefabId, Entity.CreateInfo createInfo = null)
@@ -31,8 +31,8 @@ namespace Core
 
         public void Attach(T entity)
         {
-            entities.Add(entity);
-            entitiesById.Add(entity.NetworkId, entity);
+            Entities.Add(entity);
+            EntitiesById.Add(entity.NetworkId, entity);
 
             if(entity.AutoScoped)
                 entity.BoltEntity.SetScopeAll(true);
@@ -46,8 +46,8 @@ namespace Core
         {
             EventEntityDetach?.Invoke(entity);
 
-            entities.Remove(entity);
-            entitiesById.Remove(entity.NetworkId);
+            Entities.Remove(entity);
+            EntitiesById.Remove(entity.NetworkId);
 
             EntityDetached(entity);
         }
@@ -62,19 +62,19 @@ namespace Core
 
         public virtual void SetScope(BoltConnection connection, bool inScope)
         {
-            foreach (T entity in entities)
+            foreach (T entity in Entities)
                 entity.BoltEntity.SetScope(connection, inScope);
         }
 
         public void Accept(IVisitor visitor)
         {
-            foreach (var entity in entities)
+            foreach (var entity in Entities)
                 entity.Accept(visitor);
         }
 
         public T Find(ulong networkId)
         {
-            return entitiesById.LookupEntry(networkId);
+            return EntitiesById.LookupEntry(networkId);
         }
 
         protected virtual void EntityAttached(T entity)

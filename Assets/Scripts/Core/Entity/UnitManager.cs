@@ -5,8 +5,8 @@ namespace Core
 {
     public class UnitManager : EntityManager<Unit>
     {
-        protected readonly List<Player> players = new List<Player>();
-        protected readonly Dictionary<Collider, Unit> unitsByColliders = new Dictionary<Collider, Unit>();
+        private readonly List<Player> players = new List<Player>();
+        private readonly Dictionary<Collider, Unit> unitsByColliders = new Dictionary<Collider, Unit>();
 
         public UnitManager(WorldManager worldManager) : base(worldManager)
         {
@@ -49,7 +49,7 @@ namespace Core
 
         public void Accept(IUnitVisitor visitor)
         {
-            foreach (var entity in entities)
+            foreach (var entity in Entities)
                 entity.Accept(visitor);
         }
 

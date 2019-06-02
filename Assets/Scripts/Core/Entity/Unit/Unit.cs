@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -28,31 +27,12 @@ namespace Core
 
         #region Unit data
 
-        protected Dictionary<SpellSchools, float> threatModifier;
-        protected Dictionary<WeaponAttackType, uint> baseAttackSpeed;
-        protected Dictionary<WeaponAttackType, float> modAttackSpeedPct;
-        protected Dictionary<WeaponAttackType, uint> attackTimer;
-        protected Dictionary<int, List<Aura>> ownedAuras;
-        protected Dictionary<Guid, AuraApplication> appliedAuras;
-        protected Dictionary<Stats, float> createStats = new Dictionary<Stats, float>();
-        protected Dictionary<UnitMods, Dictionary<UnitModifierType, float>> auraModifiersGroup;
-        protected Dictionary<WeaponAttackType, Dictionary<WeaponDamageRange, float>> weaponDamage;
-        protected Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
-        protected Dictionary<CurrentSpellTypes, Spell> currentSpells;
-        protected Dictionary<AuraStateType, AuraApplication> auraStateAuras;    // used for improve performance of aura state checks on aura apply/remove
-        protected Dictionary<AuraType, List<AuraEffect>> modifierAuras;         // all modifier auras
-        protected List<AuraApplication> interruptableAuras;                     // auras which have interrupt mask applied on unit
-        protected List<AuraApplication> visibleAuras;
-        protected List<AuraApplication> visibleAurasToUpdate;
-        protected List<AuraEffect> modAuras;
-        protected List<Aura> removedAuras;
-        protected List<Aura> singleCastAuras;                                   // cast singlecast auras
-        protected DynamicEntity dynEntity;
-        protected GameEntity gameEntity;
-        protected List<Unit> attackers;
+        private Dictionary<int, List<Aura>> ownedAuras = new Dictionary<int, List<Aura>>();
+        private Dictionary<Stats, float> createStats = new Dictionary<Stats, float>();
+        private Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
+        private List<AuraApplication> visibleAuras;
 
-        protected IUnitState unitState;
-        protected UnitAI ai;
+        private IUnitState unitState;
 
         public bool IsMovementBlocked => HasUnitState(UnitState.Root) || HasUnitState(UnitState.Stunned);
 
@@ -64,6 +44,7 @@ namespace Core
         public UnitState UnitState { get; set; }
         public UnitMoveType MoveType { get; set; }
         public float CombatReach { get; private set; }
+        public UnitAI AI { get; private set; }
 
         #endregion
 
@@ -82,6 +63,7 @@ namespace Core
 
             MovementInfo.Attached(unitState, this);
             WorldManager.UnitManager.Attach(this);
+            ThreatManager = new ThreatManager(this);
 
             SetMap(WorldManager.FindMap(1));
         }
@@ -90,6 +72,7 @@ namespace Core
         {
             ResetMap();
 
+            ThreatManager.Dispose();
             WorldManager.UnitManager.Detach(this);
             MovementInfo.Detached();
 
@@ -142,7 +125,6 @@ namespace Core
 
         #endregion
 
-
         #region Health and powers
 
         public bool IsFullHealth() { return Health== MaxHealth; }
@@ -174,7 +156,6 @@ namespace Core
 
         #endregion
 
-
         #region Attack and cast time
 
         public int GetBaseAttackTime(WeaponAttackType att) { return 0; }
@@ -184,7 +165,6 @@ namespace Core
         public void ApplyCastTimePercentMod(float val, bool apply) { }
 
         #endregion
-
 
         #region Factions and relations
 
@@ -203,7 +183,6 @@ namespace Core
         public void GetPartyMembers(List<Unit> units) { }
 
         #endregion
-
 
         #region Hit and damage calculation and trigger checks
 
@@ -388,7 +367,6 @@ namespace Core
 
         #endregion
 
-
         #region Combat State
 
         public bool IsInCombat()
@@ -414,7 +392,6 @@ namespace Core
         }
 
         #endregion
-
 
         #region Aura and target states
 
@@ -442,7 +419,6 @@ namespace Core
 
         #endregion
 
-
         #region Spell casting
 
         public int HealBySpell(Unit victim, SpellInfo spellInfo, int addHealth, bool critical = false) { return 0; }
@@ -458,7 +434,6 @@ namespace Core
         public void SendSpellDamageImmune(Unit target, uint spellId, bool isPeriodic) { }
 
         #endregion
-
 
         #region Movement changes and states
 
@@ -476,7 +451,6 @@ namespace Core
         public bool IsWalking() { return MovementInfo.HasMovementFlag(MovementFlags.Walking); }
         
         #endregion
-
 
         #region Targets, controls, pets
 
@@ -572,20 +546,19 @@ namespace Core
 
         #endregion
 
-
         #region Aura helpers
 
         // aura apply/remove helpers - you should better not use these
-        public Aura TryStackingOrRefreshingExistingAura(SpellInfo newAuraSpellInfo, Unit caster, List<int> baseAmount = null, ulong casterId = 0)
+        public Aura TryStackingOrRefreshingExistingAura(SpellInfo newAuraSpellInfo, ulong originalCasterId, ulong targetCasterId, List<int> baseAmount = null)
         {
-            Assert.IsTrue(casterId != 0 || caster != null);
+            Assert.IsTrue(originalCasterId != 0 || targetCasterId != 0);
 
             // check if these can stack anyway
-            if (casterId == 0 && !newAuraSpellInfo.IsStackableOnOneSlotWithDifferentCasters())
-                casterId = caster.NetworkId;
+            if (originalCasterId == 0 && !newAuraSpellInfo.IsStackableOnOneSlotWithDifferentCasters())
+                originalCasterId = targetCasterId;
 
             // find current aura from spell and change it's stackamount, or refresh it's duration
-            var foundAura = GetOwnedAura(newAuraSpellInfo.Id, casterId, 0);
+            var foundAura = GetOwnedAura(newAuraSpellInfo.Id, originalCasterId, 0);
             if (foundAura == null)
                 return null;
 
@@ -607,7 +580,13 @@ namespace Core
             foundAura.ModStackAmount(1);
             return foundAura;
         }
-        public void AddAura(UnitAura aura, Unit caster) { }
+        public void AddAura(UnitAura aura, Unit caster)
+        {
+            if (!ownedAuras.ContainsKey(aura.SpellInfo.Id))
+                ownedAuras[aura.SpellInfo.Id] = new List<Aura>();
+
+            ownedAuras[aura.SpellInfo.Id].Add(aura);
+        }
         public AuraApplication CreateAuraApplication(Aura aura, uint effMask) { return null; }
         public void ApplyAuraEffect(Aura aura, byte effIndex) { }
         public void ApplyAura(AuraApplication aurApp, uint effMask) { }
@@ -672,7 +651,6 @@ namespace Core
         public void RemoveAllAuraStatMods() { }
         public void ApplyAllAuraStatMods() { }
 
-        public List<AuraEffect> GetAuraEffectsByType(AuraType type) { return modAuras.FindAll(aura => aura.GetAuraType() == type); }
         public AuraEffect GetAuraEffect(uint spellId, int effIndex, Guid casterGuid = default) { return null; }
         public AuraEffect GetAuraEffectOfRankedSpell(uint spellId, int effIndex, Guid casterGuid = default) { return null; }
         public AuraEffect GetAuraEffect(AuraType type, SpellFamilyNames family, uint iconId, int effIndex) { return null; }
@@ -723,7 +701,6 @@ namespace Core
 
         #endregion
 
-
         #region Stat helpers
 
         public float GetResistanceBuffMods(SpellSchools school, bool positive) { return 0.0f; }
@@ -746,14 +723,12 @@ namespace Core
 
         #endregion
 
-
         #region Spell helpers
 
         public void SetCurrentCastSpell(Spell spell) { }
         public void InterruptSpell(CurrentSpellTypes spellType, bool withDelayed = true, bool withInstant = true) { }
         public void FinishSpell(CurrentSpellTypes spellType, bool ok = true) { }
 
-        public Spell GetCurrentSpell(CurrentSpellTypes spellType) { return currentSpells[spellType]; }
         public Spell FindCurrentSpellBySpellId(uint spellID) { return null; }
         public int GetCurrentSpellCastTime(uint spellID) { return 0; }
         public virtual SpellInfo GetCastSpellInfo(SpellInfo spellInfo) { return null; }
@@ -766,17 +741,12 @@ namespace Core
 
         #endregion
 
-
         #region Stat system
 
         public bool HandleStatModifier(UnitMods unitMod, UnitModifierType modifierType, float amount, bool apply) { return false; }
-        public void SetModifierValue(UnitMods unitMod, UnitModifierType modifierType, float value) { auraModifiersGroup[unitMod][modifierType] = value; }
         public float GetModifierValue(UnitMods unitMod, UnitModifierType modifierType) { return 0.0f; }
         public float GetTotalStatValue(Stats stat) { return 0.0f; }
         public float GetTotalAuraModValue(UnitMods unitMod) { return 0.0f; }
-        public SpellSchools GetSpellSchoolByAuraGroup(UnitMods unitMod) { return SpellSchools.Normal; }
-        public Stats GetStatByAuraGroup(UnitMods unitMod) { return Stats.Agility; }
-        public PowerType GetPowerTypeByAuraGroup(UnitMods unitMod) { return PowerType.Mana; }
 
         public virtual bool UpdateStats(Stats stat) { return false; }
         public virtual bool UpdateAllStats() { return false; }
@@ -785,24 +755,14 @@ namespace Core
         public virtual void UpdateArmor() { }
         public virtual void UpdateMaxHealth() { }
         public virtual void UpdateMaxPower(PowerType power) { }
-        public virtual void UpdateAttackPowerAndDamage(bool ranged = false) { }
-        public virtual void UpdateDamagePhysical(WeaponAttackType attType) { }
-        public float GetTotalAttackPowerValue(WeaponAttackType attType) { return 0.0f; }
-        public float GetWeaponDamageRange(WeaponAttackType attType, WeaponDamageRange type) { return 0.0f; }
-        public void SetBaseWeaponDamage(WeaponAttackType attType, WeaponDamageRange damageRange, float value) { weaponDamage[attType][damageRange] = value; }
-        public virtual void CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bool addTotalPct, ref float minDamage, ref float maxDamage) { }
-        public uint CalculateDamage(WeaponAttackType attType, bool normalized, bool addTotalPct) { return 0; }
-        public float GetApMultiplier(WeaponAttackType attType, bool normalized) { return 0.0f; }
 
         #endregion
-
 
         #region Display info
 
         public List<AuraApplication> GetVisibleAuras() { return visibleAuras; }
         public bool HasVisibleAura(AuraApplication aurApp) { return visibleAuras.Contains(aurApp); }
         public void SetVisibleAura(AuraApplication aurApp) { }
-        public void SetVisibleAuraUpdate(AuraApplication aurApp) { visibleAurasToUpdate.Add(aurApp); }
         public void RemoveVisibleAura(AuraApplication aurApp) { }
         public void UpdateInterruptMask() { }
 
@@ -817,7 +777,6 @@ namespace Core
         public uint GetModelForTotem(PlayerTotemType totemType) { return 0; }
 
         #endregion
-
 
         #region  Dynamic object management
 
@@ -836,7 +795,6 @@ namespace Core
         public void RemoveAllGameObjects() { }
 
         #endregion
-
 
         #region Spell and aura bonus calculations
 
@@ -925,7 +883,6 @@ namespace Core
         public float CalculateLevelPenalty(SpellInfo spellProto) { return 0; }
 
         #endregion
-
 
         #region Speed, motion and movement
 
@@ -1033,7 +990,6 @@ namespace Core
         public void SetControlled(bool apply, UnitState state) { }
 
         #endregion
-
 
         public bool IsMoving() { return MovementInfo.HasMovementFlag(MovementFlags.MaskMoving); }
         public bool IsTurning() { return MovementInfo.HasMovementFlag(MovementFlags.MaskTurning); }

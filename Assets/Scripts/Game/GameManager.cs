@@ -105,6 +105,7 @@ namespace Game
         private void Initialize()
         {
             DontDestroyOnLoad(gameObject);
+            Assert.RaiseExceptions = Application.isEditor;
 
             gameObjectPool.Initialize();
             balanceManager.Initialize();

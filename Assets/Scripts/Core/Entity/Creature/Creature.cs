@@ -5,7 +5,7 @@
         public override EntityType EntityType => EntityType.Creature;
         public override bool AutoScoped => true;
 
-        public CreatureAI AI => ai as CreatureAI;
+        public new CreatureAI AI => base.AI as CreatureAI;
         public GridReference<Creature> GridRef { get; } = new GridReference<Creature>();
 
         internal override void DoUpdate(int timeDelta)

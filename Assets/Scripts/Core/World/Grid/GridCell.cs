@@ -38,7 +38,7 @@ namespace Core
                     creature.GridRef.Link(creature, worldCreatures);
                     break;
                 case Player player:
-                    player.GridRef.Link(player, worldPlayers);
+                    player.GridReference.Link(player, worldPlayers);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(worldEntity));
@@ -56,8 +56,8 @@ namespace Core
                     creature.GridRef.Invalidate();
                     break;
                 case Player player:
-                    Assert.IsTrue(worldPlayers.Contains(player.GridRef));
-                    player.GridRef.Invalidate();
+                    Assert.IsTrue(worldPlayers.Contains(player.GridReference));
+                    player.GridReference.Invalidate();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(worldEntity));

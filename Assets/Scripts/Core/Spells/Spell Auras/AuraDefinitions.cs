@@ -389,7 +389,6 @@ namespace Core
         OverrideAutoattackWithMeleeSpell = 361,  // NYI
         ModNextSpell = 363,  // Used by 101601 Throw Totem - causes the client to initialize spell cast with specified spell
         MaxFarClipPlane = 365,  // Overrides client's View Distance setting to max("Fair", current_setting) and turns off terrain display
-        OverrideSpellPowerByAPPct = 366,  // NYI - Sets spellpower equal to % of attack power, discarding all other bonuses (from gear and buffs)
         OverrideAutoattackWithRangedSpell = 367,  // NYI
         EnablePowerBarTimer = 369,
         SetFairFarClip = 370,  // Overrides client's View Distance setting to max("Fair", current_setting)

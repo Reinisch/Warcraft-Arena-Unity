@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditorInternal;
 using Core;
 using JetBrains.Annotations;
+using Common;
 
 [CustomEditor(typeof(Entity))]
 public class EntityEditor : Editor
@@ -21,6 +22,8 @@ public class EntityEditor : Editor
     private void OnEnable()
     {
         FieldInfo field = typeof(Entity).GetField("defaultFieldValues", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+        Assert.IsNotNull(field);
+
         entity = (Entity)target;
         entityFieldList = (List<EntityField>)field.GetValue(entity);
 
