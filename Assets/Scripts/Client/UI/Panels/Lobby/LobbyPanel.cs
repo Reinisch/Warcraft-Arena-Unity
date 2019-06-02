@@ -20,6 +20,9 @@ namespace Client
         [SerializeField, UsedImplicitly] private TextMeshProUGUI serverNameInput;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI statusLabel;
 
+        [SerializeField, UsedImplicitly] private GameObject startClientTooltip;
+        [SerializeField, UsedImplicitly] private GameObject noSessionsFoundTooltip;
+
         private readonly List<LobbyMapSlot> mapSlots = new List<LobbyMapSlot>();
         private readonly List<LobbySessionSlot> sessionSlots = new List<LobbySessionSlot>();
         private const int SessionDisplayCount = 20;
@@ -79,6 +82,8 @@ namespace Client
         public void Show(bool autoStartClient)
         {
             gameObject.SetActive(true);
+            startClientTooltip.SetActive(true);
+            noSessionsFoundTooltip.SetActive(false);
 
             ResetSessions();
 
@@ -91,7 +96,7 @@ namespace Client
             gameObject.SetActive(false);
         }
 
-        public void SetStatusDisconnectDescription(UdpConnectionDisconnectReason reason)
+        public void SetStatusDisconnectDescription(DisconnectReason reason)
         {
             statusLabel.text = string.Format(LocalizationHelper.LobbyDisconnectedReasonStringFormat, reason);
         }
@@ -151,6 +156,7 @@ namespace Client
         private void OnClientStartFail()
         {
             statusLabel.text = LocalizationHelper.LobbyClientStartFailedString;
+            startClientTooltip.SetActive(true);
 
             SetInputState(true);
         }
@@ -158,6 +164,8 @@ namespace Client
         private void OnClientStartSuccess()
         {
             statusLabel.text = LocalizationHelper.LobbyClientStartSuccessString;
+            startClientTooltip.SetActive(false);
+            noSessionsFoundTooltip.SetActive(photonManager.Sessions.Count == 0);
 
             SetInputState(true);
         }
@@ -198,6 +206,9 @@ namespace Client
 
             for (int i = currentSlotIndex; i < sessionSlots.Count; i++)
                 sessionSlots[i].SetSession(null);
+
+            startClientTooltip.SetActive(false);
+            noSessionsFoundTooltip.SetActive(photonManager.Sessions.Count == 0);
         }
 
         private void ResetSessions()

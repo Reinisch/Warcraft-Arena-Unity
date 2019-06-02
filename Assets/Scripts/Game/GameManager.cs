@@ -194,13 +194,15 @@ namespace Game
         private void OnDisconnectedFromMaster()
         {
             ProcessDisconnect(false);
+
+            interfaceManager.LobbyScreen.SetStatusDisconnectDescription(DisconnectReason.DisconnectedFromMaster);
         }
 
         private void OnDisconnectedFromHost(UdpConnectionDisconnectReason reason)
         {
             ProcessDisconnect(true);
 
-            interfaceManager.LobbyScreen.SetStatusDisconnectDescription(reason);
+            interfaceManager.LobbyScreen.SetStatusDisconnectDescription(reason.ToDisconnectReason());
         }
 
         private void ProcessDisconnect(bool forClient)

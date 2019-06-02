@@ -37,7 +37,7 @@ namespace Client
             gameObject.SetActive(false);
         }
 
-        public void SetStatusDisconnectDescription(UdpConnectionDisconnectReason reason)
+        public void SetStatusDisconnectDescription(DisconnectReason reason)
         {
             lobbyPanel.SetStatusDisconnectDescription(reason);
         }

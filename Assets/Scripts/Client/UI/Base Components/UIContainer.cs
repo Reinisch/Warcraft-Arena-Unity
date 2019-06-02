@@ -4,18 +4,18 @@ namespace Client
 {
     public class UIContainer : UIBehaviour
     {
-        protected readonly List<UIBehaviour> behaviours = new List<UIBehaviour>();
+        protected readonly List<UIBehaviour> Behaviours = new List<UIBehaviour>();
 
         public override void Initialize()
         {
             base.Initialize();
 
-            behaviours.ForEach(behaviour => behaviour.Initialize());
+            Behaviours.ForEach(behaviour => behaviour.Initialize());
         }
 
         public override void Deinitialize()
         {
-            behaviours.ForEach(behaviour => behaviour.Deinitialize());
+            Behaviours.ForEach(behaviour => behaviour.Deinitialize());
 
             base.Deinitialize();
         }
@@ -24,7 +24,7 @@ namespace Client
         {
             base.DoUpdate(deltaTime);
 
-            behaviours.ForEach(behaviour => behaviour.DoUpdate(deltaTime));
+            Behaviours.ForEach(behaviour => behaviour.DoUpdate(deltaTime));
         }
     }
 }

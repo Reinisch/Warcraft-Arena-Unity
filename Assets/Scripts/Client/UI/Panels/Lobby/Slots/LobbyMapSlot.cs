@@ -10,6 +10,7 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private Button slotButton;
         [SerializeField, UsedImplicitly] private Image selectedFrame;
+        [SerializeField, UsedImplicitly] private Image mapFrame;
 
         public event Action<LobbyMapSlot> EventLobbyMapSlotSelected;
 
@@ -20,6 +21,7 @@ namespace Client
             gameObject.SetActive(true);
 
             MapDefinition = mapDefiniton;
+            mapFrame.sprite = mapDefiniton.SlotBackground;
 
             slotButton.onClick.AddListener(OnMapSlotClicked);
         }
