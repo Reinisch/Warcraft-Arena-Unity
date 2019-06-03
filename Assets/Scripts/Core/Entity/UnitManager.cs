@@ -8,10 +8,6 @@ namespace Core
         private readonly List<Player> players = new List<Player>();
         private readonly Dictionary<Collider, Unit> unitsByColliders = new Dictionary<Collider, Unit>();
 
-        public UnitManager(WorldManager worldManager) : base(worldManager)
-        {
-        }
-
         public override void Dispose()
         {
             players.Clear();
@@ -45,12 +41,6 @@ namespace Core
 
             foreach (Player player in players)
                 player.Controller.ClientMoveState?.SetScope(connection, false);
-        }
-
-        public void Accept(IUnitVisitor visitor)
-        {
-            foreach (var entity in Entities)
-                entity.Accept(visitor);
         }
 
         public Unit Find(Collider unitCollider)

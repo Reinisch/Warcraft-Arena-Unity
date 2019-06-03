@@ -7,23 +7,35 @@ public class SoundManager : SingletonBehaviour<SoundManager>
     public new void Initialize()
     {
         base.Initialize();
+
+        EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+        EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
     }
 
     public new void Deinitialize()
     {
+        EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+        EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+
         base.Deinitialize();
     }
 
-    public void InitializeWorld(WorldManager worldManager)
+    private void OnWorldInitialized(WorldManager worldManager)
     {
-        SpellManager.Instance.EventSpellCast += OnSpellManagerSpellCast;
-        SpellManager.Instance.EventSpellHit += OnSpellManagerSpellHit;
+        if (worldManager.HasClientLogic)
+        {
+            SpellManager.Instance.EventSpellCast += OnSpellManagerSpellCast;
+            SpellManager.Instance.EventSpellHit += OnSpellManagerSpellHit;
+        }
     }
 
-    public void DeinitializeWorld()
+    private void OnWorldDeinitializing(WorldManager worldManager)
     {
-        SpellManager.Instance.EventSpellCast -= OnSpellManagerSpellCast;
-        SpellManager.Instance.EventSpellHit -= OnSpellManagerSpellHit;
+        if (worldManager.HasClientLogic)
+        {
+            SpellManager.Instance.EventSpellCast -= OnSpellManagerSpellCast;
+            SpellManager.Instance.EventSpellHit -= OnSpellManagerSpellHit;
+        }
     }
 
     private void OnSpellManagerSpellCast(Unit caster, SpellInfo spellInfo)

@@ -151,28 +151,12 @@ namespace Game
         {
             worldManager = HasServerLogic ? (WorldManager) new WorldServerManager(HasClientLogic) : new WorldClientManager(HasServerLogic);
 
-            if (HasClientLogic)
-            {
-                soundManager.InitializeWorld(worldManager);
-                inputManager.InitializeWorld(worldManager);
-                renderManager.InitializeWorld(worldManager);
-                interfaceManager.InitializeWorld(worldManager);
-            }
-
-            multiplayerManager.InitializeWorld(worldManager);
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, worldManager);
         }
 
         private void DeinitializeWorld()
         {
-            multiplayerManager.DeinitializeWorld();
-
-            if (HasClientLogic)
-            {
-                interfaceManager.DeinitializeWorld();
-                renderManager.DeinitializeWorld();
-                soundManager.DeinitializeWorld();
-                inputManager.DeinitializeWorld();
-            }
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, worldManager);
 
             worldManager.Dispose();
             worldManager = null;

@@ -39,37 +39,17 @@ namespace Game
         public void Initialize()
         {
             SetListeners(false, false, false);
+
+            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
         }
 
         public void Deinitialize()
         {
+            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+
             SetListeners(false, false, false);
-        }
-
-        public void InitializeWorld(WorldManager worldManager)
-        {
-            this.worldManager = worldManager;
-
-            boltSharedListener.Initialize(worldManager);
-
-            if(worldManager.HasServerLogic)
-                boltServerListener.Initialize((WorldServerManager)worldManager);
-            if (worldManager.HasClientLogic)
-                boltClientListener.Initialize(worldManager);
-        }
-
-        public void DeinitializeWorld()
-        {
-            SetListeners(false, false, false);
-
-            boltSharedListener.Deinitialize();
-
-            if (worldManager.HasServerLogic)
-                boltServerListener.Deinitialize();
-            if (worldManager.HasServerLogic)
-                boltClientListener.Deinitialize();
-
-            worldManager = null;
         }
 
         public void DoUpdate(int deltaTime)
@@ -202,6 +182,32 @@ namespace Game
                 connectionAttemptInfo.IsFailed = true;
                 state = BoltNetwork.IsRunning ? State.Active : State.Inactive;
             }
+        }
+
+        private void OnWorldInitialized(WorldManager worldManager)
+        {
+            this.worldManager = worldManager;
+
+            boltSharedListener.Initialize(worldManager);
+
+            if (worldManager.HasServerLogic)
+                boltServerListener.Initialize((WorldServerManager)worldManager);
+            if (worldManager.HasClientLogic)
+                boltClientListener.Initialize(worldManager);
+        }
+
+        private void OnWorldDeinitializing(WorldManager worldManager)
+        {
+            SetListeners(false, false, false);
+
+            boltSharedListener.Deinitialize();
+
+            if (worldManager.HasServerLogic)
+                boltServerListener.Deinitialize();
+            if (worldManager.HasServerLogic)
+                boltClientListener.Deinitialize();
+
+            this.worldManager = null;
         }
 
         private void SetListeners(bool shared, bool server, bool client)

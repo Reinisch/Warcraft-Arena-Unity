@@ -41,5 +41,11 @@ namespace Client.UI
             for (int i = panels.Count - 1; i >= 0; i--)
                 panels[i].Hide(panelData);
         }
+
+        public void DoUpdate(int deltaTime)
+        {
+            for (int i = 0; i < panels.Count; i++)
+                panels[i].DoUpdate(deltaTime);
+        }
     }
 }

@@ -58,5 +58,14 @@ namespace Client.UI
         protected virtual void PanelHidden()
         {
         }
+
+        protected virtual void PanelUpdated(int deltaTime)
+        {
+        }
+
+        internal void DoUpdate(int deltaTime)
+        {
+            PanelUpdated(deltaTime);
+        }
     }
 }

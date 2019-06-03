@@ -5,5 +5,8 @@
         GameMapLoaded,
         DisconnectedFromHost,
         DisconnectedFromMaster,
+
+        WorldInitialized,
+        WorldDeinitializing,
     }
 }

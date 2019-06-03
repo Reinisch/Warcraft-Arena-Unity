@@ -7,32 +7,38 @@ namespace Client
     {
         public Player OriginalPlayer { get; private set; }
 
-        private WorldManager worldManager;
-
         public new void Initialize()
         {
             base.Initialize();
+
+            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
         }
 
         public new void Deinitialize()
         {
+            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+
             base.Deinitialize();
         }
 
-        public void InitializeWorld(WorldManager worldManager)
+        private void OnWorldInitialized(WorldManager worldManager)
         {
-            this.worldManager = worldManager;
-
-            worldManager.UnitManager.EventEntityAttached += OnEventEntityAttached;
-            worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
+            if (worldManager.HasClientLogic)
+            {
+                worldManager.UnitManager.EventEntityAttached += OnEventEntityAttached;
+                worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
+            }
         }
 
-        public void DeinitializeWorld()
+        private void OnWorldDeinitializing(WorldManager worldManager)
         {
-            worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
-            worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
-
-            worldManager = null;
+            if (worldManager.HasClientLogic)
+            {
+                worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
+                worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
+            }
         }
 
         private void OnEventEntityAttached(WorldEntity worldEntity)

@@ -2,13 +2,14 @@
 {
     public class MovementInfo
     {
-        public const string MovementFlagsUnitStatePropertyName = "MovementFlags";
+        private const string MovementFlagsUnitStatePropertyName = "MovementFlags";
 
         private IUnitState unitState;
         private IMoveState localMoveState;
         private Unit unit;
 
-        public MovementFlags Flags { get; private set; }
+        private MovementFlags Flags { get; set; }
+
         public bool Jumping { get; set; }
 
         public void Attached(IUnitState unitState, Unit unit)
@@ -50,13 +51,6 @@
             }
         }
 
-        public void SetFlags(MovementFlags flags)
-        {
-            Flags = flags;
-
-            UpdateMovementState();
-        }
-
         public void AddMovementFlag(MovementFlags flag)
         {
             Flags |= flag;
@@ -74,6 +68,13 @@
         public bool HasMovementFlag(MovementFlags flag)
         {
             return (Flags & flag) != 0;
+        }
+
+        private void SetFlags(MovementFlags flags)
+        {
+            Flags = flags;
+
+            UpdateMovementState();
         }
 
         private void UpdateMovementState()

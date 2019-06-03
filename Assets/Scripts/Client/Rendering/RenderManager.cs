@@ -12,7 +12,6 @@ namespace Client
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
         [SerializeField, UsedImplicitly] private List<SpellVisualSettings> spellVisualSettings;
 
-        private WorldManager worldManager;
         private readonly Dictionary<int, SpellVisualSettings> spellVisualSettingsById = new Dictionary<int, SpellVisualSettings>();
         private readonly Dictionary<Unit, UnitRenderer> unitRenderers = new Dictionary<Unit, UnitRenderer>();
 
@@ -25,45 +24,55 @@ namespace Client
 
             spellVisualSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
             spellVisualSettings.ForEach(visual => visual.Initialize());
+
+            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
         }
 
         public new void Deinitialize()
         {
+            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+
             spellVisualSettings.ForEach(visual => visual.Deinitialize());
             spellVisualSettingsById.Clear();
 
             base.Deinitialize();
         }
 
-        public void InitializeWorld(WorldManager worldManager)
-        {
-            this.worldManager = worldManager;
-
-            worldManager.UnitManager.EventEntityAttached += OnEventEntityAttached;
-            worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
-
-            SpellManager.Instance.EventSpellCast += OnSpellCast;
-            SpellManager.Instance.EventSpellDamageDone += OnSpellDamageDone;
-        }
-
-        public void DeinitializeWorld()
-        {
-            SpellManager.Instance.EventSpellDamageDone -= OnSpellDamageDone;
-            SpellManager.Instance.EventSpellCast -= OnSpellCast;
-
-            worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
-            worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
-
-            foreach (var unitRendererRecord in unitRenderers)
-                unitRendererRecord.Value.Deinitialize();
-
-            unitRenderers.Clear();
-        }
-
         public void DoUpdate(int deltaTime)
         {
             foreach (var unitEntry in unitRenderers)
                 unitEntry.Value.DoUpdate(deltaTime);
+        }
+
+        private void OnWorldInitialized(WorldManager worldManager)
+        {
+            if (worldManager.HasClientLogic)
+            {
+                worldManager.UnitManager.EventEntityAttached += OnEventEntityAttached;
+                worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
+
+                SpellManager.Instance.EventSpellCast += OnSpellCast;
+                SpellManager.Instance.EventSpellDamageDone += OnSpellDamageDone;
+            }
+        }
+
+        private void OnWorldDeinitializing(WorldManager worldManager)
+        {
+            if (worldManager.HasClientLogic)
+            {
+                SpellManager.Instance.EventSpellDamageDone -= OnSpellDamageDone;
+                SpellManager.Instance.EventSpellCast -= OnSpellCast;
+
+                worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
+                worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
+
+                foreach (var unitRendererRecord in unitRenderers)
+                    unitRendererRecord.Value.Deinitialize();
+
+                unitRenderers.Clear();
+            }
         }
 
         private void OnSpellDamageDone(Unit caster, Unit target, int damage, bool isCrit)

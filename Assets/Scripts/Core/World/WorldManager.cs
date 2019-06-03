@@ -19,7 +19,7 @@ namespace Core
             BoltNetwork.SetPrefabPool(entityPool);
 
             MapManager = new MapManager(this);
-            UnitManager = new UnitManager(this);
+            UnitManager = new UnitManager();
         }
 
         public virtual void Dispose()

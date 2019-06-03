@@ -1,41 +1,29 @@
-﻿using Core;
+﻿using Client.UI;
+using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client
 {
-    public class BattleScreen : MonoBehaviour
+    public class BattleScreen : UIWindowController<BattlePanelType>
     {
-        [SerializeField, UsedImplicitly] private UnitFrame playerUnitFrame;
-        [SerializeField, UsedImplicitly] private UnitFrame playerTargetUnitFrame;
-
+        [SerializeField, UsedImplicitly] private BattleHudPanel battleHudPanel;
+        
         private WorldManager worldManager;
         private PhotonBoltClientListener clientListener;
 
         public void Initialize(PhotonBoltManager photonManager, PhotonBoltClientListener clientListener)
         {
-            this.clientListener = clientListener;
-
             gameObject.SetActive(false);
 
-            playerUnitFrame.Initialize();
-            playerTargetUnitFrame.Initialize();
-
-            clientListener.EventPlayerControlGained += OnPlayerControlGained;
-            clientListener.EventPlayerControlLost += OnPlayerControlLost;
+            RegisterPanel(battleHudPanel, new BattleHudPanel.InitData(photonManager, clientListener));
         }       
 
         public void Deinitialize()
         {
-            clientListener.EventPlayerControlGained -= OnPlayerControlGained;
-            clientListener.EventPlayerControlLost -= OnPlayerControlLost;
-
-            playerUnitFrame.Deinitialize();
-            playerTargetUnitFrame.Deinitialize();
+            UnregisterPanel(battleHudPanel, new BattleHudPanel.DefaultDeinitData());
 
             gameObject.SetActive(false);
-
-            clientListener = null;
         }
 
         public void InitializeWorld(WorldManager worldManager)
@@ -46,35 +34,6 @@ namespace Client
         public void DeinitializeWorld()
         {
             worldManager = null;
-        }
-
-        public void DoUpdate(int deltaTime)
-        {
-            if (clientListener.LocalPlayer != null)
-            {
-                playerUnitFrame.DoUpdate(deltaTime);
-                playerTargetUnitFrame.DoUpdate(deltaTime);
-            }
-        }
-
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Hide()
-        {
-            gameObject.SetActive(false);
-        }
-
-        private void OnPlayerControlGained()
-        {
-            playerUnitFrame.SetUnit(clientListener.LocalPlayer);
-        }
-
-        private void OnPlayerControlLost()
-        {
-            playerUnitFrame.SetUnit(null);
         }
     }
 }

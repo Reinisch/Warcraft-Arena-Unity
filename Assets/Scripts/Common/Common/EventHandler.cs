@@ -5,6 +5,8 @@ namespace Common
 {
     public class EventHandler
     {
+        public static readonly object GlobalDispatcher = new object();
+
         private static readonly Dictionary<object, Dictionary<GameEvents, List<Delegate>>> EventActionsByTarget = new Dictionary<object, Dictionary<GameEvents, List<Delegate>>>();
 
         private static void AddEvent(object target, GameEvents gameGameEvent, Delegate action)

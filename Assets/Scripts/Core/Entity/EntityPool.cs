@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using Bolt;
+using Common;
 using UnityEngine;
-using UnityEngine.Assertions;
+
+using Assert = UnityEngine.Assertions.Assert;
 
 namespace Core
 {
@@ -29,7 +31,7 @@ namespace Core
 
         public GameObject Instantiate(PrefabId prefabId, Vector3 position, Quaternion rotation)
         {
-            GameObject gameObject = Object.Instantiate(LoadPrefab(prefabId), position, rotation);
+            GameObject gameObject = GameObjectPool.Take(LoadPrefab(prefabId), position, rotation);
 
             if (!gameObject.CompareTag("Move State"))
             {
@@ -51,8 +53,8 @@ namespace Core
                 takenEntities[gameObject].ReturnedToPool();
                 takenEntities.Remove(gameObject);
             }
-           
-            Object.Destroy(gameObject);
+
+            GameObjectPool.Return(gameObject, false);
         }
     }
 }

@@ -16,28 +16,25 @@ public class InterfaceManager : SingletonBehaviour<InterfaceManager>
 
         lobbyScreen.Initialize(photonManager);
         battleScreen.Initialize(photonManager, clientListener);
+
+        EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+        EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
     }
 
     public new void Deinitialize()
     {
+        EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+        EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+
         battleScreen.Deinitialize();
         lobbyScreen.Deinitialize();
 
         base.Deinitialize();
     }
 
-    public void InitializeWorld(WorldManager worldManager)
-    {
-        battleScreen.InitializeWorld(worldManager);
-    }
-
-    public void DeinitializeWorld()
-    {
-        battleScreen.DeinitializeWorld();
-    }
-
     public void DoUpdate(int deltaTime)
     {
+        lobbyScreen.DoUpdate(deltaTime);
         battleScreen.DoUpdate(deltaTime);
     }
 
@@ -53,11 +50,27 @@ public class InterfaceManager : SingletonBehaviour<InterfaceManager>
 
     public void ShowBattleScreen()
     {
-        battleScreen.Show();
+        battleScreen.Show(new UIWindow<BattlePanelType>.DefaultShowData(BattlePanelType.HudPanel));
     }
 
     public void HideBattleScreen()
     {
         battleScreen.Hide();
+    }
+
+    private void OnWorldInitialized(WorldManager worldManager)
+    {
+        if (worldManager.HasClientLogic)
+        {
+            battleScreen.InitializeWorld(worldManager);
+        }
+    }
+
+    private void OnWorldDeinitializing(WorldManager worldManager)
+    {
+        if (worldManager.HasClientLogic)
+        {
+            battleScreen.DeinitializeWorld();
+        }
     }
 }
