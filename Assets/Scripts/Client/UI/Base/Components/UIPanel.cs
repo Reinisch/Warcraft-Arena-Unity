@@ -3,39 +3,37 @@ using UnityEngine;
 
 namespace Client.UI
 {
-    public abstract class UIPanel<TPanelType> : MonoBehaviour, IPanel
+    public abstract class UIPanel : MonoBehaviour
     {
         [SerializeField, UsedImplicitly] private CanvasGroup panelCanvasGroup;
 
-        public abstract TPanelType PanelType { get; }
-        public GameObject GameObject => gameObject;
-
-        internal void Initialize<TPanelInitData>(TPanelInitData initData = default) where TPanelInitData : struct, IPanelInitData
+        internal void Initialize()
         {
-            initData.Process(this);
-
             PanelInitialized();
         }
 
-        internal void Deinitialize<TPanelDeinitData>(TPanelDeinitData deinitData = default) where TPanelDeinitData : struct, IPanelDeinitData
+        internal void Deinitialize()
         {
             PanelDeinitialized();
-
-            deinitData.Process(this);
         }
 
-        internal void Show<TPanelShowData>(TPanelShowData showData = default) where TPanelShowData : struct, IPanelShowData
+        internal void Show()
         {
-            showData.Process(this);
+            gameObject.SetActive(true);
 
             PanelShown();
         }
 
-        internal void Hide<TPanelHideData>(TPanelHideData hideData = default) where TPanelHideData : struct, IPanelHideData
+        internal void Hide()
         {
-            PanelHidden();
+            gameObject.SetActive(false);
 
-            hideData.Process(this);
+            PanelHidden();
+        }
+
+        internal void DoUpdate(int deltaTime)
+        {
+            PanelUpdated(deltaTime);
         }
 
         protected void UpdateInputState(bool interactable)
@@ -61,11 +59,6 @@ namespace Client.UI
 
         protected virtual void PanelUpdated(int deltaTime)
         {
-        }
-
-        internal void DoUpdate(int deltaTime)
-        {
-            PanelUpdated(deltaTime);
         }
     }
 }

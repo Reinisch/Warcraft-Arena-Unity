@@ -1,39 +1,31 @@
 ﻿using Client.UI;
-using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client
 {
-    public class BattleScreen : UIWindowController<BattlePanelType>
+    public class BattleScreen : UIWindowController
     {
         [SerializeField, UsedImplicitly] private BattleHudPanel battleHudPanel;
         
-        private WorldManager worldManager;
         private PhotonBoltClientListener clientListener;
 
-        public void Initialize(PhotonBoltManager photonManager, PhotonBoltClientListener clientListener)
+        public void Initialize(PhotonBoltClientListener clientListener, ScreenController controller)
         {
+            Initialize(controller);
+
             gameObject.SetActive(false);
 
-            RegisterPanel(battleHudPanel, new BattleHudPanel.InitData(photonManager, clientListener));
+            RegisterPanel(battleHudPanel, new BattleHudPanel.RegisterToken(clientListener));
         }       
 
-        public void Deinitialize()
+        public new void Deinitialize(ScreenController controller)
         {
-            UnregisterPanel(battleHudPanel, new BattleHudPanel.DefaultDeinitData());
+            UnregisterPanel(battleHudPanel, new BattleHudPanel.UnregisterToken());
 
             gameObject.SetActive(false);
-        }
 
-        public void InitializeWorld(WorldManager worldManager)
-        {
-            this.worldManager = worldManager;
-        }
-
-        public void DeinitializeWorld()
-        {
-            worldManager = null;
+            base.Deinitialize(controller);
         }
     }
 }

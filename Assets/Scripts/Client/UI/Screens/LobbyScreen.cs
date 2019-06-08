@@ -5,22 +5,26 @@ using Client.UI;
 
 namespace Client
 {
-    public class LobbyScreen : UIWindowController<LobbyPanelType>
+    public class LobbyScreen : UIWindowController
     {
         [SerializeField, UsedImplicitly] private LobbyPanel lobbyPanel;
 
-        public void Initialize(PhotonBoltManager photonManager)
+        public void Initialize(PhotonBoltManager photonManager, ScreenController controller)
         {
+            Initialize(controller);
+
             gameObject.SetActive(false);
 
-            RegisterPanel(lobbyPanel, new LobbyPanel.InitData(photonManager, this));
+            RegisterPanel(lobbyPanel, new LobbyPanel.RegisterToken(photonManager, this));
         }
 
-        public void Deinitialize()
+        public new void Deinitialize(ScreenController controller)
         {
-            UnregisterPanel(lobbyPanel, new UIWindow<LobbyPanelType>.DefaultDeinitData());
+            UnregisterPanel(lobbyPanel, new LobbyPanel.UnregisterToken());
 
             gameObject.SetActive(false);
+
+            base.Deinitialize(controller);
         }
     }
 }

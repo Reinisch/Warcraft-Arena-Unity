@@ -1,34 +1,32 @@
 ﻿using System.Collections.Generic;
 using Client.UI;
-using Common;
-using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client
 {
-    public class BattleHudPanel : UIWindow<BattlePanelType>
+    public class BattleHudPanel : UIWindow
     {
-        public struct InitData : IPanelInitData
+        public struct RegisterToken : IPanelRegisterToken<BattleHudPanel>
         {
-            private readonly PhotonBoltManager photonManager;
             private readonly PhotonBoltClientListener clientListener;
 
-            public InitData(PhotonBoltManager photonManager, PhotonBoltClientListener clientListener)
+            public RegisterToken(PhotonBoltClientListener clientListener)
             {
-                this.photonManager = photonManager;
                 this.clientListener = clientListener;
             }
 
-            public void Process<TPanelType>(UIPanel<TPanelType> panel)
+            public void Initialize(BattleHudPanel panel)
             {
-                Assert.IsTrue(panel is BattleHudPanel);
+                panel.clientListener = clientListener;
+            }
+        }
 
-                if (panel is BattleHudPanel hudPanel)
-                {
-                    hudPanel.photonManager = photonManager;
-                    hudPanel.clientListener = clientListener;
-                }
+        public struct UnregisterToken : IPanelUnregisterToken<BattleHudPanel>
+        {
+            public void Deinitialize(BattleHudPanel panel)
+            {
+                panel.gameObject.SetActive(false);
             }
         }
 
@@ -36,10 +34,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetUnitFrame;
         [SerializeField, UsedImplicitly] private List<ActionBar> actionBars;
 
-        private PhotonBoltManager photonManager;
         private PhotonBoltClientListener clientListener;
-
-        public override BattlePanelType PanelType => BattlePanelType.HudPanel;
 
         protected override void PanelInitialized()
         {
@@ -75,6 +70,9 @@ namespace Client
             {
                 playerUnitFrame.DoUpdate(deltaTime);
                 playerTargetUnitFrame.DoUpdate(deltaTime);
+
+                foreach (var actionBar in actionBars)
+                    actionBar.DoUpdate(deltaTime);
             }
         }
 

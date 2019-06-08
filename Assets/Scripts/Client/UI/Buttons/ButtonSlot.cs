@@ -42,8 +42,7 @@ public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
     {
         base.DoUpdate(deltaTime);
 
-        if (buttonContent != null)
-            buttonContent.UpdateButton();
+        buttonContent?.UpdateButton();
     }
 
     public void Click()

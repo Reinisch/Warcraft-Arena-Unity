@@ -43,8 +43,6 @@ namespace Core
 
         public new void Deinitialize()
         {
-            Mask.Ground = 0;
-            
             base.Deinitialize();
         }
     }

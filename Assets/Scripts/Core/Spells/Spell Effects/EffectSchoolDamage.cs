@@ -16,13 +16,13 @@ namespace Core
 
         public override void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)
         {
-            spell.EffectSchoolDMG(this, target, mode);
+            spell.EffectSchoolDamage(this, target, mode);
         }
     }
 
     public partial class Spell
     {
-        public void EffectSchoolDMG(EffectSchoolDamage effect, Unit target, SpellEffectHandleMode mode)
+        public void EffectSchoolDamage(EffectSchoolDamage effect, Unit target, SpellEffectHandleMode mode)
         {
             if (mode != SpellEffectHandleMode.LaunchTarget)
                 return;

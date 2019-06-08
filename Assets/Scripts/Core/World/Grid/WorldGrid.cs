@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions;
+using Common;
 
 namespace Core
 {
@@ -133,7 +133,6 @@ namespace Core
         internal void AddEntity(WorldEntity entity)
         {
             GridCell startingCell = FindCell(entity.Position);
-            Assert.IsNotNull(startingCell, $"Starting cell is not found for {entity.GetType()} at {entity.Position}");
 
             if (startingCell == null)
             {
@@ -141,6 +140,7 @@ namespace Core
                 startingCell = FindCell(entity.Position);
             }
 
+            Assert.IsNotNull(startingCell, $"Starting cell is not found for {entity.GetType()} at {entity.Position}");
             startingCell.AddWorldEntity(entity);
         }
 

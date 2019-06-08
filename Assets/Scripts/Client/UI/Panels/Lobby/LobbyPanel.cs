@@ -5,60 +5,57 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Common;
 
 namespace Client
 {
-    public class LobbyPanel : UIWindow<LobbyPanelType>
+    public class LobbyPanel : UIWindow
     {
-        public struct InitData : IPanelInitData
+        public struct RegisterToken : IPanelRegisterToken<LobbyPanel>
         {
             private readonly PhotonBoltManager photonManager;
             private readonly LobbyScreen lobbyScreen;
 
-            public InitData(PhotonBoltManager photonManager, LobbyScreen lobbyScreen)
+            public RegisterToken(PhotonBoltManager photonManager, LobbyScreen lobbyScreen)
             {
                 this.photonManager = photonManager;
                 this.lobbyScreen = lobbyScreen;
             }
 
-            public void Process<TPanelType>(UIPanel<TPanelType> panel)
+            public void Initialize(LobbyPanel panel)
             {
-                Assert.IsTrue(panel is LobbyPanel);
-
-                if (panel is LobbyPanel lobbyPanel)
-                {
-                    lobbyPanel.photonManager = photonManager;
-                    lobbyPanel.lobbyScreen = lobbyScreen;
-                }
+                panel.photonManager = photonManager;
+                panel.lobbyScreen = lobbyScreen;
             }
         }
 
-        public struct ShowData : IPanelShowData<LobbyPanelType>
+        public struct UnregisterToken : IPanelUnregisterToken<LobbyPanel>
+        {
+            public void Deinitialize(LobbyPanel panel)
+            {
+                panel.gameObject.SetActive(false);
+                panel.photonManager = null;
+                panel.lobbyScreen = null;
+            }
+        }
+
+        public struct ShowToken : IPanelShowToken<LobbyPanel>
         {
             private bool AutoStartClient { get; }
             private DisconnectReason? DisconnectReason { get; }
 
-            public LobbyPanelType PanelType => LobbyPanelType.LobbyPanel;
-
-            public ShowData(bool autoStartClient, DisconnectReason? disconnectReason = null)
+            public ShowToken(bool autoStartClient, DisconnectReason? disconnectReason = null)
             {
                 AutoStartClient = autoStartClient;
                 DisconnectReason = disconnectReason;
             }
 
-            public void Process(IPanel panel)
+            public void Process(LobbyPanel panel)
             {
-                Assert.IsTrue(panel is LobbyPanel);
+                if (DisconnectReason.HasValue)
+                    panel.statusLabel.text = string.Format(LocalizationHelper.LobbyDisconnectedReasonStringFormat, DisconnectReason.Value);
 
-                if (panel is LobbyPanel lobbyPanel)
-                {
-                    if (DisconnectReason.HasValue)
-                        lobbyPanel.statusLabel.text = string.Format(LocalizationHelper.LobbyDisconnectedReasonStringFormat, DisconnectReason.Value);
-
-                    if (AutoStartClient)
-                        lobbyPanel.OnClientButtonClicked();
-                }
+                if (AutoStartClient)
+                    panel.OnClientButtonClicked();
             }
         }
 
@@ -82,8 +79,6 @@ namespace Client
         private LobbyScreen lobbyScreen;
         private LobbyMapSlot selectedMapSlot;
         private PhotonBoltManager photonManager;
-
-        public override LobbyPanelType PanelType => LobbyPanelType.LobbyPanel;
 
         protected override void PanelInitialized()
         {
@@ -205,7 +200,7 @@ namespace Client
 
             UpdateInputState(true);
 
-            lobbyScreen.Hide();
+            lobbyScreen.HideAllPanels();
         }
 
         private void OnClientStartFail()
@@ -238,7 +233,7 @@ namespace Client
 
             UpdateInputState(true);
 
-            lobbyScreen.Hide();
+            lobbyScreen.HideAllPanels();
         }
 
         private void OnPhotonManagerSessionListUpdated()

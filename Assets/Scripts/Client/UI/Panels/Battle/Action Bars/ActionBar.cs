@@ -9,14 +9,14 @@ public class ActionBar : UIContainer
 
     public override void Initialize()
     {
-        buttonSlots.ForEach(slot => Behaviours.Add(slot));
-
         base.Initialize();
+
+        buttonSlots.ForEach(RegisterBehaviour);
     }
 
     public override void Deinitialize()
     {
-        buttonSlots.ForEach(slot => Behaviours.Remove(slot));
+        buttonSlots.ForEach(UnregisterBehaviour);
 
         base.Deinitialize();
     }

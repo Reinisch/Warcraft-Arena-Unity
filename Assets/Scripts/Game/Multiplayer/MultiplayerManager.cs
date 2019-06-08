@@ -168,7 +168,7 @@ namespace Game
 
             if (state == State.Connecting)
             {
-                connectionAttemptInfo.IsFailed = true;
+                connectionAttemptInfo.IsRefused = true;
                 state = BoltNetwork.IsRunning ? State.Active : State.Inactive;
             }
         }

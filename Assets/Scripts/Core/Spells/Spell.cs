@@ -527,11 +527,6 @@ namespace Core
                 AddGameEntityTarget((GameEntity)target, 1 << effect.Index);
         }
 
-        private void SearchTargets(IWorldEntityTargetCheck searcher, int containerMask, Unit referer, Vector3 pos, float radius)
-        {
-            throw new NotImplementedException();
-        }
-
         private void SearchAreaTargets(List<WorldEntity> targets, float range, Vector3 position, Unit referer, TargetEntities entityType, TargetChecks selectType) { throw new NotImplementedException(); }
 
         private void SearchChainTargets(List<WorldEntity> targets, int chainTargets, WorldEntity target, TargetEntities entityType, TargetChecks selectType, bool isChainHeal) { throw new NotImplementedException(); }

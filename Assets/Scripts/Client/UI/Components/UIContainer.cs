@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
+using Common;
 
 namespace Client
 {
     public class UIContainer : UIBehaviour
     {
-        protected readonly List<UIBehaviour> Behaviours = new List<UIBehaviour>();
+        private readonly List<UIBehaviour> behaviours = new List<UIBehaviour>();
 
         public override void Initialize()
         {
             base.Initialize();
 
-            Behaviours.ForEach(behaviour => behaviour.Initialize());
+            Assert.IsTrue(behaviours.Count == 0, $"UI Container: {this.GetPath()} already has some registered behaviours while initializing!");
         }
 
         public override void Deinitialize()
         {
-            Behaviours.ForEach(behaviour => behaviour.Deinitialize());
+            Assert.IsTrue(behaviours.Count == 0, $"UI Container: {this.GetPath()} still has some registered behaviours while deinitializing!");
 
             base.Deinitialize();
         }
@@ -24,7 +25,25 @@ namespace Client
         {
             base.DoUpdate(deltaTime);
 
-            Behaviours.ForEach(behaviour => behaviour.DoUpdate(deltaTime));
+            behaviours.ForEach(behaviour => behaviour.DoUpdate(deltaTime));
+        }
+
+        protected void RegisterBehaviour(UIBehaviour behaviour)
+        {
+            Assert.IsFalse(behaviours.Contains(behaviour), $"UI Container: {this.GetPath()} already contains: {behaviour.GetPath()}");
+
+            behaviour.Initialize();
+
+            behaviours.Add(behaviour);
+        }
+
+        protected void UnregisterBehaviour(UIBehaviour behaviour)
+        {
+            Assert.IsTrue(behaviours.Contains(behaviour), $"UI Container: {this.GetPath()} does not contain: {behaviour.GetPath()}");
+
+            behaviour.Deinitialize();
+
+            behaviours.Remove(behaviour);
         }
     }
 }

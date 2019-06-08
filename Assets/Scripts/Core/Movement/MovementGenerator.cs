@@ -1,4 +1,4 @@
-﻿using UnityEngine.Assertions;
+﻿using Common;
 
 namespace Core
 {
@@ -20,6 +20,7 @@ namespace Core
 
             DoInitialize(u as TUnit);
         }
+
         public abstract void DoInitialize(TUnit u);
 
         public override void Deinitialize(Unit u)
@@ -28,6 +29,7 @@ namespace Core
 
             DoDeinitialize(u as TUnit);
         }
+
         public abstract void DoDeinitialize(TUnit u);
 
         public override void Reset(Unit u)
@@ -36,6 +38,7 @@ namespace Core
 
             DoReset(u as TUnit);
         }
+
         public abstract void DoReset(TUnit u);
 
         public override bool Update(Unit u, uint timeDiff)
@@ -44,6 +47,7 @@ namespace Core
 
             return DoUpdate(u as TUnit, timeDiff);
         }
+
         public abstract bool DoUpdate(TUnit u, uint timeDiff);
     }
 }

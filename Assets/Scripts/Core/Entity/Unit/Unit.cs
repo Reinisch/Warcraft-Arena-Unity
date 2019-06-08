@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 
 using Debug = UnityEngine.Debug;
-using Assert = UnityEngine.Assertions.Assert;
+using Assert = Common.Assert;
 using Mathf = UnityEngine.Mathf;
 using Vector3 = UnityEngine.Vector3;
 using AuraApplicationList = System.Collections.Generic.List<Core.AuraApplication>;
@@ -148,9 +148,9 @@ namespace Core
 
         public PowerType GetPowerType() { return (PowerType)GetIntValue(EntityFields.DisplayPower); }
         public void SetPowerType(PowerType power) { }
-        public int GetPower(PowerType power) { return 0; }
+        public int GetPower(PowerType power) { return GetIntValue(EntityFields.Power); }
         public int GetMinPower(PowerType power) { return power == PowerType.LunarPower ? -100 : 0; }
-        public int GetMaxPower(PowerType power) { return 0; }
+        public int GetMaxPower(PowerType power) { return GetIntValue(EntityFields.MaxPower); }
         public float GetPowerPct(PowerType power) { return GetMaxPower(power) > 0 ? 100.0f * GetPower(power) / GetMaxPower(power) : 0.0f; }
         public int CountPctFromMaxPower(PowerType power, int pct) { return GetMaxPower(power).CalculatePercentage(pct); }
         public void SetPower(PowerType power, int val) { }

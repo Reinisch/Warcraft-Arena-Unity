@@ -3,7 +3,7 @@ using Bolt;
 using Common;
 using UnityEngine;
 
-using Assert = UnityEngine.Assertions.Assert;
+using Assert = Common.Assert;
 
 namespace Core
 {
@@ -40,7 +40,8 @@ namespace Core
                 createdEntity.TakenFromPool(worldManager);
                 takenEntities.Add(gameObject, createdEntity);
             }
-            
+
+            gameObject.transform.SetParent(null);
             return gameObject;
         }
 

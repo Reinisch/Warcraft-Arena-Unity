@@ -108,7 +108,7 @@ namespace Core
 
         public TEntity FindMapEntity<TEntity>(Predicate<TEntity> predicate) where TEntity : WorldEntity
         {
-            return worldEntities.Find(entity => { TEntity target = entity as TEntity; return target != null && predicate(target); }) as TEntity;
+            return worldEntities.Find(entity => entity is TEntity targetEntity && predicate(targetEntity)) as TEntity;
         }
     }
 }

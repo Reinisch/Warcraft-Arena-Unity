@@ -2,7 +2,7 @@
 using Core;
 using JetBrains.Annotations;
 
-using Assert = UnityEngine.Assertions.Assert;
+using Assert = Common.Assert;
 
 namespace Client
 {
@@ -21,6 +21,9 @@ namespace Client
 
         public new void Deinitialize()
         {
+            if (LocalPlayer != null)
+                ControlOfEntityLost(LocalPlayer.BoltEntity);
+
             base.Deinitialize();
         }
 
@@ -41,7 +44,7 @@ namespace Client
 
         public override void ControlOfEntityLost(BoltEntity entity)
         {
-            base.ControlOfEntityGained(entity);
+            base.ControlOfEntityLost(entity);
 
             if (entity.StateIs<IPlayerState>())
             {

@@ -36,7 +36,6 @@ namespace Game
         [SerializeField, UsedImplicitly] private BalanceManager balanceManager;
         [SerializeField, UsedImplicitly] private PhysicsManager physicsManager;
         [SerializeField, UsedImplicitly] private MultiplayerManager multiplayerManager;
-
         [SerializeField, UsedImplicitly] private InputManager inputManager;
         [SerializeField, UsedImplicitly] private InterfaceManager interfaceManager;
         [SerializeField, UsedImplicitly] private SoundManager soundManager;
@@ -119,8 +118,7 @@ namespace Game
 
             gameTimer.Start();
 
-            interfaceManager.HideBattleScreen();
-            interfaceManager.ShowLobbyScreen(new LobbyPanel.ShowData(true));
+            interfaceManager.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>();
 
             EventHandler.RegisterEvent<string, NetworkingMode>(multiplayerManager, GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(multiplayerManager, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
@@ -172,8 +170,8 @@ namespace Game
 
             InitializeWorld();
 
-            interfaceManager.HideLobbyScreen();
-            interfaceManager.ShowBattleScreen();
+            interfaceManager.HideScreen<LobbyScreen>();
+            interfaceManager.ShowScreen<BattleScreen, BattleHudPanel>();
         }
 
         private void OnDisconnectedFromMaster()
@@ -181,20 +179,20 @@ namespace Game
             ProcessDisconnect(false, DisconnectReason.DisconnectedFromMaster);
         }
 
-        private void OnDisconnectedFromHost(UdpConnectionDisconnectReason reason)
+        private void OnDisconnectedFromHost(UdpConnectionDisconnectReason udpDisconnectReason)
         {
-            ProcessDisconnect(true, reason.ToDisconnectReason());
+            ProcessDisconnect(true, udpDisconnectReason.ToDisconnectReason());
         }
 
-        private void ProcessDisconnect(bool forClient, DisconnectReason reason)
+        private void ProcessDisconnect(bool autoStartClient, DisconnectReason disconnectReason)
         {
             DeinitializeWorld();
 
             HasServerLogic = false;
             HasClientLogic = false;
 
-            interfaceManager.HideBattleScreen();
-            interfaceManager.ShowLobbyScreen(new LobbyPanel.ShowData(forClient, reason));
+            interfaceManager.HideScreen<BattleScreen>();
+            interfaceManager.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(autoStartClient, disconnectReason));
         }
     }
 }
