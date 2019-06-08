@@ -69,7 +69,7 @@ public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHand
     public void Activate()
     {
         if (enabled && BalanceManager.SpellInfosById.ContainsKey(itemId))
-            InputManager.Instance.OriginalPlayer?.CastSpell(new SpellCastTargets(), BalanceManager.SpellInfosById[itemId]);
+            InputManager.CastSpell(itemId);
     }
 
     public void Remove()

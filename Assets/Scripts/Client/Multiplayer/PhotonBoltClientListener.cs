@@ -1,8 +1,10 @@
 ﻿using System;
+using Common;
 using Core;
 using JetBrains.Annotations;
 
 using Assert = Common.Assert;
+using EventHandler = Common.EventHandler;
 
 namespace Client
 {
@@ -53,6 +55,14 @@ namespace Client
                 EventPlayerControlLost?.Invoke();
                 LocalPlayer = null;
             }
+        }
+
+        public override void OnEvent(SpellCastRequestAnswerEvent spellCastAnswer)
+        {
+            base.OnEvent(spellCastAnswer);
+
+            if (spellCastAnswer.Result == (int)SpellCastResult.Success)
+                EventHandler.ExecuteEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, LocalPlayer, spellCastAnswer.SpellId);
         }
     }
 }

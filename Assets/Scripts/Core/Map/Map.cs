@@ -9,7 +9,8 @@ namespace Core
     public class Map
     {
         private readonly WorldGrid mapGrid = new WorldGrid();
-        private readonly List<WorldEntity> worldEntities = new List<WorldEntity>();
+        private readonly Dictionary<ulong, WorldEntity> worldEntitiesById = new Dictionary<ulong, WorldEntity>();
+        private readonly Collider[] raycastResults = new Collider[200];
 
         private WorldManager WorldManager { get; set; }
         private MapDefinition Definition { get; }
@@ -36,8 +37,9 @@ namespace Core
             Assert.IsNotNull(Settings, $"Map settings are missing in map: {Definition.MapName} Id: {Definition.Id}");
             mapGrid.Initialize(this);
 
-            foreach (var scenarioAction in Settings.ScenarioActions)
-                scenarioAction.Initialize(this);
+            if(Settings != null)
+                foreach (var scenarioAction in Settings.ScenarioActions)
+                    scenarioAction.Initialize(this);
         }
 
         internal void Deinitialize()
@@ -66,22 +68,23 @@ namespace Core
 
         internal void AddWorldEntity(WorldEntity entity)
         {
-            worldEntities.Add(entity);
+            worldEntitiesById.Add(entity.NetworkId, entity);
             mapGrid.AddEntity(entity);
         }
 
         internal void RemoveWorldEntity(WorldEntity entity)
         {
-            worldEntities.Remove(entity);
+            worldEntitiesById.Remove(entity.NetworkId);
             mapGrid.RemoveEntity(entity);
         }
 
         public void SearchAreaTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, TargetChecks checkType)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(center, radius, PhysicsManager.Mask.Characters);
-            foreach (var hitCollider in hitColliders)
+            int hitCount = Physics.OverlapSphereNonAlloc(center, radius, raycastResults, PhysicsManager.Mask.Characters);
+            Assert.IsFalse(hitCount == raycastResults.Length, "Raycast results reached maximum!");
+            for (int i = 0; i < hitCount; i++)
             {
-                var targetUnit = WorldManager.UnitManager.Find(hitCollider);
+                var targetUnit = WorldManager.UnitManager.Find(raycastResults[i]);
                 if (targetUnit == null || targetUnit.Map != this)
                     continue;
 
@@ -103,12 +106,13 @@ namespace Core
 
         public TEntity FindMapEntity<TEntity>(ulong networkId) where TEntity : Entity
         {
-            return worldEntities.Find(entity => entity.NetworkId == networkId) as TEntity;
+            return worldEntitiesById.LookupEntry(networkId) as TEntity;
         }
 
-        public TEntity FindMapEntity<TEntity>(Predicate<TEntity> predicate) where TEntity : WorldEntity
+        public TEntity FindMapEntity<TEntity>(ulong networkId, Predicate<TEntity> predicate) where TEntity : WorldEntity
         {
-            return worldEntities.Find(entity => entity is TEntity targetEntity && predicate(targetEntity)) as TEntity;
+            TEntity targetEntity = FindMapEntity<TEntity>(networkId);
+            return targetEntity != null && predicate(targetEntity) ? targetEntity : null;
         }
     }
 }

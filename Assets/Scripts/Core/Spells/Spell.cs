@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Common;
 using UnityEngine;
+using EventHandler = Common.EventHandler;
 
 namespace Core
 {
@@ -162,8 +162,8 @@ namespace Core
             SpellCastResult result = CheckCast(true);
 
             if ((TriggerCastFlags & TriggerCastFlags.IgnoreTargetCheck) != 0 && result == SpellCastResult.BadTargets)
-                result = SpellCastResult.SpellCastOk;
-            if (result != SpellCastResult.SpellCastOk)
+                result = SpellCastResult.Success;
+            if (result != SpellCastResult.Success)
             {
                 if (triggeredByAura != null && triggeredByAura.IsPeriodic() && !triggeredByAura.BaseAura.IsPassive())
                 {
@@ -187,7 +187,7 @@ namespace Core
             CastTime = SpellInfo.CastTime;
             CastTimer = CastTime;
 
-            if (CastTime == 0)
+            if (Mathf.Approximately(CastTime, 0.0f))
                 Cast(true);
         }
 
@@ -242,7 +242,7 @@ namespace Core
                     {
                         // selection has to be found and to be valid target for the spell
                         Unit selectedUnit = playerCaster.WorldManager.UnitManager.Find(playerCaster.GetTarget());
-                        if (selectedUnit != null && SpellInfo.CheckExplicitTarget(Caster, selectedUnit) == SpellCastResult.SpellCastOk)
+                        if (selectedUnit != null && SpellInfo.CheckExplicitTarget(Caster, selectedUnit) == SpellCastResult.Success)
                             unit = selectedUnit;
                     }
 
@@ -256,7 +256,7 @@ namespace Core
 
             // check if spell needs dst target
             // if target isn't set try to use unit target if provided, else use self
-            if (neededTargets.HasFlag(SpellCastTargetFlags.DestLocation))
+            if (neededTargets.HasTargetFlag(SpellCastTargetFlags.DestLocation))
             {
                 if (!Targets.HasDest)
                     Targets.SetDst(targets.Target ?? Caster);
@@ -264,7 +264,7 @@ namespace Core
             else
                 Targets.RemoveDst();
 
-            if (neededTargets.HasFlag(SpellCastTargetFlags.SourceLocation))
+            if (neededTargets.HasTargetFlag(SpellCastTargetFlags.SourceLocation))
             {
                 if (!targets.HasSource)
                     Targets.SetSrc(Caster);
@@ -280,7 +280,7 @@ namespace Core
             int processedAreaEffectsMask = 0;
             foreach (var effect in Effects)
             {
-                if (effect.ImplicitTargetFlags.HasFlag(SpellCastTargetFlags.Unit))
+                if (effect.ImplicitTargetFlags.HasTargetFlag(SpellCastTargetFlags.Unit))
                     Targets.TargetMask |= SpellCastTargetFlags.Unit;       
 
                 SelectEffectImplicitTargets(effect, effect.MainTargeting, ref processedAreaEffectsMask);
@@ -290,12 +290,16 @@ namespace Core
                 if (Targets.HasDest)
                     AddDestTarget(Targets.Destination, effect.Index);
 
-                if (SpellInfo.IsChanneled())
-                {
-                    int mask = 1 << effect.Index;
-                    if (UniqueTargetInfo.Any(targetInfo => (targetInfo.EffectMask & mask) != 0))
+                if (!SpellInfo.IsChanneled())
+                    continue;
+
+                int mask = 1 << effect.Index;
+                foreach(var targetInfo in UniqueTargetInfo)
+                    if ((targetInfo.EffectMask & mask) != 0)
+                    {
                         ChannelTargetEffectMask |= mask;
-                }
+                        break;
+                    }
             }
 
             if (Targets.HasDest)
@@ -312,7 +316,7 @@ namespace Core
             if (target == null)
                 return;
 
-            if (SpellInfo.ExplicitTargetMask.HasAnyFlag(SpellCastTargetFlags.UnitEnemy) || SpellInfo.ExplicitTargetMask.HasFlag(SpellCastTargetFlags.Unit) && !Caster.IsFriendlyTo(target))
+            if (SpellInfo.ExplicitTargetMask.HasAnyFlag(SpellCastTargetFlags.UnitEnemy) || SpellInfo.ExplicitTargetMask.HasTargetFlag(SpellCastTargetFlags.Unit) && !Caster.IsFriendlyTo(target))
             {
                 Unit redirect;
                 switch (SpellInfo.DamageClass)
@@ -438,7 +442,7 @@ namespace Core
                     {
                         if ((UniqueTargetInfo[i].EffectMask & (1 << effect.Index)) > 0)
                         {
-                            referer = Caster.Map.FindMapEntity<Unit>(unit => unit.NetworkId == UniqueTargetInfo[i].TargetId && unit.IsAlive);
+                            referer = Caster.Map.FindMapEntity<Unit>(UniqueTargetInfo[i].TargetId, unit => unit.IsAlive);
                             break;
                         }
                     }
@@ -648,7 +652,7 @@ namespace Core
             }
 
             // Check global cooldown
-            if (strict && !TriggerCastFlags.HasFlag(TriggerCastFlags.IgnoreGcd) && HasGlobalCooldown)
+            if (strict && !TriggerCastFlags.HasTargetFlag(TriggerCastFlags.IgnoreGcd) && HasGlobalCooldown)
                 return SpellCastResult.NotReady;
 
             // Check for line of sight for spells with dest
@@ -662,7 +666,7 @@ namespace Core
         }*/
 
             SpellCastResult castResult = CheckRange(strict);
-            if (castResult != SpellCastResult.SpellCastOk)
+            if (castResult != SpellCastResult.Success)
                 return castResult;
 
             return SpellCastResult.Success;
@@ -672,21 +676,21 @@ namespace Core
         {
             // Don't check for instant cast spells
             if (!strict && CastTime == 0)
-                return SpellCastResult.SpellCastOk;
+                return SpellCastResult.Success;
 
             Unit target = Targets.UnitTarget;
             float minRange = 0.0f;
             float maxRange = 0.0f;
             float rangeMod = 0.0f;
 
-            if (SpellInfo.RangedFlags.HasFlag(SpellRangeFlag.Melee))
+            if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlag.Melee))
             {
                 rangeMod = 3.0f + 4.0f / 3.0f;
             }
             else
             {
                 float meleeRange = 0.0f;
-                if (SpellInfo.RangedFlags.HasFlag(SpellRangeFlag.Ranged))
+                if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlag.Ranged))
                     meleeRange = 3.0f + 4.0f / 3.0f;
 
                 minRange = Caster.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
@@ -707,7 +711,7 @@ namespace Core
                     return SpellCastResult.OutOfRange;
             }
 
-            return SpellCastResult.SpellCastOk;
+            return SpellCastResult.Success;
         }
 
         private SpellCastResult CheckPower() { throw new NotImplementedException(); }
@@ -731,8 +735,6 @@ namespace Core
 
         private void HandleImmediate()
         {
-            SpellManager.SpellCasted(Caster, SpellInfo);
-
             // process immediate effects (items, ground, etc.) also initialize some variables
             HandleImmediatePhase();
 
@@ -806,7 +808,7 @@ namespace Core
                     spellHitTarget = null;
                 }
                 else
-                    SpellManager.SpellHit(spellHitTarget, SpellInfo);
+                    EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHit, spellHitTarget, SpellInfo.Id);
             }
 
             // All calculated do it!
@@ -862,7 +864,7 @@ namespace Core
         
         private void DoEffectOnTarget(Unit unitTarget, SpellEffectInfo effect, SpellEffectHandleMode mode)
         {
-            Debug.LogFormat($"Spell: {SpellInfo.Id} Handling effect: {effect.EffectType}");
+            //Debug.LogFormat($"Spell: {SpellInfo.Id} Handling effect: {effect.EffectType}");
 
             SpellDamage += CalculateDamage(effect.Index, unitTarget);
             effect.Handle(this, unitTarget, mode);

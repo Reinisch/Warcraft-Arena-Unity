@@ -52,5 +52,12 @@ namespace Client
             if (worldEntity == OriginalPlayer)
                 OriginalPlayer = null;
         }
+
+        public static void CastSpell(int spellId)
+        {
+            SpellCastRequestEvent spellCastRequest = SpellCastRequestEvent.Create(Bolt.GlobalTargets.OnlyServer);
+            spellCastRequest.SpellId = spellId;
+            spellCastRequest.Send();
+        }
     }
 }

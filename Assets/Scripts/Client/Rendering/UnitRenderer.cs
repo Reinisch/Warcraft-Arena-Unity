@@ -1,30 +1,44 @@
-﻿using Client;
+﻿using Bolt;
+using Client;
+using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class UnitRenderer : MonoBehaviour
+public class UnitRenderer : EntityEventListener<IUnitState>
 {
     [SerializeField, UsedImplicitly] private EffectTagPositioner effectTagPositioner;
     [SerializeField, UsedImplicitly] private Animator animator;
 
-    public Animator Animator => animator;
+    private Animator Animator => animator;
+    private Unit Unit { get; set; }
+
     public EffectTagPositioner EffectTagPositioner => effectTagPositioner;
-    public Unit Unit { get; private set; }
 
     public void Initialize(Unit unit)
     {
         Unit = unit;
+
+        Unit.BoltEntity.AddEventListener(this);
     }
 
     public void Deinitialize()
     {
+        Unit.BoltEntity.RemoveEventListener(this);
+
         Unit = null;
     }
 
     public void DoUpdate(int deltaTime)
     {
         UpdateAnimations(deltaTime);
+    }
+
+    public override void OnEvent(UnitSpellCastEvent spellCastEvent)
+    {
+        base.OnEvent(spellCastEvent);
+
+        EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, Unit, spellCastEvent.SpellId);
     }
 
     private void UpdateAnimations(int deltaTime)

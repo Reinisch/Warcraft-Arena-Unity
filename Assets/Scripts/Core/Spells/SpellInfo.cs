@@ -59,6 +59,9 @@ namespace Core
         [SerializeField, UsedImplicitly] private SpellSoundSettings soundSettings;
         [SerializeField, UsedImplicitly] private List<SpellProcsPerMinuteModifier> procsPerMinuteModifiers;
 
+        /// <summary>
+        /// Compressed to 8 bits in SpellCastRequestEvent.
+        /// </summary>
         public int Id => id;
         public string SpellName => spellName;
 
@@ -292,7 +295,7 @@ namespace Core
             }
             // other types of objects - always valid
             else
-                return SpellCastResult.SpellCastOk;
+                return SpellCastResult.Success;
 
             // corpseOwner and unit specific target checks
             if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && unitTarget.EntityType != EntityType.Player)
@@ -322,31 +325,31 @@ namespace Core
                 if (HasEffect(SpellEffectType.SelfResurrect) || HasEffect(SpellEffectType.Resurrect))
                     return SpellCastResult.TargetCannotBeResurrected;
 
-            return SpellCastResult.SpellCastOk;
+            return SpellCastResult.Success;
         }
 
         public SpellCastResult CheckExplicitTarget(Unit caster, WorldEntity target)
         {
             SpellCastTargetFlags neededTargets = ExplicitTargetMask;
             if (target == null && neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
-                return SpellCastResult.SpellCastOk;
+                return SpellCastResult.Success;
 
             var unitTarget = target as Unit;
             if(unitTarget == null)
-                return SpellCastResult.SpellCastOk;
+                return SpellCastResult.Success;
 
             if ((neededTargets & SpellCastTargetFlags.UnitMask) != 0)
             {
                 if (neededTargets.HasFlag(SpellCastTargetFlags.UnitEnemy) && caster.IsValidAttackTarget(unitTarget, this))
-                    return SpellCastResult.SpellCastOk;
+                    return SpellCastResult.Success;
 
                 if (neededTargets.HasFlag(SpellCastTargetFlags.UnitAlly) && caster.IsValidAssistTarget(unitTarget, this))
-                    return SpellCastResult.SpellCastOk;
+                    return SpellCastResult.Success;
 
                 return SpellCastResult.BadTargets;
             }
 
-            return SpellCastResult.SpellCastOk;
+            return SpellCastResult.Success;
         }
 
         public SpellCastResult CheckVehicle(Unit caster)

@@ -8,5 +8,9 @@
 
         WorldInitialized,
         WorldDeinitializing,
+
+        SpellCasted,
+        SpellHit,
+        SpellDamageDone
     }
 }

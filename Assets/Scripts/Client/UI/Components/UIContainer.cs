@@ -25,7 +25,8 @@ namespace Client
         {
             base.DoUpdate(deltaTime);
 
-            behaviours.ForEach(behaviour => behaviour.DoUpdate(deltaTime));
+            foreach (UIBehaviour behaviour in behaviours)
+                behaviour.DoUpdate(deltaTime);
         }
 
         protected void RegisterBehaviour(UIBehaviour behaviour)

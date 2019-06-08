@@ -53,8 +53,8 @@ namespace Client
                 worldManager.UnitManager.EventEntityAttached += OnEventEntityAttached;
                 worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
 
-                SpellManager.Instance.EventSpellCast += OnSpellCast;
-                SpellManager.Instance.EventSpellDamageDone += OnSpellDamageDone;
+                EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
+                EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, OnSpellCast);
             }
         }
 
@@ -62,8 +62,8 @@ namespace Client
         {
             if (worldManager.HasClientLogic)
             {
-                SpellManager.Instance.EventSpellDamageDone -= OnSpellDamageDone;
-                SpellManager.Instance.EventSpellCast -= OnSpellCast;
+                EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
+                EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, OnSpellCast);
 
                 worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
                 worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
@@ -82,14 +82,17 @@ namespace Client
 
             if (caster.IsController)
             {
-                GameObject damageEvent = Instantiate(Resources.Load("Prefabs/UI/DamageEvent")) as GameObject;
-                Assert.IsNotNull(damageEvent, "damageEvent != null");
+                // GameObject damageEvent = Instantiate(Resources.Load("Prefabs/UI/DamageEvent")) as GameObject;
+                // Assert.IsNotNull(damageEvent, "damageEvent != null");
                 // damageEvent.GetComponent<UnitDamageUIEvent>().Initialize(damage, unitRenderers[caster], isCrit, ArenaManager.PlayerInterface);
             }
         }
 
-        private void OnSpellCast(Unit caster, SpellInfo spellInfo)
+        private void OnSpellCast(Unit caster, int spellId)
         {
+            if (!BalanceManager.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
+                return;
+
             if (!SpellVisualSettingsById.TryGetValue(spellInfo.Id, out SpellVisualSettings spellVisuals))
                 return;
 

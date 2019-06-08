@@ -12,7 +12,11 @@ namespace Core
 
         public AudioClip FindSound(SpellSoundEntry.UsageType usageType)
         {
-            return soundEntries.Find(entry => entry.SoundUsageType == usageType)?.AudioClip;
+            foreach (var entry in soundEntries)
+                if (entry.SoundUsageType == usageType)
+                    return entry.AudioClip;
+
+            return null;
         }
     }
 }

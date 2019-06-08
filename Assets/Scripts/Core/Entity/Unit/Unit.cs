@@ -1,14 +1,16 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
-using Debug = UnityEngine.Debug;
 using Assert = Common.Assert;
+using EventHandler = Common.EventHandler;
+using Debug = UnityEngine.Debug;
 using Mathf = UnityEngine.Mathf;
 using Vector3 = UnityEngine.Vector3;
-using AuraApplicationList = System.Collections.Generic.List<Core.AuraApplication>;
 using DispelChargesList = System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<Core.Aura, short>>;
 
 namespace Core
@@ -235,10 +237,6 @@ namespace Core
             WeaponAttackType attType, SpellInfo procSpell, uint damage, SpellInfo procAura = null)
         { }
 
-        public void GetProcAurasTriggeredOnEvent(AuraApplicationList aurasTriggeringProc, AuraApplicationList procAuras, ProcEventInfo eventInfo) { }
-        public void TriggerAurasProcOnEvent(ProcEventInfo eventInfo, AuraApplicationList procAuras) { }
-        public void TriggerAurasProcOnEvent(CalcDamageInfo damageInfo) { }
-
         public void HandleEmoteCommand(uint animID) { }
         public void AttackerStateUpdate(Unit victim, WeaponAttackType attType = WeaponAttackType.BaseAttack, bool extra = false) { }
         public void FakeAttackerStateUpdate(Unit victim, WeaponAttackType attType = WeaponAttackType.BaseAttack) { }
@@ -301,7 +299,7 @@ namespace Core
             CleanDamage cleanDamage = new CleanDamage(damageInfo.Absorb, damageInfo.Damage);
             DealDamage(victim, damageInfo.Damage, cleanDamage, DamageEffectType.SpellDirectDamage, damageInfo.SchoolMask, spellProto);
 
-            SpellManager.SpellDamageDone(this, victim, damageInfo.Damage, damageInfo.HitInfo == HitInfo.CriticalHit);
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, this, victim, damageInfo.Damage, damageInfo.HitInfo == HitInfo.CriticalHit);
         }
 
         public uint GetDamageReduction(uint damage) { return GetCombatRatingDamageReduction(CombatRating.ResilencePlayerDamage, 1.0f, 100.0f, damage); }
@@ -425,9 +423,9 @@ namespace Core
 
         #region Spell casting
 
-        public int HealBySpell(Unit victim, SpellInfo spellInfo, int addHealth, bool critical = false) { return 0; }
+        internal int HealBySpell(Unit victim, SpellInfo spellInfo, int addHealth, bool critical = false) { return 0; }
 
-        public void CastSpell(SpellCastTargets targets, SpellInfo spellInfo, TriggerCastFlags triggerFlags = TriggerCastFlags.None, AuraEffect triggeredByAura = null, ulong originalCaster = 0)
+        internal void CastSpell(SpellCastTargets targets, SpellInfo spellInfo, TriggerCastFlags triggerFlags = TriggerCastFlags.None, AuraEffect triggeredByAura = null, ulong originalCaster = 0)
         {
             new Spell(this, spellInfo, triggerFlags, originalCaster).Prepare(targets, triggeredByAura);
         }

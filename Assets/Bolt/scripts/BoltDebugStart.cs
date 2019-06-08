@@ -64,7 +64,7 @@ end tell'";
 
     public override void BoltStartDone()
     {
-        if (BoltNetwork.isServer)
+        if (BoltNetwork.IsServer)
         {
             BoltNetwork.LoadScene(BoltRuntimeSettings.instance.debugStartMapName);
         }

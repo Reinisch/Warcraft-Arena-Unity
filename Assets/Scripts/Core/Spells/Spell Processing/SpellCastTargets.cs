@@ -22,8 +22,8 @@ namespace Core
         public WorldEntity Source => source;
         public WorldEntity Target => target;
 
-        public bool HasSource => TargetMask.HasFlag(SpellCastTargetFlags.SourceLocation);
-        public bool HasDest => TargetMask.HasFlag(SpellCastTargetFlags.DestLocation);
+        public bool HasSource => TargetMask.HasTargetFlag(SpellCastTargetFlags.SourceLocation);
+        public bool HasDest => TargetMask.HasTargetFlag(SpellCastTargetFlags.DestLocation);
         public bool HasTrajectory => !Mathf.Approximately(Speed, 0);
         public float SpeedXY => Speed * Mathf.Cos(Pitch);
         public float SpeedZ => Speed * Mathf.Sin(Pitch);

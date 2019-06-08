@@ -153,7 +153,7 @@ public static class BoltLauncher
     /// </summary>
     public static void Shutdown()
     {
-        BoltNetworkInternal.Shutdown();
+        BoltNetwork.Shutdown();
     }
 
     // Platform Settings

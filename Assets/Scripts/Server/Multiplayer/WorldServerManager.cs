@@ -10,6 +10,8 @@ namespace Server
         private readonly List<PlayerServerInfo> playerInfos = new List<PlayerServerInfo>();
         private readonly Dictionary<BoltConnection, PlayerServerInfo> playerInfosByConnection = new Dictionary<BoltConnection, PlayerServerInfo>();
         private readonly Dictionary<ulong, PlayerServerInfo> playerInfosByPlayerId = new Dictionary<ulong, PlayerServerInfo>();
+        private PlayerServerInfo serverPlayerInfo;
+
         private const int DisconnectedPlayerDestroyTime = 10000;
 
         public WorldServerManager(bool hasClientLogic)
@@ -73,6 +75,9 @@ namespace Server
                 playerInfos.Remove(removeInfo);
                 playerInfosByPlayerId.Remove(entity.networkId.PackedValue);
 
+                if (serverPlayerInfo == removeInfo)
+                    serverPlayerInfo = null;
+
                 if (removeInfo.IsClient)
                     playerInfosByConnection.Remove(removeInfo.BoltConnection);
             }
@@ -111,11 +116,13 @@ namespace Server
             playerInfosByPlayerId[newPlayer.NetworkId] = newPlayerInfo;
             if (boltConnection != null)
                 playerInfosByConnection[boltConnection] = newPlayerInfo;
+            else
+                serverPlayerInfo = newPlayerInfo;
         }
 
-        private Player FindPlayer(BoltConnection boltConnection)
+        public Player FindPlayer(BoltConnection boltConnection)
         {
-            return playerInfosByConnection.LookupEntry(boltConnection)?.Player;
+            return boltConnection == null ? serverPlayerInfo?.Player : playerInfosByConnection.LookupEntry(boltConnection)?.Player;
         }
     }
 }

@@ -21,37 +21,37 @@
             }
         }
 
-        public static bool HasFlag(this SpellInterruptFlags baseFlags, SpellInterruptFlags flag)
+        public static bool HasTargetFlag(this SpellInterruptFlags baseFlags, SpellInterruptFlags flag)
         {
             return (baseFlags & flag) == flag;
         }
 
-        public static bool HasFlag(this SpellAuraInterruptFlags baseFlags, SpellAuraInterruptFlags flag)
+        public static bool HasTargetFlag(this SpellAuraInterruptFlags baseFlags, SpellAuraInterruptFlags flag)
         {
             return (baseFlags & flag) == flag;
         }
 
-        public static bool HasFlag(this SpellChannelInterruptFlags baseFlags, SpellChannelInterruptFlags flag)
+        public static bool HasTargetFlag(this SpellChannelInterruptFlags baseFlags, SpellChannelInterruptFlags flag)
         {
             return (baseFlags & flag) == flag;
         }
 
-        public static bool HasFlag(this SpellSchoolMask baseFlags, SpellSchoolMask flag)
+        public static bool HasTargetFlag(this SpellSchoolMask baseFlags, SpellSchoolMask flag)
         {
             return (baseFlags & flag) == flag;
         }
 
-        public static bool HasFlag(this TriggerCastFlags baseFlags, TriggerCastFlags flag)
+        public static bool HasTargetFlag(this TriggerCastFlags baseFlags, TriggerCastFlags flag)
         {
             return (baseFlags & flag) == flag;
         }
 
-        public static bool HasFlag(this SpellRangeFlag baseFlags, SpellRangeFlag flag)
+        public static bool HasTargetFlag(this SpellRangeFlag baseFlags, SpellRangeFlag flag)
         {
             return (baseFlags & flag) == flag;
         }
 
-        public static bool HasFlag(this SpellCastTargetFlags baseFlags, SpellCastTargetFlags flag)
+        public static bool HasTargetFlag(this SpellCastTargetFlags baseFlags, SpellCastTargetFlags flag)
         {
             return (baseFlags & flag) == flag;
         }

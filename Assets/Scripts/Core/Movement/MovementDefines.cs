@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace Core
 {
@@ -23,7 +22,10 @@ namespace Core
         EffectMotionType = 16,
     }
 
-    [Flags, Description("Compressed to 12 bits in UnitState and MoveState.")]
+    /// <summary>
+    /// Compressed to 12 bits in UnitState and MoveState.
+    /// </summary>
+    [Flags]
     public enum MovementFlags
     {
         Root = 1 << 0,
