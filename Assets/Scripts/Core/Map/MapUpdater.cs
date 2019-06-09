@@ -82,8 +82,7 @@ namespace Core
         {
             while (true)
             {
-                MapUpdateRequest request;
-                if (updateRequests.TryTake(out request, 10, cancellationTokenSource.Token))
+                if (updateRequests.TryTake(out MapUpdateRequest request, 10, cancellationTokenSource.Token))
                     request.Call();
 
                 if (cancellationTokenSource.IsCancellationRequested)

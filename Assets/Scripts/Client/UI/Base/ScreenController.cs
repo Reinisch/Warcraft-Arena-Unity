@@ -6,16 +6,16 @@ namespace Client.UI
 {
     public sealed class ScreenController
     {
-        private readonly List<UIPanelControllerBase> panelControllers = new List<UIPanelControllerBase>();
-        private readonly Dictionary<Type, UIPanelControllerBase> panelControllersByPanelType = new Dictionary<Type, UIPanelControllerBase>();
+        private readonly List<UIPanelController> panelControllers = new List<UIPanelController>();
+        private readonly Dictionary<Type, UIPanelController> panelControllersByPanelType = new Dictionary<Type, UIPanelController>();
         
-        internal void RegisterScreen<TPanel>(UIPanelController<TPanel> panelController) where TPanel : UIPanel
+        internal void RegisterScreen(UIPanelController panelController)
         {
             panelControllersByPanelType.Add(panelController.GetType(), panelController);
             panelControllers.Add(panelController);
         }
 
-        internal void UnregisterScreen<TPanel>(UIPanelController<TPanel> panelController) where TPanel : UIPanel
+        internal void UnregisterScreen(UIPanelController panelController)
         {
             panelControllers.Remove(panelController);
             panelControllersByPanelType.Remove(panelController.GetType());
@@ -27,37 +27,37 @@ namespace Client.UI
                 panelController.DoUpdate(deltaTime);
         }
         
-        public void ShowScreen<TScreen, TShowPanel>() where TScreen : UIPanelController<UIPanel> where TShowPanel : UIPanel
+        public void ShowScreen<TScreen, TShowPanel>() where TScreen : UIPanelController where TShowPanel : UIPanel, IPanel<TScreen>
         {
             Assert.IsTrue(panelControllersByPanelType.ContainsKey(typeof(TScreen)), $"Screen with panel type {typeof(TScreen)} not found when showing!");
-            if (!panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelControllerBase basePanelController))
+            if (!panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelController basePanelController))
                 return;
 
             if (basePanelController is TScreen panelController)
             {
                 panelController.gameObject.SetActive(true);
-                panelController.ShowPanel<TShowPanel>();
+                panelController.ShowPanelInternal<TShowPanel>();
             }
         }
 
         public void ShowScreen<TScreen, TShowPanel, TShowToken>(TShowToken token = default)
-            where TScreen : UIPanelController<UIPanel> where TShowPanel : UIPanel where TShowToken : IPanelShowToken<TShowPanel>
+            where TScreen : UIPanelController where TShowPanel : UIPanel where TShowToken : IPanelShowToken<TShowPanel>
         {
             Assert.IsTrue(panelControllersByPanelType.ContainsKey(typeof(TScreen)), $"Screen with panel type {typeof(TScreen)} not found when showing!");
-            if (!panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelControllerBase basePanelController))
+            if (!panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelController basePanelController))
                 return;
 
             if (basePanelController is TScreen panelController)
             {
                 panelController.gameObject.SetActive(true);
-                panelController.ShowPanel<TShowPanel, TShowToken>(token);
+                panelController.ShowPanelInternal<TShowPanel, TShowToken>(token);
             }
         }
 
-        public void HideScreen<TScreen>()
+        public void HideScreen<TScreen>() where TScreen : UIPanelController
         {
             Assert.IsTrue(panelControllersByPanelType.ContainsKey(typeof(TScreen)), $"Screen with panel type {typeof(TScreen)} not found when hiding!");
-            if (panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelControllerBase basePanelController))
+            if (panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelController basePanelController))
             {
                 basePanelController.HideAllPanels();
                 basePanelController.gameObject.SetActive(false);

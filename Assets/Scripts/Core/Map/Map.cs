@@ -78,7 +78,7 @@ namespace Core
             mapGrid.RemoveEntity(entity);
         }
 
-        public void SearchAreaTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, TargetChecks checkType)
+        public void SearchAreaTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, SpellTargetChecks checkType)
         {
             int hitCount = Physics.OverlapSphereNonAlloc(center, radius, raycastResults, PhysicsManager.Mask.Characters);
             Assert.IsFalse(hitCount == raycastResults.Length, "Raycast results reached maximum!");
@@ -90,11 +90,11 @@ namespace Core
 
                 switch (checkType)
                 {
-                    case TargetChecks.Ally:
+                    case SpellTargetChecks.Ally:
                         if (referer.IsHostileTo(targetUnit))
                             continue;
                         break;
-                    case TargetChecks.Enemy:
+                    case SpellTargetChecks.Enemy:
                         if (!referer.IsHostileTo(targetUnit))
                             continue;
                         break;

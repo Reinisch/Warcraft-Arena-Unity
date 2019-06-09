@@ -10,7 +10,7 @@ public class UnitRenderer : EntityEventListener<IUnitState>
     [SerializeField, UsedImplicitly] private EffectTagPositioner effectTagPositioner;
     [SerializeField, UsedImplicitly] private Animator animator;
 
-    private Animator Animator => animator;
+    public Animator Animator => animator;
     private Unit Unit { get; set; }
 
     public EffectTagPositioner EffectTagPositioner => effectTagPositioner;

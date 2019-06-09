@@ -38,7 +38,7 @@ namespace Core
             EffectNone(effect);
         }
 
-        public void EffectEnvironmentalDMG(EffectTeleportDirect effect, Unit target, SpellEffectHandleMode mode)
+        public void EffectEnvironmentalDamage(EffectTeleportDirect effect, Unit target, SpellEffectHandleMode mode)
         {
             if (mode != SpellEffectHandleMode.HitTarget)
                 return;
@@ -48,14 +48,11 @@ namespace Core
 
             int absorb = 0;
             int resist = 0;
-            Caster.CalcAbsorbResist(target, SpellInfo.SchoolMask, DamageEffectType.DirectDamage, SpellDamage, ref absorb, ref resist, SpellInfo);
+            Caster.CalcAbsorbResist(target, SpellInfo.SchoolMask, SpellDamageType.Pure, 100, ref absorb, ref resist, SpellInfo);
 
-            if (target.EntityType == EntityType.Player)
-                ((Player)target).EnvironmentalDamage(EnviromentalDamage.Fire, SpellDamage);
-
-            var log = new SpellNonMeleeDamage(Caster, target, SpellInfo.Id, SpellInfo.SchoolMask, CastId)
+            var log = new SpellCastDamageInfo(Caster, target, SpellInfo.Id, SpellInfo.SchoolMask, CastId)
             {
-                Damage = SpellDamage - absorb - resist,
+                Damage = 100 - absorb - resist,
                 Absorb = absorb,
                 Resist = resist
             };
@@ -73,7 +70,7 @@ namespace Core
             if (Caster == target)
                 Finish();
 
-            Caster.DealDamage(target, target.Health, null, DamageEffectType.NoDamage, SpellSchoolMask.Normal, null, false);
+            Caster.DealDamage(target, target.Health, 0, SpellDamageType.Pure, SpellSchoolMask.Normal, null, false);
         }
 
         public void EffectDummy(int effIndex) { throw new NotImplementedException(); }

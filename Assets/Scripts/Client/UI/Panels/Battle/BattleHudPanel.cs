@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Client
 {
-    public class BattleHudPanel : UIWindow
+    public class BattleHudPanel : UIWindow<BattleScreen>
     {
         public struct RegisterToken : IPanelRegisterToken<BattleHudPanel>
         {

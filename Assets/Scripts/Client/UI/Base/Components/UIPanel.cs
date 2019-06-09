@@ -7,14 +7,20 @@ namespace Client.UI
     {
         [SerializeField, UsedImplicitly] private CanvasGroup panelCanvasGroup;
 
-        internal void Initialize()
+        protected UIPanelController PanelController { get; private set; }
+
+        internal void Initialize(UIPanelController panelController)
         {
+            PanelController = panelController;
+
             PanelInitialized();
         }
 
         internal void Deinitialize()
         {
             PanelDeinitialized();
+
+            PanelController = null;
         }
 
         internal void Show()

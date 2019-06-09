@@ -14,7 +14,7 @@ namespace Core
 
         public override void ApplyForTarget(Unit target, Unit caster, AuraApplication aurApp) { }
         public override void UnapplyForTarget(Unit target, Unit caster, AuraApplication aurApp) { }
-        public override void Remove(AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault) { }
+        public override void Remove(AuraRemoveMode removeMode = AuraRemoveMode.Default) { }
         public override void FillTargetMap(Dictionary<Unit, uint> targets, Unit caster) { }
     }
 }

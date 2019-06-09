@@ -12,11 +12,9 @@ namespace Core
         [SerializeField, UsedImplicitly] private int id;
         [SerializeField, UsedImplicitly] private string spellName;
 
-        [SerializeField, UsedImplicitly] private SpellCategory categoryId;
         [SerializeField, UsedImplicitly] private SpellDamageClass damageClass;
-        [SerializeField, UsedImplicitly] private SpellFamilyNames spellFamilyName;
-        [SerializeField, UsedImplicitly] private DispelType dispel;
-        [SerializeField, UsedImplicitly] private Mechanics mechanic;
+        [SerializeField, UsedImplicitly] private SpellDispelType spellDispel;
+        [SerializeField, UsedImplicitly] private SpellMechanics mechanic;
 
         [SerializeField, EnumFlag, UsedImplicitly] private SpellSchoolMask schoolMask;
         [SerializeField, EnumFlag, UsedImplicitly] private SpellPreventionType preventionType;
@@ -30,7 +28,7 @@ namespace Core
         [SerializeField, EnumFlag, UsedImplicitly] private AuraStateType targetAuraState;
         [SerializeField, EnumFlag, UsedImplicitly] private AuraStateType excludeCasterAuraState;
         [SerializeField, EnumFlag, UsedImplicitly] private AuraStateType excludeTargetAuraState;
-        [SerializeField, EnumFlag, UsedImplicitly] private SpellRangeFlag rangedFlags;
+        [SerializeField, EnumFlag, UsedImplicitly] private SpellRangeFlags rangedFlags;
         [SerializeField, EnumFlag, UsedImplicitly] private SpellInterruptFlags interruptFlags;
 
         [SerializeField, UsedImplicitly] private int duration;
@@ -52,7 +50,6 @@ namespace Core
         [SerializeField, UsedImplicitly] private int procCooldown;
         [SerializeField, UsedImplicitly] private int procCharges;
         [SerializeField, UsedImplicitly] private int procChance;
-        [SerializeField, EnumFlag, UsedImplicitly] private ProcFlags procFlags;
 
         [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos = new List<SpellEffectInfo>();
         [SerializeField, UsedImplicitly] private List<SpellPowerEntry> spellPowerEntries = new List<SpellPowerEntry>();
@@ -60,16 +57,14 @@ namespace Core
         [SerializeField, UsedImplicitly] private List<SpellProcsPerMinuteModifier> procsPerMinuteModifiers;
 
         /// <summary>
-        /// Compressed to 8 bits in SpellCastRequestEvent.
+        /// Compressed to 8 bits in Spell Events.
         /// </summary>
         public int Id => id;
         public string SpellName => spellName;
 
-        public SpellCategory CategoryId => categoryId;
-        public DispelType Dispel => dispel;
-        public Mechanics Mechanic => mechanic;
+        public SpellDispelType SpellDispel => spellDispel;
+        public SpellMechanics Mechanic => mechanic;
         public SpellDamageClass DamageClass => damageClass;
-        public SpellFamilyNames SpellFamilyName => spellFamilyName;
 
         public SpellSchoolMask SchoolMask => schoolMask;
         public SpellPreventionType PreventionType => preventionType;
@@ -83,10 +78,9 @@ namespace Core
         public EnityTypeMask TargetEntityTypeMask => targetEntityTypeMask;
         public AuraStateType ExcludeCasterAuraState => excludeCasterAuraState;
         public AuraStateType ExcludeTargetAuraState => excludeTargetAuraState;
-        public SpellRangeFlag RangedFlags => rangedFlags;
+        public SpellRangeFlags RangedFlags => rangedFlags;
         public SpellInterruptFlags InterruptFlags => interruptFlags;
 
-        public ProcFlags ProcFlags => procFlags;
         public int ProcChance => procChance;
         public int ProcCharges => procCharges;
         public int ProcCooldown => procCooldown;
@@ -184,7 +178,7 @@ namespace Core
 
             SpellCastTargetFlags targetMask = 0;
             foreach(var effect in Effects)
-                if (effect.MainTargeting.ReferenceType != TargetReferences.Caster && effect.SecondaryTargeting.ReferenceType != TargetReferences.Caster)
+                if (effect.MainTargeting.ReferenceType != SpellTargetReferences.Caster && effect.SecondaryTargeting.ReferenceType != SpellTargetReferences.Caster)
                     targetMask |= effect.ImplicitTargetFlags;
 
             return (targetMask & SpellCastTargetFlags.UnitMask) != 0;
@@ -231,12 +225,12 @@ namespace Core
                 return false;
 
             // ...but not these (Divine shield, Ice block, Cyclone and Banish for example)
-            return !(aura.Mechanic == Mechanics.ImmuneShield || aura.Mechanic == Mechanics.Invulnerability || aura.Mechanic == Mechanics.Banish);
+            return !(aura.Mechanic == SpellMechanics.ImmuneShield || aura.Mechanic == SpellMechanics.Invulnerability || aura.Mechanic == SpellMechanics.Banish);
         }
 
         public bool CanDispelAura(SpellInfo aura)
         {
-            // These spells (like Mass Dispel) can dispell all auras, except death persistent ones (like Dungeon and Battleground Deserter)
+            // These spells (like Mass SpellDispel) can dispell all auras, except death persistent ones (like Dungeon and Battleground Deserter)
             if (HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !aura.IsDeathPersistent())
                 return true;
 
@@ -368,12 +362,12 @@ namespace Core
 
         #endregion
 
-        #region School, mechanics, dispel and states
+        #region School, mechanics, spellDispel and states
 
         public AuraStateType GetAuraState()
         {
             // Enrage aura state
-            if (Dispel == DispelType.Enrage)
+            if (SpellDispel == SpellDispelType.Enrage)
                 return AuraStateType.Enrage;
 
             if (SchoolMask.HasFlag(SpellSchoolMask.Frost))
@@ -383,13 +377,13 @@ namespace Core
             return AuraStateType.None;
         }
 
-        public Mechanics GetEffectMechanic(int effIndex)
+        public SpellMechanics GetEffectMechanic(int effIndex)
         {
             SpellEffectInfo effect = Effects[effIndex];
             if (effect.Mechanic != 0)
                 return effect.Mechanic;
 
-            return Mechanic != 0 ? Mechanic : Mechanics.None;
+            return Mechanic != 0 ? Mechanic : SpellMechanics.None;
         }
 
         public uint GetEffectMechanicMask(int effIndex)
@@ -434,7 +428,7 @@ namespace Core
             {
                 Player modOwner = caster.SpellModOwner;
                 if (modOwner != null)
-                    modOwner.ApplySpellMod(Id, SpellModOp.Range, ref range, spell);
+                    modOwner.ApplySpellMod(Id, SpellModifierType.Range, ref range, spell);
             }
             return range;
         }
@@ -486,10 +480,10 @@ namespace Core
             return RecoveryTime > CategoryRecoveryTime ? RecoveryTime : CategoryRecoveryTime;
         }
 
-        public List<CostData> CalcPowerCost(Unit caster, SpellSchoolMask schoolMask)
+        public List<SpellResourceCost> CalcPowerCost(Unit caster, SpellSchoolMask schoolMask)
         {
             var powers = PowerCosts;
-            var costs = new List<CostData>(PowerCosts.Count);
+            var costs = new List<SpellResourceCost>(PowerCosts.Count);
             int healthCost = 0;
 
             foreach (var power in powers)
@@ -499,26 +493,26 @@ namespace Core
                 // percent cost from total amount
                 if (power.PowerCostPercentage > 0)
                 {
-                    switch (power.PowerType)
+                    switch (power.SpellResourceType)
                     {
                         // health as power used
-                        case PowerType.Health:
+                        case SpellResourceType.Health:
                             powerCost += (int)caster.MaxHealth.CalculatePercentage(power.PowerCostPercentage);
                             break;
-                        case PowerType.Mana:
+                        case SpellResourceType.Mana:
                             powerCost += (int)caster.GetCreateMana().CalculatePercentage(power.PowerCostPercentage);
                             break;
-                        case PowerType.Rage:
-                        case PowerType.Focus:
-                        case PowerType.Energy:
-                            powerCost += caster.GetMaxPower(power.PowerType).CalculatePercentage(power.PowerCostPercentage);
+                        case SpellResourceType.Rage:
+                        case SpellResourceType.Focus:
+                        case SpellResourceType.Energy:
+                            powerCost += caster.GetMaxPower(power.SpellResourceType).CalculatePercentage(power.PowerCostPercentage);
                             break;
-                        case PowerType.Runes:
-                        case PowerType.RunicPower:
-                            Debug.unityLogger.LogWarning("Spells", $"CalculateManaCost for {power.PowerType}: Not implemented yet!");
+                        case SpellResourceType.Runes:
+                        case SpellResourceType.RunicPower:
+                            Debug.unityLogger.LogWarning("Spells", $"CalculateManaCost for {power.SpellResourceType}: Not implemented yet!");
                             break;
                         default:
-                            Debug.unityLogger.LogError("Spells", $"CalculateManaCost: Unknown power type '{power.PowerType}' in spell {Id}");
+                            Debug.unityLogger.LogError("Spells", $"CalculateManaCost: Unknown power type '{power.SpellResourceType}' in spell {Id}");
                             continue;
                     }
                 }
@@ -527,9 +521,9 @@ namespace Core
 
                 // apply cost mod by spell
                 if (modOwner != null)
-                    modOwner.ApplySpellMod(Id, SpellModOp.Cost, ref powerCost);
+                    modOwner.ApplySpellMod(Id, SpellModifierType.Cost, ref powerCost);
 
-                if (power.PowerType == PowerType.Health)
+                if (power.SpellResourceType == SpellResourceType.Health)
                 {
                     healthCost += powerCost;
                     continue;
@@ -538,21 +532,21 @@ namespace Core
                 bool found = false;
                 for (int i = 0; i < costs.Count; i++)
                 {
-                    if(costs[i].Power == power.PowerType)
+                    if(costs[i].SpellResource == power.SpellResourceType)
                     {
-                        costs[i] = new CostData(costs[i].Power, costs[i].Amount + powerCost);
+                        costs[i] = new SpellResourceCost(costs[i].SpellResource, costs[i].Amount + powerCost);
                         found = true;
                     }
                 }
 
                 if (!found)
-                    costs.Add(new CostData(power.PowerType, powerCost));
+                    costs.Add(new SpellResourceCost(power.SpellResourceType, powerCost));
             }
 
             if (healthCost > 0)
-                costs.Add(new CostData(PowerType.Health, healthCost));
+                costs.Add(new SpellResourceCost(SpellResourceType.Health, healthCost));
 
-            costs.RemoveAll(cost => cost.Power != PowerType.Runes && cost.Amount <= 0);
+            costs.RemoveAll(cost => cost.SpellResource != SpellResourceType.Runes && cost.Amount <= 0);
 
             return costs;
         }
@@ -650,7 +644,7 @@ namespace Core
             // prepare target mask using effect target entries
             foreach (var effect in Effects)
             {
-                if (effect.ExplicitTargetType != ExplicitTargetTypes.Explicit)
+                if (effect.ExplicitTargetType != SpellExplicitTargetType.Explicit)
                     continue;
 
                 targetMask |= CalculateExplicitTargetMask(effect.MainTargeting);
@@ -668,27 +662,27 @@ namespace Core
             SpellCastTargetFlags targetMask = 0;
             switch (targetingType.ReferenceType)
             {
-                case TargetReferences.Source:
+                case SpellTargetReferences.Source:
                     targetMask = SpellCastTargetFlags.SourceLocation;
                     break;
-                case TargetReferences.Dest:
+                case SpellTargetReferences.Dest:
                     targetMask = SpellCastTargetFlags.DestLocation;
                     break;
-                case TargetReferences.Target:
+                case SpellTargetReferences.Target:
                     switch (targetingType.TargetEntities)
                     {
-                        case TargetEntities.GameEntity:
+                        case SpellTargetEntities.GameEntity:
                             targetMask = SpellCastTargetFlags.GameEntity;
                             break;
-                        case TargetEntities.UnitAndDest:
-                        case TargetEntities.Unit:
-                        case TargetEntities.Dest:
+                        case SpellTargetEntities.UnitAndDest:
+                        case SpellTargetEntities.Unit:
+                        case SpellTargetEntities.Dest:
                             switch (targetingType.SelectionCheckType)
                             {
-                                case TargetChecks.Enemy:
+                                case SpellTargetChecks.Enemy:
                                     targetMask = SpellCastTargetFlags.UnitEnemy;
                                     break;
-                                case TargetChecks.Ally:
+                                case SpellTargetChecks.Ally:
                                     targetMask = SpellCastTargetFlags.UnitAlly;
                                     break;
                                 default:

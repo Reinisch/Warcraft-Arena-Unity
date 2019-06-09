@@ -3,8 +3,8 @@
     public class SpellModifier
     {
         private Aura OwnerAura { get; set; }
-        private SpellModOp Mod { get; set; }
-        private SpellModType Type { get; set; }
+        private SpellModifierType Mod { get; set; }
+        private SpellModifierApplicationType Type { get; set; }
 
         public short Charges { get; set; }
         public int Value { get; set; }
@@ -13,8 +13,8 @@
         public SpellModifier(Aura ownerAura)
         {
             OwnerAura = ownerAura;
-            Mod = SpellModOp.Damage;
-            Type = SpellModType.Flat;
+            Mod = SpellModifierType.Damage;
+            Type = SpellModifierApplicationType.Flat;
         }
     }
 }

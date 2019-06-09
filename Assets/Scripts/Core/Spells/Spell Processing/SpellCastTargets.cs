@@ -15,9 +15,6 @@ namespace Core
         public float Speed { get; set; }
         public float Pitch { get; set; }
 
-        public ulong OrigUnitTargetId => origEntityTargetId;
-        public ulong EntityTargetId => entityTargetId;
-
         public WorldEntity Destination => destination;
         public WorldEntity Source => source;
         public WorldEntity Target => target;
@@ -54,20 +51,6 @@ namespace Core
             }
         }
 
-        public GameEntity GameEntityTarget
-        {
-            get => target as GameEntity;
-            set
-            {
-                if (value == null)
-                    return;
-
-                target = value;
-                entityTargetId = value.NetworkId;
-                TargetMask |= SpellCastTargetFlags.GameEntity;
-            }
-        }
-
         public SpellCastTargets()
         {
             TargetMask = 0;
@@ -76,7 +59,7 @@ namespace Core
             target = null;
         }
 
-        public SpellCastTargets(Unit caster/*, ref SpellCastRequest spellCastRequest*/)
+        public SpellCastTargets(Unit caster, SpellCastRequestEvent spellCastRequest)
         {
             /*TargetMask = spellCastRequest.Target.Flags;
             Pitch = 0.0f;

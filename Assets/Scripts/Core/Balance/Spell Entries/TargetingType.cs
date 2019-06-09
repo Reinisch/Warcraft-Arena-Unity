@@ -7,23 +7,23 @@ namespace Core
     [Serializable]
     public struct TargetingType
     {
-        [SerializeField, UsedImplicitly] private TargetEntities targetEntities;
-        [SerializeField, UsedImplicitly] private TargetReferences referenceType;
-        [SerializeField, UsedImplicitly] private TargetSelections selectionCategory;
-        [SerializeField, UsedImplicitly] private TargetChecks selectionCheckType;
-        [SerializeField, UsedImplicitly] private TargetDirections directionType;
+        [SerializeField, UsedImplicitly] private SpellTargetEntities targetEntities;
+        [SerializeField, UsedImplicitly] private SpellTargetReferences referenceType;
+        [SerializeField, UsedImplicitly] private SpellTargetSelection selectionCategory;
+        [SerializeField, UsedImplicitly] private SpellTargetChecks selectionCheckType;
+        [SerializeField, UsedImplicitly] private SpellTargetDirections directionType;
 
-        public TargetEntities TargetEntities => targetEntities;
-        public TargetReferences ReferenceType => referenceType;
-        public TargetSelections SelectionCategory => selectionCategory;
-        public TargetChecks SelectionCheckType => selectionCheckType;
-        public TargetDirections DirectionType => directionType;
-        public bool IsArea => SelectionCategory == TargetSelections.Area || SelectionCategory == TargetSelections.Cone;
-        public bool IsAreaLookup => IsArea || SelectionCategory == TargetSelections.Nearby;
+        public SpellTargetEntities TargetEntities => targetEntities;
+        public SpellTargetReferences ReferenceType => referenceType;
+        public SpellTargetSelection SelectionCategory => selectionCategory;
+        public SpellTargetChecks SelectionCheckType => selectionCheckType;
+        public SpellTargetDirections DirectionType => directionType;
+        public bool IsArea => SelectionCategory == SpellTargetSelection.Area || SelectionCategory == SpellTargetSelection.Cone;
+        public bool IsAreaLookup => IsArea || SelectionCategory == SpellTargetSelection.Nearby;
 
         public override bool Equals(object obj)
         {
-            return obj is TargetingType && this == (TargetingType)obj;
+            return obj is TargetingType type && this == type;
         }
 
         public override int GetHashCode()

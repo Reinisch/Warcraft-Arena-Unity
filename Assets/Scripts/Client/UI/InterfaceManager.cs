@@ -28,18 +28,18 @@ public class InterfaceManager : MonoBehaviour
         screenController.DoUpdate(deltaTime);
     }
 
-    public void ShowScreen<TScreen, TShowPanel>() where TScreen : UIPanelController<UIPanel> where TShowPanel : UIPanel
+    public void ShowScreen<TScreen, TShowPanel>() where TScreen : UIPanelController where TShowPanel : UIPanel, IPanel<TScreen>
     {
         screenController.ShowScreen<TScreen, TShowPanel>();
     }
 
     public void ShowScreen<TScreen, TFirstPanel, TPanelShowData>(TPanelShowData showData = default)
-        where TScreen : UIPanelController<UIPanel> where TFirstPanel : UIPanel where TPanelShowData : IPanelShowToken<TFirstPanel>
+        where TScreen : UIPanelController where TFirstPanel : UIPanel, IPanel<TScreen> where TPanelShowData : IPanelShowToken<TFirstPanel>
     {
         screenController.ShowScreen<TScreen, TFirstPanel, TPanelShowData>(showData);
     }
 
-    public void HideScreen<TScreen>() where TScreen : UIPanelControllerBase
+    public void HideScreen<TScreen>() where TScreen : UIPanelController
     {
         screenController.HideScreen<TScreen>();
     }

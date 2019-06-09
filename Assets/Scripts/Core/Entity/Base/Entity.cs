@@ -19,7 +19,7 @@ namespace Core
 
         [SerializeField, UsedImplicitly] private List<EntityField> defaultFieldValues = new List<EntityField>();
 
-        private readonly Dictionary<EntityFields, EntityFieldValue> entityFields = new Dictionary<EntityFields, EntityFieldValue>(new EntityFieldsEqualityComparer());
+        private readonly Dictionary<EntityFields, EntityFieldValue> entityFields = new Dictionary<EntityFields, EntityFieldValue>(new StatUtils.EntityFieldsComparer());
         private readonly bool validateFieldAccess = false;
 
         internal WorldManager WorldManager { get; private set; }
@@ -36,7 +36,7 @@ namespace Core
         [UsedImplicitly]
         internal virtual void Awake()
         {
-            foreach (var entityField in EntityFieldHelper.GetEntityFields(EntityType))
+            foreach (var entityField in StatUtils.GetEntityFields(EntityType))
                 entityFields[entityField] = default;
         }
 

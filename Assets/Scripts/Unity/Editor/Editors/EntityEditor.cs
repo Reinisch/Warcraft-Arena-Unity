@@ -94,7 +94,7 @@ public class EntityEditor : Editor
                     targetEntityType = EntityType.Creature;
                 }
 
-                foreach (var entityField in EntityFieldHelper.GetEntityFields(targetEntityType))
+                foreach (var entityField in StatUtils.GetEntityFields(targetEntityType))
                 {
                     entityFieldList.Add(new EntityField(entityField, entityField.GetFieldType()));
                 }

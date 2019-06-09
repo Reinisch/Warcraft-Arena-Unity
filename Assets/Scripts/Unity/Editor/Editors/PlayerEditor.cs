@@ -1,7 +1,8 @@
 ﻿using UnityEditor;
 using Core;
+using JetBrains.Annotations;
 
-[CustomEditor(typeof(Player))]
+[CustomEditor(typeof(Player)), UsedImplicitly]
 public class PlayerEditor : EntityEditor
 {
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Client
 {
-    public class BattleScreen : UIWindowController
+    public class BattleScreen : UIWindowController<BattleScreen>
     {
         [SerializeField, UsedImplicitly] private BattleHudPanel battleHudPanel;
         

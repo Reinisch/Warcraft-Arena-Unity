@@ -5,7 +5,7 @@ using Client.UI;
 
 namespace Client
 {
-    public class LobbyScreen : UIWindowController
+    public class LobbyScreen : UIWindowController<LobbyScreen>
     {
         [SerializeField, UsedImplicitly] private LobbyPanel lobbyPanel;
 
@@ -15,7 +15,7 @@ namespace Client
 
             gameObject.SetActive(false);
 
-            RegisterPanel(lobbyPanel, new LobbyPanel.RegisterToken(photonManager, this));
+            RegisterPanel(lobbyPanel, new LobbyPanel.RegisterToken(photonManager));
         }
 
         public new void Deinitialize(ScreenController controller)

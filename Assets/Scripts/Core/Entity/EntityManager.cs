@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bolt;
+using Common;
 
 namespace Core
 {

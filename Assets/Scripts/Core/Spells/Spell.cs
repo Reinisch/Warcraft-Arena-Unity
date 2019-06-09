@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Common;
 using UnityEngine;
+
 using EventHandler = Common.EventHandler;
 
 namespace Core
@@ -22,18 +23,14 @@ namespace Core
         public SpellSchoolMask SpellSchoolMask { get; set; }
         public WeaponAttackType AttackType { get; set; }
         public SpellState SpellState { get; set; }
-        public TriggerCastFlags TriggerCastFlags { get; set; }
-        public DiminishingLevels DiminishLevel { get; set; }
-        public DiminishingGroup DiminishGroup { get; set; }
+        public SpellCastFlags SpellCastFlags { get; set; }
+        public SpellDiminishingLevel DiminishLevel { get; set; }
+        public SpellDiminishingGroup DiminishGroup { get; set; }
 
         public GameEntity GameEntityTarget { get; set; }
         public Vector3 DestTarget { get; set; }
-        public int SpellDamage { get; set; }
         public int SpellHealing { get; set; }
         public float Variance { get; set; }
-
-        public ProcFlags ProcAttacker { get; set; }
-        public ProcFlags ProcVictim { get; set; }
 
         public int EffectDamage { get; set; }
         public int EffectHealing { get; set; }
@@ -54,28 +51,24 @@ namespace Core
         public float CastTimer { get; private set; }
         public float ChanneledDuration { get; set; }
         public bool ImmediateHandled { get; set; }
-        public List<PowerCostData> PowerCost { get; set; }
 
         public int ChannelTargetEffectMask { get; set; }
-        public List<TargetInfo> UniqueTargetInfo { get; set; }
-        public List<GameEntityTargetInfo> UniqueGameEntityTargetInfo { get; set; }
+        public List<SpellTargetInfo> UniqueTargetInfo { get; set; }
         public SpellCastTargets Targets { get; set; }
-
         public SpellCustomErrors CustomError { get; private set; }
 
         public bool IsNextMeleeSwingSpell => throw new NotImplementedException();
-        public bool IsTriggered => (TriggerCastFlags & TriggerCastFlags.FullMask) != 0;
-        public bool IsIgnoringCooldowns => (TriggerCastFlags & TriggerCastFlags.IgnoreSpellAndCategoryCd) != 0;
+        public bool IsTriggered => SpellCastFlags != 0;
+        public bool IsIgnoringCooldowns => (SpellCastFlags & SpellCastFlags.IgnoreSpellAndCategoryCd) != 0;
         public bool IsChannelActive => Caster.GetUintValue(EntityFields.ChannelSpell) != 0;
         public bool IsAutoActionResetSpell => throw new NotImplementedException();
         public bool IsInterruptable => !ExecutedCurrently;
         public bool IsNeedSendToClient => throw new NotImplementedException();
-        public CurrentSpellTypes CurrentContainer => throw new NotImplementedException();
+        public SpellSlotType CurrentContainer => throw new NotImplementedException();
 
-        public List<HitTriggerSpell> HitTriggerSpells { get; private set; }
         private bool HasGlobalCooldown => Caster.SpellHistory.HasGlobalCooldown();
 
-        public Spell(Unit caster, SpellInfo info, TriggerCastFlags triggerFlags, ulong originalCasterId, bool skipCheck = false)
+        internal Spell(Unit caster, SpellInfo info, SpellCastFlags spellFlags, ulong originalCasterId, bool skipCheck = false)
         {
             SpellInfo = info;
             Caster = caster;
@@ -95,19 +88,16 @@ namespace Core
                 OriginalCaster = null;
 
             SpellState = SpellState.None;
-            TriggerCastFlags = triggerFlags;
+            SpellCastFlags = spellFlags;
             if (info.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
-                TriggerCastFlags = TriggerCastFlags | TriggerCastFlags.IgnoreCastInProgress | TriggerCastFlags.CastDirectly;
+                SpellCastFlags = SpellCastFlags | SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
 
             GameEntityTarget = null;
             DestTarget = Vector3.zero;
             Variance = 0.0f;
-            DiminishLevel = DiminishingLevels.Level1;
-            DiminishGroup = DiminishingGroup.None;
-            SpellDamage = 0;
+            DiminishLevel = SpellDiminishingLevel.Level1;
+            DiminishGroup = SpellDiminishingGroup.None;
             SpellHealing = 0;
-            ProcAttacker = 0;
-            ProcVictim = 0;
             CastId = 0;
             PreCastSpell = 0;
             TriggeredByAuraSpell = null;
@@ -126,15 +116,14 @@ namespace Core
             CanReflect = SpellInfo.DamageClass == SpellDamageClass.Magic && !SpellInfo.HasAttribute(SpellAttributes.CantBeReflected) &&
                 !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive() && !SpellInfo.IsPositive();
 
-            UniqueTargetInfo = new List<TargetInfo>();
-            UniqueGameEntityTargetInfo = new List<GameEntityTargetInfo>();
+            UniqueTargetInfo = new List<SpellTargetInfo>();
 
             DelayMoment = 0;
             EffectDamage = 0;
             EffectHealing = 0;
         }
 
-        public void DoUpdate(int diffTime)
+        internal void DoUpdate(int diffTime)
         {
             if (SpellState == SpellState.Preparing)
             {
@@ -143,14 +132,14 @@ namespace Core
                 else
                     CastTimer = 0;
 
-                if (CastTimer == 0)
+                if (Mathf.Approximately(CastTimer, 0))
                     Cast(CastTime > 0);
             }
             else
                 Finish(false);
         }
 
-        public void Prepare(SpellCastTargets targets, AuraEffect triggeredByAura = null)
+        internal void Prepare(SpellCastTargets targets, AuraEffect triggeredByAura = null)
         {
             InitiateExplicitTargets(targets);
 
@@ -161,7 +150,7 @@ namespace Core
 
             SpellCastResult result = CheckCast(true);
 
-            if ((TriggerCastFlags & TriggerCastFlags.IgnoreTargetCheck) != 0 && result == SpellCastResult.BadTargets)
+            if ((SpellCastFlags & SpellCastFlags.IgnoreTargetCheck) != 0 && result == SpellCastResult.BadTargets)
                 result = SpellCastResult.Success;
             if (result != SpellCastResult.Success)
             {
@@ -195,7 +184,7 @@ namespace Core
         {
             SelectSpellTargets();
 
-            Caster.SpellHistory.HandleCooldowns(SpellInfo, this);
+            Caster.SpellHistory.HandleCooldowns(SpellInfo);
 
             HandleImmediate();
         }
@@ -223,8 +212,8 @@ namespace Core
             WorldEntity target = Targets.Target;
             if (target != null)
             {
-                // check if object target is valid with needed target flags
-                // for unit case allow corpse target mask because player with not released corpse is a unit target
+                // check if object spellTarget is valid with needed spellTarget flags
+                // for unit case allow corpse spellTarget mask because player with not released corpse is a unit spellTarget
                 if (target is Unit && !neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
                     targets.RemoveEntityTarget();
                 if (target is GameEntity && !neededTargets.HasAnyFlag(SpellCastTargetFlags.GameEntity))
@@ -232,21 +221,21 @@ namespace Core
             }
             else
             {
-                // try to select correct unit target if not provided by client or by serverside cast
+                // try to select correct unit spellTarget if not provided by client or by serverside cast
                 if (neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
                 {
                     Unit unit = null;
                     var playerCaster = Caster as Player;
-                    // try to use player selection as a target
+                    // try to use player selection as a spellTarget
                     if (playerCaster != null)
                     {
-                        // selection has to be found and to be valid target for the spell
+                        // selection has to be found and to be valid spellTarget for the spell
                         Unit selectedUnit = playerCaster.WorldManager.UnitManager.Find(playerCaster.GetTarget());
                         if (selectedUnit != null && SpellInfo.CheckExplicitTarget(Caster, selectedUnit) == SpellCastResult.Success)
                             unit = selectedUnit;
                     }
 
-                    // didn't find anything - let's use self as target
+                    // didn't find anything - let's use self as spellTarget
                     if (unit == null && neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitAlly))
                         unit = Caster;
 
@@ -254,8 +243,8 @@ namespace Core
                 }
             }
 
-            // check if spell needs dst target
-            // if target isn't set try to use unit target if provided, else use self
+            // check if spell needs dst spellTarget
+            // if spellTarget isn't set try to use unit spellTarget if provided, else use self
             if (neededTargets.HasTargetFlag(SpellCastTargetFlags.DestLocation))
             {
                 if (!Targets.HasDest)
@@ -356,52 +345,52 @@ namespace Core
 
             switch (targetingType.SelectionCategory)
             {
-                case TargetSelections.Channel:
+                case SpellTargetSelection.Channel:
                     SelectImplicitChannelTargets(effect, targetingType);
                     break;
-                case TargetSelections.Nearby:
+                case SpellTargetSelection.Nearby:
                     SelectImplicitNearbyTargets(effect, targetingType, effectMask);
                     break;
-                case TargetSelections.Cone:
+                case SpellTargetSelection.Cone:
                     SelectImplicitConeTargets(effect, targetingType, effectMask);
                     break;
-                case TargetSelections.Area:
+                case SpellTargetSelection.Area:
                     SelectImplicitAreaTargets(effect, targetingType, effectMask);
                     break;
-                case TargetSelections.Default:
+                case SpellTargetSelection.Default:
                     switch (targetingType.TargetEntities)
                     {
-                        case TargetEntities.None:
+                        case SpellTargetEntities.None:
                             break;
-                        case TargetEntities.Source:
+                        case SpellTargetEntities.Source:
                             switch (targetingType.ReferenceType)
                             {
-                                case TargetReferences.Caster:
+                                case SpellTargetReferences.Caster:
                                     Targets.SetSrc(Caster);
                                     break;
                                 default:
                                     throw new NotImplementedException($"Not implemented {targetingType.ReferenceType} for {targetingType.TargetEntities}");
                             }
                             break;
-                        case TargetEntities.Dest:
+                        case SpellTargetEntities.Dest:
                             switch (targetingType.ReferenceType)
                             {
-                                case TargetReferences.Caster:
+                                case SpellTargetReferences.Caster:
                                     SelectImplicitCasterDestTargets(effect, targetingType);
                                     break;
-                                case TargetReferences.Target:
+                                case SpellTargetReferences.Target:
                                     SelectImplicitTargetDestTargets(effect, targetingType);
                                     break;
-                                case TargetReferences.Dest:
+                                case SpellTargetReferences.Dest:
                                     SelectImplicitDestDestTargets(effect, targetingType);
                                     break;
                                 default:
                                     throw new NotImplementedException($"Not implemented {targetingType.ReferenceType} for {targetingType.TargetEntities}");
                             }
                             break;
-                        case TargetEntities.Unit:
-                        case TargetEntities.UnitAndDest:
-                        case TargetEntities.GameEntity:
+                        case SpellTargetEntities.Unit:
+                        case SpellTargetEntities.UnitAndDest:
+                        case SpellTargetEntities.GameEntity:
                             break;
                     }
                     break;
@@ -428,15 +417,15 @@ namespace Core
             Unit referer = null;
             switch (targetingType.ReferenceType)
             {
-                case TargetReferences.Source:
-                case TargetReferences.Dest:
-                case TargetReferences.Caster:
+                case SpellTargetReferences.Source:
+                case SpellTargetReferences.Dest:
+                case SpellTargetReferences.Caster:
                     referer = Caster;
                     break;
-                case TargetReferences.Target:
+                case SpellTargetReferences.Target:
                     referer = Targets.UnitTarget;
                     break;
-                case TargetReferences.Last:
+                case SpellTargetReferences.Last:
                 {
                     for (int i = UniqueTargetInfo.Count - 1; i >= 0; i--)
                     {
@@ -458,15 +447,15 @@ namespace Core
             Vector3 center;
             switch (targetingType.ReferenceType)
             {
-                case TargetReferences.Source:
+                case SpellTargetReferences.Source:
                     center = new Vector3(Targets.Source.Position.x, Targets.Source.Position.y, Targets.Source.Position.z);
                     break;
-                case TargetReferences.Dest:
+                case SpellTargetReferences.Dest:
                     center = new Vector3(Targets.Destination.Position.x, Targets.Destination.Position.y, Targets.Destination.Position.z);
                     break;
-                case TargetReferences.Caster:
-                case TargetReferences.Target:
-                case TargetReferences.Last:
+                case SpellTargetReferences.Caster:
+                case SpellTargetReferences.Target:
+                case SpellTargetReferences.Last:
                     center = referer.Position;
                     break;
                 default:
@@ -498,52 +487,33 @@ namespace Core
 
         private void SelectEffectTypeImplicitTargets(SpellEffectInfo effect)
         {
-            // select spell implicit targets based on effect type
-            if (effect.ExplicitTargetType == 0)
-                return;
-
-            SpellCastTargetFlags targetMask = effect.GetMissingTargetMask();
-            if (targetMask == 0)
-                return;
-
-            WorldEntity target = null;
+            // add explicit spellTarget or self to the spellTarget list
             switch (effect.ExplicitTargetType)
             {
-                // add explicit object target or self to the target map
-                case ExplicitTargetTypes.Explicit:
-                    // player which not released his spirit is Unit, but target flag for it is CorpseMask
-                    if (targetMask.HasAnyFlag(SpellCastTargetFlags.UnitMask))
-                        target = Targets.UnitTarget ?? Caster;
-               
-                    if (targetMask.HasAnyFlag(SpellCastTargetFlags.GameEntity))
-                        target = Targets.GameEntityTarget;
+                case SpellExplicitTargetType.Explicit:
+                    AddUnitTarget(Targets.UnitTarget ?? Caster, 1 << effect.Index, false);
                     break;
-                // add self to the target map
-                case ExplicitTargetTypes.Caster:
-                    if (targetMask.HasAnyFlag(SpellCastTargetFlags.UnitMask))
-                        target = Caster;
+                case SpellExplicitTargetType.Caster:
+                    AddUnitTarget(Caster, 1 << effect.Index, false);
                     break;
+                case SpellExplicitTargetType.None:
+                    return;
+                default:
+                    return;
             }
-
-            if (target is Unit)
-                AddUnitTarget((Unit)target, 1 << effect.Index, false);
-            else if (target is GameEntity)
-                AddGameEntityTarget((GameEntity)target, 1 << effect.Index);
         }
 
-        private void SearchAreaTargets(List<WorldEntity> targets, float range, Vector3 position, Unit referer, TargetEntities entityType, TargetChecks selectType) { throw new NotImplementedException(); }
+        private void SearchAreaTargets(List<WorldEntity> targets, float range, Vector3 position, Unit referer, SpellTargetEntities entityType, SpellTargetChecks selectType) { throw new NotImplementedException(); }
 
-        private void SearchChainTargets(List<WorldEntity> targets, int chainTargets, WorldEntity target, TargetEntities entityType, TargetChecks selectType, bool isChainHeal) { throw new NotImplementedException(); }
+        private void SearchChainTargets(List<WorldEntity> targets, int chainTargets, WorldEntity target, SpellTargetEntities entityType, SpellTargetChecks selectType, bool isChainHeal) { throw new NotImplementedException(); }
 
-        private WorldEntity SearchNearbyTarget(float range, TargetEntities entityType, TargetChecks selectionType) { throw new NotImplementedException(); }
-
-        private GameEntity SearchSpellFocus() { throw new NotImplementedException(); }
+        private WorldEntity SearchNearbyTarget(float range, SpellTargetEntities entityType, SpellTargetChecks selectionType) { throw new NotImplementedException(); }
 
         private void AddUnitTarget(Unit target, int effectMask, bool checkIfValid = true, bool implicitTarget = true, Vector3 losPosition = default)
         {
             int validEffectMask = 0;
             foreach (var effect in Effects)
-                if (effect != null && (effectMask & (1 << effect.Index)) != 0 && CheckEffectTarget(target, effect, losPosition))
+                if (effect != null && (effectMask & (1 << effect.Index)) != 0)
                     validEffectMask |= 1 << effect.Index;
 
             effectMask &= validEffectMask;
@@ -554,10 +524,10 @@ namespace Core
 
             /*// Check for effect immune skip if immuned
         for (SpellEffectInfo const* effect : GetEffects())
-            if (effect && target->IsImmunedToSpellEffect(m_spellInfo, effect->EffectIndex))
+            if (effect && spellTarget->IsImmunedToSpellEffect(m_spellInfo, effect->EffectIndex))
                 effectMask &= ~(1 << effect->EffectIndex);*/
 
-            // Lookup target in already in list
+            // Lookup spellTarget in already in list
             var sameTargetInfo = UniqueTargetInfo.Find(unit => unit.TargetId == target.NetworkId);
             if (sameTargetInfo != null)
             {
@@ -565,67 +535,65 @@ namespace Core
                 return;
             }
 
-            // This is new target calculate data for him
+            // This is new spellTarget calculate data for him
 
-            // Get spell hit result on target
-            TargetInfo targetInfo = new TargetInfo();
-            targetInfo.TargetId = target.NetworkId;                          // Store target GUID
-            targetInfo.EffectMask = effectMask;                         // Store all effects not immune
-            targetInfo.Processed = false;                               // Effects not apply on target
-            targetInfo.Alive = target.IsAlive;
-            targetInfo.Damage = 0;
-            targetInfo.Crit = false;
-            targetInfo.ScaleAura = false;
+            // Get spell hit result on spellTarget
+            SpellTargetInfo spellTargetInfo = new SpellTargetInfo();
+            spellTargetInfo.TargetId = target.NetworkId;                          // Store spellTarget GUID
+            spellTargetInfo.EffectMask = effectMask;                         // Store all effects not immune
+            spellTargetInfo.Processed = false;                               // Effects not apply on spellTarget
+            spellTargetInfo.Alive = target.IsAlive;
+            spellTargetInfo.Damage = 0;
+            spellTargetInfo.Crit = false;
+            spellTargetInfo.ScaleAura = false;
 
             // Calculate hit result
             if (OriginalCaster != null)
             {
-                targetInfo.MissCondition = OriginalCaster.SpellHitResult(target, SpellInfo, CanReflect);
-                if (SkipCheck && targetInfo.MissCondition != SpellMissInfo.Immune)
-                    targetInfo.MissCondition = SpellMissInfo.None;
+                spellTargetInfo.MissCondition = OriginalCaster.SpellHitResult(target, SpellInfo, CanReflect);
+                if (SkipCheck && spellTargetInfo.MissCondition != SpellMissType.Immune)
+                    spellTargetInfo.MissCondition = SpellMissType.None;
             }
             else
-                targetInfo.MissCondition = SpellMissInfo.Evade; //SPELL_MISS_NONE;
+                spellTargetInfo.MissCondition = SpellMissType.Evade; //SPELL_MISS_NONE;
 
             // Spell have speed - need calculate incoming time
             // Incoming time is zero for self casts. At least I think so.
             if (SpellInfo.Speed > 0.0f && Caster != target)
             {
                 // calculate spell incoming interval
-                //float dist = Vector3.Distance(Caster.Position, target.Position);
+                //float dist = Vector3.Distance(Caster.Position, spellTarget.Position);
 
                 //if (dist < 5.0f)
                 //    dist = 5.0f;
 
-                targetInfo.Delay = SpellInfo.Speed;
+                spellTargetInfo.Delay = SpellInfo.Speed;
 
                 // Calculate minimum incoming time
-                if (DelayMoment == 0 || DelayMoment > targetInfo.Delay)
-                    DelayMoment = targetInfo.Delay;
+                if (DelayMoment == 0 || DelayMoment > spellTargetInfo.Delay)
+                    DelayMoment = spellTargetInfo.Delay;
             }
             else
-                targetInfo.Delay = 0.0f;
+                spellTargetInfo.Delay = 0.0f;
 
-            // If target reflect spell back to caster
-            /*if (targetInfo.missCondition == SPELL_MISS_REFLECT)
+            // If spellTarget reflect spell back to caster
+            /*if (spellTargetInfo.missCondition == SPELL_MISS_REFLECT)
         {
             // Calculate reflected spell result on caster
-            targetInfo.reflectResult = m_caster->SpellHitResult(m_caster, m_spellInfo, m_canReflect);
+            spellTargetInfo.reflectResult = m_caster->SpellHitResult(m_caster, m_spellInfo, m_canReflect);
 
-            if (targetInfo.reflectResult == SPELL_MISS_REFLECT)     // Impossible reflect again, so simply deflect spell
-                targetInfo.reflectResult = SPELL_MISS_PARRY;
+            if (spellTargetInfo.reflectResult == SPELL_MISS_REFLECT)     // Impossible reflect again, so simply deflect spell
+                spellTargetInfo.reflectResult = SPELL_MISS_PARRY;
 
             // Increase time interval for reflected spells by 1.5
-            targetInfo.timeDelay += targetInfo.timeDelay >> 1;
+            spellTargetInfo.timeDelay += spellTargetInfo.timeDelay >> 1;
         }
         else
-            targetInfo.reflectResult = SPELL_MISS_NONE;*/
+            spellTargetInfo.reflectResult = SPELL_MISS_NONE;*/
 
-            // Add target to list
-            UniqueTargetInfo.Add(targetInfo);
+            // Add spellTarget to list
+            UniqueTargetInfo.Add(spellTargetInfo);
         }
-
-        private void AddGameEntityTarget(GameEntity target, int effectMask) { throw new NotImplementedException(); }
 
         private void AddDestTarget(WorldEntity destination, int effIndex) { throw new NotImplementedException(); }
 
@@ -652,7 +620,7 @@ namespace Core
             }
 
             // Check global cooldown
-            if (strict && !TriggerCastFlags.HasTargetFlag(TriggerCastFlags.IgnoreGcd) && HasGlobalCooldown)
+            if (strict && !SpellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreGcd) && HasGlobalCooldown)
                 return SpellCastResult.NotReady;
 
             // Check for line of sight for spells with dest
@@ -683,14 +651,14 @@ namespace Core
             float maxRange = 0.0f;
             float rangeMod = 0.0f;
 
-            if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlag.Melee))
+            if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Melee))
             {
                 rangeMod = 3.0f + 4.0f / 3.0f;
             }
             else
             {
                 float meleeRange = 0.0f;
-                if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlag.Ranged))
+                if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Ranged))
                     meleeRange = 3.0f + 4.0f / 3.0f;
 
                 minRange = Caster.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
@@ -718,12 +686,6 @@ namespace Core
 
         private SpellCastResult CheckCasterAuras() { throw new NotImplementedException(); }
 
-        private SpellCastResult CheckPetCast(Unit target) { throw new NotImplementedException(); }
-
-        private bool CheckEffectTarget(Unit target, SpellEffectInfo effect, Vector3 losPosition) { throw new NotImplementedException(); }
-
-        private bool CheckEffectTarget(GameEntity target, SpellEffectInfo effect) { throw new NotImplementedException(); }
-
         #endregion
 
         #region Spell Processing
@@ -748,17 +710,12 @@ namespace Core
                 Finish();
         }
 
-        private long HandleDelayed(long offset)
-        {
-            throw new NotImplementedException();
-        }
-
         private void HandleImmediatePhase()
         {
             SpellAura = null;
             // initialize Diminishing Returns Data
-            DiminishLevel = DiminishingLevels.Level1;
-            DiminishGroup = DiminishingGroup.None;
+            DiminishLevel = SpellDiminishingLevel.Level1;
+            DiminishGroup = SpellDiminishingGroup.None;
 
             foreach (var effect in Effects)
                 DoEffectOnTarget(null, effect, SpellEffectHandleMode.Hit);
@@ -769,53 +726,47 @@ namespace Core
 
         }
 
-        private void DoAllEffectsOnTarget(TargetInfo target)
+        private void DoAllEffectsOnTarget(SpellTargetInfo spellTarget)
         {
-            if (target == null || target.Processed)
+            if (spellTarget == null || spellTarget.Processed)
                 return;
 
-            target.Processed = true;
-            int mask = target.EffectMask;
+            spellTarget.Processed = true;
+            int mask = spellTarget.EffectMask;
 
-            Unit unit = Caster.NetworkId == target.TargetId ? Caster : Caster.Map.FindMapEntity<Unit>(target.TargetId);
-            if (unit?.IsAlive != target.Alive)
+            Unit unit = Caster.NetworkId == spellTarget.TargetId ? Caster : Caster.Map.FindMapEntity<Unit>(spellTarget.TargetId);
+            if (unit?.IsAlive != spellTarget.Alive)
                 return;
 
             Unit caster = OriginalCaster ?? Caster;
             if (caster == null)
                 return;
 
-            SpellMissInfo missInfo = target.MissCondition;
+            SpellMissType missType = spellTarget.MissCondition;
 
-            EffectDamage = target.Damage;
-            EffectHealing = -target.Damage;
-
+            EffectDamage = spellTarget.Damage;
+            EffectHealing = -spellTarget.Damage;
             SpellAura = null;
 
             Unit spellHitTarget = null;
-            if (missInfo == SpellMissInfo.None)
+            if (missType == SpellMissType.None)
                 spellHitTarget = unit;
-            else if (missInfo == SpellMissInfo.Reflect && target.ReflectResult == SpellMissInfo.None)
+            else if (missType == SpellMissType.Reflect && spellTarget.ReflectResult == SpellMissType.None)
                 spellHitTarget = Caster;
 
             if (spellHitTarget != null)
             {
-                SpellMissInfo missInfo2 = DoSpellHitOnUnit(spellHitTarget, mask);
+                SpellMissType missInfo2 = DoSpellHitOnUnit(spellHitTarget, mask);
 
-                if (missInfo2 != SpellMissInfo.None)
-                {
+                if (missInfo2 != SpellMissType.None)
                     EffectDamage = 0;
-                    spellHitTarget = null;
-                }
                 else
                     EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHit, spellHitTarget, SpellInfo.Id);
             }
 
-            // All calculated do it!
-            // Do healing and triggers
             if (EffectHealing > 0)
             {
-                bool crit = target.Crit;
+                bool crit = spellTarget.Crit;
                 int addhealth = SpellHealing;
                 if (crit)
                     addhealth = caster.SpellCriticalHealingBonus(SpellInfo, addhealth, null);
@@ -823,75 +774,37 @@ namespace Core
                 int gain = caster.HealBySpell(unit, SpellInfo, addhealth, crit);
                 EffectHealing = gain;
             }
-            // Do damage and triggers
             else if (EffectDamage > 0)
             {
-                // Fill base damage struct (unitTarget - is real spell target)
-                SpellNonMeleeDamage damageInfo = new SpellNonMeleeDamage(caster, unit, SpellInfo.Id, SpellSchoolMask, CastId);
+                SpellCastDamageInfo damageInfoInfo = new SpellCastDamageInfo(caster, unit, SpellInfo.Id, SpellSchoolMask, CastId);
+                caster.CalculateSpellDamageTaken(damageInfoInfo, EffectDamage, SpellInfo, WeaponAttackType.BaseAttack, spellTarget.Crit);
 
-                // Add bonuses and fill damageInfo struct
-                caster.CalculateSpellDamageTaken(damageInfo, EffectDamage, SpellInfo, WeaponAttackType.BaseAttack, target.Crit);
-                //caster.DealDamageMods(damageInfo.Target, damageInfo.damage, &damageInfo.absorb);
-
-                EffectDamage = damageInfo.Damage;
-
-                caster.DealSpellDamage(damageInfo, false);
-            }
-            // Passive spell hits/misses or active spells only misses (only triggers)
-            else
-            {
-                // Fill base damage struct (unitTarget - is real spell target)
-                /*SpellNonMeleeDamage damageInfo(caster, unitTarget, m_spellInfo->Id, m_spellSchoolMask);
-            procEx |= createProcExtendMask(&damageInfo, missInfo);
-            // Do triggers for unit (reflect triggers passed on hit phase for correct drop charge)
-            if (canEffectTrigger && missInfo != SPELL_MISS_REFLECT)
-                caster->ProcDamageAndSpell(unit, procAttacker, procVictim, procEx, 0, m_attackType, m_spellInfo, m_triggeredByAuraSpell);*/
-            }
-
-            if (spellHitTarget != null)
-            {
-                // Needs to be called after dealing damage/healing to not remove breaking on damage auras
-                //DoTriggersOnSpellHit(spellHitTarget, mask);
-
-                //CallScriptAfterHitHandlers();
+                EffectDamage = damageInfoInfo.Damage;
+                caster.DealSpellDamage(damageInfoInfo, false);
             }
         }
 
-        private void DoAllEffectOnLaunchTarget(TargetInfo targetInfo, ref float multiplier)
+        private void DoAllEffectOnLaunchTarget(SpellTargetInfo spellTargetInfo)
         {
             throw new NotImplementedException();
         }
         
         private void DoEffectOnTarget(Unit unitTarget, SpellEffectInfo effect, SpellEffectHandleMode mode)
         {
-            //Debug.LogFormat($"Spell: {SpellInfo.Id} Handling effect: {effect.EffectType}");
-
-            SpellDamage += CalculateDamage(effect.Index, unitTarget);
             effect.Handle(this, unitTarget, mode);
         }
 
-        private void DoTriggersOnSpellHit(Unit unit, int effMask)
-        {
-            throw new NotImplementedException();
-        }
-
-        private SpellMissInfo DoSpellHitOnUnit(Unit unit, int effectMask)
+        private SpellMissType DoSpellHitOnUnit(Unit unit, int effectMask)
         {
             if (unit == null || effectMask == 0)
-                return SpellMissInfo.Evade;
+                return SpellMissType.Evade;
 
             foreach (var effect in Effects)
                 if (effect != null && (effectMask & (1 << effect.Index)) > 0)
                     DoEffectOnTarget(unit, effect, SpellEffectHandleMode.HitTarget);
 
-            return SpellMissInfo.None;
+            return SpellMissType.None;
         }
-
-        private int CalculateDamage(int effectIndex, Unit target)
-        {
-            return Caster.CalculateSpellDamage(target, SpellInfo, effectIndex, 100);
-        }
-
 
         private void Delayed() { throw new NotImplementedException(); }
 
@@ -905,60 +818,7 @@ namespace Core
 
         private void CancelGlobalCooldown() { throw new NotImplementedException(); }
 
-
-        private void TakePower() { throw new NotImplementedException(); }
-
-        private void TakeRunePower(bool didHit) { throw new NotImplementedException(); }
-
-        private void TakeReagents() { throw new NotImplementedException(); }
-
-        private void TakeCastItem() { throw new NotImplementedException(); }
-
-        #endregion
-
-        #region Spellcast Results
-
-        private static void SendCastResult(Player caster, SpellInfo spellInfo, int spellVisual, Guid castCount, SpellCastResult result, SpellCustomErrors customError = SpellCustomErrors.None) { throw new NotImplementedException(); }
-
-        private void SendCastResult(SpellCastResult result) { throw new NotImplementedException(); }
-
-        private void SendPetCastResult(SpellCastResult result) { throw new NotImplementedException(); }
-
-        private void SendSpellStart() { throw new NotImplementedException(); }
-
-        private void SendSpellGo() { throw new NotImplementedException(); }
-
-        private void SendSpellCooldown() { throw new NotImplementedException(); }
-
-        private void SendSpellExecuteLog() { throw new NotImplementedException(); }
-
-        private void ExecuteLogEffectTakeTargetPower(int effIndex, Unit target, int powerType, int points, float amplitude) { throw new NotImplementedException(); }
-
-        private void ExecuteLogEffectExtraAttacks(int effIndex, Unit victim, int numAttacks) { throw new NotImplementedException(); }
-
-        private void ExecuteLogEffectInterruptCast(int effIndex, Unit victim, int spellId) { throw new NotImplementedException(); }
-
-        private void ExecuteLogEffectDurabilityDamage(int effIndex, Unit victim, int itemId, int amount) { throw new NotImplementedException(); }
-
-        private void ExecuteLogEffectOpenLock(int effIndex, Entity obj) { throw new NotImplementedException(); }
-
-        private void ExecuteLogEffectCreateItem(int effIndex, int entry) { throw new NotImplementedException(); }
-
-        private void ExecuteLogEffectDestroyItem(int effIndex, int entry) { throw new NotImplementedException(); }
-
-        private void ExecuteLogEffectSummonObject(int effIndex, WorldEntity obj) { throw new NotImplementedException(); }
-
-        private void ExecuteLogEffectUnsummonObject(int effIndex, WorldEntity obj) { throw new NotImplementedException(); }
-
-        private void ExecuteLogEffectResurrect(int effIndex, Unit target) { throw new NotImplementedException(); }
-
-        private void SendInterrupted(int result) { throw new NotImplementedException(); }
-
-        private void SendChannelUpdate(int time) { throw new NotImplementedException(); }
-
-        private void SendChannelStart(int duration) { throw new NotImplementedException(); }
-
-        private void SendResurrectRequest(Player target) { throw new NotImplementedException(); }
+        private void ConsumeResources(bool isSpellHit) { throw new NotImplementedException(); }
 
         #endregion
     }

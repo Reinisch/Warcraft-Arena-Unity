@@ -142,7 +142,7 @@ namespace Core
         {
         }
 
-        public virtual void Remove(AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault)
+        public virtual void Remove(AuraRemoveMode removeMode = AuraRemoveMode.Default)
         {
         }
 
@@ -245,21 +245,21 @@ namespace Core
             return CalcMaxCharges(Caster);
         }
 
-        public bool ModCharges(int num, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault)
+        public bool ModCharges(int num, AuraRemoveMode removeMode = AuraRemoveMode.Default)
         {
             return true;
         }
 
-        public bool DropCharge(AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault)
+        public bool DropCharge(AuraRemoveMode removeMode = AuraRemoveMode.Default)
         {
             return ModCharges(-1, removeMode);
         }
 
-        public void ModChargesDelayed(int num, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault)
+        public void ModChargesDelayed(int num, AuraRemoveMode removeMode = AuraRemoveMode.Default)
         {
         }
 
-        public void DropChargeDelayed(uint delay, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault)
+        public void DropChargeDelayed(uint delay, AuraRemoveMode removeMode = AuraRemoveMode.Default)
         {
         }
 
@@ -267,7 +267,7 @@ namespace Core
         {
         }
 
-        public bool ModStackAmount(int num, AuraRemoveMode removeMode = AuraRemoveMode.AuraRemoveByDefault)
+        public bool ModStackAmount(int num, AuraRemoveMode removeMode = AuraRemoveMode.Default)
         {
             return false;
         }
@@ -372,29 +372,29 @@ namespace Core
             return false;
         }
 
-        public void CallScriptDispel(DispelInfo dispelInfo)
+        public void CallScriptDispel(SpellDispelInfo spellDispelInfo)
         {
         }
 
-        public void CallScriptAfterDispel(DispelInfo dispelInfo)
+        public void CallScriptAfterDispel(SpellDispelInfo spellDispelInfo)
         {
         }
 
-        public bool CallScriptEffectApplyHandlers(AuraEffect aurEff, AuraApplication aurApp, AuraEffectHandleModes mode)
-        {
-            return false;
-        }
-
-        public bool CallScriptEffectRemoveHandlers(AuraEffect aurEff, AuraApplication aurApp, AuraEffectHandleModes mode)
+        public bool CallScriptEffectApplyHandlers(AuraEffect aurEff, AuraApplication aurApp, AuraEffectHandleMode mode)
         {
             return false;
         }
 
-        public void CallScriptAfterEffectApplyHandlers(AuraEffect aurEff, AuraApplication aurApp, AuraEffectHandleModes mode)
+        public bool CallScriptEffectRemoveHandlers(AuraEffect aurEff, AuraApplication aurApp, AuraEffectHandleMode mode)
+        {
+            return false;
+        }
+
+        public void CallScriptAfterEffectApplyHandlers(AuraEffect aurEff, AuraApplication aurApp, AuraEffectHandleMode mode)
         {
         }
 
-        public void CallScriptAfterEffectRemoveHandlers(AuraEffect aurEff, AuraApplication aurApp, AuraEffectHandleModes mode)
+        public void CallScriptAfterEffectRemoveHandlers(AuraEffect aurEff, AuraApplication aurApp, AuraEffectHandleMode mode)
         {
         }
 
@@ -423,12 +423,12 @@ namespace Core
             
         }
 
-        public void CallScriptEffectAbsorbHandlers(AuraEffect aurEff, AuraApplication aurApp, DamageInfo dmgInfo, uint absorbAmount, bool defaultPrevented)
+        public void CallScriptEffectAbsorbHandlers(AuraEffect aurEff, AuraApplication aurApp, SpellDamageInfo dmgInfo, uint absorbAmount, bool defaultPrevented)
         {
             
         }
 
-        public void CallScriptEffectAfterAbsorbHandlers(AuraEffect aurEff, AuraApplication aurApp, DamageInfo dmgInfo, uint absorbAmount)
+        public void CallScriptEffectAfterAbsorbHandlers(AuraEffect aurEff, AuraApplication aurApp, SpellDamageInfo dmgInfo, uint absorbAmount)
         {
             
         }

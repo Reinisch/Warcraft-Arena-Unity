@@ -9,8 +9,8 @@
         public uint ChargeCategory;
         public byte DifficultyID;
         public SpellDamageClass DefenseType;
-        public DispelType DispelType;
-        public Mechanics Mechanic;
+        public SpellDispelType SpellDispelType;
+        public SpellMechanics Mechanic;
         public SpellPreventionType PreventionType;
     }
 }

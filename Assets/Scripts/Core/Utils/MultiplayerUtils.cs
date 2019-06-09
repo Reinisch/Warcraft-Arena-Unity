@@ -1,9 +1,26 @@
-﻿using UdpKit;
+﻿using System.Collections.Generic;
+using UdpKit;
 
 namespace Core
 {
     public static class MultiplayerUtils
     {
+        public static readonly IReadOnlyList<string> FullAvailableRegions = new List<string>
+        {
+            "eu",
+            "us",
+            "asia",
+            "jp",
+            "au",
+            "usw",
+            "sa",
+            "cae",
+            "kr",
+            "in",
+            "ru",
+            "rue",
+        };
+
         public static DisconnectReason ToDisconnectReason(this UdpConnectionDisconnectReason udpReason)
         {
             switch (udpReason)

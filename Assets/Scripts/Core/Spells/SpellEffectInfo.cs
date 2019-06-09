@@ -1,5 +1,4 @@
-﻿using System;
-using Common;
+﻿using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -7,8 +6,8 @@ namespace Core
 {
     public abstract class SpellEffectInfo : ScriptableObject
     {
-        [SerializeField, UsedImplicitly] private AuraType auraType;
-        [SerializeField, UsedImplicitly] private Mechanics mechanic;
+        [SerializeField, UsedImplicitly, Header("Base Effect")] private AuraType auraType;
+        [SerializeField, UsedImplicitly] private SpellMechanics mechanic;
         [SerializeField, UsedImplicitly] private TargetingType mainTargeting;
         [SerializeField, UsedImplicitly] private TargetingType secondaryTargeting;
 
@@ -20,44 +19,44 @@ namespace Core
         [SerializeField, UsedImplicitly] private float amplitude;
         [SerializeField, UsedImplicitly] private float chainAmplitude;
 
-        [NonSerialized] private SpellInfo spellInfo;
-
-        public abstract SpellEffectType EffectType { get; }
-        public abstract TargetEntities TargetEntityType { get; }
-        public abstract ExplicitTargetTypes ExplicitTargetType { get; }
-
-        public TargetingType MainTargeting => mainTargeting;
-        public TargetingType SecondaryTargeting => secondaryTargeting;
-        public AuraType AuraType => auraType;
-        public Mechanics Mechanic => mechanic;
-
-        public int BasePoints => basePoints;
-        public int ApplyAuraPeriod => applyAuraPeriod;
-        private int RandomPoints => randomPoints;
         private float MinRadius => minRadius;
         private float MaxRadius => maxRadius;
         private float Amplitude => amplitude;
         private float ChainAmplitude => chainAmplitude;
 
+        protected SpellInfo SpellInfo { get; private set; }
+        protected int RandomPoints => randomPoints;
+
+        public abstract SpellEffectType EffectType { get; }
+        public abstract SpellTargetEntities TargetEntityType { get; }
+        public abstract SpellExplicitTargetType ExplicitTargetType { get; }
+
+        public TargetingType MainTargeting => mainTargeting;
+        public TargetingType SecondaryTargeting => secondaryTargeting;
+        public AuraType AuraType => auraType;
+        public SpellMechanics Mechanic => mechanic;
+
+        public int BasePoints => basePoints;
+        public int ApplyAuraPeriod => applyAuraPeriod;
         public int Index { get; private set; }
         public SpellCastTargetFlags ImplicitTargetFlags { get; private set; }
 
-        public void Initialize(SpellInfo spellInfo)
+        internal void Initialize(SpellInfo spellInfo)
         {
-            this.spellInfo = spellInfo;
+            SpellInfo = spellInfo;
             Index = spellInfo.Effects.IndexOf(this);
             ImplicitTargetFlags = MainTargeting.TargetEntities.TargetFlags() | SecondaryTargeting.TargetEntities.TargetFlags();
 
             Assert.AreNotEqual(Index, -1);
         }
 
-        public void Deinitialize()
+        internal void Deinitialize()
         {
-            spellInfo = null;
+            SpellInfo = null;
             Index = 0;
         }
 
-        public virtual void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)
+        internal virtual void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)
         {
             spell.EffectNone(this);
         }
@@ -99,27 +98,10 @@ namespace Core
             return IsAreaAuraEffect() || EffectType == SpellEffectType.ApplyAura;
         }
 
-
-        public int CalcValue(Unit caster = null, int basePoints = int.MinValue, Unit target = null)
-        {
-            basePoints = basePoints == int.MinValue ? BasePoints : basePoints;
-
-            if (Mathf.Abs(RandomPoints) <= 1)
-                basePoints += RandomPoints;
-            else
-                basePoints += RandomPoints > 0 ? RandomUtils.Next(1, RandomPoints + 1) : RandomUtils.Next(RandomPoints, 1);
-
-            float value = basePoints;
-            if (caster != null)
-                value = caster.ApplyEffectModifiers(spellInfo, Index, value);
-
-            return (int)value;
-        }
-
         public float CalcValueMultiplier(Unit caster, Spell spell = null)
         {
             float multiplier = Amplitude;
-            caster?.SpellModOwner?.ApplySpellMod(spellInfo.Id, SpellModOp.ValueMultiplier, ref multiplier, spell);
+            caster?.SpellModOwner?.ApplySpellMod(SpellInfo.Id, SpellModifierType.ValueMultiplier, ref multiplier, spell);
 
             return multiplier;
         }
@@ -127,10 +109,9 @@ namespace Core
         public float CalcDamageMultiplier(Unit caster, Spell spell = null)
         {
             float multiplierPercent = ChainAmplitude * 100.0f;
-            caster?.SpellModOwner?.ApplySpellMod(spellInfo.Id, SpellModOp.DamageMultiplier, ref multiplierPercent, spell);
+            caster?.SpellModOwner?.ApplySpellMod(SpellInfo.Id, SpellModifierType.DamageMultiplier, ref multiplierPercent, spell);
             return multiplierPercent / 100.0f;
         }
-
 
         public bool HasRadius()
         {
@@ -150,30 +131,11 @@ namespace Core
             float radius = MinRadius == 0 ? MaxRadius : MinRadius;
             if (caster != null)
             {
-                caster.SpellModOwner?.ApplySpellMod(spellInfo.Id, SpellModOp.Radius, ref radius, spell);
+                caster.SpellModOwner?.ApplySpellMod(SpellInfo.Id, SpellModifierType.Radius, ref radius, spell);
                 radius = Mathf.Clamp(radius, MinRadius, MaxRadius);
             }
 
             return radius;
-        }
-
-
-        public SpellCastTargetFlags GetMissingTargetMask(SpellCastTargetFlags mask = 0)
-        {
-            SpellCastTargetFlags effectImplicitTargetMask = TargetEntityType.TargetFlags();
-            SpellCastTargetFlags providedTargetMask = ImplicitTargetFlags | mask;
-
-            // remove all flags covered by effect target mask
-            if ((providedTargetMask & SpellCastTargetFlags.UnitMask) > 0)
-                effectImplicitTargetMask &= ~SpellCastTargetFlags.UnitMask;
-            if ((providedTargetMask & SpellCastTargetFlags.GameEntity) > 0)
-                effectImplicitTargetMask &= ~SpellCastTargetFlags.GameEntity;
-            if ((providedTargetMask & SpellCastTargetFlags.DestLocation) > 0)
-                effectImplicitTargetMask &= ~SpellCastTargetFlags.DestLocation;
-            if ((providedTargetMask & SpellCastTargetFlags.SourceLocation) > 0)
-                effectImplicitTargetMask &= ~SpellCastTargetFlags.SourceLocation;
-
-            return effectImplicitTargetMask;
         }
     }
 }

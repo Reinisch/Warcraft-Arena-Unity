@@ -14,7 +14,7 @@ public static class EditorSerializationHelper
         property.NextVisible(true);
         while (true)
         {
-            if ((SerializedProperty.EqualContents(property, nextElement)))
+            if (SerializedProperty.EqualContents(property, nextElement))
                 yield break;
 
             yield return property;

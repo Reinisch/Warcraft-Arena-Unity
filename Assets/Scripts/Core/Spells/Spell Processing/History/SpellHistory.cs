@@ -5,12 +5,12 @@ namespace Core
 {
     public class SpellHistory
     {
-        public Dictionary<int, CooldownEntry> SpellCooldowns { get; private set; }
+        public Dictionary<int, SpellCooldown> SpellCooldowns { get; private set; }
         public float GlobalCooldown { get; private set; }
 
         public SpellHistory()
         {
-            SpellCooldowns = new Dictionary<int, CooldownEntry>();
+            SpellCooldowns = new Dictionary<int, SpellCooldown>();
         }
 
         public bool IsReady(SpellInfo spellInfo, bool isIgnoringCooldowns)
@@ -29,15 +29,13 @@ namespace Core
             return false;
         }
 
-        public void HandleCooldowns(SpellInfo spellInfo, Spell spell)
+        public void HandleCooldowns(SpellInfo spellInfo)
         {
-            if (spellInfo.IsPassive() || (spell != null && spell.IsIgnoringCooldowns))
-                return;
-
-            StartCooldown(spellInfo, spell);
+            if (!spellInfo.IsPassive())
+                StartCooldown(spellInfo);
         }
 
-        public void StartCooldown(SpellInfo spellInfo, Spell spell = null)
+        public void StartCooldown(SpellInfo spellInfo)
         {
             float cooldown = spellInfo.RecoveryTime;
 
@@ -60,14 +58,13 @@ namespace Core
 
         public void AddCooldown(int spellId, float cooldownEnd)
         {
-            CooldownEntry cooldownEntry = new CooldownEntry(spellId, cooldownEnd);
+            SpellCooldown spellCooldown = new SpellCooldown(spellId, cooldownEnd);
 
             if (SpellCooldowns.ContainsKey(spellId))
-                SpellCooldowns[spellId] = cooldownEntry;
+                SpellCooldowns[spellId] = spellCooldown;
             else
-                SpellCooldowns.Add(spellId, cooldownEntry);
+                SpellCooldowns.Add(spellId, spellCooldown);
         }
-
 
         public bool HasGlobalCooldown()
         {

@@ -90,6 +90,11 @@ namespace Client
 
         private void OnSpellCast(Unit caster, int spellId)
         {
+            if (!unitRenderers.TryGetValue(caster, out UnitRenderer casterRenderer))
+                return;
+
+            casterRenderer.Animator.SetTrigger(AnimatorUtils.SpellCastAnimationTrigger);
+
             if (!BalanceManager.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
@@ -99,8 +104,7 @@ namespace Client
             if (!spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Cast, out EffectSpellSettings spellVisualEffect))
                 return;
 
-            if (unitRenderers.TryGetValue(caster, out UnitRenderer casterRenderer))
-                spellVisualEffect.EffectSettings.PlayEffect(caster.Position, caster.Rotation)?.ApplyPositioning(casterRenderer.EffectTagPositioner, spellVisualEffect);
+            spellVisualEffect.EffectSettings.PlayEffect(caster.Position, caster.Rotation)?.ApplyPositioning(casterRenderer.EffectTagPositioner, spellVisualEffect);
         }
 
         private void OnEventEntityAttached(WorldEntity worldEntity)

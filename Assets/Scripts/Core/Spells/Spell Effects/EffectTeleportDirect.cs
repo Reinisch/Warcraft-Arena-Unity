@@ -11,10 +11,10 @@ namespace Core
         public float HorizontalDistance => horizontalDistance;
 
         public override SpellEffectType EffectType => SpellEffectType.TeleportDirect;
-        public override ExplicitTargetTypes ExplicitTargetType => ExplicitTargetTypes.Explicit;
-        public override TargetEntities TargetEntityType => TargetEntities.Unit;
+        public override SpellExplicitTargetType ExplicitTargetType => SpellExplicitTargetType.Explicit;
+        public override SpellTargetEntities TargetEntityType => SpellTargetEntities.Unit;
 
-        public override void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)
+        internal override void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)
         {
             spell.EffectTeleportDirect(this, target, mode);
         }
@@ -22,7 +22,7 @@ namespace Core
 
     public partial class Spell
     {
-        public void EffectTeleportDirect(EffectTeleportDirect effect, Unit target, SpellEffectHandleMode mode)
+        internal void EffectTeleportDirect(EffectTeleportDirect effect, Unit target, SpellEffectHandleMode mode)
         {
             if (mode != SpellEffectHandleMode.LaunchTarget)
                 return;
