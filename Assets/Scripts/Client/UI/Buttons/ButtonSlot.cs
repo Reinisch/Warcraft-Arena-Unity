@@ -38,7 +38,7 @@ public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
             buttonContent.Initialize(this);
     }
 
-    public override void DoUpdate(int deltaTime)
+    public override void DoUpdate(float deltaTime)
     {
         base.DoUpdate(deltaTime);
 

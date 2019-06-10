@@ -38,19 +38,23 @@ namespace Common
             if (destroyed)
                 return false;
 
-            returnedObject.SetActive(false);
-            returnedObject.transform.parent = container;
+            ProcessPooling(returnedObject, protoId);
+            return true;
+        }
+
+        private void ProcessPooling(GameObject pooledObject, int protoId)
+        {
+            pooledObject.SetActive(false);
+            pooledObject.transform.parent = container;
 
             if (pooledGameObjectsByProtoId.TryGetValue(protoId, out Stack<GameObject> pooledObjects))
-                pooledObjects.Push(returnedObject);
+                pooledObjects.Push(pooledObject);
             else
             {
                 pooledObjects = new Stack<GameObject>();
-                pooledObjects.Push(returnedObject);
+                pooledObjects.Push(pooledObject);
                 pooledGameObjectsByProtoId.Add(protoId, pooledObjects);
             }
-
-            return true;
         }
 
         private T TakeOrCreate<T>(T prototype, Vector3 position, Quaternion rotation, Transform parent) where T : MonoBehaviour
@@ -91,6 +95,26 @@ namespace Common
                 }
             }
             return null;
+        }
+
+        public static void PreInstantiate(GameObject prototype, int preinstantiatedCount)
+        {
+            if (Instance == null)
+                return;
+
+            int protoId = prototype.GetInstanceID();
+            int existingCount = 0;
+
+            if (Instance.pooledGameObjectsByProtoId.TryGetValue(protoId, out Stack<GameObject> pooledObjects))
+                existingCount = pooledObjects.Count;
+
+            for (int i = existingCount; i < preinstantiatedCount; i++)
+                Instance.ProcessPooling(Instantiate(prototype, Vector3.zero, Quaternion.identity), protoId);
+        }
+
+        public static void PreInstantiate<T>(T prototypeBehaviour, int preinstantiatedCount) where T: MonoBehaviour
+        {
+            PreInstantiate(prototypeBehaviour.gameObject, preinstantiatedCount);
         }
 
         public static GameObject Take(GameObject prototype, Vector3 position, Quaternion rotation, Transform parent = null)

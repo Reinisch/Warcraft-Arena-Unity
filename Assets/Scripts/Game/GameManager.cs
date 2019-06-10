@@ -61,6 +61,7 @@ namespace Game
             long elapsedTime = gameTimer.ElapsedMilliseconds;
             int worldTimeDiff = (int)(elapsedTime - lastWorldUpdateTime);
             int gameTimeDiff = (int)(elapsedTime - lastGameUpdateTime);
+            float gameTimeFloatDiff = gameTimeDiff / 1000.0f;
 
             if (worldManager != null)
             {
@@ -89,9 +90,9 @@ namespace Game
 
             if (HasClientLogic)
             {
-                renderManager.DoUpdate(gameTimeDiff);
-                effectManager.DoUpdate(gameTimeDiff);
-                interfaceManager.DoUpdate(gameTimeDiff);
+                renderManager.DoUpdate(gameTimeFloatDiff);
+                effectManager.DoUpdate(gameTimeFloatDiff);
+                interfaceManager.DoUpdate(gameTimeFloatDiff);
             }
         }
 

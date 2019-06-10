@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common;
@@ -19,47 +18,35 @@ namespace Core
     {
         [SerializeField, UsedImplicitly, Header("Unit"), Space(10)]
         private CapsuleCollider unitCollider;
+        [SerializeField, UsedImplicitly]
+        private UnitMovementDefinition unitMovementDefinition;
 
+        private IUnitState unitState;
+        private DeathState deathState;
+
+        private readonly Dictionary<int, List<Aura>> ownedAuras = new Dictionary<int, List<Aura>>();
+        private readonly Dictionary<StatType, float> createStats = new Dictionary<StatType, float>();
+        private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
+        private readonly List<AuraApplication> visibleAuras = new List<AuraApplication>();
+
+        private ThreatManager ThreatManager { get; set; }
+        private UnitState UnitState { get; set; }
+        protected UnitAI AI { get; private set; }
+
+        public SpellHistory SpellHistory { get; } = new SpellHistory();
         public override EntityType EntityType => EntityType.Unit;
         public CapsuleCollider UnitCollider => unitCollider;
-
         public long Health => GetLongValue(EntityFields.Health);
         public long MaxHealth => GetLongValue(EntityFields.MaxHealth);
         public float HealthRatio => (float) GetLongValue(EntityFields.Health) / GetLongValue(EntityFields.MaxHealth);
-
-        #region Unit data
-
-        private Dictionary<int, List<Aura>> ownedAuras = new Dictionary<int, List<Aura>>();
-        private Dictionary<StatType, float> createStats = new Dictionary<StatType, float>();
-        private Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
-        private List<AuraApplication> visibleAuras;
-
-        private IUnitState unitState;
-
         public bool IsMovementBlocked => HasUnitState(UnitState.Root) || HasUnitState(UnitState.Stunned);
-
-        public Player MovedPlayer { get; set; }
-        public MotionMaster MotionMaster { get; protected set; }
-        public ThreatManager ThreatManager { get; protected set; }
-        public HostileReferenceManager HostileRefManager { get; private set; }
-
-        public UnitState UnitState { get; set; }
-        public UnitMoveType MoveType { get; set; }
-        public float CombatReach { get; private set; }
-        public UnitAI AI { get; private set; }
-
-        #endregion
-
-        internal override void Awake()
-        {
-            base.Awake();
-
-            StatUtils.InitializeSpeedRates(speedRates);
-        }
 
         public override void Attached()
         {
             base.Attached();
+
+            foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
+                speedRates[moveType] = 1.0f;
 
             unitState = entity.GetState<IUnitState>();
 
@@ -85,10 +72,6 @@ namespace Core
             unitState = null;
 
             base.Detached();
-        }
-
-        internal override void DoUpdate(int timeDelta)
-        {
         }
 
         public float GetSpellMinRangeForTarget(Unit target, SpellInfo spellInfo)
@@ -142,11 +125,21 @@ namespace Core
         public long CountPctFromMaxHealth(int pct) { return MaxHealth.CalculatePercentage(pct); }
         public long CountPctFromCurHealth(int pct) { return Health.CalculatePercentage(pct); }
 
-        public void SetHealth(long val) { }
-        public void SetMaxHealth(long val) { }
-        public void SetFullHealth() { SetHealth(MaxHealth); }
-        public long ModifyHealth(long val) { return 0; }
-        public long GetHealthGain(long dVal) { return 0; }
+        /// <summary> Modifies health, returns effective delta. </summary>
+        internal long ModifyHealth(long delta)
+        {
+            long oldHealth = Health;
+            long newHealth = oldHealth + delta;
+            long maxHealth = MaxHealth;
+
+            if (newHealth < 0)
+                newHealth = 0;
+            if (newHealth > maxHealth)
+                newHealth = maxHealth;
+
+            SetLongValue(EntityFields.Health, newHealth);
+            return newHealth - oldHealth;
+        }
 
         public SpellResourceType GetPowerType() { return (SpellResourceType)GetIntValue(EntityFields.DisplayPower); }
         public void SetPowerType(SpellResourceType spellResource) { }
@@ -192,71 +185,57 @@ namespace Core
 
         #region Hit and damage calculation and trigger checks
 
-        public void DealDamageMods(Unit victim, ref uint damage, ref uint absorb) { }
-        public long DealDamage(Unit victim, long damage, long absorb, SpellDamageType damagetype = SpellDamageType.Direct,
-            SpellSchoolMask damageSchoolMask = SpellSchoolMask.Normal, SpellInfo spellProto = null, bool durabilityLoss = true)
+        internal long DealDamage(Unit victim, long damageAmount)
         {
-            // Hook for OnDamage Event
-            //sScriptMgr->OnDamage(this, victim, damage);
-
-            if (damage < 1)
+            if (damageAmount < 1)
                 return 0;
 
             long health = victim.Health;
-            if (health <= damage)
+            if (health <= damageAmount)
             {
-                Debug.Log("DealDamage: Victim just died");
-
                 Kill(victim);
+                return health;
             }
-            else
-            {
-                Debug.Log("DealDamage: Alive");
 
-                victim.ModifyHealth(-damage);
-            }
-            return damage;
+            return victim.ModifyHealth(-damageAmount);
         }
 
-        public void Kill(Unit victim, bool durabilityLoss = true)
+        internal long DealHeal(Unit victim, long healAmount)
         {
-            // Prevent killing unit twice (and giving reward from kill twice)
-            if (victim.Health<= 0)
+            if(healAmount < 1)
+                return 0;
+
+            return victim.ModifyHealth(healAmount);
+        }
+
+        internal void Kill(Unit victim)
+        {
+            if (victim.Health <= 0)
                 return;
 
-            Debug.Log("Killed unit!");
-            victim.DeathState = DeathState.Dead;
+            victim.ModifyDeathState(DeathState.Dead);
         }
-        public void KillSelf(bool durabilityLoss = true) { Kill(this, durabilityLoss); }
-        public int DealHeal(Unit victim, uint addhealth) { return 0; }
 
-        public void ProcDamageAndSpell(Unit victim, uint procAttacker, uint procVictim, uint procEx, uint amount,
-            WeaponAttackType attType = WeaponAttackType.BaseAttack, SpellInfo procSpell = null, SpellInfo procAura = null)
-        { }
-        public void ProcDamageAndSpellFor(bool isVictim, Unit target, uint procFlag, uint procExtra,
-            WeaponAttackType attType, SpellInfo procSpell, uint damage, SpellInfo procAura = null)
-        { }
+        internal void ModifyDeathState(DeathState newState)
+        {
+            DeathState oldState = deathState;
+            deathState = newState;
 
-        public void HandleEmoteCommand(uint animID) { }
-        public void AttackerStateUpdate(Unit victim, WeaponAttackType attType = WeaponAttackType.BaseAttack, bool extra = false) { }
-        public void FakeAttackerStateUpdate(Unit victim, WeaponAttackType attType = WeaponAttackType.BaseAttack) { }
+            if(oldState != deathState)
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.UnitDeathStateModified, this, deathState);
+        }
 
-        public void CalculateSpellDamageTaken(SpellCastDamageInfo damageInfoInfo, int damage, SpellInfo spellInfo,
-            WeaponAttackType attackType = WeaponAttackType.BaseAttack, bool crit = false)
+        internal int CalculateSpellDamageTaken(SpellCastDamageInfo damageInfoInfo, int damage, SpellInfo spellInfo)
         {
             if (damage < 0)
-                return;
+                return 0;
 
             Unit victim = damageInfoInfo.Target;
             if (victim == null || !victim.IsAlive)
-                return;
+                return 0;
 
             SpellSchoolMask damageSchoolMask = damageInfoInfo.SchoolMask;
 
-            // Script Hook For CalculateSpellDamageTaken -- Allow scripts to change the Damage post class mitigation calculations
-            //sScriptMgr->ModifySpellDamageTaken(spellDamageInfo->target, spellDamageInfo->attacker, damage);
-
-            // Calculate absorb resist
             if (damage > 0)
             {
                 int absorb = damageInfoInfo.Absorb;
@@ -269,9 +248,10 @@ namespace Core
             else
                 damage = 0;
 
-            damageInfoInfo.Damage = damage;
+            return damageInfoInfo.Damage = damage;
         }
-        public void DealSpellDamage(SpellCastDamageInfo damageInfoInfo, bool durabilityLoss)
+
+        internal void DealSpellDamage(SpellCastDamageInfo damageInfoInfo)
         {
             if (damageInfoInfo == null)
                 return;
@@ -291,19 +271,12 @@ namespace Core
                 return;
             }
 
-            // Call default DealDamage
-            DealDamage(victim, damageInfoInfo.Damage, damageInfoInfo.Absorb, SpellDamageType.Direct, damageInfoInfo.SchoolMask, spellProto);
+            DealDamage(victim, damageInfoInfo.Damage);
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, this, victim, damageInfoInfo.Damage, damageInfoInfo.HitInfo == HitInfo.CriticalHit);
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, this, victim, damageInfoInfo.Damage, damageInfoInfo.HitInfo == HitType.CriticalHit);
         }
 
-        public uint GetDamageReduction(uint damage) { return GetCombatRatingDamageReduction(CombatRating.ResilencePlayerDamage, 1.0f, 100.0f, damage); }
-        public void ApplyResilience(Unit victim, ref int damage) { }
-
-        public float MeleeSpellMissChance(Unit victim, WeaponAttackType attType, uint spellId) { return 0.0f; }
-        public SpellMissType MeleeSpellHitResult(Unit victim, SpellInfo spellInfo) { return SpellMissType.None; }
-        public SpellMissType MagicSpellHitResult(Unit victim, SpellInfo spellInfo) { return SpellMissType.None; }
-        public SpellMissType SpellHitResult(Unit victim, SpellInfo spellInfo, bool canReflect = false)
+        internal SpellMissType SpellHitResult(Unit victim, SpellInfo spellInfo, bool canReflect = false)
         {
             // Check for immune
             /*if (victim->IsImmunedToSpell(spellInfo))
@@ -348,19 +321,6 @@ namespace Core
             }*/
             return SpellMissType.None;
         }
-
-        public float GetUnitDodgeChanceAgainst(Unit attacker) { return 0.0f; }
-        public float GetUnitParryChanceAgainst(Unit attacker) { return 0.0f; }
-        public float GetUnitBlockChanceAgainst(Unit attacker) { return 0.0f; }
-        public float GetUnitMissChance(WeaponAttackType attType) { return 0.0f; }
-        public float GetUnitCriticalChance(WeaponAttackType attackType, Unit victim) { return 0.0f; }
-        public int GetMechanicResistChance(SpellInfo spellInfo) { return 0; }
-        public bool CanUseAttackType(WeaponAttackType attType) { return false; }
-
-        public virtual uint GetBlockPercent() { return 30; }
-        public float GetWeaponProcChance() { return 0.0f; }
-        public float GetPpmProcChance(uint weaponSpeed, float ppm, SpellInfo spellProto) { return 0.0f; }
-        public MeleeHitOutcome RollMeleeOutcomeAgainst(Unit victim, WeaponAttackType attType) { return MeleeHitOutcome.Normal; }
 
         #endregion
 
@@ -420,9 +380,9 @@ namespace Core
 
         internal int HealBySpell(Unit victim, SpellInfo spellInfo, int addHealth, bool critical = false) { return 0; }
 
-        internal void CastSpell(SpellCastTargets targets, SpellInfo spellInfo, SpellCastFlags spellFlags = 0, AuraEffect triggeredByAura = null, ulong originalCaster = 0)
+        internal SpellCastResult CastSpell(SpellCastTargets targets, SpellInfo spellInfo, SpellCastFlags spellFlags = 0, AuraEffect triggeredByAura = null, ulong originalCaster = 0)
         {
-            new Spell(this, spellInfo, spellFlags, originalCaster).Prepare(targets, triggeredByAura);
+            return new Spell(this, spellInfo, spellFlags, originalCaster).Prepare(targets, triggeredByAura);
         }
 
         public void SendSpellNonMeleeDamageLog(ref SpellCastDamageInfo log) { }
@@ -446,19 +406,14 @@ namespace Core
         public void MonsterMoveWithSpeed(float x, float y, float z, float speed, bool generatePath = false, bool forceDestination = false) { }
 
         public bool IsWalking() { return MovementInfo.HasMovementFlag(MovementFlags.Walking); }
-        
+
         #endregion
 
         #region Targets, controls, pets
 
-        public virtual DeathState DeathState
-        {
-            get => deathState;
-            set => deathState = value;
-        }
-        public bool IsAlive => DeathState == DeathState.Alive;
-        public bool IsDying => DeathState == DeathState.JustDied;
-        public bool IsDead => DeathState == DeathState.Dead || DeathState == DeathState.Corpse;
+        public bool IsAlive => deathState == DeathState.Alive;
+        public bool IsDying => deathState == DeathState.JustDied;
+        public bool IsDead => deathState == DeathState.Dead || deathState == DeathState.Corpse;
 
         public ulong OwnerGuid
         {
@@ -484,18 +439,6 @@ namespace Core
             set => SetULongValue(EntityFields.UnitCharmedBy, value);
         }
 
-        public ulong PetGuid
-        {
-            get => SummonSlots[UnitHelper.SummonSlotPet];
-            set => SummonSlots[UnitHelper.SummonSlotPet] = value;
-        }
-
-        public ulong CritterGuid
-        {
-            get => GetULongValue(EntityFields.UnitCritter);
-            set => SetULongValue(EntityFields.UnitCritter, value);
-        }
-
         public bool IsControlledByPlayer() { return false; }
         public Guid GetCharmerOrOwnerGuid() { return default; }
         public Guid GetCharmerOrOwnerOrOwnGuid() { return default; }
@@ -517,7 +460,6 @@ namespace Core
         public void RemoveAllMinionsByEntry(uint entry) { }
         public void SetCharm(Unit target, bool apply) { }
         public Unit GetNextRandomRaidMemberOrPet(float radius) { return null; }
-        public bool SetCharmedBy(Unit charmer, CharmType type, AuraApplication aurApp = null) { return false; }
         public void RemoveCharmedBy(Unit charmer) { }
         public void RestoreFaction() { }
 
@@ -725,14 +667,7 @@ namespace Core
 
         public Spell FindCurrentSpellBySpellId(uint spellID) { return null; }
         public int GetCurrentSpellCastTime(uint spellID) { return 0; }
-        public virtual SpellInfo GetCastSpellInfo(SpellInfo spellInfo) { return null; }
-
-        public SpellHistory SpellHistory { get; } = new SpellHistory();
-
-        private DeathState deathState;
-        public ulong[] SummonSlots { get; } = new ulong[UnitHelper.MaxSummonSlot];
-        public ulong[] ObjectSlots { get; } = new ulong[UnitHelper.MaxGameEntitySlot];
-
+        
         #endregion
 
         #region Stat system
@@ -743,50 +678,10 @@ namespace Core
         public float GetTotalAuraModValue(UnitModifierType unitModifierType) { return 0.0f; }
 
         public virtual bool UpdateStats(StatType statType) { return false; }
-        public virtual bool UpdateAllStats() { return false; }
         public virtual void UpdateResistances(SpellSchools school) { }
         public virtual void UpdateAllResistances() { }
-        public virtual void UpdateArmor() { }
         public virtual void UpdateMaxHealth() { }
         public virtual void UpdateMaxPower(SpellResourceType spellResource) { }
-
-        #endregion
-
-        #region Display info
-
-        public List<AuraApplication> GetVisibleAuras() { return visibleAuras; }
-        public bool HasVisibleAura(AuraApplication aurApp) { return visibleAuras.Contains(aurApp); }
-        public void SetVisibleAura(AuraApplication aurApp) { }
-        public void RemoveVisibleAura(AuraApplication aurApp) { }
-        public void UpdateInterruptMask() { }
-
-        public uint GetDisplayId() { return GetUintValue(EntityFields.DisplayId); }
-        public virtual void SetDisplayId(uint modelId) { }
-        public uint GetNativeDisplayId() { return GetUintValue(EntityFields.NativeDisplayId); }
-        public void RestoreDisplayId() { }
-        public void SetNativeDisplayId(uint modelId) { SetUintValue(EntityFields.NativeDisplayId, modelId); }
-
-
-        public uint GetModelForForm(ShapeshiftForm form) { return 0; }
-        public uint GetModelForTotem(PlayerTotemType totemType) { return 0; }
-
-        #endregion
-
-        #region  Dynamic object management
-
-        public void _RegisterDynObject(WorldEntity dynObj) { }
-        public void _UnregisterDynObject(WorldEntity dynObj) { }
-        public WorldEntity GetDynObject(uint spellId) { return null; }
-        public List<WorldEntity> GetDynObjects(uint spellId) { return null; }
-        public void RemoveDynObject(uint spellId) { }
-        public void RemoveAllDynObjects() { }
-
-        public GameEntity GetGameEntity(uint spellId) { return null; }
-        public List<GameEntity> GetGameEntities(uint spellId) { return null; }
-        public void AddGameObject(GameEntity gameObj) { }
-        public void RemoveGameObject(GameEntity gameObj, bool del) { }
-        public void RemoveGameObject(uint spellid, bool del) { }
-        public void RemoveAllGameObjects() { }
 
         #endregion
 
@@ -804,7 +699,13 @@ namespace Core
         public int SpellBaseDamageBonusTaken(SpellSchoolMask schoolMask) { return 0; }
         public int SpellDamageBonusDone(Unit victim, SpellInfo spellProto, int damage, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1) { return 0; }
         public float SpellDamagePctDone(Unit victim, SpellInfo spellProto, SpellDamageType damagetype) { return 0.0f; }
-        public int SpellDamageBonusTaken(Unit caster, SpellInfo spellProto, int damage, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1) { return 0; }
+        public void ApplySpellMod(SpellInfo spellInfo, SpellModifierType modifierType, ref int value) { }
+        public void ApplySpellMod(SpellInfo spellInfo, SpellModifierType modifierType, ref float value) { }
+
+        public int SpellDamageBonusTaken(Unit caster, SpellInfo spellProto, int damage, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1)
+        {
+            return damage;
+        }
         public int SpellBaseHealingBonusDone(SpellSchoolMask schoolMask) { return 0; }
         public int SpellBaseHealingBonusTaken(SpellSchoolMask schoolMask) { return 0; }
         public uint SpellHealingBonusDone(Unit victim, SpellInfo spellProto, uint healamount, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1) { return 0; }
@@ -815,26 +716,21 @@ namespace Core
         public uint MeleeDamageBonusTaken(Unit attacker, uint pdamage, WeaponAttackType attType, SpellInfo spellProto = null) { return 0; }
 
         public bool IsSpellBlocked(Unit victim, SpellInfo spellProto, WeaponAttackType attackType = WeaponAttackType.BaseAttack) { return false; }
-        public bool IsBlockCritical() { return false; }
         public bool IsSpellCrit(Unit victim, SpellInfo spellProto, SpellSchoolMask schoolMask, WeaponAttackType attackType = WeaponAttackType.BaseAttack) { return false; }
         public float GetUnitSpellCriticalChance(Unit victim, SpellInfo spellProto, SpellSchoolMask schoolMask, WeaponAttackType attackType = WeaponAttackType.BaseAttack) { return 0.0f; }
         public int SpellCriticalHealingBonus(SpellInfo spellProto, int damage, Unit victim) { return 0; }
-        public void SetContestedPvP(Player attackedPlayer = null) { }
 
         public uint GetCastingTimeForBonus(SpellInfo spellProto, SpellDamageType damagetype, uint castingTime) { return 0; }
         public float CalculateDefaultCoefficient(SpellInfo spellProto, SpellDamageType damagetype) { return 0.0f; }
-
         public uint GetRemainingPeriodicAmount(Guid caster, uint spellId, AuraType auraType, int effectIndex = 0) { return 0; }
 
         public void ApplySpellImmune(uint spellId, uint op, uint type, bool apply) { }
         public void ApplySpellDispelImmunity(SpellInfo spellProto, SpellDispelType spellDispelType, bool apply) { }
-        public virtual bool IsImmunedToSpell(SpellInfo spellProto) { return false; } // redefined in Creature
         public uint GetSchoolImmunityMask() { return 0; }
         public uint GetMechanicImmunityMask() { return 0; }
-
         public bool IsImmunedToDamage(SpellSchoolMask meleeSchoolMask) { return false; }
         public bool IsImmunedToDamage(SpellInfo spellProto) { return false; }
-        public virtual bool IsImmunedToSpellEffect(SpellInfo spellProto, int index) { return false; } // redefined in Creature
+        public virtual bool IsImmunedToSpellEffect(SpellInfo spellProto, int index) { return false; }
 
         public bool IsDamageReducedByArmor(SpellSchoolMask damageSchoolMask, SpellInfo spellProto = null, int effIndex = -1) { return false; }
         public uint CalcArmorReducedDamage(Unit attacker, Unit victim, uint damage, SpellInfo spellProto, WeaponAttackType attackType = WeaponAttackType.BaseAttack) { return 0; }
@@ -910,7 +806,7 @@ namespace Core
                     if (normalization > 0)
                     {
                         // Use speed from aura
-                        float maxSpeed = normalization / StatUtils.BaseMovementSpeed(type);
+                        float maxSpeed = normalization / unitMovementDefinition.BaseSpeedByType(type);
                         if (speed > maxSpeed)
                             speed = maxSpeed;
                     }
@@ -919,7 +815,7 @@ namespace Core
                     int minSpeedModRate = /*GetMaxPositiveAuraModifier(SPELL_AURA_MOD_MINIMUM_SPEED_RATE)*/0;
                     if (minSpeedModRate != 0)
                     {
-                        float minSpeed = minSpeedModRate / StatUtils.BaseMovementSpeed(type);
+                        float minSpeed = minSpeedModRate / unitMovementDefinition.BaseSpeedByType(type);
                         if (speed < minSpeed)
                             speed = minSpeed;
                     }
@@ -944,7 +840,7 @@ namespace Core
 
         public float GetSpeed(UnitMoveType type)
         {
-            return speedRates[type] * StatUtils.BaseMovementSpeed(type);
+            return speedRates[type] * unitMovementDefinition.BaseSpeedByType(type);
         }
 
         public float GetSpeedRate(UnitMoveType type)
@@ -954,7 +850,7 @@ namespace Core
 
         public void SetSpeed(UnitMoveType type, float newValue)
         {
-            SetSpeedRate(type, newValue / StatUtils.BaseMovementSpeed(type));
+            SetSpeedRate(type, newValue / unitMovementDefinition.BaseSpeedByType(type));
         }
 
         public void SetSpeedRate(UnitMoveType type, float rate)
@@ -981,14 +877,8 @@ namespace Core
 
         #endregion
 
-        public bool IsMoving() { return MovementInfo.HasMovementFlag(MovementFlags.MaskMoving); }
-        public bool IsTurning() { return MovementInfo.HasMovementFlag(MovementFlags.MaskTurning); }
-        public bool IsFalling() { return false; }
-
         public ulong GetTarget() { return GetULongValue(EntityFields.Target); }
         public virtual void SetTarget(ulong targetNetworkId) { }
-
-        private uint GetCombatRatingDamageReduction(CombatRating cr, float rate, float cap, uint damage) { return 0; }
 
         public abstract void Accept(IUnitVisitor unitVisitor);
     }

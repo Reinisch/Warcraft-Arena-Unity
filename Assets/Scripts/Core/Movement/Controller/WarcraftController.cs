@@ -1,11 +1,10 @@
 ﻿using Bolt;
-using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Client
+namespace Core
 {
-    public class WarcraftController : EntityBehaviour<IPlayerState>
+    internal class WarcraftController : EntityBehaviour<IPlayerState>
     {
         [SerializeField, UsedImplicitly]
         private PlayerControllerDefinition controllerDefinition;
@@ -155,7 +154,7 @@ namespace Client
             }
         }
 
-        public void AttachClientSideMoveState(BoltEntity moveEntity)
+        internal void AttachClientSideMoveState(BoltEntity moveEntity)
         {
             var localPlayerMoveState = moveEntity.GetState<IMoveState>();
             unit.MovementInfo.AttachedMoveState(localPlayerMoveState);
@@ -164,7 +163,7 @@ namespace Client
             ClientMoveState = moveEntity;
         }
 
-        public void DetachClientSideMoveState(bool destroyObject)
+        internal void DetachClientSideMoveState(bool destroyObject)
         {
             BoltEntity moveStateEntity = ClientMoveState;
             if (moveStateEntity != null && destroyObject)
@@ -183,7 +182,9 @@ namespace Client
         {
             Vector3 rawInputVelocity = Vector3.zero;
 
-            if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
+            if (!Unit.IsAlive)
+                inputVelocity = Vector3.zero;
+            else if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
             {
                 inputVelocity = new Vector3(Input.GetMouseButton(1) ? Input.GetAxis("Horizontal") : 0, 0, Input.GetAxis("Vertical"));
 
@@ -241,6 +242,9 @@ namespace Client
 
         private void ApplyControllerInputRotation()
         {
+            if(!Unit.IsAlive)
+                return;
+
             if (Input.GetMouseButton(1))
                 transform.rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
             else

@@ -89,13 +89,16 @@ namespace Server
                 return;
             }
 
-            caster.CastSpell(new SpellCastTargets(), spellInfo);
+            SpellCastResult castResult = caster.CastSpell(new SpellCastTargets(), spellInfo);
 
-            UnitSpellCastEvent unitCastEvent = UnitSpellCastEvent.Create(caster.BoltEntity, EntityTargets.EveryoneExceptController);
-            unitCastEvent.SpellId = spellCastRequest.SpellId;
-            unitCastEvent.Send();
+            if (castResult == SpellCastResult.Success)
+            {
+                UnitSpellCastEvent unitCastEvent = UnitSpellCastEvent.Create(caster.BoltEntity, EntityTargets.EveryoneExceptController);
+                unitCastEvent.SpellId = spellCastRequest.SpellId;
+                unitCastEvent.Send();
+            }
 
-            spellCastAnswer.Result = (int)SpellCastResult.Success;
+            spellCastAnswer.Result = (int)castResult;
             spellCastAnswer.Send();
         }
     }

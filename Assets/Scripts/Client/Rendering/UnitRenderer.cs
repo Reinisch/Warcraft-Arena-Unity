@@ -7,13 +7,13 @@ using UnityEngine;
 
 public class UnitRenderer : EntityEventListener<IUnitState>
 {
-    [SerializeField, UsedImplicitly] private EffectTagPositioner effectTagPositioner;
+    [SerializeField, UsedImplicitly] private TagContainer tagContainer;
     [SerializeField, UsedImplicitly] private Animator animator;
 
     public Animator Animator => animator;
     private Unit Unit { get; set; }
 
-    public EffectTagPositioner EffectTagPositioner => effectTagPositioner;
+    public TagContainer TagContainer => tagContainer;
 
     public void Initialize(Unit unit)
     {
@@ -29,7 +29,7 @@ public class UnitRenderer : EntityEventListener<IUnitState>
         Unit = null;
     }
 
-    public void DoUpdate(int deltaTime)
+    public void DoUpdate(float deltaTime)
     {
         UpdateAnimations(deltaTime);
     }
@@ -41,10 +41,13 @@ public class UnitRenderer : EntityEventListener<IUnitState>
         EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, Unit, spellCastEvent.SpellId);
     }
 
-    private void UpdateAnimations(int deltaTime)
+    private void UpdateAnimations(float deltaTime)
     {
-        if (Unit.DeathState != DeathState.Alive)
-            animator.SetTrigger("Death");
+        if (!Unit.IsAlive)
+        {
+            animator.SetBool("IsDead", true);
+            return;
+        }
 
         if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
         {
@@ -54,8 +57,7 @@ public class UnitRenderer : EntityEventListener<IUnitState>
             float strafeTarget = Unit.MovementInfo.HasMovementFlag(MovementFlags.StrafeLeft) ? 0 :
                  Unit.MovementInfo.HasMovementFlag(MovementFlags.StrafeRight) ? 1 : 0.5f;
 
-            float deltaSeconds = (float)deltaTime / 1000;
-            float strafeDelta = 2 * Mathf.Sign(strafeTarget - currentStrafe) * deltaSeconds;
+            float strafeDelta = 2 * Mathf.Sign(strafeTarget - currentStrafe) * deltaTime;
             float resultStrafe = Mathf.Clamp(currentStrafe + strafeDelta, 0.0f, 1.0f);
 
             if (Mathf.Abs(strafeTarget - currentStrafe) > Mathf.Abs(strafeDelta))
@@ -64,7 +66,7 @@ public class UnitRenderer : EntityEventListener<IUnitState>
             if (Unit.MovementInfo.HasMovementFlag(MovementFlags.Forward | MovementFlags.StrafeRight | MovementFlags.StrafeLeft))
                 Animator.SetFloat("Speed", 1);
             else
-                Animator.SetFloat("Speed", Mathf.Clamp(Animator.GetFloat("Speed") - 10 * deltaSeconds, 0.0f, 1.0f));
+                Animator.SetFloat("Speed", Mathf.Clamp(Animator.GetFloat("Speed") - 10 * deltaTime, 0.0f, 1.0f));
         }
         else
             Animator.SetBool("Grounded", false);

@@ -139,7 +139,7 @@ namespace Core
                 Finish(false);
         }
 
-        internal void Prepare(SpellCastTargets targets, AuraEffect triggeredByAura = null)
+        internal SpellCastResult Prepare(SpellCastTargets targets, AuraEffect triggeredByAura = null)
         {
             InitiateExplicitTargets(targets);
 
@@ -150,27 +150,16 @@ namespace Core
 
             SpellCastResult result = CheckCast(true);
 
-            if ((SpellCastFlags & SpellCastFlags.IgnoreTargetCheck) != 0 && result == SpellCastResult.BadTargets)
+            if (SpellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreTargetCheck) && result == SpellCastResult.BadTargets)
                 result = SpellCastResult.Success;
+
             if (result != SpellCastResult.Success)
             {
                 if (triggeredByAura != null && triggeredByAura.IsPeriodic() && !triggeredByAura.BaseAura.IsPassive())
-                {
                     triggeredByAura.BaseAura.SetDuration(0);
-                }
-
-                if (Caster.EntityType == EntityType.Player)
-                {
-                    var player = (Player)Caster;
-                    player.RestoreSpellMods(this);
-                    // cleanup after mod system
-                    // triggered spell pointer can be not removed in some cases
-                    player.SetSpellModTakingSpell(this, false);
-                }
-                //SendCastResult(result);
 
                 Finish(false);
-                return;
+                return result;
             }
 
             CastTime = SpellInfo.CastTime;
@@ -178,6 +167,8 @@ namespace Core
 
             if (Mathf.Approximately(CastTime, 0.0f))
                 Cast(true);
+
+            return result;
         }
 
         private void Cast(bool skipCheck = false)
@@ -777,10 +768,8 @@ namespace Core
             else if (EffectDamage > 0)
             {
                 SpellCastDamageInfo damageInfoInfo = new SpellCastDamageInfo(caster, unit, SpellInfo.Id, SpellSchoolMask, CastId);
-                caster.CalculateSpellDamageTaken(damageInfoInfo, EffectDamage, SpellInfo, WeaponAttackType.BaseAttack, spellTarget.Crit);
-
-                EffectDamage = damageInfoInfo.Damage;
-                caster.DealSpellDamage(damageInfoInfo, false);
+                EffectDamage = caster.CalculateSpellDamageTaken(damageInfoInfo, EffectDamage, SpellInfo);
+                caster.DealSpellDamage(damageInfoInfo);
             }
         }
 

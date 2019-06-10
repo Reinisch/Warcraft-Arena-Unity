@@ -50,7 +50,7 @@ namespace Core
             if (OriginalCaster != null)
             {
                 int bonus = OriginalCaster.SpellDamageBonusDone(target, SpellInfo, spellPower, SpellDamageType.Direct, effect);
-                spellPower = bonus + (int)(bonus * Variance);
+                spellPower += bonus + (int)(bonus * Variance);
                 spellPower = target.SpellDamageBonusTaken(OriginalCaster, SpellInfo, spellPower, SpellDamageType.Direct, effect);
             }
 

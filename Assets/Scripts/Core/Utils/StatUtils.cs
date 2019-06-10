@@ -742,14 +742,6 @@ namespace Core
 
         #endregion
 
-        private static readonly Dictionary<UnitMoveType, float> BaseMoveSpeed = new Dictionary<UnitMoveType, float>()
-        {
-            { UnitMoveType.Run, 7.0f },
-            { UnitMoveType.RunBack, 4.5f },
-            { UnitMoveType.TurnRate, 3.14f },
-            { UnitMoveType.PitchRate, 3.14f },
-        };
-
         public const float ContactDistance = 0.5f;
         public const float InteractionDistance = 5.0f;
         public const float AttackDistance = 5.0f;
@@ -763,6 +755,7 @@ namespace Core
         public const float DefaultPhase = 169;
         public const int CorpseReclaimRadius = 50;
         public const int AIDefaultCooldown = 5000;
+        public static UnitMoveType[] UnitMoveTypes = (UnitMoveType[]) Enum.GetValues(typeof(UnitMoveType));
 
         public static FieldTypes GetFieldType(this EntityFields entityField)
         {
@@ -858,52 +851,6 @@ namespace Core
             }
         }
 
-        public static EntityFields ResistanceBuffModPositiveField(this SpellSchools school)
-        {
-            switch (school)
-            {
-                case SpellSchools.Normal:
-                    return EntityFields.ResistanceBuffModsPositive;
-                case SpellSchools.Holy:
-                    return EntityFields.ResistanceBuffModsPositive1;
-                case SpellSchools.Fire:
-                    return EntityFields.ResistanceBuffModsPositive2;
-                case SpellSchools.Nature:
-                    return EntityFields.ResistanceBuffModsPositive3;
-                case SpellSchools.Frost:
-                    return EntityFields.ResistanceBuffModsPositive4;
-                case SpellSchools.Shadow:
-                    return EntityFields.ResistanceBuffModsPositive5;
-                case SpellSchools.Arcane:
-                    return EntityFields.ResistanceBuffModsPositive6;
-                default:
-                    throw new NotImplementedException("EntityField for resistance buff mod positive school: " + school + " is not implemented yet!");
-            }
-        }
-
-        public static EntityFields ResistanceBuffModNegativeField(this SpellSchools school)
-        {
-            switch (school)
-            {
-                case SpellSchools.Normal:
-                    return EntityFields.ResistanceBuffModsNegative;
-                case SpellSchools.Holy:
-                    return EntityFields.ResistanceBuffModsNegative1;
-                case SpellSchools.Fire:
-                    return EntityFields.ResistanceBuffModsNegative2;
-                case SpellSchools.Nature:
-                    return EntityFields.ResistanceBuffModsNegative3;
-                case SpellSchools.Frost:
-                    return EntityFields.ResistanceBuffModsNegative4;
-                case SpellSchools.Shadow:
-                    return EntityFields.ResistanceBuffModsNegative5;
-                case SpellSchools.Arcane:
-                    return EntityFields.ResistanceBuffModsNegative6;
-                default:
-                    throw new NotImplementedException("EntityField for resistance buff mod negative school: " + school + " is not implemented yet!");
-            }
-        }
-
         public static EntityFields CombatRatingField(this CombatRating rating)
         {
             switch (rating)
@@ -954,19 +901,6 @@ namespace Core
                 default:
                     throw new NotImplementedException("Entity type " + typeId + " is not implemented!");
             }
-        }
-
-        public static void InitializeSpeedRates(Dictionary<UnitMoveType, float> speedRates)
-        {
-            speedRates.Clear();
-
-            foreach (var speedRate in BaseMoveSpeed)
-                speedRates.Add(speedRate.Key, 1.0f);
-        }
-
-        public static float BaseMovementSpeed(UnitMoveType moveType)
-        {
-            return BaseMoveSpeed[moveType];
         }
 
         #region Percentage calculations

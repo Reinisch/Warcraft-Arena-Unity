@@ -37,7 +37,7 @@ namespace Client.UI
             PanelHidden();
         }
 
-        internal void DoUpdate(int deltaTime)
+        internal void DoUpdate(float deltaTime)
         {
             PanelUpdated(deltaTime);
         }
@@ -63,7 +63,7 @@ namespace Client.UI
         {
         }
 
-        protected virtual void PanelUpdated(int deltaTime)
+        protected virtual void PanelUpdated(float deltaTime)
         {
         }
     }

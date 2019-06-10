@@ -25,7 +25,7 @@ public class UnitFrame : MonoBehaviour
         mainResource.Deinitialize();
     }
 
-    public void DoUpdate(int deltaTime)
+    public void DoUpdate(float deltaTime)
     {
         if (unit != null)
         {

@@ -125,7 +125,7 @@ namespace Client
                 effectSetting.Deinitialize();
         }
 
-        public void DoUpdate(int deltaTime)
+        public void DoUpdate(float deltaTime)
         {
             foreach (EffectSettings effectSetting in effectSettings)
                 effectSetting.EffectContainer.DoUpdate();

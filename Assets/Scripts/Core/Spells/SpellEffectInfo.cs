@@ -87,30 +87,9 @@ namespace Core
                    EffectType == SpellEffectType.ApplyAreaAuraEnemy || EffectType == SpellEffectType.ApplyAreaAuraPet || EffectType == SpellEffectType.ApplyAreaAuraOwner;
         }
 
-        public bool IsFarUnitTargetEffect()
-        {
-            return EffectType == SpellEffectType.SummonPlayer || EffectType == SpellEffectType.SummonRafFriend
-                   || EffectType == SpellEffectType.Resurrect || EffectType == SpellEffectType.SkinPlayerCorpse;
-        }
-
         public bool IsUnitOwnedAuraEffect()
         {
             return IsAreaAuraEffect() || EffectType == SpellEffectType.ApplyAura;
-        }
-
-        public float CalcValueMultiplier(Unit caster, Spell spell = null)
-        {
-            float multiplier = Amplitude;
-            caster?.SpellModOwner?.ApplySpellMod(SpellInfo.Id, SpellModifierType.ValueMultiplier, ref multiplier, spell);
-
-            return multiplier;
-        }
-
-        public float CalcDamageMultiplier(Unit caster, Spell spell = null)
-        {
-            float multiplierPercent = ChainAmplitude * 100.0f;
-            caster?.SpellModOwner?.ApplySpellMod(SpellInfo.Id, SpellModifierType.DamageMultiplier, ref multiplierPercent, spell);
-            return multiplierPercent / 100.0f;
         }
 
         public bool HasRadius()
@@ -129,9 +108,9 @@ namespace Core
                 return 0.0f;
 
             float radius = MinRadius == 0 ? MaxRadius : MinRadius;
-            if (caster != null)
+            if (caster != null && spell != null)
             {
-                caster.SpellModOwner?.ApplySpellMod(SpellInfo.Id, SpellModifierType.Radius, ref radius, spell);
+                caster.ApplySpellMod(spell.SpellInfo, SpellModifierType.Radius, ref radius);
                 radius = Mathf.Clamp(radius, MinRadius, MaxRadius);
             }
 

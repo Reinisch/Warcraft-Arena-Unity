@@ -40,7 +40,7 @@ namespace Client
                 LocalPlayer = (Player)WorldManager.UnitManager.Find(entity.networkId.PackedValue);
                 EventPlayerControlGained?.Invoke();
 
-                FindObjectOfType<WarcraftCamera>().Target = LocalPlayer.transform;
+                FindObjectOfType<WarcraftCamera>().Target = LocalPlayer;
             }
         }
 

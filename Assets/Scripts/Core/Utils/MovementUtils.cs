@@ -7,6 +7,10 @@ namespace Core
         public const float SpeedCharge = 42.0f;
         public const int SplineStepsPerSegment = 3;
 
+        public const float GridCellSwitchDifference = 1.0f;
+        public const float MaxHeight = 100.0f;
+        public const float MinHeight = -100.0f;
+
         public const float Gravity = 19.29110527038574f;
         public const float TerminalVelocity = 60.148003f;
         public const float TerminalSafefallVelocity = 7.0f;

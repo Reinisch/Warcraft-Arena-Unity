@@ -10,7 +10,7 @@ public class UIBehaviour : MonoBehaviour
     {
     }
 
-    public virtual void DoUpdate(int deltaTime)
+    public virtual void DoUpdate(float deltaTime)
     {
     }
 }

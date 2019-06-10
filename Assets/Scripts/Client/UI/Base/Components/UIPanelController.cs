@@ -53,8 +53,8 @@ namespace Client.UI
         {
             if (panelsByType.TryGetValue(typeof(TShowPanel), out UIPanel panel) && panel is TShowPanel showPanel)
             {
-                token.Process(showPanel);
                 showPanel.Show();
+                token.Process(showPanel);
             }
             else
                 Assert.IsTrue(false, $"Panel {typeof(TShowPanel)} not found when showing or has invalid type!");
@@ -85,6 +85,6 @@ namespace Client.UI
                 Panels[i].Hide();
         }
 
-        internal abstract void DoUpdate(int deltaTime);
+        internal abstract void DoUpdate(float deltaTime);
     }
 }

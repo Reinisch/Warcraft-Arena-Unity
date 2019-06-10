@@ -14,7 +14,7 @@
         public int Blocked { get; set; }
         public int CleanDamage { get; set; }
 
-        public HitInfo HitInfo { get; set; }
+        public HitType HitInfo { get; set; }
         public bool PeriodicLog { get; set; }
         public long PreHitHealth { get; set; }
 
@@ -32,7 +32,7 @@
             Blocked = 0;
             CleanDamage = 0;
             PeriodicLog = false;
-            HitInfo = HitInfo.NormalSwing;
+            HitInfo = HitType.NormalSwing;
             PreHitHealth = target.Health;
         }
     }

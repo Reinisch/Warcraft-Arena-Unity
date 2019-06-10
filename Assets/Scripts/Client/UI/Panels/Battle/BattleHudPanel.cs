@@ -62,7 +62,7 @@ namespace Client
             base.PanelDeinitialized();
         }
 
-        protected override void PanelUpdated(int deltaTime)
+        protected override void PanelUpdated(float deltaTime)
         {
             base.PanelUpdated(deltaTime);
 

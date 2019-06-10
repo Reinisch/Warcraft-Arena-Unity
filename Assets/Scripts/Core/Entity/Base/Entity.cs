@@ -30,11 +30,11 @@ namespace Core
         public ulong NetworkId => entity.networkId.PackedValue;
 
         public bool IsValid { get; private set; }
-        public abstract bool AutoScoped { get; }
+        internal abstract bool AutoScoped { get; }
         public abstract EntityType EntityType { get; }
 
         [UsedImplicitly]
-        internal virtual void Awake()
+        private void Awake()
         {
             foreach (var entityField in StatUtils.GetEntityFields(EntityType))
                 entityFields[entityField] = default;
@@ -187,7 +187,7 @@ namespace Core
             visitor.Visit(this);
         }
 
-        [Conditional("UNITY_ASSERTIONS")]
+        [Conditional(Assert.AssertionDefine)]
         private void ValidateField(EntityFields field, int set)
         {
             if (!validateFieldAccess)

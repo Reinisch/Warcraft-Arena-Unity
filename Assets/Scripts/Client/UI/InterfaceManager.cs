@@ -23,7 +23,7 @@ public class InterfaceManager : MonoBehaviour
         lobbyScreen.Deinitialize(screenController);
     }
 
-    public void DoUpdate(int deltaTime)
+    public void DoUpdate(float deltaTime)
     {
         screenController.DoUpdate(deltaTime);
     }

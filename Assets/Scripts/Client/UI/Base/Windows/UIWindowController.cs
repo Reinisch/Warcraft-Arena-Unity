@@ -2,7 +2,7 @@
 {
     public class UIWindowController<T> : UIPanelController where T : UIWindowController<T>
     {
-        internal override void DoUpdate(int deltaTime)
+        internal override void DoUpdate(float deltaTime)
         {
             for (int i = Panels.Count - 1; i >= 0; i--)
                 Panels[i].DoUpdate(deltaTime);

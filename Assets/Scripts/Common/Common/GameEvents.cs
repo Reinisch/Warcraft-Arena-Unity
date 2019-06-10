@@ -11,6 +11,8 @@
 
         SpellCasted,
         SpellHit,
-        SpellDamageDone
+        SpellDamageDone,
+
+        UnitDeathStateModified
     }
 }

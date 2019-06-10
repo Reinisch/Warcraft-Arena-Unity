@@ -17,22 +17,22 @@ namespace Core
             
             private bool IsOutOfCellBounds(Vector3 position, GridCell cell)
             {
-                if (position.x + GridHelper.GridCellSwitchDifference < cell.Bounds.min.x)
+                if (position.x + MovementUtils.GridCellSwitchDifference < cell.Bounds.min.x)
                 {
                     return true;
                 }
 
-                if (position.x > cell.Bounds.max.x + GridHelper.GridCellSwitchDifference)
+                if (position.x > cell.Bounds.max.x + MovementUtils.GridCellSwitchDifference)
                 {
                     return true;
                 }
 
-                if (position.z + GridHelper.GridCellSwitchDifference < cell.Bounds.min.z)
+                if (position.z + MovementUtils.GridCellSwitchDifference < cell.Bounds.min.z)
                 {
                     return true;
                 }
 
-                if (position.z > cell.Bounds.max.z + GridHelper.GridCellSwitchDifference)
+                if (position.z > cell.Bounds.max.z + MovementUtils.GridCellSwitchDifference)
                 {
                     return true;
                 }
@@ -45,7 +45,7 @@ namespace Core
                 GridReference<TEntity> reference = container.FirstReference;
                 while (reference != null)
                 {
-                    if (reference.Target.Position.y > GridHelper.MaxHeight || reference.Target.Position.y < GridHelper.MinHeight)
+                    if (reference.Target.Position.y > MovementUtils.MaxHeight || reference.Target.Position.y < MovementUtils.MinHeight)
                     {
                         reference.Target.Position = worldGrid.map.Settings.DefaultSpawnPoint.position;
                     }

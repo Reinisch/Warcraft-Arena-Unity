@@ -1,0 +1,21 @@
+﻿using JetBrains.Annotations;
+using UnityEngine;
+
+namespace Client
+{
+    [UsedImplicitly, CreateAssetMenu(fileName = "Floating Text Settings", menuName = "Game Data/Interface/Floating Text Settings", order = 1)]
+    public class FloatingTextSettings : ScriptableObject
+    {
+        [SerializeField, UsedImplicitly] private float lifeTime = 3.0f;
+        [SerializeField, UsedImplicitly] private float randomOffset = 0.2f;
+        [SerializeField, UsedImplicitly] private float floatingSpeed = 3;
+        [SerializeField, UsedImplicitly] private int fontSize = 120;
+        [SerializeField, UsedImplicitly] private AnimationCurve sizeOverTime;
+
+        public float LifeTime => lifeTime;
+        public float RandomOffset => randomOffset;
+        public float FloatingSpeed => floatingSpeed;
+        public int FontSize => fontSize;
+        public AnimationCurve SizeOverTime => sizeOverTime;
+    }
+}

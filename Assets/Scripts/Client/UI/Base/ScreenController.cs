@@ -21,7 +21,7 @@ namespace Client.UI
             panelControllersByPanelType.Remove(panelController.GetType());
         }
 
-        public void DoUpdate(int deltaTime)
+        public void DoUpdate(float deltaTime)
         {
             foreach (var panelController in panelControllers)
                 panelController.DoUpdate(deltaTime);

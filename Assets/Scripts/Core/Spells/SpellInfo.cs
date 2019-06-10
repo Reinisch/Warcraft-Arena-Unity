@@ -278,12 +278,8 @@ namespace Core
                     if (caster.EntityType == EntityType.Player)
                     {
                         if (HasAttribute(SpellCustomAttributes.Pickpocket))
-                        {
                             if (unitTarget.EntityType == EntityType.Player)
                                 return SpellCastResult.BadTargets;
-                            if ((unitTarget.GetCreatureTypeMask() & UnitHelper.CreatureTypemaskHumanoidOrUndead) == 0)
-                                return SpellCastResult.TargetNoPockets;
-                        }
                     }
                 }
             }
@@ -334,10 +330,10 @@ namespace Core
 
             if ((neededTargets & SpellCastTargetFlags.UnitMask) != 0)
             {
-                if (neededTargets.HasFlag(SpellCastTargetFlags.UnitEnemy) && caster.IsValidAttackTarget(unitTarget, this))
+                if (neededTargets.HasTargetFlag(SpellCastTargetFlags.UnitEnemy) && caster.IsValidAttackTarget(unitTarget, this))
                     return SpellCastResult.Success;
 
-                if (neededTargets.HasFlag(SpellCastTargetFlags.UnitAlly) && caster.IsValidAssistTarget(unitTarget, this))
+                if (neededTargets.HasTargetFlag(SpellCastTargetFlags.UnitAlly) && caster.IsValidAssistTarget(unitTarget, this))
                     return SpellCastResult.Success;
 
                 return SpellCastResult.BadTargets;
@@ -424,11 +420,11 @@ namespace Core
         public float GetMaxRange(bool positive, Unit caster = null, Spell spell = null)
         {
             float range = positive ? MaxRangeFriend : MaxRangeHostile;
-            if (caster != null)
+            if (caster != null && spell != null)
             {
                 Player modOwner = caster.SpellModOwner;
                 if (modOwner != null)
-                    modOwner.ApplySpellMod(Id, SpellModifierType.Range, ref range, spell);
+                    modOwner.ApplySpellMod(spell.SpellInfo, SpellModifierType.Range, ref range);
             }
             return range;
         }
@@ -521,7 +517,7 @@ namespace Core
 
                 // apply cost mod by spell
                 if (modOwner != null)
-                    modOwner.ApplySpellMod(Id, SpellModifierType.Cost, ref powerCost);
+                    modOwner.ApplySpellMod(this, SpellModifierType.Cost, ref powerCost);
 
                 if (power.SpellResourceType == SpellResourceType.Health)
                 {

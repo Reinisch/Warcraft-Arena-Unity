@@ -1,10 +1,13 @@
-﻿using JetBrains.Annotations;
+﻿using Core;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class WarcraftCamera : MonoBehaviour
 {
     [SerializeField, UsedImplicitly]
     private float targetHeight = 1.7f;
+    [SerializeField, UsedImplicitly]
+    private float deadTargetHeight = 0.5f;
     [SerializeField, UsedImplicitly]
     private float distance = 5.0f;
     [SerializeField, UsedImplicitly]
@@ -28,24 +31,31 @@ public class WarcraftCamera : MonoBehaviour
     [SerializeField, UsedImplicitly]
     private int zoomRate = 40;
 
+    [SerializeField, UsedImplicitly]
+    private float targetHeightDampening = 3.0f;
+    [SerializeField, UsedImplicitly]
     private float rotationDampening = 3.0f;
     [SerializeField, UsedImplicitly]
     private float zoomDampening = 5.0f;
     [SerializeField, UsedImplicitly]
     private LayerMask collisionLayers = -1;
     [SerializeField, UsedImplicitly]
-    private Transform target;
+    private Unit target;
 
     private float xDeg;
     private float yDeg;
     private float currentDistance;
     private float desiredDistance;
     private float correctedDistance;
+    private float currentActualHeight;
 
-    public Transform Target
+    public Unit Target
     {
-        get => target;
-        set => target = value;
+        set
+        {
+            target = value;
+            currentActualHeight = target == null || target.IsAlive ? targetHeight : deadTargetHeight;
+        }
     }
 
     [UsedImplicitly]
@@ -66,6 +76,8 @@ public class WarcraftCamera : MonoBehaviour
         if (!target)
             return;
 
+        currentActualHeight = Mathf.MoveTowards(currentActualHeight, target.IsAlive ? targetHeight : deadTargetHeight, targetHeightDampening * Time.deltaTime);
+
         // If either mouse buttons are down, let the mouse govern camera position
         if (GUIUtility.hotControl == 0)
         {
@@ -77,9 +89,12 @@ public class WarcraftCamera : MonoBehaviour
             // otherwise, ease behind the target if any of the directional keys are pressed
             else if (!Mathf.Approximately(Input.GetAxis("Vertical"), 0) || !Mathf.Approximately(Input.GetAxis("Horizontal"), 0))
             {
-                float targetRotationAngle = target.eulerAngles.y;
-                float currentRotationAngle = transform.eulerAngles.y;
-                xDeg = Mathf.LerpAngle(currentRotationAngle, targetRotationAngle, rotationDampening * Time.deltaTime);
+                if (target.IsAlive)
+                {
+                    float targetRotationAngle = target.transform.eulerAngles.y;
+                    float currentRotationAngle = transform.eulerAngles.y;
+                    xDeg = Mathf.LerpAngle(currentRotationAngle, targetRotationAngle, rotationDampening * Time.deltaTime);
+                }
             }
         }
 
@@ -94,12 +109,12 @@ public class WarcraftCamera : MonoBehaviour
         correctedDistance = desiredDistance;
 
         // calculate desired camera position
-        var vTargetOffset = new Vector3(0, -targetHeight, 0);
-        Vector3 position = target.position - (rotation * Vector3.forward * desiredDistance + vTargetOffset);
+        var vTargetOffset = new Vector3(0, -currentActualHeight, 0);
+        Vector3 position = target.transform.position - (rotation * Vector3.forward * desiredDistance + vTargetOffset);
 
         // check for collision using the true target's desired registration point as set by user using height
         RaycastHit collisionHit;
-        Vector3 trueTargetPosition = new Vector3(target.position.x, target.position.y, target.position.z) - vTargetOffset;
+        Vector3 trueTargetPosition = target.transform.position - vTargetOffset;
 
         // if there was a collision, correct the camera position and calculate the corrected distance
         bool isCorrected = false;
@@ -122,7 +137,7 @@ public class WarcraftCamera : MonoBehaviour
         currentDistance = Mathf.Clamp(currentDistance, minDistance, maxDistance);
 
         // recalculate position based on the new currentDistance
-        position = target.position - (rotation * Vector3.forward * currentDistance + vTargetOffset);
+        position = target.transform.position - (rotation * Vector3.forward * currentDistance + vTargetOffset);
 
         transform.rotation = rotation;
         transform.position = position;

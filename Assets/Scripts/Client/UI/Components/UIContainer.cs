@@ -21,7 +21,7 @@ namespace Client
             base.Deinitialize();
         }
 
-        public override void DoUpdate(int deltaTime)
+        public override void DoUpdate(float deltaTime)
         {
             base.DoUpdate(deltaTime);
 

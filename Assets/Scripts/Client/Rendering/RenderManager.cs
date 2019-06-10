@@ -10,6 +10,7 @@ namespace Client
     public class RenderManager : SingletonBehaviour<RenderManager>
     {
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
+        [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
         [SerializeField, UsedImplicitly] private List<SpellVisualSettings> spellVisualSettings;
 
         private readonly Dictionary<int, SpellVisualSettings> spellVisualSettingsById = new Dictionary<int, SpellVisualSettings>();
@@ -24,6 +25,7 @@ namespace Client
 
             spellVisualSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
             spellVisualSettings.ForEach(visual => visual.Initialize());
+            floatingTextController.Initialize();
 
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
@@ -34,16 +36,19 @@ namespace Client
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
 
+            floatingTextController.Deinitialize();
             spellVisualSettings.ForEach(visual => visual.Deinitialize());
             spellVisualSettingsById.Clear();
 
             base.Deinitialize();
         }
 
-        public void DoUpdate(int deltaTime)
+        public void DoUpdate(float deltaTime)
         {
             foreach (var unitEntry in unitRenderers)
                 unitEntry.Value.DoUpdate(deltaTime);
+
+            floatingTextController.DoUpdate(deltaTime);
         }
 
         private void OnWorldInitialized(WorldManager worldManager)
@@ -75,17 +80,15 @@ namespace Client
             }
         }
 
-        private void OnSpellDamageDone(Unit caster, Unit target, int damage, bool isCrit)
+        private void OnSpellDamageDone(Unit caster, Unit target, int damageAmount, bool isCrit)
         {
-            if (!unitRenderers.ContainsKey(target))
+            if (!caster.IsController)
                 return;
 
-            if (caster.IsController)
-            {
-                // GameObject damageEvent = Instantiate(Resources.Load("Prefabs/UI/DamageEvent")) as GameObject;
-                // Assert.IsNotNull(damageEvent, "damageEvent != null");
-                // damageEvent.GetComponent<UnitDamageUIEvent>().Initialize(damage, unitRenderers[caster], isCrit, ArenaManager.PlayerInterface);
-            }
+            if (!unitRenderers.TryGetValue(target, out UnitRenderer targetRenderer))
+                return;
+
+            floatingTextController.SpawnDamageText(targetRenderer, damageAmount);
         }
 
         private void OnSpellCast(Unit caster, int spellId)
@@ -104,7 +107,7 @@ namespace Client
             if (!spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Cast, out EffectSpellSettings spellVisualEffect))
                 return;
 
-            spellVisualEffect.EffectSettings.PlayEffect(caster.Position, caster.Rotation)?.ApplyPositioning(casterRenderer.EffectTagPositioner, spellVisualEffect);
+            spellVisualEffect.EffectSettings.PlayEffect(caster.Position, caster.Rotation)?.ApplyPositioning(casterRenderer.TagContainer, spellVisualEffect);
         }
 
         private void OnEventEntityAttached(WorldEntity worldEntity)
