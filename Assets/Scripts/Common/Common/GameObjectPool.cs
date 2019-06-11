@@ -45,7 +45,7 @@ namespace Common
         private void ProcessPooling(GameObject pooledObject, int protoId)
         {
             pooledObject.SetActive(false);
-            pooledObject.transform.parent = container;
+            pooledObject.transform.SetParent(container);
 
             if (pooledGameObjectsByProtoId.TryGetValue(protoId, out Stack<GameObject> pooledObjects))
                 pooledObjects.Push(pooledObject);
@@ -87,7 +87,7 @@ namespace Common
 
                     objectToTake.transform.position = position;
                     objectToTake.transform.rotation = rotation;
-                    objectToTake.transform.parent = parent ?? container;
+                    objectToTake.transform.SetParent(parent ?? container);
                     objectToTake.SetActive(true);
 
                     takenObjectProtoIds.Add(objectToTake, protoId);

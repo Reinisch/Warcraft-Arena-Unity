@@ -27,6 +27,8 @@ public class UnitRenderer : EntityEventListener<IUnitState>
         Unit.BoltEntity.RemoveEventListener(this);
 
         Unit = null;
+
+        Animator.WriteDefaultValues();
     }
 
     public void DoUpdate(float deltaTime)

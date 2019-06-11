@@ -49,6 +49,7 @@ namespace Core
                 speedRates[moveType] = 1.0f;
 
             unitState = entity.GetState<IUnitState>();
+            deathState = DeathState.Alive;
 
             MovementInfo.Attached(unitState, this);
             WorldManager.UnitManager.Attach(this);
