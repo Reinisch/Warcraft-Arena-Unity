@@ -1,26 +1,23 @@
 ﻿using Common;
 using Core;
+using UnityEngine;
 
 namespace Client
 {
-    public class InputManager : SingletonBehaviour<InputManager>
+    public class InputManager : MonoBehaviour
     {
         public Player OriginalPlayer { get; private set; }
 
-        public new void Initialize()
+        public void Initialize()
         {
-            base.Initialize();
-
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
         }
 
-        public new void Deinitialize()
+        public void Deinitialize()
         {
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
-
-            base.Deinitialize();
         }
 
         private void OnWorldInitialized(WorldManager worldManager)

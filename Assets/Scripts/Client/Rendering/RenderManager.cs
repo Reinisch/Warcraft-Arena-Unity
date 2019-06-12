@@ -7,41 +7,30 @@ using UnityEngine;
 
 namespace Client
 {
-    public class RenderManager : SingletonBehaviour<RenderManager>
+    public class RenderManager : MonoBehaviour
     {
         [SerializeField, UsedImplicitly] private BalanceReference balance;
-        [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
+        [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
-        [SerializeField, UsedImplicitly] private List<SpellVisualSettings> spellVisualSettings;
 
-        private readonly Dictionary<int, SpellVisualSettings> spellVisualSettingsById = new Dictionary<int, SpellVisualSettings>();
         private readonly Dictionary<Unit, UnitRenderer> unitRenderers = new Dictionary<Unit, UnitRenderer>();
 
-        public Sprite DefaultSpellIcon => defaultSpellIcon;
-        public IReadOnlyDictionary<int, SpellVisualSettings> SpellVisualSettingsById => spellVisualSettingsById;
-
-        public new void Initialize()
+        public void Initialize()
         {
-            base.Initialize();
-
-            spellVisualSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
-            spellVisualSettings.ForEach(visual => visual.Initialize());
+            rendering.Initialize();
             floatingTextController.Initialize();
 
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
         }
 
-        public new void Deinitialize()
+        public void Deinitialize()
         {
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
 
             floatingTextController.Deinitialize();
-            spellVisualSettings.ForEach(visual => visual.Deinitialize());
-            spellVisualSettingsById.Clear();
-
-            base.Deinitialize();
+            rendering.Deinitialize();
         }
 
         public void DoUpdate(float deltaTime)
@@ -102,7 +91,7 @@ namespace Client
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
-            if (!SpellVisualSettingsById.TryGetValue(spellInfo.Id, out SpellVisualSettings spellVisuals))
+            if (!rendering.SpellVisualSettingsById.TryGetValue(spellInfo.Id, out SpellVisualSettings spellVisuals))
                 return;
 
             if (!spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Cast, out EffectSpellSettings spellVisualEffect))

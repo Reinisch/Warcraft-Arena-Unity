@@ -8,6 +8,7 @@ using UnityEngine;
 public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IPointerDownHandler
 {
     [SerializeField, UsedImplicitly] private BalanceReference balance;
+    [SerializeField, UsedImplicitly] private RenderingReference rendering;
     [SerializeField, UsedImplicitly] private ButtonSlot.ContentType contentType;
     [SerializeField, UsedImplicitly] private int itemId;
 
@@ -20,9 +21,9 @@ public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHand
         Image = gameObject.GetComponent<Image>();
 
         ButtonSlot = buttonSlot;
-        Image.sprite = RenderManager.Instance.SpellVisualSettingsById.ContainsKey(itemId) 
-            ? RenderManager.Instance.SpellVisualSettingsById[itemId].SpellIcon 
-            : RenderManager.Instance.DefaultSpellIcon;
+        Image.sprite = rendering.SpellVisualSettingsById.ContainsKey(itemId) 
+            ? rendering.SpellVisualSettingsById[itemId].SpellIcon 
+            : rendering.DefaultSpellIcon;
     }
 
     public void UpdateButton()
