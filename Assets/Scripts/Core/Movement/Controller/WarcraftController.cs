@@ -9,6 +9,9 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private BalanceReference balance;
         [SerializeField, UsedImplicitly]
+        private PhysicsReference physics;
+
+        [SerializeField, UsedImplicitly]
         private PlayerControllerDefinition controllerDefinition;
         [SerializeField, UsedImplicitly]
         private Unit unit;
@@ -303,9 +306,9 @@ namespace Core
             }
 
             if (TooSteep || OnEdge)
-                Unit.UnitCollider.material = PhysicsManager.SlidingMaterial;
+                Unit.UnitCollider.material = physics.SlidingMaterial;
             else
-                Unit.UnitCollider.material = PhysicsManager.GroundedMaterial;
+                Unit.UnitCollider.material = physics.GroundedMaterial;
         }
 
         private void ProcessMovement()

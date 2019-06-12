@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Core
 {
-    [CreateAssetMenu(fileName = "Balance Definition", menuName = "Game Data/Balance Definition", order = 1)]
+    [CreateAssetMenu(fileName = "Balance Definition", menuName = "Game Data/Balance/Balance Definition", order = 1)]
     public class BalanceDefinition : ScriptableObject
     {
         [SerializeField, UsedImplicitly]

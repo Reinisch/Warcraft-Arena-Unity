@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core
 {
-    [CreateAssetMenu(fileName = "Player Controller Definition", menuName = "Game Data/Player Controller Definition", order = 3)]
+    [CreateAssetMenu(fileName = "Player Controller Definition", menuName = "Game Data/Physics/Player Controller Definition", order = 3)]
     public class PlayerControllerDefinition : ScriptableObject
     {
         [SerializeField, UsedImplicitly]

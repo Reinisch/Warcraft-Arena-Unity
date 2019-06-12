@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core
 {
-    [CreateAssetMenu(fileName = "Map Definition", menuName = "Game Data/Map Definition", order = 2)]
+    [CreateAssetMenu(fileName = "Map Definition", menuName = "Game Data/World/Map Definition", order = 2)]
     public class MapDefinition : ScriptableObject
     {
         [SerializeField, UsedImplicitly] private int id;

@@ -1,10 +1,9 @@
-﻿using Common;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core
 {
-    public class PhysicsManager : SingletonBehaviour<PhysicsManager>
+    public class PhysicsManager : MonoBehaviour
     {
         public static class Mask
         {
@@ -21,17 +20,10 @@ namespace Core
         }
 
         [SerializeField, UsedImplicitly]
-        private PhysicMaterial groundedUnitMaterial;
-        [SerializeField, UsedImplicitly]
-        private PhysicMaterial slidingUnitMaterial;
+        private PhysicsReference physicsReference;
 
-        public static PhysicMaterial GroundedMaterial => Instance.groundedUnitMaterial;
-        public static PhysicMaterial SlidingMaterial => Instance.slidingUnitMaterial;
-
-        public new void Initialize()
+        public void Initialize()
         {
-            base.Initialize();
-
             Layer.Characters = LayerMask.NameToLayer("Characters");
             Layer.Ground = LayerMask.NameToLayer("Ground");
             Layer.NoCollision = LayerMask.NameToLayer("NoCollision");
@@ -41,9 +33,15 @@ namespace Core
             Mask.NoCollision = 1 << Layer.NoCollision;
         }
 
-        public new void Deinitialize()
+        public void Deinitialize()
         {
-            base.Deinitialize();
+            Layer.Characters = 0;
+            Layer.Ground = 0;
+            Layer.NoCollision = 0;
+
+            Mask.Characters = 0;
+            Mask.Ground = 0;
+            Mask.NoCollision = 0;
         }
     }
 }

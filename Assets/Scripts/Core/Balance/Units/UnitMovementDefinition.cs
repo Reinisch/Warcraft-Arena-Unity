@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Core
 {
-    [CreateAssetMenu(fileName = "Unit Movement Definition", menuName = "Game Data/Unit Movement Definition", order = 4)]
+    [CreateAssetMenu(fileName = "Unit Movement Definition", menuName = "Game Data/Physics/Unit Movement Definition", order = 4)]
     public class UnitMovementDefinition : ScriptableObject
     {
         [SerializeField, UsedImplicitly]
