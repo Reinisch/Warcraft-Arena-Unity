@@ -113,12 +113,11 @@ public class WarcraftCamera : MonoBehaviour
         Vector3 position = target.transform.position - (rotation * Vector3.forward * desiredDistance + vTargetOffset);
 
         // check for collision using the true target's desired registration point as set by user using height
-        RaycastHit collisionHit;
         Vector3 trueTargetPosition = target.transform.position - vTargetOffset;
 
         // if there was a collision, correct the camera position and calculate the corrected distance
         bool isCorrected = false;
-        if (Physics.Linecast(trueTargetPosition, position, out collisionHit, collisionLayers.value))
+        if (Physics.Linecast(trueTargetPosition, position, out var collisionHit, collisionLayers.value))
         {
             // calculate the distance from the original estimated position to the collision location,
             // subtracting out a safety "offset" distance from the object we hit.  The offset will help

@@ -17,7 +17,5 @@ namespace Core
         {
             visitor.Visit(this);
         }
-
-        public override void SetTarget(ulong targetId) { } // Used for serverside target changes, does not apply to players
     }
 }

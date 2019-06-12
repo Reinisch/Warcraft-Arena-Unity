@@ -19,9 +19,9 @@ namespace Core
                 Destroy(entities[0]);
         }
 
-        public TEntity Create<TEntity>(PrefabId prefabId, Entity.CreateInfo createInfo = null)
+        public TEntity Create<TEntity>(PrefabId prefabId, Entity.CreateToken createToken = null)
         {
-            return BoltNetwork.Instantiate(prefabId, createInfo).GetComponent<TEntity>();
+            return BoltNetwork.Instantiate(prefabId, createToken).GetComponent<TEntity>();
         }
 
         public void Attach(T entity)
@@ -63,6 +63,11 @@ namespace Core
         public T Find(ulong networkId)
         {
             return entitiesById.LookupEntry(networkId);
+        }
+
+        public bool TryGet(ulong networkId, out T entity)
+        {
+            return entitiesById.TryGetValue(networkId, out entity);
         }
 
         protected virtual void EntityAttached(T entity)

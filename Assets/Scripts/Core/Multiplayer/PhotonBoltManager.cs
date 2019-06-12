@@ -26,7 +26,7 @@ namespace Core
         {
             base.BoltStartBegin();
 
-            BoltNetwork.RegisterTokenClass<WorldEntity.CreateInfo>();
+            BoltNetwork.RegisterTokenClass<Unit.CreateToken>();
         }
 
         public abstract void StartServer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail);

@@ -10,7 +10,7 @@ namespace Core
 {
     public abstract class Entity : EntityBehaviour
     {
-        public abstract class CreateInfo : IProtocolToken
+        public abstract class CreateToken : IProtocolToken
         {
             public abstract void Read(UdpPacket packet);
 

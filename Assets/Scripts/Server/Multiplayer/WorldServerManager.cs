@@ -10,6 +10,8 @@ namespace Server
         private readonly List<PlayerServerInfo> playerInfos = new List<PlayerServerInfo>();
         private readonly Dictionary<BoltConnection, PlayerServerInfo> playerInfosByConnection = new Dictionary<BoltConnection, PlayerServerInfo>();
         private readonly Dictionary<ulong, PlayerServerInfo> playerInfosByPlayerId = new Dictionary<ulong, PlayerServerInfo>();
+        private readonly GameSpellListener spellListener;
+
         private PlayerServerInfo serverPlayerInfo;
 
         private const int DisconnectedPlayerDestroyTime = 10000;
@@ -18,10 +20,14 @@ namespace Server
         {
             HasServerLogic = true;
             HasClientLogic = hasClientLogic;
+
+            spellListener = new GameSpellListener(this);
         }
 
         public override void Dispose()
         {
+            spellListener.Dispose();
+
             playerInfos.Clear();
             playerInfosByConnection.Clear();
             playerInfosByPlayerId.Clear();
@@ -103,8 +109,8 @@ namespace Server
         {
             Map mainMap = MapManager.FindMap(1);
             Transform spawnPoint = RandomUtils.GetRandomElement(mainMap.Settings.FindSpawnPoints(Team.Alliance));
-            WorldEntity.CreateInfo playerCreateInfo = new WorldEntity.CreateInfo { Position = spawnPoint.position, Rotation = spawnPoint.rotation };
-            Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.PlayerMage, playerCreateInfo);
+            var playerCreateToken = new Unit.CreateToken { Position = spawnPoint.position, Rotation = spawnPoint.rotation, DeathState = DeathState.Alive };
+            Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.PlayerMage, playerCreateToken);
 
             if (boltConnection == null)
                 newPlayer.BoltEntity.TakeControl();

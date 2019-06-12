@@ -119,7 +119,7 @@ namespace Game
 
             gameTimer.Start();
 
-            interfaceManager.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>();
+            interfaceManager.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(true));
 
             EventHandler.RegisterEvent<string, NetworkingMode>(multiplayerManager, GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(multiplayerManager, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);

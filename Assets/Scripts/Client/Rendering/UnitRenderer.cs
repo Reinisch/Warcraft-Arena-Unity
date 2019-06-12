@@ -20,6 +20,13 @@ public class UnitRenderer : EntityEventListener<IUnitState>
         Unit = unit;
 
         Unit.BoltEntity.AddEventListener(this);
+
+        if (Unit.IsDead)
+        {
+            animator.SetBool("IsDead", true);
+            animator.Play("Death", 0, 1.0f);
+            animator.Play("Death", 1, 1.0f);
+        }
     }
 
     public void Deinitialize()

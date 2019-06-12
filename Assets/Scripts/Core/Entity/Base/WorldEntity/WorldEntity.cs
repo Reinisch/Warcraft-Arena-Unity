@@ -6,7 +6,7 @@ namespace Core
 {
     public abstract class WorldEntity : Entity
     {
-        public new class CreateInfo : Entity.CreateInfo
+        public new abstract class CreateToken : Entity.CreateToken
         {
             public Vector3 Position { get; set; }
             public Quaternion Rotation { get; set; }
@@ -43,7 +43,7 @@ namespace Core
             worldEntityState = entity.GetState<IWorldEntityState>();
             worldEntityState.SetTransforms(worldEntityState.Transform, transform);
 
-            if (entity.attachToken is CreateInfo createInfo)
+            if (entity.attachToken is CreateToken createInfo)
             {
                 Position = createInfo.Position;
                 Rotation = createInfo.Rotation;

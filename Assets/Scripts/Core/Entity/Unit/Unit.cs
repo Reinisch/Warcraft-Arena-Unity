@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Common;
 using JetBrains.Annotations;
+using UdpKit;
 using UnityEngine;
 
 using Assert = Common.Assert;
@@ -16,6 +17,30 @@ namespace Core
 {
     public abstract class Unit : WorldEntity
     {
+        public new class CreateToken : WorldEntity.CreateToken
+        {
+            public DeathState DeathState;
+            
+            public override void Read(UdpPacket packet)
+            {
+                base.Read(packet);
+
+                DeathState = (DeathState)packet.ReadInt();
+            }
+
+            public override void Write(UdpPacket packet)
+            {
+                base.Write(packet);
+
+                packet.WriteInt((int)DeathState);
+            }
+
+            public void Attached(Unit unit)
+            {
+                unit.deathState = DeathState;
+            }
+        }
+
         [SerializeField, UsedImplicitly, Header("Unit"), Space(10)]
         private CapsuleCollider unitCollider;
         [SerializeField, UsedImplicitly]
@@ -23,6 +48,7 @@ namespace Core
 
         private IUnitState unitState;
         private DeathState deathState;
+        private CreateToken createToken;
 
         private readonly Dictionary<int, List<Aura>> ownedAuras = new Dictionary<int, List<Aura>>();
         private readonly Dictionary<StatType, float> createStats = new Dictionary<StatType, float>();
@@ -36,8 +62,9 @@ namespace Core
         public SpellHistory SpellHistory { get; } = new SpellHistory();
         public override EntityType EntityType => EntityType.Unit;
         public CapsuleCollider UnitCollider => unitCollider;
-        public long Health => GetLongValue(EntityFields.Health);
-        public long MaxHealth => GetLongValue(EntityFields.MaxHealth);
+        public int Health => GetIntValue(EntityFields.Health);
+        public int MaxHealth => GetIntValue(EntityFields.MaxHealth);
+        public ulong Target => GetULongValue(EntityFields.Target);
         public float HealthRatio => (float) GetLongValue(EntityFields.Health) / GetLongValue(EntityFields.MaxHealth);
         public bool IsMovementBlocked => HasUnitState(UnitState.Root) || HasUnitState(UnitState.Stunned);
 
@@ -49,20 +76,29 @@ namespace Core
                 speedRates[moveType] = 1.0f;
 
             unitState = entity.GetState<IUnitState>();
-            deathState = DeathState.Alive;
+            createToken = (CreateToken)entity.attachToken;
+            createToken.Attached(this);
 
+            if (!IsOwner)
+            {
+                unitState.AddCallback(nameof(unitState.DeathState), OnDeathStateChanged);
+                unitState.AddCallback(nameof(unitState.Health), OnHealthStateChanged);
+            }
+
+            ThreatManager = new ThreatManager(this);
             MovementInfo.Attached(unitState, this);
             WorldManager.UnitManager.Attach(this);
-            ThreatManager = new ThreatManager(this);
 
             SetMap(WorldManager.FindMap(1));
         }
-        
+
         public override void Detached()
         {
             // for instant manual client detach without waiting for Photon
             if (!IsValid)
                 return;
+
+            unitState.RemoveAllCallbacks();
 
             ResetMap();
 
@@ -71,6 +107,7 @@ namespace Core
             MovementInfo.Detached();
 
             unitState = null;
+            createToken = null;
 
             base.Detached();
         }
@@ -127,18 +164,26 @@ namespace Core
         public long CountPctFromCurHealth(int pct) { return Health.CalculatePercentage(pct); }
 
         /// <summary> Modifies health, returns effective delta. </summary>
-        internal long ModifyHealth(long delta)
+        internal int ModifyHealth(int delta)
         {
-            long oldHealth = Health;
-            long newHealth = oldHealth + delta;
-            long maxHealth = MaxHealth;
+            return SetHealth(Health + delta);
+        }
+
+        /// <summary> Sets health, returns effective delta. </summary>
+        internal int SetHealth(int value)
+        {
+            int oldHealth = Health;
+            int newHealth = value;
+            int maxHealth = MaxHealth;
 
             if (newHealth < 0)
                 newHealth = 0;
             if (newHealth > maxHealth)
                 newHealth = maxHealth;
 
-            SetLongValue(EntityFields.Health, newHealth);
+            SetIntValue(EntityFields.Health, newHealth);
+            unitState.Health = newHealth;
+
             return newHealth - oldHealth;
         }
 
@@ -186,12 +231,12 @@ namespace Core
 
         #region Hit and damage calculation and trigger checks
 
-        internal long DealDamage(Unit victim, long damageAmount)
+        internal int DealDamage(Unit victim, int damageAmount)
         {
             if (damageAmount < 1)
                 return 0;
 
-            long health = victim.Health;
+            int health = victim.Health;
             if (health <= damageAmount)
             {
                 Kill(victim);
@@ -201,7 +246,7 @@ namespace Core
             return victim.ModifyHealth(-damageAmount);
         }
 
-        internal long DealHeal(Unit victim, long healAmount)
+        internal int DealHeal(Unit victim, int healAmount)
         {
             if(healAmount < 1)
                 return 0;
@@ -214,16 +259,16 @@ namespace Core
             if (victim.Health <= 0)
                 return;
 
+            victim.SetHealth(0);
             victim.ModifyDeathState(DeathState.Dead);
         }
 
         internal void ModifyDeathState(DeathState newState)
         {
-            DeathState oldState = deathState;
-            deathState = newState;
+            if (deathState == newState)
+                return;
 
-            if(oldState != deathState)
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.UnitDeathStateModified, this, deathState);
+            unitState.DeathState = (int)(createToken.DeathState = deathState = newState);
         }
 
         internal int CalculateSpellDamageTaken(SpellCastDamageInfo damageInfoInfo, int damage, SpellInfo spellInfo)
@@ -878,9 +923,16 @@ namespace Core
 
         #endregion
 
-        public ulong GetTarget() { return GetULongValue(EntityFields.Target); }
-        public virtual void SetTarget(ulong targetNetworkId) { }
-
         public abstract void Accept(IUnitVisitor unitVisitor);
+
+        private void OnDeathStateChanged()
+        {
+            deathState = (DeathState)unitState.DeathState;
+        }
+
+        private void OnHealthStateChanged()
+        {
+            SetIntValue(EntityFields.Health, unitState.Health);
+        }
     }
 }

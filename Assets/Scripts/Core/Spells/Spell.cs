@@ -221,7 +221,7 @@ namespace Core
                     if (playerCaster != null)
                     {
                         // selection has to be found and to be valid spellTarget for the spell
-                        Unit selectedUnit = playerCaster.WorldManager.UnitManager.Find(playerCaster.GetTarget());
+                        Unit selectedUnit = playerCaster.WorldManager.UnitManager.Find(playerCaster.Target);
                         if (selectedUnit != null && SpellInfo.CheckExplicitTarget(Caster, selectedUnit) == SpellCastResult.Success)
                             unit = selectedUnit;
                     }

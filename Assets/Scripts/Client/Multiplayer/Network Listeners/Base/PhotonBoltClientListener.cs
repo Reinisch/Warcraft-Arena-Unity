@@ -1,15 +1,13 @@
 ﻿using System;
-using Common;
 using Core;
 using JetBrains.Annotations;
 
 using Assert = Common.Assert;
-using EventHandler = Common.EventHandler;
 
 namespace Client
 {
     [UsedImplicitly]
-    public class PhotonBoltClientListener : PhotonBoltBaseListener
+    public partial class PhotonBoltClientListener : PhotonBoltBaseListener
     {
         public Player LocalPlayer { get; private set; }
 
@@ -55,14 +53,6 @@ namespace Client
                 EventPlayerControlLost?.Invoke();
                 LocalPlayer = null;
             }
-        }
-
-        public override void OnEvent(SpellCastRequestAnswerEvent spellCastAnswer)
-        {
-            base.OnEvent(spellCastAnswer);
-
-            if (spellCastAnswer.Result == (int)SpellCastResult.Success)
-                EventHandler.ExecuteEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, LocalPlayer, spellCastAnswer.SpellId);
         }
     }
 }

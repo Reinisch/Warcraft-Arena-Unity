@@ -113,7 +113,7 @@ namespace Core
         DisplayPower = UnitFields.DisplayPower,
         /// <summary> Type: Int - Powers, Flags: PUBLIC </summary>
         OverrideDisplayPowerId = UnitFields.OverrideDisplayPowerId,
-        /// <summary> Type: Long, Flags: PUBLIC </summary>
+        /// <summary> Type: Int, Flags: PUBLIC </summary>
         Health = UnitFields.Health,
         /// <summary> Type: Int, Flags: PUBLIC, URGENT_SELF_ONLY </summary>
         Power = UnitFields.Power,
@@ -127,7 +127,7 @@ namespace Core
         Power4 = UnitFields.Power4,
         /// <summary> Type: Int, Flags: PUBLIC, URGENT_SELF_ONLY </summary>
         Power5 = UnitFields.Power5,
-        /// <summary> Type: Long, Flags: PUBLIC </summary>
+        /// <summary> Type: Int, Flags: PUBLIC </summary>
         MaxHealth = UnitFields.MaxHealth,
         /// <summary> Type: Int, Flags: PUBLIC </summary>
         MaxPower = UnitFields.MaxPower,
@@ -814,7 +814,7 @@ namespace Core
         DisplayPower,
         /// <summary> Type: Int - Powers, Flags: PUBLIC </summary>
         OverrideDisplayPowerId,
-        /// <summary> Type: Long, Flags: PUBLIC </summary>
+        /// <summary> Type: Int, Flags: PUBLIC </summary>
         Health,
         /// <summary> Type: Int, Flags: PUBLIC, URGENT_SELF_ONLY </summary>
         Power,
@@ -828,7 +828,7 @@ namespace Core
         Power4,
         /// <summary> Type: Int, Flags: PUBLIC, URGENT_SELF_ONLY </summary>
         Power5,
-        /// <summary> Type: Long, Flags: PUBLIC </summary>
+        /// <summary> Type: Int, Flags: PUBLIC </summary>
         MaxHealth,
         /// <summary> Type: Int, Flags: PUBLIC </summary>
         MaxPower,
