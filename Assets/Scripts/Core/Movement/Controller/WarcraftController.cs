@@ -7,6 +7,8 @@ namespace Core
     internal class WarcraftController : EntityBehaviour<IPlayerState>
     {
         [SerializeField, UsedImplicitly]
+        private BalanceReference balance;
+        [SerializeField, UsedImplicitly]
         private PlayerControllerDefinition controllerDefinition;
         [SerializeField, UsedImplicitly]
         private Unit unit;
@@ -63,10 +65,10 @@ namespace Core
 
         public override void SimulateOwner()
         {
-            if (!Unit.IsController && BalanceManager.NetworkMovementType == NetworkMovementType.ServerSide)
+            if (!Unit.IsController && balance.NetworkMovementType == NetworkMovementType.ServerSide)
                 ProcessMovement();
 
-            if (BalanceManager.NetworkMovementType == NetworkMovementType.ClientSide && ClientMoveState != null)
+            if (balance.NetworkMovementType == NetworkMovementType.ClientSide && ClientMoveState != null)
             {
                 Unit.Position = ClientMoveState.transform.position;
                 Unit.Rotation = ClientMoveState.transform.rotation;
@@ -77,7 +79,7 @@ namespace Core
         {
             ProcessMovement();
 
-            if (BalanceManager.NetworkMovementType == NetworkMovementType.ServerSide && IsRemote)
+            if (balance.NetworkMovementType == NetworkMovementType.ServerSide && IsRemote)
             {
                 ProcessMovementCorrection();
 
@@ -101,7 +103,7 @@ namespace Core
 
             UpdateOwnership();
 
-            if (!Unit.IsOwner && Unit.IsController && BalanceManager.NetworkMovementType == NetworkMovementType.ClientSide)
+            if (!Unit.IsOwner && Unit.IsController && balance.NetworkMovementType == NetworkMovementType.ClientSide)
             {
                 BoltEntity localClientMoveState = BoltNetwork.Instantiate(BoltPrefabs.MoveState);
                 localClientMoveState.SetScopeAll(false);
@@ -123,7 +125,7 @@ namespace Core
 
         public override void ExecuteCommand(Command command, bool resetState)
         {
-            if (BalanceManager.NetworkMovementType == NetworkMovementType.ClientSide)
+            if (balance.NetworkMovementType == NetworkMovementType.ClientSide)
                 return;
 
             var moveCommand = (PlayerMoveCommand) command;
@@ -362,7 +364,7 @@ namespace Core
 
         private void UpdateOwnership()
         {
-            switch (BalanceManager.NetworkMovementType)
+            switch (balance.NetworkMovementType)
             {
                 case NetworkMovementType.ClientSide:
                     unitRigidbody.isKinematic = !Unit.IsController;

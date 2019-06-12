@@ -9,6 +9,7 @@ namespace Client
 {
     public class RenderManager : SingletonBehaviour<RenderManager>
     {
+        [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
         [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
         [SerializeField, UsedImplicitly] private List<SpellVisualSettings> spellVisualSettings;
@@ -98,7 +99,7 @@ namespace Client
 
             casterRenderer.Animator.SetTrigger(AnimatorUtils.SpellCastAnimationTrigger);
 
-            if (!BalanceManager.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
+            if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
             if (!SpellVisualSettingsById.TryGetValue(spellInfo.Id, out SpellVisualSettings spellVisuals))

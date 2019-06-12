@@ -493,7 +493,7 @@ namespace Core
                     {
                         // health as power used
                         case SpellResourceType.Health:
-                            powerCost += (int)caster.MaxHealth.CalculatePercentage(power.PowerCostPercentage);
+                            powerCost += caster.MaxHealth.CalculatePercentage(power.PowerCostPercentage);
                             break;
                         case SpellResourceType.Mana:
                             powerCost += (int)caster.GetCreateMana().CalculatePercentage(power.PowerCostPercentage);

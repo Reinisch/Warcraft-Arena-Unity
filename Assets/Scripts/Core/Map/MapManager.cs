@@ -59,9 +59,8 @@ namespace Core
             {
                 mapsLock.WaitOne();
 
-                map = new Map(mapId);
-                baseMaps[mapId] = map;
-                map.Initialize(worldManager, SceneManager.GetActiveScene());
+                baseMaps[mapId] = map = new Map();
+                baseMaps[mapId].Initialize(worldManager, SceneManager.GetActiveScene());
 
                 mapsLock.ReleaseMutex();
             }

@@ -7,9 +7,11 @@ using UnityEngine;
 
 public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IPointerDownHandler
 {
-    [SerializeField, UsedImplicitly]  private int itemId;
-    public ButtonSlot.ContentType ContentType;
+    [SerializeField, UsedImplicitly] private BalanceReference balance;
+    [SerializeField, UsedImplicitly] private ButtonSlot.ContentType contentType;
+    [SerializeField, UsedImplicitly] private int itemId;
 
+    public ButtonSlot.ContentType ContentType => contentType;
     public ButtonSlot ButtonSlot { get; set; }
     public Image Image { get; set; }
 
@@ -68,14 +70,14 @@ public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void Activate()
     {
-        if (enabled && BalanceManager.SpellInfosById.ContainsKey(itemId))
+        if (enabled && balance.SpellInfosById.ContainsKey(itemId))
             InputManager.CastSpell(itemId);
     }
 
     public void Remove()
     {
         itemId = 0;
-        ContentType = ButtonSlot.ContentType.Empty;
+        contentType = ButtonSlot.ContentType.Empty;
         Image.sprite = null;
         Image.enabled = false;
         enabled = false;

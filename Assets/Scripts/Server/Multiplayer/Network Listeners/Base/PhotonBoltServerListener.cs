@@ -1,9 +1,13 @@
 ﻿using Core;
+using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Server
 {
     public partial class PhotonBoltServerListener : PhotonBoltBaseListener
     {
+        [SerializeField, UsedImplicitly] private BalanceReference balance;
+
         private new WorldServerManager WorldManager { get; set; }
 
         public void Initialize(WorldServerManager worldManager)

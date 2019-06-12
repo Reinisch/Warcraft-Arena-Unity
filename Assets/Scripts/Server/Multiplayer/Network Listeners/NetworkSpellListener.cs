@@ -23,7 +23,7 @@ namespace Server
                 return;
             }
 
-            if (!BalanceManager.SpellInfosById.TryGetValue(spellCastRequest.SpellId, out SpellInfo spellInfo))
+            if (!balance.SpellInfosById.TryGetValue(spellCastRequest.SpellId, out SpellInfo spellInfo))
             {
                 spellCastAnswer.Result = (int)SpellCastResult.SpellUnavailable;
                 spellCastAnswer.Send();

@@ -13,14 +13,8 @@ namespace Core
         private readonly Collider[] raycastResults = new Collider[200];
 
         private WorldManager WorldManager { get; set; }
-        private MapDefinition Definition { get; }
 
         public MapSettings Settings { get; private set; }
-
-        internal Map(int id, Map parent = null)
-        {
-            Definition = BalanceManager.MapsById[id];
-        }
 
         internal void Initialize(WorldManager worldManager, Scene mapScene)
         {
@@ -34,7 +28,7 @@ namespace Core
                     break;
             }
 
-            Assert.IsNotNull(Settings, $"Map settings are missing in map: {Definition.MapName} Id: {Definition.Id}");
+            Assert.IsNotNull(Settings, $"Map settings are missing in map: {mapScene.name}");
             mapGrid.Initialize(this);
 
             if(Settings != null)

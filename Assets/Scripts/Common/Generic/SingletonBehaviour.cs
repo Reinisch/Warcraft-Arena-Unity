@@ -6,7 +6,7 @@ namespace Common
     {
         public static T Instance { get; private set; }
 
-        protected virtual void Initialize()
+        protected void Initialize()
         {
             if (Instance != null)
                 Destroy(this);
@@ -14,7 +14,7 @@ namespace Common
                 Instance = GetComponent<T>();
         }
 
-        protected virtual void Deinitialize()
+        protected void Deinitialize()
         {
             Instance = null;
         }

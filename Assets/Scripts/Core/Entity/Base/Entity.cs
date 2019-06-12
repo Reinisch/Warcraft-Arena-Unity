@@ -18,18 +18,20 @@ namespace Core
         }
 
         [SerializeField, UsedImplicitly] private List<EntityField> defaultFieldValues = new List<EntityField>();
+        [SerializeField, UsedImplicitly] private BalanceReference balance;
 
         private readonly Dictionary<EntityFields, EntityFieldValue> entityFields = new Dictionary<EntityFields, EntityFieldValue>(new StatUtils.EntityFieldsComparer());
         private readonly bool validateFieldAccess = false;
 
+        protected BalanceReference Balance => balance;
         internal WorldManager WorldManager { get; private set; }
 
         public BoltEntity BoltEntity => entity;
         public bool IsOwner => entity.isOwner;
         public bool IsController => entity.hasControl;
+        public bool IsValid { get; private set; }
         public ulong NetworkId => entity.networkId.PackedValue;
 
-        public bool IsValid { get; private set; }
         internal abstract bool AutoScoped { get; }
         public abstract EntityType EntityType { get; }
 

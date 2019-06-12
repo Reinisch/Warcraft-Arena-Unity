@@ -1,45 +1,20 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
-using Common;
 
 namespace Core
 {
-    public class BalanceManager : SingletonBehaviour<BalanceManager>
+    public class BalanceManager : MonoBehaviour
     {
-        [SerializeField, UsedImplicitly] private BalanceDefinition balanceDefinition;
+        [SerializeField, UsedImplicitly] private BalanceReference reference;
 
-        private readonly List<MapDefinition> maps = new List<MapDefinition>();
-        private readonly Dictionary<int, MapDefinition> mapsById = new Dictionary<int, MapDefinition>();
-        private readonly Dictionary<int, SpellInfo> spellInfosById = new Dictionary<int, SpellInfo>();
-
-        public static NetworkMovementType NetworkMovementType => Instance.balanceDefinition.NetworkMovementType;
-        public static IReadOnlyList<MapDefinition> Maps => Instance.maps;
-        public static IReadOnlyDictionary<int, MapDefinition> MapsById => Instance.mapsById;
-        public static IReadOnlyDictionary<int, SpellInfo> SpellInfosById => Instance.spellInfosById;
-
-        public new void Initialize()
+        public void Initialize()
         {
-            base.Initialize();
-
-            maps.AddRange(balanceDefinition.MapEntries);
-            balanceDefinition.SpellInfos.ForEach(spellInfo => spellInfosById.Add(spellInfo.Id, spellInfo));
-            balanceDefinition.MapEntries.ForEach(mapEntry => mapsById.Add(mapEntry.Id, mapEntry));
-
-            foreach (var spellInfoEntry in SpellInfosById)
-                spellInfoEntry.Value.Initialize();
+            reference.Initialize();
         }
 
-        public new void Deinitialize()
+        public void Deinitialize()
         {
-            foreach (var spellInfoEntry in SpellInfosById)
-                spellInfoEntry.Value.Deinitialize();
-
-            spellInfosById.Clear();
-            mapsById.Clear();
-            maps.Clear();
-
-            base.Deinitialize();
+            reference.Deinitialize();
         }
     }
 }

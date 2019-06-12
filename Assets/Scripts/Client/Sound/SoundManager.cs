@@ -1,9 +1,12 @@
 ﻿using Common;
 using Core;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    [SerializeField, UsedImplicitly] private BalanceReference balance;
+
     public void Initialize()
     {
         EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
@@ -36,7 +39,7 @@ public class SoundManager : MonoBehaviour
 
     private void OnSpellCast(Unit caster, int spellId)
     {
-        if (!BalanceManager.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
+        if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
             return;
 
         AudioClip castSound = spellInfo.SoundSettings.FindSound(SpellSoundEntry.UsageType.Cast);
@@ -46,7 +49,7 @@ public class SoundManager : MonoBehaviour
 
     private void OnSpellHit(Unit unitTarget, int spellId)
     {
-        if (!BalanceManager.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
+        if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
             return;
 
         AudioClip hitSound = spellInfo.SoundSettings.FindSound(SpellSoundEntry.UsageType.Impact);

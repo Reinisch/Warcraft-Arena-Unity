@@ -55,6 +55,7 @@ namespace Client
             }
         }
 
+        [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private Button startServerButton;
         [SerializeField, UsedImplicitly] private Button clientServerButton;
         [SerializeField, UsedImplicitly] private Transform mapsContentHolder;
@@ -64,7 +65,6 @@ namespace Client
         [SerializeField, UsedImplicitly] private TextMeshProUGUI selectedMapLabel;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI serverNameInput;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI statusLabel;
-
         [SerializeField, UsedImplicitly] private GameObject startClientTooltip;
         [SerializeField, UsedImplicitly] private GameObject noSessionsFoundTooltip;
 
@@ -82,11 +82,11 @@ namespace Client
             startServerButton.onClick.AddListener(OnServerButtonClicked);
             clientServerButton.onClick.AddListener(OnClientButtonClicked);
 
-            for (int i = 0; i < BalanceManager.Maps.Count; i++)
+            for (int i = 0; i < balance.Maps.Count; i++)
             {
                 mapSlots.Add(Instantiate(mapSlotPrototype, mapsContentHolder));
                 mapSlots[i].EventLobbyMapSlotSelected += OnLobbyMapSlotSelected;
-                mapSlots[i].Initialize(BalanceManager.Maps[i]);
+                mapSlots[i].Initialize(balance.Maps[i]);
                 mapSlots[i].SetSelectState(i == 0);
             }
 

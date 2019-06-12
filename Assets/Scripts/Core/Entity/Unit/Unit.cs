@@ -310,7 +310,7 @@ namespace Core
             if (!victim.IsAlive)
                 return;
 
-            SpellInfo spellProto = BalanceManager.SpellInfosById.ContainsKey(damageInfoInfo.SpellId) ? BalanceManager.SpellInfosById[damageInfoInfo.SpellId] : null;
+            SpellInfo spellProto = Balance.SpellInfosById.ContainsKey(damageInfoInfo.SpellId) ? Balance.SpellInfosById[damageInfoInfo.SpellId] : null;
             if (spellProto == null)
             {
                 Debug.LogErrorFormat("Unit.DealSpellDamage has wrong spellDamageInfo->SpellID: {0}", damageInfoInfo.SpellId);
