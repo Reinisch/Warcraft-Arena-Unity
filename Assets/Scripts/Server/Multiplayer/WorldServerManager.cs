@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common;
 using Core;
+using UdpKit;
 using UnityEngine;
 
 namespace Server
@@ -13,6 +14,7 @@ namespace Server
         private readonly GameSpellListener spellListener;
 
         private PlayerServerInfo serverPlayerInfo;
+        private ServerRoomToken serverRoomToken;
 
         private const int DisconnectedPlayerDestroyTime = 10000;
 
@@ -26,6 +28,7 @@ namespace Server
 
         public override void Dispose()
         {
+            serverRoomToken = null;
             spellListener.Dispose();
 
             playerInfos.Clear();
@@ -48,6 +51,11 @@ namespace Server
                         UnitManager.Destroy(playerInfos[i].Player);
                 }
             }
+        }
+
+        internal void SessionUpdated(UdpSession session)
+        {
+            serverRoomToken = (ServerRoomToken)session.GetProtocolToken();
         }
 
         internal void EntityAttached(BoltEntity entity)
@@ -109,15 +117,36 @@ namespace Server
         {
             Map mainMap = MapManager.FindMap(1);
             Transform spawnPoint = RandomUtils.GetRandomElement(mainMap.Settings.FindSpawnPoints(Team.Alliance));
-            var playerCreateToken = new Unit.CreateToken { Position = spawnPoint.position, Rotation = spawnPoint.rotation, DeathState = DeathState.Alive };
-            Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.PlayerMage, playerCreateToken);
 
+            string playerName;
+            string unityId;
+            if (boltConnection == null)
+            {
+                playerName = serverRoomToken.LocalPlayerName;
+                unityId = SystemInfo.deviceUniqueIdentifier;
+            }
+            else
+            {
+                var connectionToken = (ClientConnectionToken) boltConnection.ConnectToken;
+                playerName = connectionToken.Name;
+                unityId = connectionToken.UnityId;
+            }
+
+            var playerCreateToken = new Player.CreateToken
+            {
+                Position = spawnPoint.position,
+                Rotation = spawnPoint.rotation,
+                DeathState = DeathState.Alive,
+                PlayerName = playerName
+            };
+
+            Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.PlayerMage, playerCreateToken);
             if (boltConnection == null)
                 newPlayer.BoltEntity.TakeControl();
             else
                 newPlayer.BoltEntity.AssignControl(boltConnection);
 
-            var newPlayerInfo = new PlayerServerInfo(boltConnection, newPlayer);
+            var newPlayerInfo = new PlayerServerInfo(boltConnection, newPlayer, unityId);
             playerInfos.Add(newPlayerInfo);
             playerInfosByPlayerId[newPlayer.NetworkId] = newPlayerInfo;
             if (boltConnection != null)

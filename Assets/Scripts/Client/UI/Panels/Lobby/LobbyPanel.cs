@@ -65,6 +65,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private TextMeshProUGUI selectedMapLabel;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI serverNameInput;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI statusLabel;
+        [SerializeField, UsedImplicitly] private TextMeshProUGUI playerNameInput;
         [SerializeField, UsedImplicitly] private GameObject startClientTooltip;
         [SerializeField, UsedImplicitly] private GameObject noSessionsFoundTooltip;
 
@@ -161,7 +162,7 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonManager.StartConnection(lobbySessionSlot.UdpSession, OnConnectSuccess, OnConnectFail);
+            photonManager.StartConnection(lobbySessionSlot.UdpSession, new ClientConnectionToken(playerNameInput.text), OnConnectSuccess, OnConnectFail);
         }
 
         private void OnServerButtonClicked()
@@ -170,7 +171,7 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonManager.StartServer(new ServerRoomToken(serverNameInput.text, selectedMapSlot.MapDefinition.MapName), OnServerStartSuccess, OnServerStartFail);
+            photonManager.StartServer(new ServerRoomToken(serverNameInput.text, playerNameInput.text, selectedMapSlot.MapDefinition.MapName), OnServerStartSuccess, OnServerStartFail);
         }
 
         private void OnClientButtonClicked()

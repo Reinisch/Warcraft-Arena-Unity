@@ -10,8 +10,6 @@ using Assert = Common.Assert;
 using EventHandler = Common.EventHandler;
 using Debug = UnityEngine.Debug;
 using Mathf = UnityEngine.Mathf;
-using Vector3 = UnityEngine.Vector3;
-using DispelChargesList = System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<Core.Aura, short>>;
 
 namespace Core
 {
@@ -60,22 +58,33 @@ namespace Core
         protected UnitAI AI { get; private set; }
 
         public SpellHistory SpellHistory { get; } = new SpellHistory();
-        public override EntityType EntityType => EntityType.Unit;
         public CapsuleCollider UnitCollider => unitCollider;
+
+        public override EntityType EntityType => EntityType.Unit;
         public int Health => GetIntValue(EntityFields.Health);
         public int MaxHealth => GetIntValue(EntityFields.MaxHealth);
+        public uint BaseMana => GetUintValue(EntityFields.BaseMana);
         public ulong Target => GetULongValue(EntityFields.Target);
         public float HealthRatio => (float) GetLongValue(EntityFields.Health) / GetLongValue(EntityFields.MaxHealth);
-        public bool IsMovementBlocked => HasUnitState(UnitState.Root) || HasUnitState(UnitState.Stunned);
 
+        public bool IsMovementBlocked => HasUnitState(UnitState.Root) || HasUnitState(UnitState.Stunned);
+        public bool IsAlive => deathState == DeathState.Alive;
+        public bool IsDead => deathState == DeathState.Dead || deathState == DeathState.Corpse;
+        public bool IsInCombat => HasFlag(EntityFields.UnitFlags, (int)UnitFlags.InCombat);
+        public bool IsControlledByPlayer => this is Player;
+
+        public bool IsHostileTo(Unit unit) => GetUintValue(EntityFields.FactionTemplate) != unit.GetUintValue(EntityFields.FactionTemplate);
+        public bool IsFriendlyTo(Unit unit) => GetUintValue(EntityFields.FactionTemplate) == unit.GetUintValue(EntityFields.FactionTemplate);
+        
         public override void Attached()
         {
+            unitState = entity.GetState<IUnitState>();
+
             base.Attached();
 
             foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
                 speedRates[moveType] = 1.0f;
 
-            unitState = entity.GetState<IUnitState>();
             createToken = (CreateToken)entity.attachToken;
             createToken.Attached(this);
 
@@ -201,35 +210,39 @@ namespace Core
 
         #endregion
 
-        #region Attack and cast time
+        #region Spell Casting and Hit Calculations
 
-        public int GetBaseAttackTime(WeaponAttackType att) { return 0; }
-        public void SetBaseAttackTime(WeaponAttackType att, uint val) { }
-        public void UpdateAttackTimeField(WeaponAttackType att) { }
-        public void ApplyAttackTimePercentMod(WeaponAttackType att, float val, bool apply) { }
-        public void ApplyCastTimePercentMod(float val, bool apply) { }
-
-        #endregion
-
-        #region Factions and relations
-
-        public bool IsHostileTo(Unit unit)
+        internal SpellCastResult CastSpell(SpellCastTargets targets, SpellInfo spellInfo, SpellCastFlags spellFlags = 0, AuraEffect triggeredByAura = null, ulong originalCaster = 0)
         {
-            return GetUintValue(EntityFields.FactionTemplate) != unit.GetUintValue(EntityFields.FactionTemplate);
+            return new Spell(this, spellInfo, spellFlags, originalCaster).Prepare(targets, triggeredByAura);
         }
-        public bool IsHostileToPlayers() { return false; }
-        public bool IsFriendlyTo(Unit unit)
+
+        internal int DealSpellDamage(SpellCastDamageInfo damageInfoInfo)
         {
-            return GetUintValue(EntityFields.FactionTemplate) == unit.GetUintValue(EntityFields.FactionTemplate);
+            if (damageInfoInfo == null)
+                return 0;
+
+            Unit victim = damageInfoInfo.Target;
+
+            if (victim == null)
+                return 0;
+
+            if (!victim.IsAlive)
+                return 0;
+
+            SpellInfo spellProto = Balance.SpellInfosById.ContainsKey(damageInfoInfo.SpellId) ? Balance.SpellInfosById[damageInfoInfo.SpellId] : null;
+            if (spellProto == null)
+            {
+                Debug.LogErrorFormat("Unit.DealSpellDamage has wrong spellDamageInfo->SpellID: {0}", damageInfoInfo.SpellId);
+                return 0;
+            }
+
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, this, victim, damageInfoInfo.Damage, damageInfoInfo.HitInfo == HitType.CriticalHit);
+
+            return DealDamage(victim, damageInfoInfo.Damage);
         }
-        public bool IsNeutralToAll() { return false; }
-        public bool IsInPartyWith(Unit unit) { return false; }
-        public bool IsInRaidWith(Unit unit) { return false; }
-        public void GetPartyMembers(List<Unit> units) { }
 
-        #endregion
-
-        #region Hit and damage calculation and trigger checks
+        internal int HealBySpell(Unit victim, SpellInfo spellInfo, int addHealth, bool critical = false) { return 0; }
 
         internal int DealDamage(Unit victim, int damageAmount)
         {
@@ -296,32 +309,7 @@ namespace Core
 
             return damageInfoInfo.Damage = damage;
         }
-
-        internal void DealSpellDamage(SpellCastDamageInfo damageInfoInfo)
-        {
-            if (damageInfoInfo == null)
-                return;
-
-            Unit victim = damageInfoInfo.Target;
-
-            if (victim == null)
-                return;
-
-            if (!victim.IsAlive)
-                return;
-
-            SpellInfo spellProto = Balance.SpellInfosById.ContainsKey(damageInfoInfo.SpellId) ? Balance.SpellInfosById[damageInfoInfo.SpellId] : null;
-            if (spellProto == null)
-            {
-                Debug.LogErrorFormat("Unit.DealSpellDamage has wrong spellDamageInfo->SpellID: {0}", damageInfoInfo.SpellId);
-                return;
-            }
-
-            DealDamage(victim, damageInfoInfo.Damage);
-
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, this, victim, damageInfoInfo.Damage, damageInfoInfo.HitInfo == HitType.CriticalHit);
-        }
-
+        
         internal SpellMissType SpellHitResult(Unit victim, SpellInfo spellInfo, bool canReflect = false)
         {
             // Check for immune
@@ -370,32 +358,6 @@ namespace Core
 
         #endregion
 
-        #region Combat State
-
-        public bool IsInCombat()
-        {
-            return HasFlag(EntityFields.UnitFlags, (int)UnitFlags.InCombat);
-        }
-
-        public bool IsInCombatWith(Unit target)
-        {
-            return true;
-        }
-
-        public void CombatStart(Unit target, bool initialAggro = true)
-        {
-        }
-
-        public void SetInCombatState(bool isPvP, Unit enemy = null)
-        {
-        }
-
-        public void SetInCombatWith(Unit enemy)
-        {
-        }
-
-        #endregion
-
         #region Aura and target states
 
         public bool HasAuraTypeWithFamilyFlags(AuraType auraType, uint familyName, uint familyFlags) { return false; }
@@ -419,115 +381,6 @@ namespace Core
         public bool IsValidAssistTarget(Unit target, SpellInfo bySpell) { return false; }
 
         public bool IsInAccessiblePlaceFor(Creature creature) { return false; }
-
-        #endregion
-
-        #region Spell casting
-
-        internal int HealBySpell(Unit victim, SpellInfo spellInfo, int addHealth, bool critical = false) { return 0; }
-
-        internal SpellCastResult CastSpell(SpellCastTargets targets, SpellInfo spellInfo, SpellCastFlags spellFlags = 0, AuraEffect triggeredByAura = null, ulong originalCaster = 0)
-        {
-            return new Spell(this, spellInfo, spellFlags, originalCaster).Prepare(targets, triggeredByAura);
-        }
-
-        public void SendSpellNonMeleeDamageLog(ref SpellCastDamageInfo log) { }
-        public void SendSpellMiss(Unit target, uint spellId, SpellMissType missType) { }
-        public void SendSpellDamageResist(Unit target, uint spellId) { }
-        public void SendSpellDamageImmune(Unit target, uint spellId, bool isPeriodic) { }
-
-        #endregion
-
-        #region Movement changes and states
-
-        public void NearTeleportTo(float x, float y, float z, float orientation, bool casting = false) { }
-        public void SendTeleportPacket(Vector3 pos) { }
-        public void UpdateOrientation(float orientation) { }
-        public void UpdateHeight(float newZ) { }
-
-        public void SendMoveKnockBack(Player player, float speedXY, float speedZ, float vcos, float vsin) { }
-        public void KnockbackFrom(float x, float y, float speedXY, float speedZ) { }
-        public void JumpTo(float speedXY, float speedZ, bool forward = true) { }
-        public void JumpTo(WorldEntity obj, float speedZ, bool withOrientation = false) { }
-        public void MonsterMoveWithSpeed(float x, float y, float z, float speed, bool generatePath = false, bool forceDestination = false) { }
-
-        public bool IsWalking() { return MovementInfo.HasMovementFlag(MovementFlags.Walking); }
-
-        #endregion
-
-        #region Targets, controls, pets
-
-        public bool IsAlive => deathState == DeathState.Alive;
-        public bool IsDying => deathState == DeathState.JustDied;
-        public bool IsDead => deathState == DeathState.Dead || deathState == DeathState.Corpse;
-
-        public ulong OwnerGuid
-        {
-            get => GetULongValue(EntityFields.UnitSummonedBy);
-            set => SetULongValue(EntityFields.UnitSummonedBy, value);
-        }
-
-        public ulong CreatorGuid
-        {
-            get => GetULongValue(EntityFields.UnitCreatedBy);
-            set => SetULongValue(EntityFields.UnitCreatedBy, value);
-        }
-
-        public ulong MinionGuid
-        {
-            get => GetULongValue(EntityFields.UnitSummon);
-            set => SetULongValue(EntityFields.UnitSummon, value);
-        }
-
-        public ulong CharmerGuid
-        {
-            get => GetULongValue(EntityFields.UnitCharmedBy);
-            set => SetULongValue(EntityFields.UnitCharmedBy, value);
-        }
-
-        public bool IsControlledByPlayer() { return false; }
-        public Guid GetCharmerOrOwnerGuid() { return default; }
-        public Guid GetCharmerOrOwnerOrOwnGuid() { return default; }
-        public bool IsCharmedOwnedByPlayerOrPlayer() { return false; }
-
-        public Player SpellModOwner => null;
-        public Unit Owner => null;
-        public Guardian GuardianPet => null;
-        public Minion FirstMinion => null;
-        public Unit Charmer => null;
-        public Unit Charm => null;
-        public Unit CharmerOrOwner => null;
-        public Unit CharmerOrOwnerOrSelf => null;
-        public Player CharmerOrOwnerPlayerOrPlayerItself => null;
-        public Player AffectingPlayer => null;
-
-        public void SetMinion(Minion minion, bool apply) { }
-        public void GetAllMinionsByEntry(List<TempSummon> minions, uint entry) { }
-        public void RemoveAllMinionsByEntry(uint entry) { }
-        public void SetCharm(Unit target, bool apply) { }
-        public Unit GetNextRandomRaidMemberOrPet(float radius) { return null; }
-        public void RemoveCharmedBy(Unit charmer) { }
-        public void RestoreFaction() { }
-
-        public bool CreateVehicleKit(uint kitId, uint creatureEntry, bool loading = false) { throw new NotImplementedException(); }
-        public void RemoveVehicleKit(bool onRemoveFromWorld = false) { throw new NotImplementedException(); }
-        public bool IsOnVehicle(Unit vehicle) { throw new NotImplementedException(); }
-        public Unit GetVehicleBase() { throw new NotImplementedException(); }
-        public Creature GetVehicleCreatureBase() { throw new NotImplementedException(); }
-
-        public List<Unit> Controlled { get; private set; }
-        public Unit GetFirstControlled() { throw new NotImplementedException(); }
-        public void RemoveAllControlled() { throw new NotImplementedException(); }
-
-        public bool IsCharmed() { return CharmerGuid != 0; }
-        public bool IsPossessed() { return HasUnitState(UnitState.Possessed); }
-        public bool IsPossessedByPlayer() { throw new NotImplementedException(); }
-        public bool IsPossessing() { throw new NotImplementedException(); }
-        public bool IsPossessing(Unit u) { throw new NotImplementedException(); }
-
-        public Pet CreateTamedPetFrom(Creature creatureTarget, uint spellID = 0) { throw new NotImplementedException(); }
-        public Pet CreateTamedPetFrom(uint creatureEntry, uint spellID = 0) { throw new NotImplementedException(); }
-        public bool InitTamedPet(Pet pet, byte level, uint spellID) { throw new NotImplementedException(); }
 
         #endregion
 
@@ -608,7 +461,6 @@ namespace Core
         public void RemoveAppliedAuras(uint spellId, Predicate<AuraApplication> check) { }
         public void RemoveOwnedAuras(uint spellId, Predicate<Aura> check) { }
 
-
         public void RemoveAurasByType(AuraType auraType, Predicate<AuraApplication> check) { }
         public void RemoveAurasDueToSpell(uint spellId, Guid casterGuid = default, uint reqEffMask = 0, AuraRemoveMode removeMode = AuraRemoveMode.Default) { }
         public void RemoveAuraFromStack(uint spellId, Guid casterGuid = default, AuraRemoveMode removeMode = AuraRemoveMode.Default) { }
@@ -632,20 +484,6 @@ namespace Core
         public void RemoveAllAurasExceptType(AuraType type1, AuraType type2) { }
         public void DelayOwnedAuras(uint spellId, Guid caster, int delaytime) { }
 
-        public void RemoveAllAuraStatMods() { }
-        public void ApplyAllAuraStatMods() { }
-
-        public AuraEffect GetAuraEffect(uint spellId, int effIndex, Guid casterGuid = default) { return null; }
-        public AuraEffect GetAuraEffectOfRankedSpell(uint spellId, int effIndex, Guid casterGuid = default) { return null; }
-
-        public AuraApplication GetAuraApplication(uint spellId, Guid casterGuid = default, uint reqEffMask = 0, AuraApplication except = null) { return null; }
-        public Aura GetAura(uint spellId, Guid casterGuid = default, uint reqEffMask = 0) { return null; }
-
-        public AuraApplication GetAuraApplicationOfRankedSpell(uint spellId, Guid casterGuid = default, uint reqEffMask = 0, AuraApplication except = null) { return null; }
-        public Aura GetAuraOfRankedSpell(uint spellId, Guid casterGuid = default, uint reqEffMask = 0) { return null; }
-
-        public void GetDispellableAuraList(Unit caster, uint dispelMask, DispelChargesList dispelList) { }
-
         public bool HasAuraEffect(uint spellId, int effIndex, Guid caster = default) { return false; }
         public uint GetAuraCount(uint spellId) { return 0; }
         public bool HasAura(uint spellId, Guid casterGuid = default, uint reqEffMask = 0) { return false; }
@@ -657,77 +495,6 @@ namespace Core
         public bool HasNegativeAuraWithInterruptFlag(uint flag, Guid guid = default) { return false; }
         public bool HasNegativeAuraWithAttribute(uint flag, Guid guid = default) { return false; }
         public bool HasAuraWithMechanic(uint mechanicMask) { return false; }
-
-        public AuraEffect IsScriptOverriden(SpellInfo spell, int script) { return null; }
-        public uint GetDiseasesByCaster(Guid casterGuid, bool remove = false) { return 0; }
-        public uint GetDoTsByCaster(Guid casterGuid) { return 0; }
-
-        public int GetTotalAuraModifier(AuraType auratype) { return 0; }
-        public float GetTotalAuraMultiplier(AuraType auratype) { return 0.0f; }
-        public int GetMaxPositiveAuraModifier(AuraType auratype) { return 0; }
-        public int GetMaxNegativeAuraModifier(AuraType auratype) { return 0; }
-        public int GetTotalAuraModifierByMiscMask(AuraType auratype, uint miscMask) { return 0; }
-        public float GetTotalAuraMultiplierByMiscMask(AuraType auratype, uint miscMask) { return 0; }
-        public int GetMaxPositiveAuraModifierByMiscMask(AuraType auratype, uint miscMask, AuraEffect except = null) { return 0; }
-        public int GetMaxNegativeAuraModifierByMiscMask(AuraType auratype, uint miscMask) { return 0; }
-
-        public int GetTotalAuraModifierByMiscValue(AuraType auratype, int miscValue) { return 0; }
-        public float GetTotalAuraMultiplierByMiscValue(AuraType auratype, int miscValue) { return 0; }
-        public int GetMaxPositiveAuraModifierByMiscValue(AuraType auratype, int miscValue) { return 0; }
-        public int GetMaxNegativeAuraModifierByMiscValue(AuraType auratype, int miscValue) { return 0; }
-
-        public int GetTotalAuraModifierByAffectMask(AuraType auratype, SpellInfo affectedSpell) { return 0; }
-        public float GetTotalAuraMultiplierByAffectMask(AuraType auratype, SpellInfo affectedSpell) { return 0; }
-        public int GetMaxPositiveAuraModifierByAffectMask(AuraType auratype, SpellInfo affectedSpell) { return 0; }
-        public int GetMaxNegativeAuraModifierByAffectMask(AuraType auratype, SpellInfo affectedSpell) { return 0; }
-
-        #endregion
-
-        #region Stat helpers
-
-        public float GetResistanceBuffMods(SpellSchools school, bool positive) { return 0.0f; }
-        public void SetResistanceBuffMods(SpellSchools school, bool positive, float val) { }
-        public void ApplyResistanceBuffModsMod(SpellSchools school, bool positive, float val, bool apply) { }
-        public void ApplyResistanceBuffModsPercentMod(SpellSchools school, bool positive, float val, bool apply) { }
-        public void InitStatBuffMods() { }
-        public void ApplyStatBuffMod(StatType statType, float val, bool apply) { }
-        public void ApplyStatPercentBuffMod(StatType statType, float val, bool apply) { }
-        public void SetCreateStat(StatType statType, float val) { createStats[statType] = val; }
-        public void SetCreateHealth(uint val) { SetUintValue(EntityFields.BaseHealth, val); }
-        public uint GetCreateHealth() { return GetUintValue(EntityFields.BaseHealth); }
-        public void SetCreateMana(uint val) { SetUintValue(EntityFields.BaseMana, val); }
-        public uint GetCreateMana() { return GetUintValue(EntityFields.BaseMana); }
-        public uint GetPowerIndex(uint powerType) { return 0; }
-        public int GetCreatePowers(SpellResourceType spellResource) { return 0; }
-        public float GetPosStat(StatType statType) { return GetFloatValue(statType.StatPositiveField()); }
-        public float GetNegStat(StatType statType) { return GetFloatValue(statType.StatNegativeField()); }
-        public float GetCreateStat(StatType statType) { return createStats[statType]; }
-
-        #endregion
-
-        #region Spell helpers
-
-        public void SetCurrentCastSpell(Spell spell) { }
-        public void InterruptSpell(SpellSlotType spellType, bool withDelayed = true, bool withInstant = true) { }
-        public void FinishSpell(SpellSlotType spellType, bool ok = true) { }
-
-        public Spell FindCurrentSpellBySpellId(uint spellID) { return null; }
-        public int GetCurrentSpellCastTime(uint spellID) { return 0; }
-        
-        #endregion
-
-        #region Stat system
-
-        public bool HandleStatModifier(UnitModifierType unitModifierType, UnitModifierApplicationType modifierApplicationType, float amount, bool apply) { return false; }
-        public float GetModifierValue(UnitModifierType unitModifierType, UnitModifierApplicationType modifierApplicationType) { return 0.0f; }
-        public float GetTotalStatValue(StatType statType) { return 0.0f; }
-        public float GetTotalAuraModValue(UnitModifierType unitModifierType) { return 0.0f; }
-
-        public virtual bool UpdateStats(StatType statType) { return false; }
-        public virtual void UpdateResistances(SpellSchools school) { }
-        public virtual void UpdateAllResistances() { }
-        public virtual void UpdateMaxHealth() { }
-        public virtual void UpdateMaxPower(SpellResourceType spellResource) { }
 
         #endregion
 

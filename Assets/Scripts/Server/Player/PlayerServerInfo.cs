@@ -9,14 +9,16 @@ namespace Server
 
         public PlayerNetworkState NetworkState { get; set; }
         public int DisconnectTimeLeft { get; set; }
+        public string UnityId { get; set; }
 
         public BoltConnection BoltConnection { get; private set; }
         public Player Player { get; private set; }
 
-        public PlayerServerInfo(BoltConnection boltConneciton, Player player)
+        public PlayerServerInfo(BoltConnection boltConneciton, Player player, string unityId)
         {
             NetworkState = PlayerNetworkState.Connected;
             BoltConnection = boltConneciton;
+            UnityId = unityId;
             Player = player;
         }
     }

@@ -27,7 +27,6 @@ namespace Core
         public SpellDiminishingLevel DiminishLevel { get; set; }
         public SpellDiminishingGroup DiminishGroup { get; set; }
 
-        public GameEntity GameEntityTarget { get; set; }
         public Vector3 DestTarget { get; set; }
         public int SpellHealing { get; set; }
         public float Variance { get; set; }
@@ -92,7 +91,6 @@ namespace Core
             if (info.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
                 SpellCastFlags = SpellCastFlags | SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
 
-            GameEntityTarget = null;
             DestTarget = Vector3.zero;
             Variance = 0.0f;
             DiminishLevel = SpellDiminishingLevel.Level1;
@@ -206,8 +204,6 @@ namespace Core
                 // check if object spellTarget is valid with needed spellTarget flags
                 // for unit case allow corpse spellTarget mask because player with not released corpse is a unit spellTarget
                 if (target is Unit && !neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
-                    targets.RemoveEntityTarget();
-                if (target is GameEntity && !neededTargets.HasAnyFlag(SpellCastTargetFlags.GameEntity))
                     targets.RemoveEntityTarget();
             }
             else

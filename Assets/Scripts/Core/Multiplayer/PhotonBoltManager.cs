@@ -27,11 +27,12 @@ namespace Core
             base.BoltStartBegin();
 
             BoltNetwork.RegisterTokenClass<Unit.CreateToken>();
+            BoltNetwork.RegisterTokenClass<Player.CreateToken>();
         }
 
         public abstract void StartServer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail);
 
-        public abstract void StartConnection(UdpSession session, Action onConnectSuccess, Action onConnectFail);
+        public abstract void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action onConnectFail);
 
         public abstract void StartClient(Action onStartSuccess, Action onStartFail);
     }

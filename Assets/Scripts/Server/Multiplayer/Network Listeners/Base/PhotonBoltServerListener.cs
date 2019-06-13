@@ -1,5 +1,7 @@
-﻿using Core;
+﻿using Bolt;
+using Core;
 using JetBrains.Annotations;
+using UdpKit;
 using UnityEngine;
 
 namespace Server
@@ -9,12 +11,14 @@ namespace Server
         [SerializeField, UsedImplicitly] private BalanceReference balance;
 
         private new WorldServerManager WorldManager { get; set; }
+        private UdpSession CurrentSession { get; set; }
 
         public void Initialize(WorldServerManager worldManager)
         {
             base.Initialize(worldManager);
 
             WorldManager = worldManager;
+            WorldManager.SessionUpdated(CurrentSession);
         }
 
         public new void Deinitialize()
@@ -37,6 +41,24 @@ namespace Server
             base.SceneLoadRemoteDone(connection);
 
             WorldManager.CreatePlayer(connection);
+        }
+
+        public override void SessionCreated(UdpSession session)
+        {
+            base.SessionCreated(session);
+
+            CurrentSession = session;
+            WorldManager?.SessionUpdated(session);
+        }
+
+        public override void ConnectRequest(UdpEndPoint endpoint, IProtocolToken token)
+        {
+            base.ConnectRequest(endpoint, token);
+
+            if (token is ClientConnectionToken clientToken && clientToken.UnityId != SystemInfo.unsupportedIdentifier)
+                BoltNetwork.Accept(endpoint);
+            else
+                BoltNetwork.Refuse(endpoint);
         }
 
         public override void Connected(BoltConnection boltConnection)

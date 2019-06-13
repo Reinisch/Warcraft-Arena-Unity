@@ -76,13 +76,13 @@ namespace Game
             StartCoroutine(StartClientRoutine(onStartSuccess, onStartFail));
         }
 
-        public override void StartConnection(UdpSession session, Action onConnectSuccess, Action onConnectFail)
+        public override void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action onConnectFail)
         {
             StopAllCoroutines();
 
             state = State.Connecting;
 
-            StartCoroutine(ConnectClientRoutine(session, onConnectSuccess, onConnectFail));
+            StartCoroutine(ConnectClientRoutine(session, token, onConnectSuccess, onConnectFail));
         }
 
         public override void BoltStartBegin()
@@ -90,6 +90,7 @@ namespace Game
             base.BoltStartBegin();
 
             BoltNetwork.RegisterTokenClass<ServerRoomToken>();
+            BoltNetwork.RegisterTokenClass<ClientConnectionToken>();
         }
 
         public override void BoltStartDone()
@@ -296,7 +297,7 @@ namespace Game
             }
         }
 
-        private IEnumerator ConnectClientRoutine(UdpSession session, Action onConnectSuccess, Action onConnectFail)
+        private IEnumerator ConnectClientRoutine(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action onConnectFail)
         {
             if (BoltNetwork.IsRunning && !BoltNetwork.IsClient)
             {
@@ -321,7 +322,7 @@ namespace Game
 
             state = State.Connecting;
             connectionAttemptInfo.Reset();
-            BoltNetwork.Connect(session);
+            BoltNetwork.Connect(session, token);
 
             while (true)
             {

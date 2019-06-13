@@ -22,7 +22,7 @@ namespace Core
                 return;
 
             // Check for possible target
-            if (target == null || target.IsInCombat())
+            if (target == null || target.IsInCombat)
                 return;
 
             // target must be OK to do this
@@ -49,14 +49,6 @@ namespace Core
             int absorb = 0;
             int resist = 0;
             Caster.CalcAbsorbResist(target, SpellInfo.SchoolMask, SpellDamageType.Pure, 100, ref absorb, ref resist, SpellInfo);
-
-            var log = new SpellCastDamageInfo(Caster, target, SpellInfo.Id, SpellInfo.SchoolMask, CastId)
-            {
-                Damage = 100 - absorb - resist,
-                Absorb = absorb,
-                Resist = resist
-            };
-            Caster.SendSpellNonMeleeDamageLog(ref log);
         }
 
         public void EffectInstaKill(EffectTeleportDirect effect, Unit target, SpellEffectHandleMode mode)

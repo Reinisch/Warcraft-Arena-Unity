@@ -26,7 +26,7 @@ namespace Client.Spells
 
         public void Deinitialize()
         {
-            visualEffects.Clear();
+            visualsByUsage.Clear();
         }
     }
 }

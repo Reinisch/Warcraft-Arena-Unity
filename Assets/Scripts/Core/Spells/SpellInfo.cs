@@ -295,7 +295,7 @@ namespace Core
                 return target.EntityType == EntityType.Player ? SpellCastResult.TargetIsPlayer : SpellCastResult.BadTargets;
 
             // check GM mode and GM invisibility - only for player casts (npc casts are controlled by AI) and negative spells
-            if (unitTarget != caster && (caster.IsControlledByPlayer() || !IsPositive()) && unitTarget.EntityType == EntityType.Player)
+            if (unitTarget != caster && (caster.IsControlledByPlayer || !IsPositive()) && unitTarget.EntityType == EntityType.Player)
             {
                 var playerTarget = (Player) unitTarget ;
                 if (!playerTarget.IsVisible)
@@ -421,11 +421,7 @@ namespace Core
         {
             float range = positive ? MaxRangeFriend : MaxRangeHostile;
             if (caster != null && spell != null)
-            {
-                Player modOwner = caster.SpellModOwner;
-                if (modOwner != null)
-                    modOwner.ApplySpellMod(spell.SpellInfo, SpellModifierType.Range, ref range);
-            }
+                caster.ApplySpellMod(spell.SpellInfo, SpellModifierType.Range, ref range);
             return range;
         }
 
@@ -496,7 +492,7 @@ namespace Core
                             powerCost += caster.MaxHealth.CalculatePercentage(power.PowerCostPercentage);
                             break;
                         case SpellResourceType.Mana:
-                            powerCost += (int)caster.GetCreateMana().CalculatePercentage(power.PowerCostPercentage);
+                            powerCost += (int)caster.BaseMana.CalculatePercentage(power.PowerCostPercentage);
                             break;
                         case SpellResourceType.Rage:
                         case SpellResourceType.Focus:
@@ -513,11 +509,7 @@ namespace Core
                     }
                 }
 
-                Player modOwner = caster.SpellModOwner;
-
-                // apply cost mod by spell
-                if (modOwner != null)
-                    modOwner.ApplySpellMod(this, SpellModifierType.Cost, ref powerCost);
+                caster.ApplySpellMod(this, SpellModifierType.Cost, ref powerCost);
 
                 if (power.SpellResourceType == SpellResourceType.Health)
                 {

@@ -12,7 +12,6 @@ namespace Core
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
 
         private readonly Dictionary<int, SpellVisualSettings> spellVisualSettingsById = new Dictionary<int, SpellVisualSettings>();
-        private readonly Dictionary<Unit, UnitRenderer> unitRenderers = new Dictionary<Unit, UnitRenderer>();
 
         public Sprite DefaultSpellIcon => defaultSpellIcon;
         public IReadOnlyDictionary<int, SpellVisualSettings> SpellVisualSettingsById => spellVisualSettingsById;
