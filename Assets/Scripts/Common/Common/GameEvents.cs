@@ -12,5 +12,7 @@
         SpellCasted,
         SpellHit,
         SpellDamageDone,
+
+        EntityAttributeChanged
     }
 }

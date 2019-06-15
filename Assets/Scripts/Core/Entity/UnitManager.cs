@@ -22,8 +22,8 @@ namespace Core
 
             unitsByColliders[entity.UnitCollider] = entity;
 
-            if (entity.EntityType == EntityType.Player)
-                players.Add((Player)entity);
+            if (entity is Player player)
+                players.Add(player);
         }
 
         protected override void EntityDetached(Unit entity)
@@ -32,8 +32,8 @@ namespace Core
 
             unitsByColliders.Remove(entity.UnitCollider);
 
-            if (entity.EntityType == EntityType.Player)
-                players.Remove((Player)entity);
+            if (entity is Player player)
+                players.Remove(player);
         }
 
         public override void SetScope(BoltConnection connection, bool inScope)

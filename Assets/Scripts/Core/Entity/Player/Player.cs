@@ -42,7 +42,7 @@ namespace Core
         internal override bool AutoScoped => true;
 
         public override string Name { get => playerName; protected set => playerState.PlayerName = playerName = value; }
-        public override EntityType EntityType => EntityType.Player;
+        public int SpecId { get; } = 1;
 
         public override void Attached()
         {
@@ -65,10 +65,9 @@ namespace Core
             base.Detached();
         }
 
-        public override void Accept(IUnitVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
+        public override void Accept(IUnitVisitor visitor) => visitor.Visit(this);
+
+        public override void Accept(IVisitor visitor) => visitor.Visit(this);
 
         private void OnPlayerNameChanged()
         {

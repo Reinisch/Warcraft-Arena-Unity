@@ -5,37 +5,31 @@ namespace Core
 {
     public class SpellHistory
     {
-        public Dictionary<int, SpellCooldown> SpellCooldowns { get; private set; }
-        public float GlobalCooldown { get; private set; }
+        private readonly Unit owner;
 
-        public SpellHistory()
+        private Dictionary<int, SpellCooldown> SpellCooldowns { get; set; }
+        private float GlobalCooldown { get; set; }
+
+        public bool HasGlobalCooldown => GlobalCooldown > 0.0f;
+
+        public SpellHistory(Unit owner)
         {
+            this.owner = owner;
+
             SpellCooldowns = new Dictionary<int, SpellCooldown>();
         }
 
-        public bool IsReady(SpellInfo spellInfo, bool isIgnoringCooldowns)
-        {
-            if (HasCooldown(spellInfo.Id, isIgnoringCooldowns))
-                return false;
+        public bool IsReady(SpellInfo spellInfo) => !HasCooldown(spellInfo.Id);
 
-            return true;
-        }
+        public bool HasCooldown(int spellInfoId) => SpellCooldowns.ContainsKey(spellInfoId);
 
-        public bool HasCooldown(int spellInfoId, bool ignoreCategoryCooldown)
-        {
-            if (SpellCooldowns.ContainsKey(spellInfoId))
-                return true;
-
-            return false;
-        }
-
-        public void HandleCooldowns(SpellInfo spellInfo)
+        internal void HandleCooldowns(SpellInfo spellInfo)
         {
             if (!spellInfo.IsPassive())
                 StartCooldown(spellInfo);
         }
 
-        public void StartCooldown(SpellInfo spellInfo)
+        internal void StartCooldown(SpellInfo spellInfo)
         {
             float cooldown = spellInfo.RecoveryTime;
 
@@ -56,7 +50,7 @@ namespace Core
                 AddCooldown(spellInfo.Id, recTime);
         }
 
-        public void AddCooldown(int spellId, float cooldownEnd)
+        internal void AddCooldown(int spellId, float cooldownEnd)
         {
             SpellCooldown spellCooldown = new SpellCooldown(spellId, cooldownEnd);
 
@@ -64,11 +58,6 @@ namespace Core
                 SpellCooldowns[spellId] = spellCooldown;
             else
                 SpellCooldowns.Add(spellId, spellCooldown);
-        }
-
-        public bool HasGlobalCooldown()
-        {
-            return Time.time < GlobalCooldown;
         }
     }
 }

@@ -271,38 +271,26 @@ namespace Core
             Unit unitTarget = target as Unit;
 
             // creature/player specific target checks
-            if (unitTarget != null)
+            if (unitTarget != null && caster != unitTarget)
             {
-                if (caster != unitTarget)
-                {
-                    if (caster.EntityType == EntityType.Player)
-                    {
-                        if (HasAttribute(SpellCustomAttributes.Pickpocket))
-                            if (unitTarget.EntityType == EntityType.Player)
-                                return SpellCastResult.BadTargets;
-                    }
-                }
+                if (caster is Player && unitTarget is Player && HasAttribute(SpellCustomAttributes.Pickpocket))
+                    return SpellCastResult.BadTargets;
             }
             // other types of objects - always valid
             else
                 return SpellCastResult.Success;
 
             // corpseOwner and unit specific target checks
-            if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && unitTarget.EntityType != EntityType.Player)
+            if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && unitTarget is Player == false)
                 return SpellCastResult.TargetNotPlayer;
 
-            if (!CheckTargetCreatureType(unitTarget))
-                return target.EntityType == EntityType.Player ? SpellCastResult.TargetIsPlayer : SpellCastResult.BadTargets;
-
-            // check GM mode and GM invisibility - only for player casts (npc casts are controlled by AI) and negative spells
-            if (unitTarget != caster && (caster.IsControlledByPlayer || !IsPositive()) && unitTarget.EntityType == EntityType.Player)
+            if (unitTarget != caster && (caster.IsControlledByPlayer || !IsPositive()) && unitTarget is Player player)
             {
-                var playerTarget = (Player) unitTarget ;
-                if (!playerTarget.IsVisible)
+                if (!player.IsVisible)
                     return SpellCastResult.BmOrInvisgod;
             }
 
-            if (unitTarget.HasUnitState(UnitState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInflightTarget))
+            if (unitTarget.HasState(UnitState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInflightTarget))
                 return SpellCastResult.BadTargets;
 
             if (TargetAuraState != 0 && !unitTarget.HasAuraState(TargetAuraState, this, caster))
@@ -340,20 +328,6 @@ namespace Core
             }
 
             return SpellCastResult.Success;
-        }
-
-        public SpellCastResult CheckVehicle(Unit caster)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool CheckTargetCreatureType(Unit target)
-        {
-            if (target.IsMagnet())
-                return true;
-
-            uint creatureTypeMask = target.GetCreatureTypeMask();
-            return TargetEntityTypeMask == 0 || creatureTypeMask == 0 || (creatureTypeMask & (int)TargetEntityTypeMask) > 0;
         }
 
         #endregion
@@ -492,7 +466,7 @@ namespace Core
                             powerCost += caster.MaxHealth.CalculatePercentage(power.PowerCostPercentage);
                             break;
                         case SpellResourceType.Mana:
-                            powerCost += (int)caster.BaseMana.CalculatePercentage(power.PowerCostPercentage);
+                            powerCost += caster.BaseMana.CalculatePercentage(power.PowerCostPercentage);
                             break;
                         case SpellResourceType.Rage:
                         case SpellResourceType.Focus:
@@ -561,10 +535,8 @@ namespace Core
                     }
                     case SpellProcsPerMinuteModType.Spec:
                     {
-                        Player playerCaster = caster as Player;
-                        if(playerCaster != null)
-                            if (playerCaster.GetUintValue(EntityFields.CurrentSpecId) == mod.Parameter)
-                                ppm *= 1.0f + mod.Value;
+                        if(caster is Player player && player.SpecId == mod.Parameter)
+                            ppm *= 1.0f + mod.Value;
                         break;
                     }
                 }
@@ -575,10 +547,10 @@ namespace Core
 
         public static float CalcPPMHasteMod(SpellProcsPerMinuteModifier mod, Unit caster)
         {
-            float haste = caster.GetFloatValue(EntityFields.ModHaste);
-            float rangedHaste = caster.GetFloatValue(EntityFields.ModRangedHaste);
-            float spellHaste = caster.GetFloatValue(EntityFields.UnitModCastHaste);
-            float regenHaste = caster.GetFloatValue(EntityFields.ModHasteRegen);
+            float haste = caster.ModHaste;
+            float rangedHaste = caster.ModRangedHaste;
+            float spellHaste = caster.ModSpellHaste;
+            float regenHaste = caster.ModRegenHaste;
 
             switch (mod.Parameter)
             {
@@ -599,12 +571,12 @@ namespace Core
 
         public static float CalcPPMCritMod(SpellProcsPerMinuteModifier mod, Unit caster)
         {
-            if (caster.EntityType != EntityType.Player)
+            if (caster is Player == false)
                 return 0.0f;
 
-            float crit = caster.GetFloatValue(EntityFields.CritPercentage);
-            float rangedCrit = caster.GetFloatValue(EntityFields.RangedCritPercentage);
-            float spellCrit = caster.GetFloatValue(EntityFields.SpellCritPercentage);
+            float crit = caster.CritPercentage;
+            float rangedCrit = caster.RangedCritPercentage;
+            float spellCrit = caster.SpellCritPercentage;
 
             switch (mod.Parameter)
             {

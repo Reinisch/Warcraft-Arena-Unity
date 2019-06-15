@@ -30,7 +30,7 @@ public class UnitFrame : MonoBehaviour
         if (unit != null)
         {
             health.Ratio = unit.HealthRatio;
-            mainResource.Ratio = Mathf.Clamp01((float) unit.GetPower(SpellResourceType.Mana) / unit.GetMaxPower(SpellResourceType.Mana));
+            mainResource.Ratio = Mathf.Clamp01((float) unit.Mana / unit.MaxMana);
         }
     }
 

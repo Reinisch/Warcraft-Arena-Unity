@@ -2,7 +2,8 @@
 {
     public class AreaTrigger : WorldEntity
     {
-        public override EntityType EntityType => EntityType.AreaTrigger;
         internal override bool AutoScoped => true;
+
+        public override void Accept(IVisitor visitor) => visitor.Visit(this);
     }
 }

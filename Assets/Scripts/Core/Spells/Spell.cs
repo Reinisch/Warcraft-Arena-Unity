@@ -59,13 +59,12 @@ namespace Core
         public bool IsNextMeleeSwingSpell => throw new NotImplementedException();
         public bool IsTriggered => SpellCastFlags != 0;
         public bool IsIgnoringCooldowns => (SpellCastFlags & SpellCastFlags.IgnoreSpellAndCategoryCd) != 0;
-        public bool IsChannelActive => Caster.GetUintValue(EntityFields.ChannelSpell) != 0;
         public bool IsAutoActionResetSpell => throw new NotImplementedException();
         public bool IsInterruptable => !ExecutedCurrently;
         public bool IsNeedSendToClient => throw new NotImplementedException();
         public SpellSlotType CurrentContainer => throw new NotImplementedException();
 
-        private bool HasGlobalCooldown => Caster.SpellHistory.HasGlobalCooldown();
+        private bool HasGlobalCooldown => Caster.SpellHistory.HasGlobalCooldown;
 
         internal Spell(Unit caster, SpellInfo info, SpellCastFlags spellFlags, ulong originalCasterId, bool skipCheck = false)
         {
@@ -595,15 +594,12 @@ namespace Core
                 return SpellCastResult.CasterDead;
 
             // check cooldowns to prevent cheating
-            if (!SpellInfo.IsPassive())
+            if (!SpellInfo.IsPassive() && !Caster.SpellHistory.IsReady(SpellInfo))
             {
-                if (!Caster.SpellHistory.IsReady(SpellInfo, IsIgnoringCooldowns))
-                {
-                    if (TriggeredByAuraSpell != null)
-                        return SpellCastResult.DontReport;
-                    else
-                        return SpellCastResult.NotReady;
-                }
+                if (TriggeredByAuraSpell != null)
+                    return SpellCastResult.DontReport;
+                else
+                    return SpellCastResult.NotReady;
             }
 
             // Check global cooldown

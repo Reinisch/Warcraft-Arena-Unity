@@ -4,7 +4,7 @@ using Common;
 
 namespace Client
 {
-    [UsedImplicitly, CreateAssetMenu(fileName = "Effect Settings", menuName = "Game Data/Visual Effects/Effect Settings", order = 1)]
+    [UsedImplicitly, CreateAssetMenu(fileName = "Effect Settings", menuName = "Game Data/Visuals/Effect Settings", order = 1)]
     public class EffectSettings : ScriptableObject
     {
         [SerializeField, UsedImplicitly] private EffectEntity prototype;

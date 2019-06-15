@@ -26,11 +26,11 @@ namespace Core
                 return;
 
             // target must be OK to do this
-            if (target.HasUnitState(UnitState.Confused | UnitState.Stunned | UnitState.Fleeing))
+            if (target.HasState(UnitState.Confused | UnitState.Stunned | UnitState.Fleeing))
                 return;
 
             target.SetFacingTo(DestTarget);
-            target.ClearUnitState(UnitState.Moving);
+            target.RemoveState(UnitState.Moving);
         }
 
         public void EffectPull(SpellEffectInfo effect)

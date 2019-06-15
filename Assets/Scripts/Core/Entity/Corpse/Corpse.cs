@@ -2,7 +2,8 @@
 {
     public class Corpse : WorldEntity
     {
-        public override EntityType EntityType => EntityType.Corpse;
         internal override bool AutoScoped => true;
+
+        public override void Accept(IVisitor visitor) => visitor.Visit(this);
     }
 }

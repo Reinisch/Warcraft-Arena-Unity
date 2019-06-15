@@ -4,6 +4,6 @@
     {
         void Visit(Entity entity);
 
-        void Visit<T>(T enttiy) where T : Entity;
+        void Visit<T>(T enttity) where T : Entity;
     }
 }

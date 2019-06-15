@@ -59,9 +59,8 @@ namespace Core
             base.Detached();
         }
 
-        internal virtual void DoUpdate(int timeDelta)
+        internal virtual void DoUpdate(int deltaTime)
         {
-
         }
 
         internal void SetMap(Map map)
