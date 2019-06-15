@@ -69,6 +69,13 @@ namespace Core
 
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
 
+        internal void ProcessCreation()
+        {
+            ModifyDeathState(DeathState.Alive);
+
+            SetHealth(MaxHealth);
+        }
+
         private void OnPlayerNameChanged()
         {
             Name = playerState.PlayerName;
