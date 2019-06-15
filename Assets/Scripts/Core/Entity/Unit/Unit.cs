@@ -322,7 +322,7 @@ namespace Core
             return new Spell(this, spellInfo, spellFlags, originalCaster).Prepare(targets, triggeredByAura);
         }
 
-        internal int DealSpellDamage(SpellCastDamageInfo damageInfoInfo)
+        internal int DamageBySpell(SpellCastDamageInfo damageInfoInfo)
         {
             if (damageInfoInfo == null)
                 return 0;
@@ -338,7 +338,7 @@ namespace Core
             SpellInfo spellProto = Balance.SpellInfosById.ContainsKey(damageInfoInfo.SpellId) ? Balance.SpellInfosById[damageInfoInfo.SpellId] : null;
             if (spellProto == null)
             {
-                Debug.LogErrorFormat("Unit.DealSpellDamage has wrong spellDamageInfo->SpellID: {0}", damageInfoInfo.SpellId);
+                Debug.LogErrorFormat("Unit.DamageBySpell has wrong spellDamageInfo->SpellID: {0}", damageInfoInfo.SpellId);
                 return 0;
             }
 
@@ -347,29 +347,32 @@ namespace Core
             return DealDamage(victim, damageInfoInfo.Damage);
         }
 
-        internal int HealBySpell(Unit victim, SpellInfo spellInfo, int addHealth, bool critical = false) { return 0; }
+        internal int HealBySpell(Unit target, SpellInfo spellInfo, int healAmount, bool critical = false)
+        {
+            return DealHeal(target, healAmount);
+        }
 
-        internal int DealDamage(Unit victim, int damageAmount)
+        internal int DealDamage(Unit target, int damageAmount)
         {
             if (damageAmount < 1)
                 return 0;
 
-            int healthValue = victim.Health;
+            int healthValue = target.Health;
             if (healthValue <= damageAmount)
             {
-                Kill(victim);
+                Kill(target);
                 return healthValue;
             }
 
-            return victim.ModifyHealth(-damageAmount);
+            return target.ModifyHealth(-damageAmount);
         }
 
-        internal int DealHeal(Unit victim, int healAmount)
+        internal int DealHeal(Unit target, int healAmount)
         {
             if(healAmount < 1)
                 return 0;
 
-            return victim.ModifyHealth(healAmount);
+            return target.ModifyHealth(healAmount);
         }
 
         internal void Kill(Unit victim)

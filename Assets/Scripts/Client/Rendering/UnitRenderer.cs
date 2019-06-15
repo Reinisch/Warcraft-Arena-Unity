@@ -11,7 +11,9 @@ public class UnitRenderer : EntityEventListener<IUnitState>
     [SerializeField, UsedImplicitly] private Animator animator;
 
     public Animator Animator => animator;
+
     private Unit Unit { get; set; }
+    private IUnitState UnitState { get; set; }
 
     public TagContainer TagContainer => tagContainer;
 
@@ -20,6 +22,8 @@ public class UnitRenderer : EntityEventListener<IUnitState>
         Unit = unit;
 
         Unit.BoltEntity.AddEventListener(this);
+        UnitState = entity.GetState<IUnitState>();
+        UnitState.AddCallback(nameof(UnitState.DeathState), OnDeathStateChanged);
 
         if (Unit.IsDead)
         {
@@ -32,8 +36,10 @@ public class UnitRenderer : EntityEventListener<IUnitState>
     public void Deinitialize()
     {
         Unit.BoltEntity.RemoveEventListener(this);
+        UnitState.RemoveAllCallbacks();
 
         Unit = null;
+        UnitState = null;
 
         Animator.WriteDefaultValues();
     }
@@ -79,6 +85,11 @@ public class UnitRenderer : EntityEventListener<IUnitState>
         }
         else
             Animator.SetBool("Grounded", false);
+    }
+
+    private void OnDeathStateChanged()
+    {
+        animator.SetBool("IsDead", Unit.IsDead);
     }
 
     [UsedImplicitly]

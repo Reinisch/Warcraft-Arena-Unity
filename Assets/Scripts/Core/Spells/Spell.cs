@@ -590,7 +590,7 @@ namespace Core
         private SpellCastResult CheckCast(bool strict)
         {
             // check death state
-            if (!Caster.IsAlive && !SpellInfo.IsPassive())
+            if (!Caster.IsAlive && !SpellInfo.IsPassive() && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileDead))
                 return SpellCastResult.CasterDead;
 
             // check cooldowns to prevent cheating
@@ -761,7 +761,7 @@ namespace Core
             {
                 SpellCastDamageInfo damageInfoInfo = new SpellCastDamageInfo(caster, unit, SpellInfo.Id, SpellSchoolMask, CastId);
                 EffectDamage = caster.CalculateSpellDamageTaken(damageInfoInfo, EffectDamage, SpellInfo);
-                caster.DealSpellDamage(damageInfoInfo);
+                caster.DamageBySpell(damageInfoInfo);
             }
         }
 

@@ -110,7 +110,7 @@ public class BalanceDefinitionEditor : Editor
                 break;
 
             var spellInfoProperty = serializedObject.FindProperty("spellInfos").GetArrayElementAtIndex(spellInfoIndex);
-            CreateCachedEditor(spellInfoProperty.objectReferenceValue, typeof(Editor), ref cachedSpellEditor);
+            CreateCachedEditor(spellInfoProperty.objectReferenceValue, null, ref cachedSpellEditor);
             cachedSpellEditor.OnInspectorGUI();
 
             spellEffectReorderableFoldout = EditorGUILayout.Foldout(spellEffectReorderableFoldout, "Reorderable Effect List");
@@ -124,7 +124,7 @@ public class BalanceDefinitionEditor : Editor
                     if (!spellEffectSelectionFoldout)
                         break;
 
-                    CreateCachedEditor(balanceDefinition.SpellInfos[spellInfoIndex].Effects[spellEffectIndex], typeof(Editor), ref cachedSpellInfoEditor);
+                    CreateCachedEditor(balanceDefinition.SpellInfos[spellInfoIndex].Effects[spellEffectIndex], null, ref cachedSpellInfoEditor);
                     cachedSpellInfoEditor.OnInspectorGUI();
                 }
             }

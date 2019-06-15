@@ -92,7 +92,7 @@
         GameobjectDamage = 87,
         GameobjectRepair = 88,
         GameobjectSetDestructionState = 89,
-        KillCredit = 90,
+        Kill = 90,
         ThreatAll = 91,
         EnchantHeldItem = 92,
         ForceDeselect = 93,
