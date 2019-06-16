@@ -18,30 +18,21 @@ public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
     public RectTransform RectTransform { get; private set; }
     public Image CooldownShade { get; private set; }
     public Text TimerText { get; private set; }
+    public bool IsButtonPressed => hotkeyInput.IsPressed();
 
-    public bool IsButtonPressed()
+    public void Initialize()
     {
-        return hotkeyInput.IsPressed();
-    }
-
-    public override void Initialize()
-    {
-        base.Initialize();
-
         buttonContent = gameObject.GetComponentInChildren<ButtonContent>();
         RectTransform = GetComponent<RectTransform>();
 
         CooldownShade = transform.Find("Cooldown").GetComponent<Image>();
         TimerText = transform.Find("Timer").GetComponent<Text>();
 
-        if (buttonContent != null)
-            buttonContent.Initialize(this);
+        buttonContent?.Initialize(this);
     }
 
-    public override void DoUpdate(float deltaTime)
+    public void DoUpdate(float deltaTime)
     {
-        base.DoUpdate(deltaTime);
-
         buttonContent?.UpdateButton();
     }
 

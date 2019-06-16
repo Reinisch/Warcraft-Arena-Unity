@@ -1,4 +1,6 @@
-﻿namespace Game
+﻿using Core;
+
+namespace Game
 {
     public class ConnectionAttemptInfo
     {
@@ -6,6 +8,7 @@
         public bool IsConnected { get; set; }
         public bool IsFailed { get; set; }
         public bool IsRefused { get; set; }
+        public ConnectRefusedReason RefuseReason { get; set; }
 
         public void Reset()
         {
@@ -13,6 +16,7 @@
             IsConnected = false;
             IsFailed = false;
             IsRefused = false;
+            RefuseReason = ConnectRefusedReason.None;
         }
     }
 }

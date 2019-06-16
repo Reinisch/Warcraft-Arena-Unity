@@ -281,7 +281,7 @@ namespace Core
                 return SpellCastResult.Success;
 
             // corpseOwner and unit specific target checks
-            if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && unitTarget is Player == false)
+            if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && !(unitTarget is Player))
                 return SpellCastResult.TargetNotPlayer;
 
             if (unitTarget != caster && (caster.IsControlledByPlayer || !IsPositive()) && unitTarget is Player player)
@@ -571,7 +571,7 @@ namespace Core
 
         public static float CalcPPMCritMod(SpellProcsPerMinuteModifier mod, Unit caster)
         {
-            if (caster is Player == false)
+            if (!(caster is Player))
                 return 0.0f;
 
             float crit = caster.CritPercentage;

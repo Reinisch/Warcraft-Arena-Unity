@@ -1,32 +1,23 @@
 ﻿using System.Collections.Generic;
-using Client;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class ActionBar : UIContainer
+public class ActionBar : MonoBehaviour
 {
     [SerializeField, UsedImplicitly] List<ButtonSlot> buttonSlots;
 
-    public override void Initialize()
+    public void Initialize()
     {
-        base.Initialize();
-
-        buttonSlots.ForEach(RegisterBehaviour);
+        buttonSlots.ForEach(buttonSlot => buttonSlot.Initialize());
     }
 
-    public override void Deinitialize()
+    public void DoUpdate(float deltaTime)
     {
-        buttonSlots.ForEach(UnregisterBehaviour);
-
-        base.Deinitialize();
-    }
-
-    public override void DoUpdate(float deltaTime)
-    {
-        base.DoUpdate(deltaTime);
-
         foreach (var slot in buttonSlots)
-            if (slot.IsButtonPressed())
+        {
+            slot.DoUpdate(deltaTime);
+            if (slot.IsButtonPressed)
                 slot.Click();
+        }
     }
 }

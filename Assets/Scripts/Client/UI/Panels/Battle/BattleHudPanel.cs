@@ -40,9 +40,6 @@ namespace Client
         {
             base.PanelInitialized();
 
-            playerUnitFrame.Initialize();
-            playerTargetUnitFrame.Initialize();
-
             actionBars.ForEach(actionBar => actionBar.Initialize());
 
             clientListener.EventPlayerControlGained += OnPlayerControlGained;
@@ -54,10 +51,8 @@ namespace Client
             clientListener.EventPlayerControlGained -= OnPlayerControlGained;
             clientListener.EventPlayerControlLost -= OnPlayerControlLost;
 
-            actionBars.ForEach(actionBar => actionBar.Deinitialize());
-
-            playerUnitFrame.Deinitialize();
-            playerTargetUnitFrame.Deinitialize();
+            playerUnitFrame.UpdateUnit(null);
+            playerTargetUnitFrame.UpdateUnit(null);
 
             base.PanelDeinitialized();
         }
@@ -67,23 +62,18 @@ namespace Client
             base.PanelUpdated(deltaTime);
 
             if (clientListener.LocalPlayer != null)
-            {
-                playerUnitFrame.DoUpdate(deltaTime);
-                playerTargetUnitFrame.DoUpdate(deltaTime);
-
                 foreach (var actionBar in actionBars)
                     actionBar.DoUpdate(deltaTime);
-            }
         }
 
         private void OnPlayerControlGained()
         {
-            playerUnitFrame.SetUnit(clientListener.LocalPlayer);
+            playerUnitFrame.UpdateUnit(clientListener.LocalPlayer);
         }
 
         private void OnPlayerControlLost()
         {
-            playerUnitFrame.SetUnit(null);
+            playerUnitFrame.UpdateUnit(null);
         }
     }
 }

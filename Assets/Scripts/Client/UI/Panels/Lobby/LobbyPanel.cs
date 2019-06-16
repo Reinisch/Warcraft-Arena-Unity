@@ -66,6 +66,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private TextMeshProUGUI serverNameInput;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI statusLabel;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI playerNameInput;
+        [SerializeField, UsedImplicitly] private TextMeshProUGUI versionName;
         [SerializeField, UsedImplicitly] private GameObject startClientTooltip;
         [SerializeField, UsedImplicitly] private GameObject noSessionsFoundTooltip;
 
@@ -101,6 +102,7 @@ namespace Client
             photonManager.EventSessionListUpdated += OnPhotonManagerSessionListUpdated;
 
             mapSlots[0].Select();
+            versionName.text = photonManager.Version;
         }
 
         protected override void PanelDeinitialized()
@@ -216,9 +218,9 @@ namespace Client
             UpdateInputState(true);
         }
 
-        private void OnConnectFail()
+        private void OnConnectFail(ClientConnectFailReason failReason)
         {
-            statusLabel.text = LocalizationUtils.LobbyClientConnectFailedString;
+            statusLabel.text = LocalizationUtils.ClientConnectFailedString(failReason);
 
             UpdateInputState(true);
         }

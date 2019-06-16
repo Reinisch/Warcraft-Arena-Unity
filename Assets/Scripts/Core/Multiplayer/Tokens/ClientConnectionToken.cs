@@ -8,6 +8,7 @@ namespace Core
     {
         public string Name { get; private set; }
         public string UnityId { get; private set; }
+        public string Version { get; set; }
 
         public ClientConnectionToken()
         {
@@ -25,12 +26,14 @@ namespace Core
         {
             Name = packet.ReadString();
             UnityId = packet.ReadString();
+            Version = packet.ReadString();
         }
 
         public void Write(UdpPacket packet)
         {
             packet.WriteString(Name);
             packet.WriteString(UnityId);
+            packet.WriteString(Version);
         }
     }
 }

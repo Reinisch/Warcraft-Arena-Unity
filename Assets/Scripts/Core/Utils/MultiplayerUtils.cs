@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UdpKit;
 
 namespace Core
@@ -35,6 +36,23 @@ namespace Core
                     return DisconnectReason.Disconnected;
                 default:
                     return DisconnectReason.Unknown;
+            }
+        }
+
+        public static ClientConnectFailReason ToConnectFailReason(this ConnectRefusedReason refusedReason)
+        {
+            switch (refusedReason)
+            {
+                case ConnectRefusedReason.None:
+                    return ClientConnectFailReason.ServerRefusedConnection;
+                case ConnectRefusedReason.InvalidToken:
+                    return ClientConnectFailReason.InvalidToken;
+                case ConnectRefusedReason.InvalidVersion:
+                    return ClientConnectFailReason.InvalidVersion;
+                case ConnectRefusedReason.UnsupportedDevice:
+                    return ClientConnectFailReason.UnsupportedDevice;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(refusedReason), refusedReason, "Unknown refuse reason!");
             }
         }
     }

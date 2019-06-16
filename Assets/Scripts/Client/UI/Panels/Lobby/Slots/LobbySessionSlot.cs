@@ -13,6 +13,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private Button slotButton;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI mapNameLabel;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI serverNameLabel;
+        [SerializeField, UsedImplicitly] private TextMeshProUGUI versionNameLabel;
 
         public event Action<LobbySessionSlot> EventLobbySessionSlotSelected;
 
@@ -34,11 +35,11 @@ namespace Client
         {
             UdpSession = updSession;
 
-            var serverRoomToken = UdpSession?.GetProtocolToken() as ServerRoomToken;
-            if (serverRoomToken != null)
+            if (UdpSession?.GetProtocolToken() is ServerRoomToken serverRoomToken)
             {
                 mapNameLabel.text = serverRoomToken.Map;
                 serverNameLabel.text = serverRoomToken.Name;
+                versionNameLabel.text = serverRoomToken.Version;
                 gameObject.SetActive(true);
             }
             else

@@ -8,6 +8,7 @@ namespace Core
         public string LocalPlayerName { get; private set; }
         public string Name { get; private set; }
         public string Map { get; private set; }
+        public string Version { get; set; }
 
         public ServerRoomToken()
         {
@@ -28,6 +29,7 @@ namespace Core
             LocalPlayerName = packet.ReadString();
             Name = packet.ReadString();
             Map = packet.ReadString();
+            Version = packet.ReadString();
         }
 
         public void Write(UdpPacket packet)
@@ -35,6 +37,7 @@ namespace Core
             packet.WriteString(LocalPlayerName);
             packet.WriteString(Name);
             packet.WriteString(Map);
+            packet.WriteString(Version);
         }
     }
 }

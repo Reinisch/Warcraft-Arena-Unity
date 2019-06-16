@@ -7,6 +7,7 @@ namespace Core
     public abstract class PhotonBoltManager : GlobalEventListener
     {
         public Map<Guid, UdpSession> Sessions => BoltNetwork.SessionList;
+        public abstract string Version { get; }
 
         public event Action EventSessionListUpdated;
 
@@ -32,7 +33,7 @@ namespace Core
 
         public abstract void StartServer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail);
 
-        public abstract void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action onConnectFail);
+        public abstract void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action<ClientConnectFailReason> onConnectFail);
 
         public abstract void StartClient(Action onStartSuccess, Action onStartFail);
     }

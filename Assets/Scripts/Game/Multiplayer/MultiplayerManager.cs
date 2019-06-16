@@ -27,7 +27,7 @@ namespace Game
         [SerializeField, UsedImplicitly] private PhotonBoltServerListener boltServerListener;
         [SerializeField, UsedImplicitly] private PhotonBoltClientListener boltClientListener;
 
-        private const float MaxConnectionAttemptTime = 2.0f;
+        private const float MaxConnectionAttemptTime = 10.0f;
 
         private readonly ConnectionAttemptInfo connectionAttemptInfo = new ConnectionAttemptInfo();
         private GameManager.NetworkingMode networkingMode;
@@ -35,6 +35,7 @@ namespace Game
         private State state;
 
         public PhotonBoltClientListener ClientListener => boltClientListener;
+        public override string Version => "1.0.0";
 
         public void Initialize()
         {
@@ -66,6 +67,8 @@ namespace Game
         {
             StopAllCoroutines();
 
+            serverToken.Version = Version;
+
             StartCoroutine(StartServerRoutine(serverToken, onStartSuccess, onStartFail));
         }
 
@@ -76,11 +79,12 @@ namespace Game
             StartCoroutine(StartClientRoutine(onStartSuccess, onStartFail));
         }
 
-        public override void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action onConnectFail)
+        public override void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action<ClientConnectFailReason> onConnectFail)
         {
             StopAllCoroutines();
 
             state = State.Connecting;
+            token.Version = Version;
 
             StartCoroutine(ConnectClientRoutine(session, token, onConnectSuccess, onConnectFail));
         }
@@ -170,6 +174,7 @@ namespace Game
             if (state == State.Connecting)
             {
                 connectionAttemptInfo.IsRefused = true;
+                connectionAttemptInfo.RefuseReason = (token as ClientRefuseToken)?.Reason ?? ConnectRefusedReason.None;
                 state = BoltNetwork.IsRunning ? State.Active : State.Inactive;
             }
         }
@@ -297,7 +302,7 @@ namespace Game
             }
         }
 
-        private IEnumerator ConnectClientRoutine(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action onConnectFail)
+        private IEnumerator ConnectClientRoutine(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action<ClientConnectFailReason> onConnectFail)
         {
             if (BoltNetwork.IsRunning && !BoltNetwork.IsClient)
             {
@@ -316,7 +321,7 @@ namespace Game
 
             if (!BoltNetwork.IsClient)
             {
-                onConnectFail?.Invoke();
+                onConnectFail?.Invoke(ClientConnectFailReason.FailedToConnectToMaster);
                 yield break;
             }
 
@@ -330,16 +335,22 @@ namespace Game
 
                 if (connectionAttemptInfo.TimeSinceAttempt > MaxConnectionAttemptTime)
                 {
-                    onConnectFail?.Invoke();
+                    onConnectFail?.Invoke(ClientConnectFailReason.ConnectionTimeout);
 
                     state = BoltNetwork.IsRunning ? State.Active : State.Inactive;
 
                     yield break;
                 }
 
-                if (connectionAttemptInfo.IsFailed || connectionAttemptInfo.IsRefused)
+                if (connectionAttemptInfo.IsRefused)
                 {
-                    onConnectFail?.Invoke();
+                    onConnectFail?.Invoke(connectionAttemptInfo.RefuseReason.ToConnectFailReason());
+                    yield break;
+                }
+
+                if (connectionAttemptInfo.IsFailed)
+                {
+                    onConnectFail?.Invoke(ClientConnectFailReason.FailedToConnectToSession);
                     yield break;
                 }
 

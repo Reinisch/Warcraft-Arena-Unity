@@ -11,14 +11,14 @@ namespace Server
         [SerializeField, UsedImplicitly] private BalanceReference balance;
 
         private new WorldServerManager WorldManager { get; set; }
-        private UdpSession CurrentSession { get; set; }
+        private ServerRoomToken ServerToken { get; set; }
 
         public void Initialize(WorldServerManager worldManager)
         {
             base.Initialize(worldManager);
 
             WorldManager = worldManager;
-            WorldManager.SessionUpdated(CurrentSession);
+            WorldManager.SessionUpdated(ServerToken);
         }
 
         public new void Deinitialize()
@@ -47,18 +47,33 @@ namespace Server
         {
             base.SessionCreated(session);
 
-            CurrentSession = session;
-            WorldManager?.SessionUpdated(session);
+            ServerToken = (ServerRoomToken)session.GetProtocolToken();
+            WorldManager?.SessionUpdated(ServerToken);
         }
 
         public override void ConnectRequest(UdpEndPoint endpoint, IProtocolToken token)
         {
             base.ConnectRequest(endpoint, token);
 
-            if (token is ClientConnectionToken clientToken && clientToken.UnityId != SystemInfo.unsupportedIdentifier)
-                BoltNetwork.Accept(endpoint);
-            else
-                BoltNetwork.Refuse(endpoint);
+            if (!(token is ClientConnectionToken clientToken))
+            {
+                BoltNetwork.Refuse(endpoint, new ClientRefuseToken(ConnectRefusedReason.InvalidToken));
+                return;
+            }
+
+            if (clientToken.UnityId == SystemInfo.unsupportedIdentifier)
+            {
+                BoltNetwork.Refuse(endpoint, new ClientRefuseToken(ConnectRefusedReason.UnsupportedDevice));
+                return;
+            }
+
+            if (clientToken.Version != ServerToken.Version)
+            {
+                BoltNetwork.Refuse(endpoint, new ClientRefuseToken(ConnectRefusedReason.InvalidVersion));
+                return;
+            }
+
+            BoltNetwork.Accept(endpoint);
         }
 
         public override void Connected(BoltConnection boltConnection)

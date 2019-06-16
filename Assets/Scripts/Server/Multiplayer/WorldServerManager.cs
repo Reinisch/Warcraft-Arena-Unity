@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common;
 using Core;
-using UdpKit;
 using UnityEngine;
 
 namespace Server
@@ -53,9 +52,9 @@ namespace Server
             }
         }
 
-        internal void SessionUpdated(UdpSession session)
+        internal void SessionUpdated(ServerRoomToken sessionToken)
         {
-            serverRoomToken = (ServerRoomToken)session.GetProtocolToken();
+            serverRoomToken = sessionToken;
         }
 
         internal void EntityAttached(BoltEntity entity)

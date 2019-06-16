@@ -21,11 +21,11 @@ namespace Core
         {
             int oldValue = CurrentValue;
             int newValue = Mathf.Clamp(value, 0, MaxValue);
+            CurrentValue = newValue;
 
             if (oldValue != newValue)
                 EventHandler.ExecuteEvent(Entity, GameEvents.EntityAttributeChanged, AttributeType);
 
-            CurrentValue = newValue;
             return newValue - oldValue;
         }
 

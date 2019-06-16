@@ -1,7 +1,11 @@
-﻿using Core;
+﻿using System;
+using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 using TMPro;
+using Common;
+
+using EventHandler = Common.EventHandler;
 
 public class UnitFrame : MonoBehaviour
 {
@@ -9,32 +13,15 @@ public class UnitFrame : MonoBehaviour
     [SerializeField, UsedImplicitly] private AttributeBar mainResource;
     [SerializeField, UsedImplicitly] private TextMeshProUGUI unitName;
 
+    private readonly Action<EntityAttributes> onAttributeChangedAction;
     private Unit unit;
 
-    public void Initialize()
+    private UnitFrame()
     {
-        health.Initialize();
-        mainResource.Initialize();
-
-        gameObject.SetActive(false);
+        onAttributeChangedAction = OnAttributeChanged;
     }
 
-    public void Deinitialize()
-    {
-        health.Deinitialize();
-        mainResource.Deinitialize();
-    }
-
-    public void DoUpdate(float deltaTime)
-    {
-        if (unit != null)
-        {
-            health.Ratio = unit.HealthRatio;
-            mainResource.Ratio = Mathf.Clamp01((float) unit.Mana / unit.MaxMana);
-        }
-    }
-
-    public void SetUnit(Unit newUnit)
+    public void UpdateUnit(Unit newUnit)
     {
         if (unit != null)
             DeinitializeUnit();
@@ -49,10 +36,20 @@ public class UnitFrame : MonoBehaviour
     {
         this.unit = unit;
         unitName.text = unit.Name;
+        EventHandler.RegisterEvent(unit, GameEvents.EntityAttributeChanged, onAttributeChangedAction);
     }
 
     private void DeinitializeUnit()
     {
+        EventHandler.UnregisterEvent(unit, GameEvents.EntityAttributeChanged, onAttributeChangedAction);
         unit = null;
+    }
+
+    private void OnAttributeChanged(EntityAttributes attributeType)
+    {
+        if (attributeType == EntityAttributes.Health || attributeType == EntityAttributes.MaxHealth)
+            health.Ratio = unit.HealthRatio;
+        else if (attributeType == EntityAttributes.Power || attributeType == EntityAttributes.MaxPower)
+            mainResource.Ratio = Mathf.Clamp01((float)unit.Mana / unit.MaxMana);
     }
 }
