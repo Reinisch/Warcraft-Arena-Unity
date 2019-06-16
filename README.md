@@ -1,16 +1,19 @@
 # Warcraft Arena
-Converting old XNA/Unity 2D arena project from early university C# assignments to proper 3D World of Warcraft arena.
+World of Warcraft combat system implementation in Unity with Photon Bolt
 
 ## Project status
 **Done:**
-- [X] Blades edge map
-- [X] Mage model and animations setup
-- [X] Character/camera controller
+- [X] Server room creation
+- [X] Client connections
+- [X] Unit wow-like controller
+- [X] Player wow-like camera
+- [X] Basic location setup, player loading and spawning
+- [X] Basic spell effects and visuals
+- [X] Lobby UI
 
 **Next:**
-- [ ] Convert/Rewrite old XNA/Unity scripts
-- [ ] Implement proper character/spell system
-- [ ] Basic enemy AI
-- [ ] Photon multiplayer
-
-![alt link](Screenshots/WoW_Arena_Prototype.png)
+- [ ] Spell system, new effect types
+- [ ] Spell auras and buffs, aura application and management
+- [ ] Arena or battleground logic
+- [ ] Battle UI
+- [ ] New character, spells, locations, etc.

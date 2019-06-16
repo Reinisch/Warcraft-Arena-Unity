@@ -1,0 +1,4299 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>bolt</name>
+    </assembly>
+    <members>
+        <member name="T:Bolt.IEventFilter">
+            <summary>
+            Interface that can be implemented to create custom event filtering rules
+            </summary>
+            <example>
+            *Example:* An event filter that blocks chat events from a chat restricted player
+            
+            <code>
+            public class ChatEventFilter : IEventFilter {
+              public bool EventReceived(Event evt) {
+                if(chatRestrictedPlayerList.ContainsKey(evt.RaisedBy)) {
+                  return false;
+                }
+                else return true;
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:Bolt.IEventFilter.EventReceived(Bolt.Event)">
+            <summary>
+            Called when a new event is recieved
+            </summary>
+            <param name="ev">The event data</param>
+            <returns>Whether to accept or reject the event</returns>
+        </member>
+        <member name="T:Bolt.DefaultEventFilter">
+            <summary>
+            Default implementation of Bolt.IEventFilter that lets everything through
+            </summary>
+        </member>
+        <member name="T:Bolt.IEventListener">
+            <summary>
+            Interface that can be implemented on Bolt.GlobalEventListener, Bolt.EntityEventListener and Bolt.EntityEventListener&lt;T&gt;
+            to modify its invoke condition settings
+            </summary>
+            <example>
+            *Example:* A custom server callback class that invokes events even when disabled.
+            
+            <code>
+            [BoltGlobalBehaviour(BoltNetworkModes.Server)]
+            public class BoltServerCallbacks : Bolt.GlobalEventListener, Bolt.IEventListener {
+              public bool InvokeIfDisabled { return true; }
+              public bool InvokeIfGameObjectIsInactive { return true; }
+            
+              // event callback overrides below
+            } 
+            </code>
+            </example>
+        </member>
+        <member name="T:Bolt.Command">
+            <summary>
+            Base class that all commands inherit from
+            </summary>
+        </member>
+        <member name="P:Bolt.Command.ServerFrame">
+            <summary>
+            The value of the BoltNetwork.serverFrame property of the computer this command was created on
+            </summary>
+        </member>
+        <member name="P:Bolt.Command.IsFirstExecution">
+            <summary>
+            Returns true if it's the first time this command executed
+            </summary>
+        </member>
+        <member name="P:Bolt.Command.UserToken">
+            <summary>
+            User assignable token that lets you pair arbitrary data with the command, this is not replicated over the network to any remote computers.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Bolt.EntityBehaviour" -->
+        <member name="P:Bolt.EntityBehaviour.entity">
+            <summary>
+            The entity for this behaviour
+            </summary>
+            Use the ```entity``` property to access the internal ```BoltEntity``` of the gameObject that this script is attached to.
+            <example>
+            *Example:* Passing the ```entity``` of this gameObject to a ```MiniMap```, giving it the position, facing direction and the 
+            entity state (such as team, alive/dead, hostile, etc).
+            
+            <code>
+            public class PlayerController : Bolt.EntityBehaviour {
+              public override void ControlGained() {
+                GameCamera.instance.AddFollowTarget(this.transform);
+                MiniMap.instance.SetControlledPlayer(this.entity);
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:Bolt.EntityBehaviour.Initialized">
+            <summary>
+            Invoked when the entity has been initialized, before Attached
+            </summary>
+            <example>
+            *Example:* Notifying a ```MiniMap``` class to draw this gameObject by overriding the ```Initialized()``` method.
+            
+            <code>
+            public override void Initialized() {
+              MiniMap.instance.AddKnownPlayer(this.gameObject);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:Bolt.EntityBehaviour.Attached">
+            <summary>
+            Invoked when Bolt is aware of this entity and all internal state has been setup
+            </summary>
+            <example>
+            *Example:* Overriding the ```Attached()``` method to add state change callbacks to the newly valid state.
+            
+            <code>
+            public override void Attached() {
+              state.AddCallback("name", NameChanged);
+              state.AddCallback("team", TeamChanged);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:Bolt.EntityBehaviour.Detached">
+            <summary>
+            Invoked when this entity is removed from Bolt's awareness
+            </summary>
+            <example>
+            *Example:* Notifying the game minimap to remove the entity upon detaching from the simulation.
+            
+            <code>
+            public override void Detached() {
+              MiniMap.instance.RemoveKnownPlayer(this.entity);
+            {
+            </code> 
+            </example>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bolt.EntityBehaviour.SimulateOwner" -->
+        <member name="M:Bolt.EntityBehaviour.SimulateController">
+            <summary>
+            Invoked each simulation step on the controller
+            </summary>
+            <example>
+            *Example:* Creating a simple WASD-style movement input command and adding it to the queue of inputs. One input command 
+            should be added to the queue per execution and remember to create and compile a Command asset before using this method!
+            
+            <code>
+            bool forward;
+            bool backward;
+            bool left;
+            bool right;
+            
+            public override void SimulateController() {
+              IPlayerCommandInput input = PlayerCommand.Create();
+            
+              PollKeys();
+              
+              input.forward = forward;
+              input.backward = backward;
+              input.left = left;
+              input.right = right;
+              
+              entity.QueueInput(input);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:Bolt.EntityBehaviour.ControlGained">
+            <summary>
+            Invoked when you gain control of this entity
+            </summary>
+            <example>
+            *Example:* Using the ```ControlGained()``` callback to set up a ```GameCamera``` and ```MiniMap``` to focus on this entity.
+            
+            <code>
+            public override void ControlGained() {
+              GameCamera.instance.AddFollowTarget(this.transform);
+              MiniMap.instance.ControlGained(this.entity);
+            }
+            </code> 
+            </example>
+        </member>
+        <member name="M:Bolt.EntityBehaviour.ControlLost">
+            <summary>
+            Invoked when you lost control of this entity
+            </summary>
+            <example>
+            *Example:* Using the ```ControlLost()``` callback to remove the focus of a ```GameCamera``` and ```MiniMap```.
+            
+            <code>
+            public override void ControlLost() {
+              GameCamera.instance.RemoveFollowTarget();
+              MiniMap.instance.ControlLost(this.entity);
+            }
+            </code>
+            </example>  
+        </member>
+        <member name="M:Bolt.EntityBehaviour.MissingCommand(Bolt.Command)">
+            <summary>
+            Invoked on the owner when a remote connection is controlling this entity but we have not received any command for the current simulation frame.
+            </summary>
+            <param name="previous">The last valid command received</param>
+            <example>
+            *Example:* Handling missing input commands by using the last received input command to continue moving in the same direction.
+            
+            <code>
+            public override void MissingCommand(Bolt.Command previous)
+            {
+              WASDCommand cmd = (WASDCommand)command;
+              
+              cmd.Result.position motor.Move(cmd.Input.forward, cmd.Input.backward, cmd.Input.left, cmd.Input.right);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:Bolt.EntityBehaviour.ExecuteCommand(Bolt.Command,System.Boolean)">
+            <summary>
+            Invoked on both the owner and controller to execute a command
+            </summary>
+            <param name="command">The command to execute</param>
+            <param name="resetState">Indicates if we should reset the state of the local motor or not</param>
+            <example>
+            *Example:* Executing a simple WASD movement command. On the client this method can be called multiple times per fixed frame,
+            beginning with a reset to the last confirmed state (resetState == true), and then again for each unverified input command in the queue (resetState == false);
+            
+            Use the cmd.isFirstExecution property to do any type of one-shot behaviour such as playing sound or animations. This will prevent it from being called each time
+            the input is replayed on the client. 
+             
+            Remember to create and compile a Command asset before using this method!
+            
+            <code>
+            public override ExecuteCommand(Bolt.Command command, bool resetState) {
+              WASDCommand cmd = (WASDCommand)command;
+              if(resetState) {
+                motor.SetState(cmd.Result.position);
+              }
+              else {
+                 cmd.Result.position = motor.Move(cmd.Input.forward, cmd.Input.backward, cmd.Input.left, cmd.Input.right);
+                 
+                 if (cmd.IsFirstExecution) {
+                    AnimatePlayer(cmd);
+                 }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:Bolt.EntityBehaviour`1">
+            <summary>
+            Base class for unity behaviours that want to access Bolt methods with the state available also
+            </summary>
+            <typeparam name="TState">The type of state on this BoltEntity</typeparam>
+            <example>
+            *Example:* Using the ```IPlayerState``` type as a parameter and using its property ```state.team``` in code.
+            
+            <code>
+            public class PlayerController : Bolt.EntityBehaviour&lt;IPlayerState&gt; {
+              public override void ControlGained() {
+                state.AddCallback("team", TeamChanged);  
+              }
+              
+              void TeamChanged() {
+                var nameplate = GetComponent&lt;PlayerNameplate&gt;();
+                if (state.team == 0) nameplate.color = Color.Blue;
+                else nameplate.color = Color.Red;
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:Bolt.EntityBehaviour`1.state">
+            <summary>
+            The state for this behaviours entity
+            </summary>
+            <example>
+            *Example:* Using the ```state``` property to set up state callbacks.
+            
+            <code>
+            public class PlayerController : Bolt.EntityBehaviour&lt;IPlayerState&gt; {
+              public override void ControlGained() {
+                state.AddCallback("team", TeamChanged);  
+              }
+              
+              void TeamChanged() {
+                var nameplate = GetComponent&lt;PlayerNameplate&gt;();
+                if (state.team == 0) nameplate.color = Color.Blue;
+                else nameplate.color = Color.Red;
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="F:Bolt.Entity.EntityBehaviourQueryOption">
+            <summary>
+            Not really sure why these aren't just pulled from UnityObject when needed?
+            </summary>
+        </member>
+        <member name="T:Bolt.IEntityBehaviour">
+            <summary>
+            Interface for unity behaviours that want to access Bolt methods
+            </summary>
+        </member>
+        <member name="T:Bolt.IPriorityCalculator">
+            <summary>
+            Interface which can be implemented on a behaviour attached to an entity which lets you provide
+            custom priority calculations for state and events.
+            </summary>
+        </member>
+        <member name="M:Bolt.IPriorityCalculator.CalculateStatePriority(BoltConnection,System.Int32)">
+            <summary>
+            Called for calculating the priority of this entity for the connection passed in
+            </summary>
+            <param name="connection">The connection we are calculating priority for</param>
+            <param name="skipped">How many packets since we sent an update for this entity</param>
+            <returns>The priority of the entity</returns>
+        </member>
+        <member name="M:Bolt.IPriorityCalculator.CalculateEventPriority(BoltConnection,Bolt.Event)">
+            <summary>
+            Called for calculating the priority of an event sent to this entity for the connection passed in
+            </summary>
+            <param name="connection">The connection we are calculating priority for</param>
+            <param name="evnt">The event we are calculating priority for</param>
+            <returns>The priority of the event</returns>
+        </member>
+        <member name="T:Bolt.IEntityBehaviour`1">
+            <summary>
+            Interface for unity behaviours that want to access Bolt methods
+            </summary>
+            <typeparam name="TState">Bolt state of the entity</typeparam>
+        </member>
+        <member name="T:Bolt.Event">
+            <summary>
+            Base class that all events inherit from
+            </summary>
+            <example>
+            *Example:* Using a LogEvent object to send a message.
+            
+            <code>
+            void LogMessage(string message) { 
+              var logEvt = new LogEvent();
+              logEvt.message = message;
+              logEvt.Send();
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:Bolt.Event.FromSelf">
+            <summary>
+            Returns true if this event was sent from own connection
+            </summary>
+            <example>
+            *Example:* Showing chat messages from other players.
+            
+            <code>
+            public override void OnEvent(ChatEvent chatEvt) {
+              if(chatEvt.FromSelf) {
+                return;
+              }
+              
+              ChatWindow.instance.ShowMessage(chatEvt.message, chatEvt.timestamp);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="P:Bolt.Event.RaisedBy">
+            <summary>
+            The connection which raised this event
+            </summary>
+            <example>
+            *Example:* Blocking messages from players on a chat restricted list.
+            
+            <code>
+            public override void OnEvent(ChatEvent chatEvt) {
+              if(chatRestrictedPlayerList.ContainsKey(chatEvt.RaisedBy)) {
+                return;
+              }
+              
+              ChatWindow.instance.ShowMessage(chatEvt.message, chatEvt.timestamp);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:Bolt.Event.IsGlobalEvent">
+            <summary>
+            Returns true if this is a global event / not an entity event
+            </summary>
+            <example>
+            *Example:* Using the isGlobal property to determine whether to send local or whole-zone chat.
+            
+            <code>
+            public override void OnEvent(ChatEvent chatEvt) {
+              if(chatEvt.isGlobalEvent) {
+                BroadcastZoneChat(chatEvt.message, chatEvt.timestamp);
+              }
+              else {
+                SendLocalChat(chatEvt.message, chatEvt.timestamp);
+              }   
+            }
+            </code>
+            </example>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Bolt.Event.BinaryData" -->
+        <member name="M:Bolt.Event.Send">
+            <summary>
+            Enqueue this object for sending across the network
+            </summary>
+            <example>
+            *Example:* Sending a log message.
+            
+            <code>
+            void LogMessage(string message) { 
+              var logEvt = new LogEvent();
+              logEvt.message = message;
+              logEvt.Send();
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:Bolt.ReliabilityModes">
+            <summary>
+            The reliability mode of an event
+            </summary>
+        </member>
+        <member name="T:Bolt.EntityTargets">
+            <summary>
+            The target of an entity event
+            </summary>
+        </member>
+        <member name="T:Bolt.GlobalTargets">
+            <summary>
+            The target of a global event
+            </summary>
+        </member>
+        <member name="M:Bolt.IPrefabPool.LoadPrefab(Bolt.PrefabId)">
+            <summary>
+            Called by Bolt to inspect a prefab before instantiating it. The object
+            returned from this method can be the prefab itself, it does not have
+            to be a unique instance.
+            </summary>
+            <param name="prefabId">The id of the prefab we are looking for</param>
+            <returns>A game object representing the prefab or an instance of the prefab</returns>
+        </member>
+        <member name="M:Bolt.IPrefabPool.Instantiate(Bolt.PrefabId,UnityEngine.Vector3,UnityEngine.Quaternion)">
+            <summary>
+            This is called when bolt wants to create a new instance of an entity prefab.
+            </summary>
+            <param name="prefabId">The id of this prefab</param>
+            <param name="position">The position we want the instance instantiated at</param>
+            <param name="rotation">The rotation we want the instance to take</param>
+            <returns>The newly instantiate object, or null if a prefab with <paramref name="prefabId"/> was not found</returns>
+        </member>
+        <member name="M:Bolt.IPrefabPool.Destroy(UnityEngine.GameObject)">
+            <summary>
+            This is called when Bolt wants to destroy the instance of an entity prefab.
+            </summary>
+            <param name="gameObject">The instance to destroy</param>
+        </member>
+        <member name="T:Bolt.DefaultPrefabPool">
+            <summary>
+            Deault implementation of Bolt.IPrefabPool which uses GameObject.Instantiate and GameObject.Destroy
+            </summary>
+        </member>
+        <member name="T:Bolt.IState">
+            <summary>
+            Base interface for all states
+            </summary>
+        </member>
+        <member name="P:Bolt.IState.Animator">
+            <summary>
+            The Animator component associated with this entity state
+            </summary>
+        </member>
+        <member name="P:Bolt.IState.AllAnimators">
+            <summary>
+            A collection of all Animator components associated with this entity state
+            </summary>
+        </member>
+        <member name="M:Bolt.IState.SetAnimator(UnityEngine.Animator)">
+            <summary>
+            Set the animator object this state should use for reading/writing mecanim parameters
+            </summary>
+            <param name="animator">The animator object to use</param>
+        </member>
+        <member name="M:Bolt.IState.AddCallback(System.String,Bolt.PropertyCallback)">
+            <summary>
+            Allows you to hook up a callback to a specific property
+            </summary>
+            <param name="path">The path of the property</param>
+            <param name="callback">The callback delegate</param>
+        </member>
+        <member name="M:Bolt.IState.AddCallback(System.String,Bolt.PropertyCallbackSimple)">
+            <summary>
+            Allows you to hook up a callback to a specific property
+            </summary>
+            <param name="path">The path of the property</param>
+            <param name="callback">The callback delegate</param>
+        </member>
+        <member name="M:Bolt.IState.RemoveCallback(System.String,Bolt.PropertyCallback)">
+            <summary>
+            Removes a callback from a property
+            </summary>
+            <param name="path">The path of the property</param>
+            <param name="callback">The callback delegate to remove</param>
+        </member>
+        <member name="M:Bolt.IState.RemoveCallback(System.String,Bolt.PropertyCallbackSimple)">
+            <summary>
+            Removes a callback from a property
+            </summary>
+            <param name="path">The path of the property</param>
+            <param name="callback">The callback delegate to remove</param>
+        </member>
+        <member name="M:Bolt.IState.RemoveAllCallbacks">
+            <summary>
+            Clears all callbacks currently set.  This is useful when pooling entities and you wish to clear out the current callbacks before returning the entity to the pool.
+            </summary>
+        </member>
+        <member name="M:Bolt.IState.SetDynamic(System.String,System.Object)">
+            <summary>
+            Set a property dynamically by string name
+            </summary>
+            <param name="property">The property name to set</param>
+            <param name="value">The property value to set</param>
+        </member>
+        <member name="M:Bolt.IState.GetDynamic(System.String)">
+            <summary>
+            Gets a property dynamically by string name
+            </summary>
+            <param name="property">The property name to get</param>
+            <returns></returns>
+        </member>
+        <member name="T:Bolt.DoubleBuffer`1">
+            <summary>
+            Double buffer class represents a buffer with only 2 values,
+            swapped when you call @<see cref="M:Bolt.DoubleBuffer`1.Shift(`0)"/>
+            </summary>
+        </member>
+        <member name="M:Bolt.DoubleBuffer`1.Shift(`0)">
+            <summary>
+            Shift the specified value into the buffer, while 
+            saving the current value as the previous one
+            </summary>
+            <returns>The shift.</returns>
+            <param name="value">Value.</param>
+        </member>
+        <member name="M:Bolt.DoubleBuffer`1.InitBuffer(`0)">
+            <summary>
+            Inits the buffer.
+            </summary>
+            <returns>The buffer itself.</returns>
+            <param name="value">Value to set on the both spots on the buffer.</param>
+        </member>
+        <member name="T:Bolt.ArrayIndices">
+            <summary>
+            Contains the indices for all arrays that contain a specific property, in order
+            </summary>
+        </member>
+        <member name="P:Bolt.ArrayIndices.Length">
+            <summary>
+            The amount of indices
+            </summary>
+        </member>
+        <member name="T:Bolt.NetworkObj">
+            <summary>
+            Network object.
+            </summary>
+        </member>
+        <member name="T:Bolt.NetworkProperty">
+            <summary>
+            Network property describes one property of a State
+            </summary>
+        </member>
+        <member name="F:Bolt.QueryComponentOptionsGlobal.None">
+            <summary>
+            Don't query anything.
+            </summary>
+        </member>
+        <member name="F:Bolt.QueryComponentOptionsGlobal.Component">
+            <summary>
+            Query for a single component
+            </summary>
+        </member>
+        <member name="F:Bolt.QueryComponentOptionsGlobal.Components">
+            <summary>
+            Query for all components on this entity
+            </summary>
+        </member>
+        <member name="F:Bolt.QueryComponentOptionsGlobal.ComponentsInChildren">
+            <summary>
+            Query for all components on this entity and children.
+            </summary>
+        </member>
+        <member name="F:Bolt.QueryComponentOptions.UseGlobal">
+            <summary>
+            Use global options
+            </summary>
+        </member>
+        <member name="F:Bolt.QueryComponentOptions.None">
+            <summary>
+            Dont query anything
+            </summary>
+        </member>
+        <member name="F:Bolt.QueryComponentOptions.Component">
+            <summary>
+            Query for a single component
+            </summary>
+        </member>
+        <member name="F:Bolt.QueryComponentOptions.Components">
+            <summary>
+            Query for all components on this entity
+            </summary>
+        </member>
+        <member name="F:Bolt.QueryComponentOptions.ComponentsInChildren">
+            <summary>
+            Query for all components on this entity and children.
+            </summary>
+        </member>
+        <member name="T:Bolt.CachedObject`1">
+            <summary>
+            Utility struct for caching a unity component globally as a field on a class
+            </summary>
+            <typeparam name="T">The component type</typeparam>
+        </member>
+        <member name="P:Bolt.CachedObject`1.Exists">
+            <summary>
+            Returns false if the component is currently null
+            </summary>
+        </member>
+        <member name="P:Bolt.CachedObject`1.Component">
+            <summary>
+            Returns the cached component
+            </summary>
+        </member>
+        <member name="T:Bolt.CachedComponent`1">
+            <summary>
+            Utility struct for caching a unity component on the same object (or children) field on a class
+            </summary>
+            <typeparam name="T">The component type</typeparam>
+        </member>
+        <member name="P:Bolt.CachedComponent`1.Exists">
+            <summary>
+            Returns false if the component is currently null
+            </summary>
+        </member>
+        <member name="P:Bolt.CachedComponent`1.Component">
+            <summary>
+            Returns the cached component
+            </summary>
+        </member>
+        <member name="T:Bolt.NatPortMappingStatus">
+            <summary>
+            Whether a NAT port mapping is open or closed
+            </summary>
+        </member>
+        <member name="T:Bolt.Photon.PhotonCloudGlobalBehavior">
+            <summary>
+            This class is responsible to initialize the Photon Cloud system
+            in order to always mantain the player connected to the cloud services
+            and take care of the CCU count.
+            </summary>
+        </member>
+        <member name="M:Bolt.Photon.PhotonRoomProperties.AddRoomProperty(System.String,System.Object,System.Boolean)">
+            <summary>
+            Adds the room property.
+            </summary>
+            <returns><c>true</c>, if room property was added, <c>false</c> otherwise.</returns>
+            <param name="key">Propety Key.</param>
+            <param name="value">Property Value.</param>
+            <param name="showInLobby">If set to <c>true</c> show this property on the Lobby too, 
+            so the client can see the properties before entering the room.</param>
+        </member>
+        <member name="M:Bolt.Photon.PhotonRoomProperties.RemoveRoomProperty(System.String)">
+            <summary>
+            Removes the room property.
+            </summary>
+            <returns><c>true</c>, if room property was removed, <c>false</c> otherwise.</returns>
+            <param name="key">Property Key.</param>
+        </member>
+        <member name="P:Bolt.zeuz.Zeuz.ServiceID">
+            <summary>
+            Service ID of this instance (server only)
+            </summary>
+        </member>
+        <member name="P:Bolt.zeuz.Zeuz.IP">
+            <summary>
+            IP address on which this game server should listen
+            </summary>
+        </member>
+        <member name="P:Bolt.zeuz.Zeuz.GamePort">
+            <summary>
+            Port on which this game server should listen
+            </summary>
+        </member>
+        <member name="P:Bolt.zeuz.Zeuz.GroupID">
+            <summary>
+            Server Group ID of this instance
+            </summary>
+        </member>
+        <member name="P:Bolt.zeuz.Zeuz.ProfileID">
+            <summary>
+            Game Profile ID of this instance
+            </summary>
+        </member>
+        <member name="M:Bolt.zeuz.Zeuz.SetServerOverrides(System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Override settings for game server
+            </summary>
+            <param name="ip">IP address of the server</param>
+            <param name="gamePort">Port on which the server listen</param>
+            <param name="queryPort">Port for A2S queries</param>
+            <param name="groupID">Zeuz Server Group ID</param>
+            <param name="profileID">Zeuz Game Profile ID</param>
+        </member>
+        <member name="M:Bolt.zeuz.Zeuz.Initialize(System.Boolean)">
+            <summary>
+            Initialize zeuz - loads properties from command line arguments, setup query port and unreserve service (optional). We recommend to call this in Awake.
+            </summary>
+            <param name="unreserve">Set if you want to call Unreserve on zeuz API (with Service ID received as command line argument)</param>
+        </member>
+        <member name="M:Bolt.zeuz.Zeuz.Deinitialize(System.Boolean)">
+            <summary>
+            Deinitialize zeuz and unreserve service (optional). We recommend to call this when the game is over and all clients already left the server.
+            </summary>
+            <param name="unreserve">Set if you want to call Unreserve on zeuz API (with Service ID received as command line argument)</param>
+        </member>
+        <member name="E:Bolt.zeuz.ZeuzClient.OnServerInfoReceived">
+            <summary>
+            Called when the game server instance is successfully reserved and returns IP address and port
+            </summary>
+        </member>
+        <member name="E:Bolt.zeuz.ZeuzClient.OnServerNotAvailable">
+            <summary>
+            Called when the game server instance reservation failed
+            </summary>
+        </member>
+        <member name="M:Bolt.zeuz.ZeuzClient.GetRoomOptions(System.Int32,System.Int32)">
+            <summary>
+            Get room options with Server Group ID and Game Profile ID properties. Both properties set as visible for lobby.
+            </summary>
+            <param name="groupID">Zeuz Server Group ID</param>
+            <param name="profileID">Zeuz Game Profile ID</param>
+            <returns>New instance of RoomOptions, filled with Server Group ID and Game Profile ID</returns>
+        </member>
+        <member name="M:Bolt.zeuz.ZeuzClient.GetRoomOptions(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Get room options with Server Group ID, Game Profile ID and minimum players needed for server reservation. Server Group ID and Game Profile ID set as visible for lobby.
+            </summary>
+            <param name="groupID">Zeuz Server Group ID</param>
+            <param name="profileID">Zeuz Game Profile ID</param>
+            <param name="minPlayers">Minimum players needed for server reservation</param>
+            <returns>New instance of RoomOptions, filled with Server Group ID, Game Profile ID and minimum players needed for server reservation</returns>
+        </member>
+        <member name="M:Bolt.zeuz.ZeuzClient.GetRoomOptions(System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            Get room options with Server Group ID, Game Profile ID, custom server IP and Port properties. Server Group ID and Game Profile ID set as visible for lobby.
+            Use this if you want to bypass zeuz.io Reserve API call and send all clients in the room to a specific server instance.
+            </summary>
+            <param name="groupID">Zeuz Server Group ID</param>
+            <param name="profileID">Zeuz Game Profile ID</param>
+            <param name="customServerIP">IP address of custom server</param>
+            <param name="customServerPort">Port on which custom server listen</param>
+            <returns>New instance of RoomOptions, filled with Server Group ID, Game Profile ID, custom server IP address and Port properties</returns>
+        </member>
+        <member name="M:Bolt.zeuz.ZeuzClient.GetRoomOptions(System.Int32,System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            Get room options with Server Group ID, Game Profile ID, custom server IP, Port and minimum players needed for server reservation. Server Group ID and Game Profile ID set as visible for lobby.
+            Use this if you want to bypass zeuz.io Reserve API call and send all clients in the room to a specific server instance.
+            </summary>
+            <param name="groupID">Zeuz Server Group ID</param>
+            <param name="profileID">Zeuz Game Profile ID</param>
+            <param name="minPlayers">Minimum players needed for server reservation</param>
+            <param name="customServerIP">IP address of custom server</param>
+            <param name="customServerPort">Port on which custom server listen</param>
+            <returns>New instance of RoomOptions, filled with Server Group ID, Game Profile ID, custom server IP address and Port properties</returns>
+        </member>
+        <member name="M:Bolt.zeuz.ZeuzClient.GetRoomProperties(System.Int32,System.Int32)">
+            <summary>
+            Get room properties with Server Group ID, Game Profile ID
+            </summary>
+            <param name="groupID">Zeuz Server Group ID</param>
+            <param name="profileID">Zeuz Game Profile ID</param>
+            <returns>Hashtable filled with Server Group ID and Game Profile ID</returns>
+        </member>
+        <member name="M:Bolt.zeuz.ZeuzClient.GetRoomProperties(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Get room properties with Server Group ID, Game Profile ID and minimum players needed for server reservation.
+            </summary>
+            <param name="groupID">Zeuz Server Group ID</param>
+            <param name="profileID">Zeuz Game Profile ID</param>
+            <param name="minPlayers">Minimum players needed for server reservation</param>
+            <returns>Hashtable filled with Server Group ID and Game Profile ID</returns>
+        </member>
+        <member name="M:Bolt.zeuz.ZeuzClient.GetRoomProperties(System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            Get room properties with Server Group ID, Game Profile ID, custom server IP and Port.
+            Use this if you want to bypass zeuz.io Reserve API call and send all clients in the room to a specific server instance.
+            </summary>
+            <param name="groupID">Zeuz Server Group ID</param>
+            <param name="profileID">Zeuz Game Profile ID</param>
+            <param name="customServerIP">IP address of custom server</param>
+            <param name="customServerPort">Port on which custom server listen</param>
+            <returns>Hashtable filled with Server Group ID, Game Profile ID, custom server IP address and Port</returns>
+        </member>
+        <member name="M:Bolt.zeuz.ZeuzClient.GetRoomProperties(System.Int32,System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            Get room properties with Server Group ID, Game Profile ID, custom server IP, Port and minimum players needed for server reservation.
+            Use this if you want to bypass zeuz.io Reserve API call and send all clients in the room to a specific server instance.
+            </summary>
+            <param name="groupID">Zeuz Server Group ID</param>
+            <param name="profileID">Zeuz Game Profile ID</param>
+            <param name="minPlayers">Minimum players needed for server reservation</param>
+            <param name="customServerIP">IP address of custom server</param>
+            <param name="customServerPort">Port on which custom server listen</param>
+            <returns>Hashtable filled with Server Group ID, Game Profile ID, custom server IP address and Port</returns>
+        </member>
+        <member name="M:Bolt.zeuz.ZeuzClient.GetRoomPropertiesForLobby">
+            <summary>
+            Get room property names related to zeuz to expose them in lobby.
+            </summary>
+            <returns>Array of property names for zeuz Server Group ID and Game Profile ID</returns>
+        </member>
+        <member name="T:Bolt.Exceptions.BoltException">
+            <summary>
+            Generci Bolt exception.
+            </summary>
+        </member>
+        <member name="T:Bolt.Exceptions.BoltAssertFailedException">
+            <summary>
+            Thrown if a debug assert fails somewhere in the code
+            </summary>
+        </member>
+        <member name="T:Bolt.Exceptions.BoltPackageOverflowException">
+            <summary>
+            Bolt package overflow exception.
+            </summary>
+        </member>
+        <member name="M:Bolt.Exceptions.Assert.Fail(System.String)">
+            <summary>
+            Fail automatically with the specified message.
+            </summary>
+            <param name="message">Message.</param>
+        </member>
+        <member name="M:Bolt.Exceptions.Assert.Same(System.Object,System.Object,System.String)">
+            <summary>
+            Test if both A and B are not null and are the same, or raise a exception otherwise.
+            </summary>
+            <param name="a">The A component.</param>
+            <param name="b">The B component.</param>
+            <param name="error">Error message.</param>
+        </member>
+        <member name="M:Bolt.Exceptions.Assert.False``1(System.Boolean,System.Object)">
+            <summary>
+            Raises the Generic Exception Type if the condition is not False, passing the extraInfo object.
+            </summary>
+            <param name="condition">Condition to test as False.</param>
+            <param name="extraInfo">Extra info passed to the BoltException instance.</param>
+            <typeparam name="BE">A <see cref="T:Bolt.Exceptions.BoltException"/> derivative type.</typeparam>
+        </member>
+        <member name="M:Bolt.Exceptions.Assert.True``1(System.Boolean,System.Object)">
+            <summary>
+            Raises the Generic Exception Type if the condition is not True, passing the extraInfo object.
+            </summary>
+            <param name="condition">Condition to test as True.</param>
+            <param name="extraInfo">Extra info passed to the BoltException instance.</param>
+            <typeparam name="BE">A <see cref="T:Bolt.Exceptions.BoltException"/> derivative type.</typeparam>
+        </member>
+        <member name="T:Bolt.NetworkValue">
+            <summary>
+            NetworkValue describes one set of values that can be networked
+            </summary>
+        </member>
+        <member name="F:Bolt.Services.CCUService.PublishInterval">
+            <summary>
+            Interval between publish count information
+            </summary>
+        </member>
+        <member name="F:Bolt.Services.CCUService.ServerUrl">
+            <summary>
+            Remote Server
+            </summary>
+        </member>
+        <member name="M:Bolt.Services.CCUService.SendReport">
+            <summary>
+            Sends the report count to the Server
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bolt.Services.CCUService.SendData(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Create the HTTP request and send JSON data to remote server
+            </summary>
+            <param name="serverUrl">Server URL.</param>
+            <param name="appId">App identifier.</param>
+            <param name="licenseKey">License key.</param>
+            <param name="total">Total players in the Game.</param>
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.PersistBetweenStartupAndShutdown">
+            <summary>
+            Override this method and return true if you want the event listener to keep being attached to Bolt even 
+            when Bolt shuts down and starts again.
+            </summary>
+            <returns>True/False</returns>
+            <example>
+            *Example:* Configuring the persistence behaviour to keep this listener alive between startup and shutdown.
+            
+            <code>
+            public override bool PersistBetweenStartupAndShutdown() {
+              return true;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.BoltStartBegin">
+            <summary>
+            Callback triggered before the Bolt simulation starts.
+            </summary>
+            <example>
+            *Example:* Logging a message in the console when Bolt is starting.
+            
+            <code>
+            public override void BoltStartBegin() {
+              BoltLog.Debug("Warning: Bolt is Starting...");
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.BoltStartDone">
+            <summary>
+            Callback triggered after the Bolt simulation starts.
+            </summary>
+            <example>
+            *Example:* Logging a message in the console when Bolt is already started.
+            
+            <code>
+            public override void BoltStartDone() {
+              BoltLog.Debug("Warning: Bolt started...");
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.BoltStartFailed">
+            <summary>
+            Callback triggered when Bolt was not able to initialize completely.
+            </summary>
+            <example>
+            *Example:* Logging a message in the console when Bolt failed to start.
+            
+            <code>
+            public override void BoltStartFailed() {
+              BoltLog.Debug("Warning: Bolt failed to start.");
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.BoltShutdownBegin(Bolt.AddCallback)">
+             <summary>
+             Callback triggered when the Bolt simulation is shutting down.
+             </summary>
+             <example>
+             *Example:* Logging a message in the Bolt console when the server has shut down unexpectedly.
+             
+             <code>
+             public override void BoltShutdown(Bolt.AddCallback registerDoneCallback) {
+               BoltLog.Warn("Bolt is shutting down");
+            
+               registerDoneCallback(() =>
+               {
+                 BoltLog.Warn("Bolt is down");
+                 SceneManager.LoadScene(0);
+               });
+             }
+             </code>
+             </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.BoltShutdownBegin(Bolt.AddCallback,UdpKit.UdpConnectionDisconnectReason)">
+             <summary>
+             Callback triggered when the Bolt simulation is shutting down.
+             </summary>
+             <example>
+             *Example:* Logging a message in the Bolt console when the server has shut down unexpectedly.
+             
+             <code>
+             public override void BoltShutdown(Bolt.AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason = UdpConnectionDisconnectReason.Disconnected) {
+               BoltLog.Warn("Bolt is shutting down");
+            
+               registerDoneCallback(() =>
+               {
+                 BoltLog.Warn("Bolt is down");
+                 SceneManager.LoadScene(0);
+               });
+             }
+             </code>
+             </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.Connected(BoltConnection)">
+             <summary>
+             Callback triggered when a client has become connected to this instance
+             </summary>
+             <param name="connection">Endpoint of the connected client</param>
+             <example>
+             *Example:* Instantiating and configuring a player entity when a client connects to the server.
+             
+             <code>
+             public override void Connected(BoltConnection connection) {
+               BoltLog.Info("Accept Token {0} using Connect Token {1}", connection.AcceptToken, connection.ConnectToken);
+            
+               var player = BoltNetwork.Instantiate(BoltPrefabs.Player);
+               player.transform.position = spawnPoint.transform.position;
+               
+               var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+               Configure(player, initData);
+               
+               player.AssignControl(connection);
+             }
+             </code>
+             </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.ConnectFailed(UdpKit.UdpEndPoint,Bolt.IProtocolToken)">
+            <summary>
+            Callback triggered when a connection to remote server has failed
+            </summary>
+            <param name="endpoint">The remote address</param>
+            <param name="token">Connect token sent by the client when trying to connect.</param>
+            <example>
+            *Example:* Logging an error message when the remote connection has failed.
+            
+            <code>
+            public override void ConnectFailed(UdpEndPoint endpoint, Bolt.IProtocolToken token) {
+              BoltLog.Info(string.Format("Connection To ({0}:{1}) has failed", endpoint.Address.ToString(), endpoint.ToString()));
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.ConnectRequest(UdpKit.UdpEndPoint,Bolt.IProtocolToken)">
+            <summary>
+            Callback triggered when this instance receives an incoming client connection
+            </summary>
+            <param name="endpoint">The incoming client endpoint</param>
+            <param name="token">A data token sent from the incoming client</param>
+            <example>
+            *Example:* Accepting an incoming connection with user credentials in the data token.
+            
+            <code>
+            public override void ConnectRequest(UdpEndPoint endpoint, Bolt.IProtocolToken token) {
+              UserCredentials creds = (UserCredentials)token);
+              if(Authenticate(creds.username, creds.password)) {
+                BoltNetwork.Accept(connection.remoteEndPoint);
+              }
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.ConnectRefused(UdpKit.UdpEndPoint,Bolt.IProtocolToken)">
+            <summary>
+            Callback triggered when the connection to a remote server has been refused.
+            </summary>
+            <param name="endpoint">The remote server endpoint</param>
+            <param name="token">Data token sent by the refusing server</param>
+            <example>
+            *Example:* Logging an error message when the remote connection has been refused using an error message token from the server.
+            
+            <code>
+            public override void ConnectRefused(UdpEndPoint endpoint, Bolt.IProtocolToken token) {
+              ServerMessage.message = (ServerMessage)token;
+              BoltLog.Info(string.Format("Connection To ({0}:{1}) has been refused. Reason was {3}", 
+                endpoint.Address.ToString(), endpoint.ToString(), serverMessage.errorDescription));
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.ConnectAttempt(UdpKit.UdpEndPoint,Bolt.IProtocolToken)">
+            <summary>
+            Callback triggered when trying to connect to a remote endpoint
+            </summary>
+            <param name="endpoint">The remote server address</param>
+            <param name="token">Token passed by the client when trying to connect to a server.</param>
+            <example>
+            *Example:* Logging a message when initializing a connection to server.
+            
+            <code>
+            public override void ConnectAttempt((UdpEndPoint endpoint) {
+              BoltLog.Info(string.Format("To Remote Server At ({0}:{1})", endpoint.Address, endpoint.Port);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.ControlOfEntityLost(BoltEntity)">
+            <summary>
+            Callback triggered when this instance of Bolt loses control of a Bolt entity
+            </summary>
+            <param name="entity">The controlled entity</param>
+            <example>
+            *Example:* Setting up game components to no longer control an entity.
+            
+            <code>
+            public override void ControlOfEntityLost(BoltEntity entity) {
+              BoltLog.Info("Control lost with Token {0}", entity.ControlLostToken);
+              GameInput.instance.RemoveControlledEntity(entity);
+              MiniMap.instance.RemoveControlledEntity(entity);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.ControlOfEntityGained(BoltEntity)">
+            <summary>
+            Callback triggered when this instance of bolt receieves control of a bolt entity
+            </summary>
+            <param name="entity">The controlled entity</param>
+            <example>
+            *Example:* Setting up the game minimap and other components to use a specific entity as the player's controlled entity.
+            
+            <code>
+            public override void ControlOfEntityGained(BoltEntity entity) {
+              GameInput.instance.SetControlledEntity(entity);
+              MiniMap.instance.SetControlledEntity(entity);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.Disconnected(BoltConnection)">
+            <summary>
+            Callback triggered when disconnected from remote server
+            </summary>
+            <param name="connection">The remote server endpoint</param>
+            <example>
+            *Example:* Logging a disconnect message and returning to the main menu scene.
+            
+            <code>
+            public override void Disconnected(BoltConnection connection) {
+              BoltLog.Info("Disconnected with Token {0}", connection.DisconnectToken);
+              BoltLog.Info("Returning to main menu...");
+              Application.LoadLevel("MainMenu");
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.EntityAttached(BoltEntity)">
+            <summary>
+            Callback triggered when a new entity is attached to the bolt simulation
+            </summary>
+            <param name="entity">The attached entity</param>
+            <example>
+            *Example:* Setting up the game minimap to show a newly attached entity.
+            
+            <code>
+            public override void EntityAttached(BoltEntity entity) {
+              MiniMap.instance.SetKnownEntity(entity);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.EntityDetached(BoltEntity)">
+            <summary>
+            Callback triggered when a new entity is detached from the bolt simulation
+            </summary>
+            <param name="entity">The detached entity</param>
+            <example>
+            *Example:* Removing the newly detached entity from the game minimap.
+            
+            <code>
+            public override void EntityDetached(BoltEntity entity) {
+              MiniMap.instance.RemoveKnownEntity(entity);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.EntityReceived(BoltEntity)">
+            <summary>
+            Callback triggered when a bolt entity is recieved from the network
+            </summary>
+            <param name="entity">The recieved bolt entity</param>
+            <example>
+            *Example:* Loggging connections from remote players in the client bolt console
+            
+            <code>
+            public override void EntityReceived(BoltEntity entity) {
+              string name = entity.GetState&lt;PlayerState&gt;().Name; 
+              BoltLog.Info(string.Format("{0} Has Connected", name));
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.EntityFrozen(BoltEntity)">
+            <summary>
+            Callback triggered when a bolt entity is frozen.
+            </summary>
+            <param name="entity">The recieved bolt entity</param>
+            <example>
+            *Example:* Loggging connections from remote players in the client bolt console
+            
+            <code>
+            public override void EntityFrozen(BoltEntity entity) {
+              string name = entity.GetState&lt;PlayerState&gt;().Name; 
+              BoltLog.Info(string.Format("{0} Has been frozen", name));
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.EntityThawed(BoltEntity)">
+            <summary>
+            Callback triggered when a bolt entity is thawed.
+            </summary>
+            <param name="entity">The recieved bolt entity</param>
+            <example>
+            *Example:* Loggging connections from remote players in the client bolt console
+            
+            <code>
+            public override void EntityThawed(BoltEntity entity) {
+              string name = entity.GetState&lt;PlayerState&gt;().Name; 
+              BoltLog.Info(string.Format("{0} Has been thawed", name));
+            }
+            </code>
+            </example> 
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:BoltInternal.GlobalEventListenerBase.SceneLoadLocalBegin(System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:BoltInternal.GlobalEventListenerBase.SceneLoadLocalBegin(System.String,Bolt.IProtocolToken)" -->
+        <!-- Badly formed XML comment ignored for member "M:BoltInternal.GlobalEventListenerBase.SceneLoadLocalDone(System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:BoltInternal.GlobalEventListenerBase.SceneLoadLocalDone(System.String,Bolt.IProtocolToken)" -->
+        <member name="M:BoltInternal.GlobalEventListenerBase.SceneLoadRemoteDone(BoltConnection)">
+            <summary>
+            Callback triggered when a remote connection has completely loaded the current scene
+            </summary>
+            <param name="connection">The remote connection</param>
+            <example>
+            *Example:* Instantiating and configuring a player entity on the server and then assigning control to the client.
+            
+            <code>
+            public override void SceneLoadRemoteDone(BoltConnection connection) {
+              var player = BoltNetwork.Instantiate(BoltPrefabs.Player);
+              player.transform.position = spawnPoint.transform.position;
+              
+              var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+              Configure(player, initData);
+              
+              player.AssignControl(connection);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.SceneLoadRemoteDone(BoltConnection,Bolt.IProtocolToken)">
+            <summary>
+            Callback triggered when a remote connection has completely loaded the current scene
+            </summary>
+            <param name="connection">The remote connection</param>
+            <param name="token">Token passed by the Server when loading the new scene.</param>
+            <example>
+            *Example:* Instantiating and configuring a player entity on the server and then assigning control to the client.
+            
+            <code>
+            public override void SceneLoadRemoteDone(BoltConnection connection, Bolt.IProtocolToken token) {
+              var player = BoltNetwork.Instantiate(BoltPrefabs.Player);
+              player.transform.position = spawnPoint.transform.position;
+              
+              var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+              Configure(player, initData);
+              
+              player.AssignControl(connection);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.SessionListUpdated(UdpKit.Map{System.Guid,UdpKit.UdpSession})">
+             <summary>
+             Callback triggered when the session list is updated.
+             </summary>
+             <param name="sessionList">The updated session list</param>
+             <example>
+             *Example:* Loggging all sessions from the list.
+             
+             <code>
+             public override void SessionListUpdated(Map&lt;System.Guid, UdpSession&gt; sessionList) {
+               BoltLog.Info("Session list updated: {0} total sessions", sessionList.Count);
+            
+               foreach (var session in sessionList)
+               {
+                 UdpSession udpSession = session.Value as UdpSession;
+                 BoltLog.Info("UdpSession {0} Source: {1}", udpSession.HostName, udpSession.Source);
+               }
+             }
+             </code>
+             </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.SessionConnectFailed(UdpKit.UdpSession,Bolt.IProtocolToken)">
+            <summary>
+            Callback triggered when connecting to a session has failed.
+            </summary>
+            <param name="session">The session the client was trying to connect to</param>
+            <param name="token">Connection token</param>
+            <example>
+            *Example:* Loggging 
+            
+            <code>
+            public override void SessionConnectFailed(UdpSession session, IProtocolToken token)
+            {
+              BoltLog.Error("Failed to connect to session {0} with token {1}", session, token);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.SessionCreated(UdpKit.UdpSession)">
+            <summary>
+            Callback triggered when the requested session creation was successful.
+            </summary>
+            <param name="session">The created session</param>
+            <example>
+            *Example:* Loggging 
+            
+            <code>
+            public override void SessionCreated(UdpSession session)
+            {
+              BoltLog.Info("UdpSession {0} of type {1} was created", session.HostName, session.Source);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.SessionCreationFailed(UdpKit.UdpSession)">
+            <summary>
+            Callback triggered when the requested session creation has failed.
+            </summary>
+            <param name="session">The failed session</param>
+            <example>
+            *Example:* Loggging 
+            
+            <code>
+            public override void SessionCreationFailed(UdpSession session)
+            {
+              BoltLog.Info("UdpSession {0} of type {1} has failed to create", session.HostName, session.Source);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltInternal.GlobalEventListenerBase.StreamDataReceived(BoltConnection,UdpKit.UdpStreamData)">
+            <summary>
+            Callback triggered when binary stream data is received.
+            </summary>
+            <param name="connection">The sender connection</param>
+            <param name="data">The binary stream data</param>
+            <example>
+            *Example:* Receiving a custom player icon.
+            
+            <code>
+            public override void StreamDataReceived(BoltConnection connnection, UdpStreamData data) { 
+              Texture2D icon = new Texture2D(4, 4);
+              icon.LoadImage(data.Data);
+              
+              PlayerData playerData = (PlayerData)connection.userToken;
+              playerData.SetIcon(icon);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="T:BoltLog">
+            <summary>
+            Provides logging capabilities to a variety of outputs
+            </summary>
+            <example>
+            *Example:* Logging with different status levels.
+            
+            <code>
+            void OwnerOnAttack(BoltEntity player, BoltEntity target) {
+              if(!target.IsAttached) {
+                BoltLog.Error("Attempting to target an entity that is not attached: {0}", target.NetworkId);
+              }
+              else {
+                BoltLog.Info("{0} attack on {1}", player.NetworkId, target.NetworkId);
+                
+                var playerState = player.GetState&lt;PlayerState&gt;();
+                var targetState = target.GetState&lt;PlayerState&gt;();
+                
+                using (var mod = targetState.Modify()) {
+                  mod.HP -= playerState.BaseDamage * playerState.DamageModMultiplier;       
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltLog.IWriter">
+            <summary>
+            The interface providing log writing capabilities to an output
+            </summary>
+        </member>
+        <member name="T:BoltLog.File">
+            <summary>
+            IWriter implementation that outputs to a file
+            </summary>
+        </member>
+        <member name="T:BoltLog.ConsoleWriter">
+            <summary>
+            IWriter implementation that outputs to the Bolt console
+            </summary>
+        </member>
+        <member name="T:BoltLog.SystemOutWriter">
+            <summary>
+            IWriter implementation that outputs to the system console out
+            </summary>
+        </member>
+        <member name="T:BoltLog.UnityWriter">
+            <summary>
+            IWriter implementation that outputs to Unity console
+            </summary>
+        </member>
+        <member name="T:BoltRandomFunction">
+             <summary>
+             The type of random function to use for network latency simulation
+             </summary>
+             <example>
+             *Example:*
+             
+             <code>
+             void WriteSettings() {
+               BoltConfig config = BoltRuntimeSettings.instance.GetConfigCopy();
+               
+               if(config.simulatedRandomFunction == BoltRandomFunction.PerlinNoise) {
+                 Debug.Log("Using Perlin Noise!");
+               }
+               else {
+                 Debug.Log("Using System.Random!");
+               }
+             }
+             </code>
+             </example>
+            
+        </member>
+        <member name="T:BoltConnectionAcceptMode">
+            <summary>
+            Whether to accept connnections automatically or use the manual process
+            </summary>
+            <example>
+            *Example:*
+            
+            <code>
+            void WriteSettings() {
+              BoltConfig config = BoltRuntimeSettings.instance.GetConfigCopy();
+              
+              if(config.serverConnectionAcceptMode == BoltConnectionAcceptMode.Auto) {
+                Debug.Log("Using Automatic Connection Acceptance");
+              }
+              else {
+                Debug.Log("Using Manual Connection Acceptance");
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltConfigLogTargets">
+            <summary>
+            The target output of bolt logging
+            </summary>
+            <example>
+            *Example:* Conditionally writing to the Unity console depending on the log target of the current config.
+            
+            <code>
+            void WriteExtra(string message) {
+              BoltConfig config = BoltRuntimeSettings.instance.GetConfigCopy();
+              
+              if(config.logTargets == BoltConfigLogTargets.Unity) {
+                Debug.Log(message);
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltConfig">
+            <summary>
+            Bolt configuration settings object
+            </summary>
+            <example>
+            *Example:* Starting a bolt server simulation internally requires a config parameter (there is a bit more to it not shown here).
+            
+            <code>
+            static void Initialize(BoltNetworkModes modes, UdpEndPoint endpoint, BoltConfig config) {
+            
+              BoltNetworkInternal.__Initialize(modes, endpoint, config, CreateUdpPlatform());
+            
+            </code>
+            </example>
+        </member>
+        <member name="F:BoltConfig.framesPerSecond">
+            <summary>
+            The number of fixed updates to the simulation per second
+            </summary>
+        </member>
+        <member name="F:BoltConfig.packetSize">
+            <summary>
+            The UDP packet size in bytes
+            </summary>
+        </member>
+        <member name="F:BoltConfig.packetMaxEventSize">
+            <summary>
+            The max data payload size of a packet
+            </summary>
+        </member>
+        <member name="F:BoltConfig.maxEntityPriority">
+            <summary>
+            The max priority value for updating an entity
+            </summary>
+        </member>
+        <member name="F:BoltConfig.maxPropertyPriority">
+            <summary>
+            The max priority value for updating a property
+            </summary>
+        </member>
+        <member name="F:BoltConfig.scopeMode">
+            <summary>
+            Whether to scope connections manually or automatically
+            </summary>
+        </member>
+        <member name="F:BoltConfig.logTargets">
+            <summary>
+            The output targets to write log messages
+            </summary>
+        </member>
+        <member name="F:BoltConfig.disableDejitterBuffer">
+            <summary>
+            Whether dejitter delay buffering is disabled or not
+            </summary>
+        </member>
+        <member name="F:BoltConfig.serverConnectionLimit">
+            <summary>
+            The max number of server connections
+            </summary>
+        </member>
+        <member name="F:BoltConfig.serverConnectionAcceptMode">
+            <summary>
+            Whether to use automatic or manual mode for accepting incoming client connection requests
+            </summary>
+        </member>
+        <member name="F:BoltConfig.commandQueueSize">
+            <summary>
+            The max number of input commands that can be queued at once
+            </summary>
+        </member>
+        <member name="F:BoltConfig.commandRedundancy">
+            <summary>
+            The number of times to redundantly send input commands to the server
+            </summary>
+        </member>
+        <member name="F:BoltConfig.useNetworkSimulation">
+            <summary>
+            Whether to use network latency simulation
+            </summary>
+        </member>
+        <member name="F:BoltConfig.simulatedLoss">
+            <summary>
+            The packet loss rate to use in latency simulation
+            </summary>
+        </member>
+        <member name="F:BoltConfig.simulatedPingMean">
+            <summary>
+            The mean ping in milliseconds to use in latency simulation
+            </summary>
+        </member>
+        <member name="F:BoltConfig.simulatedPingJitter">
+            <summary>
+            The deviation to use in ping simulation
+            </summary>
+        </member>
+        <member name="F:BoltConfig.simulatedRandomFunction">
+            <summary>
+            Whether to use Perlin Noise or System.Random function to create ping deviations
+            </summary>
+        </member>
+        <member name="F:BoltConfig.connectionRequestAttempts">
+            <summary>
+            The max number of allowed connection attempts by a single client
+            </summary>
+        </member>
+        <member name="T:BoltGlobalBehaviourAttribute">
+            <summary>
+            Sets the network mode and scenes that a Bolt.GlobalEventListener should be run on
+            </summary>
+            <example>
+            *Example:* Setting up a server-side event listener to spawn players
+            
+            <code>
+            [BoltGlobalBehaviour(BoltNetworkModes.Server)]
+            public class BoltServerCallbacks: Bolt.GlobalEventListener {
+              public override void SceneLoadLocalDone(string map) {
+                SpawnServerPlayer();
+              }
+              
+              public override void SceneLoadRemoteDone(BoltConnection connection) {
+                SpawnRemotePlayer(connection);
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltGlobalBehaviourAttribute.Mode">
+            <summary>
+            Sets this behaviour to run only in server or client network mode
+            </summary>
+        </member>
+        <member name="P:BoltGlobalBehaviourAttribute.Scenes">
+            <summary>
+            A list of scenes for this behaviour to run on
+            </summary>
+        </member>
+        <member name="T:BoltNetwork">
+             <summary>
+             Holds global methods and properties for starting and
+             stopping bolt, instantiating prefabs and other utils
+             </summary>
+             <example>
+             *Example:* How to load a map on the server and instantiate a server controlled player.
+            
+             <code>
+             void LoadMap(string mapName) {
+               BoltNetwork.LoadScene(mapName);
+               var serverPlayer = BoltNetwork.Instantiate(BoltPrefabs.Player) as GameObject;
+               Configure(serverPlayer);
+             }
+             </code>
+            
+             *Example:* How to connect to a server with known IP and port number.
+            
+             <code>
+             void ConnectToServer(string host, int port) {
+               UdpEndPoint serverAddr = UdpEndPoint(UdpIPv4Address.Parse(host), (ushort)port);
+               BoltNetwork.Connect(server);
+             }
+             </code>
+            
+             *Example:* How to use the BoltNetwork ```frame``` property in an Update loop. Here we recalculate the player path 3 times per second.
+            
+             <code>
+             void Update() {
+               if(BoltNetwork.frame % 20) == 0) {
+                 playerMotor.Repath(targetPos);
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.Connections">
+             <summary>
+             All the connections connected to this host
+             </summary>
+             <example>
+             *Example:* Terminating all connections.
+            
+             <code>
+             void DisconnectAll() {
+               foreach(var connection in BoltNetwork.connections) {
+                 connection.Disconnect();
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.Clients">
+             <summary>
+             All clients connected to this host
+             </summary>
+             <example>
+             *Example:* Disconnecting all current clients.
+            
+             <code>
+             void DisconnectAllClients() {
+               foreach(var client in BoltNetwork.clients) {
+                 client.Disconnect();
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.CurrentAsyncOperation">
+            <summary>
+            Gets the current async operation.
+            </summary>
+            <value>The current async operation.</value>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:BoltNetwork.Entities" -->
+        <member name="P:BoltNetwork.Frame">
+             <summary>
+             The current local simulation frame number
+             </summary>
+             <example>
+             *Example:* Using the BoltNetwork frame in a loop to recalculate the player path once every 20 frames.
+            
+             <code>
+             void FixedUpdate() {
+               if(BoltNetwork.frame % 20) == 0) {
+                 playerMotor.Repath(targetPos);
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.FrameAlpha">
+            <summary>
+            Normalized value of how much time have passed since the last FixedUpdate
+            </summary>
+        </member>
+        <member name="P:BoltNetwork.FrameBeginTime">
+            <summary>
+            The time the last fixed update begain, same as Time.fixedTime
+            </summary>
+        </member>
+        <member name="P:BoltNetwork.FrameDeltaTime">
+             <summary>
+             The fixed frame delta, same as Time.fixedDeltaTime
+             </summary>
+             <example>
+             *Example:* How to use ```frameDeltaTime``` to translate a player's per-second health regeneration
+             rate into a per-frame
+             value.
+            
+             <code>
+             protected override void SimulateOwner() {
+               float hpRegen = BoltNetwork.frameDeltaTime * state.HealthRegen;
+               state.Modify().HP = Mathf.Clamp(state.HP + hpRegen, 0, 100);
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.FramesPerSecond">
+             <summary>
+             How many FixedUpdate frames per second bolt is configured to run
+             </summary>
+             <example>
+             *Example:* Calculating the number of frames between footsteps from a time interval.
+            
+             <code>
+             int FootstepFrameInterval(float stepTimeInterval) {
+               return Mathf.Round(stepTimeInterval / BoltNetwork.framesPerSecond);
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.GlobalObject">
+             <summary>
+             The global object that all global behaviours will be attached to
+             </summary>
+             <example>
+             *Example:* The ```globalObject``` can be used as a root for attaching new scripts such as
+             GlobalEventListener callbacks.
+            
+             <code>
+             protected override void SceneLoadLocalDone(string map) {
+               if(map.Equals("GameScene")) {
+                 BoltNetwork.globalObject.AddComponent&lt;ClientGameCallbacks&gt;();
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:BoltNetwork.IsConnected" -->
+        <member name="P:BoltNetwork.IsClient">
+             <summary>
+             Returns true if this host is a client
+             </summary>
+             <example>
+             *Example:* Implementing a client-side score sheet display to show the scores at the end of a game.
+            
+             <code>
+             void GameOver(string winTeam) {
+               if(BoltNetwork.isClient) {
+                 DisplayScoreSheet("Game Over", winTeam + " Team Wins!";
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.IsDebugMode">
+             <summary>
+             Returns true if Bolt was compiled in debug mode
+             </summary>
+             <example>
+             *Example:* Showing an FPS and ping counter when in debug mode.
+            
+             <code>
+             public override void BoltStartDone() {
+               if(BoltNetwork.isDebugMode) {
+                 PingView.instance.Show();
+                 FPSCounter.instance.Show();
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.IsRunning">
+             <summary>
+             If bolt is running
+             </summary>
+             <example>
+             *Example:* How to use the ```isRunning``` property to detect a downtime and restart the server.
+            
+             <code>
+             void Update() {
+               if(!BoltNetwork.isRunning &amp;&amp; BoltNetwork.time > lastRestart + 30f) {
+                 RestartServer();
+                 lastRestart = BoltNetwork.time;
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.IsServer">
+             <summary>
+             Returns true if this host is a server
+             </summary>
+             <example>
+             *Example:* Using the ```isServer``` property to implement server specific logic such as spawning NPCs
+             after a new map has been generated.
+            
+             <code>
+             public override void SceneLoadLocalDone(string map) {
+               GenerateMap();
+            
+               if(BoltNetwork.isServer)
+               {
+                 SpawnNPCs();
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.IsSinglePlayer">
+            <summary>
+            Returns true if this host is running in single player mode.
+            </summary>
+            <value><c>true</c> if is single player; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:BoltNetwork.MaxConnections">
+             <summary>
+             The max number of client connections to the server
+             </summary>
+             <example>
+             *Example:* Using the max connections value to enforce server connection limits on an incoming client connection.
+            
+             <code>
+             public override void ConnectRequest(UdpEndPoint clientAddr)
+             {
+               if(BoltNetwork.connections.Count == BoltNetwork.maxConnections)
+               {
+                 BoltNetwork.Refuse(clientAddr);
+                 return;
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.SceneObjects">
+             <summary>
+             A list of all BoltEntities in the server simulation
+             </summary>
+             <example>
+             *Example:* Destroying all player entities using a foreach loop over ```BoltNetwork.SceneObjects``` and
+             finding the players with ```StateIs()```.
+            
+             <code>
+             void DestroyAllPlayers()
+             {
+               foreach(var entity in BoltNetwork.SceneObjects)
+               {
+                 if(entity.StateIs&lt;IPlayerState&gt;())
+                 {
+                   BoltNetwork.Destroy(entity.gameObject);
+                 }
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.ScopeMode">
+            <summary>
+            The scoping mode active
+            </summary>
+        </member>
+        <member name="P:BoltNetwork.Server">
+             <summary>
+             The server connection
+             </summary>
+             <example>
+             *Example:* Displaying the current server IP address and port to the client.
+            
+             <code>
+             void ShowServerEndpoint() {
+               UdpEndPoint serverEndPoint = BoltNetwork.server.remoteEndPoint;
+               Message.Show("Current Server", string.Format("({0}:{1}", serverEndPoint.Address, serverEndPoint.Port);
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.ServerFrame">
+             <summary>
+             On the server this returns the local frame, on a client this returns
+             the currently estimated frame of all server objects we have received
+             </summary>
+             <example>
+             *Example:* Predicting the next possible fire frame on the client using the estimated ```serverFrame```.
+            
+             <code>
+             void ClientFireWeapon(PlayerCommand cmd) {
+               if(weapon.nextFireFrame &lt;= BoltNEtwork.serverFrame) {
+                 state.Modify().FireTrigger();
+                 weapon.nextFireFrame = BoltNetwork.serverFrame + weapon.refireRate;
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.ServerTime">
+             <summary>
+             The current server simulation time
+             </summary>
+             <example>
+             *Example:* Using the ```serverTime``` property to display a message when the max game time
+             has expired.
+            
+             <code>
+             void Update() {
+               if((BoltNetwork.serverTime - gameStartTime >= MAX_GAME_TIME) {
+                 Message.Show("Game Over", "Time Has Expired!");
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.SessionList">
+            <summary>
+            Gets the list of UdpSession received by the system.
+            </summary>
+            <value>The session list.</value>
+        </member>
+        <member name="P:BoltNetwork.Time">
+             <summary>
+             The local time, same as Time.time
+             </summary>
+             <example>
+             *Example:* Using the ```time``` property to periodically play footstep sounds on the client.
+            
+             <code>
+             void Footsteps() {
+               if(BoltNetwork.time >= lastFootstep + footstepInterval) {
+                 audio.PlayOneShot(footstepSound);
+                 lastFootstep = BoltNetwork.time;
+               }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltNetwork.UdpSocket">
+            <summary>
+            Gets the current UDP socket.
+            </summary>
+            <value>The UDP socket.</value>
+        </member>
+        <member name="P:BoltNetwork.Version">
+            <summary>
+            The current Photon Bolt assembly version number.
+            </summary>
+        </member>
+        <member name="P:BoltNetwork.CurrentVersion">
+            <summary>
+            Gets the current Bolt version as string.
+            </summary>
+        </member>
+        <member name="P:BoltNetwork.VersionConfiguration">
+            <summary>
+            Gets the Bolt Version description.
+            </summary>
+            <value>The Bolt Version description.</value>
+        </member>
+        <member name="M:BoltNetwork.AddGlobalEventListener(UnityEngine.MonoBehaviour)">
+            <summary>
+            Manually add a global event listener
+            </summary>
+            <param name="mb">The monobehaviour to invoke events on</param>
+        </member>
+        <member name="M:BoltNetwork.AddGlobalEventCallback``1(System.Action{``0})">
+            <summary>
+            Manually add a global event callback
+            </summary>
+        </member>
+        <member name="M:BoltNetwork.RemoveGlobalEventListener(UnityEngine.MonoBehaviour)">
+            <summary>
+            Manually remove a global event listener
+            </summary>
+            <param name="mb">The monobehaviour to be removed</param>
+        </member>
+        <member name="M:BoltNetwork.RemoveGlobalEventCallback``1(System.Action{``0})">
+            <summary>
+            Manually remove a global event callback
+            </summary>
+        </member>
+        <member name="M:BoltNetwork.EnableLanBroadcast(System.UInt16)">
+             <summary>
+             Enable LAN broadcasting
+             </summary>
+             <param name="port">The port to use for LAN broadcast. Default is 60000.</param>
+             <example>
+             *Example:* Enabling LAN broadcast after starting a new server using a specified port.
+            
+             <code>
+             void StartServer(int port, string map) {
+               BoltLauncher.StartServer(serverAddr);
+               BoltNetwork.EnableLanBroadcast(port);
+               BoltNetwork.LoadScene(map);
+             }
+             </code>
+             </example>
+        </member>
+        <member name="M:BoltNetwork.DisableLanBroadcast">
+             <summary>
+             Disable LAN broadcasting
+             </summary>
+             <example>
+             *Example:* Disabling LAN broadcasting at the end of a game.
+            
+             <code>
+             void GameOver() {
+               foreach(var client in BoltNetwork.clients) {
+                 client.Disconnect();
+               }
+               BoltNetwork.DisableLanBroadcast();
+             }
+             </code>
+             </example>
+        </member>
+        <member name="M:BoltNetwork.RegisterTokenClass``1">
+             <summary>
+             Registers a type as a potential protocol token
+             </summary>
+             <typeparam name="T">The type to register</typeparam>
+             <example>
+             *Example* Registering two token types on startup.
+            
+             <code>
+             public override void BoltStartDone() {
+               BoltNetwork.RegisterTokenClass&lt;UserToken&gt;();
+               BoltNetwork.RegisterTokenClass&lt;ServerMessage&gt;();
+             }
+             </code>
+             </example>
+        </member>
+        <member name="M:BoltNetwork.SetEventFilter(Bolt.IEventFilter)">
+             <summary>
+             Sets bolt to use a filter to accept or reject certain events based on custom filtering
+             </summary>
+             <param name="filter">Your custom implementation of the IEventFilter interface</param>
+             <example>
+             *Example:* A custom event filter implementation which does nothing.
+            
+             <code>
+             public class NullEventFilter : IEventFilter {
+               public bool EventReceived(Event ev) {
+                 return true;
+               }
+             }
+             </code>
+            
+             *Example:* Setting the ```NullEventFilter``` on startup.
+            
+             <code>
+             public override void BoltStartDone() {
+               SetEventFilter(new NullEventFilter());
+             }
+             </code>
+            
+             </example>
+        </member>
+        <member name="M:BoltNetwork.SetNetworkSimulation(System.Single,System.Int32,System.Int32)">
+            <summary>
+            Sets the simulated network loss/ping settings for this peer.
+            </summary>
+            <param name="loss">Simulated loss, 0.0-1.0</param>
+            <param name="pingMin">Simulated minimum ping</param>
+            <param name="pingMax">Simulated max ping</param>
+        </member>
+        <member name="M:BoltNetwork.UpdateSessionList(UdpKit.Map{System.Guid,UdpKit.UdpSession})">
+            <summary>
+            Updates the session list from an external source
+            </summary>
+            <param name="sessions">New sessions list.</param>
+        </member>
+        <member name="M:BoltNetwork.UpdateSceneObjectsLookup">
+            <summary>
+            Updates the scene objects for fast lookup.
+            </summary>
+        </member>
+        <member name="M:BoltNetwork.Accept(UdpKit.UdpEndPoint)">
+            <summary>
+            Signal bolt to accept an incoming client connection request
+            </summary>
+            <param name="endpoint">The UDP address of incoming client connection</param>
+            <example>
+            *Example:* Accepting an incoming connection.
+            
+            <code>
+            public override void ConnectRequest(UdpEndPoint endpoint) {
+              BoltNetwork.Accept(endPoint);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Accept(UdpKit.UdpEndPoint,Bolt.IProtocolToken)">
+            <summary>
+            Signal bolt to accept an incoming client connection request
+            </summary>
+            <param name="endpoint">The UDP address of incoming client connection</param>
+            <param name="acceptToken">A data token from the server</param> 
+            <example>
+            *Example:* Accepting an incoming connection and passing a data token to tell the client the preferred reconnect timeout.
+            
+            <code>
+            public override void ConnectRequest(BoltConnection connection) {
+              ConnectionToken token = new ConnectionToken();
+              connectionToken.retryTimeout = 30f;
+              
+              BoltNetwork.Accept(connection.remoteEndPoint, token);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Connect(UdpKit.UdpEndPoint,Bolt.IProtocolToken)">
+            <summary>
+            Connect to a server using their listening endpoint
+            </summary>
+            <remarks>BOLT PRO ONLY</remarks>
+            <param name="endpoint">Server end point to connect to</param>
+            <param name="token">Optional Token used when connecting to server, this can be the client credentials</param>
+            <example>
+            *Example:* A method to connect to any server ip and port as a client.
+            
+            <code>
+            void Connect(string host, int port) {
+              UdpEndPoint serverAddr = new UdpEndPoint(UdpIPv4Address.Parse(host), (ushort)port);
+              
+              Credentials cred = new Credentials("DevUser01", "DevPassword");
+              
+              BoltNetwork.Connect(serverAddr, cred);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Connect(UdpKit.UdpSession,Bolt.IProtocolToken)">
+            <summary>
+            Connect to a server using a session description
+            </summary>
+            <param name="session">Session description sent by the server</param>
+            <param name="token">Optional Token used when connecting to server, this can be the client credentials</param>
+            <example>
+            *Example:* A method to connect to any server ip and port as a client.
+            
+            <code>
+            void Connect(UdpSession session) {
+              Credentials cred = new Credentials("DevUser01", "DevPassword");
+              
+              BoltNetwork.Connect(session, cred);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Connect(System.UInt16)">
+            <summary>
+            Connect to a server using a session description
+            </summary>
+            <param name="port">Connect to a local server using its port</param>
+            <example>
+            *Example:* A method to connect to any server using only its port as a client.
+            
+            <code>
+            void Connect(int port) {
+              BoltNetwork.Connect(port);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.CreateStreamChannel(System.String,UdpKit.UdpChannelMode,System.Int32)">
+            <summary>
+            Creating a new binary streaming channel
+            </summary>
+            <param name="name">Channel name</param>
+            <param name="mode">Reliability mode</param>
+            <param name="priority">Bandwidth priority</param>
+            <returns>Channel name struct</returns>
+            <example>
+            *Example:* Creating an unreliable stream channel for voice and a reliable stream channel for sending custom player icons.
+            
+            <code>
+            public static UdpKit.UdpChannelName Voice;
+            public static UdpKit.UdpChannelName CustomPlayerIcon;
+            
+            public override void BoltStartBegin() {
+              Voice = BoltNetwork.CreateStreamChannel("Voice", UdpKit.UdpChannelMode.Unreliable, 1});
+              CustomPlayerIcon = BoltNetwork.CreateStreamChannel("CustomPlayerIcon", UdpKit.UdpChannelMode.Reliable, 4});
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.LoadScene(System.String)">
+            <summary>
+            Load a scene based on name, only possible on the Server
+            </summary>
+            <param name="scene">The scene to load</param>
+            <example>
+            *Example:* A utility function to start a server and initialize the first map.
+            <code>
+            public void StartServer(UdpEndPoint addr, string map) {
+              BoltLauncher.StartServer(addr);
+              BoltNetwork.LoadScene(map);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.LoadScene(System.String,Bolt.IProtocolToken)">
+            <summary>
+            Load a scene based on name, only possible on the Server
+            </summary>
+            <param name="scene">The scene to load</param>
+            <param name="token">A data token from the server</param>
+            <example>
+            *Example:* Passing a random tip to display to each client while the new map is loading.
+            
+            <code>
+            public void ChangeMap(string map) {
+              ServerMessage message = new ServerMessage("Loading Map ...", GameTips.GetNext());
+              BoltNetwork.LoadScene(map, message);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Refuse(UdpKit.UdpEndPoint)">
+            <summary>
+            Signal bolt to refuse an incoming connection request
+            </summary>
+            <param name="endpoint">The UDP address of incoming client connection</param>
+            <example>
+            *Example:* Refusing an incoming connection.
+            
+            <code>
+            public override void ConnectRequest(BoltConnection connection) {
+              BoltNetwork.Refuse(connection.remoteEndPoint);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Refuse(UdpKit.UdpEndPoint,Bolt.IProtocolToken)">
+            <summary>
+            Signal bolt to refuse an incoming connection request
+            </summary>
+            <param name="endpoint">The UDP address of incoming client connection</param>
+            <param name="token">A data token from the server</param> 
+            <example>
+            *Example:* Refusing an incoming connection and sending back an error message.
+            
+            <code>
+            public override void ConnectRequest(BoltConnection connection) {
+              ErrorMessage errorMessage = new ErrorMessage("Connection Refused", "Server Is Full");
+            
+              BoltNetwork.Refuse(connection.remoteEndPoint, errorMessage);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.SetServerInfo(System.String,Bolt.IProtocolToken)">
+            <summary>
+            Set Session information
+            </summary>
+            <param name="serverName">Name of the server</param>
+            <param name="token">User definable data</param>
+            <example>
+            *Example:* Setting the server info to contain the max number of connections allowed by this server.
+            
+            <code>
+            void SetSessionData(string serverName, string description, int maxPlayers) {
+              SessionData sessionData = new SessionData(description, BoltNetwork.maxConnections);
+              
+              BoltNetwork.SetServerInfo(serverName, sessionData);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.SetDedicatedServerInfo(System.String,Bolt.IProtocolToken)">
+            <summary>
+            Set Session information on a dedicated server.
+            </summary>
+            <param name="serverName">Server name.</param>
+            <param name="token">Token.</param>
+        </member>
+        <member name="M:BoltNetwork.Shutdown">
+            <summary>
+            Shutdown this instance.
+            </summary>
+        </member>
+        <member name="M:BoltNetwork.ShutdownImmediate">
+            <summary>
+            Shutdowns Bolt Immediately.
+            </summary>
+        </member>
+        <member name="M:BoltNetwork.PositionAtFrame(BoltHitboxBody,System.Int32)">
+            <summary>
+            Perform a hitbox rewind to get transform position at a given frame.
+            </summary>
+            <param name="hitboxBody">The BoltHitboxBody to rewind</param>
+            <param name="frame">The frame (aka BoltNetwork.frame) to rewind to</param>
+            <returns>The transform position of the hitbox on a given BoltNetwork.frame</returns>
+            <example>
+            *Example:* Using PositionAtFrame to perform a dist check between a caster and target entity, but some frames back in time.
+            
+            <code>
+            Vector3 RewindDistCheck(BoltEntity caster, BoltEntity target, int framesToRewind) {
+              casterHitbox = caster.GetComponent&lt;BoltHitboxBody&gt;();
+              targetHitbox = caster.GetComponent&lt;BoltHitboxBody&gt;();
+              casterRewindPos = BoltNetwork.PositionAtFrame(casterHitbox, BoltNetwork.frame - framesToRewind);
+              targetRewindPos = BoltNetwork.PositionAtFrame(targetHitbox, BoltNetwork.frame - framesToRewind);
+              return Vector3.Distance(casterRewindPos, targetRewindPos);
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltNetwork.RaycastAll(UnityEngine.Ray)">
+            <summary>
+            Perform a raycast against Bolt hitboxes
+            </summary>
+            <param name="ray">The ray to</param>
+            <returns>The hitboxes that intersected the ray</returns>
+            <example>
+            *Example:* Using RaycastAll to detect a hit event and apply damage in a player weapon firing method.
+            
+            <code>
+            void FireWeaponOwner(PlayerCommand cmd, BoltEntity entity) {
+              if(entity.IsOwner) {
+                using(var hits = BoltNetwork.RaycastAll(new Ray(entity.transform.position, cmd.Input.targetPos)) {
+                  var hit = hits.GetHit(0);
+                  var targetEntity = hit.body.GetComponent&lt;BoltEntity&gt;();
+                  
+                  if(targetEntity.StateIs&lt;ILivingEntity&gt;()) {
+                    targetEntity.GetState&lt;ILivingEntity&gt;().Modify().HP -= activeWeapon.damage; 
+                  }
+                }
+              }
+            }
+            </code>
+            </example> 
+        </member>
+        <member name="M:BoltNetwork.RaycastAll(UnityEngine.Ray,System.Int32)">
+            <summary>
+            Perform a raycast against Bolt hitboxes
+            </summary>
+            <param name="ray">The ray to</param>
+            <param name="frame">The frame to roll back to when performing this raycast</param>
+            <returns>The hitboxes that intersected the ray</returns>
+            <example>
+            *Example:* Using RaycastAll to detect a hit event on a specific previous frame and then apply damage in a player weapon firing method.
+            
+            <code>
+            void FireWeaponOwner(PlayerCommand cmd, BoltEntity entity) {
+              if(entity.IsOwner) {
+                using(var hits = BoltNetwork.RaycastAll(new Ray(entity.transform.position, cmd.Input.targetPos),
+                  cmd.ServerFrame)) {
+                  var hit = hits.GetHit(0);
+                  var targetEntity = hit.body.GetComponent&lt;BoltEntity&gt;();
+                  
+                  if(targetEntity.StateIs&lt;ILivingEntity&gt;()) {
+                    targetEntity.GetState&lt;ILivingEntity&gt;().Modify().HP -= activeWeapon.damage; 
+                  }
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:BoltNetwork.OverlapSphereAll(UnityEngine.Vector3,System.Single)" -->
+        <!-- Badly formed XML comment ignored for member "M:BoltNetwork.OverlapSphereAll(UnityEngine.Vector3,System.Single,System.Int32)" -->
+        <member name="M:BoltNetwork.Attach(UnityEngine.GameObject)">
+            <summary>
+            Manually attach an Entity.
+            </summary>
+            <param name="gameObject">Game object.</param>
+            <returns>The Entity to attach.</returns>
+        </member>
+        <member name="M:BoltNetwork.Attach(UnityEngine.GameObject,Bolt.IProtocolToken)">
+            <summary>
+            Manually attach an Entity.
+            </summary>
+            <param name="gameObject">Game object.</param>
+            <param name="token">Token.</param>
+            <returns>The attach.</returns>
+        </member>
+        <member name="M:BoltNetwork.Detach(UnityEngine.GameObject)">
+            <summary>
+            Manually detach an Entity.
+            </summary>
+            <param name="gameObject">Game object.</param>
+        </member>
+        <member name="M:BoltNetwork.Detach(UnityEngine.GameObject,Bolt.IProtocolToken)">
+            <summary>
+            Manually detach an Entity.
+            </summary>
+            <param name="gameObject">Game object.</param>
+            <param name="token">Token.</param>
+        </member>
+        <member name="M:BoltNetwork.Destroy(UnityEngine.GameObject)">
+            <summary>
+            Remove a gameObject from the bolt simulation.
+            </summary>
+            <param name="gameObject">The gameObject to remove</param>
+            <example>
+            *Example:* Destroying all player entities using a foreach loop over ```BoltNetwork.SceneObjects```.
+            
+            <code>
+            void DestroyAllPlayers() {
+              foreach(var entity in BoltNetwork.SceneObjects) {
+                if(entity.StateIs&lt;IPlayerState&gt;()) {
+                  BoltNetwork.Destroy(entity.gameObject);
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Destroy(UnityEngine.GameObject,Bolt.IProtocolToken)">
+            <summary>
+            Remove a gameObject from the bolt simulation.
+            </summary>
+            <param name="gameObject">The gameObject to remove</param>
+            <param name="token">Optional Token used when destroying an Entity, this can be used to send information about the destruction.</param>
+            <example>
+            *Example:* Destroying all player entities using a foreach loop over ```BoltNetwork.SceneObjects``` and 
+            sending a death recap message as a protocol token.
+            
+            <code>
+            void DestroyAllPlayers() {
+              foreach(var entity in BoltNetwork.SceneObjects) {
+                if(entity.StateIs&lt;IPlayerState&gt;()) {
+                  DeathRecap recap = new DeathRecap("Destroyed By Server");
+                  BoltNetwork.Destroy(entity.gameObject, recap);
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.FindEntity(Bolt.NetworkId)">
+            <summary>
+            Find an entity based on unique id
+            </summary>
+            <param name="id">The id to look up</param>
+            <returns>The entity if one was found, otherwise null</returns>
+            <example>
+            *Example:* Locating an entity within the scene using an id provided by the input command.
+            
+            <code>
+            public override void ExecuteCommand(Bolt.Command cmd, bool resetState) {
+              AttackCommand atkCmd = (AttackCommand)cmd;
+              vNetworkId targetId = atkCmd.Input.targetId;
+              
+              BoltEntity target = BoltNetwork.FindEntity(targetId);
+              activeWeapon.Fire(entity, target);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Instantiate(UnityEngine.GameObject)">
+            <summary>
+            Create a new entity in the simuation from a prefab
+            </summary>
+            <param name="prefab">The prefab to clone into the simulation</param>
+            <returns>A reference to the new bolt entity</returns>
+            <example>
+            *Example:* How to instantiate and configure a player entity inside a ```Bolt.GlobalEventListener``` on the server using
+            a public editor variable ```playerPrefab``` as the player prefab object.
+            
+            <code>
+            public GameObject playerPrefab;
+            
+            public override void SceneLoadRemoteDone(BoltConnection connection) {
+              var player = BoltNetwork.Instantiate(playerPrefab);
+              player.transform.position = spawnPoint.transform.position;
+              
+              var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+              Configure(player, initData);
+              
+              player.AssignControl(connection);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Instantiate(UnityEngine.GameObject,Bolt.IProtocolToken)">
+            <summary>
+            Create a new entity in the simuation from a prefab
+            </summary>
+            <param name="prefab">The prefab to clone into the simulation</param>
+            <param name="token">A data token of max size 512 bytes</param>
+            <returns>A reference to the new bolt entity</returns>
+            <example>
+            *Example:* How to instantiate a player entity and allow to to configure itself with some initial data.
+            
+            <code>
+            public GameObject playerPrefab;
+            
+            public override void SceneLoadRemoteDone(BoltConnection connection) {
+              var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+              var player = BoltNetwork.Instantiate(playerPrefab, initData);
+              player.AssignControl(connection);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Instantiate(UnityEngine.GameObject,UnityEngine.Vector3,UnityEngine.Quaternion)">
+            <summary>
+            Create a new entity in the simuation from a prefab
+            </summary>
+            <param name="prefab">The prefab to clone into the simulation</param>
+            <param name="position">A position vector</param>
+            <param name="rotation">A rotation quaternion</param>
+            <returns>A reference to the new bolt entity</returns>
+            <example>
+            *Example:* How to instantiate and configure a player entity with the position and rotation set to match
+            that of the ```spawnPoint``` transform reference.
+            
+            <code>
+            public GameObject playerPrefab;
+            
+            public override void SceneLoadRemoteDone(BoltConnection connection) {
+              var player = BoltNetwork.Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+              
+              var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+              Configure(player, initData);
+              
+              player.AssignControl(connection);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Instantiate(UnityEngine.GameObject,Bolt.IProtocolToken,UnityEngine.Vector3,UnityEngine.Quaternion)">
+            <summary>
+            Create a new entity in the simuation from a prefab
+            </summary>
+            <param name="prefab">The prefab to clone into the simulation</param>
+            <param name="token">A data token of max size 512 bytes</param>
+            <param name="position">A position vector</param>
+            <param name="rotation">A rotation quaternion</param>
+            <returns>A reference to the new bolt entity</returns>
+            <example>
+            *Example:* How to instantiate and configure a player entity with both an initial data token and a given position / rotation.
+            
+            <code>
+            public GameObject playerPrefab;
+            
+            public override void SceneLoadRemoteDone(BoltConnection connection) {
+              var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+              var player = BoltNetwork.Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+              
+              player.AssignControl(connection);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Instantiate(Bolt.PrefabId)">
+            <summary>
+            Create a new entity in the simuation from a prefab
+            </summary>
+            <param name="prefabId">The prefab to clone into the simulation</param>
+            <returns>A reference to the new bolt entity</returns>
+            <example>
+            *Example:* How to instantiate a player entity using the static ```BoltPrefabs``` class as a shortcut to the 
+            player prefab object.
+            
+            <code>
+            public override void SceneLoadRemoteDone(BoltConnection connection) {
+              var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+              var player = BoltNetwork.Instantiate(BoltPrefabs.Player, initData);
+              player.AssignControl(connection);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Instantiate(Bolt.PrefabId,Bolt.IProtocolToken)">
+            <summary>
+            Create a new entity in the simuation from a prefab
+            </summary>
+            <param name="prefabId">The prefab to clone into the simulation</param>
+            <param name="token">A data token of max size 512 bytes</param>
+            <returns>A reference to the new bolt entity</returns>
+            <example>
+            *Example:* How to instantiate a player entity and allow to to configure itself with some initial data using
+            static ```BoltPrefabs``` class as a shortcut to the player prefab object.
+            
+            <code>
+            public override void SceneLoadRemoteDone(BoltConnection connection) {
+              var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+              var player = BoltNetwork.Instantiate(BoltPrefabs.Player, initData);
+              player.AssignControl(connection);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Instantiate(Bolt.PrefabId,UnityEngine.Vector3,UnityEngine.Quaternion)">
+            <summary>
+            Create a new entity in the simuation from a prefab
+            </summary>
+            <param name="prefabId">The prefab to clone into the simulation</param>
+            <param name="position">A position vector</param>
+            <param name="rotation">A rotation quaternion</param>
+            <returns>A reference to the new bolt entity</returns>
+            <example>
+            *Example:* How to instantiate a player entity from the static ```BoltPrefabs``` class with a given position and rotation.
+            
+            <code>
+            public override void SceneLoadRemoteDone(BoltConnection connection) {
+              var player = BoltNetwork.Instantiate(BoltPrefabs.Player, spawnPoint.position, spawnPoint.rotation);
+              
+              var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+              Configure(player, initData);
+              
+              player.AssignControl(connection);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.Instantiate(Bolt.PrefabId,Bolt.IProtocolToken,UnityEngine.Vector3,UnityEngine.Quaternion)">
+            <summary>
+            Create a new entity in the simuation from a prefab
+            </summary>
+            <param name="prefabId">The prefab to clone into the simulation</param>
+            <param name="token">A data token of max size 512 bytes</param>
+            <param name="position">A position vector</param>
+            <param name="rotation">A rotation quaternion</param>
+            <returns>A reference to the new bolt entity</returns>
+            <example>
+            *Example:* How to instantiate and configure a player entity inside a ```Bolt.GlobalEventListener``` on the server using
+            initial data and the static ```BoltPrefabs``` class as a shortcut to the player prefab id.
+            
+            <code>
+            public override void SceneLoadRemoteDone(BoltConnection connection) {
+              var initData = prototype.GetNewPlayer(GameLogic.PlayableClass.Mercenary);
+              var player = BoltNetwork.Instantiate(BoltPrefabs.Player, spawnPoint.position, spawnPoint.rotation);
+              
+              player.AssignControl(connection);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.PreLoadPrefabDatabase">
+            <summary>
+            Async load Bolt Entity prefabs
+            </summary>
+            <example>
+            *Example:* Preloading assets in the background before Bolt starts.
+            
+            <code>
+            void loadInBackground() {
+              BoltNetwork.PreLoadPrefabDatabase();
+              Resources.LoadAsync&lt;myTerrain&gt;("Terrain");
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.SetPrefabPool(Bolt.IPrefabPool)">
+            <summary>
+            Sets a custom implementation for pooling prefabs
+            </summary>
+            <param name="pool">The custom pooling implementation</param>
+            <example>
+            *Example:* Setting bolt to use a custom prefab pooling implementation.
+            
+            <code>
+            public override void BoltStartDone() {
+              SetPrefabPool(new YourPrefabPool());
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltNetwork.SetCanReceiveEntities(System.Boolean)">
+            <summary>
+            Whether the local simulation can receive entities instantiated from other connections
+            </summary>
+            <param name="canReceiveEntities">WTrue/False</param>
+            <example>
+            *Example:* Configuring the server to allow receiving entities and open a LAN game.
+            
+            <code>
+            void ConfigureServer() {
+              BoltNetwork.SetCanReceiveEntities(true);
+              BoltNetwork.EnableLanBroadcast();
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltSingletonPrefab`1">
+            <summary>
+            Base class for monobehaviours that can be accessed as a singleton. The singleton is instantiated from the resources folder and should have the same name as the class type.
+            </summary>
+            <typeparam name="T">The name of the type and name of the prefab inside resources folder</typeparam>
+            <example>
+            *Example:* Using as a base class for PlayerCamera script.
+            
+            <code>
+            public class PlayerCamera : BoltSingletonPrefab&lt;PlayerCamera&gt; {
+              Transform _target;
+              
+              public new Camera camera { 
+                get { return _camera; }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltSingletonPrefab`1.instance">
+            <summary>
+            Returns the singleton instance of this type
+            </summary>
+            <example>
+            *Example:* Using the player camera singleton
+            
+            <code>
+            public override void ControlOfEntityGained(BoltEntity entity {
+              PlayerCamera.instance.SetTarget(entity);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltSingletonPrefab`1.Instantiate">
+            <summary>
+            Create an instance of the singleton prefab
+            </summary>
+            <example>
+            *Example:* Instantiate a player camera and game hud instance when the local scene is loaded. These will be cloned from
+            from prefabs inside a Resources folder that have the same name as the type ("PlayerCamera" and "GameHUD").
+            
+            <code>
+            public override void SceneLoadLocalDone(string map) {
+              if(map.Equals("Game")) {
+                GameHUD.Instantiate();
+                PlayerCamera.Instantiate();
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltHitbox">
+            <summary>
+            Defines one hitbox on a BoltHitboxBody
+            </summary>
+            <example>
+            *Example:* Resizing a sphere hitbox
+            
+            <code>
+            void ResizeSphereHitbox(BoltHitbox hitbox, float newRadius) {
+              if(hitbox.hitboxShape != BoltHitboxShape.Sphere) {
+                Debug.Log("Attemping to resize a non-sphere hitbox");
+                return;
+              }
+              
+              hitbox.hitboxSphereRadius = newRadius;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltHitbox.hitboxShape">
+            <summary>
+            Shape of the hitbox (box or sphere)
+            </summary>
+            <example>
+            *Example:* Sorting the hitboxes in a body based on shape.
+            
+            <code>
+            void ConfigureHitboxes(BoltHitboxBody body) {
+              foreach(BoltHitbox hitbox in body.hitboxes) {
+                switch(hitbox.hitboxShape) {
+                  case BoltHitboxShape.Sphere: ConfigureSphere(hitbox); break;
+                  case BoltHitboxShape.Box: ConfigureBox(hitbox); break;
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltHitbox.hitboxType">
+            <summary>
+            Type of the hitbox
+            </summary>
+            <example>
+            *Example:* Modifying a base damage value depending on the area of the hit.
+            
+            <code>
+            float CalculateDamage(BoltHitbox hit, float baseDamage) {
+              switch(hit.hitboxType) {
+                case BoltHitboxType.Head: return 2.0f * baseDamage;
+                
+                case BoltHitboxType.Leg:
+                case BoltHitboxType.UpperArm: return 0.7f * baseDamage;
+                
+                default: return baseDamage;
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltHitbox.hitboxCenter">
+            <summary>
+            Center of the hitbox in local coordinates
+            </summary>
+            <example>
+            *Example:* Getting a vector that points from the player's weapon to the head of a target entity.
+            
+            <code>
+            Vector3 GetHeadshotVector(BoltEntity target, IWeapon currentWeapon) {
+              BoltHitboxBody body = target.GetComponent&lt;BoltHitboxBody%gt();
+              BoltHitbox head = body.hitboxes[0];
+              
+              foreach(BoltHitbox hitbox in body.hitboxes) {
+                if(hitbox.hitboxType == BoltHitboxType.Head) {
+                  head = hitbox;
+                }
+              }
+              
+              return head.hitboxCenter - currentWeapon.fireOrigin;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltHitbox.hitboxBoxSize">
+            <summary>
+            Size of the hitbox if this shape is a box
+            </summary>
+            <example>
+            *Example:* A method to double the size of a player's head hitbox if it is a box.
+            
+            <code>
+            void DoubleHeadSize(BoltHitboxBody body) {
+              foreach(BoltHitbox hitbox in body.hitboxes) {
+                if(hitbox.hitboxType == BoltHitboxType.Head) {
+                  hitbox.hitboxBoxSize = hitbox.hitboxBoxSize * 2f;
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltHitbox.hitboxSphereRadius">
+            <summary>
+            Type of the hitbox
+            </summary>
+            <example>
+            *Example:* A method to double the size of a player's head hitbox if it is a sphere.
+            
+            <code>
+            void DoubleHeadSize(BoltHitboxBody body) {
+              foreach(BoltHitbox hitbox in body.hitboxes) {
+                if(hitbox.hitboxType == BoltHitboxType.Head) {
+                  hitbox.hitboxSphereRadius = hitbox.hitboxSphereRadius * 2f;
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltHitboxShape">
+            <summary>
+            What type of shape to use in a bolt hitbox
+            </summary>
+            <example>
+            *Example:* Sorting the hitboxes in a body based on shape.
+            
+            <code>
+            void ConfigureHitboxes(BoltHitboxBody body) {
+              foreach(BoltHitbox hitbox in body.hitboxes) {
+                switch(hitbox.hitboxShape) {
+                  case BoltHitboxShape.Sphere: ConfigureSphere(hitbox); break;
+                  case BoltHitboxShape.Box: ConfigureBox(hitbox); break;
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltHitboxBody">
+            <summary>
+            Defines a body of hitboxes to be tracked 
+            </summary>
+            <example>
+            *Example:* Adding a hitbox body to a character pre-configured with BoltHitbox components
+            
+            <code>
+            void AddHitboxBody(BoltEntity entity) { 
+              BoltHitbox[] hitboxes = entity.GetComponentsInChildren&lt;BoltHitbox&gt;();
+              
+              BoltHitboxBody body = entity.AddComponent&lt;BoltHitboxBody&gt;();
+              body.hitboxes = hitboxes;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltHitboxBody.proximity">
+            <summary>
+            A hitbox which should contain all other hitboxes on this entity
+            </summary>
+        </member>
+        <member name="P:BoltHitboxBody.hitboxes">
+            <summary>
+            An array of hitbox components that compose this body
+            </summary>
+            <example>
+            *Example:* Finding all hitbox components on an entity and adding them to a hitbox body
+            
+            <code>
+            void AddHitboxBody(BoltEntity entity) { 
+              BoltHitbox[] hitboxes = entity.gameObject.GetComponentsInChildren&lt;BoltHitbox&gt;();
+              
+              BoltHitboxBody body = entity.AddComponent&lt;BoltHitboxBody&gt;();
+              body.hitboxes = hitboxes;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltHitboxType">
+            <summary>
+            The body area represented by a bolt hitbox
+            </summary>
+            <example>
+            *Example:* Modifying a base damage value depending on the area of the hit.
+            
+            <code>
+            float CalculateDamage(BoltHitbox hit, float baseDamage) {
+              switch(hit.hitboxType) {
+                case BoltHitboxType.Head: return 2.0f * baseDamage;
+                
+                case BoltHitboxType.Leg:
+                case BoltHitboxType.UpperArm: return 0.7f * baseDamage;
+                
+                default: return baseDamage;
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltPhysicsHit">
+            <summary>
+            Describes a hit to a BoltHitbox on a BoltHitboxBody
+            </summary>
+            <example>
+            *Example:* Logging the details of a BoltPhysicsHit object.
+            
+            <code>
+            void FireWeaponOwner(PlayerCommand cmd, BoltEntity entity) {
+              if(entity.IsOwner) {
+                using(BoltPhysicsHits hits = BoltNetwork.RaycastAll(new Ray(entity.transform.position, cmd.Input.targetPos),
+                  cmd.ServerFrame))0 {
+                  
+                  if(hit.count > 0) {
+                    BoltPhysicsHit hit = hits.GetHit(0);   
+                    Debug.Log(string.Format("[HIT] Target={0}, Distance={1}, HitArea={2}", hit.body.gameObject.name, hit.distance, hit.hitbox.hitboxType);
+                  }
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="F:BoltPhysicsHit.distance">
+            <summary>
+            The distance away from the origin of the ray
+            </summary>
+        </member>
+        <member name="F:BoltPhysicsHit.hitbox">
+            <summary>
+            Which hitbox was hit
+            </summary>
+        </member>
+        <member name="F:BoltPhysicsHit.body">
+            <summary>
+            The body which was hit
+            </summary>
+        </member>
+        <member name="T:BoltPhysicsHits">
+            <summary>
+            Container for a group of BoltPhysicsHits
+            </summary>
+            <example>
+            *Example:* Using ```BoltNetwork.RaycastAll()``` to detect hit events and processing the BoltPhysicsHits object that is returned.
+            
+            <code>
+            void FireWeaponOwner(PlayerCommand cmd, BoltEntity entity) {
+              if(entity.IsOwner) {
+                using(BoltPhysicsHits hits = BoltNetwork.RaycastAll(new Ray(entity.transform.position, cmd.Input.targetPos),
+                  cmd.ServerFrame)) {
+                  var hit = hits.GetHit(0);
+                  var targetEntity = hit.body.GetComponent&lt;BoltEntity&gt;();
+                  
+                  if(targetEntity.StateIs&lt;ILivingEntity&gt;()) {
+                    targetEntity.GetState&lt;ILivingEntity&gt;().Modify().HP -= activeWeapon.damage; 
+                  }
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:BoltPhysicsHits.count" -->
+        <member name="P:BoltPhysicsHits.Item(System.Int32)">
+            <summary>
+            Array indexing of the hits in this object
+            </summary>
+            <param name="index">Index position</param>
+            <returns>The BoltPhysicsHit at the given index</returns>
+            <example>
+            *Example:* Using the array indexing to get the first object hit by a weapon firing raycast.
+            
+            <code>
+            void FireWeaponOwner(PlayerCommand cmd, BoltEntity entity) {
+              if(entity.IsOwner) {
+                using(BoltPhysicsHits hits = BoltNetwork.RaycastAll(new Ray(entity.transform.position, cmd.Input.targetPos),
+                  cmd.ServerFrame))0 {
+                  
+                  if(hit.count > 0) {
+                    var hit = hits[0];
+                    var targetEntity = hit.body.GetComponent&lt;BoltEntity&gt;();
+                  
+                    if(targetEntity.StateIs&lt;ILivingEntity&gt;()) {
+                      targetEntity.GetState&lt;ILivingEntity&gt;().Modify().HP -= activeWeapon.damage; 
+                    }
+                  }
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltPhysicsHits.GetHit(System.Int32)">
+            <summary>
+            Get the hit at a specific index
+            </summary>
+            <param name="index">Index position</param>
+            <returns>The BoltPhysicsHit at the given index</returns>
+            <example>
+            *Example:* Using the GetHit method to find the first object hit by a weapon firing raycast.
+            
+            <code>
+            void FireWeaponOwner(PlayerCommand cmd, BoltEntity entity) {
+              if(entity.IsOwner) {
+                using(BoltPhysicsHits hits = BoltNetwork.RaycastAll(new Ray(entity.transform.position, cmd.Input.targetPos),
+                  cmd.ServerFrame))0 {
+                  
+                  if(hit.count > 0) {
+                    var hit = hits.GetHit(0);
+                    var targetEntity = hit.body.GetComponent&lt;BoltEntity&gt;();
+                  
+                    if(targetEntity.StateIs&lt;ILivingEntity&gt;()) {
+                      targetEntity.GetState&lt;ILivingEntity&gt;().Modify().HP -= activeWeapon.damage; 
+                    }
+                  }
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltPhysicsHits.Dispose">
+            <summary>
+            Implementing the IDisposable interface to allow "using" syntax.
+            </summary>
+            <example>
+            *Example:* Implementing the Disponse() method allows BoltPhysicsHits to be in a "using" block.
+            
+            <code>
+            void DoRaycast(Ray ray) {
+              using(BoltPhysicsHits hits = BoltNetwork.RaycastAll(ray)) {
+                // the hits variable will be automatically disposed at the end of this block
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltConnection">
+            <summary>
+            The connection to a remote endpoint
+            </summary>
+            <example>
+            *Example:* Accepting an incoming connection.
+            
+            <code>
+            public override void ConnectRequest(UdpEndPoint endpoint) {
+              BoltNetwork.Accept(endPoint);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltConnection.IsLoadingMap">
+            <summary>
+            Returns true if the remote computer on the other end of this connection is loading a map currently, otherwise false
+            </summary>
+            <example>
+            *Example:* Removing a preloaded player entity from the game if they disconnect while loading.
+            
+            <code>
+            public override void Disconnected(BoltConnection connection) {
+              if(connection.isLoadingMap) {
+                PlayerEntityList.instance.RemoveFor(connection);
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltConnection.RemoteFrame">
+            <summary>
+            The estimated frame of the simulation running at the other end of this connection
+            </summary>
+            <example>
+            *Example:* Calculating the average frame difference of the client and server for all clients.
+            
+            <code>
+            float EstimateFrameDiff() {
+              int count
+              float avg;
+              
+              foreach(BoltConnection client in BoltNetwork.clients) {
+                count++;
+                avg += BoltNetwork.serverFrame - client.remoteFrame;
+              }
+              avg = avg / count;
+              return avg;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltConnection.AcceptToken">
+            <summary>
+            A data token that was passed by the server when accepting the connection
+            </summary>
+            <example>
+            *Example:* Using the <c>AcceptToken</c> to store connection settings.
+            
+            <code>
+            public override void Disconnected(BoltConnection connection, IProtocolToken token) {
+              ConnectionSettings connSettings = (ConnectionSettings)token;
+              
+              StartCoroutine(RemoveIfTimeout(connection, connSettings.maxTimeout));
+            }
+            </code>
+            </example>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:BoltConnection.PingNetwork" -->
+        <!-- Badly formed XML comment ignored for member "P:BoltConnection.DejitterFrames" -->
+        <!-- Badly formed XML comment ignored for member "P:BoltConnection.PingAliased" -->
+        <!-- Badly formed XML comment ignored for member "P:BoltConnection.BitsPerSecondIn" -->
+        <!-- Badly formed XML comment ignored for member "P:BoltConnection.BitsPerSecondOut" -->
+        <member name="P:BoltConnection.ConnectionId">
+             <summary>
+             For the host this will be the ID of the client, an on the client it will show the ID of the client
+             </summary>
+             <example>
+             *Example:* Getting a connection Id
+             
+             <code>
+            uint getID()
+            {
+                if (BoltNetwork.isClient)
+                {
+                    //my Id
+                    return BoltNetwork.server.ConnectionId;
+                }
+                else
+                {
+                    //Id of first client
+                    return BoltNetwork.clients.First().ConnectionId;
+                }
+            }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltConnection.RemoteEndPoint">
+            <summary>
+            Remote end point of this connection
+            </summary>
+            <example>
+            *Example:* Logging the address of new connections
+            
+            <code>
+            public override void Connected(BoltConnection connection) {
+              ServerLog.Write(string.Format("[{0}:{1}] New Connection", connection.remoteEndPoint.Address, connection.remoteEndPoint.Port);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltConnection.UserData">
+            <summary>
+            User assignable object which lets you pair arbitrary data with the connection
+            </summary>
+            <example>
+            *Example:* Using a reference to the player entity in the UserData property.
+            
+            <code>
+            public override void Disconnected(BoltConnection connection) {
+              BoltNetwork.Destroy((BoltEntity)connection.UserData);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltConnection.StreamBytes(UdpKit.UdpChannelName,System.Byte[])">
+            <summary>
+            Send a binary stream of data to this connection
+            </summary>
+            <param name="channel">The channel to send on</param>
+            <param name="data">The binary data</param>
+            <example>
+            *Example:* Sending the binary data of a custom icon texture to the server using a static reference 
+            to the "PlayerIcon" channel that was created inside a <c>Channels</c> class.
+            
+            <code>
+            void SendCustomIcon(Texture2D myCustomIcon) {
+              byte[] data = myCustomIcon.EncodeToPNG();
+              
+              BoltNetwork.server.StreamBytes(Channels.PlayerIcon, data);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltConnection.SetStreamBandwidth(System.Int32)">
+            <summary>
+            Set the max amount of data allowed per second
+            </summary>
+            <param name="bytesPerSecond">The rate in bytes / sec</param>
+            <example>
+            *Example:* Configuring the initial stream bandwidth of new connections to 20 kb/s.
+            
+            <code>
+            public override void Connected(BoltConnection connection) {
+              connection.SetStreamBandwidth(1024 * 20);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltConnection.SendData(System.Byte[])">
+            <summary>
+            Sends the data.
+            </summary>
+            <param name="data">Data.</param>
+        </member>
+        <member name="M:BoltConnection.ReceiveData(System.Byte[]@)">
+            <summary>
+            Receives the data.
+            </summary>
+            <returns><c>true</c>, if data was received, <c>false</c> otherwise.</returns>
+            <param name="data">Data.</param>
+        </member>
+        <member name="M:BoltConnection.Disconnect">
+            <summary>
+            Disconnect this connection
+            </summary>
+            <example>
+            *Example:* Terminating all connections.
+            
+            <code>
+            void DisconnectAll() {
+              foreach(var connection in BoltNetwork.connections) {
+                connection.Disconnect();
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltConnection.Disconnect(Bolt.IProtocolToken,UdpKit.UdpConnectionDisconnectReason)">
+            <summary>
+            Disconnect this connection with custom data
+            </summary>
+            <param name="token">A data token</param>
+            <param name="disconnectReason">Specify the disconnect reason to shutdown this connection</param>
+            <example>
+            *Example:* Terminating all connections with a custom error message.
+            
+            <code>
+            void DisconnectAll(int errorCode, string errorMessage) {
+              ServerMessage msg = new ServerMessage(errorCode, errorMessage);
+              
+              foreach(var connection in BoltNetwork.connections) {
+                connection.Disconnect(errorMessage);
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltConnection.Equals(System.Object)">
+            <summary>
+            Reference comparison between two connections
+            </summary>
+            <param name="obj">The object to compare</param>
+            <example>
+            bool Compare(BoltConnection A, BoltConnection B) {
+              return A.Equals(B);
+            }
+            </example>
+        </member>
+        <member name="M:BoltConnection.GetHashCode">
+            <summary>
+            A hash code for this connection
+            </summary>
+        </member>
+        <member name="M:BoltConnection.ToString">
+            <summary>
+            The string representation of this connection
+            </summary>
+            <example>
+            *Example:* Logging the address of new connections using the string representation.
+            
+            <code>
+            public override void Connected(BoltConnection connection) {
+              ServerLog.instance.Write("New Connection:" + connection.ToString());
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltConsole">
+            <summary>
+            The in-game console window
+            </summary>
+            <example>
+            *Example:* Writing a custom message to the console.
+            
+            <code>
+            void Start() {
+              BoltConsole.Write("[Start:" + this.gameObject.name + "]);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltConsole.Write(System.String,UnityEngine.Color)">
+            <summary>
+            Write one line to the console
+            </summary>
+            <param name="line">Text to write</param>
+            <param name="color">Color of the text</param>
+            <example>
+            *Example:* Writing a custom message to the console in color.
+            
+            <code>
+            void OnDeath() {
+              BoltConsole.Write("[Death:" + this.gameObject.name + "], Color.Red);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltConsole.Write(System.String)">
+            <summary>
+            Write one line to the console
+            </summary>
+            <param name="line">Text to write</param>
+            <example>
+            *Example:* Writing a custom message to the console.
+            
+            <code>
+            void OnSpawn() {
+              BoltConsole.Write("[Spawn:" + this.gameObject.name + "]);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltException">
+            <summary>
+            Base class for all bolt specific exceptions
+            </summary>
+        </member>
+        <member name="T:BoltRuntimeSettings">
+            <summary>
+            The runtime settings and confugration for the current bolt simulation
+            </summary>
+            <example>
+            *Example:* Using the settings instance to get a copy of the server config.
+            
+            BoltConfig GetServerConfig() {
+              return BoltRuntimeSettings.instance.GetConfigCopy();
+            }
+            </example>
+        </member>
+        <member name="P:BoltRuntimeSettings.instance">
+            <summary>
+            A singleton static instance of the runtime settings
+            </summary>
+            <example>
+            *Example:* Using the runtime settings to create a button mapping to show the bolt console
+            
+            void ConfigureDefault(GameButton button) {
+              if(button = GameButton.ShowConsole) { 
+                buttonMap.Add(button, BoltRuntimeSettings.instance.consoleToggleKey);
+              }
+            }
+            </example>
+        </member>
+        <member name="F:BoltRuntimeSettings.debugClientCount">
+            <summary>
+            The number of clients to start when launching a debug mode server
+            </summary>
+        </member>
+        <member name="F:BoltRuntimeSettings.debugStartPort">
+            <summary>
+            The default debug start port
+            </summary>
+        </member>
+        <member name="F:BoltRuntimeSettings.debugStartMapName">
+            <summary>
+            The scene to load after initializing bolt
+            </summary>
+        </member>
+        <member name="F:BoltRuntimeSettings.debugPlayAsServer">
+            <summary>
+            Whether to play as a server or not
+            </summary>
+        </member>
+        <member name="F:BoltRuntimeSettings.showDebugInfo">
+            <summary>
+            Whether to show debug info or not
+            </summary>
+        </member>
+        <member name="F:BoltRuntimeSettings.overrideTimeScale">
+            <summary>
+            Whether to show debug info or not
+            </summary>
+        </member>
+        <member name="F:BoltRuntimeSettings.logUncaughtExceptions">
+            <summary>
+            Whether to log uncaught exceptions
+            </summary>
+        </member>
+        <member name="F:BoltRuntimeSettings.consoleToggleKey">
+            <summary>
+            The keycode that will toggle visibility of the bolt console
+            </summary>
+        </member>
+        <member name="F:BoltRuntimeSettings.consoleVisibleByDefault">
+            <summary>
+            Whether the bolt console is initially visible or not
+            </summary>
+        </member>
+        <member name="F:BoltRuntimeSettings.photonAppId">
+            Photon stuff
+        </member>
+        <member name="M:BoltRuntimeSettings.GetConfigCopy">
+            <summary>
+            Get a memberwise copy of the current bolt config
+            </summary>
+            <returns>A bolt config</returns>
+            <example>
+            *Example:* Conditionally writing to the Unity console depending on the log target of the current config.
+            
+            <code>
+            void WriteExtra(string message) {
+              BoltConfig config = BoltRuntimeSettings.instance.GetConfigCopy();
+              
+              if(config.logTargets == BoltConfigLogTargets.Unity) {
+                Debug.Log(message);
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="F:BoltCore.FreezeProxyTempList">
+            <summary>
+            Temporary re-used list for holding current proxies that need to be frozen.
+            </summary>
+        </member>
+        <member name="T:BoltPoll">
+            <summary>
+            Bolt behaviour to poll the network and step entities in the simulation
+            </summary>
+            <example>
+            *Example:* if bolt is missing the ```BoltPoll`` behaviour then the simulation is broken and we should shut down.
+            
+            <code>
+            void CheckBoltHealth() {
+              if(BoltNetwork.globalObject.GetComponent&lt;BoltPoll&gt;() == null) {
+                Debug.Log("BoltPoll is missing!);
+                GameApplication.Shutdown(ErrorCode.Bolt);
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltSend">
+            <summary>
+            
+            </summary>
+            <example>
+            *Example:* if bolt is missing the ```BoltSend`` behaviour then the simulation is broken and we should shut down.
+            
+            <code>
+            void CheckBoltHealth() {
+              if(BoltNetwork.globalObject.GetComponent&lt;BoltSend&gt;() == null) {
+                Debug.Log("BoltSend is missing!);
+                GameApplication.Shutdown(ErrorCode.Bolt);
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:BoltEntitySettingsModifier">
+            <summary>
+            Modifier for bolt entity settings before it's attached
+            </summary>
+            <example>
+            *Example:* Attaching an entity with custom settings
+            
+            <code>
+            if (BoltNetwork.isServer) {
+              BoltEntity entity = gameObject.AddComponent&lt;BoltEntity&gt;();
+              
+              using (var mod = entity.ModifySettings()) {
+                mod.persistThroughSceneLoads = true;
+                mod.allowInstantiateOnClient = false;
+                mod.clientPredicted = false;
+                mod.prefabId = prefabId;
+                mod.updateRate = 1;
+                mod.sceneId = Bolt.UniqueId.None;
+                mod.serializerId = state;
+              }
+              
+              BoltNetwork.Attach(entity.gameObject);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltEntitySettingsModifier.prefabId">
+            <summary>
+            The prefab identifier
+            </summary>
+        </member>
+        <member name="P:BoltEntitySettingsModifier.sceneId">
+            <summary>
+            A unique identifier present on scene entities
+            </summary>
+        </member>
+        <member name="P:BoltEntitySettingsModifier.serializerId">
+            <summary>
+            A unique identifier of this entity state serializer
+            </summary>
+        </member>
+        <member name="P:BoltEntitySettingsModifier.updateRate">
+            <summary>
+            The network update rate for this entity
+            </summary>
+        </member>
+        <member name="P:BoltEntitySettingsModifier.autoFreezeProxyFrames">
+            <summary>
+            The network update rate for this entity
+            </summary>
+        </member>
+        <member name="P:BoltEntitySettingsModifier.clientPredicted">
+            <summary>
+            Enable or disable client prediction on the entity
+            </summary>
+        </member>
+        <member name="P:BoltEntitySettingsModifier.allowInstantiateOnClient">
+            <summary>
+            Enable or disable instantiation of the entity by clients
+            </summary>
+        </member>
+        <member name="P:BoltEntitySettingsModifier.persistThroughSceneLoads">
+            <summary>
+            Whether the entity is persistence between scenes
+            </summary>
+        </member>
+        <member name="P:BoltEntitySettingsModifier.sceneObjectAutoAttach">
+            <summary>
+            True if bolt should automatically attach the entity during instantiation
+            </summary>
+        </member>
+        <member name="P:BoltEntitySettingsModifier.alwaysProxy">
+            <summary>
+            True if this entity is always owned by the server
+            </summary>
+        </member>
+        <member name="T:BoltEntity">
+            <summary>
+            A game entity within the bolt simulation
+            </summary>
+            <example>
+            *Example:* Instantiating and taking control of a new <c>BoltEntity</c> that will replicate to all connected clients.
+            
+            <code>
+            public void InstantiateEntity() {
+              BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Player, RandomSpawn(), Quaternion.identity);
+              
+              entity.TakeControl();
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltEntity.PrefabId">
+            <summary>
+            The prefabId used to instantiate this entity
+            </summary>
+            <example>
+            *Example:* Cloning an entity with ```prefabId```.
+            
+            <code>
+            BoltEntity Replicate(BoltEntity entity) {
+              return Instantiate(entity.PrefabId, entity.transform.position, entity.transform.rotation);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltEntity.Source">
+            <summary>
+            If this entity was created on another computer, contains the connection we received this entity from, otherwise null
+            </summary>
+            <example>
+            *Example:* Using ```source``` to determine if an entity was originally instantiated on a remote host. 
+            
+            <code>
+            bool IsRemoteEntity(BoltEntity entity) {
+              return entity.source != null;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltEntity.NetworkId">
+            <summary>
+            The unique id of this entity
+            </summary>
+        </member>
+        <member name="P:BoltEntity.CanFreeze">
+            <summary>
+            Whether the entity can be paused / frozen
+            </summary>
+            <example>
+            *Example:* Pausing all entities that can be frozen.
+            
+            <code>
+            void Pause() { 
+              foreach(BoltEntity entity in BoltNetwork.entities) {
+                if(entity.CanFreeze) {
+                  entity.Freeze(true);
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltEntity.Controller">
+            <summary>
+            If this entity is controlled by a remote connection it contains that connection, otherwise null
+            </summary>
+            <example>
+            *Example:* Disconnecting a client when they run out of lives.
+            
+            <code>
+            void OnDeath(BoltEntity entity) {
+              if(entity.GetState%ltILivingEntity&gt;().lives == 0) {
+                entity.Controller.Disconnect(new ServerMessage("Game Over", "Zero Lives Remaining"));
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltEntity.IsAttached">
+            <summary>
+            If this entity is attached to Bolt or not
+            </summary>
+            <example>
+            *Example:* Checking if an entity is still attached before trying to modify the state. This can occur if entities are
+            destroyed immediately upon death.
+            
+            void DealDamage(BoltEntity entity, AttackData atkData) {
+              if(entity.IsAttached) {
+                entity.GetState&lt;ILivingEntity&gt;().Modify().hp -= atkData.damage;
+              }
+            }
+            </example>
+        </member>
+        <member name="P:BoltEntity.IsFrozen">
+            <summary>
+            If this entity is currently paused
+            </summary>
+            <example>
+            *Example:* Unpausing all frozen entities.
+            
+            <code>
+            void Unpause() {
+              foreach(BoltEntity entity in BoltNetwork.entities) {
+                if(entity.isFrozen) {
+                  entity.Freeze(false);
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltEntity.IsSceneObject">
+            <summary>
+            This is a scene object placed in the scene in the Unity editor
+            </summary>
+            <example>
+            *Example:* Configuring the state of initial buildings and minions during startup.
+            
+            <code>
+            public override void BoltStartDone() {
+              foreach(BoltEntity entity in BoltNetwork.entities) {
+                if(entity.IsSceneObject) {
+                  if(entity.StateIs&lt;IStructure&gt;()) {
+                    StructureFactory.Configure(entity);
+                  }
+                  else if(entity.StateIs&lt;IMinion&gt;()) {
+                    MinionFactory.Configure(entity);
+                  }
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltEntity.IsOwner">
+             <summary>
+             Did the local computer create this entity or not?
+             </summary>
+             <example>
+             *Example:* Implementing an authoritative weapon firing method.
+             
+             <code>
+             void FireWeapon(PlayerCommand cmd) {
+                if (activeWeapon.fireFrame + activeWeapon.refireRate &lt;= BoltNetwork.serverFrame) {
+                  activeWeapon.fireFrame = BoltNetwork.serverFrame;
+            
+                  state.Fire();
+            
+                  if (entity.IsOwner) {
+                    activeWeapon.OnOwner(cmd, entity);
+                  }
+                }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:BoltEntity.HasControl">
+            <summary>
+            Do we have control of this entity?
+            </summary>
+            <example>
+            *Example:* Implementing a method to turn controlled entities green on the minimap.
+            
+            <code>
+            public void AddKnownEntity(BoltEntity entity) {
+              _minimap.AddNewEntity(entity.NetworkId, entity);
+              
+              if(entity.HasControl) {
+                _minimap.entities[entity.NetworkId].color = Color.Green;
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltEntity.HasControlWithPrediction">
+            <summary>
+            Do we have control of this entity and are we using client side prediction
+            </summary>
+        </member>
+        <member name="P:BoltEntity.PersistsOnSceneLoad">
+            <summary>
+            Should this entity persist between scene loads
+            </summary>
+            <example>
+            *Example:* Pausing all persistent entities before changing scenes
+            
+            <code>
+            public override void SceneLoadLocalBegin(string map) {
+              foreach(BoltEntity entity in BoltNetwork.entities) {
+                if(entity.PersistsOnSceneLoad) {
+                  entity.Freeze(true);
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:BoltEntity.HasParent">
+            <summary>
+            Gets a value indicating whether this <see cref="T:BoltEntity"/> has parent.
+            </summary>
+            <value><c>true</c> if has parent; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="M:BoltEntity.ModifySettings">
+            <summary>
+            Creates an object which lets you modify the internal settings of an entity before it is attached to Bolt.
+            </summary>
+            <returns>The object used to modify entity settings</returns>
+        </member>
+        <member name="M:BoltEntity.SetScopeAll(System.Boolean)">
+            <summary>
+            Sets the scope of all currently active connections for this entity. Only usable if Scope Mode has been set to Manual.
+            </summary>
+            <param name="inScope">If this entity should be in scope or not</param>
+            <example>
+            *Example:* A method which renders an entity invisible to all active client connections.
+            
+            <code>
+            public void Disappear(BoltEntity entity) {
+              entity.SetScopeAll(false);
+            } 
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.SetScope(BoltConnection,System.Boolean)">
+            <summary>
+            Sets the scope for the connection passed in for this entity. Only usable if Scope Mode has been set to Manual.
+            </summary>
+            <param name="connection">The connection being scoped</param>
+            <param name="inScope">If this entity should be in scope or not</param>
+            <example>
+            *Example:* A coroutine that renders a player invisible to enemies for a given time in seconds.
+            
+            <code>
+            IEnumerator Stealth(BoltEntity entity, float stealthInterval) {
+              int team = entity.GetState&lt;IPlayerState&gt;().team;
+              
+              foreach(BoltEntity adjEntity in BoltNetwork.entities) {
+                if(adjEntity == entity) continue;
+                
+                if(!adjEntity.StateIs%ltIPlayerState%gt()) continue;
+                
+                int adjTeam = adjEntity.GetState&lt;IPlayerState&gt;().team;
+                if(team != adjTeam) {
+                  entity.SetScope(adjEntity.Controller, false);
+                }
+              }
+              
+              yield return new WaitForSeconds(stealthInterval);
+              
+              entity.SetScopeAll(true);
+            }
+            
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.SetParent(BoltEntity)">
+            <summary>
+            Sets the parent of this entity
+            </summary>
+            <param name="parent">The parent of this entity</param>
+            <example>
+            *Example:* Instantiating a vehicle and taking control of it.
+            
+            <code>
+            public void SpawnPlayerVehicle(BoltEntity playerEntity) {
+              var car = BoltNetwork.Instantiate(BoltPrefabs.Vehicle, playerEntity.transform.position, playerEntity.transform.rotation);
+              
+              car.AssignContro(playerEntity.Controller);
+              playerEntity.RevokeControl();
+              playerEntity.SetParent(car);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.TakeControl">
+            <summary>
+            Takes local control of this entity
+            </summary>
+            <example>
+            *Example:* Spawning a server-side player entity.
+            
+            <code>
+            void SpawnServerPlayer() {
+              var entity = Instantiate(BoltPrefabs.Player);
+              
+              entity.TakeControl();
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.TakeControl(Bolt.IProtocolToken)">
+            <summary>
+            Takes local control of this entity
+            </summary>
+            <param name="token">A data token of max size 512 bytes</param>
+            <example>
+            *Example:* Spawning a server-side player entity and initializing it with a local hotkey configuration.
+            
+            <code>
+            HotkeyConfig hotkeys;
+            
+            void SpawnServerPlayer() {
+              var entity = Instantiate(BoltPrefabs.Player);
+              
+              entity.TakeControl(hotkeys);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.ReleaseControl">
+            <summary>
+            Releases local control of this entity
+            </summary> 
+            <example>
+            *Example:* Releasing control of a player entity when exiting the game.
+            
+            <code>
+            BoltEntity controlledEntity;
+            
+            public override void ExitGame() {
+              controlledEntity.ReleaseControl();
+              BoltNetwork.server.Disconnect();
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.ReleaseControl(Bolt.IProtocolToken)">
+            <summary>
+            Releases local control of this entity
+            </summary>
+            <param name="token">A data token of max size 512 bytes</param>
+            <example>
+            *Example:* Releasing control of a player entity when exiting the game.
+            
+            <code>
+            BoltEntity controlledEntity;
+            
+            public override void ExitGame() {
+              ClientEvent evt = new ClientEvent();
+              evt.EvtCode = ClientEventCode.EXIT_GAME;
+              
+              controlledEntity.ReleaseControl(evt);
+              BoltNetwork.server.Disconnect();
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.AssignControl(BoltConnection)">
+            <summary>
+            Assigns control of this entity to a connection
+            </summary>
+            <param name="connection">The connection to assign control to</param>
+            <example>
+            *Example:* Instantiating and assigning control of an entity to a newly connected player.
+            
+            <code>
+            public override void Connected(BoltConnection connection) {
+              var playerEntity = BoltNetwork.Instantiate(BoltPrefabs.Player, RandomSpawn(), Quaternion.Identity);
+              
+              playerEntity.AssignControl(connection);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.AssignControl(BoltConnection,Bolt.IProtocolToken)">
+            <summary>
+            Assigns control of this entity to a connection
+            </summary>
+            <param name="connection">The connection to assign control to</param>
+            <param name="token">A data token of max size 512 bytes</param>
+            <example>
+            *Example:* Instantiating and assigning control of an entity to a newly connected player.
+            
+            <code>
+            public override void Connected(BoltConnection connection, IProtocolToken token) {
+              var playerEntity = BoltNetwork.Instantiate(BoltPrefabs.Player, RandomSpawn(), Quaternion.Identity);
+            
+              var fingerprint = ((UserInfo)token).fingerprint;
+              PlayerLoadout loadout;
+            
+              if(playerDatabase.Contains(fingerprint, out loadout)) {     
+                playerEntity.AssignControl(connection, loadout);
+              }
+              else {
+                playerEntity.AssignControl(connection, new BeginnerLoadout());
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.RevokeControl">
+            <summary>
+            Revokes control of this entity from a connection
+            </summary>
+            <example>
+            *Example:* A server-side stun routine that completely revokes control for the length of stun interval.
+            
+            <code>
+            IEnumerator Stun(BoltEntity entity, float stunInterval) {
+              var controller = entity.Controller;
+              entity.RevokeControl();
+              entity.GetState&lt;ILivingEntity&gt;().Modify().stunned = true;
+              
+              return new WaitForSeconds(stunInterval);
+              
+              entity.AssignControl(controller);
+              entity.GetState&lt;ILivingEntity&gt;().Modify().stunned = false;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.RevokeControl(Bolt.IProtocolToken)">
+            <summary>
+            Revokes control of this entity from a connection
+            </summary>
+            <param name="token">A data token of max size 512 bytes</param>
+            <example>
+            *Example:* A server-side stun routine that completely revokes control for the length of stun interval.
+            
+            <code>
+            IEnumerator Stun(BoltEntity entity, float stunInterval) {
+              var controller = entity.Controller;
+              CombatEventData evtData = new CombatEventData();
+              evtData.stunInterval = stunInterval;
+              
+              entity.RevokeControl(evtData);
+              entity.GetState&lt;ILivingEntity&gt;().Modify().stunned = true;
+              
+              return new WaitForSeconds(stunInterval);
+              
+              entity.AssignControl(controller);
+              entity.GetState&lt;ILivingEntity&gt;().Modify().stunned = false;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.IsController(BoltConnection)">
+            <summary>
+            Checks if this entity is being controlled by the connection
+            </summary>
+            <param name="connection">The connection to check</param>
+        </member>
+        <member name="M:BoltEntity.QueueInput(Bolt.INetworkCommandData)">
+            <summary>
+            Queue an input data on this entity for execution. This is called on a client which is 
+            controlling a proxied entity. The data will be sent to the server for authoritative execution
+            </summary>
+            <param name="data">The input data to queue</param>
+            <example>
+            *Example:* A ```SimulateController()``` loop that queues WASD-style movement input.
+            
+            <code>
+            bool forward;
+            bool backward;
+            bool left;
+            bool right;
+            
+            public override void SimulateController() {
+              IPlayerCommandInput input = PlayerCommand.Create();
+            
+              PollKeys();
+              
+              input.forward = forward;
+              input.backward = backward;
+              input.left = left;
+              input.right = right;
+              
+              entity.QueueInput(input);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.Idle(BoltConnection,System.Boolean)">
+            <summary>
+            Set this entity as idle on the supplied connection, this means that the connection 
+            will not receive update state for this entity as long as it's idle.
+            </summary>
+            <param name="connection">The connection to idle the entity on</param>
+            <param name="idle">If this should be idle or not</param>
+        </member>
+        <member name="M:BoltEntity.Freeze(System.Boolean)">
+            <summary>
+            Freeze or unfreeze an entity
+            </summary>
+            <param name="pause">True if entity should freeze and false to unfreeze</param>
+            <example>
+            *Example:* Pausing all entities.
+            
+            <code>
+            void Pause() { 
+              foreach(BoltEntity entity in BoltNetwork.entities) {
+                if(entity.CanFreeze) {
+                  entity.Freeze(true);
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.AddEventListener(UnityEngine.MonoBehaviour)">
+            <summary>
+            Add an event listener to this entity.
+            </summary>
+            <param name="behaviour">The behaviour to invoke event callbacks on</param>
+        </member>
+        <member name="M:BoltEntity.AddEventCallback``1(System.Action{``0})">
+            <summary>
+            Add a event callback to this entity.
+            </summary>
+        </member>
+        <member name="M:BoltEntity.RemoveEventListener(UnityEngine.MonoBehaviour)">
+            <summary>
+            Remove an event listern from this entity
+            </summary>
+            <param name="behaviour">The behaviour to remove</param>
+        </member>
+        <member name="M:BoltEntity.RemoveEventCallback``1(System.Action{``0})">
+            <summary>
+            Remove a event callback to this entity.
+            </summary>
+        </member>
+        <member name="M:BoltEntity.GetState``1">
+            <summary>
+            Get the state if this entity
+            </summary>
+            <typeparam name="TState">The type of state to get</typeparam>
+            <returns>The state</returns>
+            <example>
+            *Example:* Modifying the state of an entity to change its name.
+            
+            <code>
+            public void RenameEntity(BoltEntity entity, string name) {
+              entity.GetState&lt;IPlayerState&gt;().Modify().name = name;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.TryFindState``1(``0@)">
+            <summary>
+            A null safe way to look for a specific type of state on an entity
+            </summary>
+            <typeparam name="TState">The state type to search for</typeparam>
+            <param name="state">Entity to search</param>
+            <example>
+            *Example:* Pausing all player entities using ```TryFindState()```.
+            
+            <code>
+            public void FreezeAllPlayers() {
+              foreach(BoltEntity entity in BoltNetwork.entities) {
+                IPlayerState state;
+                
+                if(entity.TryGetState&lt;IPlayerState&gt;(out state)) {
+                  entity.Freeze(true);
+                  state.Modify().pausedByServer = true;
+                }
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.StateIs``1">
+            <summary>
+            Checks which type of state this entity has
+            </summary>
+            <typeparam name="TState">The type of state to check for</typeparam>
+            <returns>True if this entity has a state of type TState otherwise false</returns>
+            <example>
+            *Example:* Discarding attack requests that do not target living entities.
+            
+            <code>
+            public override void FireOnOwner(BoltEntity entity, BoltEntity target, AttackData attack) {
+              if(entity.IsOwner) {
+                if(!target.StateIs&lt;ILivingEntity&gt;()) {
+                  return;
+                }
+              
+                target.GetState&lt;ILivingEntity&gt;().Modify().health -= attack.damage;
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.StateIs(System.Type)">
+            <summary>
+            Checks which type of state this entity has
+            </summary>
+            <param name="t">The type of state to check for</param>
+            <returns>True if this entity has a state of type TState otherwise false</returns>
+            <example>
+            *Example:* Discarding attack requests that do not target living entities.
+            
+            <code>
+            public override void FireOnOwner(BoltEntity entity, BoltEntity target, AttackData attack) {
+              if(entity.IsOwner) {
+                if(!target.StateIs(typeof(ILivingEntity))) {
+                  return;
+                }
+              
+                target.GetState&lt;ILivingEntity&gt;().Modify().health -= attack.damage;
+              }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.ToString">
+            <summary>
+            String representation of the entity
+            </summary>
+            <example>
+            *Example:* Logging new entities to the debug log.
+            
+            <code>
+            public override void EntityAttached(BoltEntity entity) {
+              Debug.Log("Entity Attached: " + entity.ToString());
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltEntity.DestroyDelayed(System.Single)">
+            <summary>
+            Destroy this entity after a given delay
+            </summary>
+            <param name="time">The time interval to delay</param>
+            <example>
+            *Example:* A death routine that makes state changes and initiates a destruction with configurable delay.
+            
+            <code>
+            void OnDeath(BoltEntity entity) {
+              var state = entity.GetState&lt;ILivingEntity&gt;();
+              
+              state.Modify().alive = false;
+              state.Modify().DeathTrigger();
+              
+              entity.DestroyDelayed(ServerConfig.DESTRUCT_DELAY);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:BoltLauncher.StartSinglePlayer(BoltConfig)">
+            <summary>
+            Starts Bolt as a Single Player game
+            </summary>
+            <param name="config">Custom Bolt configuration</param>
+        </member>
+        <member name="M:BoltLauncher.StartServer(System.Int32)">
+            <summary>
+            Starts Bolt as Server.
+            </summary>
+            <param name="port">Port where the Server will try to bind</param>
+        </member>
+        <member name="M:BoltLauncher.StartServer(BoltConfig,System.String)">
+            <summary>
+            Starts Bolt as Server.
+            </summary>
+            <param name="config">Custom Bolt configuration</param>
+            <param name="scene">Default Scene loaded by Bolt when the initialization is complete</param>
+        </member>
+        <member name="M:BoltLauncher.StartServer(UdpKit.UdpEndPoint,System.String)">
+            <summary>
+            Starts Bolt as Server.
+            </summary>
+            <param name="endpoint">Custom EndPoint where Bolt will try to bind</param>
+            <param name="scene">Default Scene loaded by Bolt when the initialization is complete</param>
+        </member>
+        <member name="M:BoltLauncher.StartServer(UdpKit.UdpEndPoint,BoltConfig,System.String)">
+            <summary>
+            Starts Bolt as Server.
+            </summary>
+            <param name="endpoint">Custom EndPoint where Bolt will try to bind</param>
+            <param name="config">Custom Bolt configuration</param>
+            <param name="scene">Default Scene loaded by Bolt when the initialization is complete</param>
+        </member>
+        <member name="M:BoltLauncher.StartClient(System.Int32)">
+            <summary>
+            Starts Bolt as Client.
+            </summary>
+            <param name="port">Port where the Server will try to bind</param>
+        </member>
+        <member name="M:BoltLauncher.StartClient(BoltConfig)">
+            <summary>
+            Starts Bolt as Client.
+            </summary>
+            <param name="config">Custom Bolt configuration</param>
+        </member>
+        <member name="M:BoltLauncher.StartClient(UdpKit.UdpEndPoint,BoltConfig)">
+            <summary>
+            Starts Bolt as Client.
+            </summary>
+            <param name="endpoint">Custom EndPoint where Bolt will try to bind</param>
+            <param name="config">Custom Bolt configuration</param>
+        </member>
+        <member name="M:BoltLauncher.Initialize(BoltNetworkModes,UdpKit.UdpEndPoint,BoltConfig,System.String)">
+            <summary>
+            Utility function to initialize Bolt with the specified modes, endpoint, config and scene.
+            </summary>
+            <param name="modes">Bolt mode. <see cref="T:BoltNetworkModes"/></param>
+            <param name="endpoint">Custom EndPoint where Bolt will try to bind</param>
+            <param name="config">Custom Bolt configuration</param>
+            <param name="scene">Default Scene loaded by Bolt when the initialization is complete</param>
+        </member>
+        <member name="M:BoltLauncher.Shutdown">
+            <summary>
+            Shutdown this Bolt instance.
+            </summary>
+        </member>
+        <member name="M:BoltLauncher.SetUdpPlatform(UdpKit.UdpPlatform)">
+            <summary>
+            Set a custom UDP platform. Use this method only to set custom properties
+            to your desired platform. By default, there is no need to change 
+            the platform, this is handled internally by Bolt. 
+            </summary>
+            <param name="platform">Custom UdpPlatform</param>
+            <example>
+            This example show how to set a custom PhotonPlatform:
+            <code>
+            BoltLauncher.SetUdpPlatform(new PhotonPlatform(new PhotonPlatformConfig
+            {
+                AppId = "your-app-id",
+                RegionMaster = "your-region",
+                UsePunchThrough = true, // set to false, to disable PunchThrough
+                MaxConnections = 32
+            }));
+            </code>
+            </example>
+        </member>
+    </members>
+</doc>

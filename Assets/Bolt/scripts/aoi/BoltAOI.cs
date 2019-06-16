@@ -23,9 +23,9 @@ public class BoltAOI : Bolt.EntityBehaviour
     {
         if (((BoltNetwork.Frame % 30) == 0) && (BoltNetwork.ScopeMode == Bolt.ScopeMode.Manual) && enabled)
         {
-            if (entity.controller != null)
+            if (entity.Controller != null)
             {
-                BoltPOI.UpdateScope(this, entity.controller);
+                BoltPOI.UpdateScope(this, entity.Controller);
             }
         }
     }

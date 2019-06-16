@@ -10,6 +10,8 @@ public partial class BoltDebugStart : BoltInternal.GlobalEventListenerBase
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
+
+		Application.targetFrameRate = 60;
     }
 
     void Start()

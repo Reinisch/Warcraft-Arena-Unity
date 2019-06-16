@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>bolt.editor</name>
+    </assembly>
+    <members>
+        <member name="T:bolt.editor.Utils.BoltLogExecutor">
+            <summary>
+            This class will setup the BoltLog class using the current configuration 
+            on the Bolt Settings. This will keep the logs appearing in Editor Mode,
+            but will totally disabled if the user prefers.
+            </summary>
+        </member>
+    </members>
+</doc>

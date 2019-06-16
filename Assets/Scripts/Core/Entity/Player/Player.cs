@@ -50,7 +50,7 @@ namespace Core
 
             base.Attached();
 
-            createToken = (CreateToken)entity.attachToken;
+            createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
 
             if (!IsOwner)

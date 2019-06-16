@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>bolt.compiler</name>
+    </assembly>
+    <members>
+        <member name="T:Bolt.Compiler.AssetFolder">
+            <summary>
+            Asset Folder
+            </summary>
+        </member>
+        <member name="T:Bolt.Compiler.AssetDefinition">
+            <summary>
+            Asset definition describes all properties of an Bolt Asset
+            </summary>
+        </member>
+        <member name="M:Bolt.Compiler.Serialization.JsonSerializerUtils.SaveProject(Bolt.Compiler.Assets.BoltProject,System.String)">
+            <summary>
+            Serializes BoltProject to file.
+            </summary>
+            <returns><c>true</c>, if the reference was serialized, <c>false</c> otherwise.</returns>
+            <param name="project">BoltProject reference.</param>
+            <param name="path">Path to destination file.</param>
+        </member>
+        <member name="M:Bolt.Compiler.Serialization.JsonSerializerUtils.LoadProject(Bolt.Compiler.Assets.BoltProject@,System.String)">
+            <summary>
+            Deserializes a BoltProject from a file.
+            </summary>
+            <returns><c>true</c>, if the BoltProject was deserialized, <c>false</c> otherwise.</returns>
+            <param name="project">BoltProject output.</param>
+            <param name="path">Path to JSON file.</param>
+            <exception cref="T:System.IO.FileNotFoundException">Thrown when the JSON file was not found at path</exception>
+        </member>
+        <member name="M:Bolt.Compiler.Assets.BoltProject.FindState(System.Guid)">
+            <summary>
+            Finds a state asset by its guid.
+            </summary>
+            <returns>The state or null if not found.</returns>
+            <param name="guid">GUID of the State.</param>
+        </member>
+        <member name="M:Bolt.Compiler.Assets.BoltProject.GetInheritanceTree(Bolt.Compiler.StateDefinition)">
+            <summary>
+            Gets the inheritance tree of a State
+            </summary>
+            <returns>The inheritance tree.</returns>
+            <param name="state">State to check the inheritance tree</param>
+        </member>
+        <member name="M:Bolt.Compiler.Assets.BoltProject.GetInheritanceTree(Bolt.Compiler.StateDefinition,System.Collections.Generic.List{System.Guid})">
+            <summary>
+            Gets the inheritance tree of a State and save to the list
+            </summary>
+            <param name="state">State to check the inheritance tree</param>
+            <param name="result">Result list of states.</param>
+        </member>
+    </members>
+</doc>

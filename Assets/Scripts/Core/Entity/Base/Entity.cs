@@ -21,10 +21,10 @@ namespace Core
         internal abstract bool AutoScoped { get; }
 
         public BoltEntity BoltEntity => entity;
-        public bool IsOwner => entity.isOwner;
-        public bool IsController => entity.hasControl;
+        public bool IsOwner => entity.IsOwner;
+        public bool IsController => entity.HasControl;
         public bool IsValid { get; private set; }
-        public ulong NetworkId => entity.networkId.PackedValue;
+        public ulong NetworkId => entity.NetworkId.PackedValue;
 
         [UsedImplicitly]
         protected virtual void Awake()

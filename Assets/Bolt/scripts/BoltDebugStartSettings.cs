@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-class BoltDebugStartSettings
+public class BoltDebugStartSettings
 {
 #if UNITY_EDITOR
     public static bool DebugStartIsServer

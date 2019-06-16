@@ -1,4 +1,5 @@
-﻿using UdpKit;
+﻿using Bolt.Utils;
+using UdpKit;
 using UnityEngine;
 using Common;
 
@@ -45,7 +46,7 @@ namespace Core
             worldEntityState.SetTransforms(worldEntityState.Transform, transform);
             Name = name;
 
-            if (entity.attachToken is CreateToken createInfo)
+            if (entity.AttachToken is CreateToken createInfo)
             {
                 Position = createInfo.Position;
                 Rotation = createInfo.Rotation;

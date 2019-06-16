@@ -25,7 +25,6 @@ public class BoltRuntimeConfigs : Bolt.GlobalEventListener
 #elif UNITY_ANDROID
         UnitySettings.CurrentPlatform = RuntimePlatform.Android;
 #endif
-
     }
 }
 

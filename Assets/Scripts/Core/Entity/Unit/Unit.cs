@@ -152,7 +152,7 @@ namespace Core
             foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
                 speedRates[moveType] = 1.0f;
 
-            createToken = (CreateToken)entity.attachToken;
+            createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
 
             if (!IsOwner)

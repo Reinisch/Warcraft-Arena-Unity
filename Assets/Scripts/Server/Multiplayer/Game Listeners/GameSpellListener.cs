@@ -17,10 +17,10 @@ namespace Server
 
         private void OnSpellDamageDone(Unit caster, Unit target, int damageAmount, bool isCrit)
         {
-            if (caster is Player player && player.BoltEntity.controller != null)
+            if (caster is Player player && player.BoltEntity.Controller != null)
             {
-                SpellDamageDoneEvent spellDamageEvent = SpellDamageDoneEvent.Create(player.BoltEntity.controller, Bolt.ReliabilityModes.ReliableOrdered);
-                spellDamageEvent.Target = target.BoltEntity.networkId;
+                SpellDamageDoneEvent spellDamageEvent = SpellDamageDoneEvent.Create(player.BoltEntity.Controller, Bolt.ReliabilityModes.ReliableOrdered);
+                spellDamageEvent.Target = target.BoltEntity.NetworkId;
                 spellDamageEvent.DamageAmount = damageAmount;
                 spellDamageEvent.IsCrit = isCrit;
                 spellDamageEvent.Send();

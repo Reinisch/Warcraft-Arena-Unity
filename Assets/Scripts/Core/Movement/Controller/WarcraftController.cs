@@ -242,7 +242,7 @@ namespace Core
             BoltEntity moveStateEntity = ClientMoveState;
             if (moveStateEntity != null && destroyObject)
             {
-                if (!moveStateEntity.isOwner || !moveStateEntity.isAttached)
+                if (!moveStateEntity.IsOwner || !moveStateEntity.IsAttached)
                     Destroy(moveStateEntity.gameObject);
                 else
                     BoltNetwork.Destroy(moveStateEntity.gameObject);

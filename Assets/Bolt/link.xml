@@ -10,4 +10,5 @@
     <assembly fullname="System">
         <namespace fullname="System.Net.Configuration" preserve="all" />
     </assembly>
+    <assembly fullname="udpkit.platform.dotnet" preserve="all"/>
 </linker>

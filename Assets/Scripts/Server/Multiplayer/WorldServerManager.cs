@@ -59,11 +59,11 @@ namespace Server
 
         internal void EntityAttached(BoltEntity entity)
         {
-            if (entity.prefabId == BoltPrefabs.MoveState)
+            if (entity.PrefabId == BoltPrefabs.MoveState)
             {
                 entity.SetScopeAll(false);
 
-                Player player = FindPlayer(entity.source);
+                Player player = FindPlayer(entity.Source);
                 if (player == null)
                     Object.Destroy(entity.gameObject);
                 else
@@ -73,20 +73,20 @@ namespace Server
 
         internal void EntityDetached(BoltEntity entity)
         {
-            if (entity.prefabId == BoltPrefabs.MoveState)
+            if (entity.PrefabId == BoltPrefabs.MoveState)
             {
-                Player player = FindPlayer(entity.source);
+                Player player = FindPlayer(entity.Source);
                 if (player == null)
                     Object.Destroy(entity.gameObject);
                 else
                     player.Controller.DetachClientSideMoveState(false);
             }
 
-            if (playerInfosByPlayerId.ContainsKey(entity.networkId.PackedValue))
+            if (playerInfosByPlayerId.ContainsKey(entity.NetworkId.PackedValue))
             {
-                PlayerServerInfo removeInfo = playerInfosByPlayerId[entity.networkId.PackedValue];
+                PlayerServerInfo removeInfo = playerInfosByPlayerId[entity.NetworkId.PackedValue];
                 playerInfos.Remove(removeInfo);
-                playerInfosByPlayerId.Remove(entity.networkId.PackedValue);
+                playerInfosByPlayerId.Remove(entity.NetworkId.PackedValue);
 
                 if (serverPlayerInfo == removeInfo)
                     serverPlayerInfo = null;

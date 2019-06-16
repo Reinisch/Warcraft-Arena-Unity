@@ -5,291 +5,292 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
+using Bolt.Editor;
 
 // [InitializeOnLoad]
 public class BoltWelcome : EditorWindow
 {
-    [Flags]
-    protected enum PackageFlags
-    {
-        WarnForProjectOverwrite = 1 << 1,
-        RunInitialSetup = 1 << 2
-    }
+	[Flags]
+	protected enum PackageFlags
+	{
+		WarnForProjectOverwrite = 1 << 1,
+		RunInitialSetup = 1 << 2
+	}
 
-    static String FirstStartupKey
-    {
-        get { return "$Bolt$First$Startup/" + BoltNetwork.CurrentVersion; }
-    }
+	static String FirstStartupKey
+	{
+		get { return "$Bolt$First$Startup/" + BoltNetwork.CurrentVersion; }
+	}
 
-    static String ShowAtStartupKey
-    {
-        get { return "$Bolt$Show$At$Startup"; }
-    }
+	static String ShowAtStartupKey
+	{
+		get { return "$Bolt$Show$At$Startup"; }
+	}
 
-    const Boolean SHOW_AT_STARTUP_DEFAULT = true;
+	const Boolean SHOW_AT_STARTUP_DEFAULT = true;
 
-    static Single? _firstCall;
+	static Single? _firstCall;
 
-    static BoltWelcome()
-    {
-        // EditorApplication.update -= ShowWelcomeMessage;
-        // EditorApplication.update += ShowWelcomeMessage;
-    }
+	static BoltWelcome()
+	{
+		// EditorApplication.update -= ShowWelcomeMessage;
+		// EditorApplication.update += ShowWelcomeMessage;
+	}
 
-    static void ShowWelcomeMessage()
-    {
-        var show = true;
+	static void ShowWelcomeMessage()
+	{
+		var show = true;
 
 #if !BOLT_DEV_INSTALLER
-        if (EditorApplication.timeSinceStartup > 32f)
-        {
-            if (EditorPrefs.GetBool(FirstStartupKey, false))
-            {
-                show = false;
-            }
-        }
+		if (EditorApplication.timeSinceStartup > 32f)
+		{
+			if (EditorPrefs.GetBool(FirstStartupKey, false))
+			{
+				show = false;
+			}
+		}
 #endif
 
-        // if disabled
-        if (EditorPrefs.GetBool(ShowAtStartupKey, SHOW_AT_STARTUP_DEFAULT) == false)
-        {
+		// if disabled
+		if (EditorPrefs.GetBool(ShowAtStartupKey, SHOW_AT_STARTUP_DEFAULT) == false)
+		{
 #if !BOLT_DEV_INSTALLER
-            show = false;
+			show = false;
 #endif
-        }
+		}
 
-        if (show)
-        {
-            if (_firstCall.HasValue == false)
-            {
-                _firstCall = Time.realtimeSinceStartup;
-            }
+		if (show)
+		{
+			if (_firstCall.HasValue == false)
+			{
+				_firstCall = Time.realtimeSinceStartup;
+			}
 
-            if ((Time.realtimeSinceStartup - _firstCall.Value) > 1)
-            {
-                // remove callback right away
-                EditorApplication.update -= ShowWelcomeMessage;
+			if ((Time.realtimeSinceStartup - _firstCall.Value) > 1)
+			{
+				// remove callback right away
+				EditorApplication.update -= ShowWelcomeMessage;
 
-                // open window
-                Open();
-            }
-        }
-        else
-        {
-            EditorApplication.update -= ShowWelcomeMessage;
-        }
-    }
+				// open window
+				Open();
+			}
+		}
+		else
+		{
+			EditorApplication.update -= ShowWelcomeMessage;
+		}
+	}
 
-    // [MenuItem("Window/Bolt/Welcome")]
-    static void Open()
-    {
-        // set first startup flag
-        EditorPrefs.SetBool(FirstStartupKey, true);
+	// [MenuItem("Window/Bolt/Welcome")]
+	static void Open()
+	{
+		// set first startup flag
+		EditorPrefs.SetBool(FirstStartupKey, true);
 
-        BoltWelcome w;
-        w = GetWindow<BoltWelcome>(true);
-        w.titleContent = new GUIContent("Welcome To Photon Bolt");
-    }
+		BoltWelcome w;
+		w = GetWindow<BoltWelcome>(true);
+		w.titleContent = new GUIContent("Welcome To Photon Bolt");
+	}
 
-    [NonSerialized]
-    protected Boolean? _init;
+	[NonSerialized]
+	protected Boolean? _init;
 
-    [NonSerialized]
-    protected GUIStyle _iconSection;
+	[NonSerialized]
+	protected GUIStyle _iconSection;
 
-    [NonSerialized]
-    protected GUIStyle _headerLabel;
+	[NonSerialized]
+	protected GUIStyle _headerLabel;
 
-    [NonSerialized]
-    GUIStyle _headerLargeLabel;
+	[NonSerialized]
+	GUIStyle _headerLargeLabel;
 
-    [NonSerialized]
-    protected GUIStyle _textSection;
+	[NonSerialized]
+	protected GUIStyle _textSection;
 
-    [NonSerialized]
-    protected GUIStyle _textLabel;
+	[NonSerialized]
+	protected GUIStyle _textLabel;
 
-    [NonSerialized]
-    protected Texture2D _bugtrackerIcon;
+	[NonSerialized]
+	protected Texture2D _bugtrackerIcon;
 
-    [NonSerialized]
-    protected GUIContent _bugtrackerHeader;
+	[NonSerialized]
+	protected GUIContent _bugtrackerHeader;
 
-    [NonSerialized]
-    protected GUIContent _bugtrackerText;
+	[NonSerialized]
+	protected GUIContent _bugtrackerText;
 
-    [NonSerialized]
-    protected Texture2D _discordIcon;
+	[NonSerialized]
+	protected Texture2D _discordIcon;
 
-    [NonSerialized]
-    protected GUIContent _discordHeader;
+	[NonSerialized]
+	protected GUIContent _discordHeader;
 
-    [NonSerialized]
-    protected GUIContent _discordText;
+	[NonSerialized]
+	protected GUIContent _discordText;
 
-    [NonSerialized]
-    protected Texture2D _documentationIcon;
+	[NonSerialized]
+	protected Texture2D _documentationIcon;
 
-    [NonSerialized]
-    protected GUIContent _documentationHeader;
+	[NonSerialized]
+	protected GUIContent _documentationHeader;
 
-    [NonSerialized]
-    protected GUIContent _documentationText;
+	[NonSerialized]
+	protected GUIContent _documentationText;
 
-    [NonSerialized]
-    protected Texture2D _samplesIcon;
+	[NonSerialized]
+	protected Texture2D _samplesIcon;
 
 #pragma warning disable
-    [NonSerialized]
-    protected GUIContent _samplesHeader;
+	[NonSerialized]
+	protected GUIContent _samplesHeader;
 
-    [NonSerialized]
-    protected GUIContent _samplesText;
+	[NonSerialized]
+	protected GUIContent _samplesText;
 #pragma warning restore
 
-    Vector2 scrollController;
+	Vector2 scrollController;
 
-    void OnGUI()
-    {
-        this.position = new Rect(this.position.x, this.position.y, 380, 900);
+	void OnGUI()
+	{
+		this.position = new Rect(this.position.x, this.position.y, 380, 900);
 
-        scrollController = GUILayout.BeginScrollView(scrollController);
+		scrollController = GUILayout.BeginScrollView(scrollController);
 
-        InitContent();
+		InitContent();
 
-        GUILayout.BeginVertical();
+		GUILayout.BeginVertical();
 
-        MainMenu();
+		MainMenu();
 
-        GUILayout.FlexibleSpace();
-        GUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+		GUILayout.BeginHorizontal();
 
-        GUILayout.Label(BoltNetwork.CurrentVersion, _textLabel);
+		GUILayout.Label(BoltNetwork.CurrentVersion, _textLabel);
 
-        GUILayout.FlexibleSpace();
-        EditorPrefs.SetBool(ShowAtStartupKey, GUILayout.Toggle(EditorPrefs.GetBool(ShowAtStartupKey, SHOW_AT_STARTUP_DEFAULT), "Always Show This On Startup"));
+		GUILayout.FlexibleSpace();
+		EditorPrefs.SetBool(ShowAtStartupKey, GUILayout.Toggle(EditorPrefs.GetBool(ShowAtStartupKey, SHOW_AT_STARTUP_DEFAULT), "Always Show This On Startup"));
 
-        GUILayout.EndHorizontal();
+		GUILayout.EndHorizontal();
 
-        GUILayout.Space(8);
-        GUILayout.EndVertical();
+		GUILayout.Space(8);
+		GUILayout.EndVertical();
 
-        GUILayout.EndScrollView();
-    }
+		GUILayout.EndScrollView();
+	}
 
-    void MainMenu()
-    {
-        GUILayout.Space(32);
-        GUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-        GUILayout.Label(Resources.Load<Texture2D>("BoltLogo"), GUILayout.Width(256), GUILayout.Height(139));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+	void MainMenu()
+	{
+		GUILayout.Space(32);
+		GUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+		GUILayout.Label(Resources.Load<Texture2D>("BoltLogo"), GUILayout.Width(256), GUILayout.Height(139));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.Space(32);
+		GUILayout.Space(32);
 
-        DrawMenuHeader("Packages");
-        DrawMenuInstall("bolt_install", "Core Package", "Install core bolt package", PackageFlags.RunInitialSetup);
+		DrawMenuHeader("Packages");
+		DrawMenuInstall("bolt_install", "Core Package", "Install core bolt package", PackageFlags.RunInitialSetup);
 
-        EditorGUI.BeginDisabledGroup(MainPackageInstalled() == false);
+		EditorGUI.BeginDisabledGroup(MainPackageInstalled() == false);
 
-        // MOBILE
-        DrawMenuInstall("bolt_mobile_plugins", "Mobile Plugins", "Install iOS/Android socket plugins");
-		
-        // SAMPLES
-        DrawMenuInstall("bolt_samples", "Samples", "Install bolt samples", PackageFlags.WarnForProjectOverwrite);
+		// MOBILE
+		DrawMenuInstall("bolt_mobile_plugins", "Mobile Plugins", "Install iOS/Android socket plugins");
 
-        // XBox One
-        DrawMenuInstall("bolt_xb1", "XBox One", "Install XB1 support");
+		// SAMPLES
+		DrawMenuInstall("bolt_samples", "Samples", "Install bolt samples", PackageFlags.WarnForProjectOverwrite);
 
-        // PS4
-        DrawMenuInstall("bolt_ps4", "Playstation 4", "Install PS4 support");
+		// XBox One
+		DrawMenuInstall("bolt_xb1", "XBox One", "Install XB1 support");
 
-        EditorGUI.EndDisabledGroup();
+		// PS4
+		DrawMenuInstall("bolt_ps4", "Playstation 4", "Install PS4 support");
 
-        GUILayout.Space(16);
+		EditorGUI.EndDisabledGroup();
 
-        DrawMenuHeader("Support");
-        DrawMenuOption(_documentationIcon, _documentationHeader, _documentationText, OpenURL("https://doc.photonengine.com/en-us/bolt/current/setup/overview"));
-        DrawMenuOption(_discordIcon, _discordHeader, _discordText, OpenURL("https://discord.gg/0ya6ZpOvnShSCtbb"));
-        DrawMenuOption(_bugtrackerIcon, _bugtrackerHeader, _bugtrackerText, OpenURL("https://github.com/BoltEngine/Bolt-Tracker"));
-    }
+		GUILayout.Space(16);
 
-    virtual protected void InitContent()
-    {
-        if (_init.HasValue && _init.Value)
-        {
-            return;
-        }
+		DrawMenuHeader("Support");
+		DrawMenuOption(_documentationIcon, _documentationHeader, _documentationText, OpenURL("https://doc.photonengine.com/en-us/bolt/current/setup/overview"));
+		DrawMenuOption(_discordIcon, _discordHeader, _discordText, OpenURL("https://discord.gg/0ya6ZpOvnShSCtbb"));
+		DrawMenuOption(_bugtrackerIcon, _bugtrackerHeader, _bugtrackerText, OpenURL("https://github.com/BoltEngine/Bolt-Tracker"));
+	}
 
-        _init = true;
+	virtual protected void InitContent()
+	{
+		if (_init.HasValue && _init.Value)
+		{
+			return;
+		}
 
-        _textLabel = new GUIStyle("Label");
-        _textLabel.wordWrap = true;
-        _textLabel.margin = new RectOffset();
-        _textLabel.padding = new RectOffset(10, 0, 0, 0);
+		_init = true;
 
-        _textSection = new GUIStyle();
-        _iconSection = new GUIStyle();
-        _iconSection.margin = new RectOffset(0, 0, 0, 0);
+		_textLabel = new GUIStyle("Label");
+		_textLabel.wordWrap = true;
+		_textLabel.margin = new RectOffset();
+		_textLabel.padding = new RectOffset(10, 0, 0, 0);
 
-        _headerLabel = new GUIStyle(EditorStyles.boldLabel);
-        _headerLabel.padding = new RectOffset(10, 0, 0, 0);
-        _headerLabel.margin = new RectOffset();
+		_textSection = new GUIStyle();
+		_iconSection = new GUIStyle();
+		_iconSection.margin = new RectOffset(0, 0, 0, 0);
 
-        _headerLargeLabel = new GUIStyle(EditorStyles.boldLabel);
-        _headerLargeLabel.padding = new RectOffset(10, 0, 0, 0);
-        _headerLargeLabel.margin = new RectOffset();
-        _headerLargeLabel.fontSize = 18;
-        _headerLargeLabel.normal.textColor = EditorGUIUtility.isProSkin ? new Color(0xf2 / 255f, 0xad / 255f, 0f) : new Color(30 / 255f, 99 / 255f, 183 / 255f);
+		_headerLabel = new GUIStyle(EditorStyles.boldLabel);
+		_headerLabel.padding = new RectOffset(10, 0, 0, 0);
+		_headerLabel.margin = new RectOffset();
 
-        _discordIcon = Resources.Load<Texture2D>("icons_welcome/community");
-        _discordText = new GUIContent("Join the Bolt Discord Community.");
-        _discordHeader = new GUIContent("Community");
+		_headerLargeLabel = new GUIStyle(EditorStyles.boldLabel);
+		_headerLargeLabel.padding = new RectOffset(10, 0, 0, 0);
+		_headerLargeLabel.margin = new RectOffset();
+		_headerLargeLabel.fontSize = 18;
+		_headerLargeLabel.normal.textColor = EditorGUIUtility.isProSkin ? new Color(0xf2 / 255f, 0xad / 255f, 0f) : new Color(30 / 255f, 99 / 255f, 183 / 255f);
 
-        _bugtrackerIcon = Resources.Load<Texture2D>("icons_welcome/bugtracker");
-        _bugtrackerText = new GUIContent("Open bugtracker on github.");
-        _bugtrackerHeader = new GUIContent("Bug Tracker");
+		_discordIcon = Resources.Load<Texture2D>("icons_welcome/community");
+		_discordText = new GUIContent("Join the Bolt Discord Community.");
+		_discordHeader = new GUIContent("Community");
 
-        _documentationIcon = Resources.Load<Texture2D>("icons_welcome/documentation");
-        _documentationText = new GUIContent("Open the documentation.");
-        _documentationHeader = new GUIContent("Documentation");
+		_bugtrackerIcon = Resources.Load<Texture2D>("icons_welcome/bugtracker");
+		_bugtrackerText = new GUIContent("Open bugtracker on github.");
+		_bugtrackerHeader = new GUIContent("Bug Tracker");
 
-        _samplesIcon = Resources.Load<Texture2D>("icons_welcome/samples");
-        _samplesText = new GUIContent("Import the samples package.");
-        _samplesHeader = new GUIContent("Samples");
-    }
+		_documentationIcon = Resources.Load<Texture2D>("icons_welcome/documentation");
+		_documentationText = new GUIContent("Open the documentation.");
+		_documentationHeader = new GUIContent("Documentation");
 
-    protected Action OpenURL(String url, params System.Object[] args)
-    {
-        return () =>
-        {
-            if (args.Length > 0)
-            {
-                url = String.Format(url, args);
-            }
+		_samplesIcon = Resources.Load<Texture2D>("icons_welcome/samples");
+		_samplesText = new GUIContent("Import the samples package.");
+		_samplesHeader = new GUIContent("Samples");
+	}
 
-            Application.OpenURL(url);
-        };
-    }
+	protected Action OpenURL(String url, params System.Object[] args)
+	{
+		return () =>
+		{
+			if (args.Length > 0)
+			{
+				url = String.Format(url, args);
+			}
 
-    protected void DrawMenuHeader(String text)
-    {
-        GUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
+			Application.OpenURL(url);
+		};
+	}
 
-        GUILayout.Label(text, _headerLargeLabel);
+	protected void DrawMenuHeader(String text)
+	{
+		GUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
 
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
-    }
+		GUILayout.Label(text, _headerLargeLabel);
 
-    protected void DrawMenuInstall(String packageName, String title, String description, PackageFlags packageFlags = default(PackageFlags))
-    {
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
+	}
+
+	protected void DrawMenuInstall(String packageName, String title, String description, PackageFlags packageFlags = default(PackageFlags))
+	{
 		bool packageExists = PackageExists(packageName);
 
 		Action ignoredAction;
-		if(packageExists == true)
+		if (packageExists == true)
 		{
 			ignoredAction = () => { ShowNotification(new GUIContent("One of the dependencies is missing")); };
 		}
@@ -300,35 +301,35 @@ public class BoltWelcome : EditorWindow
 			EditorGUI.BeginDisabledGroup(true);
 		}
 
-        DrawMenuOption(_samplesIcon, new GUIContent(title), new GUIContent(description), InstallPackage(packageName, packageFlags), ignoredAction);
+		DrawMenuOption(_samplesIcon, new GUIContent(title), new GUIContent(description), InstallPackage(packageName, packageFlags), ignoredAction);
 
-		if(packageExists == false)
+		if (packageExists == false)
 		{
 			EditorGUI.EndDisabledGroup();
 		}
-    }
+	}
 
-    protected void DrawMenuOption(Texture2D icon, GUIContent header, GUIContent text, System.Action callback = null, Action ignoredCallback = null)
-    {
-        GUILayout.Space(16);
-        GUILayout.BeginHorizontal();
+	protected void DrawMenuOption(Texture2D icon, GUIContent header, GUIContent text, System.Action callback = null, Action ignoredCallback = null)
+	{
+		GUILayout.Space(16);
+		GUILayout.BeginHorizontal();
 
-        GUILayout.Space(80);
-        GUILayout.Label(icon, _iconSection, GUILayout.Width(32), GUILayout.Height(32));
+		GUILayout.Space(80);
+		GUILayout.Label(icon, _iconSection, GUILayout.Width(32), GUILayout.Height(32));
 
-        GUILayout.BeginVertical(_textSection);
-        GUILayout.Label(header, _headerLabel);
-        GUILayout.Label(text, _textLabel);
-        GUILayout.EndVertical();
+		GUILayout.BeginVertical(_textSection);
+		GUILayout.Label(header, _headerLabel);
+		GUILayout.Label(text, _textLabel);
+		GUILayout.EndVertical();
 
-        GUILayout.EndHorizontal();
+		GUILayout.EndHorizontal();
 
-        var rect = GUILayoutUtility.GetLastRect();
-        EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
-		
+		var rect = GUILayoutUtility.GetLastRect();
+		EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
+
 		if (rect.Contains(Event.current.mousePosition))
-        {
-            if (Event.current.type == EventType.MouseDown)
+		{
+			if (Event.current.type == EventType.MouseDown)
 			{
 				if (callback != null)
 				{
@@ -344,88 +345,88 @@ public class BoltWelcome : EditorWindow
 					ignoredCallback();
 				}
 			}
-        }
-    }
+		}
+	}
 
-    protected String PackagePath(String packageName)
-    {
-        return "Assets/bolt/packages/" + packageName + ".unitypackage";
-    }
+	protected String PackagePath(String packageName)
+	{
+		return Path.Combine(BoltPathUtility.PackagesPath, packageName + ".unitypackage");
+	}
 
-    protected Boolean PackageExists(String packageName)
-    {
-        return File.Exists(PackagePath(packageName));
-    }
+	protected Boolean PackageExists(String packageName)
+	{
+		return File.Exists(PackagePath(packageName));
+	}
 
-    protected Boolean ProjectExists()
-    {
-        return File.Exists("Assets/bolt/project.bytes");
-    }
+	protected Boolean ProjectExists()
+	{
+		return File.Exists(BoltPathUtility.ProjectPath);
+	}
 
-    protected Boolean MainPackageInstalled()
-    {
-        return File.Exists("Assets/bolt/scripts/BoltLauncher.cs");
-    }
+	protected Boolean MainPackageInstalled()
+	{
+		return File.Exists(Path.Combine(BoltPathUtility.ScriptsPath, "BoltLauncher.cs"));
+	}
 
-    protected Boolean SamplesPackageInstalled()
-    {
-        return Directory.Exists("Assets/samples");
-    }
+	protected Boolean SamplesPackageInstalled()
+	{
+		return Directory.Exists("Assets/samples");
+	}
 
-    protected Boolean SteamPackageInstalled()
-    {
-        return File.Exists("Assets/Plugins/x86/CSteamworks.dll");
-    }
+	protected Boolean SteamPackageInstalled()
+	{
+		return File.Exists("Assets/Plugins/x86/CSteamworks.dll");
+	}
 
-    protected Boolean MobilePackageInstalled()
-    {
-        return Directory.Exists("Assets/Plugins/iOS") && Directory.Exists("Assets/Plugins/Android");
-    }
+	protected Boolean MobilePackageInstalled()
+	{
+		return Directory.Exists("Assets/Plugins/iOS") && Directory.Exists("Assets/Plugins/Android");
+	}
 
-    protected Action InstallPackage(String packageName, PackageFlags packageFlags)
-    {
-        return () =>
-        {
-            if ((packageFlags & PackageFlags.WarnForProjectOverwrite) == PackageFlags.WarnForProjectOverwrite)
-            {
-                if (ProjectExists())
-                {
-                    if (EditorUtility.DisplayDialog("Warning", "Importing this package will overwrite the existing bolt project file that contains all your states, events, etc. Are you sure?", "Yes", "No") == false)
-                    {
-                        return;
-                    }
-                }
-            }
+	protected Action InstallPackage(String packageName, PackageFlags packageFlags)
+	{
+		return () =>
+		{
+			if ((packageFlags & PackageFlags.WarnForProjectOverwrite) == PackageFlags.WarnForProjectOverwrite)
+			{
+				if (ProjectExists())
+				{
+					if (EditorUtility.DisplayDialog("Warning", "Importing this package will overwrite the existing bolt project file that contains all your states, events, etc. Are you sure?", "Yes", "No") == false)
+					{
+						return;
+					}
+				}
+			}
 
-            if ((packageFlags & PackageFlags.RunInitialSetup) == PackageFlags.RunInitialSetup)
-            {
-                InitialSetup();
-            }
+			if ((packageFlags & PackageFlags.RunInitialSetup) == PackageFlags.RunInitialSetup)
+			{
+				InitialSetup();
+			}
 
-            AssetDatabase.ImportPackage(PackagePath(packageName), false);
-        };
-    }
+			AssetDatabase.ImportPackage(PackagePath(packageName), false);
+		};
+	}
 
-    protected void InitialSetup()
-    {
-        const string SETTINGS_PATH = "Assets/bolt/resources/BoltRuntimeSettings.asset";
-        const string PREFABDB_PATH = "Assets/bolt/resources/BoltPrefabDatabase.asset";
+	protected void InitialSetup()
+	{
+		string SETTINGS_PATH = Path.Combine(BoltPathUtility.ResourcesPath, "BoltRuntimeSettings.asset");
+		string PREFABDB_PATH = Path.Combine(BoltPathUtility.ResourcesPath, "BoltPrefabDatabase.asset");
 
-        if (!AssetDatabase.LoadAssetAtPath(SETTINGS_PATH, typeof(BoltRuntimeSettings)))
-        {
-            BoltRuntimeSettings settings = CreateInstance<BoltRuntimeSettings>();
-            settings.masterServerGameId = Guid.NewGuid().ToString().ToUpperInvariant();
+		if (!AssetDatabase.LoadAssetAtPath(SETTINGS_PATH, typeof(BoltRuntimeSettings)))
+		{
+			BoltRuntimeSettings settings = CreateInstance<BoltRuntimeSettings>();
+			settings.masterServerGameId = Guid.NewGuid().ToString().ToUpperInvariant();
 
-            AssetDatabase.CreateAsset(settings, SETTINGS_PATH);
-            AssetDatabase.ImportAsset(SETTINGS_PATH, ImportAssetOptions.Default);
-        }
+			AssetDatabase.CreateAsset(settings, SETTINGS_PATH);
+			AssetDatabase.ImportAsset(SETTINGS_PATH, ImportAssetOptions.Default);
+		}
 
-        if (!AssetDatabase.LoadAssetAtPath(PREFABDB_PATH, typeof(Bolt.PrefabDatabase)))
-        {
-            AssetDatabase.CreateAsset(CreateInstance<Bolt.PrefabDatabase>(), PREFABDB_PATH);
-            AssetDatabase.ImportAsset(PREFABDB_PATH, ImportAssetOptions.Default);
-        }
+		if (!AssetDatabase.LoadAssetAtPath(PREFABDB_PATH, typeof(Bolt.PrefabDatabase)))
+		{
+			AssetDatabase.CreateAsset(CreateInstance<Bolt.PrefabDatabase>(), PREFABDB_PATH);
+			AssetDatabase.ImportAsset(PREFABDB_PATH, ImportAssetOptions.Default);
+		}
 
-        BoltMenuItems.RunCompiler();
-    }
+		BoltMenuItems.RunCompiler();
+	}
 }

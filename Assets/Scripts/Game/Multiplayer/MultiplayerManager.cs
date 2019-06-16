@@ -32,6 +32,7 @@ namespace Game
         private readonly ConnectionAttemptInfo connectionAttemptInfo = new ConnectionAttemptInfo();
         private GameManager.NetworkingMode networkingMode;
         private WorldManager worldManager;
+        private BoltConfig config;
         private State state;
 
         public PhotonBoltClientListener ClientListener => boltClientListener;
@@ -39,6 +40,9 @@ namespace Game
 
         public void Initialize()
         {
+            config = BoltRuntimeSettings.instance.GetConfigCopy();
+            config.connectionRequestTimeout = (int) (MaxConnectionAttemptTime * 1000.0f);
+
             SetListeners(false, false, false);
 
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
@@ -111,9 +115,9 @@ namespace Game
             SetListeners(false, false, false);
         }
 
-        public override void BoltShutdownBegin(AddCallback registerDoneCallback)
+        public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
         {
-            base.BoltShutdownBegin(registerDoneCallback);
+            base.BoltShutdownBegin(registerDoneCallback, disconnectReason);
 
             if (worldManager != null && worldManager.HasServerLogic)
                 EventHandler.ExecuteEvent(this, GameEvents.DisconnectedFromMaster);
@@ -259,7 +263,7 @@ namespace Game
 
             state = State.Starting;
 
-            BoltLauncher.StartServer();
+            BoltLauncher.StartServer(config);
             yield return new WaitUntil(NetworkIsIdle);
 
             if (BoltNetwork.IsServer)
@@ -288,7 +292,7 @@ namespace Game
             {
                 state = State.Starting;
 
-                BoltLauncher.StartClient();
+                BoltLauncher.StartClient(config);
                 yield return new WaitUntil(NetworkIsIdle);
             }
 
