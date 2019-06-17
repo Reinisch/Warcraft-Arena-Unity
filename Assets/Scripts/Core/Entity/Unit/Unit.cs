@@ -42,8 +42,6 @@ namespace Core
         private UnitAttributeDefinition unitAttributeDefinition;
         [SerializeField, UsedImplicitly]
         private UnitMovementDefinition unitMovementDefinition;
-
-        private IUnitState unitState;
         private DeathState deathState;
 
         private CreateToken createToken;
@@ -73,6 +71,8 @@ namespace Core
         public UnitFlags UnitFlags { get; private set; }
         public FactionDefinition Faction { get; private set; }
         public SpellHistory SpellHistory { get; private set; }
+        public SpellCast SpellCast { get; private set; }
+        public IUnitState EntityState { get; private set; }
         public CapsuleCollider UnitCollider => unitCollider;
 
         public int Level => level.Value;
@@ -125,7 +125,6 @@ namespace Core
         {
             base.Awake();
 
-            Faction = Balance.DefaultFaction;
 
             health = new EntityAttributeInt(this, unitAttributeDefinition.BaseHealth, int.MaxValue, EntityAttributes.Health);
             maxHealth = new EntityAttributeInt(this, unitAttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
@@ -140,12 +139,12 @@ namespace Core
             rangedCritPercentage = new EntityAttributeFloat(this, 1.0f, unitAttributeDefinition.RangedCritPercentage, EntityAttributes.RangedCritPercentage);
             spellCritPercentage = new EntityAttributeFloat(this, 1.0f, unitAttributeDefinition.SpellCritPercentage, EntityAttributes.SpellCritPercentage);
 
-            SpellHistory = new SpellHistory(this);
+            Faction = Balance.DefaultFaction;
         }
 
         public override void Attached()
         {
-            unitState = entity.GetState<IUnitState>();
+            EntityState = entity.GetState<IUnitState>();
 
             base.Attached();
 
@@ -157,24 +156,31 @@ namespace Core
 
             if (!IsOwner)
             {
-                unitState.AddCallback(nameof(unitState.DeathState), OnDeathStateChanged);
-                unitState.AddCallback(nameof(unitState.Health), OnHealthStateChanged);
+                EntityState.AddCallback(nameof(EntityState.DeathState), OnDeathStateChanged);
+                EntityState.AddCallback(nameof(EntityState.Health), OnHealthStateChanged);
             }
 
             ThreatManager = new ThreatManager(this);
-            MovementInfo.Attached(unitState, this);
+            MovementInfo.Attached(EntityState, this);
             WorldManager.UnitManager.Attach(this);
+
+            SpellHistory = new SpellHistory(this);
+            SpellCast = new SpellCast(this);
 
             SetMap(WorldManager.FindMap(1));
         }
 
         public override void Detached()
         {
-            // for instant manual client detach without waiting for Photon
+            // called twice on client (from Detached Photon callback and manual in UnitManager.Dispose)
+            // if he needs to instantly destroy current world and avoid any events
             if (!IsValid)
                 return;
 
-            unitState.RemoveAllCallbacks();
+            SpellHistory.Dispose();
+            SpellCast.Dispose();
+
+            EntityState.RemoveAllCallbacks();
 
             ResetMap();
 
@@ -182,7 +188,6 @@ namespace Core
             WorldManager.UnitManager.Detach(this);
             MovementInfo.Detached();
 
-            unitState = null;
             createToken = null;
 
             base.Detached();
@@ -216,7 +221,7 @@ namespace Core
         internal int SetHealth(int value)
         {
             int delta = health.Set(Mathf.Clamp(value, 0, maxHealth.Value));
-            unitState.Health = health.Value;
+            EntityState.Health = health.Value;
             return delta;
         }
 
@@ -317,30 +322,37 @@ namespace Core
 
         #region Spell Handling
 
-        internal SpellCastResult CastSpell(SpellCastTargets targets, SpellInfo spellInfo, SpellCastFlags spellFlags = 0, AuraEffect triggeredByAura = null, ulong originalCaster = 0)
+        internal SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastTargets targets = null, SpellCastFlags spellFlags = 0)
         {
-            return new Spell(this, spellInfo, spellFlags, originalCaster).Prepare(targets, triggeredByAura);
+            Spell spell = new Spell(this, spellInfo, spellFlags);
+            WorldManager.SpellManager.Add(spell);
+
+            SpellCastResult castResult = spell.Prepare(targets ?? new SpellCastTargets());
+            if (castResult != SpellCastResult.Success)
+            {
+                WorldManager.SpellManager.Remove(spell);
+                return castResult;
+            }
+
+            switch (spell.ExecutionState)
+            {
+                case SpellExecutionState.Casting:
+                    SpellCast.HandleSpellCast(spell, SpellCast.HandleMode.Started);
+                    break;
+                case SpellExecutionState.Processing:
+                    return castResult;
+                case SpellExecutionState.Completed:
+                    return castResult;
+            }
+            
+            return SpellCastResult.Success;
         }
 
         internal int DamageBySpell(SpellCastDamageInfo damageInfoInfo)
         {
-            if (damageInfoInfo == null)
-                return 0;
-
             Unit victim = damageInfoInfo.Target;
-
-            if (victim == null)
+            if (victim == null || !victim.IsAlive)
                 return 0;
-
-            if (!victim.IsAlive)
-                return 0;
-
-            SpellInfo spellProto = Balance.SpellInfosById.ContainsKey(damageInfoInfo.SpellId) ? Balance.SpellInfosById[damageInfoInfo.SpellId] : null;
-            if (spellProto == null)
-            {
-                Debug.LogErrorFormat("Unit.DamageBySpell has wrong spellDamageInfo->SpellID: {0}", damageInfoInfo.SpellId);
-                return 0;
-            }
 
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, this, victim, damageInfoInfo.Damage, damageInfoInfo.HitInfo == HitType.CriticalHit);
 
@@ -389,7 +401,7 @@ namespace Core
             if (deathState == newState)
                 return;
 
-            unitState.DeathState = (int)(createToken.DeathState = deathState = newState);
+            EntityState.DeathState = (int)(createToken.DeathState = deathState = newState);
         }
 
         internal int CalculateSpellDamageTaken(SpellCastDamageInfo damageInfoInfo, int damage, SpellInfo spellInfo)
@@ -674,12 +686,12 @@ namespace Core
 
         private void OnDeathStateChanged()
         {
-            deathState = (DeathState)unitState.DeathState;
+            deathState = (DeathState)EntityState.DeathState;
         }
 
         private void OnHealthStateChanged()
         {
-            SetHealth(unitState.Health);
+            SetHealth(EntityState.Health);
         }
     }
 }

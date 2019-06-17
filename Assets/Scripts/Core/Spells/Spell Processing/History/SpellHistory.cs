@@ -19,6 +19,11 @@ namespace Core
             SpellCooldowns = new Dictionary<int, SpellCooldown>();
         }
 
+        internal void Dispose()
+        {
+            SpellCooldowns.Clear();
+        }
+
         public bool IsReady(SpellInfo spellInfo) => !HasCooldown(spellInfo.Id);
 
         public bool HasCooldown(int spellInfoId) => SpellCooldowns.ContainsKey(spellInfoId);

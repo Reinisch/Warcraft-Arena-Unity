@@ -7,6 +7,8 @@ namespace Core
         private readonly EntityPool entityPool = new EntityPool();
         private readonly IPrefabPool defaultPool = new DefaultPrefabPool();
 
+        internal SpellManager SpellManager { get; }
+
         public UnitManager UnitManager { get; }
         public MapManager MapManager { get; }
 
@@ -19,12 +21,14 @@ namespace Core
             BoltNetwork.SetPrefabPool(entityPool);
 
             MapManager = new MapManager(this);
+            SpellManager = new SpellManager(this);
             UnitManager = new UnitManager();
         }
 
         public virtual void Dispose()
         {
             UnitManager.Dispose();
+            SpellManager.Dispose();
             MapManager.Dispose();
 
             BoltNetwork.SetPrefabPool(defaultPool);
@@ -34,6 +38,9 @@ namespace Core
         public virtual void DoUpdate(int deltaTime)
         {
             MapManager.DoUpdate(deltaTime);
+
+            if(HasServerLogic)
+                SpellManager.DoUpdate(deltaTime);
         }
 
         public Map FindMap(int mapId)

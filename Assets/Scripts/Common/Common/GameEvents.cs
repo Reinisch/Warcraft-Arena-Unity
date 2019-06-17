@@ -13,6 +13,8 @@
         SpellHit,
         SpellDamageDone,
 
+        ServerSpellCast,
+
         EntityAttributeChanged
     }
 }

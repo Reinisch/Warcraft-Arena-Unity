@@ -32,6 +32,7 @@ namespace Client
 
         [SerializeField, UsedImplicitly] private UnitFrame playerUnitFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetUnitFrame;
+        [SerializeField, UsedImplicitly] private CastFrame playerCastFrame;
         [SerializeField, UsedImplicitly] private List<ActionBar> actionBars;
 
         private PhotonBoltClientListener clientListener;
@@ -44,6 +45,8 @@ namespace Client
 
             clientListener.EventPlayerControlGained += OnPlayerControlGained;
             clientListener.EventPlayerControlLost += OnPlayerControlLost;
+
+            playerCastFrame.gameObject.SetActive(false);
         }
 
         protected override void PanelDeinitialized()
@@ -61,6 +64,8 @@ namespace Client
         {
             base.PanelUpdated(deltaTime);
 
+            playerCastFrame.DoUpdate(deltaTime);
+
             if (clientListener.LocalPlayer != null)
                 foreach (var actionBar in actionBars)
                     actionBar.DoUpdate(deltaTime);
@@ -69,11 +74,13 @@ namespace Client
         private void OnPlayerControlGained()
         {
             playerUnitFrame.UpdateUnit(clientListener.LocalPlayer);
+            playerCastFrame.UpdateUnit(clientListener.LocalPlayer);
         }
 
         private void OnPlayerControlLost()
         {
             playerUnitFrame.UpdateUnit(null);
+            playerCastFrame.UpdateUnit(null);
         }
     }
 }

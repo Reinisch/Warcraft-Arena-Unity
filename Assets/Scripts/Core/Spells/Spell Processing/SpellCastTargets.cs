@@ -94,6 +94,13 @@ namespace Core
             DoUpdate(caster);
         }
 
+        public void Dispose()
+        {
+            target = null;
+            source = null;
+            destination = null;
+        }
+
         public void RemoveEntityTarget()
         {
             target = null;

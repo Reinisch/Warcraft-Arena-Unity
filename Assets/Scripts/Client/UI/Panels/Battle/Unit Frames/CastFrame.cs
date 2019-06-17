@@ -1,53 +1,58 @@
 ﻿using Core;
 using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CastFrame : MonoBehaviour
 {
-    [SerializeField, UsedImplicitly] private CastBar castBar;
+    [SerializeField, UsedImplicitly] private BalanceReference balanceReference;
+    [SerializeField, UsedImplicitly] private TextMeshProUGUI spellLabel;
+    [SerializeField, UsedImplicitly] private Slider castSlider;
 
-    [UsedImplicitly]
-    private void Awake()
+    private Unit caster;
+    private bool isCasting;
+
+    public void DoUpdate(float deltaTime)
     {
-        castBar = transform.Find("Cast Bar").gameObject.GetComponent<CastBar>();
+        gameObject.SetActive(isCasting);
+        if (!isCasting)
+            return;
+
+        int expectedCastFrames = (int) (caster.EntityState.SpellCast.CastTime / BoltNetwork.FrameDeltaTime / 1000.0f);
+        castSlider.value = (float)(BoltNetwork.ServerFrame - caster.EntityState.SpellCast.ServerFrame) / expectedCastFrames;
     }
 
-    public void UpdateUnit()
+    public void UpdateUnit(Unit newCaster)
     {
-        /*if (gameObject.activeSelf)
-        {
-            if (castBar.caster == null || castBar.caster.Characters.SpellCast.HasCast == false)
-            {
-                gameObject.SetActive(false);
-            }
-        }
+        if (caster != null)
+            DeinitializeCaster();
+
+        if (newCaster != null)
+            InitializeCaster(newCaster);
+
+        gameObject.SetActive(caster != null && caster.EntityState.SpellCast.Id != 0);
+    }
+
+    private void InitializeCaster(Unit caster)
+    {
+        this.caster = caster;
+
+        caster.EntityState.AddCallback(nameof(caster.EntityState.SpellCast), OnSpellCastChanged);
+    }
+
+    private void DeinitializeCaster()
+    {
+        caster.EntityState.RemoveCallback(nameof(caster.EntityState.SpellCast), OnSpellCastChanged);
+        caster = null;
+    }
+
+    private void OnSpellCastChanged()
+    {
+        isCasting = caster.EntityState.SpellCast.Id != 0;
+        if (isCasting && balanceReference.SpellInfosById.TryGetValue(caster.EntityState.SpellCast.Id, out SpellInfo spellInfo))
+            spellLabel.text = spellInfo.SpellName;
         else
-        {
-            if (castBar.caster != null && castBar.caster.Characters.SpellCast.HasCast == true)
-            {
-                gameObject.SetActive(true);
-                spellText.text = castBar.caster.Characters.SpellCast.spell.name;
-            }
-        }*/
-        castBar.UpdateCastBar();
-    }
-
-    public void OnTargetSet(Unit target)
-    {
-        gameObject.SetActive(true);
-
-        castBar.SetCaster(target);
-    }
-
-    public void OnTargetLost(Unit target)
-    {
-        gameObject.SetActive(false);
-
-        castBar.SetCaster(null);
-    }
-
-    public void OnTargetSwitch(Unit target)
-    {
-        castBar.SetCaster(target);
+            spellLabel.text = string.Empty;
     }
 }

@@ -24,6 +24,7 @@ public class UnitRenderer : EntityEventListener<IUnitState>
         Unit.BoltEntity.AddEventListener(this);
         UnitState = entity.GetState<IUnitState>();
         UnitState.AddCallback(nameof(UnitState.DeathState), OnDeathStateChanged);
+        UnitState.AddCallback(nameof(UnitState.SpellCast), OnSpellCastChanged);
 
         if (Unit.IsDead)
         {
@@ -90,6 +91,11 @@ public class UnitRenderer : EntityEventListener<IUnitState>
     private void OnDeathStateChanged()
     {
         animator.SetBool("IsDead", Unit.IsDead);
+    }
+
+    private void OnSpellCastChanged()
+    {
+        animator.SetBool("Casting", UnitState.SpellCast.Id != 0);
     }
 
     [UsedImplicitly]

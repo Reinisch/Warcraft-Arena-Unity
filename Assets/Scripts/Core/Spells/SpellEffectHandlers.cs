@@ -51,20 +51,6 @@ namespace Core
             Caster.CalcAbsorbResist(target, SpellInfo.SchoolMask, SpellDamageType.Pure, 100, ref absorb, ref resist, SpellInfo);
         }
 
-        public void EffectInstaKill(EffectTeleportDirect effect, Unit target, SpellEffectHandleMode mode)
-        {
-            if (mode != SpellEffectHandleMode.HitTarget)
-                return;
-
-            if (target == null || !target.IsAlive)
-                return;
-
-            if (Caster == target)
-                Finish();
-
-            Caster.DealDamage(target, target.Health);
-        }
-
         public void EffectDummy(int effIndex) { throw new NotImplementedException(); }
 
         public void EffectTeleportUnits(int effIndex) { throw new NotImplementedException(); }

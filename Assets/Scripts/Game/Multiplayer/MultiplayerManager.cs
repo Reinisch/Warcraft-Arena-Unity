@@ -99,6 +99,7 @@ namespace Game
 
             BoltNetwork.RegisterTokenClass<ServerRoomToken>();
             BoltNetwork.RegisterTokenClass<ClientConnectionToken>();
+            BoltNetwork.RegisterTokenClass<ClientRefuseToken>();
         }
 
         public override void BoltStartDone()

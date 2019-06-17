@@ -30,17 +30,12 @@ namespace Server
                 return;
             }
 
-            SpellCastResult castResult = caster.CastSpell(new SpellCastTargets(), spellInfo);
-
-            if (castResult == SpellCastResult.Success)
+            SpellCastResult castResult = caster.CastSpell(spellInfo);
+            if (castResult != SpellCastResult.Success)
             {
-                UnitSpellCastEvent unitCastEvent = UnitSpellCastEvent.Create(caster.BoltEntity, EntityTargets.EveryoneExceptController);
-                unitCastEvent.SpellId = spellCastRequest.SpellId;
-                unitCastEvent.Send();
+                spellCastAnswer.Result = (int)castResult;
+                spellCastAnswer.Send();
             }
-
-            spellCastAnswer.Result = (int)castResult;
-            spellCastAnswer.Send();
         }
     }
 }
