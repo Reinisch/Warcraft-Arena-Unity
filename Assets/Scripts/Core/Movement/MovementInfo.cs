@@ -11,6 +11,7 @@
         private MovementFlags Flags { get; set; }
 
         public bool Jumping { get; set; }
+        public bool IsMoving => (Flags & MovementFlags.MaskMoving) != 0;
 
         public void Attached(IUnitState unitState, Unit unit)
         {

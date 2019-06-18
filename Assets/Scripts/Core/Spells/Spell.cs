@@ -103,6 +103,11 @@ namespace Core
                     Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
                     Launch();
                 }
+                else if (!SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.MovementInfo.IsMoving)
+                {
+                    Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
+                    Cancel();
+                }
             }
             else
             {

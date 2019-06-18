@@ -7,6 +7,7 @@ namespace Core
     {
         Passive = 1 << 0,
         CastableWhileDead = 1 << 1,
+        CastableWhileMoving = 1 << 2,
         UnaffectedByInvulnerability = 1 << 3,
         CantCancel = 1 << 4,
         Channeled = 1 << 5,
