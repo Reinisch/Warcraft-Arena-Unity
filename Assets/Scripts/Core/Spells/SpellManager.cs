@@ -4,6 +4,8 @@ namespace Core
 {
     internal class SpellManager
     {
+        internal static int SpellAliveCount;
+
         private readonly WorldManager worldManager;
         private readonly List<Spell> activeSpells = new List<Spell>();
         private readonly List<Spell> spellsToRemove = new List<Spell>();

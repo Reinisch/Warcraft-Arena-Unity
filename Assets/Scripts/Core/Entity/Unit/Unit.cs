@@ -95,7 +95,7 @@ namespace Core
 
         public bool IsMovementBlocked => HasState(UnitState.Root) || HasState(UnitState.Stunned);
         public bool IsAlive => deathState == DeathState.Alive;
-        public bool IsDead => deathState == DeathState.Dead || deathState == DeathState.Corpse;
+        public bool IsDead => deathState == DeathState.Dead;
         public bool IsInCombat => UnitFlags.HasTargetFlag(UnitFlags.InCombat);
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitState.Moving);
@@ -402,6 +402,9 @@ namespace Core
                 return;
 
             EntityState.DeathState = (int)(createToken.DeathState = deathState = newState);
+
+            if (IsDead && SpellCast.IsCasting)
+                SpellCast.Cancel();
         }
 
         internal int CalculateSpellDamageTaken(SpellCastDamageInfo damageInfoInfo, int damage, SpellInfo spellInfo)
@@ -602,17 +605,10 @@ namespace Core
                 return null;
 
             // update basepoints with new values - effect amount will be recalculated in ModStackAmount
-            foreach (var spellEffectInfo in foundAura.GetSpellEffectInfos())
+            foreach (var spellEffectInfo in foundAura.SpellEffects)
             {
-                if (spellEffectInfo == null)
-                    continue;
-
-                AuraEffect auraEffect = foundAura.GetEffect(spellEffectInfo.Index);
-                if (auraEffect == null)
-                    continue;
-
                 int newBasePoints = baseAmount?[spellEffectInfo.Index] ?? spellEffectInfo.BasePoints;
-                foundAura.GetEffect(spellEffectInfo.Index).UpdateBaseAmount(newBasePoints);
+                foundAura.AuraEffects[spellEffectInfo.Index].UpdateBaseAmount(newBasePoints);
             }
 
             // try to increase stack amount

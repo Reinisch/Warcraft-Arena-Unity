@@ -12,7 +12,7 @@ namespace Common
     [DebuggerStepThrough]
     public static class Assert
     {
-        public const string AssertionDefine = "USE_UNITY_ASSERTIONS";
+        private const string AssertionDefine = "USE_UNITY_ASSERTIONS";
 
         public static bool RaiseExceptions { set => UnityAssert.raiseExceptions = value; }
 

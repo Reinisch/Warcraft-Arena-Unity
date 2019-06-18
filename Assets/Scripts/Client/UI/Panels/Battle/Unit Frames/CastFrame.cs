@@ -43,6 +43,7 @@ public class CastFrame : MonoBehaviour
 
     private void DeinitializeCaster()
     {
+        isCasting = false;
         caster.EntityState.RemoveCallback(nameof(caster.EntityState.SpellCast), OnSpellCastChanged);
         caster = null;
     }

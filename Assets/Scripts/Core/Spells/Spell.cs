@@ -9,7 +9,7 @@ namespace Core
 {
     public partial class Spell
     {
-        private readonly SpellManager spellManager;
+        private SpellManager SpellManager { get; }
 
         internal SpellState SpellState { get; set; }
         internal SpellExecutionState ExecutionState { get; set; }
@@ -41,11 +41,11 @@ namespace Core
         public List<SpellTargetInfo> UniqueTargetInfo { get; set; }
         public SpellCastTargets Targets { get; set; }
 
-        private bool HasGlobalCooldown => Caster.SpellHistory.HasGlobalCooldown;
-
         internal Spell(Unit caster, SpellInfo info, SpellCastFlags spellFlags)
         {
-            spellManager = caster.WorldManager.SpellManager;
+            Logging.LogSpell($"Created new spell, current count: {++SpellManager.SpellAliveCount}");
+
+            SpellManager = caster.WorldManager.SpellManager;
 
             Caster = OriginalCaster = caster;
             SpellInfo = info;
@@ -73,6 +73,11 @@ namespace Core
             EffectHealing = 0;
 
             UniqueTargetInfo = new List<SpellTargetInfo>();
+        }
+
+        ~Spell()
+        {
+            Logging.LogSpell($"Finalized another spell, current count: {--SpellManager.SpellAliveCount}");
         }
 
         internal void Dispose()
@@ -130,6 +135,18 @@ namespace Core
             return result;
         }
 
+        internal bool Cancel()
+        {
+            if (ExecutionState == SpellExecutionState.Preparing || ExecutionState == SpellExecutionState.Casting)
+            {
+                Finish();
+
+                return true;
+            }
+
+            return false;
+        }
+
         private void Cast()
         {
             ExecutionState = SpellExecutionState.Casting;
@@ -153,23 +170,11 @@ namespace Core
             HandleLaunch();
         }
 
-        private bool Cancel()
-        {
-            if (ExecutionState == SpellExecutionState.Preparing || ExecutionState == SpellExecutionState.Casting)
-            {
-                Finish();
-
-                return true;
-            }
-
-            return false;
-        }
-
         private void Finish()
         {
             ExecutionState = SpellExecutionState.Completed;
 
-            spellManager.Remove(this);
+            SpellManager.Remove(this);
         }
 
         #region Target Selection
@@ -503,7 +508,7 @@ namespace Core
                 return SpellCastResult.NotReady;
 
             // check global cooldown
-            if (strict && !SpellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreGcd) && HasGlobalCooldown)
+            if (strict && !SpellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreGcd) && Caster.SpellHistory.HasGlobalCooldown)
                 return SpellCastResult.NotReady;
 
             // check if already casting

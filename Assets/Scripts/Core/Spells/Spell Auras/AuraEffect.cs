@@ -36,7 +36,7 @@ namespace Core
             SpellInfo = baseAura.SpellInfo;
 
             this.effIndex = effIndex;
-            this.baseAmount = baseAmount > 0 ? baseAmount : BaseAura.GetSpellEffectInfo(effIndex).BasePoints;
+            this.baseAmount = baseAmount;
             damage = 0;
             critChance = 0;
             donePct = 1.0f;

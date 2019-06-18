@@ -20,7 +20,7 @@
 
         internal void Dispose()
         {
-            currentSpell = null;
+            Cancel();
         }
 
         internal void HandleSpellCast(Spell spell, HandleMode handleMode)
@@ -37,6 +37,16 @@
                     unitState.SpellCast.Id = 0;
                     currentSpell = null;
                     break;
+            }
+        }
+
+        internal void Cancel()
+        {
+            if (currentSpell != null)
+            {
+                currentSpell.Cancel();
+
+                HandleSpellCast(currentSpell, HandleMode.Finished);
             }
         }
     }

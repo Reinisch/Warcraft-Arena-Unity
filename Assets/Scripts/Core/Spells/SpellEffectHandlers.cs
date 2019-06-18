@@ -63,8 +63,8 @@ namespace Core
             if (SpellAura == null || target == null)
                 return;
 
+            //SpellAura.ApplyForTarget(effect);
             Assert.IsTrue(target == SpellAura.Owner);
-            SpellAura.ApplyEffectForTargets(effect);
         }
 
         public void EffectDispel(int effIndex) { throw new NotImplementedException(); }

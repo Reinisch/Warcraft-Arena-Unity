@@ -54,5 +54,15 @@ namespace Client
                 LocalPlayer = null;
             }
         }
+
+        public override void EntityDetached(BoltEntity entity)
+        {
+            base.EntityDetached(entity);
+
+            if (LocalPlayer != null && LocalPlayer.BoltEntity == entity)
+            {
+                ControlOfEntityLost(LocalPlayer.BoltEntity);
+            }
+        }
     }
 }

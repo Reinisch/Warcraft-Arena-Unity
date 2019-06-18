@@ -6,7 +6,6 @@
     public enum DeathState
     {
         Alive = 0,
-        Corpse = 1,
-        Dead = 2
+        Dead = 1
     }
 }
