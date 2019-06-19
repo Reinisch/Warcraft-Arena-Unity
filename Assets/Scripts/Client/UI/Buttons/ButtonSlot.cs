@@ -1,4 +1,5 @@
 ﻿using Client;
+using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +19,6 @@ public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
     public RectTransform RectTransform { get; private set; }
     public Image CooldownShade { get; private set; }
     public Text TimerText { get; private set; }
-    public bool IsButtonPressed => hotkeyInput.IsPressed();
 
     public void Initialize()
     {
@@ -29,6 +29,13 @@ public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
         TimerText = transform.Find("Timer").GetComponent<Text>();
 
         buttonContent?.Initialize(this);
+
+        EventHandler.RegisterEvent(hotkeyInput, GameEvents.HotkeyPressed, OnHotkeyPressed);
+    }
+
+    public void Denitialize()
+    {
+        EventHandler.UnregisterEvent(hotkeyInput, GameEvents.HotkeyPressed, OnHotkeyPressed);
     }
 
     public void DoUpdate(float deltaTime)
@@ -58,5 +65,10 @@ public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
             InterfaceManager.Instance.ButtonController.DropItem(buttonContent);
             buttonContent.Enable();
         }*/
+    }
+
+    private void OnHotkeyPressed()
+    {
+        Click();
     }
 }

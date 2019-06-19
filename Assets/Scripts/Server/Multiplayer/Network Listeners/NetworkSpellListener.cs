@@ -37,5 +37,14 @@ namespace Server
                 spellCastAnswer.Send();
             }
         }
+
+        public override void OnEvent(SpellCastCancelRequestEvent spellCancelRequest)
+        {
+            base.OnEvent(spellCancelRequest);
+
+            Player caster = WorldManager.FindPlayer(spellCancelRequest.RaisedBy);
+            if (caster != null && caster.SpellCast.IsCasting)
+                caster.SpellCast.Cancel();
+        }
     }
 }

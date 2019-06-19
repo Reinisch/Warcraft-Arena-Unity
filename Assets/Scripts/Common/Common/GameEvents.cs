@@ -15,6 +15,8 @@
 
         ServerSpellCast,
 
-        EntityAttributeChanged
+        EntityAttributeChanged,
+
+        HotkeyPressed
     }
 }

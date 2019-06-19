@@ -54,6 +54,8 @@ namespace Client
             clientListener.EventPlayerControlGained -= OnPlayerControlGained;
             clientListener.EventPlayerControlLost -= OnPlayerControlLost;
 
+            actionBars.ForEach(actionBar => actionBar.Denitialize());
+
             playerUnitFrame.UpdateUnit(null);
             playerTargetUnitFrame.UpdateUnit(null);
 

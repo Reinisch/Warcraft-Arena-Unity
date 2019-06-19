@@ -93,6 +93,7 @@ namespace Game
                 renderManager.DoUpdate(gameTimeFloatDiff);
                 effectManager.DoUpdate(gameTimeFloatDiff);
                 interfaceManager.DoUpdate(gameTimeFloatDiff);
+                inputManager.DoUpdate(gameTimeFloatDiff);
             }
         }
 

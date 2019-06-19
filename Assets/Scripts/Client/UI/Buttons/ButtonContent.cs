@@ -1,6 +1,6 @@
-﻿using UnityEngine.UI;
+﻿using Client;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Client;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -9,6 +9,7 @@ public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     [SerializeField, UsedImplicitly] private BalanceReference balance;
     [SerializeField, UsedImplicitly] private RenderingReference rendering;
+    [SerializeField, UsedImplicitly] private InputReference input;
     [SerializeField, UsedImplicitly] private ButtonSlot.ContentType contentType;
     [SerializeField, UsedImplicitly] private int itemId;
 
@@ -72,7 +73,7 @@ public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHand
     public void Activate()
     {
         if (enabled && balance.SpellInfosById.ContainsKey(itemId))
-            InputManager.CastSpell(itemId);
+            input.CastSpell(itemId);
     }
 
     public void Remove()
