@@ -46,9 +46,6 @@ namespace Core
         
             if (mapUpdater.Activated)
                 mapUpdater.Wait();
-
-            foreach (var mapEntry in baseMaps)
-                mapEntry.Value.DelayedUpdate(timeDiff);
         }
 
         internal void InitializeLoadedMap(int mapId)

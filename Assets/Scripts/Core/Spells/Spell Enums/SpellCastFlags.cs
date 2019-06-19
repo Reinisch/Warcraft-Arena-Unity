@@ -24,5 +24,4 @@ namespace Core
         IgnoreEquippedItemRequirement = 1 << 16,
         IgnoreTargetCheck = 1 << 17
     }
-
 }

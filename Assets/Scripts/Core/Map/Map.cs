@@ -55,11 +55,6 @@ namespace Core
                 scenarioAction.DoUpdate(deltaTime);
         }
 
-        internal void DelayedUpdate(int deltaTime)
-        {
-
-        }
-
         internal void AddWorldEntity(WorldEntity entity)
         {
             worldEntitiesById.Add(entity.NetworkId, entity);

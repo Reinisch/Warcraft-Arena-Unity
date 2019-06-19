@@ -39,7 +39,7 @@ namespace Game
         [SerializeField, UsedImplicitly] private InputManager inputManager;
         [SerializeField, UsedImplicitly] private InterfaceManager interfaceManager;
         [SerializeField, UsedImplicitly] private SoundManager soundManager;
-        [SerializeField, UsedImplicitly] private RenderManager renderManager;
+        [SerializeField, UsedImplicitly] private ScriptableContainer scriptableClientContainer;
 
         private readonly Stopwatch gameTimer = new Stopwatch();
         private WorldManager worldManager;
@@ -90,7 +90,7 @@ namespace Game
 
             if (HasClientLogic)
             {
-                renderManager.DoUpdate(gameTimeFloatDiff);
+                scriptableClientContainer.DoUpdate(gameTimeFloatDiff);
                 effectManager.DoUpdate(gameTimeFloatDiff);
                 interfaceManager.DoUpdate(gameTimeFloatDiff);
                 inputManager.DoUpdate(gameTimeFloatDiff);
@@ -113,7 +113,7 @@ namespace Game
             effectManager.Initialize();
             physicsManager.Initialize();
             multiplayerManager.Initialize();
-            renderManager.Initialize();
+            scriptableClientContainer.Register();
             soundManager.Initialize();
             inputManager.Initialize();
             interfaceManager.Initialize(multiplayerManager, multiplayerManager.ClientListener);
@@ -139,7 +139,7 @@ namespace Game
             interfaceManager.Deinitialize();
             inputManager.Deinitialize();
             soundManager.Deinitialize();
-            renderManager.Deinitialize();
+            scriptableClientContainer.Unregister();
             multiplayerManager.Deinitialize();
             physicsManager.Deinitialize();
             effectManager.Deinitialize();
