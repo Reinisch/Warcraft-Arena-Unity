@@ -26,6 +26,8 @@ namespace Common
 
         protected abstract void OnUnregister();
 
-        protected abstract void OnUpdate(float deltaTime);
+        protected virtual void OnUpdate(float deltaTime)
+        {
+        }
     }
 }

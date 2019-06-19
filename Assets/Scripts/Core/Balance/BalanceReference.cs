@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core
 {
-    [CreateAssetMenu(fileName = "Balance Reference", menuName = "Game Data/Balance/Balance Reference", order = 2)]
-    public class BalanceReference : ScriptableObject
+    [CreateAssetMenu(fileName = "Balance Reference", menuName = "Game Data/Scriptable/Balance", order = 2)]
+    public class BalanceReference : ScriptableReference
     {
         [SerializeField, UsedImplicitly]
         private BalanceDefinition definition;
@@ -20,7 +21,7 @@ namespace Core
         public IReadOnlyDictionary<int, SpellInfo> SpellInfosById => spellInfosById;
         public IReadOnlyDictionary<int, FactionDefinition> FactionsById => factionsById;
 
-        public void Initialize()
+        protected override void OnRegistered()
         {
             maps.AddRange(definition.MapEntries);
             definition.SpellInfos.ForEach(spellInfo => spellInfosById.Add(spellInfo.Id, spellInfo));
@@ -30,7 +31,7 @@ namespace Core
                 spellInfoEntry.Value.Initialize();
         }
 
-        public void Deinitialize()
+        protected override void OnUnregister()
         {
             foreach (var spellInfoEntry in SpellInfosById)
                 spellInfoEntry.Value.Deinitialize();

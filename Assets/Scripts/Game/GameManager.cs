@@ -33,11 +33,11 @@ namespace Game
 
         [SerializeField, UsedImplicitly] private GameObjectPool gameObjectPool;
         [SerializeField, UsedImplicitly] private EffectManager effectManager;
-        [SerializeField, UsedImplicitly] private BalanceManager balanceManager;
         [SerializeField, UsedImplicitly] private PhysicsManager physicsManager;
         [SerializeField, UsedImplicitly] private MultiplayerManager multiplayerManager;
         [SerializeField, UsedImplicitly] private InterfaceManager interfaceManager;
         [SerializeField, UsedImplicitly] private SoundManager soundManager;
+        [SerializeField, UsedImplicitly] private ScriptableContainer scriptableCoreContainer;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableClientContainer;
 
         private readonly Stopwatch gameTimer = new Stopwatch();
@@ -107,7 +107,7 @@ namespace Game
             Assert.RaiseExceptions = Application.isEditor;
 
             gameObjectPool.Initialize();
-            balanceManager.Initialize();
+            scriptableCoreContainer.Register();
             effectManager.Initialize();
             physicsManager.Initialize();
             multiplayerManager.Initialize();
@@ -139,7 +139,7 @@ namespace Game
             multiplayerManager.Deinitialize();
             physicsManager.Deinitialize();
             effectManager.Deinitialize();
-            balanceManager.Deinitialize();
+            scriptableCoreContainer.Unregister();
             gameObjectPool.Deinitialize();
         }
 
