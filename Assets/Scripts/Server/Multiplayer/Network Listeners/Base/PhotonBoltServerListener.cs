@@ -12,6 +12,7 @@ namespace Server
         [SerializeField, UsedImplicitly] private BalanceReference balance;
 
         private new WorldServerManager WorldManager { get; set; }
+        private ServerLaunchState LaunchState { get; set; }
         private ServerRoomToken ServerToken { get; set; }
 
         public void Initialize(WorldServerManager worldManager)
@@ -19,22 +20,16 @@ namespace Server
             base.Initialize(worldManager);
 
             WorldManager = worldManager;
-            WorldManager.SessionUpdated(ServerToken);
+            WorldManager.MapManager.EventMapInitialized += OnMapInitialized;
         }
 
         public new void Deinitialize()
         {
+            WorldManager.MapManager.EventMapInitialized -= OnMapInitialized;
             WorldManager = null;
+            LaunchState = 0;
 
             base.Deinitialize();
-        }
-
-        public override void SceneLoadLocalDone(string map)
-        {
-            base.SceneLoadLocalDone(map);
-
-            if (WorldManager.HasClientLogic)
-                WorldManager.CreatePlayer();
         }
 
         public override void SceneLoadRemoteDone(BoltConnection connection)
@@ -49,7 +44,7 @@ namespace Server
             base.SessionCreated(session);
 
             ServerToken = (ServerRoomToken)session.GetProtocolToken();
-            WorldManager?.SessionUpdated(ServerToken);
+            ProcessServerLaunchState(ServerLaunchState.SessionCreated);
         }
 
         public override void ConnectRequest(UdpEndPoint endpoint, IProtocolToken token)
@@ -103,6 +98,19 @@ namespace Server
             base.EntityDetached(entity);
 
             WorldManager.EntityDetached(entity);
+        }
+
+        private void OnMapInitialized()
+        {
+            ProcessServerLaunchState(ServerLaunchState.MapLoaded);
+        }
+
+        private void ProcessServerLaunchState(ServerLaunchState state)
+        {
+            LaunchState |= state;
+
+            if (LaunchState == ServerLaunchState.Complete)
+                WorldManager.ServerLaunched(ServerToken);
         }
     }
 }

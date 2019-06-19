@@ -35,6 +35,6 @@ namespace Core
 
         public abstract void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action<ClientConnectFailReason> onConnectFail);
 
-        public abstract void StartClient(Action onStartSuccess, Action onStartFail);
+        public abstract void StartClient(Action onStartSuccess, Action onStartFail, bool forceRestart);
     }
 }

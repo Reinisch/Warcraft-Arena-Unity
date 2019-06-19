@@ -7,6 +7,7 @@ using Core;
 using Server;
 using UnityEngine;
 using JetBrains.Annotations;
+using udpkit.platform.photon;
 using UdpKit;
 
 using EventHandler = Common.EventHandler;
@@ -40,6 +41,7 @@ namespace Game
 
         public void Initialize()
         {
+            BoltRuntimeSettings.instance.UpdateBestRegion(PhotonRegion.regions[PhotonRegion.Regions.RU]);
             config = BoltRuntimeSettings.instance.GetConfigCopy();
             config.connectionRequestTimeout = (int) (MaxConnectionAttemptTime * 1000.0f);
 
@@ -76,11 +78,11 @@ namespace Game
             StartCoroutine(StartServerRoutine(serverToken, onStartSuccess, onStartFail));
         }
 
-        public override void StartClient(Action onStartSuccess, Action onStartFail)
+        public override void StartClient(Action onStartSuccess, Action onStartFail, bool forceRestart)
         {
             StopAllCoroutines();
 
-            StartCoroutine(StartClientRoutine(onStartSuccess, onStartFail));
+            StartCoroutine(StartClientRoutine(onStartSuccess, onStartFail, forceRestart));
         }
 
         public override void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action<ClientConnectFailReason> onConnectFail)
@@ -280,9 +282,9 @@ namespace Game
             }
         }
 
-        private IEnumerator StartClientRoutine(Action onStartSuccess, Action onStartFail)
+        private IEnumerator StartClientRoutine(Action onStartSuccess, Action onStartFail, bool forceRestart)
         {
-            if (BoltNetwork.IsRunning && !BoltNetwork.IsClient)
+            if (BoltNetwork.IsRunning && !BoltNetwork.IsClient || BoltNetwork.IsRunning && forceRestart)
             {
                 BoltLauncher.Shutdown();
 

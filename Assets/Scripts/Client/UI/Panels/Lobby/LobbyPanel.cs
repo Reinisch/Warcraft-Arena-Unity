@@ -67,6 +67,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private TextMeshProUGUI statusLabel;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI playerNameInput;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI versionName;
+        [SerializeField, UsedImplicitly] private TMP_Dropdown regionDropdown;
         [SerializeField, UsedImplicitly] private GameObject startClientTooltip;
         [SerializeField, UsedImplicitly] private GameObject noSessionsFoundTooltip;
 
@@ -81,6 +82,12 @@ namespace Client
         {
             base.PanelInitialized();
 
+            regionDropdown.ClearOptions();
+            regionDropdown.AddOptions(MultiplayerUtils.AvailableRegionDescriptions);
+            BoltRuntimeSettings.instance.UpdateBestRegion(MultiplayerUtils.AvailableRegions[0]);
+            regionDropdown.value = 0;
+
+            regionDropdown.onValueChanged.AddListener(OnRegionDropdownChanged);
             startServerButton.onClick.AddListener(OnServerButtonClicked);
             clientServerButton.onClick.AddListener(OnClientButtonClicked);
 
@@ -123,6 +130,8 @@ namespace Client
 
             startServerButton.onClick.RemoveListener(OnServerButtonClicked);
             clientServerButton.onClick.RemoveListener(OnClientButtonClicked);
+
+            regionDropdown.onValueChanged.RemoveListener(OnRegionDropdownChanged);
 
             base.PanelDeinitialized();
         }
@@ -167,6 +176,20 @@ namespace Client
             photonManager.StartConnection(lobbySessionSlot.UdpSession, new ClientConnectionToken(playerNameInput.text), OnConnectSuccess, OnConnectFail);
         }
 
+        private void OnRegionDropdownChanged(int index)
+        {
+            BoltRuntimeSettings.instance.UpdateBestRegion(MultiplayerUtils.AvailableRegions[index]);
+
+            startClientTooltip.SetActive(true);
+            noSessionsFoundTooltip.SetActive(false);
+
+            statusLabel.text = LocalizationUtils.LobbyClientStartString;
+
+            UpdateInputState(false);
+
+            photonManager.StartClient(OnClientStartSuccess, OnClientStartFail, true);
+        }
+
         private void OnServerButtonClicked()
         {
             statusLabel.text = LocalizationUtils.LobbyServerStartString;
@@ -182,7 +205,7 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonManager.StartClient(OnClientStartSuccess, OnClientStartFail);
+            photonManager.StartClient(OnClientStartSuccess, OnClientStartFail, false);
         }
 
         private void OnServerStartFail()

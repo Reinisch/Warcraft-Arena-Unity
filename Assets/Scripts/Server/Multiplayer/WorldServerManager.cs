@@ -52,9 +52,12 @@ namespace Server
             }
         }
 
-        internal void SessionUpdated(ServerRoomToken sessionToken)
+        internal void ServerLaunched(ServerRoomToken sessionToken)
         {
             serverRoomToken = sessionToken;
+
+            if (HasClientLogic)
+                CreatePlayer();
         }
 
         internal void EntityAttached(BoltEntity entity)
