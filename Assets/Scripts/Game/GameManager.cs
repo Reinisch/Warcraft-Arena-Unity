@@ -36,7 +36,6 @@ namespace Game
         [SerializeField, UsedImplicitly] private BalanceManager balanceManager;
         [SerializeField, UsedImplicitly] private PhysicsManager physicsManager;
         [SerializeField, UsedImplicitly] private MultiplayerManager multiplayerManager;
-        [SerializeField, UsedImplicitly] private InputManager inputManager;
         [SerializeField, UsedImplicitly] private InterfaceManager interfaceManager;
         [SerializeField, UsedImplicitly] private SoundManager soundManager;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableClientContainer;
@@ -93,7 +92,6 @@ namespace Game
                 scriptableClientContainer.DoUpdate(gameTimeFloatDiff);
                 effectManager.DoUpdate(gameTimeFloatDiff);
                 interfaceManager.DoUpdate(gameTimeFloatDiff);
-                inputManager.DoUpdate(gameTimeFloatDiff);
             }
         }
 
@@ -115,7 +113,6 @@ namespace Game
             multiplayerManager.Initialize();
             scriptableClientContainer.Register();
             soundManager.Initialize();
-            inputManager.Initialize();
             interfaceManager.Initialize(multiplayerManager, multiplayerManager.ClientListener);
 
             gameTimer.Start();
@@ -137,7 +134,6 @@ namespace Game
                 DeinitializeWorld();
 
             interfaceManager.Deinitialize();
-            inputManager.Deinitialize();
             soundManager.Deinitialize();
             scriptableClientContainer.Unregister();
             multiplayerManager.Deinitialize();

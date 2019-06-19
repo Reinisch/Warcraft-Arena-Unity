@@ -7,7 +7,6 @@ using Core;
 using Server;
 using UnityEngine;
 using JetBrains.Annotations;
-using udpkit.platform.photon;
 using UdpKit;
 
 using EventHandler = Common.EventHandler;
@@ -41,7 +40,6 @@ namespace Game
 
         public void Initialize()
         {
-            BoltRuntimeSettings.instance.UpdateBestRegion(PhotonRegion.regions[PhotonRegion.Regions.RU]);
             config = BoltRuntimeSettings.instance.GetConfigCopy();
             config.connectionRequestTimeout = (int) (MaxConnectionAttemptTime * 1000.0f);
 
@@ -61,7 +59,7 @@ namespace Game
 
         public void DoUpdate(int deltaTime)
         {
-            if(boltSharedListener.enabled)
+            if (boltSharedListener.enabled)
                 boltSharedListener.DoUpdate(deltaTime);
             if (boltServerListener.enabled)
                 boltServerListener.DoUpdate(deltaTime);

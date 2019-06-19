@@ -6,15 +6,15 @@ using UnityEngine;
 
 namespace Client
 {
-    [CreateAssetMenu(fileName = "Input Reference", menuName = "Player Data/Input/Input Reference", order = 1)]
-    public class InputReference : ScriptableObject
+    [CreateAssetMenu(fileName = "Input Reference", menuName = "Game Data/Scriptable/Input", order = 1)]
+    public class InputReference : ScriptableReference
     {
         [SerializeField, UsedImplicitly] private List<HotkeyInputItem> hotkeys;
         [SerializeField, UsedImplicitly] private List<InputActionGlobal> globalActions;
+        
+        private Player Player { get; set; }
 
-        public Player OriginalPlayer { get; private set; }
-
-        public void Initialize()
+        protected override void OnRegistered()
         {
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
@@ -22,7 +22,7 @@ namespace Client
             globalActions.ForEach(globalAction => globalAction.Register());
         }
 
-        public void Deinitialize()
+        protected override void OnUnregister()
         {
             globalActions.ForEach(globalAction => globalAction.Unregister());
 
@@ -30,7 +30,7 @@ namespace Client
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
         }
 
-        public void DoUpdate(float deltaTime)
+        protected override void OnUpdate(float deltaTime)
         {
             foreach (var hotkey in hotkeys)
                 if (hotkey.IsPressed())
@@ -58,13 +58,13 @@ namespace Client
         private void OnEventEntityAttached(WorldEntity worldEntity)
         {
             if (worldEntity is Player player && player.IsOwner)
-                OriginalPlayer = player;
+                Player = player;
         }
 
         private void OnEventEntityDetach(WorldEntity worldEntity)
         {
-            if (worldEntity == OriginalPlayer)
-                OriginalPlayer = null;
+            if (worldEntity == Player)
+                Player = null;
         }
 
         public void CastSpell(int spellId)
