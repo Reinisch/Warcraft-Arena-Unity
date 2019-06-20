@@ -5,9 +5,13 @@
         GameMapLoaded,
         DisconnectedFromHost,
         DisconnectedFromMaster,
+        SessionListUpdated,
 
         WorldInitialized,
         WorldDeinitializing,
+
+        PlayerControlGained,
+        PlayerControlLost,
 
         SpellCasted,
         SpellHit,

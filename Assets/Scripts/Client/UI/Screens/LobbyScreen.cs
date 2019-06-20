@@ -1,5 +1,4 @@
-﻿using Core;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 using Client.UI;
 
@@ -9,18 +8,18 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private LobbyPanel lobbyPanel;
 
-        public void Initialize(PhotonBoltManager photonManager, ScreenController controller)
+        public new void Initialize(ScreenController controller)
         {
-            Initialize(controller);
+            base.Initialize(controller);
 
             gameObject.SetActive(false);
 
-            RegisterPanel(lobbyPanel, new LobbyPanel.RegisterToken(photonManager));
+            RegisterPanel<LobbyPanel, LobbyPanel.RegisterToken>(lobbyPanel);
         }
 
         public new void Deinitialize(ScreenController controller)
         {
-            UnregisterPanel(lobbyPanel, new LobbyPanel.UnregisterToken());
+            UnregisterPanel<LobbyPanel, LobbyPanel.UnregisterToken>(lobbyPanel);
 
             gameObject.SetActive(false);
 

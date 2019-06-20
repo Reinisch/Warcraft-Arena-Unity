@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Common;
 using Core;
 using JetBrains.Annotations;
+using UnityEngine;
 
 using Assert = Common.Assert;
+using EventHandler = Common.EventHandler;
 
 namespace Client
 {
     [UsedImplicitly]
     public partial class PhotonBoltClientListener : PhotonBoltBaseListener
     {
-        public Player LocalPlayer { get; private set; }
+        [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
 
-        public event Action EventPlayerControlGained;
-        public event Action EventPlayerControlLost;
+        private Player LocalPlayer { get; set; }
 
         public new void Initialize(WorldManager worldManager)
         {
@@ -36,9 +37,8 @@ namespace Client
                 Assert.IsNull(LocalPlayer, "Gained control of another player while already controlling one!");
 
                 LocalPlayer = (Player)WorldManager.UnitManager.Find(entity.NetworkId.PackedValue);
-                EventPlayerControlGained?.Invoke();
-
-                FindObjectOfType<WarcraftCamera>().Target = LocalPlayer;
+                EventHandler.ExecuteEvent(photon, GameEvents.PlayerControlGained, LocalPlayer);
+                FindObjectOfType<WarcraftCamera>().Target = LocalPlayer; // TODO: implement camera manager
             }
         }
 
@@ -50,7 +50,7 @@ namespace Client
             {
                 Assert.IsTrue(LocalPlayer.BoltEntity == entity, "Lost control of non-local player!");
 
-                EventPlayerControlLost?.Invoke();
+                EventHandler.ExecuteEvent(photon, GameEvents.PlayerControlLost, LocalPlayer);
                 LocalPlayer = null;
             }
         }

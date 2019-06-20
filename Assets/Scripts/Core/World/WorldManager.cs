@@ -1,4 +1,5 @@
 ﻿using Bolt;
+using Common;
 
 namespace Core
 {
@@ -27,6 +28,8 @@ namespace Core
 
         public virtual void Dispose()
         {
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, this);
+
             UnitManager.Dispose();
             SpellManager.Dispose();
             MapManager.Dispose();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Client.UI;
+using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -12,16 +13,9 @@ namespace Client
     {
         public struct RegisterToken : IPanelRegisterToken<LobbyPanel>
         {
-            private readonly PhotonBoltManager photonManager;
-
-            public RegisterToken(PhotonBoltManager photonManager)
-            {
-                this.photonManager = photonManager;
-            }
-
             public void Initialize(LobbyPanel panel)
             {
-                panel.photonManager = photonManager;
+                panel.gameObject.SetActive(false);
             }
         }
 
@@ -30,7 +24,6 @@ namespace Client
             public void Deinitialize(LobbyPanel panel)
             {
                 panel.gameObject.SetActive(false);
-                panel.photonManager = null;
             }
         }
 
@@ -56,6 +49,7 @@ namespace Client
         }
 
         [SerializeField, UsedImplicitly] private BalanceReference balance;
+        [SerializeField, UsedImplicitly] private PhotonBoltReference photonReference;
         [SerializeField, UsedImplicitly] private Button startServerButton;
         [SerializeField, UsedImplicitly] private Button clientServerButton;
         [SerializeField, UsedImplicitly] private Transform mapsContentHolder;
@@ -76,7 +70,6 @@ namespace Client
         private const int SessionDisplayCount = 20;
 
         private LobbyMapSlot selectedMapSlot;
-        private PhotonBoltManager photonManager;
 
         protected override void PanelInitialized()
         {
@@ -106,15 +99,15 @@ namespace Client
                 sessionSlots[i].Initialize();
             }
 
-            photonManager.EventSessionListUpdated += OnPhotonManagerSessionListUpdated;
-
             mapSlots[0].Select();
-            versionName.text = photonManager.Version;
+            versionName.text = photonReference.Version;
+
+            EventHandler.RegisterEvent(photonReference.UnderlyingController, GameEvents.SessionListUpdated, OnPhotonControllerSessionListUpdated);
         }
 
         protected override void PanelDeinitialized()
         {
-            photonManager.EventSessionListUpdated -= OnPhotonManagerSessionListUpdated;
+            EventHandler.UnregisterEvent(photonReference.UnderlyingController, GameEvents.SessionListUpdated, OnPhotonControllerSessionListUpdated);
 
             for (int i = 0; i < SessionDisplayCount; i++)
             {
@@ -173,7 +166,7 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonManager.StartConnection(lobbySessionSlot.UdpSession, new ClientConnectionToken(playerNameInput.text), OnConnectSuccess, OnConnectFail);
+            photonReference.StartConnection(lobbySessionSlot.UdpSession, new ClientConnectionToken(playerNameInput.text), OnConnectSuccess, OnConnectFail);
         }
 
         private void OnRegionDropdownChanged(int index)
@@ -187,7 +180,7 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonManager.StartClient(OnClientStartSuccess, OnClientStartFail, true);
+            photonReference.StartClient(OnClientStartSuccess, OnClientStartFail, true);
         }
 
         private void OnServerButtonClicked()
@@ -196,7 +189,7 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonManager.StartServer(new ServerRoomToken(serverNameInput.text, playerNameInput.text, selectedMapSlot.MapDefinition.MapName), OnServerStartSuccess, OnServerStartFail);
+            photonReference.StartServer(new ServerRoomToken(serverNameInput.text, playerNameInput.text, selectedMapSlot.MapDefinition.MapName), OnServerStartSuccess, OnServerStartFail);
         }
 
         private void OnClientButtonClicked()
@@ -205,7 +198,7 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonManager.StartClient(OnClientStartSuccess, OnClientStartFail, false);
+            photonReference.StartClient(OnClientStartSuccess, OnClientStartFail, false);
         }
 
         private void OnServerStartFail()
@@ -236,7 +229,7 @@ namespace Client
         {
             statusLabel.text = LocalizationUtils.LobbyClientStartSuccessString;
             startClientTooltip.SetActive(false);
-            noSessionsFoundTooltip.SetActive(photonManager.Sessions.Count == 0);
+            noSessionsFoundTooltip.SetActive(photonReference.Sessions.Count == 0);
 
             UpdateInputState(true);
         }
@@ -257,17 +250,17 @@ namespace Client
             WindowController.HidePanel<LobbyPanel>();
         }
 
-        private void OnPhotonManagerSessionListUpdated()
+        private void OnPhotonControllerSessionListUpdated()
         {
             if (!gameObject.activeInHierarchy)
                 return;
 
             int currentSlotIndex = 0;
-            foreach (var session in photonManager.Sessions)
+            foreach (var session in photonReference.Sessions)
             {
                 if (currentSlotIndex >= SessionDisplayCount)
                 {
-                    Debug.LogError($"To many sessions to display! Available slots {SessionDisplayCount} Received: {photonManager.Sessions.Count}");
+                    Debug.LogError($"To many sessions to display! Available slots {SessionDisplayCount} Received: {photonReference.Sessions.Count}");
                     break;
                 }
 
@@ -279,7 +272,7 @@ namespace Client
                 sessionSlots[i].SetSession(null);
 
             startClientTooltip.SetActive(false);
-            noSessionsFoundTooltip.SetActive(photonManager.Sessions.Count == 0);
+            noSessionsFoundTooltip.SetActive(photonReference.Sessions.Count == 0);
         }
 
         private void ResetSessions()

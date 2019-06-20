@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Client;
 using Common;
 using Core;
@@ -30,8 +29,6 @@ namespace Game
 
         [SerializeField, UsedImplicitly] private UpdatePolicy updatePolicy;
         [SerializeField, UsedImplicitly] private long updateTimeMilliseconds = 20;
-
-        [SerializeField, UsedImplicitly] private MultiplayerManager multiplayerManager;
         [SerializeField, UsedImplicitly] private InterfaceManager interfaceManager;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableCoreContainer;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableClientContainer;
@@ -81,7 +78,7 @@ namespace Game
 
             lastGameUpdateTime = elapsedTime;
 
-            multiplayerManager.DoUpdate(gameTimeDiff);
+            scriptableCoreContainer.DoUpdate(gameTimeDiff);
 
             if (HasClientLogic)
             {
@@ -102,58 +99,37 @@ namespace Game
             Assert.RaiseExceptions = Application.isEditor;
 
             scriptableCoreContainer.Register();
-            multiplayerManager.Initialize();
             scriptableClientContainer.Register();
-            interfaceManager.Initialize(multiplayerManager, multiplayerManager.ClientListener);
+            interfaceManager.Initialize();
 
             gameTimer.Start();
 
             interfaceManager.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(true));
 
-            EventHandler.RegisterEvent<string, NetworkingMode>(multiplayerManager, GameEvents.GameMapLoaded, OnGameMapLoaded);
-            EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(multiplayerManager, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
-            EventHandler.RegisterEvent(multiplayerManager, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
+            EventHandler.RegisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
+            EventHandler.RegisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
         }
 
         private void Deinitialize()
         {
-            EventHandler.UnregisterEvent(multiplayerManager, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
-            EventHandler.UnregisterEvent<string, NetworkingMode>(multiplayerManager, GameEvents.GameMapLoaded, OnGameMapLoaded);
-            EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(multiplayerManager, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
+            EventHandler.UnregisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
+            EventHandler.UnregisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
 
-            if (worldManager != null)
-                DeinitializeWorld();
-
+            worldManager?.Dispose();
             interfaceManager.Deinitialize();
             scriptableClientContainer.Unregister();
-            multiplayerManager.Deinitialize();
             scriptableCoreContainer.Unregister();
-        }
-
-        private void InitializeWorld()
-        {
-            worldManager = HasServerLogic ? (WorldManager) new WorldServerManager(HasClientLogic) : new WorldClientManager(HasServerLogic);
-
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, worldManager);
-        }
-
-        private void DeinitializeWorld()
-        {
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, worldManager);
-
-            worldManager.Dispose();
-            worldManager = null;
         }
 
         private void OnGameMapLoaded(string map, NetworkingMode mode)
         {
-            if (mode == NetworkingMode.None)
-                throw new ArgumentOutOfRangeException(nameof(mode), mode, "Game loaded with invalid networking state!");
-
             HasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
             HasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;
 
-            InitializeWorld();
+            worldManager = HasServerLogic ? (WorldManager)new WorldServerManager(HasClientLogic) : new WorldClientManager(HasServerLogic);
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, worldManager);
 
             interfaceManager.HideScreen<LobbyScreen>();
             interfaceManager.ShowScreen<BattleScreen, BattleHudPanel>();
@@ -171,7 +147,8 @@ namespace Game
 
         private void ProcessDisconnect(bool autoStartClient, DisconnectReason disconnectReason)
         {
-            DeinitializeWorld();
+            worldManager.Dispose();
+            worldManager = null;
 
             HasServerLogic = false;
             HasClientLogic = false;

@@ -2,7 +2,6 @@
 using Client.UI;
 using JetBrains.Annotations;
 using UnityEngine;
-using Core;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -11,10 +10,10 @@ public class InterfaceManager : MonoBehaviour
 
     private readonly ScreenController screenController = new ScreenController();
 
-    public void Initialize(PhotonBoltManager photonManager, PhotonBoltClientListener clientListener)
+    public void Initialize()
     {
-        lobbyScreen.Initialize(photonManager, screenController);
-        battleScreen.Initialize(clientListener, screenController);
+        lobbyScreen.Initialize(screenController);
+        battleScreen.Initialize(screenController);
     }
 
     public void Deinitialize()

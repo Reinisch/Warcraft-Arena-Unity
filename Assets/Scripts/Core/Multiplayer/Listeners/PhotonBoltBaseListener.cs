@@ -16,10 +16,6 @@ namespace Core
             WorldManager = null;
         }
 
-        public void DoUpdate(int deltaTime)
-        {
-        }
-
         public override bool PersistBetweenStartupAndShutdown()
         {
             return true;

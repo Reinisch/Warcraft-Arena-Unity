@@ -8,20 +8,18 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private BattleHudPanel battleHudPanel;
         
-        private PhotonBoltClientListener clientListener;
-
-        public void Initialize(PhotonBoltClientListener clientListener, ScreenController controller)
+        public new void Initialize(ScreenController controller)
         {
-            Initialize(controller);
+            base.Initialize(controller);
 
             gameObject.SetActive(false);
 
-            RegisterPanel(battleHudPanel, new BattleHudPanel.RegisterToken(clientListener));
+            RegisterPanel<BattleHudPanel, BattleHudPanel.RegisterToken>(battleHudPanel);
         }       
 
         public new void Deinitialize(ScreenController controller)
         {
-            UnregisterPanel(battleHudPanel, new BattleHudPanel.UnregisterToken());
+            UnregisterPanel<BattleHudPanel, BattleHudPanel.UnregisterToken>(battleHudPanel);
 
             gameObject.SetActive(false);
 

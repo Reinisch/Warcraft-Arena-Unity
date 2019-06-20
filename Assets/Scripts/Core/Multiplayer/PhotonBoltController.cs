@@ -1,34 +1,40 @@
 ﻿using System;
 using Bolt;
 using UdpKit;
+using Common;
+using EventHandler = Common.EventHandler;
 
 namespace Core
 {
-    public abstract class PhotonBoltManager : GlobalEventListener
+    public abstract class PhotonBoltController : GlobalEventListener, IPhotonBoltController
     {
         public Map<Guid, UdpSession> Sessions => BoltNetwork.SessionList;
         public abstract string Version { get; }
 
-        public event Action EventSessionListUpdated;
+        internal void Register()
+        {
+            OnRegistered();
+        }
+
+        internal void Unregister()
+        {
+            OnUnregistered();
+        }
+
+        protected abstract void OnRegistered();
+
+        protected abstract void OnUnregistered();
 
         public override void SessionListUpdated(Map<Guid, UdpSession> sessionList)
         {
             base.SessionListUpdated(sessionList);
 
-            EventSessionListUpdated?.Invoke();
+            EventHandler.ExecuteEvent(this, GameEvents.SessionListUpdated);
         }
 
         public override bool PersistBetweenStartupAndShutdown()
         {
             return true;
-        }
-
-        public override void BoltStartBegin()
-        {
-            base.BoltStartBegin();
-
-            BoltNetwork.RegisterTokenClass<Unit.CreateToken>();
-            BoltNetwork.RegisterTokenClass<Player.CreateToken>();
         }
 
         public abstract void StartServer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail);

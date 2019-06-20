@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Client.UI;
+using Common;
+using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -9,16 +11,9 @@ namespace Client
     {
         public struct RegisterToken : IPanelRegisterToken<BattleHudPanel>
         {
-            private readonly PhotonBoltClientListener clientListener;
-
-            public RegisterToken(PhotonBoltClientListener clientListener)
-            {
-                this.clientListener = clientListener;
-            }
-
             public void Initialize(BattleHudPanel panel)
             {
-                panel.clientListener = clientListener;
+                panel.gameObject.SetActive(false);
             }
         }
 
@@ -30,12 +25,13 @@ namespace Client
             }
         }
 
+        [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
         [SerializeField, UsedImplicitly] private UnitFrame playerUnitFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetUnitFrame;
         [SerializeField, UsedImplicitly] private CastFrame playerCastFrame;
         [SerializeField, UsedImplicitly] private List<ActionBar> actionBars;
 
-        private PhotonBoltClientListener clientListener;
+        private Player localPlayer;
 
         protected override void PanelInitialized()
         {
@@ -43,21 +39,23 @@ namespace Client
 
             actionBars.ForEach(actionBar => actionBar.Initialize());
 
-            clientListener.EventPlayerControlGained += OnPlayerControlGained;
-            clientListener.EventPlayerControlLost += OnPlayerControlLost;
+            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
+            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
 
             playerCastFrame.gameObject.SetActive(false);
         }
 
         protected override void PanelDeinitialized()
         {
-            clientListener.EventPlayerControlGained -= OnPlayerControlGained;
-            clientListener.EventPlayerControlLost -= OnPlayerControlLost;
+            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
+            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
 
             actionBars.ForEach(actionBar => actionBar.Denitialize());
 
             playerUnitFrame.UpdateUnit(null);
             playerTargetUnitFrame.UpdateUnit(null);
+
+            localPlayer = null;
 
             base.PanelDeinitialized();
         }
@@ -68,21 +66,25 @@ namespace Client
 
             playerCastFrame.DoUpdate(deltaTime);
 
-            if (clientListener.LocalPlayer != null)
+            if (localPlayer != null)
                 foreach (var actionBar in actionBars)
                     actionBar.DoUpdate(deltaTime);
         }
 
-        private void OnPlayerControlGained()
+        private void OnPlayerControlGained(Player player)
         {
-            playerUnitFrame.UpdateUnit(clientListener.LocalPlayer);
-            playerCastFrame.UpdateUnit(clientListener.LocalPlayer);
+            localPlayer = player;
+
+            playerUnitFrame.UpdateUnit(localPlayer);
+            playerCastFrame.UpdateUnit(localPlayer);
         }
 
-        private void OnPlayerControlLost()
+        private void OnPlayerControlLost(Player player)
         {
             playerUnitFrame.UpdateUnit(null);
             playerCastFrame.UpdateUnit(null);
+
+            localPlayer = null;
         }
     }
 }

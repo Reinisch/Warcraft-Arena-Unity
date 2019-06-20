@@ -13,7 +13,7 @@ using EventHandler = Common.EventHandler;
 
 namespace Game
 {
-    public class MultiplayerManager : PhotonBoltManager
+    public class MultiplayerController : PhotonBoltController
     {
         private enum State
         {
@@ -35,13 +35,12 @@ namespace Game
         private BoltConfig config;
         private State state;
 
-        public PhotonBoltClientListener ClientListener => boltClientListener;
         public override string Version => "1.0.0";
 
-        public void Initialize()
+        protected override void OnRegistered()
         {
             config = BoltRuntimeSettings.instance.GetConfigCopy();
-            config.connectionRequestTimeout = (int) (MaxConnectionAttemptTime * 1000.0f);
+            config.connectionRequestTimeout = (int)(MaxConnectionAttemptTime * 1000.0f);
 
             SetListeners(false, false, false);
 
@@ -49,22 +48,12 @@ namespace Game
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
         }
 
-        public void Deinitialize()
+        protected override void OnUnregistered()
         {
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
 
             SetListeners(false, false, false);
-        }
-
-        public void DoUpdate(int deltaTime)
-        {
-            if (boltSharedListener.enabled)
-                boltSharedListener.DoUpdate(deltaTime);
-            if (boltServerListener.enabled)
-                boltServerListener.DoUpdate(deltaTime);
-            if (boltClientListener.enabled)
-                boltClientListener.DoUpdate(deltaTime);
         }
 
         public override void StartServer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail)
@@ -100,6 +89,8 @@ namespace Game
             BoltNetwork.RegisterTokenClass<ServerRoomToken>();
             BoltNetwork.RegisterTokenClass<ClientConnectionToken>();
             BoltNetwork.RegisterTokenClass<ClientRefuseToken>();
+            BoltNetwork.RegisterTokenClass<Unit.CreateToken>();
+            BoltNetwork.RegisterTokenClass<Player.CreateToken>();
         }
 
         public override void BoltStartDone()
@@ -121,14 +112,14 @@ namespace Game
             base.BoltShutdownBegin(registerDoneCallback, disconnectReason);
 
             if (worldManager != null && worldManager.HasServerLogic)
-                EventHandler.ExecuteEvent(this, GameEvents.DisconnectedFromMaster);
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster);
         }
 
         public override void SceneLoadLocalDone(string map)
         {
             base.SceneLoadLocalDone(map);
 
-            EventHandler.ExecuteEvent(this, GameEvents.GameMapLoaded, map, networkingMode);
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, map, networkingMode);
         }
 
         public override void Connected(BoltConnection connection)
@@ -149,7 +140,7 @@ namespace Game
             if (networkingMode == GameManager.NetworkingMode.Client)
             {
                 Debug.LogError("Disconnected: reason: " + connection.DisconnectReason + " from " + connection);
-                EventHandler.ExecuteEvent(this, GameEvents.DisconnectedFromHost, connection.DisconnectReason);
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, connection.DisconnectReason);
             }
         }
 
@@ -193,6 +184,11 @@ namespace Game
                 connectionAttemptInfo.IsFailed = true;
                 state = BoltNetwork.IsRunning ? State.Active : State.Inactive;
             }
+        }
+
+        public override bool PersistBetweenStartupAndShutdown()
+        {
+            return true;
         }
 
         private void OnWorldInitialized(WorldManager worldManager)
