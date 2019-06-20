@@ -7,7 +7,7 @@ namespace Client
     public class BattleScreen : UIWindowController<BattleScreen>
     {
         [SerializeField, UsedImplicitly] private BattleHudPanel battleHudPanel;
-        
+
         public new void Initialize(ScreenController controller)
         {
             base.Initialize(controller);

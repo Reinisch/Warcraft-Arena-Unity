@@ -29,5 +29,11 @@ namespace Common
             foreach (ScriptableReference scriptableReference in scriptableReferences)
                 scriptableReference.DoUpdate(deltaTime);
         }
+
+        public void DoUpdate(int deltaTime)
+        {
+            foreach (ScriptableReference scriptableReference in scriptableReferences)
+                scriptableReference.DoUpdate(deltaTime);
+        }
     }
 }

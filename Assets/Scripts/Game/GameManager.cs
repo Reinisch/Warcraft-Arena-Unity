@@ -29,7 +29,7 @@ namespace Game
 
         [SerializeField, UsedImplicitly] private UpdatePolicy updatePolicy;
         [SerializeField, UsedImplicitly] private long updateTimeMilliseconds = 20;
-        [SerializeField, UsedImplicitly] private InterfaceManager interfaceManager;
+        [SerializeField, UsedImplicitly] private InterfaceReference interfaceReference;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableCoreContainer;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableClientContainer;
 
@@ -55,36 +55,28 @@ namespace Game
             int gameTimeDiff = (int)(elapsedTime - lastGameUpdateTime);
             float gameTimeFloatDiff = gameTimeDiff / 1000.0f;
 
-            if (worldManager != null)
-            {
-                switch (updatePolicy)
-                {
-                    case UpdatePolicy.EveryUpdateCall:
-                        lastWorldUpdateTime = elapsedTime;
-                        worldManager.DoUpdate(worldTimeDiff);
-                        break;
-                    case UpdatePolicy.FixedTimeDelta:
-                        if (worldTimeDiff >= updateTimeMilliseconds)
-                            goto case UpdatePolicy.EveryUpdateCall;
-                        break;
-                    default:
-                        goto case UpdatePolicy.EveryUpdateCall;
-                }
-            }
-            else
-            {
-                lastWorldUpdateTime = elapsedTime;
-            }
-
             lastGameUpdateTime = elapsedTime;
+
+            if (worldManager == null)
+                lastWorldUpdateTime = elapsedTime;
+            else switch (updatePolicy)
+            {
+                case UpdatePolicy.EveryUpdateCall:
+                    lastWorldUpdateTime = elapsedTime;
+                    worldManager.DoUpdate(worldTimeDiff);
+                    break;
+                case UpdatePolicy.FixedTimeDelta:
+                    if (worldTimeDiff >= updateTimeMilliseconds)
+                        goto case UpdatePolicy.EveryUpdateCall;
+                    break;
+                default:
+                    goto case UpdatePolicy.EveryUpdateCall;
+            }
 
             scriptableCoreContainer.DoUpdate(gameTimeDiff);
 
             if (HasClientLogic)
-            {
                 scriptableClientContainer.DoUpdate(gameTimeFloatDiff);
-                interfaceManager.DoUpdate(gameTimeFloatDiff);
-            }
         }
 
         [UsedImplicitly]
@@ -100,11 +92,10 @@ namespace Game
 
             scriptableCoreContainer.Register();
             scriptableClientContainer.Register();
-            interfaceManager.Initialize();
 
             gameTimer.Start();
 
-            interfaceManager.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(true));
+            interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(true));
 
             EventHandler.RegisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
@@ -118,7 +109,6 @@ namespace Game
             EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
 
             worldManager?.Dispose();
-            interfaceManager.Deinitialize();
             scriptableClientContainer.Unregister();
             scriptableCoreContainer.Unregister();
         }
@@ -131,8 +121,8 @@ namespace Game
             worldManager = HasServerLogic ? (WorldManager)new WorldServerManager(HasClientLogic) : new WorldClientManager(HasServerLogic);
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, worldManager);
 
-            interfaceManager.HideScreen<LobbyScreen>();
-            interfaceManager.ShowScreen<BattleScreen, BattleHudPanel>();
+            interfaceReference.HideScreen<LobbyScreen>();
+            interfaceReference.ShowScreen<BattleScreen, BattleHudPanel>();
         }
 
         private void OnDisconnectedFromMaster()
@@ -153,8 +143,8 @@ namespace Game
             HasServerLogic = false;
             HasClientLogic = false;
 
-            interfaceManager.HideScreen<BattleScreen>();
-            interfaceManager.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(autoStartClient, disconnectReason));
+            interfaceReference.HideScreen<BattleScreen>();
+            interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(autoStartClient, disconnectReason));
         }
     }
 }
