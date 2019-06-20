@@ -7,7 +7,7 @@ using Assert = Common.Assert;
 
 namespace Core
 {
-    public class EntityPool : IPrefabPool
+    internal class EntityPool : IPrefabPool
     {
         private readonly Dictionary<GameObject, Entity> takenEntities = new Dictionary<GameObject, Entity>();
         private WorldManager worldManager;

@@ -4,25 +4,29 @@ using UnityEngine;
 
 namespace Common
 {
-    public class GameObjectPool : MonoBehaviour
+    [CreateAssetMenu(fileName = "Pool Reference", menuName = "Game Data/Scriptable/Pool", order = 6)]
+    public class GameObjectPool : ScriptableReference
     {
         private static GameObjectPool Instance;
 
-        [SerializeField, UsedImplicitly] private Transform container;
+        [SerializeField, UsedImplicitly] private string containerTag;
 
         private readonly Dictionary<int, Stack<GameObject>> pooledGameObjectsByProtoId = new Dictionary<int, Stack<GameObject>>();
         private readonly Dictionary<GameObject, int> takenObjectProtoIds = new Dictionary<GameObject, int>();
+        private Transform container;
 
-        public void Initialize()
+        protected override void OnRegistered()
         {
+            container = GameObject.FindGameObjectWithTag(containerTag).transform;
+
             Instance = this;
         }
 
-        public void Deinitialize()
+        protected override void OnUnregister()
         {
             foreach (var pooledObjects in pooledGameObjectsByProtoId)
-                foreach (var pooledObject in pooledObjects.Value)
-                    Destroy(pooledObject);
+            foreach (var pooledObject in pooledObjects.Value)
+                Destroy(pooledObject);
 
             pooledGameObjectsByProtoId.Clear();
             takenObjectProtoIds.Clear();

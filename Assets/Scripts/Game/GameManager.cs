@@ -31,7 +31,6 @@ namespace Game
         [SerializeField, UsedImplicitly] private UpdatePolicy updatePolicy;
         [SerializeField, UsedImplicitly] private long updateTimeMilliseconds = 20;
 
-        [SerializeField, UsedImplicitly] private GameObjectPool gameObjectPool;
         [SerializeField, UsedImplicitly] private MultiplayerManager multiplayerManager;
         [SerializeField, UsedImplicitly] private InterfaceManager interfaceManager;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableCoreContainer;
@@ -102,7 +101,6 @@ namespace Game
             DontDestroyOnLoad(gameObject);
             Assert.RaiseExceptions = Application.isEditor;
 
-            gameObjectPool.Initialize();
             scriptableCoreContainer.Register();
             multiplayerManager.Initialize();
             scriptableClientContainer.Register();
@@ -130,7 +128,6 @@ namespace Game
             scriptableClientContainer.Unregister();
             multiplayerManager.Deinitialize();
             scriptableCoreContainer.Unregister();
-            gameObjectPool.Deinitialize();
         }
 
         private void InitializeWorld()
