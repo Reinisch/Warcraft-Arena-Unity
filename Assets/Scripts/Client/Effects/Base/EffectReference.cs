@@ -5,19 +5,20 @@ using Common;
 
 namespace Client
 {
-    public class EffectManager : MonoBehaviour
+    [CreateAssetMenu(fileName = "Effect Reference", menuName = "Game Data/Scriptable/Effects", order = 1)]
+    public class EffectReference : ScriptableReference
     {
         internal class EffectContainer
         {
             private readonly List<EffectEntity> activeEffects = new List<EffectEntity>();
             private readonly List<EffectEntity> idleEffects = new List<EffectEntity>();
             private readonly EffectSettings effectSettings;
-            private readonly EffectManager effectManager;
+            private readonly EffectReference reference;
 
-            internal EffectContainer(EffectSettings effectSettings, EffectManager effectManager)
+            internal EffectContainer(EffectSettings effectSettings, EffectReference reference)
             {
                 this.effectSettings = effectSettings;
-                this.effectManager = effectManager;
+                this.reference = reference;
 
                 AddEffects(effectSettings.MaxAmount);
             }
@@ -57,11 +58,11 @@ namespace Client
                 var effectToPlay = idleEffects[0];
                 effectToPlay.transform.position = position;
                 effectToPlay.transform.rotation = rotation;
-                effectToPlay.transform.SetParent(parent ?? effectManager.effectOrigin);
+                effectToPlay.transform.SetParent(parent ?? reference.containerTransform);
                 idleEffects.RemoveAt(0);
 
                 activeEffects.Add(effectToPlay);
-                effectToPlay.Play(effectManager.nextPlayId++);
+                effectToPlay.Play(reference.nextPlayId++);
                 effectToPlay.gameObject.SetActive(true);
 
                 return effectToPlay;
@@ -94,7 +95,7 @@ namespace Client
             
             private void AddEffect()
             {
-                EffectEntity newEffect = GameObjectPool.Take(effectSettings.Prototype, Vector3.zero, Quaternion.identity, effectManager.effectOrigin);
+                EffectEntity newEffect = GameObjectPool.Take(effectSettings.Prototype, Vector3.zero, Quaternion.identity, reference.containerTransform);
                 newEffect.Initialize(effectSettings);
                 idleEffects.Add(newEffect);
 
@@ -109,23 +110,28 @@ namespace Client
         }
 
         [SerializeField, UsedImplicitly] private List<EffectSettings> effectSettings;
-        [SerializeField, UsedImplicitly] private Transform effectOrigin;
+        [SerializeField, UsedImplicitly] private string containerTag;
 
         private long nextPlayId = -1;
+        private Transform containerTransform;
 
-        public void Initialize()
+        protected override void OnRegistered()
         {
+            containerTransform = GameObject.FindGameObjectWithTag(containerTag).transform;
+
             foreach (EffectSettings effectSetting in effectSettings)
-                effectSetting.Initialize(this);
+                effectSetting.Initialize();
         }
 
-        public void Deinitialize()
+        protected override void OnUnregister()
         {
             foreach (EffectSettings effectSetting in effectSettings)
                 effectSetting.Deinitialize();
+
+            containerTransform = null;
         }
 
-        public void DoUpdate(float deltaTime)
+        protected override void OnUpdate(float deltaTime)
         {
             foreach (EffectSettings effectSetting in effectSettings)
                 effectSetting.EffectContainer.DoUpdate();

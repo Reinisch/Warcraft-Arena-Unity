@@ -32,7 +32,6 @@ namespace Game
         [SerializeField, UsedImplicitly] private long updateTimeMilliseconds = 20;
 
         [SerializeField, UsedImplicitly] private GameObjectPool gameObjectPool;
-        [SerializeField, UsedImplicitly] private EffectManager effectManager;
         [SerializeField, UsedImplicitly] private MultiplayerManager multiplayerManager;
         [SerializeField, UsedImplicitly] private InterfaceManager interfaceManager;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableCoreContainer;
@@ -88,7 +87,6 @@ namespace Game
             if (HasClientLogic)
             {
                 scriptableClientContainer.DoUpdate(gameTimeFloatDiff);
-                effectManager.DoUpdate(gameTimeFloatDiff);
                 interfaceManager.DoUpdate(gameTimeFloatDiff);
             }
         }
@@ -106,7 +104,6 @@ namespace Game
 
             gameObjectPool.Initialize();
             scriptableCoreContainer.Register();
-            effectManager.Initialize();
             multiplayerManager.Initialize();
             scriptableClientContainer.Register();
             interfaceManager.Initialize(multiplayerManager, multiplayerManager.ClientListener);
@@ -132,7 +129,6 @@ namespace Game
             interfaceManager.Deinitialize();
             scriptableClientContainer.Unregister();
             multiplayerManager.Deinitialize();
-            effectManager.Deinitialize();
             scriptableCoreContainer.Unregister();
             gameObjectPool.Deinitialize();
         }

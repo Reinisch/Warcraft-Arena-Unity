@@ -7,16 +7,17 @@ namespace Client
     [UsedImplicitly, CreateAssetMenu(fileName = "Effect Settings", menuName = "Game Data/Visuals/Effect Settings", order = 1)]
     public class EffectSettings : ScriptableObject
     {
+        [SerializeField, UsedImplicitly] private EffectReference reference;
         [SerializeField, UsedImplicitly] private EffectEntity prototype;
         [SerializeField, UsedImplicitly] private int maxAmount;
 
-        internal EffectManager.EffectContainer EffectContainer { get; private set; }
+        internal EffectReference.EffectContainer EffectContainer { get; private set; }
         internal EffectEntity Prototype => prototype;
         internal int MaxAmount => maxAmount;
 
-        internal void Initialize(EffectManager effectManager)
+        internal void Initialize()
         {
-            EffectContainer = new EffectManager.EffectContainer(this, effectManager);
+            EffectContainer = new EffectReference.EffectContainer(this, reference);
         }
 
         internal void Deinitialize()
