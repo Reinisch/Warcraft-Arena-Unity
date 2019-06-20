@@ -33,10 +33,8 @@ namespace Game
 
         [SerializeField, UsedImplicitly] private GameObjectPool gameObjectPool;
         [SerializeField, UsedImplicitly] private EffectManager effectManager;
-        [SerializeField, UsedImplicitly] private PhysicsManager physicsManager;
         [SerializeField, UsedImplicitly] private MultiplayerManager multiplayerManager;
         [SerializeField, UsedImplicitly] private InterfaceManager interfaceManager;
-        [SerializeField, UsedImplicitly] private SoundManager soundManager;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableCoreContainer;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableClientContainer;
 
@@ -109,10 +107,8 @@ namespace Game
             gameObjectPool.Initialize();
             scriptableCoreContainer.Register();
             effectManager.Initialize();
-            physicsManager.Initialize();
             multiplayerManager.Initialize();
             scriptableClientContainer.Register();
-            soundManager.Initialize();
             interfaceManager.Initialize(multiplayerManager, multiplayerManager.ClientListener);
 
             gameTimer.Start();
@@ -134,10 +130,8 @@ namespace Game
                 DeinitializeWorld();
 
             interfaceManager.Deinitialize();
-            soundManager.Deinitialize();
             scriptableClientContainer.Unregister();
             multiplayerManager.Deinitialize();
-            physicsManager.Deinitialize();
             effectManager.Deinitialize();
             scriptableCoreContainer.Unregister();
             gameObjectPool.Deinitialize();

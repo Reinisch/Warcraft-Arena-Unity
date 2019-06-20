@@ -339,7 +339,7 @@ namespace Core
         private bool IsTouchingGround(out RaycastHit groundHitInfo)
         {
             return Physics.Raycast(Unit.UnitCollider.bounds.center, Vector3.down, out groundHitInfo, Unit.UnitCollider.bounds.extents.y +
-                controllerDefinition.BaseGroundCheckDistance * 2, PhysicsManager.Mask.Ground);
+                controllerDefinition.BaseGroundCheckDistance * 2, PhysicsReference.Mask.Ground);
         }
 
         private void UpdateOwnership()

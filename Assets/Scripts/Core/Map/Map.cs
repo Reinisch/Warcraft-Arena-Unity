@@ -69,7 +69,7 @@ namespace Core
 
         public void SearchAreaTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, SpellTargetChecks checkType)
         {
-            int hitCount = Physics.OverlapSphereNonAlloc(center, radius, raycastResults, PhysicsManager.Mask.Characters);
+            int hitCount = Physics.OverlapSphereNonAlloc(center, radius, raycastResults, PhysicsReference.Mask.Characters);
             Assert.IsFalse(hitCount == raycastResults.Length, "Raycast results reached maximum!");
             for (int i = 0; i < hitCount; i++)
             {
