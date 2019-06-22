@@ -58,6 +58,9 @@ namespace Client
             this.unit = unit;
             unitName.text = unit.Name;
             targetUnitFrame?.UpdateUnit(unit.Target);
+            
+            OnAttributeChanged(EntityAttributes.Health);
+            OnAttributeChanged(EntityAttributes.Power);
 
             EventHandler.RegisterEvent(unit, GameEvents.EntityAttributeChanged, onAttributeChangedAction);
             EventHandler.RegisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);

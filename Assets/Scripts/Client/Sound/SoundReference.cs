@@ -12,8 +12,10 @@ namespace Client
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private string soundContainerTag;
         [SerializeField, UsedImplicitly] private List<SoundSettings> soundSettings;
+        [SerializeField, UsedImplicitly] private List<SpellSoundSettings> spellSettings;
 
         private readonly Dictionary<SoundSettings, AudioSource> sourcesBySettings = new Dictionary<SoundSettings, AudioSource>();
+        private readonly Dictionary<SpellInfo, SpellSoundSettings> spellSettingsByInfo = new Dictionary<SpellInfo, SpellSoundSettings>();
         private Transform soundContainer;
 
         protected override void OnRegistered()
@@ -22,6 +24,9 @@ namespace Client
 
             foreach (var soundSetting in soundSettings)
                 sourcesBySettings[soundSetting] = ApplySettings(new GameObject(soundSetting.name).AddComponent<AudioSource>(), soundSetting);
+
+            foreach (var spellSetting in spellSettings)
+                spellSettingsByInfo[spellSetting.SpellInfo] = spellSetting;
 
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
@@ -35,6 +40,7 @@ namespace Client
             foreach (var soundSourceEntry in sourcesBySettings)
                 Destroy(soundSourceEntry.Value);
 
+            spellSettingsByInfo.Clear();
             sourcesBySettings.Clear();
             soundContainer = null;
         }
@@ -62,19 +68,17 @@ namespace Client
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
-            AudioClip castSound = spellInfo.SoundSettings.FindSound(SpellSoundEntry.UsageType.Cast);
-            if (castSound != null)
-                AudioSource.PlayClipAtPoint(castSound, caster.Position);
+            if (spellSettingsByInfo.TryGetValue(spellInfo, out SpellSoundSettings spellSoundSettings))
+                spellSoundSettings.PlayAtPoint(caster.Position, SpellSoundEntry.UsageType.Cast);
         }
 
-        private void OnSpellHit(Unit unitTarget, int spellId)
+        private void OnSpellHit(Unit target, int spellId)
         {
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
-            AudioClip hitSound = spellInfo.SoundSettings.FindSound(SpellSoundEntry.UsageType.Impact);
-            if (hitSound != null)
-                AudioSource.PlayClipAtPoint(hitSound, unitTarget.Position);
+            if (spellSettingsByInfo.TryGetValue(spellInfo, out SpellSoundSettings spellSoundSettings))
+                spellSoundSettings.PlayAtPoint(target.Position, SpellSoundEntry.UsageType.Impact);
         }
 
         private AudioSource ApplySettings(AudioSource source, SoundSettings settings)
@@ -109,9 +113,13 @@ namespace Client
         private void CollectSettings()
         {
             soundSettings.Clear();
+            spellSettings.Clear();
 
             foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{nameof(SoundSettings)}", null))
                 soundSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<SoundSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
+
+            foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{nameof(SpellSoundSettings)}", null))
+                spellSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<SpellSoundSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
         }
 #endif
     }

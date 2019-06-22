@@ -54,7 +54,6 @@ namespace Core
 
         [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos = new List<SpellEffectInfo>();
         [SerializeField, UsedImplicitly] private List<SpellPowerEntry> spellPowerEntries = new List<SpellPowerEntry>();
-        [SerializeField, UsedImplicitly] private SpellSoundSettings soundSettings;
         [SerializeField, UsedImplicitly] private List<SpellProcsPerMinuteModifier> procsPerMinuteModifiers;
 
         /// <summary>
@@ -90,7 +89,6 @@ namespace Core
 
         public List<SpellPowerEntry> PowerCosts => spellPowerEntries;
         public List<SpellEffectInfo> Effects => spellEffectInfos;
-        public SpellSoundSettings SoundSettings => soundSettings;
         public List<SpellProcsPerMinuteModifier> ProcsPerMinuteModifiers => procsPerMinuteModifiers;
 
         public int Duration => duration;

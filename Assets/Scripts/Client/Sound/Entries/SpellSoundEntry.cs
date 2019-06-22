@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Core
+namespace Client
 {
     [Serializable]
     public class SpellSoundEntry
@@ -16,9 +16,10 @@ namespace Core
         }
 
         [SerializeField, UsedImplicitly] private UsageType soundUsageType;
-        [SerializeField, UsedImplicitly] private AudioClip audioClip;
+        [SerializeField, UsedImplicitly] private SoundEntry soundEntry;
 
         public UsageType SoundUsageType => soundUsageType;
-        public AudioClip AudioClip => audioClip;
+
+        public void PlayAtPoint(Vector3 point) => soundEntry?.PlayAtPoint(point);
     }
 }
