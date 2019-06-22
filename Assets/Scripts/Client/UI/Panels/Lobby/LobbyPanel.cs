@@ -56,10 +56,10 @@ namespace Client
         [SerializeField, UsedImplicitly] private Transform sessionsContentHolder;
         [SerializeField, UsedImplicitly] private LobbyMapSlot mapSlotPrototype;
         [SerializeField, UsedImplicitly] private LobbySessionSlot sessionSlotPrototype;
+        [SerializeField, UsedImplicitly] private TMP_InputField playerNameInput;
+        [SerializeField, UsedImplicitly] private TMP_InputField serverNameInput;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI selectedMapLabel;
-        [SerializeField, UsedImplicitly] private TextMeshProUGUI serverNameInput;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI statusLabel;
-        [SerializeField, UsedImplicitly] private TextMeshProUGUI playerNameInput;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI versionName;
         [SerializeField, UsedImplicitly] private TMP_Dropdown regionDropdown;
         [SerializeField, UsedImplicitly] private GameObject startClientTooltip;
@@ -75,6 +75,9 @@ namespace Client
         {
             base.PanelInitialized();
 
+            playerNameInput.text = PlayerPrefs.GetString(PrefUtils.PlayerNamePref, $"Player{Random.Range(1, 99999).ToString().PadLeft(5, ' ')}");
+            serverNameInput.text = PlayerPrefs.GetString(PrefUtils.PlayerServerNamePref, $"\"{playerNameInput.text}\" Server");
+
             regionDropdown.ClearOptions();
             regionDropdown.AddOptions(MultiplayerUtils.AvailableRegionDescriptions);
             BoltRuntimeSettings.instance.UpdateBestRegion(MultiplayerUtils.AvailableRegions[0]);
@@ -83,6 +86,8 @@ namespace Client
             regionDropdown.onValueChanged.AddListener(OnRegionDropdownChanged);
             startServerButton.onClick.AddListener(OnServerButtonClicked);
             clientServerButton.onClick.AddListener(OnClientButtonClicked);
+            playerNameInput.onValueChanged.AddListener(OnPlayerNameChanged);
+            serverNameInput.onValueChanged.AddListener(OnServerNameChanged);
 
             for (int i = 0; i < balance.Maps.Count; i++)
             {
@@ -123,8 +128,9 @@ namespace Client
 
             startServerButton.onClick.RemoveListener(OnServerButtonClicked);
             clientServerButton.onClick.RemoveListener(OnClientButtonClicked);
-
             regionDropdown.onValueChanged.RemoveListener(OnRegionDropdownChanged);
+            playerNameInput.onValueChanged.RemoveListener(OnPlayerNameChanged);
+            serverNameInput.onValueChanged.AddListener(OnServerNameChanged);
 
             base.PanelDeinitialized();
         }
@@ -149,6 +155,16 @@ namespace Client
             ResetSessions();
 
             base.PanelHidden();
+        }
+
+        private void OnPlayerNameChanged(string newName)
+        {
+            PlayerPrefs.SetString(PrefUtils.PlayerNamePref, newName);
+        }
+
+        private void OnServerNameChanged(string newName)
+        {
+            PlayerPrefs.SetString(PrefUtils.PlayerServerNamePref, newName);
         }
 
         private void OnLobbyMapSlotSelected(LobbyMapSlot lobbyMapSlot)
