@@ -8,7 +8,7 @@ namespace Client
     {
         private class PlayerTargetSelector : IUnitVisitor, IDisposable
         {
-            private readonly TargetingSettings targetingSettings;
+            private readonly TargetingSettings settings;
             private readonly List<Unit> previousTargets;
             private readonly TargetingOptions options;
             private readonly Player referer;
@@ -19,7 +19,7 @@ namespace Client
 
             public PlayerTargetSelector(TargetingSettings settings, Player referer, TargetingOptions options, List<Unit> previousTargets)
             {
-                targetingSettings = settings;
+                this.settings = settings;
                 this.previousTargets = previousTargets;
                 this.options = options;
                 this.referer = referer;
@@ -51,14 +51,14 @@ namespace Client
                 if (unit == referer)
                     return;
 
-                if (!unit.InRangeSqr(referer, targetingSettings.TargetRangeSqr))
+                if (!unit.InRangeSqr(referer, settings.TargetRangeSqr))
                     return;
 
-                int unitPrevoiusIndex = previousTargets.IndexOf(unit);
-                if (BestTarget == null || unitPrevoiusIndex < bestTargetPrevousIndex)
+                int unitPreviousIndex = previousTargets.IndexOf(unit);
+                if (BestTarget == null || unitPreviousIndex < bestTargetPrevousIndex)
                 {
                     BestTarget = unit;
-                    bestTargetPrevousIndex = unitPrevoiusIndex;
+                    bestTargetPrevousIndex = unitPreviousIndex;
                 }
             }
         }

@@ -44,11 +44,6 @@ namespace Client
             player = null;
         }
 
-        protected override void OnUpdate(float deltaTime)
-        {
-
-        }
-
         private void OnWorldInitialized(WorldManager worldManager)
         {
             world = worldManager;

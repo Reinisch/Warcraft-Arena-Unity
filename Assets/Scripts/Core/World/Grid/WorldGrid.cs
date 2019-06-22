@@ -2,7 +2,6 @@
 using UnityEngine;
 using Common;
 
-
 namespace Core
 {
     public class WorldGrid
@@ -15,7 +14,17 @@ namespace Core
             {
                 this.worldGrid = worldGrid;
             }
-            
+
+            public void Visit(Player entity)
+            {
+                VisitUnit(entity);
+            }
+
+            public void Visit(Creature entity)
+            {
+                VisitUnit(entity);
+            }
+
             private bool IsOutOfCellBounds(Vector3 position, GridCell cell)
             {
                 if (position.x + MovementUtils.GridCellSwitchDifference < cell.MinBounds.x)
@@ -39,16 +48,6 @@ namespace Core
                 }
 
                 return false;
-            }
-
-            public void Visit(Player entity)
-            {
-                VisitUnit(entity);
-            }
-
-            public void Visit(Creature entity)
-            {
-                VisitUnit(entity);
             }
 
             private void VisitUnit(Unit unit)

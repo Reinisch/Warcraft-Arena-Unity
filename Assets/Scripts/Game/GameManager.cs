@@ -88,7 +88,7 @@ namespace Game
         private void Initialize()
         {
             DontDestroyOnLoad(gameObject);
-            Assert.RaiseExceptions = Application.isEditor;
+            Assert.RaiseExceptions = Application.isEditor || UnityEngine.Debug.isDebugBuild;
 
             scriptableCoreContainer.Register();
             scriptableClientContainer.Register();
