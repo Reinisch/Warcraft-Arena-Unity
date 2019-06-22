@@ -13,7 +13,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private List<HotkeyInputItem> hotkeys;
         [SerializeField, UsedImplicitly] private List<InputActionGlobal> globalActions;
 
-        private Player Player { get; set; }
+        internal Player Player { get; private set; }
 
         protected override void OnRegistered()
         {
@@ -86,14 +86,14 @@ namespace Client
 
 #if UNITY_EDITOR
         [ContextMenu("Validate"), UsedImplicitly]
-        private void OnValidate()
+        private void Validate()
         {
             for (int i = 0; i < hotkeys.Count; i++)
             {
                 for (int j = i + 1; j < hotkeys.Count; j++)
                 {
                     if (hotkeys[i].HasSameInput(hotkeys[j]))
-                        Debug.LogError($"{hotkeys[i].name} has the same input as {hotkeys[j].name}!");
+                        Debug.LogWarning($"{hotkeys[i].name} has the same input as {hotkeys[j].name}, this combination should be properly prioritized!");
 
                     if(hotkeys[i] == hotkeys[j])
                         Debug.LogError($"{hotkeys[i].name} assigned multiple times!");

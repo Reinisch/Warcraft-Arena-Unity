@@ -97,7 +97,12 @@ namespace Client
                     }
                     break;
                 case TargetingMode.Self:
-                    input.SelectTarget(player);
+                    if(player.Target != player)
+                        input.SelectTarget(player);
+                    break;
+                case TargetingMode.Clear:
+                    if(player.Target != null)
+                        input.SelectTarget(null);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(options.Mode), $"Unknown targeting kind: {options.Mode}");
