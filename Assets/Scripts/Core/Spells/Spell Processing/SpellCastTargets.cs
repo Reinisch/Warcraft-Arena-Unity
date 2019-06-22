@@ -33,7 +33,7 @@ namespace Core
                 if (value == null)
                     return;
 
-                origEntityTargetId = value.NetworkId;
+                origEntityTargetId = value.Id;
             }
         }
 
@@ -46,7 +46,7 @@ namespace Core
                     return;
 
                 target = value;
-                entityTargetId = value.NetworkId;
+                entityTargetId = value.Id;
                 TargetMask |= SpellCastTargetFlags.Unit;
             }
         }
@@ -132,7 +132,7 @@ namespace Core
 
         public void DoUpdate(Unit caster)
         {
-            target = entityTargetId != 0 ? (entityTargetId == caster.NetworkId ? caster : caster.WorldManager.UnitManager.Find(entityTargetId)) : null;
+            target = entityTargetId != 0 ? (entityTargetId == caster.Id ? caster : caster.WorldManager.UnitManager.Find(entityTargetId)) : null;
 
             /*if (HasSource && source.TransportId != 0)
             {

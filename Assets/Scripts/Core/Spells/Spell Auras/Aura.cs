@@ -93,7 +93,7 @@ namespace Core
             if (originalCasterId == 0)
                 originalCasterId = targetCasterId;
 
-            Unit caster = owner.NetworkId == originalCasterId ? owner : owner.Map.FindMapEntity<Unit>(originalCasterId);
+            Unit caster = owner.Id == originalCasterId ? owner : owner.Map.FindMapEntity<Unit>(originalCasterId);
             Aura aura = new UnitAura(spellProto, owner, caster, baseAmount, castId);
             return aura.IsRemoved() ? null : aura;
         }

@@ -11,7 +11,7 @@ namespace Core
 
         public int BonusDamage => bonusDamage;
         public override SpellEffectType EffectType => SpellEffectType.SchoolDamage;
-        public override SpellExplicitTargetType ExplicitTargetType => SpellExplicitTargetType.Explicit;
+        public override SpellExplicitTargetType ExplicitTargetType => SpellExplicitTargetType.Target;
         public override SpellTargetEntities TargetEntityType => SpellTargetEntities.Unit;
 
         internal override void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)

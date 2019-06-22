@@ -12,7 +12,7 @@ namespace Core
         private readonly Dictionary<ulong, WorldEntity> worldEntitiesById = new Dictionary<ulong, WorldEntity>();
         private readonly Collider[] raycastResults = new Collider[200];
 
-        private WorldManager WorldManager { get; set; }
+        internal WorldManager WorldManager { get; private set; }
 
         public MapSettings Settings { get; private set; }
 
@@ -57,14 +57,19 @@ namespace Core
 
         internal void AddWorldEntity(WorldEntity entity)
         {
-            worldEntitiesById.Add(entity.NetworkId, entity);
+            worldEntitiesById.Add(entity.Id, entity);
             mapGrid.AddEntity(entity);
         }
 
         internal void RemoveWorldEntity(WorldEntity entity)
         {
-            worldEntitiesById.Remove(entity.NetworkId);
+            worldEntitiesById.Remove(entity.Id);
             mapGrid.RemoveEntity(entity);
+        }
+
+        public void VisitInRadius(WorldEntity referer, float radius, IUnitVisitor unitVisitor)
+        {
+            mapGrid.VisitInRadius(referer, radius, unitVisitor);
         }
 
         public void SearchAreaTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, SpellTargetChecks checkType)

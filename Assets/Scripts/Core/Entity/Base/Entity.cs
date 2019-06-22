@@ -24,7 +24,7 @@ namespace Core
         public bool IsOwner => entity.IsOwner;
         public bool IsController => entity.HasControl;
         public bool IsValid { get; private set; }
-        public ulong NetworkId => entity.NetworkId.PackedValue;
+        public ulong Id => entity.NetworkId.PackedValue;
 
         [UsedImplicitly]
         protected virtual void Awake()

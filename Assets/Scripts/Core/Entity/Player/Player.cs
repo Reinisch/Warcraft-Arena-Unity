@@ -36,7 +36,6 @@ namespace Core
         private IPlayerState playerState;
         private string playerName;
 
-        internal GridReference<Player> GridReference { get; } = new GridReference<Player>();
         internal WarcraftController Controller => controller;
 
         internal override bool AutoScoped => true;
@@ -68,6 +67,11 @@ namespace Core
         public override void Accept(IUnitVisitor visitor) => visitor.Visit(this);
 
         public override void Accept(IVisitor visitor) => visitor.Visit(this);
+
+        public void SetTarget(Unit target)
+        {
+            UpdateTarget(newTarget:target);
+        }
 
         internal void ProcessCreation()
         {

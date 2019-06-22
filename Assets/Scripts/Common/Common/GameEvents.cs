@@ -20,6 +20,7 @@
         ServerSpellCast,
 
         EntityAttributeChanged,
+        UnitTargetChanged,
 
         HotkeyPressed
     }

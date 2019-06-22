@@ -16,6 +16,25 @@ namespace Core
             base.Dispose();
         }
 
+        public void Accept(IUnitVisitor unitVisitor)
+        {
+            for (int i = 0; i < Entities.Count; i++)
+                Entities[i].Accept(unitVisitor);
+        }
+
+        public Unit Find(Collider unitCollider)
+        {
+            return unitsByColliders.LookupEntry(unitCollider);
+        }
+
+        internal override void SetScope(BoltConnection connection, bool inScope)
+        {
+            base.SetScope(connection, inScope);
+
+            foreach (Player player in players)
+                player.Controller.ClientMoveState?.SetScope(connection, false);
+        }
+
         protected override void EntityAttached(Unit entity)
         {
             base.EntityAttached(entity);
@@ -34,19 +53,6 @@ namespace Core
 
             if (entity is Player player)
                 players.Remove(player);
-        }
-
-        public override void SetScope(BoltConnection connection, bool inScope)
-        {
-            base.SetScope(connection, inScope);
-
-            foreach (Player player in players)
-                player.Controller.ClientMoveState?.SetScope(connection, false);
-        }
-
-        public Unit Find(Collider unitCollider)
-        {
-            return unitsByColliders.LookupEntry(unitCollider);
         }
     }
 }

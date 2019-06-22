@@ -8,15 +8,15 @@ namespace Core
     public class EntityManager<T> where T : Entity
     {
         private readonly Dictionary<ulong, T> entitiesById = new Dictionary<ulong, T>();
-        private readonly List<T> entities = new List<T>();
+        protected readonly List<T> Entities = new List<T>();
 
         public event Action<T> EventEntityAttached;
         public event Action<T> EventEntityDetach;
 
         public virtual void Dispose()
         {
-            while (entities.Count > 0)
-                Destroy(entities[0]);
+            while (Entities.Count > 0)
+                Destroy(Entities[0]);
         }
 
         public TEntity Create<TEntity>(PrefabId prefabId, Entity.CreateToken createToken = null)
@@ -26,8 +26,8 @@ namespace Core
 
         public void Attach(T entity)
         {
-            entities.Add(entity);
-            entitiesById.Add(entity.NetworkId, entity);
+            Entities.Add(entity);
+            entitiesById.Add(entity.Id, entity);
 
             if(entity.AutoScoped)
                 entity.BoltEntity.SetScopeAll(true);
@@ -41,8 +41,8 @@ namespace Core
         {
             EventEntityDetach?.Invoke(entity);
 
-            entities.Remove(entity);
-            entitiesById.Remove(entity.NetworkId);
+            Entities.Remove(entity);
+            entitiesById.Remove(entity.Id);
 
             EntityDetached(entity);
         }
@@ -54,12 +54,6 @@ namespace Core
             BoltNetwork.Destroy(entity.gameObject);
         }
 
-        public virtual void SetScope(BoltConnection connection, bool inScope)
-        {
-            foreach (T entity in entities)
-                entity.BoltEntity.SetScope(connection, inScope);
-        }
-
         public T Find(ulong networkId)
         {
             return entitiesById.LookupEntry(networkId);
@@ -68,6 +62,12 @@ namespace Core
         public bool TryGet(ulong networkId, out T entity)
         {
             return entitiesById.TryGetValue(networkId, out entity);
+        }
+
+        internal virtual void SetScope(BoltConnection connection, bool inScope)
+        {
+            foreach (T entity in Entities)
+                entity.BoltEntity.SetScope(connection, inScope);
         }
 
         protected virtual void EntityAttached(T entity)

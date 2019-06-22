@@ -12,6 +12,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private int id;
         [SerializeField, UsedImplicitly] private string spellName;
 
+        [SerializeField, UsedImplicitly] private SpellExplicitTargetType explicitTargetType;
         [SerializeField, UsedImplicitly] private SpellDamageClass damageClass;
         [SerializeField, UsedImplicitly] private SpellDispelType spellDispel;
         [SerializeField, UsedImplicitly] private SpellMechanics mechanic;
@@ -62,6 +63,7 @@ namespace Core
         public int Id => id;
         public string SpellName => spellName;
 
+        public SpellExplicitTargetType ExplicitTargetType => explicitTargetType;
         public SpellDispelType SpellDispel => spellDispel;
         public SpellMechanics Mechanic => mechanic;
         public SpellDamageClass DamageClass => damageClass;
@@ -604,7 +606,7 @@ namespace Core
             // prepare target mask using effect target entries
             foreach (var effect in Effects)
             {
-                if (effect.ExplicitTargetType != SpellExplicitTargetType.Explicit)
+                if (effect.ExplicitTargetType != SpellExplicitTargetType.Target)
                     continue;
 
                 targetMask |= CalculateExplicitTargetMask(effect.MainTargeting);

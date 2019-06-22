@@ -3,7 +3,7 @@
     public enum SpellExplicitTargetType
     {
         None = 0,
-        Explicit = 1,
+        Target = 1,
         Caster = 2
     }
 }

@@ -4,18 +4,18 @@ namespace Common
 {
     public abstract class ReferenceManager<TRefTo, TRefFrom> where TRefTo : class where TRefFrom : ReferenceManager<TRefTo, TRefFrom>
     {
-        private readonly LinkedList<Reference<TRefTo, TRefFrom>> referenceList = new LinkedList<Reference<TRefTo, TRefFrom>>();
+        protected readonly LinkedList<Reference<TRefTo, TRefFrom>> ReferenceList = new LinkedList<Reference<TRefTo, TRefFrom>>();
 
-        protected Reference<TRefTo, TRefFrom> FirstReference => referenceList.First?.Value;
+        protected Reference<TRefTo, TRefFrom> FirstReference => ReferenceList.First?.Value;
 
         public LinkedListNode<Reference<TRefTo, TRefFrom>> Add(Reference<TRefTo, TRefFrom> reference)
         {
-            return referenceList.AddFirst(reference);
+            return ReferenceList.AddFirst(reference);
         }
 
         public void Clear()
         {
-            var node = referenceList.First;
+            var node = ReferenceList.First;
 
             while (node != null)
             {
@@ -27,7 +27,7 @@ namespace Common
 
         public bool Contains(Reference<TRefTo, TRefFrom> reference)
         {
-            return referenceList.Contains(reference);
+            return ReferenceList.Contains(reference);
         }
     }
 }

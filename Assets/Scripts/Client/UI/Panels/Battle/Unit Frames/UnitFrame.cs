@@ -14,11 +14,21 @@ public class UnitFrame : MonoBehaviour
     [SerializeField, UsedImplicitly] private TextMeshProUGUI unitName;
 
     private readonly Action<EntityAttributes> onAttributeChangedAction;
+    private readonly Action onUnitTargetChanged;
+    private UnitFrame targetUnitFrame;
     private Unit unit;
 
     private UnitFrame()
     {
         onAttributeChangedAction = OnAttributeChanged;
+        onUnitTargetChanged = OnUnitTargetChanged;
+    }
+
+    public void SetTargetUnitFrame(UnitFrame unitFrame)
+    {
+        targetUnitFrame = unitFrame;
+
+        targetUnitFrame.UpdateUnit(unit?.Target);
     }
 
     public void UpdateUnit(Unit newUnit)
@@ -36,12 +46,18 @@ public class UnitFrame : MonoBehaviour
     {
         this.unit = unit;
         unitName.text = unit.Name;
+        targetUnitFrame?.UpdateUnit(unit.Target);
+
         EventHandler.RegisterEvent(unit, GameEvents.EntityAttributeChanged, onAttributeChangedAction);
+        EventHandler.RegisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
     }
 
     private void DeinitializeUnit()
     {
         EventHandler.UnregisterEvent(unit, GameEvents.EntityAttributeChanged, onAttributeChangedAction);
+        EventHandler.UnregisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
+
+        targetUnitFrame?.UpdateUnit(null);
         unit = null;
     }
 
@@ -51,5 +67,10 @@ public class UnitFrame : MonoBehaviour
             health.Ratio = unit.HealthRatio;
         else if (attributeType == EntityAttributes.Power || attributeType == EntityAttributes.MaxPower)
             mainResource.Ratio = Mathf.Clamp01((float)unit.Mana / unit.MaxMana);
+    }
+
+    private void OnUnitTargetChanged()
+    {
+        targetUnitFrame?.UpdateUnit(unit.Target);
     }
 }

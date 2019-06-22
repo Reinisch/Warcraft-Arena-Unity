@@ -211,7 +211,7 @@ namespace Core
                     if (playerCaster != null)
                     {
                         // selection has to be found and to be valid spellTarget for the spell
-                        Unit selectedUnit = playerCaster.WorldManager.UnitManager.Find(playerCaster.Target);
+                        Unit selectedUnit = playerCaster.WorldManager.UnitManager.Find(playerCaster.TargetId);
                         if (selectedUnit != null && SpellInfo.CheckExplicitTarget(Caster, selectedUnit) == SpellCastResult.Success)
                             unit = selectedUnit;
                     }
@@ -441,7 +441,7 @@ namespace Core
             // add explicit spellTarget or self to the spellTarget list
             switch (effect.ExplicitTargetType)
             {
-                case SpellExplicitTargetType.Explicit:
+                case SpellExplicitTargetType.Target:
                     AddUnitTarget(Targets.UnitTarget ?? Caster);
                     break;
                 case SpellExplicitTargetType.Caster:
@@ -463,13 +463,13 @@ namespace Core
         private void AddUnitTarget(Unit target)
         {
             // lookup spell target that may already exist
-            var sameTargetInfo = UniqueTargetInfo.Find(unit => unit.TargetId == target.NetworkId);
+            var sameTargetInfo = UniqueTargetInfo.Find(unit => unit.TargetId == target.Id);
             if (sameTargetInfo != null)
                 return;
 
             // create info for new spell target
             SpellTargetInfo spellTargetInfo = new SpellTargetInfo();
-            spellTargetInfo.TargetId = target.NetworkId;
+            spellTargetInfo.TargetId = target.Id;
             spellTargetInfo.Processed = false;
             spellTargetInfo.Alive = target.IsAlive;
             spellTargetInfo.Damage = 0;
@@ -520,17 +520,16 @@ namespace Core
             if (Caster.SpellCast.IsCasting && !SpellInfo.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
                 return SpellCastResult.NotReady;
             
-            SpellCastResult castResult = CheckRange(strict);
+            SpellCastResult castResult = CheckRange();
             if (castResult != SpellCastResult.Success)
                 return castResult;
 
             return SpellCastResult.Success;
         }
 
-        private SpellCastResult CheckRange(bool strict)
+        private SpellCastResult CheckRange()
         {
-            // don't check for instant cast spells
-            if (!strict && Mathf.Approximately(CastTime, 0.0f))
+            if (SpellInfo.ExplicitTargetType != SpellExplicitTargetType.Target)
                 return SpellCastResult.Success;
 
             Unit target = Targets.UnitTarget;
@@ -604,7 +603,7 @@ namespace Core
                 return;
 
             spellTarget.Processed = true;
-            Unit unit = Caster.NetworkId == spellTarget.TargetId ? Caster : Caster.Map.FindMapEntity<Unit>(spellTarget.TargetId);
+            Unit unit = Caster.Id == spellTarget.TargetId ? Caster : Caster.Map.FindMapEntity<Unit>(spellTarget.TargetId);
             if (unit?.IsAlive != spellTarget.Alive)
                 return;
 

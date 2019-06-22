@@ -67,7 +67,8 @@ namespace Core
         private UnitState UnitState { get; set; }
         internal UnitAI AI { get; private set; }
 
-        public ulong Target { get; private set; }
+        public Unit Target { get; private set; }
+        public ulong TargetId { get; private set; }
         public UnitFlags UnitFlags { get; private set; }
         public FactionDefinition Faction { get; private set; }
         public SpellHistory SpellHistory { get; private set; }
@@ -158,6 +159,7 @@ namespace Core
             {
                 EntityState.AddCallback(nameof(EntityState.DeathState), OnDeathStateChanged);
                 EntityState.AddCallback(nameof(EntityState.Health), OnHealthStateChanged);
+                EntityState.AddCallback(nameof(EntityState.TargetId), OnTargetIdChanged);
             }
 
             ThreatManager = new ThreatManager(this);
@@ -168,6 +170,8 @@ namespace Core
             SpellCast = new SpellCast(this);
 
             SetMap(WorldManager.FindMap(1));
+
+            WorldManager.UnitManager.EventEntityDetach += OnEntityDetach;
         }
 
         public override void Detached()
@@ -176,6 +180,8 @@ namespace Core
             // if he needs to instantly destroy current world and avoid any events
             if (!IsValid)
                 return;
+
+            WorldManager.UnitManager.EventEntityDetach -= OnEntityDetach;
 
             SpellHistory.Dispose();
             SpellCast.Dispose();
@@ -680,6 +686,23 @@ namespace Core
 
         #endregion
 
+        internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
+        {
+            TargetId = newTarget?.Id ?? newTargetId;
+            Target = newTarget ?? WorldManager.UnitManager.Find(TargetId);
+
+            if(updateState)
+                EntityState.TargetId = Target?.BoltEntity.NetworkId ?? default;
+
+            EventHandler.ExecuteEvent(this, GameEvents.UnitTargetChanged);
+        }
+
+        private void OnEntityDetach(Unit entity)
+        {
+            if (TargetId == entity.Id || Target == entity)
+                UpdateTarget(updateState: true);
+        }
+
         private void OnDeathStateChanged()
         {
             deathState = (DeathState)EntityState.DeathState;
@@ -688,6 +711,11 @@ namespace Core
         private void OnHealthStateChanged()
         {
             SetHealth(EntityState.Health);
+        }
+
+        private void OnTargetIdChanged()
+        {
+            UpdateTarget(EntityState.TargetId.PackedValue);
         }
     }
 }

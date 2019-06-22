@@ -32,5 +32,10 @@ namespace Client
 
             return false;
         }
+
+        public static bool HasTargetFlag(this TargetingEntityType entityTypes, TargetingEntityType targetingEntityType)
+        {
+            return (entityTypes & targetingEntityType) == targetingEntityType;
+        }
     }
 }

@@ -2,11 +2,12 @@
 using UnityEngine;
 using Common;
 
+
 namespace Core
 {
     public class WorldGrid
     {
-        private class GridCellRelocator : IWorldEntityGridVisitor
+        private class GridCellRelocator : IUnitVisitor
         {
             private readonly WorldGrid worldGrid;
 
@@ -17,22 +18,22 @@ namespace Core
             
             private bool IsOutOfCellBounds(Vector3 position, GridCell cell)
             {
-                if (position.x + MovementUtils.GridCellSwitchDifference < cell.Bounds.min.x)
+                if (position.x + MovementUtils.GridCellSwitchDifference < cell.MinBounds.x)
                 {
                     return true;
                 }
 
-                if (position.x > cell.Bounds.max.x + MovementUtils.GridCellSwitchDifference)
+                if (position.x > cell.MaxBounds.x + MovementUtils.GridCellSwitchDifference)
                 {
                     return true;
                 }
 
-                if (position.z + MovementUtils.GridCellSwitchDifference < cell.Bounds.min.z)
+                if (position.z + MovementUtils.GridCellSwitchDifference < cell.MinBounds.z)
                 {
                     return true;
                 }
 
-                if (position.z > cell.Bounds.max.z + MovementUtils.GridCellSwitchDifference)
+                if (position.z > cell.MaxBounds.z + MovementUtils.GridCellSwitchDifference)
                 {
                     return true;
                 }
@@ -40,22 +41,26 @@ namespace Core
                 return false;
             }
 
-            public void Visit<TEntity>(GridReferenceManager<TEntity> container) where TEntity : WorldEntity
+            public void Visit(Player entity)
             {
-                GridReference<TEntity> reference = container.FirstReference;
-                while (reference != null)
+                VisitUnit(entity);
+            }
+
+            public void Visit(Creature entity)
+            {
+                VisitUnit(entity);
+            }
+
+            private void VisitUnit(Unit unit)
+            {
+                if (unit.Position.y > MovementUtils.MaxHeight || unit.Position.y < MovementUtils.MinHeight)
                 {
-                    if (reference.Target.Position.y > MovementUtils.MaxHeight || reference.Target.Position.y < MovementUtils.MinHeight)
-                    {
-                        reference.Target.Position = worldGrid.map.Settings.DefaultSpawnPoint.position;
-                    }
+                    unit.Position = worldGrid.map.Settings.DefaultSpawnPoint.position;
+                }
 
-                    if (IsOutOfCellBounds(reference.Target.Position, reference.Target.CurrentCell))
-                    {
-                        worldGrid.relocatableEntities.Add(reference.Target);
-                    }
-
-                    reference = reference.Next;
+                if (IsOutOfCellBounds(unit.Position, unit.CurrentCell))
+                {
+                    worldGrid.relocatableEntities.Add(unit);
                 }
             }
         }
@@ -66,13 +71,14 @@ namespace Core
         private GridCell invalidCell;
         private int cellCountX;
         private int cellCountZ;
+        private float gridCellSize;
         private Map map;
 
         internal void Initialize(Map map)
         {
             this.map = map;
             gridCellRelocator = new GridCellRelocator(this);
-            float gridCellSize = map.Settings.GridCellSize;
+            gridCellSize = map.Settings.GridCellSize;
 
             cellCountX = Mathf.CeilToInt(map.Settings.BoundingBox.bounds.size.x / gridCellSize);
             cellCountZ = Mathf.CeilToInt(map.Settings.BoundingBox.bounds.size.z / gridCellSize);
@@ -82,8 +88,9 @@ namespace Core
                 for (int j = 0; j < cellCountZ; j++)
                     cells[i, j] = new GridCell();
 
-            Vector3 origin = map.Settings.BoundingBox.bounds.min;
-            Vector3 cellSize = new Vector3(gridCellSize, map.Settings.BoundingBox.size.y, gridCellSize);
+            Vector3 minBounds = map.Settings.BoundingBox.bounds.min;
+            Vector3 origin = new Vector3(minBounds.x, map.Settings.BoundingBox.center.y, minBounds.z);
+            Vector3 cellSize = new Vector3(gridCellSize, 1.0f, gridCellSize);
             for (int i = 0; i < cellCountX; i++)
             {
                 float xOffset = (i + 0.5f) * gridCellSize;
@@ -150,16 +157,31 @@ namespace Core
             entity.CurrentCell.RemoveWorldEntity(entity);
         }
 
-        public void VisitAll(IWorldEntityGridVisitor gridVisitor)
+        public void VisitInRadius(WorldEntity referer, float radius, IUnitVisitor unitVisitor)
         {
-            for (int i = 0; i < cellCountX; i++)
-                for (int j = 0; j < cellCountZ; j++)
-                    cells[i, j].Visit(gridVisitor);
+            int cellRange = Mathf.CeilToInt(radius / gridCellSize);
+            GridCell originCell = referer.CurrentCell;
+            if (originCell == null)
+                return;
+
+            int minX = Mathf.Clamp(originCell.X - cellRange, 0, cellCountX - 1);
+            int maxX = Mathf.Clamp(originCell.X + cellRange, 0, cellCountX - 1);
+            int minZ = Mathf.Clamp(originCell.Z - cellRange, 0, cellCountZ - 1);
+            int maxZ = Mathf.Clamp(originCell.Z + cellRange, 0, cellCountZ - 1);
+
+            for (int i = minX; i <= maxX; i++)
+            for (int j = minZ; j <= maxZ; j++)
+            {
+                Drawing.DrawLine(referer.Position + Vector3.up, cells[i, j].Center + Vector3.up * 20, Color.red, 1.0f);
+                Drawing.DrawLine(cells[i, j].MaxBounds + Vector3.up * 20, cells[i, j].MinBounds + Vector3.up * 20, cells[i, j] != originCell ? Color.green : Color.yellow, 1.0f);
+
+                cells[i, j].Visit(unitVisitor);
+            }
         }
 
         private GridCell FindCell(Vector3 position)
         {
-            Vector3 offset = position - cells[0, 0].Bounds.min;
+            Vector3 offset = position - cells[0, 0].MinBounds;
             int xCell = Mathf.FloorToInt(offset.x / map.Settings.GridCellSize);
             int zCell = Mathf.FloorToInt(offset.z / map.Settings.GridCellSize);
 

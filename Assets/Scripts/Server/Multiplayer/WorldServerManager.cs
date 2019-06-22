@@ -152,7 +152,7 @@ namespace Server
 
             var newPlayerInfo = new PlayerServerInfo(boltConnection, newPlayer, unityId);
             playerInfos.Add(newPlayerInfo);
-            playerInfosByPlayerId[newPlayer.NetworkId] = newPlayerInfo;
+            playerInfosByPlayerId[newPlayer.Id] = newPlayerInfo;
             if (boltConnection != null)
                 playerInfosByConnection[boltConnection] = newPlayerInfo;
             else

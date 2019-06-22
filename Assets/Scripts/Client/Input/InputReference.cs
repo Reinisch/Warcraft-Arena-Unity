@@ -9,9 +9,10 @@ namespace Client
     [CreateAssetMenu(fileName = "Input Reference", menuName = "Game Data/Scriptable/Input", order = 1)]
     public class InputReference : ScriptableReference
     {
+        [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
         [SerializeField, UsedImplicitly] private List<HotkeyInputItem> hotkeys;
         [SerializeField, UsedImplicitly] private List<InputActionGlobal> globalActions;
-        
+
         private Player Player { get; set; }
 
         protected override void OnRegistered()
@@ -39,32 +40,36 @@ namespace Client
 
         private void OnWorldInitialized(WorldManager worldManager)
         {
-            if (worldManager.HasClientLogic)
-            {
-                worldManager.UnitManager.EventEntityAttached += OnEventEntityAttached;
-                worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
-            }
+            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
+            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
         }
 
         private void OnWorldDeinitializing(WorldManager worldManager)
         {
-            if (worldManager.HasClientLogic)
-            {
-                worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
-                worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
-            }
+            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
+            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
         }
 
-        private void OnEventEntityAttached(WorldEntity worldEntity)
+        private void OnPlayerControlGained(Player player)
         {
-            if (worldEntity is Player player && player.IsOwner)
-                Player = player;
+            Player = player;
         }
 
-        private void OnEventEntityDetach(WorldEntity worldEntity)
+        private void OnPlayerControlLost(Player player)
         {
-            if (worldEntity == Player)
-                Player = null;
+            Player = null;
+        }
+
+        public void SelectTarget(Unit target)
+        {
+            if (Player == null)
+                return;
+
+            Player.SetTarget(target);
+
+            TargetSelectionRequestEvent targetSelectionRequest = TargetSelectionRequestEvent.Create(Bolt.GlobalTargets.OnlyServer);
+            targetSelectionRequest.TargetId = target?.BoltEntity.NetworkId ?? default;
+            targetSelectionRequest.Send();
         }
 
         public void CastSpell(int spellId)

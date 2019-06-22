@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Common;
 
@@ -6,20 +7,26 @@ namespace Core
 {
     public class GridCell
     {
-        private readonly GridReferenceManager<Player> worldPlayers = new GridReferenceManager<Player>();
-        private readonly GridReferenceManager<Creature> worldCreatures = new GridReferenceManager<Creature>();
-
-        private int xIndex;
-        private int zIndex;
+        private readonly List<Player> worldPlayers = new List<Player>();
+        private readonly List<Creature> worldCreatures = new List<Creature>();
         private Bounds bounds;
 
-        public Bounds Bounds => bounds;
+        public Vector3 Center { get; private set; }
+        public Vector3 MaxBounds { get; private set; }
+        public Vector3 MinBounds { get; private set; }
+        public int X { get; private set; }
+        public int Z { get; private set; }
 
         internal void Initialize(Map map, int xIndex, int zIndex, Bounds bounds)
         {
-            this.xIndex = xIndex;
-            this.zIndex = zIndex;
+            X = xIndex;
+            Z = zIndex;
+
             this.bounds = bounds;
+
+            Center = bounds.center;
+            MaxBounds = bounds.max;
+            MinBounds = bounds.min;
         }
 
         internal void Deinitialize()
@@ -35,10 +42,10 @@ namespace Core
             switch (worldEntity)
             {
                 case Creature creature:
-                    creature.GridRef.Link(creature, worldCreatures);
+                    worldCreatures.Add(creature);
                     break;
                 case Player player:
-                    player.GridReference.Link(player, worldPlayers);
+                    worldPlayers.Add(player);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(worldEntity));
@@ -52,27 +59,30 @@ namespace Core
             switch (worldEntity)
             {
                 case Creature creature:
-                    Assert.IsTrue(worldCreatures.Contains(creature.GridRef));
-                    creature.GridRef.Invalidate();
+                    Assert.IsTrue(worldCreatures.Contains(creature));
+                    worldCreatures.Remove(creature);
                     break;
                 case Player player:
-                    Assert.IsTrue(worldPlayers.Contains(player.GridReference));
-                    player.GridReference.Invalidate();
+                    Assert.IsTrue(worldPlayers.Contains(player));
+                    worldPlayers.Remove(player);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(worldEntity));
             }
         }
 
-        public void Visit(IWorldEntityGridVisitor visitor)
+        public void Visit(IUnitVisitor unitVisitor)
         {
-            visitor.Visit(worldPlayers);
-            visitor.Visit(worldCreatures);
+            for (var i = 0; i < worldPlayers.Count; i++)
+                worldPlayers[i].Accept(unitVisitor);
+
+            for (var i = 0; i < worldCreatures.Count; i++)
+                worldCreatures[i].Accept(unitVisitor);
         }
 
         public override string ToString()
         {
-            return $"X:{xIndex} Z:{zIndex} Bounds:{bounds}";
+            return $"X:{X} Z:{Z} Bounds:{bounds}";
         }
     }
 }

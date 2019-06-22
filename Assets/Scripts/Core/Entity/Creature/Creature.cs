@@ -4,8 +4,6 @@
     {
         internal override bool AutoScoped => true;
 
-        public GridReference<Creature> GridRef { get; } = new GridReference<Creature>();
-
         public override void Accept(IUnitVisitor unitVisitor)
         {
             unitVisitor.Visit(this);
