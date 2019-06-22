@@ -9,13 +9,24 @@
         }
 
         private readonly IUnitState unitState;
+        private readonly Unit caster;
         private Spell currentSpell;
 
-        internal bool IsCasting => currentSpell != null && currentSpell.ExecutionState == SpellExecutionState.Casting;
-
-        internal SpellCast(Unit owner)
+        internal bool IsCasting
         {
-            unitState = owner.EntityState;
+            get
+            {
+                if (caster.IsOwner)
+                    return currentSpell != null && currentSpell.ExecutionState == SpellExecutionState.Casting;
+
+                return unitState.SpellCast.Id != 0;
+            }
+        }
+
+        internal SpellCast(Unit caster)
+        {
+            this.caster = caster;
+            unitState = caster.EntityState;
         }
 
         internal void Dispose()
