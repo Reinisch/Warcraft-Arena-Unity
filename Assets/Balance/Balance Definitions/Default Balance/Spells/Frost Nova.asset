@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   spellName: Frost Nova
+  explicitCastTargets: 0
   explicitTargetType: 0
   damageClass: 1
   spellDispel: 0
@@ -24,7 +25,6 @@ MonoBehaviour:
   attributesExtra: 0
   attributesCustom: 0
   targetEntityTypeMask: 8
-  targets: 24
   casterAuraState: 0
   targetAuraState: 0
   excludeCasterAuraState: 0

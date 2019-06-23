@@ -7,6 +7,7 @@ namespace Core
     public abstract class SpellEffectInfo : ScriptableObject
     {
         [SerializeField, UsedImplicitly, Header("Base Effect")] private AuraType auraType;
+        [SerializeField, UsedImplicitly] private SpellExplicitTargetType explicitTargetType;
         [SerializeField, UsedImplicitly] private SpellMechanics mechanic;
         [SerializeField, UsedImplicitly] private TargetingType mainTargeting;
         [SerializeField, UsedImplicitly] private TargetingType secondaryTargeting;
@@ -21,16 +22,13 @@ namespace Core
 
         private float MinRadius => minRadius;
         private float MaxRadius => maxRadius;
-        private float Amplitude => amplitude;
-        private float ChainAmplitude => chainAmplitude;
 
-        protected SpellInfo SpellInfo { get; private set; }
         protected int RandomPoints => randomPoints;
 
         public abstract SpellEffectType EffectType { get; }
         public abstract SpellTargetEntities TargetEntityType { get; }
-        public abstract SpellExplicitTargetType ExplicitTargetType { get; }
 
+        public SpellExplicitTargetType ExplicitTargetType => explicitTargetType;
         public TargetingType MainTargeting => mainTargeting;
         public TargetingType SecondaryTargeting => secondaryTargeting;
         public AuraType AuraType => auraType;
@@ -39,20 +37,16 @@ namespace Core
         public int BasePoints => basePoints;
         public int ApplyAuraPeriod => applyAuraPeriod;
         public int Index { get; private set; }
-        public SpellCastTargetFlags ImplicitTargetFlags { get; private set; }
 
         internal void Initialize(SpellInfo spellInfo)
         {
-            SpellInfo = spellInfo;
             Index = spellInfo.Effects.IndexOf(this);
-            ImplicitTargetFlags = MainTargeting.TargetEntities.TargetFlags() | SecondaryTargeting.TargetEntities.TargetFlags();
 
             Assert.AreNotEqual(Index, -1);
         }
 
         internal void Deinitialize()
         {
-            SpellInfo = null;
             Index = 0;
         }
 

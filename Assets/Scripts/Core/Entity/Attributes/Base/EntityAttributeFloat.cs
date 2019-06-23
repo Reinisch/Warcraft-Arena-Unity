@@ -24,7 +24,7 @@ namespace Core
 
             if (!Mathf.Approximately(oldValue, newValue))
             {
-                EventHandler.ExecuteEvent(Entity, GameEvents.EntityAttributeChanged, AttributeType);
+                EventHandler.ExecuteEvent(Entity, GameEvents.UnitAttributeChanged, AttributeType);
                 return 0.0f;
             }
 

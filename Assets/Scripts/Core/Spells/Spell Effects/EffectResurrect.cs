@@ -6,11 +6,9 @@ namespace Core
     public class EffectResurrect : SpellEffectInfo
     {
         [SerializeField, UsedImplicitly, Header("Resurrect")] private int healthPercent = 20;
-        [SerializeField, UsedImplicitly] private SpellExplicitTargetType explicitTargetType;
 
         public int HealthPercent => healthPercent;
         public override SpellEffectType EffectType => SpellEffectType.Resurrect;
-        public override SpellExplicitTargetType ExplicitTargetType => explicitTargetType;
         public override SpellTargetEntities TargetEntityType => SpellTargetEntities.Unit;
 
         internal override void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)

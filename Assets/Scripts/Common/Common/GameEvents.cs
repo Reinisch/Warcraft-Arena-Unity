@@ -19,8 +19,9 @@
 
         ServerSpellCast,
 
-        EntityAttributeChanged,
+        UnitAttributeChanged,
         UnitTargetChanged,
+        UnitFactionChanged,
 
         HotkeyPressed
     }

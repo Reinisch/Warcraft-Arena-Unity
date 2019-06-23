@@ -1,8 +1,8 @@
 ﻿namespace Core
 {
-    public class SpellTargetInfo
+    public class SpellTargetEntry
     {
-        public ulong TargetId { get; set; }
+        public Unit Target { get; set; }
         public float Delay { get; set; }
         public SpellMissType MissCondition { get; set; }
         public SpellMissType ReflectResult { get; set; }

@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using Common;
 
 namespace Core
 {
@@ -29,7 +28,6 @@ namespace Core
             if (target.HasState(UnitState.Confused | UnitState.Stunned | UnitState.Fleeing))
                 return;
 
-            target.SetFacingTo(DestTarget);
             target.RemoveState(UnitState.Moving);
         }
 
@@ -57,14 +55,6 @@ namespace Core
 
         public void EffectApplyAura(EffectTeleportDirect effect, Unit target, SpellEffectHandleMode mode)
         {
-            if (mode != SpellEffectHandleMode.HitTarget)
-                return;
-
-            if (SpellAura == null || target == null)
-                return;
-
-            //SpellAura.ApplyForTarget(effect);
-            Assert.IsTrue(target == SpellAura.Owner);
         }
 
         public void EffectDispel(int effIndex) { throw new NotImplementedException(); }

@@ -62,13 +62,13 @@ namespace Client
             OnAttributeChanged(EntityAttributes.Health);
             OnAttributeChanged(EntityAttributes.Power);
 
-            EventHandler.RegisterEvent(unit, GameEvents.EntityAttributeChanged, onAttributeChangedAction);
+            EventHandler.RegisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
             EventHandler.RegisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
         }
 
         private void DeinitializeUnit()
         {
-            EventHandler.UnregisterEvent(unit, GameEvents.EntityAttributeChanged, onAttributeChangedAction);
+            EventHandler.UnregisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
             EventHandler.UnregisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
 
             targetUnitFrame?.UpdateUnit(null);

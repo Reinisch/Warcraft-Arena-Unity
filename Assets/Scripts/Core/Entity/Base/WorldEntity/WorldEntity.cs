@@ -85,7 +85,7 @@ namespace Core
 
         public bool CanSeeOrDetect(WorldEntity target, bool ignoreStealth = false, bool distanceCheck = false, bool checkAlert = false)
         {
-            return false;
+            return true;
         }
 
         public float DistanceTo(Vector3 position)

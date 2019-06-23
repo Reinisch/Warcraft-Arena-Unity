@@ -87,5 +87,11 @@ namespace Core
         }
 
         #endregion
+
+        #region Binary helpers
+
+        public static bool HasBit(this int mask, int index) => (mask & (1 << index)) == index;
+
+        #endregion
     }
 }

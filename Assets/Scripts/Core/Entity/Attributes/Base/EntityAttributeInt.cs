@@ -24,7 +24,7 @@ namespace Core
             CurrentValue = newValue;
 
             if (oldValue != newValue)
-                EventHandler.ExecuteEvent(Entity, GameEvents.EntityAttributeChanged, AttributeType);
+                EventHandler.ExecuteEvent(Entity, GameEvents.UnitAttributeChanged, AttributeType);
 
             return newValue - oldValue;
         }

@@ -9,11 +9,9 @@
                 case SpellTargetEntities.Dest:
                     return SpellCastTargetFlags.DestLocation;
                 case SpellTargetEntities.UnitAndDest:
-                    return SpellCastTargetFlags.DestLocation | SpellCastTargetFlags.Unit;
+                    return SpellCastTargetFlags.DestLocation | SpellCastTargetFlags.UnitMask;
                 case SpellTargetEntities.Unit:
-                    return SpellCastTargetFlags.Unit;
-                case SpellTargetEntities.GameEntity:
-                    return SpellCastTargetFlags.GameEntity;
+                    return SpellCastTargetFlags.UnitMask;
                 case SpellTargetEntities.Source:
                     return SpellCastTargetFlags.SourceLocation;
                 default:

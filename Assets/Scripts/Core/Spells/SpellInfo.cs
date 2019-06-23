@@ -12,6 +12,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private int id;
         [SerializeField, UsedImplicitly] private string spellName;
 
+        [SerializeField, EnumFlag, UsedImplicitly] private SpellCastTargetFlags explicitCastTargets;
         [SerializeField, UsedImplicitly] private SpellExplicitTargetType explicitTargetType;
         [SerializeField, UsedImplicitly] private SpellDamageClass damageClass;
         [SerializeField, UsedImplicitly] private SpellDispelType spellDispel;
@@ -24,7 +25,6 @@ namespace Core
         [SerializeField, EnumFlag, UsedImplicitly] private SpellCustomAttributes attributesCustom;
 
         [SerializeField, EnumFlag, UsedImplicitly] private EnityTypeMask targetEntityTypeMask;
-        [SerializeField, EnumFlag, UsedImplicitly] private SpellCastTargetFlags targets;
         [SerializeField, EnumFlag, UsedImplicitly] private AuraStateType casterAuraState;
         [SerializeField, EnumFlag, UsedImplicitly] private AuraStateType targetAuraState;
         [SerializeField, EnumFlag, UsedImplicitly] private AuraStateType excludeCasterAuraState;
@@ -63,6 +63,7 @@ namespace Core
         public string SpellName => spellName;
 
         public SpellExplicitTargetType ExplicitTargetType => explicitTargetType;
+        public SpellCastTargetFlags ExplicitCastTargets => explicitCastTargets;
         public SpellDispelType SpellDispel => spellDispel;
         public SpellMechanics Mechanic => mechanic;
         public SpellDamageClass DamageClass => damageClass;
@@ -73,7 +74,6 @@ namespace Core
         public SpellExtraAttributes AttributesExtra => attributesExtra;
         public SpellCustomAttributes AttributesCustom => attributesCustom;
 
-        public SpellCastTargetFlags Targets => targets;
         public AuraStateType CasterAuraState => casterAuraState;
         public AuraStateType TargetAuraState => targetAuraState;
         public EnityTypeMask TargetEntityTypeMask => targetEntityTypeMask;
@@ -107,17 +107,13 @@ namespace Core
         public int StackAmount => stackAmount;
         public int MaxAffectedTargets => maxAffectedTargets;
 
-        public SpellCastTargetFlags ExplicitTargetMask { get; private set; }
-
         public void Initialize()
         {
-            InitializeExplicitTargetMask();
             Effects.ForEach(effect => effect.Initialize(this));
         }
 
         public void Deinitialize()
         {
-            ExplicitTargetMask = 0;
             Effects.ForEach(effect => effect.Deinitialize());
         }
     
@@ -161,27 +157,6 @@ namespace Core
         public bool IsTargetingArea()
         {
             return Effects.Exists(effect => effect.IsTargetingArea());
-        }
-
-        public bool NeedsExplicitUnitTarget()
-        {
-            return (ExplicitTargetMask & SpellCastTargetFlags.UnitMask) != 0;
-        }
-
-        public bool NeedsToBeTriggeredByCaster(SpellInfo triggeringSpell)
-        {
-            if (NeedsExplicitUnitTarget())
-                return true;
-
-            if (!triggeringSpell.IsChanneled())
-                return false;
-
-            SpellCastTargetFlags targetMask = 0;
-            foreach(var effect in Effects)
-                if (effect.MainTargeting.ReferenceType != SpellTargetReferences.Caster && effect.SecondaryTargeting.ReferenceType != SpellTargetReferences.Caster)
-                    targetMask |= effect.ImplicitTargetFlags;
-
-            return (targetMask & SpellCastTargetFlags.UnitMask) != 0;
         }
 
         public bool IsPassive()
@@ -259,7 +234,7 @@ namespace Core
             throw new NotImplementedException();
         }
 
-        public SpellCastResult CheckTarget(Unit caster, WorldEntity target, bool isImplicit = true)
+        public SpellCastResult CheckTarget(Unit caster, Unit target, bool isImplicit = true)
         {
             if (HasAttribute(SpellAttributes.CantTargetSelf) && caster == target)
                 return SpellCastResult.BadTargets;
@@ -268,60 +243,51 @@ namespace Core
             if (!HasAttribute(SpellExtraAttributes.CanTargetInvisible) && !caster.CanSeeOrDetect(target, isImplicit))
                 return SpellCastResult.BadTargets;
 
-            Unit unitTarget = target as Unit;
-
-            // creature/player specific target checks
-            if (unitTarget != null && caster != unitTarget)
+            if (target != null && caster != target)
             {
-                if (caster is Player && unitTarget is Player && HasAttribute(SpellCustomAttributes.Pickpocket))
+                if (caster is Player && target is Player && HasAttribute(SpellCustomAttributes.Pickpocket))
                     return SpellCastResult.BadTargets;
             }
-            // other types of objects - always valid
             else
                 return SpellCastResult.Success;
 
             // corpseOwner and unit specific target checks
-            if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && !(unitTarget is Player))
+            if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && !(target is Player))
                 return SpellCastResult.TargetNotPlayer;
 
-            if (unitTarget != caster && (caster.IsControlledByPlayer || !IsPositive()) && unitTarget is Player player)
+            if (target != caster && (caster.IsControlledByPlayer || !IsPositive()) && target is Player player)
             {
                 if (!player.IsVisible)
                     return SpellCastResult.BmOrInvisgod;
             }
 
-            if (unitTarget.HasState(UnitState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInflightTarget))
+            if (target.HasState(UnitState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInflightTarget))
                 return SpellCastResult.BadTargets;
 
-            if (TargetAuraState != 0 && !unitTarget.HasAuraState(TargetAuraState, this, caster))
+            if (TargetAuraState != 0 && !target.HasAuraState(TargetAuraState, this, caster))
                 return SpellCastResult.TargetAurastate;
 
-            if (ExcludeTargetAuraState != 0 && unitTarget.HasAuraState(ExcludeTargetAuraState, this, caster))
+            if (ExcludeTargetAuraState != 0 && target.HasAuraState(ExcludeTargetAuraState, this, caster))
                 return SpellCastResult.TargetAurastate;
 
-            if (unitTarget.HasAuraType(AuraType.PreventResurrection))
+            if (target.HasAuraType(AuraType.PreventResurrection))
                 if (HasEffect(SpellEffectType.SelfResurrect) || HasEffect(SpellEffectType.Resurrect))
                     return SpellCastResult.TargetCannotBeResurrected;
 
             return SpellCastResult.Success;
         }
 
-        public SpellCastResult CheckExplicitTarget(Unit caster, WorldEntity target)
+        public SpellCastResult CheckExplicitTarget(Unit caster, Unit target)
         {
-            SpellCastTargetFlags neededTargets = ExplicitTargetMask;
-            if (target == null && neededTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
-                return SpellCastResult.Success;
-
-            var unitTarget = target as Unit;
-            if(unitTarget == null)
-                return SpellCastResult.Success;
-
-            if ((neededTargets & SpellCastTargetFlags.UnitMask) != 0)
+            if (ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
             {
-                if (neededTargets.HasTargetFlag(SpellCastTargetFlags.UnitEnemy) && caster.IsValidAttackTarget(unitTarget, this))
+                if(target == null)
+                    return SpellCastResult.BadTargets;
+
+                if (ExplicitCastTargets.HasTargetFlag(SpellCastTargetFlags.UnitEnemy) && caster.IsHostileTo(target))
                     return SpellCastResult.Success;
 
-                if (neededTargets.HasTargetFlag(SpellCastTargetFlags.UnitAlly) && caster.IsValidAssistTarget(unitTarget, this))
+                if (ExplicitCastTargets.HasTargetFlag(SpellCastTargetFlags.UnitAlly) && caster.IsFriendlyTo(target))
                     return SpellCastResult.Success;
 
                 return SpellCastResult.BadTargets;
@@ -591,70 +557,6 @@ namespace Core
             }
 
             return 0.0f;
-        }
-
-        #endregion
-
-        #region Loading/unloading helpers
-
-        private void InitializeExplicitTargetMask()
-        {
-            SpellCastTargetFlags targetMask = Targets;
-
-            // prepare target mask using effect target entries
-            foreach (var effect in Effects)
-            {
-                if (effect.ExplicitTargetType != SpellExplicitTargetType.Target)
-                    continue;
-
-                targetMask |= CalculateExplicitTargetMask(effect.MainTargeting);
-                targetMask |= CalculateExplicitTargetMask(effect.SecondaryTargeting);
-            }
-
-            ExplicitTargetMask = targetMask;
-        }
-
-        private SpellCastTargetFlags CalculateExplicitTargetMask(TargetingType targetingType)
-        {
-            if (targetingType == default)
-                return 0;
-
-            SpellCastTargetFlags targetMask = 0;
-            switch (targetingType.ReferenceType)
-            {
-                case SpellTargetReferences.Source:
-                    targetMask = SpellCastTargetFlags.SourceLocation;
-                    break;
-                case SpellTargetReferences.Dest:
-                    targetMask = SpellCastTargetFlags.DestLocation;
-                    break;
-                case SpellTargetReferences.Target:
-                    switch (targetingType.TargetEntities)
-                    {
-                        case SpellTargetEntities.GameEntity:
-                            targetMask = SpellCastTargetFlags.GameEntity;
-                            break;
-                        case SpellTargetEntities.UnitAndDest:
-                        case SpellTargetEntities.Unit:
-                        case SpellTargetEntities.Dest:
-                            switch (targetingType.SelectionCheckType)
-                            {
-                                case SpellTargetChecks.Enemy:
-                                    targetMask = SpellCastTargetFlags.UnitEnemy;
-                                    break;
-                                case SpellTargetChecks.Ally:
-                                    targetMask = SpellCastTargetFlags.UnitAlly;
-                                    break;
-                                default:
-                                    targetMask = SpellCastTargetFlags.Unit;
-                                    break;
-                            }
-                            break;
-                    }
-                    break;
-            }
-
-            return targetMask;
         }
 
         #endregion

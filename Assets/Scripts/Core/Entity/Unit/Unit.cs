@@ -15,12 +15,16 @@ namespace Core
         public new class CreateToken : WorldEntity.CreateToken
         {
             public DeathState DeathState;
-            
+            public bool FreeForAll;
+            public int FactionId;
+
             public override void Read(UdpPacket packet)
             {
                 base.Read(packet);
 
                 DeathState = (DeathState)packet.ReadInt();
+                FactionId = packet.ReadInt();
+                FreeForAll = packet.ReadBool();
             }
 
             public override void Write(UdpPacket packet)
@@ -28,11 +32,20 @@ namespace Core
                 base.Write(packet);
 
                 packet.WriteInt((int)DeathState);
+                packet.WriteInt(FactionId);
+                packet.WriteBool(FreeForAll);
             }
 
             public void Attached(Unit unit)
             {
                 unit.deathState = DeathState;
+                unit.Faction = unit.Balance.FactionsById[FactionId];
+
+                unit.EntityState.DeathState = (int) DeathState;
+                unit.EntityState.Faction.FreeForAll = FreeForAll;
+                unit.EntityState.Faction.Id = FactionId;
+
+                unit.OnFactionChanged();
             }
         }
 
@@ -100,21 +113,18 @@ namespace Core
         public bool IsInCombat => UnitFlags.HasTargetFlag(UnitFlags.InCombat);
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitState.Moving);
+        public bool IsFreeForAll => EntityState.Faction.FreeForAll;
         public bool IsFeared => HasAuraType(AuraType.ModFear);
         public bool IsFrozen => HasAuraWithMechanic(SpellMechanics.Freeze);
         public SpellResourceType PowerType => SpellResourceType.Mana;
 
         public bool HasSpell(int spellId) => true;
-        public bool IsHostileTo(Unit unit) => Faction.HostileFactions.Contains(unit.Faction);
-        public bool IsFriendlyTo(Unit unit) => Faction.FriendlyFactions.Contains(unit.Faction);
         public bool HealthBelowPercent(int percent) => health.Value < CountPercentFromMaxHealth(percent);
         public bool HealthAbovePercent(int percent) => health.Value > CountPercentFromMaxHealth(percent);
         public bool HealthAbovePercentHealed(int percent, int healAmount) => health.Value + healAmount > CountPercentFromMaxHealth(percent);
         public bool HealthBelowPercentDamaged(int percent, int damageAmount) => health.Value - damageAmount < CountPercentFromMaxHealth(percent);
         public long CountPercentFromMaxHealth(int percent) => maxHealth.Value.CalculatePercentage(percent);
         public long CountPercentFromCurrentHealth(int percent) => health.Value.CalculatePercentage(percent);
-        public bool IsValidAttackTarget(Unit target, SpellInfo bySpell, WorldEntity entity = null) => true;
-        public bool IsValidAssistTarget(Unit target, SpellInfo bySpell) => true;
         public float GetSpeed(UnitMoveType type) => speedRates[type] * unitMovementDefinition.BaseSpeedByType(type);
         public float GetSpeedRate(UnitMoveType type) => speedRates[type];
         public float GetPowerPercent(SpellResourceType type) => GetMaxPower(type) > 0 ? 100.0f * GetPower(type) / GetMaxPower(type) : 0.0f;
@@ -125,7 +135,6 @@ namespace Core
         protected override void Awake()
         {
             base.Awake();
-
 
             health = new EntityAttributeInt(this, unitAttributeDefinition.BaseHealth, int.MaxValue, EntityAttributes.Health);
             maxHealth = new EntityAttributeInt(this, unitAttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
@@ -160,6 +169,7 @@ namespace Core
                 EntityState.AddCallback(nameof(EntityState.DeathState), OnDeathStateChanged);
                 EntityState.AddCallback(nameof(EntityState.Health), OnHealthStateChanged);
                 EntityState.AddCallback(nameof(EntityState.TargetId), OnTargetIdChanged);
+                EntityState.AddCallback(nameof(EntityState.Faction), OnFactionChanged);
             }
 
             ThreatManager = new ThreatManager(this);
@@ -200,6 +210,28 @@ namespace Core
         }
 
         public abstract void Accept(IUnitVisitor unitVisitor);
+
+        public bool IsHostileTo(Unit unit)
+        {
+            if (unit == this)
+                return false;
+
+            if (unit.IsFreeForAll && IsFreeForAll)
+                return true;
+
+            return Faction.HostileFactions.Contains(unit.Faction);
+        }
+
+        public bool IsFriendlyTo(Unit unit)
+        {
+            if (unit == this)
+                return true;
+
+            if (unit.IsFreeForAll && IsFreeForAll)
+                return false;
+
+            return Faction.FriendlyFactions.Contains(unit.Faction);
+        }
 
         #region Attribute Handling
 
@@ -716,6 +748,13 @@ namespace Core
         private void OnTargetIdChanged()
         {
             UpdateTarget(EntityState.TargetId.PackedValue);
+        }
+
+        private void OnFactionChanged()
+        {
+            Faction = Balance.FactionsById[EntityState.Faction.Id];
+
+            EventHandler.ExecuteEvent(this, GameEvents.UnitFactionChanged);
         }
     }
 }

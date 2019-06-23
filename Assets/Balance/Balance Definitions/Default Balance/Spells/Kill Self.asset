@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   spellName: Kill Self
-  explicitTargetType: 0
+  explicitCastTargets: 8
+  explicitTargetType: 2
   damageClass: 1
   spellDispel: 0
   mechanic: 0
@@ -24,7 +25,6 @@ MonoBehaviour:
   attributesExtra: 4096
   attributesCustom: 1024
   targetEntityTypeMask: 16
-  targets: 16
   casterAuraState: 0
   targetAuraState: 0
   excludeCasterAuraState: 0

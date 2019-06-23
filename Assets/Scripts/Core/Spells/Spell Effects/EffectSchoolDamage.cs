@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Common;
+﻿using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -11,7 +10,6 @@ namespace Core
 
         public int BonusDamage => bonusDamage;
         public override SpellEffectType EffectType => SpellEffectType.SchoolDamage;
-        public override SpellExplicitTargetType ExplicitTargetType => SpellExplicitTargetType.Target;
         public override SpellTargetEntities TargetEntityType => SpellTargetEntities.Unit;
 
         internal override void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)
@@ -45,12 +43,12 @@ namespace Core
 
             int spellPower = effect.CalculateSpellPower(SpellInfo, Caster, target);
             if (SpellInfo.HasAttribute(SpellCustomAttributes.ShareDamage))
-                spellPower /= UniqueTargetInfo.Count(targetInfo => (targetInfo.EffectMask & (1 << effect.Index)) != 0);
+                spellPower /= SelectedTargets.TargetCountForEffect(effect.Index);
 
             if (OriginalCaster != null)
             {
                 int bonus = OriginalCaster.SpellDamageBonusDone(target, SpellInfo, spellPower, SpellDamageType.Direct, effect);
-                spellPower += bonus + (int)(bonus * Variance);
+                spellPower += bonus;
                 spellPower = target.SpellDamageBonusTaken(OriginalCaster, SpellInfo, spellPower, SpellDamageType.Direct, effect);
             }
 
