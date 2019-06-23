@@ -20,7 +20,7 @@ namespace Client
             get
             {
                 foreach (Condition condition in inactiveWhen)
-                    if (condition.WithSource(input.Player).IsValid)
+                    if (condition.With(input.Player).IsApplicableAndValid)
                         return false;
 
                 return true;

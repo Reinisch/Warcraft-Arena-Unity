@@ -50,7 +50,7 @@
         SpellInProgress,
         SpellUnavailable,
         Stunned,
-        TargetsDead,
+        TargetDead,
         TargetAurastate,
         TargetEnemy,
         TargetEnraged,

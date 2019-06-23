@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using Core.Conditions;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -25,10 +26,6 @@ namespace Core
         [SerializeField, EnumFlag, UsedImplicitly] private SpellCustomAttributes attributesCustom;
 
         [SerializeField, EnumFlag, UsedImplicitly] private EnityTypeMask targetEntityTypeMask;
-        [SerializeField, EnumFlag, UsedImplicitly] private AuraStateType casterAuraState;
-        [SerializeField, EnumFlag, UsedImplicitly] private AuraStateType targetAuraState;
-        [SerializeField, EnumFlag, UsedImplicitly] private AuraStateType excludeCasterAuraState;
-        [SerializeField, EnumFlag, UsedImplicitly] private AuraStateType excludeTargetAuraState;
         [SerializeField, EnumFlag, UsedImplicitly] private SpellRangeFlags rangedFlags;
         [SerializeField, EnumFlag, UsedImplicitly] private SpellInterruptFlags interruptFlags;
 
@@ -47,14 +44,10 @@ namespace Core
         [SerializeField, UsedImplicitly] private int stackAmount;
         [SerializeField, UsedImplicitly] private int maxAffectedTargets;
 
-        [SerializeField, UsedImplicitly] private float procPerMinuteBase;
-        [SerializeField, UsedImplicitly] private int procCooldown;
-        [SerializeField, UsedImplicitly] private int procCharges;
-        [SerializeField, UsedImplicitly] private int procChance;
-
         [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos = new List<SpellEffectInfo>();
         [SerializeField, UsedImplicitly] private List<SpellPowerEntry> spellPowerEntries = new List<SpellPowerEntry>();
         [SerializeField, UsedImplicitly] private List<SpellProcsPerMinuteModifier> procsPerMinuteModifiers;
+        [SerializeField, UsedImplicitly] private List<SpellCastCondition> targetingConditions;
 
         /// <summary>
         /// Compressed to 8 bits in Spell Events.
@@ -74,18 +67,9 @@ namespace Core
         public SpellExtraAttributes AttributesExtra => attributesExtra;
         public SpellCustomAttributes AttributesCustom => attributesCustom;
 
-        public AuraStateType CasterAuraState => casterAuraState;
-        public AuraStateType TargetAuraState => targetAuraState;
         public EnityTypeMask TargetEntityTypeMask => targetEntityTypeMask;
-        public AuraStateType ExcludeCasterAuraState => excludeCasterAuraState;
-        public AuraStateType ExcludeTargetAuraState => excludeTargetAuraState;
         public SpellRangeFlags RangedFlags => rangedFlags;
         public SpellInterruptFlags InterruptFlags => interruptFlags;
-
-        public int ProcChance => procChance;
-        public int ProcCharges => procCharges;
-        public int ProcCooldown => procCooldown;
-        public float ProcPerMinuteBase => procPerMinuteBase;
 
         public List<SpellPowerEntry> PowerCosts => spellPowerEntries;
         public List<SpellEffectInfo> Effects => spellEffectInfos;
@@ -234,7 +218,7 @@ namespace Core
             throw new NotImplementedException();
         }
 
-        public SpellCastResult CheckTarget(Unit caster, Unit target, bool isImplicit = true)
+        public SpellCastResult CheckTarget(Unit caster, Unit target, Spell spell, bool isImplicit = true)
         {
             if (HasAttribute(SpellAttributes.CantTargetSelf) && caster == target)
                 return SpellCastResult.BadTargets;
@@ -264,15 +248,13 @@ namespace Core
             if (target.HasState(UnitState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInflightTarget))
                 return SpellCastResult.BadTargets;
 
-            if (TargetAuraState != 0 && !target.HasAuraState(TargetAuraState, this, caster))
-                return SpellCastResult.TargetAurastate;
-
-            if (ExcludeTargetAuraState != 0 && target.HasAuraState(ExcludeTargetAuraState, this, caster))
-                return SpellCastResult.TargetAurastate;
-
             if (target.HasAuraType(AuraType.PreventResurrection))
                 if (HasEffect(SpellEffectType.SelfResurrect) || HasEffect(SpellEffectType.Resurrect))
                     return SpellCastResult.TargetCannotBeResurrected;
+
+            foreach (SpellCastCondition castCondition in targetingConditions)
+                if (castCondition.With(caster, target, spell).IsApplicableAndInvalid)
+                    return castCondition.FailedResult;
 
             return SpellCastResult.Success;
         }
@@ -481,7 +463,7 @@ namespace Core
 
         public float CalcProcPPM(Unit caster)
         {
-            float ppm = ProcPerMinuteBase;
+            float ppm = 1.0f;
             if (caster == null)
                 return ppm;
 

@@ -35,7 +35,7 @@ namespace Client
                     Remove();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(contentType), $"Unknown button content type: {contentType}");
+                    throw new ArgumentOutOfRangeException(nameof(contentType), $"Unknown button content: {contentType} with id: {itemId}");
             }
         }
 

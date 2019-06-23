@@ -7,31 +7,65 @@ namespace Core.Conditions
     /// </summary>
     public abstract class Condition : ScriptableObject
     {
-        protected Player SourcePlayer { get; private set; }
-        protected Player SourceUnit { get; private set; }
+        protected Unit SourceUnit { get; private set; }
+        protected Unit TargetUnit { get; private set; }
+        protected Spell Spell { get; private set; }
 
         /// <summary>
         /// Returns true if condition has needed data to be even considered valid or not.
         /// </summary>
-        public virtual bool IsApplicable => true;
+        protected internal virtual bool IsApplicable => true;
 
         /// <summary>
         /// Returns true if condition is satisfied, all implementations required to call base in the end to free resources.
         /// </summary>
-        public virtual bool IsValid => FreeResources();
+        protected internal virtual bool IsValid => FreeResources(this);
 
-        public Condition WithSource(Player player) { SourceUnit = SourcePlayer = player; return this; }
+        public bool IsApplicableAndInvalid
+        {
+            get
+            {
+                bool isApplicable = IsApplicable;
+                bool isValid = IsValid;
+
+                return !isValid && isApplicable;
+            }
+        }
+
+        public bool IsApplicableAndValid
+        {
+            get
+            {
+                bool isApplicable = IsApplicable;
+                bool isValid = IsValid;
+
+                return isValid && isApplicable;
+            }
+        }
+
+        public Condition With(Unit source = null, Unit target = null, Spell spell = null)
+        {
+            return SetResources(source, target, spell);
+        }
 
         public Condition From(Condition condition)
         {
-            SourceUnit = condition.SourceUnit;
-            SourcePlayer = condition.SourcePlayer;
+            return With(condition.SourceUnit, condition.TargetUnit, condition.Spell);
+        }
+
+        protected virtual Condition SetResources(Unit source = null, Unit target = null, Spell spell = null)
+        {
+            SourceUnit = source;
+            TargetUnit = target;
+            Spell = spell;
+
             return this;
         }
 
-        private bool FreeResources()
+        protected virtual bool FreeResources(Condition condition)
         {
-            SourceUnit = SourcePlayer = null;
+            condition.SourceUnit = condition.TargetUnit = null;
+            condition.Spell = null;
 
             return true;
         }

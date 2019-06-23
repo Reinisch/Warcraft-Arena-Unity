@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b37e44c1cac12f41af352ad9b42664c, type: 3}
-  m_Name: Source Unit Is Not Casting - Condition
+  m_Script: {fileID: 11500000, guid: 16e6e1f02aafce5448c9e0a51f33084b, type: 3}
+  m_Name: Source Is Casting - Condition
   m_EditorClassIdentifier: 
-  condition: {fileID: 11400000, guid: d7d043aaded165842a57da5f34c46c97, type: 2}
