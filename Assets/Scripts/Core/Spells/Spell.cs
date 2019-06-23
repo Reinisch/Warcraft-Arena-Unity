@@ -360,10 +360,13 @@ namespace Core
             if (castResult != SpellCastResult.Success)
                 return castResult;
 
-            castResult = SpellInfo.CheckTarget(Caster, CastTargets.Target, this, false);
-            if (castResult != SpellCastResult.Success)
-                return castResult;
-
+            if (CastTargets.Target != null)
+            {
+                castResult = SpellInfo.CheckTarget(Caster, CastTargets.Target, this, false);
+                if (castResult != SpellCastResult.Success)
+                    return castResult;
+            }
+            
             return SpellCastResult.Success;
         }
 

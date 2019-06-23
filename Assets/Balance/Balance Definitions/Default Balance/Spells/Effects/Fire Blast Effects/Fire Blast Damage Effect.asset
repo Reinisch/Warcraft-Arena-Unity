@@ -27,11 +27,11 @@ MonoBehaviour:
     selectionCategory: 0
     selectionCheckType: 0
     directionType: 0
-  basePoints: 200
+  basePoints: 100
   randomPoints: 0
   applyAuraPeriod: 0
   minRadius: 0
   maxRadius: 0
   amplitude: 0
   chainAmplitude: 0
-  bonusDamage: 50
+  bonusDamage: 25

@@ -66,7 +66,7 @@
         VisionObscured,
         DamageImmune,
         PreventedByMechanic,
-        BmOrInvisgod,
+        BmOrInvisGod,
         CustomError,
         NoValidTargets,
         TargetCannotBeResurrected,

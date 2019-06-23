@@ -19,7 +19,7 @@ namespace Core
         IgnoreArmor = 1 << 11,
         ReqTargetFacingCaster = 1 << 12,
         ReqCasterBehindTarget = 1 << 13,
-        AllowInflightTarget = 1 << 14,
+        AllowInFlightTarget = 1 << 14,
         NeedsAmmoData = 1 << 15,
     }
 }

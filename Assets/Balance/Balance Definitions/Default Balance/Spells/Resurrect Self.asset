@@ -25,10 +25,6 @@ MonoBehaviour:
   attributesExtra: 0
   attributesCustom: 0
   targetEntityTypeMask: 16
-  casterAuraState: 0
-  targetAuraState: 0
-  excludeCasterAuraState: 0
-  excludeTargetAuraState: 0
   rangedFlags: 0
   interruptFlags: 0
   duration: 0
@@ -44,11 +40,9 @@ MonoBehaviour:
   speed: 0
   stackAmount: 0
   maxAffectedTargets: 0
-  procPerMinuteBase: 0
-  procCooldown: 0
-  procCharges: 0
-  procChance: 0
   spellEffectInfos:
   - {fileID: 11400000, guid: fbade2fec7415644aa5baa910ab6d181, type: 2}
   spellPowerEntries: []
   procsPerMinuteModifiers: []
+  targetingConditions:
+  - {fileID: 11400000, guid: 758926f2ccbcbc94ea545f9c58fb5cbd, type: 2}

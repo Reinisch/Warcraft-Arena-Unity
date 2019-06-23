@@ -223,29 +223,19 @@ namespace Core
             if (HasAttribute(SpellAttributes.CantTargetSelf) && caster == target)
                 return SpellCastResult.BadTargets;
 
-            // check visibility - ignore stealth for implicit (area) targets
             if (!HasAttribute(SpellExtraAttributes.CanTargetInvisible) && !caster.CanSeeOrDetect(target, isImplicit))
                 return SpellCastResult.BadTargets;
 
-            if (target != null && caster != target)
-            {
-                if (caster is Player && target is Player && HasAttribute(SpellCustomAttributes.Pickpocket))
-                    return SpellCastResult.BadTargets;
-            }
-            else
-                return SpellCastResult.Success;
+            if (HasAttribute(SpellCustomAttributes.Pickpocket) && caster is Player && target is Player && caster != target)
+                return SpellCastResult.BadTargets;
 
-            // corpseOwner and unit specific target checks
             if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && !(target is Player))
                 return SpellCastResult.TargetNotPlayer;
 
-            if (target != caster && (caster.IsControlledByPlayer || !IsPositive()) && target is Player player)
-            {
-                if (!player.IsVisible)
-                    return SpellCastResult.BmOrInvisgod;
-            }
+            if (target != caster && (caster.IsControlledByPlayer || !IsPositive()) && target is Player player && !player.IsVisible)
+                return SpellCastResult.BmOrInvisGod;
 
-            if (target.HasState(UnitState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInflightTarget))
+            if (target.HasState(UnitState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInFlightTarget))
                 return SpellCastResult.BadTargets;
 
             if (target.HasAuraType(AuraType.PreventResurrection))
