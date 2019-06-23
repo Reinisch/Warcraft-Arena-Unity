@@ -68,7 +68,7 @@ namespace Client
         {
             base.PanelUpdated(deltaTime);
 
-            playerCastFrame.DoUpdate(deltaTime);
+            playerCastFrame.DoUpdate();
 
             if (localPlayer != null)
                 foreach (var actionBar in actionBars)
@@ -80,13 +80,13 @@ namespace Client
             localPlayer = player;
 
             playerUnitFrame.UpdateUnit(localPlayer);
-            playerCastFrame.UpdateUnit(localPlayer);
+            playerCastFrame.UpdateCaster(localPlayer);
         }
 
         private void OnPlayerControlLost(Player player)
         {
             playerUnitFrame.UpdateUnit(null);
-            playerCastFrame.UpdateUnit(null);
+            playerCastFrame.UpdateCaster(null);
 
             localPlayer = null;
         }

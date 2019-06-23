@@ -1,10 +1,14 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class AttributeBar : MonoBehaviour
+namespace Client
 {
-    [SerializeField, UsedImplicitly] private Slider slider;
+    public class AttributeBar : UIBehaviour
+    {
+        [SerializeField, UsedImplicitly] private Slider slider;
 
-    public float Ratio { set => slider.value = value; }
+        public float Ratio { set => slider.value = value; }
+    }
 }

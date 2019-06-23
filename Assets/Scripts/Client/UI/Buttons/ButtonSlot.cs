@@ -1,74 +1,68 @@
-﻿using Client;
-using Common;
+﻿using Common;
 using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
+namespace Client
 {
-    public enum ContentType
+    public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
     {
-        Spell, Empty
-    }
+        [SerializeField, UsedImplicitly] private HotkeyInputItem hotkeyInput;
+        [SerializeField, UsedImplicitly] private RectTransform rectTransform;
+        [SerializeField, UsedImplicitly] private ButtonContent buttonContent;
+        [SerializeField, UsedImplicitly] private TextMeshProUGUI timerText;
+        [SerializeField, UsedImplicitly] private Image cooldownShade;
 
-    [SerializeField, UsedImplicitly] private HotkeyInputItem hotkeyInput;
+        public RectTransform RectTransform => rectTransform;
 
-    ButtonContent buttonContent;
+        public void Initialize()
+        {
+            buttonContent.Initialize(this);
 
-    public RectTransform RectTransform { get; private set; }
-    public Image CooldownShade { get; private set; }
-    public Text TimerText { get; private set; }
+            EventHandler.RegisterEvent(hotkeyInput, GameEvents.HotkeyPressed, OnHotkeyPressed);
+        }
 
-    public void Initialize()
-    {
-        buttonContent = gameObject.GetComponentInChildren<ButtonContent>();
-        RectTransform = GetComponent<RectTransform>();
+        public void Denitialize()
+        {
+            EventHandler.UnregisterEvent(hotkeyInput, GameEvents.HotkeyPressed, OnHotkeyPressed);
 
-        CooldownShade = transform.Find("Cooldown").GetComponent<Image>();
-        TimerText = transform.Find("Timer").GetComponent<Text>();
+            buttonContent.Deinitialize();
+        }
 
-        buttonContent?.Initialize(this);
+        public void DoUpdate()
+        {
+            buttonContent.UpdateButton();
+        }
 
-        EventHandler.RegisterEvent(hotkeyInput, GameEvents.HotkeyPressed, OnHotkeyPressed);
-    }
-
-    public void Denitialize()
-    {
-        EventHandler.UnregisterEvent(hotkeyInput, GameEvents.HotkeyPressed, OnHotkeyPressed);
-    }
-
-    public void DoUpdate(float deltaTime)
-    {
-        buttonContent?.UpdateButton();
-    }
-
-    public void Click()
-    {
-        if (buttonContent != null)
+        [UsedImplicitly]
+        public void Click()
+        {
             buttonContent.Activate();
-    }
+        }
 
-    public void OnPointerDown(PointerEventData data)
-    {
-        /*if (InterfaceManager.Instance.ButtonController.IsDragging)
+        public void OnPointerDown(PointerEventData data)
         {
-            InterfaceManager.Instance.ButtonController.DropItem(buttonContent);
-            buttonContent.Enable();
-        }*/
-    }
+            /*if (InterfaceManager.Instance.ButtonController.IsDragging)
+            {
+                InterfaceManager.Instance.ButtonController.DropItem(buttonContent);
+                buttonContent.Enable();
+            }*/
+        }
 
-    public void OnDrop(PointerEventData data)
-    {
-        /*if (InterfaceManager.Instance.ButtonController.IsDragging)
+        public void OnDrop(PointerEventData data)
         {
-            InterfaceManager.Instance.ButtonController.DropItem(buttonContent);
-            buttonContent.Enable();
-        }*/
-    }
+            /*if (InterfaceManager.Instance.ButtonController.IsDragging)
+            {
+                InterfaceManager.Instance.ButtonController.DropItem(buttonContent);
+                buttonContent.Enable();
+            }*/
+        }
 
-    private void OnHotkeyPressed()
-    {
-        Click();
+        private void OnHotkeyPressed()
+        {
+            Click();
+        }
     }
 }

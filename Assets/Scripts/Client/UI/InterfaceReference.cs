@@ -1,64 +1,66 @@
-﻿using Client;
-using Client.UI;
+﻿using Client.UI;
 using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Interface Reference", menuName = "Game Data/Scriptable/Interface", order = 10)]
-public class InterfaceReference : ScriptableReference
+namespace Client
 {
-    [SerializeField, UsedImplicitly] private string containerTag;
-    [SerializeField, UsedImplicitly] private LobbyScreen lobbyScreenPrototype;
-    [SerializeField, UsedImplicitly] private BattleScreen battleScreenPrototype;
-
-    private readonly ScreenController screenController = new ScreenController();
-
-    private LobbyScreen lobbyScreen;
-    private BattleScreen battleScreen;
-    private Transform containerTransform;
-
-    protected override void OnRegistered()
+    [CreateAssetMenu(fileName = "Interface Reference", menuName = "Game Data/Scriptable/Interface", order = 10)]
+    public class InterfaceReference : ScriptableReference
     {
-        containerTransform = GameObject.FindGameObjectWithTag(containerTag).transform;
+        [SerializeField, UsedImplicitly] private string containerTag;
+        [SerializeField, UsedImplicitly] private LobbyScreen lobbyScreenPrototype;
+        [SerializeField, UsedImplicitly] private BattleScreen battleScreenPrototype;
 
-        lobbyScreen = Instantiate(lobbyScreenPrototype, containerTransform);
-        battleScreen = Instantiate(battleScreenPrototype, containerTransform);
+        private readonly ScreenController screenController = new ScreenController();
 
-        lobbyScreen.Initialize(screenController);
-        battleScreen.Initialize(screenController);
-    }
+        private LobbyScreen lobbyScreen;
+        private BattleScreen battleScreen;
+        private Transform containerTransform;
 
-    protected override void OnUnregister()
-    {
-        lobbyScreen.Deinitialize(screenController);
-        battleScreen.Deinitialize(screenController);
+        protected override void OnRegistered()
+        {
+            containerTransform = GameObject.FindGameObjectWithTag(containerTag).transform;
 
-        Destroy(lobbyScreen);
-        Destroy(battleScreen);
+            lobbyScreen = Instantiate(lobbyScreenPrototype, containerTransform);
+            battleScreen = Instantiate(battleScreenPrototype, containerTransform);
 
-        lobbyScreen = null;
-        battleScreen = null;
-        containerTransform = null;
-    }
+            lobbyScreen.Initialize(screenController);
+            battleScreen.Initialize(screenController);
+        }
 
-    protected override void OnUpdate(float deltaTime)
-    {
-        screenController.DoUpdate(deltaTime);
-    }
+        protected override void OnUnregister()
+        {
+            lobbyScreen.Deinitialize(screenController);
+            battleScreen.Deinitialize(screenController);
 
-    public void ShowScreen<TScreen, TShowPanel>() where TScreen : UIPanelController where TShowPanel : UIPanel, IPanel<TScreen>
-    {
-        screenController.ShowScreen<TScreen, TShowPanel>();
-    }
+            Destroy(lobbyScreen);
+            Destroy(battleScreen);
 
-    public void ShowScreen<TScreen, TFirstPanel, TPanelShowData>(TPanelShowData showData = default)
-        where TScreen : UIPanelController where TFirstPanel : UIPanel, IPanel<TScreen> where TPanelShowData : IPanelShowToken<TFirstPanel>
-    {
-        screenController.ShowScreen<TScreen, TFirstPanel, TPanelShowData>(showData);
-    }
+            lobbyScreen = null;
+            battleScreen = null;
+            containerTransform = null;
+        }
 
-    public void HideScreen<TScreen>() where TScreen : UIPanelController
-    {
-        screenController.HideScreen<TScreen>();
+        protected override void OnUpdate(float deltaTime)
+        {
+            screenController.DoUpdate(deltaTime);
+        }
+
+        public void ShowScreen<TScreen, TShowPanel>() where TScreen : UIPanelController where TShowPanel : UIPanel, IPanel<TScreen>
+        {
+            screenController.ShowScreen<TScreen, TShowPanel>();
+        }
+
+        public void ShowScreen<TScreen, TFirstPanel, TPanelShowData>(TPanelShowData showData = default)
+            where TScreen : UIPanelController where TFirstPanel : UIPanel, IPanel<TScreen> where TPanelShowData : IPanelShowToken<TFirstPanel>
+        {
+            screenController.ShowScreen<TScreen, TFirstPanel, TPanelShowData>(showData);
+        }
+
+        public void HideScreen<TScreen>() where TScreen : UIPanelController
+        {
+            screenController.HideScreen<TScreen>();
+        }
     }
 }

@@ -3,7 +3,7 @@
 namespace Core.Conditions
 {
     /// <summary>
-    /// Base for any game condition, implements <seealso cref="IsValid"/> with caution.
+    /// Base for any game condition, implement <seealso cref="IsValid"/> with caution.
     /// </summary>
     public abstract class Condition : ScriptableObject
     {

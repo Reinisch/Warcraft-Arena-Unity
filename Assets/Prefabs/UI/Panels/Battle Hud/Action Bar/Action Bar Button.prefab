@@ -405,6 +405,7 @@ MonoBehaviour:
   balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
   input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  contentImage: {fileID: 5402879171325353015}
   contentType: 0
   itemId: 1
 --- !u!1 &8569464949337771209
@@ -519,3 +520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hotkeyInput: {fileID: 0}
+  rectTransform: {fileID: 3469241372234463559}
+  buttonContent: {fileID: 8195847695991156714}
+  timerText: {fileID: 416116090977879064}
+  cooldownShade: {fileID: 2137625310040402075}

@@ -19,8 +19,8 @@ namespace Client
         {
             get
             {
-                foreach (Condition contition in inactiveWhen)
-                    if (contition.WithSource(input.Player).IsValid)
+                foreach (Condition condition in inactiveWhen)
+                    if (condition.WithSource(input.Player).IsValid)
                         return false;
 
                 return true;

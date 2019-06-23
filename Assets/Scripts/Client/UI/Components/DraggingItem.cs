@@ -1,37 +1,37 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class DraggingItem : MonoBehaviour
+namespace Client
 {
-    [SerializeField, UsedImplicitly] private ButtonContent draggingContent;
-
-    public Image Image { get; set; }
-    public RectTransform RectTransform { get; set; } 
-
-    [UsedImplicitly]
-    private void Awake()
+    public class DraggingItem : MonoBehaviour
     {
-        Image = GetComponent<Image>();
-        RectTransform = GetComponent<RectTransform>();
-        draggingContent.Image = Image;
-        draggingContent.enabled = false;
-    }
+        [SerializeField, UsedImplicitly] private ButtonContent draggingContent;
+        [SerializeField, UsedImplicitly] private RectTransform rectTransform;
 
-    public void DragContent(ButtonContent buttonContent)
-    {
-        gameObject.SetActive(true);
-        draggingContent.FromDrag(buttonContent);
-    }
+        public RectTransform RectTransform => rectTransform;
 
-    public void DropContent(ButtonContent targetButtonContent)
-    {
-        targetButtonContent.FromDrop(draggingContent);
-        gameObject.SetActive(false);
-    }
+        [UsedImplicitly]
+        private void Awake()
+        {
+            draggingContent.ContentImage.sprite = null;
+            draggingContent.enabled = false;
+        }
 
-    public void DropReplaceContent(ButtonContent targetButtonContent)
-    {
-        targetButtonContent.Replace(draggingContent);
+        public void DragContent(ButtonContent buttonContent)
+        {
+            gameObject.SetActive(true);
+            draggingContent.FromDrag(buttonContent);
+        }
+
+        public void DropContent(ButtonContent targetButtonContent)
+        {
+            targetButtonContent.FromDrop(draggingContent);
+            gameObject.SetActive(false);
+        }
+
+        public void DropReplaceContent(ButtonContent targetButtonContent)
+        {
+            targetButtonContent.Replace(draggingContent);
+        }
     }
 }

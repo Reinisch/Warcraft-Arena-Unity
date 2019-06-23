@@ -2,23 +2,26 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class ActionBar : MonoBehaviour
+namespace Client
 {
-    [SerializeField, UsedImplicitly] List<ButtonSlot> buttonSlots;
-
-    public void Initialize()
+    public class ActionBar : MonoBehaviour
     {
-        buttonSlots.ForEach(buttonSlot => buttonSlot.Initialize());
-    }
+        [SerializeField, UsedImplicitly] List<ButtonSlot> buttonSlots;
 
-    public void Denitialize()
-    {
-        buttonSlots.ForEach(buttonSlot => buttonSlot.Denitialize());
-    }
+        public void Initialize()
+        {
+            buttonSlots.ForEach(buttonSlot => buttonSlot.Initialize());
+        }
 
-    public void DoUpdate(float deltaTime)
-    {
-        foreach (var slot in buttonSlots)
-            slot.DoUpdate(deltaTime);
+        public void Denitialize()
+        {
+            buttonSlots.ForEach(buttonSlot => buttonSlot.Denitialize());
+        }
+
+        public void DoUpdate(float deltaTime)
+        {
+            foreach (var slot in buttonSlots)
+                slot.DoUpdate();
+        }
     }
 }
