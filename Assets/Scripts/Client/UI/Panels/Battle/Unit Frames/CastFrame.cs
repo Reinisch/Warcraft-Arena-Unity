@@ -9,6 +9,7 @@ namespace Client
     public class CastFrame : MonoBehaviour
     {
         [SerializeField, UsedImplicitly] private BalanceReference balanceReference;
+        [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellLabel;
         [SerializeField, UsedImplicitly] private Slider castSlider;
 
@@ -17,7 +18,8 @@ namespace Client
 
         public void DoUpdate()
         {
-            gameObject.SetActive(isCasting);
+            UpdateState();
+
             if (!isCasting)
                 return;
 
@@ -33,7 +35,9 @@ namespace Client
             if (newCaster != null)
                 InitializeCaster(newCaster);
 
-            gameObject.SetActive(caster != null && caster.EntityState.SpellCast.Id != 0);
+            isCasting = false;
+
+            UpdateState();
         }
 
         private void InitializeCaster(Unit caster)
@@ -48,6 +52,13 @@ namespace Client
             isCasting = false;
             caster.EntityState.RemoveCallback(nameof(caster.EntityState.SpellCast), OnSpellCastChanged);
             caster = null;
+        }
+
+        private void UpdateState()
+        {
+            canvasGroup.blocksRaycasts = isCasting;
+            canvasGroup.interactable = isCasting;
+            canvasGroup.alpha = isCasting ? 1.0f : 0.0f;
         }
 
         private void OnSpellCastChanged()

@@ -11,6 +11,7 @@ namespace Client
 {
     public class UnitFrame : MonoBehaviour
     {
+        [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private AttributeBar health;
         [SerializeField, UsedImplicitly] private AttributeBar mainResource;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI unitName;
@@ -50,7 +51,9 @@ namespace Client
             else if (wasSet)
                 lostSound?.Play();
 
-            gameObject.SetActive(unit != null);
+            canvasGroup.blocksRaycasts = unit != null;
+            canvasGroup.interactable = unit != null;
+            canvasGroup.alpha = unit != null ? 1.0f : 0.0f;
         }
 
         private void InitializeUnit(Unit unit)

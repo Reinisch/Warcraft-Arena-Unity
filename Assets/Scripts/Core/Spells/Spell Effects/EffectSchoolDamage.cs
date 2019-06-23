@@ -43,7 +43,7 @@ namespace Core
 
             int spellPower = effect.CalculateSpellPower(SpellInfo, Caster, target);
             if (SpellInfo.HasAttribute(SpellCustomAttributes.ShareDamage))
-                spellPower /= SelectedTargets.TargetCountForEffect(effect.Index);
+                spellPower /= Mathf.Min(1, SelectedTargets.TargetCountForEffect(effect.Index));
 
             if (OriginalCaster != null)
             {

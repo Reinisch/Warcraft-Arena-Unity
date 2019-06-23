@@ -43,6 +43,7 @@ namespace Client
             EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
             EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
 
+            playerCastFrame.UpdateCaster(localPlayer);
             playerUnitFrame.UpdateUnit(localPlayer);
             playerUnitFrame.SetTargetUnitFrame(playerTargetUnitFrame);
             playerTargetUnitFrame.SetTargetUnitFrame(playerTargetTargetUnitFrame);
@@ -58,6 +59,7 @@ namespace Client
             playerUnitFrame.UpdateUnit(null);
             playerTargetUnitFrame.UpdateUnit(null);
             playerTargetTargetUnitFrame.UpdateUnit(null);
+            playerCastFrame.UpdateCaster(null);
 
             localPlayer = null;
 

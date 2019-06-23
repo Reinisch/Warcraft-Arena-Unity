@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4854979382361574462}
   - component: {fileID: 4854979382564321481}
   - component: {fileID: 4854979383478195480}
+  - component: {fileID: -2997718388332763837}
+  - component: {fileID: -8373605524482637000}
   m_Layer: 5
   m_Name: Unit Frame
   m_TagString: Untagged
@@ -62,11 +64,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c074f5418eef14c4d816b5a7593616f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: -8373605524482637000}
   health: {fileID: 4854979383301074145}
   mainResource: {fileID: 4854979384034867819}
   unitName: {fileID: 3625758516588223680}
   setSound: {fileID: 0}
   lostSound: {fileID: 0}
+--- !u!223 &-2997718388332763837
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4854979382564321480}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 1
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!225 &-8373605524482637000
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4854979382564321480}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4854979382593765054
 GameObject:
   m_ObjectHideFlags: 0
