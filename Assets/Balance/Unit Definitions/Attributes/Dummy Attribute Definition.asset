@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa0898825cc923d45a1fb4083a85e1cd, type: 3}
   m_Name: Dummy Attribute Definition
   m_EditorClassIdentifier: 
-  baseHealth: 1000000
-  baseMaxHealth: 1000000
+  baseHealth: 100000000
+  baseMaxHealth: 100000000
   baseMana: 100
   baseMaxMana: 100
   critPercentage: 5

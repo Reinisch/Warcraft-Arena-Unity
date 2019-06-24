@@ -1,21 +1,25 @@
 ﻿using UnityEngine;
 
-namespace Core
+namespace Core.Scenario
 {
     public abstract class ScenarioAction : MonoBehaviour
     {
         protected Map Map { get; private set; }
+        protected WorldManager WorldManager => Map.WorldManager;
+        protected BalanceReference Balance => Map.Settings.Balance;
 
-        public void Initialize(Map map)
+        internal virtual void Initialize(Map map)
         {
             Map = map;
         }
 
-        public void DeInitialize()
+        internal virtual void DeInitialize()
         {
             Map = null;
         }
 
-        public abstract void DoUpdate(int deltaTime);
+        internal virtual void DoUpdate(int deltaTime)
+        {
+        }
     }
 }

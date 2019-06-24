@@ -31,15 +31,16 @@ namespace Core
             Assert.IsNotNull(Settings, $"Map settings are missing in map: {mapScene.name}");
             mapGrid.Initialize(this);
 
-            if(Settings != null)
+            if(worldManager.HasServerLogic)
                 foreach (var scenarioAction in Settings.ScenarioActions)
                     scenarioAction.Initialize(this);
         }
 
         internal void Deinitialize()
         {
-            foreach (var scenarioAction in Settings.ScenarioActions)
-                scenarioAction.DeInitialize();
+            if (WorldManager.HasServerLogic)
+                foreach (var scenarioAction in Settings.ScenarioActions)
+                    scenarioAction.DeInitialize();
 
             mapGrid.Deinitialize();
 
@@ -51,8 +52,9 @@ namespace Core
         {
             mapGrid.DoUpdate(deltaTime);
 
-            foreach (var scenarioAction in Settings.ScenarioActions)
-                scenarioAction.DoUpdate(deltaTime);
+            if (WorldManager.HasServerLogic)
+                foreach (var scenarioAction in Settings.ScenarioActions)
+                    scenarioAction.DoUpdate(deltaTime);
         }
 
         internal void AddWorldEntity(WorldEntity entity)

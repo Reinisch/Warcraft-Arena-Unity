@@ -58,6 +58,8 @@ namespace Server
 
             if (HasClientLogic)
                 CreatePlayer();
+
+            EventHandler.ExecuteEvent(this, GameEvents.ServerLaunched);
         }
 
         internal void EntityAttached(BoltEntity entity)

@@ -18,6 +18,7 @@
         SpellDamageDone,
 
         ServerSpellCast,
+        ServerLaunched,
 
         UnitAttributeChanged,
         UnitTargetChanged,

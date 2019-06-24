@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.Scenario;
 using JetBrains.Annotations;
 using UnityEngine;
 
