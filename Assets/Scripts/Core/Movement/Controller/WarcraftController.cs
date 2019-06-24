@@ -16,101 +16,82 @@ namespace Core
         private float groundCheckDistance = 0.2f;
         private Vector3 groundNormal = Vector3.up;
         private Vector3 inputVelocity = Vector3.zero;
-        private Vector3 hostPosition = Vector3.zero;
-        private Quaternion lastRotation;
+        private IControllerInputProvider currentInputProvider;
+        private IControllerInputProvider defaultInputProvider;
         private bool wasFlying;
 
         private Unit Unit => unit;
-        private bool IsRemote => Unit.IsController && !Unit.IsOwner;
         private bool OnEdge => Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && TouchingGround;
         private bool TooSteep => groundNormal.y <= Mathf.Cos(45 * Mathf.Deg2Rad);
         private bool TouchingGround => groundChecker.GroundCollisions > 0;
 
         internal BoltEntity ClientMoveState { get; private set; }
 
-        internal void DoUpdate(int deltaTime)
+        internal IControllerInputProvider InputProvider
+        {
+            private get => currentInputProvider ?? defaultInputProvider;
+            set => currentInputProvider = value;
+        }
+
+        internal PlayerControllerDefinition ControllerDefinition => controllerDefinition;
+
+        [UsedImplicitly]
+        private void Awake()
+        {
+            defaultInputProvider = new IdleControllerInputProvider(unit);
+        }
+
+        internal void DoUpdate()
         {
             if (Unit.IsController)
             {
-                float unscaledDelta = deltaTime / 1000.0f;
+                InputProvider.PollInput(out inputVelocity, out var inputRotation, out var shouldJump);
 
-                ApplyControllerInputVelocity();
-                ApplyControllerInputRotation();
+                Vector3 rawInputVelocity = Vector3.zero;
 
-                void ApplyControllerInputVelocity()
+                if (!Unit.IsAlive)
+                    inputVelocity = Vector3.zero;
+                else if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
                 {
-                    Vector3 rawInputVelocity = Vector3.zero;
+                    // check roots and apply final move speed
+                    inputVelocity *= Unit.IsMovementBlocked ? 0 : Unit.GetSpeed(UnitMoveType.Run);
 
-                    if (!Unit.IsAlive || Unit is Creature)
-                        inputVelocity = Vector3.zero;
-                    else if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
+                    if (shouldJump)
                     {
-                        inputVelocity = new Vector3(Input.GetMouseButton(1) ? Input.GetAxis("Horizontal") : 0, 0, Input.GetAxis("Vertical"));
-
-                        if (Input.GetMouseButton(0) && Input.GetMouseButton(1) && Mathf.Approximately(Input.GetAxis("Vertical"), 0))
-                            inputVelocity = new Vector3(inputVelocity.x, inputVelocity.y, inputVelocity.z + 1);
-
-                        if (inputVelocity.z > 1)
-                            inputVelocity.z = 1;
-
-                        inputVelocity = new Vector3(inputVelocity.x - Input.GetAxis("Strafing"), inputVelocity.y, inputVelocity.z);
-
-                        // if moving forward and to the side at the same time, compensate for distance
-                        if (Input.GetMouseButton(1) && !Mathf.Approximately(Input.GetAxis("Horizontal"), 0) && !Mathf.Approximately(Input.GetAxis("Vertical"), 0))
-                        {
-                            inputVelocity *= 0.7f;
-                        }
-
-                        // check roots and apply final move speed
-                        inputVelocity *= Unit.IsMovementBlocked ? 0 : Unit.GetSpeed(UnitMoveType.Run);
-
-                        if (Input.GetButton("Jump"))
-                        {
-                            Unit.MovementInfo.Jumping = true;
-                            inputVelocity = new Vector3(inputVelocity.x, controllerDefinition.JumpSpeed, inputVelocity.z);
-                        }
-
-                        rawInputVelocity = inputVelocity;
-                        inputVelocity = transform.TransformDirection(inputVelocity);
+                        Unit.MovementInfo.Jumping = true;
+                        inputVelocity = new Vector3(inputVelocity.x, controllerDefinition.JumpSpeed, inputVelocity.z);
                     }
-                    else
-                        inputVelocity = Vector3.zero;
 
-                    bool movingRight = rawInputVelocity.x > 0;
-                    bool movingLeft = rawInputVelocity.x < 0;
-                    bool moving = rawInputVelocity.magnitude > 0;
-
-                    if (movingRight)
-                    {
-                        Unit.MovementInfo.RemoveMovementFlag(MovementFlags.StrafeLeft);
-                        Unit.MovementInfo.AddMovementFlag(MovementFlags.StrafeRight);
-                    }
-                    else if (movingLeft)
-                    {
-                        Unit.MovementInfo.RemoveMovementFlag(MovementFlags.StrafeRight);
-                        Unit.MovementInfo.AddMovementFlag(MovementFlags.StrafeLeft);
-                    }
-                    else
-                        Unit.MovementInfo.RemoveMovementFlag(MovementFlags.StrafeRight | MovementFlags.StrafeLeft);
-
-                    if (moving)
-                        Unit.MovementInfo.AddMovementFlag(MovementFlags.Forward);
-                    else
-                        Unit.MovementInfo.RemoveMovementFlag(MovementFlags.Forward);
+                    rawInputVelocity = inputVelocity;
+                    inputVelocity = transform.TransformDirection(inputVelocity);
                 }
+                else
+                    inputVelocity = Vector3.zero;
 
-                void ApplyControllerInputRotation()
+                bool movingRight = rawInputVelocity.x > 0;
+                bool movingLeft = rawInputVelocity.x < 0;
+                bool moving = rawInputVelocity.magnitude > 0;
+
+                if (movingRight)
                 {
-                    if (!Unit.IsAlive || Unit is Creature)
-                        return;
-
-                    if (Input.GetMouseButton(1))
-                        transform.rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
-                    else
-                        transform.Rotate(0, Input.GetAxis("Horizontal") * controllerDefinition.RotateSpeed * unscaledDelta, 0);
-
-                    lastRotation = transform.rotation;
+                    Unit.MovementInfo.RemoveMovementFlag(MovementFlags.StrafeLeft);
+                    Unit.MovementInfo.AddMovementFlag(MovementFlags.StrafeRight);
                 }
+                else if (movingLeft)
+                {
+                    Unit.MovementInfo.RemoveMovementFlag(MovementFlags.StrafeRight);
+                    Unit.MovementInfo.AddMovementFlag(MovementFlags.StrafeLeft);
+                }
+                else
+                    Unit.MovementInfo.RemoveMovementFlag(MovementFlags.StrafeRight | MovementFlags.StrafeLeft);
+
+                if (moving)
+                    Unit.MovementInfo.AddMovementFlag(MovementFlags.Forward);
+                else
+                    Unit.MovementInfo.RemoveMovementFlag(MovementFlags.Forward);
+
+                if (Unit.IsAlive)
+                    transform.rotation = inputRotation;
             }
         }
 

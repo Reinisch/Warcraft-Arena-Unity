@@ -91,6 +91,7 @@ namespace Core
         public SpellCast SpellCast { get; private set; }
         public IUnitState EntityState { get; private set; }
         public CapsuleCollider UnitCollider => unitCollider;
+        public PlayerControllerDefinition ControllerDefinition => controller.ControllerDefinition;
 
         public int Level => level.Value;
         public int Health => health.Value;
@@ -218,7 +219,7 @@ namespace Core
         {
             base.DoUpdate(deltaTime);
 
-            controller.DoUpdate(deltaTime);
+            controller.DoUpdate();
         }
 
         internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)

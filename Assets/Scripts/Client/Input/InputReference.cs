@@ -53,10 +53,12 @@ namespace Client
         private void OnPlayerControlGained(Player player)
         {
             Player = player;
+            Player.InputProvider = new ClientControllerMouseKeyboardInput(player);
         }
 
         private void OnPlayerControlLost(Player player)
         {
+            Player.InputProvider = null;
             Player = null;
         }
 
