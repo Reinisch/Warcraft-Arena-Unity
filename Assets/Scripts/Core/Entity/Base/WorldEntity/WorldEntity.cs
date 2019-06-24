@@ -60,10 +60,6 @@ namespace Core
             base.Detached();
         }
 
-        internal virtual void DoUpdate(int deltaTime)
-        {
-        }
-
         internal void SetMap(Map map)
         {
             Assert.IsNotNull(map);

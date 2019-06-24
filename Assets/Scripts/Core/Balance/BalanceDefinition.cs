@@ -8,8 +8,6 @@ namespace Core
     public class BalanceDefinition : ScriptableObject
     {
         [SerializeField, UsedImplicitly]
-        private NetworkMovementType networkMovementType;
-        [SerializeField, UsedImplicitly]
         private FactionDefinition defaultFaction;
         [SerializeField, UsedImplicitly]
         private List<SpellInfo> spellInfos = new List<SpellInfo>();
@@ -21,7 +19,6 @@ namespace Core
         public List<SpellInfo> SpellInfos => spellInfos;
         public List<MapDefinition> MapEntries => mapEntries;
         public List<FactionDefinition> FactionEntries => factionEntries;
-        public NetworkMovementType NetworkMovementType => networkMovementType;
         public FactionDefinition DefaultFaction => defaultFaction;
     }
 }

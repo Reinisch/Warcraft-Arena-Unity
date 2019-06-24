@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Core
 {
-    internal class WarcraftController : EntityBehaviour<IPlayerState>
+    internal class WarcraftController : EntityBehaviour<IUnitState>
     {
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private PhysicsReference physics;
@@ -28,17 +28,12 @@ namespace Core
 
         internal BoltEntity ClientMoveState { get; private set; }
 
-        [UsedImplicitly]
-        private void Awake()
-        {
-            groundCheckDistance = controllerDefinition.BaseGroundCheckDistance;
-        }
-
-        [UsedImplicitly]
-        private void Update()
+        internal void DoUpdate(int deltaTime)
         {
             if (Unit.IsController)
             {
+                float unscaledDelta = deltaTime / 1000.0f;
+
                 ApplyControllerInputVelocity();
                 ApplyControllerInputRotation();
 
@@ -46,7 +41,7 @@ namespace Core
                 {
                     Vector3 rawInputVelocity = Vector3.zero;
 
-                    if (!Unit.IsAlive)
+                    if (!Unit.IsAlive || Unit is Creature)
                         inputVelocity = Vector3.zero;
                     else if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
                     {
@@ -106,13 +101,13 @@ namespace Core
 
                 void ApplyControllerInputRotation()
                 {
-                    if (!Unit.IsAlive)
+                    if (!Unit.IsAlive || Unit is Creature)
                         return;
 
                     if (Input.GetMouseButton(1))
                         transform.rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
                     else
-                        transform.Rotate(0, Input.GetAxis("Horizontal") * controllerDefinition.RotateSpeed * Time.deltaTime, 0);
+                        transform.Rotate(0, Input.GetAxis("Horizontal") * controllerDefinition.RotateSpeed * unscaledDelta, 0);
 
                     lastRotation = transform.rotation;
                 }
@@ -121,6 +116,8 @@ namespace Core
 
         public override void Attached()
         {
+            groundCheckDistance = controllerDefinition.BaseGroundCheckDistance;
+
             UpdateOwnership();
         }
 
@@ -134,10 +131,7 @@ namespace Core
 
         public override void SimulateOwner()
         {
-            if (!Unit.IsController && balance.NetworkMovementType == NetworkMovementType.ServerSide)
-                ProcessMovement();
-
-            if (balance.NetworkMovementType == NetworkMovementType.ClientSide && ClientMoveState != null)
+            if (ClientMoveState != null)
             {
                 Unit.Position = ClientMoveState.transform.position;
                 Unit.Rotation = ClientMoveState.transform.rotation;
@@ -147,22 +141,6 @@ namespace Core
         public override void SimulateController()
         {
             ProcessMovement();
-
-            if (balance.NetworkMovementType == NetworkMovementType.ServerSide && IsRemote)
-            {
-                if (hostPosition != Vector3.zero)
-                {
-                    float distanceDifference = Vector3.Distance(Unit.Position, hostPosition);
-                    if (distanceDifference > controllerDefinition.MovementCorrectionDistance)
-                        unitRigidbody.AddForce((hostPosition - Unit.Position) * controllerDefinition.CorrectionDampening, ForceMode.VelocityChange);
-                }
-
-                var moveCommand = PlayerMoveCommand.Create();
-                moveCommand.InputVector = inputVelocity;
-                moveCommand.Rotation = lastRotation;
-                moveCommand.Position = Unit.Position;
-                entity.QueueInput(moveCommand);
-            }
 
             if (ClientMoveState != null)
             {
@@ -177,7 +155,7 @@ namespace Core
 
             UpdateOwnership();
 
-            if (!Unit.IsOwner && Unit.IsController && balance.NetworkMovementType == NetworkMovementType.ClientSide)
+            if (!Unit.IsOwner && Unit.IsController)
             {
                 BoltEntity localClientMoveState = BoltNetwork.Instantiate(BoltPrefabs.MoveState);
                 localClientMoveState.SetScopeAll(false);
@@ -195,37 +173,6 @@ namespace Core
             UpdateOwnership();
 
             DetachClientSideMoveState(true);
-        }
-
-        public override void ExecuteCommand(Command command, bool resetState)
-        {
-            if (balance.NetworkMovementType == NetworkMovementType.ClientSide)
-                return;
-
-            var moveCommand = (PlayerMoveCommand) command;
-            if (resetState)
-                hostPosition = moveCommand.Result.Position;
-
-            if (Unit.IsOwner)
-            {
-                Unit.Rotation = moveCommand.Input.Rotation;
-               
-                if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
-                {
-                    if (moveCommand.Input.InputVector.y > 0)
-                    {
-                        Unit.MovementInfo.Jumping = true;
-                        Unit.MovementInfo.AddMovementFlag(MovementFlags.Flying);
-                        Unit.MovementInfo.AddMovementFlag(MovementFlags.Ascending);
-                        unitRigidbody.velocity = inputVelocity;
-                    }
-
-                    inputVelocity = moveCommand.Input.InputVector;
-                }
-
-                moveCommand.Result.Position = Unit.Position;
-                moveCommand.Result.Velocity = unitRigidbody.velocity;
-            }
         }
 
         internal void AttachClientSideMoveState(BoltEntity moveEntity)
@@ -344,18 +291,8 @@ namespace Core
 
         private void UpdateOwnership()
         {
-            switch (balance.NetworkMovementType)
-            {
-                case NetworkMovementType.ClientSide:
-                    unitRigidbody.isKinematic = !Unit.IsController;
-                    unitRigidbody.useGravity = Unit.IsController;
-                    break;
-                case NetworkMovementType.ServerSide:
-                    bool hasLocalMovement = Unit.IsOwner || Unit.IsController;
-                    unitRigidbody.isKinematic = !hasLocalMovement;
-                    unitRigidbody.useGravity = hasLocalMovement;
-                    break;
-            }
+            unitRigidbody.isKinematic = !Unit.IsController;
+            unitRigidbody.useGravity = Unit.IsController;
         }
     }
 }

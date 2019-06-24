@@ -42,6 +42,8 @@ namespace Core
         {
             MapManager.DoUpdate(deltaTime);
 
+            UnitManager.DoUpdate(deltaTime);
+
             if(HasServerLogic)
                 SpellManager.DoUpdate(deltaTime);
         }

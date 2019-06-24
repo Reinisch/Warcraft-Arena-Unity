@@ -70,6 +70,12 @@ namespace Core
                 entity.BoltEntity.SetScope(connection, inScope);
         }
 
+        internal virtual void DoUpdate(int deltaTime)
+        {
+            for (int i = 0; i < Entities.Count; i++)
+                Entities[i].DoUpdate(deltaTime);
+        }
+
         protected virtual void EntityAttached(T entity)
         {
         }

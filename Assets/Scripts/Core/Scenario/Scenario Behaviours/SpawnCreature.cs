@@ -32,7 +32,7 @@ namespace Core.Scenario
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
                 FactionId = Balance.DefaultFaction.FactionId,
-            });
+            }).BoltEntity.TakeControl();
         }
     }
 }

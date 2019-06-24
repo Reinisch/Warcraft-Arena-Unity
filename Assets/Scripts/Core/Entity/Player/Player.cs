@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-using UdpKit;
-using UnityEngine;
+﻿using UdpKit;
 
 namespace Core
 {
@@ -30,13 +28,9 @@ namespace Core
             }
         }
 
-        [SerializeField, UsedImplicitly, Header("Player"), Space(10)] private WarcraftController controller;
-
         private CreateToken createToken;
         private IPlayerState playerState;
         private string playerName;
-
-        internal WarcraftController Controller => controller;
 
         internal override bool AutoScoped => true;
 

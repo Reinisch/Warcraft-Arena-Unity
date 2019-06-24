@@ -16,7 +16,6 @@ namespace Core
         private readonly Dictionary<int, FactionDefinition> factionsById = new Dictionary<int, FactionDefinition>();
 
         public FactionDefinition DefaultFaction => definition.DefaultFaction;
-        public NetworkMovementType NetworkMovementType => definition.NetworkMovementType;
         public IReadOnlyList<MapDefinition> Maps => maps;
         public IReadOnlyDictionary<int, SpellInfo> SpellInfosById => spellInfosById;
         public IReadOnlyDictionary<int, FactionDefinition> FactionsById => factionsById;

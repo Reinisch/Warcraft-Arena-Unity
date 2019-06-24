@@ -52,6 +52,8 @@ namespace Core
         [SerializeField, UsedImplicitly, Header("Unit"), Space(10)]
         private CapsuleCollider unitCollider;
         [SerializeField, UsedImplicitly]
+        private WarcraftController controller;
+        [SerializeField, UsedImplicitly]
         private UnitAttributeDefinition unitAttributeDefinition;
         [SerializeField, UsedImplicitly]
         private UnitMovementDefinition unitMovementDefinition;
@@ -79,6 +81,7 @@ namespace Core
         private ThreatManager ThreatManager { get; set; }
         private UnitState UnitState { get; set; }
         internal UnitAI AI { get; private set; }
+        internal WarcraftController Controller => controller;
 
         public Unit Target { get; private set; }
         public ulong TargetId { get; private set; }
@@ -210,6 +213,24 @@ namespace Core
         }
 
         public abstract void Accept(IUnitVisitor unitVisitor);
+
+        internal override void DoUpdate(int deltaTime)
+        {
+            base.DoUpdate(deltaTime);
+
+            controller.DoUpdate(deltaTime);
+        }
+
+        internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
+        {
+            TargetId = newTarget?.Id ?? newTargetId;
+            Target = newTarget ?? WorldManager.UnitManager.Find(TargetId);
+
+            if (updateState)
+                EntityState.TargetId = Target?.BoltEntity.NetworkId ?? default;
+
+            EventHandler.ExecuteEvent(this, GameEvents.UnitTargetChanged);
+        }
 
         public bool IsHostileTo(Unit unit)
         {
@@ -717,17 +738,6 @@ namespace Core
         internal bool HasAuraWithMechanic(SpellMechanics mechanic) { return false; }
 
         #endregion
-
-        internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
-        {
-            TargetId = newTarget?.Id ?? newTargetId;
-            Target = newTarget ?? WorldManager.UnitManager.Find(TargetId);
-
-            if(updateState)
-                EntityState.TargetId = Target?.BoltEntity.NetworkId ?? default;
-
-            EventHandler.ExecuteEvent(this, GameEvents.UnitTargetChanged);
-        }
 
         private void OnEntityDetach(Unit entity)
         {

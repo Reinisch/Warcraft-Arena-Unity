@@ -47,6 +47,10 @@ namespace Core
 
         public abstract void Accept(IVisitor visitor);
 
+        internal virtual void DoUpdate(int deltaTime)
+        {
+        }
+
         internal void TakenFromPool(WorldManager worldManager)
         {
             WorldManager = worldManager;
