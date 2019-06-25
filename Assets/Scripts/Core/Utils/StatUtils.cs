@@ -11,9 +11,8 @@ namespace Core
         public const float TradeDistance = 11.11f;
         public const float SightRangeUnit = 50.0f;
         public const float DefaultCombatReach = 1.5f;
-        public const float MinMeleeReach = 2.0f;
+        public const float MinMeleeReach = 3.0f;
         public const float NominalMeleeRange = 5.0f;
-        public const float MeleeRange = NominalMeleeRange - MinMeleeReach * 2;
         public const float DefaultPhase = 169;
         public const int CorpseReclaimRadius = 50;
         public const int AIDefaultCooldown = 5000;
