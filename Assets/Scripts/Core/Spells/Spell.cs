@@ -449,21 +449,22 @@ namespace Core
             EffectDamage = entry.Damage;
             EffectHealing = -entry.Damage;
 
-            Unit spellHitTarget = null;
+            Unit hitTarget = null;
             if (missType == SpellMissType.None)
-                spellHitTarget = entry.Target;
+                hitTarget = entry.Target;
             else if (missType == SpellMissType.Reflect && entry.ReflectResult == SpellMissType.None)
-                spellHitTarget = Caster;
+                hitTarget = Caster;
 
-            if (spellHitTarget != null)
+            if (hitTarget != null)
             {
-                SpellMissType missInfo2 = DoSpellHitOnUnit(spellHitTarget);
+                SpellMissType missTypeTarget = DoSpellHitOnUnit(hitTarget);
 
-                if (missInfo2 != SpellMissType.None)
+                if (missTypeTarget != SpellMissType.None)
                     EffectDamage = 0;
-                else
-                    EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHit, spellHitTarget, SpellInfo.Id);
+
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missTypeTarget);
             }
+
             if (EffectHealing > 0)
             {
                 bool crit = entry.Crit;

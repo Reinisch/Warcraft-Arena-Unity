@@ -10,12 +10,14 @@ namespace Server
         {
             EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
             EventHandler.RegisterEvent<Unit, SpellInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCast, OnServerSpellCast);
+            EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
         }
 
         internal override void Dispose()
         {
             EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
             EventHandler.UnregisterEvent<Unit, SpellInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCast, OnServerSpellCast);
+            EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
         }
 
         private void OnSpellDamageDone(Unit caster, Unit target, int damageAmount, bool isCrit)
@@ -28,6 +30,12 @@ namespace Server
                 spellDamageEvent.IsCrit = isCrit;
                 spellDamageEvent.Send();
             }
+
+            UnitSpellDamageEvent unitSpellDemageEvent = UnitSpellDamageEvent.Create(target.BoltEntity, EntityTargets.Everyone);
+            unitSpellDemageEvent.CasterId = caster.BoltEntity.NetworkId;
+            unitSpellDemageEvent.Damage = damageAmount;
+            unitSpellDemageEvent.IsCrit = isCrit;
+            unitSpellDemageEvent.Send();
         }
 
         private void OnServerSpellCast(Unit caster, SpellInfo spellInfo)
@@ -41,8 +49,17 @@ namespace Server
                 : SpellCastRequestAnswerEvent.Create(caster.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
 
             spellCastAnswer.SpellId = spellInfo.Id;
-            spellCastAnswer.Result = (int)SpellCastResult.Success;
+            spellCastAnswer.Result = (int) SpellCastResult.Success;
             spellCastAnswer.Send();
+        }
+
+        private void OnServerSpellHit(Unit caster, Unit target, SpellInfo spellInfo, SpellMissType missType)
+        {
+            UnitSpellHitEvent unitSpellHitEvent = UnitSpellHitEvent.Create(target.BoltEntity, EntityTargets.Everyone);
+            unitSpellHitEvent.CasterId = caster.BoltEntity.NetworkId;
+            unitSpellHitEvent.SpellId = spellInfo.Id;
+            unitSpellHitEvent.MissType = (int) missType;
+            unitSpellHitEvent.Send();
         }
     }
 }

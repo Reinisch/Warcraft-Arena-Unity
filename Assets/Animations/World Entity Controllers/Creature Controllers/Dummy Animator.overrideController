@@ -6,8 +6,8 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wooden Dummy Controller
-  m_Controller: {fileID: 9100000, guid: f8b8ab42cba22774e840308e9b100e18, type: 2}
+  m_Name: Dummy Animator
+  m_Controller: {fileID: 9100000, guid: 30a1852c2b61d1f4d8727a3fde785112, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 45c75d5091f6a4040b6b24c4ed180606, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 45c75d5091f6a4040b6b24c4ed180606, type: 2}

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellInfo: {fileID: 11400000, guid: f3d84b42c86ef574f9389831a1eb2bb2, type: 2}
   soundEntries:
-  - soundUsageType: 0
+  - soundUsageType: 2
     soundEntry: {fileID: 11400000, guid: 2f587d1efbc761243afab8c311f432f8, type: 2}

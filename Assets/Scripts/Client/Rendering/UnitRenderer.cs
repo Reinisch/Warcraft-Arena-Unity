@@ -58,6 +58,21 @@ namespace Client
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, Unit, spellCastEvent.SpellId);
         }
 
+        public override void OnEvent(UnitSpellDamageEvent spellDamageEvent)
+        {
+            base.OnEvent(spellDamageEvent);
+
+            Animator.SetBool("WoundedCrit", spellDamageEvent.IsCrit);
+            Animator.SetTrigger("Wound");
+        }
+
+        public override void OnEvent(UnitSpellHitEvent spellHitEvent)
+        {
+            base.OnEvent(spellHitEvent);
+
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHit, Unit, spellHitEvent.SpellId);
+        }
+
         private void UpdateAnimations(float deltaTime)
         {
             if (!Unit.IsAlive)
