@@ -5,8 +5,8 @@ namespace Core
     [Flags]
     public enum SpellRangeFlags
     {
-        Default = 0,
-        Melee = 1,
-        Ranged = 2,
+        Default = 1 << 0,
+        Melee = 1 << 1,
+        Ranged = 1 << 2,
     }
 }

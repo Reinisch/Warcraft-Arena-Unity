@@ -19,6 +19,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 637188a259c0f8149a47bc2c267d8f46, type: 2}
   spellSettings:
   - {fileID: 11400000, guid: aa410cc744c2e65438de2244e3a7f140, type: 2}
+  - {fileID: 11400000, guid: 45c787b9d1601f24b9a68fc289922b38, type: 2}
   - {fileID: 11400000, guid: 339e22a5b7c3c2b4695a12ad713ae41a, type: 2}
   - {fileID: 11400000, guid: 62ae480122b7dd14480b14a7650c6886, type: 2}
   - {fileID: 11400000, guid: 8ceb64e7a27869646ae31c0e32e514d3, type: 2}

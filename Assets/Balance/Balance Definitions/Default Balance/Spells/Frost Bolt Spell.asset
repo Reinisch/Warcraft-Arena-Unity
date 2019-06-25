@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Frost Bolt Spell
+  m_EditorClassIdentifier: 
+  id: 5
+  spellName: Frost Bolt
+  explicitCastTargets: 4
+  explicitTargetType: 1
+  damageClass: 1
+  spellDispel: 0
+  mechanic: 0
+  schoolMask: 16
+  preventionType: -1
+  attributes: 0
+  attributesExtra: 0
+  attributesCustom: 0
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  duration: 0
+  maxDuration: 0
+  recoveryTime: 0
+  categoryRecoveryTime: 0
+  castTime: 1200
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 30
+  maxRangeFriend: 0
+  speed: 0
+  stackAmount: 0
+  maxAffectedTargets: 0
+  spellEffectInfos:
+  - {fileID: 11400000, guid: cf1c8ccbbd68e4345870816437ba40d4, type: 2}
+  spellPowerEntries: []
+  procsPerMinuteModifiers: []
+  targetingConditions: []

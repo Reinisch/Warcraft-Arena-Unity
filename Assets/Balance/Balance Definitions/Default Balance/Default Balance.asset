@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7729f0aaf01428a820ac9ae5dfb2fc0, type: 3}
   m_Name: Default Balance
   m_EditorClassIdentifier: 
-  networkMovementType: 0
   defaultFaction: {fileID: 11400000, guid: 77ea5f96cb7523d4a904fefc14363a6f, type: 2}
   spellInfos:
   - {fileID: 11400000, guid: 61bea5aabb7db454cb7e24918a3e903d, type: 2}
   - {fileID: 11400000, guid: d0450f64f06f7b24aa8b9238f776c2a5, type: 2}
   - {fileID: 11400000, guid: 1260b6b3e47f7ff4ead8ab59f5fdae56, type: 2}
   - {fileID: 11400000, guid: f3d84b42c86ef574f9389831a1eb2bb2, type: 2}
+  - {fileID: 11400000, guid: d48ac7529195b144fb2ecfd0f17a74fc, type: 2}
   mapEntries:
   - {fileID: 11400000, guid: 930fb9f3e36b00247b2f30b754492ffa, type: 2}
   - {fileID: 11400000, guid: 71240ed7b1f92cd48a8e7aa84eb9af06, type: 2}

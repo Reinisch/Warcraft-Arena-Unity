@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
-  m_Name: Fire Blast
+  m_Name: Fire Blast Spell
   m_EditorClassIdentifier: 
   id: 4
   spellName: Fire Blast
@@ -25,7 +25,7 @@ MonoBehaviour:
   attributesExtra: 0
   attributesCustom: 1024
   targetEntityTypeMask: 8
-  rangedFlags: 4
+  rangedFlags: 1
   interruptFlags: 0
   duration: 0
   maxDuration: 0
