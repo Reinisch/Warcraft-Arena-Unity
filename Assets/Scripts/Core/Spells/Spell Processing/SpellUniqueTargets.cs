@@ -23,38 +23,48 @@ namespace Core
 
         internal void AddTargetIfNotExists(Unit target)
         {
-            if (targetSet.Contains(target))
-                return;
-
-            SpellTargetEntry spellTargetEntry = new SpellTargetEntry();
-            spellTargetEntry.Target = target;
-            spellTargetEntry.Processed = false;
-            spellTargetEntry.Alive = target.IsAlive;
-            spellTargetEntry.Damage = 0;
-            spellTargetEntry.Crit = false;
-            spellTargetEntry.ScaleAura = false;
-
-            // calculate hit result
-            if (spell.OriginalCaster != null)
+            if (!targetSet.Contains(target))
             {
-                spellTargetEntry.MissCondition = spell.OriginalCaster.SpellHitResult(target, spell.SpellInfo, spell.CanReflect);
-                if (spellTargetEntry.MissCondition != SpellMissType.Immune)
-                    spellTargetEntry.MissCondition = SpellMissType.None;
-            }
-            else
-                spellTargetEntry.MissCondition = SpellMissType.Evade;
+                targetSet.Add(target);
 
-            // calculate hit delay for spells with speed
-            if (spell.SpellInfo.Speed > 0.0f && spell.Caster != target)
+                Entries.Add(new SpellTargetEntry
+                {
+                    Target = target,
+                    Processed = false,
+                    Alive = target.IsAlive,
+                    Damage = 0,
+                    Crit = false,
+                });
+            }
+        }
+
+        internal void HandleLaunch(out bool isDelayed)
+        {
+            isDelayed = false;
+
+            foreach (var targetEntry in Entries)
             {
-                float distance = Mathf.Clamp(Vector3.Distance(spell.Caster.Position, target.Position), StatUtils.DefaultCombatReach, float.MaxValue);
-                spellTargetEntry.Delay = distance / spell.SpellInfo.Speed;
-            }
-            else
-                spellTargetEntry.Delay = 0.0f;
+                // calculate hit result
+                if (spell.OriginalCaster != null)
+                {
+                    targetEntry.MissCondition = spell.OriginalCaster.SpellHitResult(targetEntry.Target, spell.SpellInfo, spell.CanReflect);
+                    if (targetEntry.MissCondition != SpellMissType.Immune)
+                        targetEntry.MissCondition = SpellMissType.None;
+                }
+                else
+                    targetEntry.MissCondition = SpellMissType.Evade;
 
-            Entries.Add(spellTargetEntry);
-            targetSet.Add(target);
+                // calculate hit delay for spells with speed
+                if (spell.SpellInfo.Speed > 0.0f && spell.Caster != targetEntry.Target)
+                {
+                    float distance = Mathf.Clamp(Vector3.Distance(spell.Caster.Position, targetEntry.Target.Position), StatUtils.DefaultCombatReach, float.MaxValue);
+                    targetEntry.Delay = Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
+                }
+                else
+                    targetEntry.Delay = 0;
+
+                isDelayed |= targetEntry.Delay > 0;
+            }
         }
 
         internal int TargetCountForEffect(int effectIndex)

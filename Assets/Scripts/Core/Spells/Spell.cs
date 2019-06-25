@@ -70,30 +70,54 @@ namespace Core
             CastTargets.Dispose();
         }
 
-        internal void DoUpdate(int diffTime)
+        internal void Cancel()
         {
-            if (ExecutionState == SpellExecutionState.Casting)
-            {
-                CastTimeLeft -= diffTime;
-
-                if (CastTimeLeft <= 0)
-                {
-                    Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
-                    Launch();
-                }
-                else if (!SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.MovementInfo.IsMoving)
-                {
-                    Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
-                    Cancel();
-                }
-            }
-            else
-            {
-                foreach (SpellTargetEntry targetInfo in SelectedTargets.Entries)
-                    if (!targetInfo.Processed)
-                        return;
-
+            if (ExecutionState == SpellExecutionState.Preparing || ExecutionState == SpellExecutionState.Casting)
                 Finish();
+        }
+
+        internal void DoUpdate(int deltaTime)
+        {
+            switch (ExecutionState)
+            {
+                case SpellExecutionState.Casting:
+                    CastTimeLeft -= deltaTime;
+                    if (CastTimeLeft <= 0)
+                    {
+                        Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
+                        Launch();
+                    }
+                    else if (!SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.MovementInfo.IsMoving)
+                    {
+                        Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
+                        Cancel();
+                    }
+                    break;
+                case SpellExecutionState.Processing:
+                    bool hasUnprocessed = false;
+                    foreach (SpellTargetEntry targetInfo in SelectedTargets.Entries)
+                    {
+                        if (targetInfo.Processed)
+                            continue;
+
+                        targetInfo.Delay -= deltaTime;
+
+                        if (targetInfo.Delay <= 0)
+                            ProcessTarget(targetInfo);
+                        else
+                            hasUnprocessed = true;
+                    }
+                    
+                    if(!hasUnprocessed)
+                        Finish();
+                    break;
+                case SpellExecutionState.Completed:
+                    goto default;
+                case SpellExecutionState.Preparing:
+                    goto default;
+                default:
+                    Assert.IsTrue(SpellState == SpellState.Removing, $"Spell {SpellInfo.SpellName} updated in invalid state: {ExecutionState} while not being removed!");
+                    break;
             }
         }
 
@@ -118,10 +142,13 @@ namespace Core
             return result;
         }
 
-        internal void Cancel()
+        #region Spell Processing
+
+        private void Finish()
         {
-            if (ExecutionState == SpellExecutionState.Preparing || ExecutionState == SpellExecutionState.Casting)
-                Finish();
+            ExecutionState = SpellExecutionState.Completed;
+
+            spellManager.Remove(this);
         }
 
         private void Cast()
@@ -138,21 +165,154 @@ namespace Core
 
         private void Launch()
         {
-            ExecutionState = SpellExecutionState.Processing;
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCast, Caster, SpellInfo);
 
+            ExecutionState = SpellExecutionState.Processing;
+            Caster.SpellHistory.HandleCooldowns(SpellInfo);
             SelectSpellTargets();
 
-            Caster.SpellHistory.HandleCooldowns(SpellInfo);
+            foreach (var effect in SpellInfo.Effects)
+                effect.Handle(this, Caster, SpellEffectHandleMode.Launch);
 
-            HandleLaunch();
+            SelectedTargets.HandleLaunch(out bool isDelayed);
+
+            if (!isDelayed)
+            {
+                foreach (var targetInfo in SelectedTargets.Entries)
+                    ProcessTarget(targetInfo);
+
+                Finish();
+            }
         }
 
-        private void Finish()
+        private void ProcessTarget(SpellTargetEntry targetEntry)
         {
-            ExecutionState = SpellExecutionState.Completed;
+            if (targetEntry.Processed)
+                return;
 
-            spellManager.Remove(this);
+            targetEntry.Processed = true;
+            if (targetEntry.Target.IsAlive != targetEntry.Alive)
+                return;
+
+            Unit caster = OriginalCaster ?? Caster;
+            if (caster == null)
+                return;
+
+            SpellMissType missType = targetEntry.MissCondition;
+
+            EffectDamage = targetEntry.Damage;
+            EffectHealing = -targetEntry.Damage;
+
+            Unit hitTarget = null;
+            if (missType == SpellMissType.None)
+                hitTarget = targetEntry.Target;
+            else if (missType == SpellMissType.Reflect && targetEntry.ReflectResult == SpellMissType.None)
+                hitTarget = Caster;
+
+            if (hitTarget != null)
+            {
+                foreach (var effect in SpellInfo.Effects)
+                    effect.Handle(this, hitTarget, SpellEffectHandleMode.HitTarget);
+
+                if (missType != SpellMissType.None)
+                    EffectDamage = 0;
+
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missType);
+            }
+
+            if (EffectHealing > 0)
+            {
+                bool crit = targetEntry.Crit;
+                int addhealth = EffectHealing;
+                if (crit)
+                    addhealth = caster.SpellCriticalHealingBonus(SpellInfo, addhealth, null);
+
+                int gain = caster.HealBySpell(targetEntry.Target, SpellInfo, addhealth, crit);
+                EffectHealing = gain;
+            }
+            else if (EffectDamage > 0)
+            {
+                SpellCastDamageInfo damageInfoInfo = new SpellCastDamageInfo(caster, targetEntry.Target, SpellInfo.Id, spellSchoolMask);
+                EffectDamage = caster.CalculateSpellDamageTaken(damageInfoInfo, EffectDamage, SpellInfo);
+                caster.DamageBySpell(damageInfoInfo);
+            }
         }
+
+        #endregion
+
+        #region Spell Validation
+
+        private SpellCastResult CheckCast(bool strict)
+        {
+            // check death state
+            if (!Caster.IsAlive && !SpellInfo.IsPassive() && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileDead))
+                return SpellCastResult.CasterDead;
+
+            // check cooldowns to prevent cheating
+            if (!SpellInfo.IsPassive() && !Caster.SpellHistory.IsReady(SpellInfo))
+                return SpellCastResult.NotReady;
+
+            // check global cooldown
+            if (strict && !spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreGcd) && Caster.SpellHistory.HasGlobalCooldown)
+                return SpellCastResult.NotReady;
+
+            // check if already casting
+            if (Caster.SpellCast.IsCasting && !SpellInfo.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
+                return SpellCastResult.NotReady;
+
+            SpellCastResult castResult = CheckRange();
+            if (castResult != SpellCastResult.Success)
+                return castResult;
+
+            castResult = SpellInfo.CheckExplicitTarget(Caster, CastTargets.Target);
+            if (castResult != SpellCastResult.Success)
+                return castResult;
+
+            if (CastTargets.Target != null)
+            {
+                castResult = SpellInfo.CheckTarget(Caster, CastTargets.Target, this, false);
+                if (castResult != SpellCastResult.Success)
+                    return castResult;
+            }
+
+            return SpellCastResult.Success;
+        }
+
+        private SpellCastResult CheckRange()
+        {
+            if (SpellInfo.ExplicitTargetType != SpellExplicitTargetType.Target || CastTargets.Target == null || CastTargets.Target == Caster)
+                return SpellCastResult.Success;
+
+            Unit target = CastTargets.Target;
+
+            float minRange = 0.0f;
+            float maxRange = 0.0f;
+            float rangeMod = 0.0f;
+
+            if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Melee))
+                rangeMod = StatUtils.NominalMeleeRange;
+            else
+            {
+                float meleeRange = 0.0f;
+                if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Ranged))
+                    meleeRange = StatUtils.MinMeleeReach;
+
+                minRange = Caster.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
+                maxRange = Caster.GetSpellMaxRangeForTarget(target, SpellInfo);
+            }
+
+            maxRange += rangeMod;
+
+            if (Vector3.Distance(Caster.Position, target.Position) > maxRange)
+                return SpellCastResult.OutOfRange;
+
+            if (minRange > 0.0f && Vector3.Distance(Caster.Position, target.Position) < minRange)
+                return SpellCastResult.OutOfRange;
+
+            return SpellCastResult.Success;
+        }
+
+        #endregion
 
         #region Target Selection
 
@@ -290,17 +450,17 @@ namespace Core
                     referer = CastTargets.Target;
                     break;
                 case SpellTargetReferences.Last:
-                {
-                    for (int i = SelectedTargets.Entries.Count - 1; i >= 0; i--)
                     {
-                        if (SelectedTargets.Entries[i].EffectMask.HasBit(effect.Index))
+                        for (int i = SelectedTargets.Entries.Count - 1; i >= 0; i--)
                         {
-                            referer = SelectedTargets.Entries[i].Target;
-                            break;
+                            if (SelectedTargets.Entries[i].EffectMask.HasBit(effect.Index))
+                            {
+                                referer = SelectedTargets.Entries[i].Target;
+                                break;
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
                 default:
                     return;
             }
@@ -329,183 +489,6 @@ namespace Core
             foreach (var unit in targets)
                 SelectedTargets.AddTargetIfNotExists(unit);
         }
-
-        #endregion
-
-        #region Cast and Target Validation
-
-        private SpellCastResult CheckCast(bool strict)
-        {
-            // check death state
-            if (!Caster.IsAlive && !SpellInfo.IsPassive() && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileDead))
-                return SpellCastResult.CasterDead;
-
-            // check cooldowns to prevent cheating
-            if (!SpellInfo.IsPassive() && !Caster.SpellHistory.IsReady(SpellInfo))
-                return SpellCastResult.NotReady;
-
-            // check global cooldown
-            if (strict && !spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreGcd) && Caster.SpellHistory.HasGlobalCooldown)
-                return SpellCastResult.NotReady;
-
-            // check if already casting
-            if (Caster.SpellCast.IsCasting && !SpellInfo.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
-                return SpellCastResult.NotReady;
-            
-            SpellCastResult castResult = CheckRange();
-            if (castResult != SpellCastResult.Success)
-                return castResult;
-
-            castResult = SpellInfo.CheckExplicitTarget(Caster, CastTargets.Target);
-            if (castResult != SpellCastResult.Success)
-                return castResult;
-
-            if (CastTargets.Target != null)
-            {
-                castResult = SpellInfo.CheckTarget(Caster, CastTargets.Target, this, false);
-                if (castResult != SpellCastResult.Success)
-                    return castResult;
-            }
-            
-            return SpellCastResult.Success;
-        }
-
-        private SpellCastResult CheckRange()
-        {
-            if (SpellInfo.ExplicitTargetType != SpellExplicitTargetType.Target || CastTargets.Target == null || CastTargets.Target == Caster)
-                return SpellCastResult.Success;
-
-            Unit target = CastTargets.Target;
-
-            float minRange = 0.0f;
-            float maxRange = 0.0f;
-            float rangeMod = 0.0f;
-
-            if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Melee))
-                rangeMod = StatUtils.NominalMeleeRange;
-            else
-            {
-                float meleeRange = 0.0f;
-                if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Ranged))
-                    meleeRange = StatUtils.MinMeleeReach;
-
-                minRange = Caster.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
-                maxRange = Caster.GetSpellMaxRangeForTarget(target, SpellInfo);
-            }
-
-            maxRange += rangeMod;
-
-            if (Vector3.Distance(Caster.Position, target.Position) > maxRange)
-                return SpellCastResult.OutOfRange;
-
-            if (minRange > 0.0f && Vector3.Distance(Caster.Position, target.Position) < minRange)
-                return SpellCastResult.OutOfRange;
-
-            return SpellCastResult.Success;
-        }
-
-        private SpellCastResult CheckPower() { throw new NotImplementedException(); }
-
-        private SpellCastResult CheckAuras() { throw new NotImplementedException(); }
-
-        #endregion
-
-        #region Spell Processing
-
-        private void HandleLaunch()
-        {
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCast, Caster, SpellInfo);
-
-            // process immediate effects (items, ground, etc.) also initialize some variables
-            HandleImmediatePhase();
-
-            foreach (var targetInfo in SelectedTargets.Entries)
-                DoAllEffectsOnTarget(targetInfo);
-
-            Finish();
-        }
-
-        private void HandleImmediatePhase()
-        {
-            foreach (var effect in SpellInfo.Effects)
-                DoEffectOnTarget(null, effect, SpellEffectHandleMode.Hit);
-        }
-
-        private void DoAllEffectsOnTarget(SpellTargetEntry entry)
-        {
-            if (entry.Processed)
-                return;
-
-            entry.Processed = true;
-            if (entry.Target.IsAlive != entry.Alive)
-                return;
-
-            Unit caster = OriginalCaster ?? Caster;
-            if (caster == null)
-                return;
-
-            SpellMissType missType = entry.MissCondition;
-
-            EffectDamage = entry.Damage;
-            EffectHealing = -entry.Damage;
-
-            Unit hitTarget = null;
-            if (missType == SpellMissType.None)
-                hitTarget = entry.Target;
-            else if (missType == SpellMissType.Reflect && entry.ReflectResult == SpellMissType.None)
-                hitTarget = Caster;
-
-            if (hitTarget != null)
-            {
-                SpellMissType missTypeTarget = DoSpellHitOnUnit(hitTarget);
-
-                if (missTypeTarget != SpellMissType.None)
-                    EffectDamage = 0;
-
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missTypeTarget);
-            }
-
-            if (EffectHealing > 0)
-            {
-                bool crit = entry.Crit;
-                int addhealth = EffectHealing;
-                if (crit)
-                    addhealth = caster.SpellCriticalHealingBonus(SpellInfo, addhealth, null);
-
-                int gain = caster.HealBySpell(entry.Target, SpellInfo, addhealth, crit);
-                EffectHealing = gain;
-            }
-            else if (EffectDamage > 0)
-            {
-                SpellCastDamageInfo damageInfoInfo = new SpellCastDamageInfo(caster, entry.Target, SpellInfo.Id, spellSchoolMask);
-                EffectDamage = caster.CalculateSpellDamageTaken(damageInfoInfo, EffectDamage, SpellInfo);
-                caster.DamageBySpell(damageInfoInfo);
-            }
-        }
-
-        private void DoEffectOnTarget(Unit unitTarget, SpellEffectInfo effect, SpellEffectHandleMode mode)
-        {
-            effect.Handle(this, unitTarget, mode);
-        }
-
-        private SpellMissType DoSpellHitOnUnit(Unit unit)
-        {
-            if (unit == null)
-                return SpellMissType.Evade;
-
-            foreach (var effect in SpellInfo.Effects)
-                DoEffectOnTarget(unit, effect, SpellEffectHandleMode.HitTarget);
-
-            return SpellMissType.None;
-        }
-
-        private void PrepareTargetProcessing() { throw new NotImplementedException(); }
-
-        private void FinishTargetProcessing() { throw new NotImplementedException(); }
-
-        private void TriggerGlobalCooldown() { throw new NotImplementedException(); }
-
-        private void CancelGlobalCooldown() { throw new NotImplementedException(); }
 
         #endregion
     }
