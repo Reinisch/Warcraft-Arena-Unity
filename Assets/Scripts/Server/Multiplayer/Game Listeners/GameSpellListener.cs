@@ -42,7 +42,6 @@ namespace Server
         {
             UnitSpellLaunchEvent unitCastEvent = UnitSpellLaunchEvent.Create(caster.BoltEntity, EntityTargets.Everyone);
             unitCastEvent.SpellId = spellInfo.Id;
-            unitCastEvent.ServerLaunchFrame = BoltNetwork.ServerFrame;
             unitCastEvent.ProcessingEntries = processingToken;
             unitCastEvent.Send();
 
@@ -52,7 +51,6 @@ namespace Server
 
             spellCastAnswer.SpellId = spellInfo.Id;
             spellCastAnswer.Result = (int) SpellCastResult.Success;
-            spellCastAnswer.ServerLaunchFrame = BoltNetwork.ServerFrame;
             spellCastAnswer.ProcessingEntries = processingToken;
             spellCastAnswer.Send();
         }

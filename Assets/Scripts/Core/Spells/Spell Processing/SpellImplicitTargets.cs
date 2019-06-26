@@ -62,7 +62,7 @@ namespace Core
                     targetEntry.Delay = Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
 
                     if (processingToken == null)
-                        processingToken = new SpellProcessingToken();
+                        processingToken = new SpellProcessingToken { ServerFrame = BoltNetwork.ServerFrame };
 
                     processingToken.ProcessingEntries.Add((targetEntry.Target.Id, targetEntry.Delay));
                 }

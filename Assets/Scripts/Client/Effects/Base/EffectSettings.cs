@@ -33,10 +33,10 @@ namespace Client
 
         public IEffectEntity PlayEffect(Vector3 position, Quaternion rotation, Transform parent = null)
         {
-            return PlayEffect(position, rotation, parent, out _);
+            return PlayEffect(position, rotation, out _, parent);
         }
 
-        public IEffectEntity PlayEffect(Vector3 position, Quaternion rotation, Transform parent, out long playId)
+        public IEffectEntity PlayEffect(Vector3 position, Quaternion rotation, out long playId, Transform parent = null)
         {
             Assert.IsNotNull(EffectContainer, $"Effect {name} is not initialized and won't play!");
 

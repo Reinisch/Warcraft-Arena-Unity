@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectSettings:
   - {fileID: 11400000, guid: 4ff8660a04a17d24c8dbd62a38ffe038, type: 2}
+  - {fileID: 11400000, guid: 92df711169a7dda48bad346faedbe155, type: 2}
   containerTag: Effect Container

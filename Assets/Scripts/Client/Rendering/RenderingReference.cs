@@ -13,10 +13,11 @@ namespace Core
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
         [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
+        [SerializeField, UsedImplicitly] private SpellVisualController spellVisualController;
         [SerializeField, UsedImplicitly] private List<SpellVisualSettings> spellVisualSettings;
 
         private readonly Dictionary<int, SpellVisualSettings> spellVisualSettingsById = new Dictionary<int, SpellVisualSettings>();
-        private readonly Dictionary<Unit, UnitRenderer> unitRenderers = new Dictionary<Unit, UnitRenderer>();
+        private readonly Dictionary<ulong, UnitRenderer> unitRenderers = new Dictionary<ulong, UnitRenderer>();
 
         public Sprite DefaultSpellIcon => defaultSpellIcon;
         public IReadOnlyDictionary<int, SpellVisualSettings> SpellVisualSettingsById => spellVisualSettingsById;
@@ -27,6 +28,7 @@ namespace Core
             spellVisualSettings.ForEach(visual => visual.Initialize());
 
             floatingTextController.Initialize();
+            spellVisualController.Initialize();
 
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
@@ -38,6 +40,7 @@ namespace Core
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
 
             floatingTextController.Deinitialize();
+            spellVisualController.Deinitialize();
 
             spellVisualSettings.ForEach(visual => visual.Deinitialize());
             spellVisualSettingsById.Clear();
@@ -49,6 +52,7 @@ namespace Core
                 unitEntry.Value.DoUpdate(deltaTime);
 
             floatingTextController.DoUpdate(deltaTime);
+            spellVisualController.DoUpdate(deltaTime);
         }
 
         private void OnWorldInitialized(WorldManager worldManager)
@@ -85,7 +89,7 @@ namespace Core
             if (!caster.IsController)
                 return;
 
-            if (!unitRenderers.TryGetValue(target, out UnitRenderer targetRenderer))
+            if (!unitRenderers.TryGetValue(target.Id, out UnitRenderer targetRenderer))
                 return;
 
             floatingTextController.SpawnDamageText(targetRenderer, damageAmount);
@@ -93,21 +97,21 @@ namespace Core
 
         private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken)
         {
-            if (!unitRenderers.TryGetValue(caster, out UnitRenderer casterRenderer))
+            if (!unitRenderers.TryGetValue(caster.Id, out UnitRenderer casterRenderer))
                 return;
 
             casterRenderer.Animator.SetTrigger(AnimatorUtils.SpellCastAnimationTrigger);
 
-            if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
+            if (!SpellVisualSettingsById.TryGetValue(spellId, out SpellVisualSettings spellVisuals))
                 return;
 
-            if (!SpellVisualSettingsById.TryGetValue(spellInfo.Id, out SpellVisualSettings spellVisuals))
-                return;
+            if (processingToken != null && spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Projectile, out EffectSpellSettings settings))
+                foreach (var entry in processingToken.ProcessingEntries)
+                    if (unitRenderers.TryGetValue(entry.Item1, out UnitRenderer targetRenderer))
+                        spellVisualController.SpawnVisual(casterRenderer, targetRenderer, settings, processingToken.ServerFrame, entry.Item2);
 
-            if (!spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Cast, out EffectSpellSettings spellVisualEffect))
-                return;
-
-            spellVisualEffect.EffectSettings.PlayEffect(caster.Position, caster.Rotation)?.ApplyPositioning(casterRenderer.TagContainer, spellVisualEffect);
+            if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Cast, out EffectSpellSettings spellVisualEffect))
+                spellVisualEffect.EffectSettings.PlayEffect(caster.Position, caster.Rotation)?.ApplyPositioning(casterRenderer.TagContainer, spellVisualEffect);
         }
 
         private void OnEventEntityAttached(WorldEntity worldEntity)
@@ -116,16 +120,16 @@ namespace Core
             {
                 var unitRenderer = unitEntity.GetComponentInChildren<UnitRenderer>();
                 unitRenderer.Initialize(unitEntity);
-                unitRenderers.Add(unitEntity, unitRenderer);
+                unitRenderers.Add(unitEntity.Id, unitRenderer);
             }
         }
 
         private void OnEventEntityDetach(WorldEntity worldEntity)
         {
-            if (worldEntity is Unit unitEntity && unitRenderers.TryGetValue(unitEntity, out UnitRenderer unitRenderer))
+            if (worldEntity is Unit unitEntity && unitRenderers.TryGetValue(unitEntity.Id, out UnitRenderer unitRenderer))
             {
                 unitRenderer.Deinitialize();
-                unitRenderers.Remove(unitEntity);
+                unitRenderers.Remove(unitEntity.Id);
             }
         }
     }

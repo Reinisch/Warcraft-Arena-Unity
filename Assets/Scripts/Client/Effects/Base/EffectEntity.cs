@@ -44,6 +44,9 @@ namespace Client
 
         private void Stop(long playId, bool isDestroyed)
         {
+            if (!isDestroyed && State != EffectState.Active)
+                return;
+
             if (PlayId == playId || isDestroyed)
             {
                 effectSettings?.StopEffect(this, isDestroyed);
@@ -51,6 +54,10 @@ namespace Client
                 State = isDestroyed ? EffectState.Unused : EffectState.Idle;
             }
         }
+
+        public bool IsPlaying(long playId) => State == EffectState.Active && playId == PlayId;
+
+        public void Stop(long playId) => Stop(playId, false);
 
         [UsedImplicitly]
         private void OnDestroy()

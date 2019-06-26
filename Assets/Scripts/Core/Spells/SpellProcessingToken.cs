@@ -7,9 +7,11 @@ namespace Core
     public sealed class SpellProcessingToken : IProtocolToken
     {
         public readonly List<(ulong, int)> ProcessingEntries = new List<(ulong, int)>();
+        public int ServerFrame { get; set; }
 
         public void Read(UdpPacket packet)
         {
+            ServerFrame = packet.ReadInt();
             int count = packet.ReadInt();
             for (int i = 0; i < count; i++)
                 ProcessingEntries.Add((packet.ReadULong(), packet.ReadInt()));
@@ -17,10 +19,9 @@ namespace Core
 
         public void Write(UdpPacket packet)
         {
-            int count = ProcessingEntries.Count;
-
-            packet.WriteInt(count);
-            for (int i = 0; i < count; i++)
+            packet.WriteInt(ServerFrame);
+            packet.WriteInt(ProcessingEntries.Count);
+            for (int i = 0; i < ProcessingEntries.Count; i++)
             {
                 packet.WriteULong(ProcessingEntries[i].Item1);
                 packet.WriteInt(ProcessingEntries[i].Item2);
