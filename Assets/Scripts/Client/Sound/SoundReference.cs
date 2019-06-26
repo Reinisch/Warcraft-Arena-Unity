@@ -49,7 +49,7 @@ namespace Client
         {
             if (worldManager.HasClientLogic)
             {
-                EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, OnSpellCast);
+                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
             }
         }
@@ -58,12 +58,12 @@ namespace Client
         {
             if (worldManager.HasClientLogic)
             {
-                EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, OnSpellCast);
+                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
             }
         }
 
-        private void OnSpellCast(Unit caster, int spellId)
+        private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken)
         {
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;

@@ -61,8 +61,6 @@ namespace Core
 
         public override void Accept(IUnitVisitor visitor) => visitor.Visit(this);
 
-        public override void Accept(IVisitor visitor) => visitor.Visit(this);
-
         public void SetTarget(Unit target)
         {
             UpdateTarget(newTarget:target);

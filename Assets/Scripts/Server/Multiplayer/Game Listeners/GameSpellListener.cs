@@ -9,14 +9,14 @@ namespace Server
         internal GameSpellListener(WorldServerManager worldServerManager) : base(worldServerManager)
         {
             EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
-            EventHandler.RegisterEvent<Unit, SpellInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCast, OnServerSpellCast);
+            EventHandler.RegisterEvent<Unit, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
         }
 
         internal override void Dispose()
         {
             EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
-            EventHandler.UnregisterEvent<Unit, SpellInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCast, OnServerSpellCast);
+            EventHandler.UnregisterEvent<Unit, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
         }
 
@@ -38,10 +38,12 @@ namespace Server
             unitSpellDemageEvent.Send();
         }
 
-        private void OnServerSpellCast(Unit caster, SpellInfo spellInfo)
+        private void OnServerSpellLaunch(Unit caster, SpellInfo spellInfo, IProtocolToken processingToken)
         {
-            UnitSpellCastEvent unitCastEvent = UnitSpellCastEvent.Create(caster.BoltEntity, EntityTargets.EveryoneExceptController);
+            UnitSpellLaunchEvent unitCastEvent = UnitSpellLaunchEvent.Create(caster.BoltEntity, EntityTargets.Everyone);
             unitCastEvent.SpellId = spellInfo.Id;
+            unitCastEvent.ServerLaunchFrame = BoltNetwork.ServerFrame;
+            unitCastEvent.ProcessingEntries = processingToken;
             unitCastEvent.Send();
 
             SpellCastRequestAnswerEvent spellCastAnswer = caster.IsController
@@ -50,6 +52,8 @@ namespace Server
 
             spellCastAnswer.SpellId = spellInfo.Id;
             spellCastAnswer.Result = (int) SpellCastResult.Success;
+            spellCastAnswer.ServerLaunchFrame = BoltNetwork.ServerFrame;
+            spellCastAnswer.ProcessingEntries = processingToken;
             spellCastAnswer.Send();
         }
 

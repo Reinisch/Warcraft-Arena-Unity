@@ -1,6 +1,6 @@
 ﻿namespace Core
 {
-    public class Corpse : WorldEntity
+    public class SpellEntity : Entity
     {
         internal override bool AutoScoped => true;
     }

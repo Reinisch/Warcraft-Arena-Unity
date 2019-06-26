@@ -2,7 +2,6 @@
 {
     public enum SpellState
     {
-        Idle,
         Adding,
         Removing,
         Active,

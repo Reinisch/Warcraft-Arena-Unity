@@ -51,11 +51,15 @@ namespace Client
             UpdateAnimations(deltaTime);
         }
 
-        public override void OnEvent(UnitSpellCastEvent spellCastEvent)
+        public override void OnEvent(UnitSpellLaunchEvent launchEvent)
         {
-            base.OnEvent(spellCastEvent);
+            base.OnEvent(launchEvent);
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, Unit, spellCastEvent.SpellId);
+            if (!Unit.IsController)
+            {
+                var token = launchEvent.ProcessingEntries as SpellProcessingToken;
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, Unit, launchEvent.SpellId, token);
+            }
         }
 
         public override void OnEvent(UnitSpellDamageEvent spellDamageEvent)

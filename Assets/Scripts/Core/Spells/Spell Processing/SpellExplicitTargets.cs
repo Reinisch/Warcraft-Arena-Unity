@@ -1,6 +1,6 @@
 ﻿namespace Core
 {
-    public class SpellCastTargets
+    public class SpellExplicitTargets
     {
         public Unit Target { get; internal set; }
 

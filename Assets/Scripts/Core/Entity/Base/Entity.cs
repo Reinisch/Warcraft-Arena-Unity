@@ -17,13 +17,14 @@ namespace Core
         [SerializeField, UsedImplicitly, Header("Entity")] private BalanceReference balance;
 
         protected BalanceReference Balance => balance;
+        protected bool IsValid { get; private set; }
+
         internal WorldManager WorldManager { get; private set; }
         internal abstract bool AutoScoped { get; }
 
         public BoltEntity BoltEntity => entity;
         public bool IsOwner => entity.IsOwner;
         public bool IsController => entity.HasControl;
-        public bool IsValid { get; private set; }
         public ulong Id => entity.NetworkId.PackedValue;
 
         [UsedImplicitly]
@@ -44,8 +45,6 @@ namespace Core
 
             base.Detached();
         }
-
-        public abstract void Accept(IVisitor visitor);
 
         internal virtual void DoUpdate(int deltaTime)
         {

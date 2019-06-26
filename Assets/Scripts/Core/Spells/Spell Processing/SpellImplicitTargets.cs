@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace Core
 {
-    internal class SpellUniqueTargets
+    internal class SpellImplicitTargets
     {
         private readonly Spell spell;
         private readonly HashSet<Unit> targetSet = new HashSet<Unit>();
 
         internal List<SpellTargetEntry> Entries { get; } = new List<SpellTargetEntry>();
 
-        internal SpellUniqueTargets(Spell spell)
+        internal SpellImplicitTargets(Spell spell)
         {
             this.spell = spell;
         }
@@ -38,9 +38,10 @@ namespace Core
             }
         }
 
-        internal void HandleLaunch(out bool isDelayed)
+        internal void HandleLaunch(out bool isDelayed, out SpellProcessingToken processingToken)
         {
             isDelayed = false;
+            processingToken = null;
 
             foreach (var targetEntry in Entries)
             {
@@ -59,6 +60,11 @@ namespace Core
                 {
                     float distance = Mathf.Clamp(Vector3.Distance(spell.Caster.Position, targetEntry.Target.Position), StatUtils.DefaultCombatReach, float.MaxValue);
                     targetEntry.Delay = Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
+
+                    if (processingToken == null)
+                        processingToken = new SpellProcessingToken();
+
+                    processingToken.ProcessingEntries.Add((targetEntry.Target.Id, targetEntry.Delay));
                 }
                 else
                     targetEntry.Delay = 0;

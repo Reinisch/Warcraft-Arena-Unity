@@ -50,10 +50,7 @@ namespace Core
             Index = 0;
         }
 
-        internal virtual void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)
-        {
-            spell.EffectNone(this);
-        }
+        internal abstract void Handle(Spell spell, Unit target, SpellEffectHandleMode mode);
 
         public bool IsEffect(SpellEffectType effectName)
         {

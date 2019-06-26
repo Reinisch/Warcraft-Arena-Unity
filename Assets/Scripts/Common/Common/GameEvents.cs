@@ -13,11 +13,11 @@
         PlayerControlGained,
         PlayerControlLost,
 
-        SpellCasted,
+        SpellLaunched,
         SpellHit,
         SpellDamageDone,
 
-        ServerSpellCast,
+        ServerSpellLaunch,
         ServerSpellHit,
         ServerLaunched,
 

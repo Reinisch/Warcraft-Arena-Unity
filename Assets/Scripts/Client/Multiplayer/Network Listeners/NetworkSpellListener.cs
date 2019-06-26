@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Bolt;
+using Common;
 using Core;
 
 using EventHandler = Common.EventHandler;
@@ -7,12 +8,15 @@ namespace Client
 {
     public partial class PhotonBoltClientListener
     {
-        public override void OnEvent(SpellCastRequestAnswerEvent spellCastAnswer)
+        public override void OnEvent(SpellCastRequestAnswerEvent answer)
         {
-            base.OnEvent(spellCastAnswer);
+            base.OnEvent(answer);
 
-            if (spellCastAnswer.Result == (int)SpellCastResult.Success)
-                EventHandler.ExecuteEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, LocalPlayer, spellCastAnswer.SpellId);
+            if (answer.Result == (int) SpellCastResult.Success)
+            {
+                var token = answer.ProcessingEntries as SpellProcessingToken;
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, (Unit)LocalPlayer, answer.SpellId, token);
+            }
         }
 
         public override void OnEvent(SpellDamageDoneEvent spellDamageEvent)

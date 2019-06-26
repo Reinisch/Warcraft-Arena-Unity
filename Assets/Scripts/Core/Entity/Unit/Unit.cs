@@ -382,12 +382,12 @@ namespace Core
 
         #region Spell Handling
 
-        internal SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastTargets targets = null, SpellCastFlags spellFlags = 0)
+        internal SpellCastResult CastSpell(SpellInfo spellInfo, SpellExplicitTargets targets = null, SpellCastFlags spellFlags = 0)
         {
-            Spell spell = new Spell(this, spellInfo, spellFlags);
+            Spell spell = new Spell(this, spellInfo, targets, spellFlags);
             WorldManager.SpellManager.Add(spell);
 
-            SpellCastResult castResult = spell.Prepare(targets ?? new SpellCastTargets());
+            SpellCastResult castResult = spell.Prepare();
             if (castResult != SpellCastResult.Success)
             {
                 WorldManager.SpellManager.Remove(spell);

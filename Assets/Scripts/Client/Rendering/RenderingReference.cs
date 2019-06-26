@@ -59,7 +59,7 @@ namespace Core
                 worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
 
                 EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
-                EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, OnSpellCast);
+                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
             }
         }
 
@@ -68,7 +68,7 @@ namespace Core
             if (worldManager.HasClientLogic)
             {
                 EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
-                EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellCasted, OnSpellCast);
+                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
 
                 worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
                 worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
@@ -91,7 +91,7 @@ namespace Core
             floatingTextController.SpawnDamageText(targetRenderer, damageAmount);
         }
 
-        private void OnSpellCast(Unit caster, int spellId)
+        private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken)
         {
             if (!unitRenderers.TryGetValue(caster, out UnitRenderer casterRenderer))
                 return;
