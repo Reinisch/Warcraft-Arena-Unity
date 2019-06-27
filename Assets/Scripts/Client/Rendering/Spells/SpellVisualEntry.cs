@@ -5,47 +5,62 @@ namespace Client
 {
     public partial class SpellVisualController
     {
-        private class SpellVisualEntry
+        private class SpellVisualProjectile
         {
-            public int Delay { get; private set; }
-            public int ServerLaunchFrame { get; private set; }
-            public int ExpectedDelayFrames { get; private set; }
+            private Vector3 casterLaunchPosition;
+            private Vector3 lastKnownTargetPosition;
 
-            public UnitRenderer CasterRenderer { get; private set; }
-            public UnitRenderer TargetRenderer { get; private set; }
-            public EffectSpellSettings Settings { get; private set; }
+            private int Delay { get; }
+            private int ServerLaunchFrame { get; }
+            private int ExpectedDelayFrames { get; }
+
+            private EffectSpellSettings Settings { get; set; }
+            private UnitRenderer TargetRenderer { get; set; }
 
             private IEffectEntity projectile;
             private long playId;
 
-            public SpellVisualEntry(UnitRenderer caster, UnitRenderer target, EffectSpellSettings settings, int serverLaunchFrame, int delay)
+            public SpellVisualProjectile(UnitRenderer target, EffectSpellSettings settings, int serverLaunchFrame, int delay)
             {
                 Delay = delay;
                 ServerLaunchFrame = serverLaunchFrame;
-                CasterRenderer = caster;
                 TargetRenderer = target;
                 Settings = settings;
 
                 ExpectedDelayFrames = (int) (Delay / BoltNetwork.FrameDeltaTime / 1000.0f);
             }
 
-            public bool HandleLaunch()
+            public bool HandleLaunch(UnitRenderer caster)
             {
-                Vector3 forward = TargetRenderer.transform.position - CasterRenderer.transform.position;
+                Vector3 forward = TargetRenderer.transform.position - caster.transform.position;
                 projectile = Settings.EffectSettings.PlayEffect(Vector3.zero, Quaternion.LookRotation(forward), out long newPlayId);
-                CasterRenderer.TagContainer.ApplyPositioning(projectile, Settings);
-                playId = newPlayId;
 
-                return projectile != null;
+                if (projectile != null)
+                {
+                    casterLaunchPosition = caster.TagContainer.FindDefaultLaunchTag();
+                    caster.TagContainer.ApplyPositioning(projectile, Settings);
+                    playId = newPlayId;
+                    return true;
+                }
+
+                return false;
             }
 
             public void HandleFinish()
             {
                 projectile?.Stop(playId);
 
-                CasterRenderer = null;
                 TargetRenderer = null;
                 Settings = null;
+            }
+
+            public void HandleRendererDetach(UnitRenderer targetRenderer)
+            {
+                if (TargetRenderer == targetRenderer)
+                {
+                    lastKnownTargetPosition = TargetRenderer.TagContainer.FindTag(DefaultTargetTag);
+                    TargetRenderer = null;
+                }
             }
 
             public bool DoUpdate(float deltaTime)
@@ -53,12 +68,14 @@ namespace Client
                 if (!projectile.IsPlaying(playId))
                     return true;
 
-                float ratio = (float)(BoltNetwork.ServerFrame - ServerLaunchFrame) / ExpectedDelayFrames;
-                Vector3 sourceTag = CasterRenderer.TagContainer.FindDefaultLaunchTag();
-                Vector3 targetTag = TargetRenderer.TagContainer.FindTag(DefaultTargetTag);
+                if (TargetRenderer != null)
+                    lastKnownTargetPosition = TargetRenderer.TagContainer.FindTag(DefaultTargetTag);
 
-                projectile.Transform.position = Vector3.Lerp(sourceTag, targetTag, ratio);
-                projectile.Transform.rotation = Quaternion.LookRotation(targetTag - sourceTag);
+                float ratio = (float)(BoltNetwork.ServerFrame - ServerLaunchFrame) / ExpectedDelayFrames;
+                projectile.Transform.position = Vector3.Lerp(casterLaunchPosition, lastKnownTargetPosition, ratio);
+
+                if(lastKnownTargetPosition != projectile.Transform.position)
+                    projectile.Transform.rotation = Quaternion.LookRotation(lastKnownTargetPosition - projectile.Transform.position);
 
                 return ratio >= 1.0f;
             }

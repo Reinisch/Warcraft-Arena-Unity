@@ -130,6 +130,7 @@ namespace Core
             {
                 unitRenderer.Deinitialize();
                 unitRenderers.Remove(unitEntity.Id);
+                spellVisualController.HandleRendererDetach(unitRenderer);
             }
         }
     }
