@@ -38,6 +38,17 @@ namespace Core
             }
         }
 
+        internal void RemoveTargetIfExists(Unit target)
+        {
+            if (targetSet.Contains(target))
+            {
+                targetSet.Remove(target);
+                for (int i = Entries.Count - 1; i >= 0; i--)
+                    if (Entries[i].Target == target)
+                        Entries.RemoveAt(i);
+            }
+        }
+
         internal void HandleLaunch(out bool isDelayed, out SpellProcessingToken processingToken)
         {
             isDelayed = false;
@@ -71,6 +82,11 @@ namespace Core
 
                 isDelayed |= targetEntry.Delay > 0;
             }
+        }
+
+        internal bool Contains(Unit target)
+        {
+            return targetSet.Contains(target);
         }
 
         internal int TargetCountForEffect(int effectIndex)

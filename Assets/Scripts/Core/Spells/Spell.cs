@@ -48,6 +48,8 @@ namespace Core
 
             ExplicitTargets = explicitTargets ?? new SpellExplicitTargets();
             ImplicitTargets = new SpellImplicitTargets(this);
+
+            spellManager.Add(this);
         }
 
         ~Spell()
@@ -113,6 +115,23 @@ namespace Core
                     goto default;
                 default:
                     Assert.IsTrue(SpellState == SpellState.Removing, $"Spell {SpellInfo.SpellName} updated in invalid state: {ExecutionState} while not being removed!");
+                    break;
+            }
+        }
+
+        internal void HandleUnitDetach(Unit detachedUnit)
+        {
+            switch (ExecutionState)
+            {
+                case SpellExecutionState.Casting when SpellInfo.ExplicitTargetType == SpellExplicitTargetType.Target && ExplicitTargets.Target == detachedUnit:
+                    Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
+                    Cancel();
+                    break;
+                case SpellExecutionState.Processing when Caster == detachedUnit:
+                    Finish();
+                    break;
+                case SpellExecutionState.Processing when ImplicitTargets.Contains(detachedUnit):
+                    ImplicitTargets.RemoveTargetIfExists(detachedUnit);
                     break;
             }
         }

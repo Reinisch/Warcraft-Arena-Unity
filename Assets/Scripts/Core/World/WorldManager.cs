@@ -21,17 +21,17 @@ namespace Core
             entityPool.Initialize(this);
             BoltNetwork.SetPrefabPool(entityPool);
 
+            UnitManager = new UnitManager();
             MapManager = new MapManager(this);
             SpellManager = new SpellManager(this);
-            UnitManager = new UnitManager();
         }
 
         public virtual void Dispose()
         {
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, this);
 
-            UnitManager.Dispose();
             SpellManager.Dispose();
+            UnitManager.Dispose();
             MapManager.Dispose();
 
             BoltNetwork.SetPrefabPool(defaultPool);

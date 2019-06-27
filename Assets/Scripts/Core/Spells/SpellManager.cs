@@ -16,10 +16,14 @@ namespace Core
         internal SpellManager(WorldManager worldManager)
         {
             this.worldManager = worldManager;
+
+            worldManager.UnitManager.EventEntityDetach += OnEntityDetach;
         }
 
         internal void Dispose()
         {
+            worldManager.UnitManager.EventEntityDetach -= OnEntityDetach;
+
             activeSpells.ForEach(spell => spell.Dispose());
             spellsToRemove.ForEach(spell => spell.Dispose());
             spellsToAdd.ForEach(spell => spell.Dispose());
@@ -31,12 +35,13 @@ namespace Core
 
         internal void DoUpdate(int deltaTime)
         {
+            bool wasProcessing = IsProcessing;
             IsProcessing = true;
 
             foreach (var spell in activeSpells)
                 spell.DoUpdate(deltaTime);
 
-            IsProcessing = false;
+            IsProcessing = wasProcessing;
 
             for (int i = spellsToRemove.Count - 1; i >= 0; i--)
             {
@@ -86,6 +91,20 @@ namespace Core
             }
 
             spell.Dispose();
+        }
+
+        private void OnEntityDetach(Unit unit)
+        {
+            bool wasProcessing = IsProcessing;
+            IsProcessing = true;
+
+            for (int i = activeSpells.Count - 1; i >= 0; i--)
+                activeSpells[i].HandleUnitDetach(unit);
+
+            for(int i = spellsToAdd.Count - 1; i >= 0; i--)
+                spellsToAdd[i].HandleUnitDetach(unit);
+
+            IsProcessing = wasProcessing;
         }
     }
 }

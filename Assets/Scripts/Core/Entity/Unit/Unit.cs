@@ -385,7 +385,6 @@ namespace Core
         internal SpellCastResult CastSpell(SpellInfo spellInfo, SpellExplicitTargets targets = null, SpellCastFlags spellFlags = 0)
         {
             Spell spell = new Spell(this, spellInfo, targets, spellFlags);
-            WorldManager.SpellManager.Add(spell);
 
             SpellCastResult castResult = spell.Prepare();
             if (castResult != SpellCastResult.Success)
