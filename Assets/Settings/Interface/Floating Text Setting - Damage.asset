@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e289857c00578db40a4afbed85afbd23, type: 3}
   m_Name: Floating Text Setting - Damage
   m_EditorClassIdentifier: 
-  lifeTime: 1.5
+  lifeTime: 1.2
   randomOffset: 0.5
   floatingSpeed: 1
-  fontSize: 6
+  fontSize: 4
   sizeOverTime:
     serializedVersion: 2
     m_Curve:
@@ -64,17 +64,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0.1
-      inSlope: 0.19
-      outSlope: 0.19
+      inSlope: 0.16333334
+      outSlope: 0.16333334
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 10
-      value: 2
-      inSlope: 0.19
-      outSlope: 0.19
+      time: 30
+      value: 5
+      inSlope: 0.16333334
+      outSlope: 0.16333334
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334

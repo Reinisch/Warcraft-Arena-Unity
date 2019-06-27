@@ -7,7 +7,7 @@ namespace Core
     public sealed class SpellProcessingToken : IProtocolToken
     {
         public readonly List<(ulong, int)> ProcessingEntries = new List<(ulong, int)>();
-        public int ServerFrame { get; set; }
+        public int ServerFrame { get; internal set; }
 
         public void Read(UdpPacket packet)
         {

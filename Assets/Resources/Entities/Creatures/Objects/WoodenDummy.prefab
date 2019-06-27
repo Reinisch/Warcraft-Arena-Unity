@@ -131,6 +131,7 @@ MonoBehaviour:
     type: 2}
   unitMovementDefinition: {fileID: 11400000, guid: 4dfbd44b5dd771148a0bba3405cc2f25,
     type: 2}
+  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
 --- !u!114 &845485024815860167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,6 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tagContainer:
+    defaultLaunchTag: 4
     defaultTag: {fileID: 8256470636781043684}
     bottomTag: {fileID: 7513124605113917069}
     footTag: {fileID: 7513124606196841806}

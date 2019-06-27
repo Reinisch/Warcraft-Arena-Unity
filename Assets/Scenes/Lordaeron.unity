@@ -728,9 +728,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1528644669}
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1528644669}
+    customNameId: Dummy Ten
 --- !u!114 &1115088534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -743,9 +745,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 538277480}
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
+  customSpawnSettings:
+    spawnPoint: {fileID: 807606279}
+    customNameId: Dummy Nine
 --- !u!114 &1115088535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -758,9 +762,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 807606279}
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
+  customSpawnSettings:
+    spawnPoint: {fileID: 807606279}
+    customNameId: Dummy Eight
 --- !u!114 &1115088536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -773,9 +779,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1516511730}
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1516511730}
+    customNameId: Dummy Seven
 --- !u!114 &1115088537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -788,9 +796,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 124852104}
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
+  customSpawnSettings:
+    spawnPoint: {fileID: 124852104}
+    customNameId: Dummy Six
 --- !u!114 &1115088538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -803,9 +813,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1663585053}
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1663585053}
+    customNameId: Dummy Five
 --- !u!114 &1115088539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,9 +830,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 367259507}
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
+  customSpawnSettings:
+    spawnPoint: {fileID: 367259507}
+    customNameId: Dummy Four
 --- !u!114 &1115088540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -833,9 +847,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1745147651}
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1745147651}
+    customNameId: Dummy Three
 --- !u!114 &1115088541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,9 +864,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1892784424}
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1892784424}
+    customNameId: Dummy Two
 --- !u!114 &1115088542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,9 +881,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1597766180}
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1597766180}
+    customNameId: Dummy One
 --- !u!1 &1235808311
 GameObject:
   m_ObjectHideFlags: 0

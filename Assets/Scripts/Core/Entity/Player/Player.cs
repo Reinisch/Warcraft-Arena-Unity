@@ -35,7 +35,7 @@ namespace Core
         internal override bool AutoScoped => true;
 
         public IControllerInputProvider InputProvider { set => Controller.InputProvider = value; }
-        public override string Name { get => playerName; protected set => playerState.PlayerName = playerName = value; }
+        public override string Name { get => playerName; internal set => playerState.PlayerName = playerName = value; }
         public int SpecId { get; } = 1;
 
         public override void Attached()

@@ -1,6 +1,6 @@
 ﻿namespace Core
 {
-    public class SpellTargetEntry
+    internal class SpellTargetEntry
     {
         public Unit Target { get; set; }
         public int Delay { get; set; }

@@ -49,7 +49,7 @@ namespace Core
             }
         }
 
-        [SerializeField, UsedImplicitly, Header("Unit"), Space(10)]
+        [SerializeField, UsedImplicitly, Header(nameof(Unit)), Space(10)]
         private CapsuleCollider unitCollider;
         [SerializeField, UsedImplicitly]
         private WarcraftController controller;

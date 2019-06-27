@@ -31,7 +31,7 @@ namespace Core
         public Vector3 Position { get => transform.position; set => transform.position = value; }
         public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
 
-        public virtual string Name { get; protected set; }
+        public abstract string Name { get; internal set; }
         public bool IsVisible { get; } = true;
 
         public Map Map { get; private set; }
@@ -44,7 +44,6 @@ namespace Core
             base.Attached();
 
             worldEntityState.SetTransforms(worldEntityState.Transform, transform);
-            Name = name;
 
             if (entity.AttachToken is CreateToken createInfo)
             {

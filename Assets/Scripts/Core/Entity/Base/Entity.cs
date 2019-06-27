@@ -14,7 +14,7 @@ namespace Core
             public abstract void Write(UdpPacket packet);
         }
 
-        [SerializeField, UsedImplicitly, Header("Entity")] private BalanceReference balance;
+        [SerializeField, UsedImplicitly, Header(nameof(Entity))] private BalanceReference balance;
 
         protected BalanceReference Balance => balance;
         protected bool IsValid { get; private set; }

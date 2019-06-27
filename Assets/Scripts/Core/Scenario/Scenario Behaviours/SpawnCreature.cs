@@ -6,8 +6,8 @@ namespace Core.Scenario
 {
     public class SpawnCreature : ScenarioAction
     {
-        [SerializeField, UsedImplicitly] private Transform spawnPoint;
         [SerializeField, UsedImplicitly] private Creature creaturePrototype;
+        [SerializeField, UsedImplicitly] private CustomSpawnSettings customSpawnSettings;
 
         internal override void Initialize(Map map)
         {
@@ -25,13 +25,14 @@ namespace Core.Scenario
 
         private void OnServerLaunched()
         {
-            WorldManager.UnitManager.Create<Creature>(creaturePrototype.BoltEntity.PrefabId, new Unit.CreateToken
+            WorldManager.UnitManager.Create<Creature>(creaturePrototype.BoltEntity.PrefabId, new Creature.CreateToken
             {
-                Position = spawnPoint.position,
-                Rotation = spawnPoint.rotation,
+                Position = customSpawnSettings.SpawnPoint.position,
+                Rotation = customSpawnSettings.SpawnPoint.rotation,
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
                 FactionId = Balance.DefaultFaction.FactionId,
+                CustomNameId = customSpawnSettings.CustomNameId
             }).BoltEntity.TakeControl();
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Core
 {
-    public enum SpellState
+    internal enum SpellState
     {
         Adding,
         Removing,

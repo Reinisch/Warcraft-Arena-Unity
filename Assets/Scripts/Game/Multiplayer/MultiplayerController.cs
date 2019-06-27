@@ -90,7 +90,7 @@ namespace Game
             BoltNetwork.RegisterTokenClass<ClientConnectionToken>();
             BoltNetwork.RegisterTokenClass<ClientRefuseToken>();
             BoltNetwork.RegisterTokenClass<SpellProcessingToken>();
-            BoltNetwork.RegisterTokenClass<Unit.CreateToken>();
+            BoltNetwork.RegisterTokenClass<Creature.CreateToken>();
             BoltNetwork.RegisterTokenClass<Player.CreateToken>();
         }
 
