@@ -25,7 +25,7 @@ namespace Core.Scenario
 
         private void OnServerLaunched()
         {
-            WorldManager.UnitManager.Create<Creature>(creaturePrototype.BoltEntity.PrefabId, new Creature.CreateToken
+            Creature creature = WorldManager.UnitManager.Create<Creature>(creaturePrototype.BoltEntity.PrefabId, new Creature.CreateToken
             {
                 Position = customSpawnSettings.SpawnPoint.position,
                 Rotation = customSpawnSettings.SpawnPoint.rotation,
@@ -33,7 +33,9 @@ namespace Core.Scenario
                 FreeForAll = true,
                 FactionId = Balance.DefaultFaction.FactionId,
                 CustomNameId = customSpawnSettings.CustomNameId
-            }).BoltEntity.TakeControl();
+            });
+
+            creature.BoltEntity.TakeControl();
         }
     }
 }

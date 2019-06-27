@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Bolt;
 using Common;
 using UnityEngine;
 
@@ -25,6 +26,13 @@ namespace Core
         public Unit Find(Collider unitCollider)
         {
             return unitsByColliders.LookupEntry(unitCollider);
+        }
+
+        public override TEntity Create<TEntity>(PrefabId prefabId, Entity.CreateToken createToken = null)
+        {
+            TEntity entity = BoltNetwork.Instantiate(prefabId, createToken).GetComponent<TEntity>();
+            entity.HandleSpawn();
+            return entity;
         }
 
         internal override void SetScope(BoltConnection connection, bool inScope)

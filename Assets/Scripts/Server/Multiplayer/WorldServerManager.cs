@@ -147,8 +147,7 @@ namespace Server
             };
 
             Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.PlayerMage, playerCreateToken);
-            newPlayer.ProcessCreation();
-
+            
             if (boltConnection == null)
                 newPlayer.BoltEntity.TakeControl();
             else

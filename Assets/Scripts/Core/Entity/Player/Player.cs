@@ -66,13 +66,6 @@ namespace Core
             UpdateTarget(newTarget:target);
         }
 
-        internal void ProcessCreation()
-        {
-            ModifyDeathState(DeathState.Alive);
-
-            SetHealth(MaxHealth);
-        }
-
         private void OnPlayerNameChanged()
         {
             Name = playerState.PlayerName;

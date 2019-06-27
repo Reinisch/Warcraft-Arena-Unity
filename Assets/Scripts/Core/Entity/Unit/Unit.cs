@@ -222,6 +222,13 @@ namespace Core
             controller.DoUpdate();
         }
 
+        internal void HandleSpawn()
+        {
+            ModifyDeathState(DeathState.Alive);
+
+            SetHealth(MaxHealth);
+        }
+
         internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
         {
             TargetId = newTarget?.Id ?? newTargetId;
