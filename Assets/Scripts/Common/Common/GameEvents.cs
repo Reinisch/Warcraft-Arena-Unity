@@ -17,6 +17,8 @@
         SpellHit,
         SpellDamageDone,
 
+        ClientSpellFailed,
+
         ServerSpellLaunch,
         ServerSpellHit,
         ServerLaunched,

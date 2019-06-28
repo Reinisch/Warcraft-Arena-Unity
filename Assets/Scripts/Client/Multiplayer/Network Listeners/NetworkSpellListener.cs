@@ -16,6 +16,8 @@ namespace Client
                 var token = answer.ProcessingEntries as SpellProcessingToken;
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, (Unit)LocalPlayer, answer.SpellId, token);
             }
+            else
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ClientSpellFailed, (SpellCastResult) answer.Result);
         }
 
         public override void OnEvent(SpellDamageDoneEvent spellDamageEvent)

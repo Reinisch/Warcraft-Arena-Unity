@@ -87,20 +87,21 @@ namespace Client
             return settings.Apply(source);
         }
 
-        public void Play(AudioClip clip, SoundSettings settings)
+        public void Play(AudioClip clip, SoundSettings settings, float volumeModifier = 1.0f)
         {
             Assert.IsTrue(sourcesBySettings.ContainsKey(settings), $"Sound settings {settings.name} are not initialized and clip: {clip.name} won't play!");
             if (sourcesBySettings.TryGetValue(settings, out AudioSource source))
-                source.PlayOneShot(clip);
+                source.PlayOneShot(clip, volumeModifier);
         }
 
-        public void PlayAtPoint(AudioClip clip, SoundSettings settings, Vector3 position)
+        public void PlayAtPoint(AudioClip clip, SoundSettings settings, Vector3 position, float volumeModifier = 1.0f)
         {
             Assert.IsTrue(sourcesBySettings.ContainsKey(settings), $"Sound settings {settings.name} are not initialized and clip: {clip.name} won't play!");
             if (sourcesBySettings.TryGetValue(settings, out AudioSource source))
             {
                 AudioSource pointSource = Instantiate(source, soundContainer);
                 pointSource.transform.position = position;
+                pointSource.volume *= volumeModifier;
                 pointSource.clip = clip;
                 pointSource.Play();
 

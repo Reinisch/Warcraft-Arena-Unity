@@ -12,6 +12,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private HotkeyInputItem hotkeyInput;
         [SerializeField, UsedImplicitly] private RectTransform rectTransform;
         [SerializeField, UsedImplicitly] private ButtonContent buttonContent;
+        [SerializeField, UsedImplicitly] private SoundEntry pressSound;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI timerText;
         [SerializeField, UsedImplicitly] private Image cooldownShade;
 
@@ -39,6 +40,7 @@ namespace Client
         [UsedImplicitly]
         public void Click()
         {
+            pressSound?.Play();
             buttonContent.Activate();
         }
 

@@ -522,5 +522,6 @@ MonoBehaviour:
   hotkeyInput: {fileID: 0}
   rectTransform: {fileID: 3469241372234463559}
   buttonContent: {fileID: 8195847695991156714}
+  pressSound: {fileID: 11400000, guid: 9e02ee1a7f594a74e8618ed4dfcf54c2, type: 2}
   timerText: {fileID: 416116090977879064}
   cooldownShade: {fileID: 2137625310040402075}

@@ -30,6 +30,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetUnitFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetTargetUnitFrame;
         [SerializeField, UsedImplicitly] private CastFrame playerCastFrame;
+        [SerializeField, UsedImplicitly] private ActionErrorDisplay actionErrorDisplay;
         [SerializeField, UsedImplicitly] private List<ActionBar> actionBars;
 
         private Player localPlayer;
@@ -39,6 +40,7 @@ namespace Client
             base.PanelInitialized();
 
             actionBars.ForEach(actionBar => actionBar.Initialize());
+            actionErrorDisplay.Initialize();
 
             EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
             EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
@@ -54,6 +56,7 @@ namespace Client
             EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
             EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
 
+            actionErrorDisplay.Deinitialize();
             actionBars.ForEach(actionBar => actionBar.Denitialize());
 
             playerUnitFrame.UpdateUnit(null);
@@ -71,6 +74,7 @@ namespace Client
             base.PanelUpdated(deltaTime);
 
             playerCastFrame.DoUpdate();
+            actionErrorDisplay.DoUpdate(deltaTime);
 
             if (localPlayer != null)
                 foreach (var actionBar in actionBars)
