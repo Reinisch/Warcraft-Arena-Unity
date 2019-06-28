@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Kill Creature
+  m_EditorClassIdentifier: 
+  id: 6
+  spellName: Kill Creature
+  explicitCastTargets: 4
+  explicitTargetType: 1
+  damageClass: 1
+  spellDispel: 0
+  mechanic: 0
+  schoolMask: -1
+  preventionType: 0
+  attributes: 64
+  attributesExtra: 8
+  attributesCustom: 32
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  duration: 0
+  maxDuration: 0
+  recoveryTime: 0
+  categoryRecoveryTime: 0
+  castTime: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 30
+  maxRangeFriend: 0
+  speed: 100
+  stackAmount: 0
+  maxAffectedTargets: 1
+  spellEffectInfos:
+  - {fileID: 11400000, guid: 6533dbdc187149a4da2a7dda1a38d25f, type: 2}
+  spellPowerEntries: []
+  procsPerMinuteModifiers: []
+  targetingConditions:
+  - {fileID: 11400000, guid: fc7180b78c6c64a4880c57ced4d9508a, type: 2}
+  - {fileID: 11400000, guid: 1aee7840b345f4140a58d8e51873b9d8, type: 2}

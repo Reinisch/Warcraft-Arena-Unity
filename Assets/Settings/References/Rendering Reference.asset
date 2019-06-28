@@ -56,3 +56,10 @@ MonoBehaviour:
       visualUsageType: 1
       tagType: 3
       effectSettings: {fileID: 11400000, guid: 92df711169a7dda48bad346faedbe155, type: 2}
+  - spellInfo: {fileID: 11400000, guid: 741d2161be4709047b67749e55031660, type: 2}
+    spellIcon: {fileID: 21300000, guid: 352df4cb88d800146bc89863e4bad670, type: 3}
+    visualEffects:
+    - attachToTag: 0
+      visualUsageType: 1
+      tagType: 3
+      effectSettings: {fileID: 11400000, guid: 92df711169a7dda48bad346faedbe155, type: 2}

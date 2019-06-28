@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f80bc3c93b889a64eb19a392d1c5a106, type: 3}
+  m_Name: Target Is Not Player - Spell Cast Condition
+  m_EditorClassIdentifier: 
+  failedResult: 53
+  condition: {fileID: 11400000, guid: 5d8d1b011b0caa449988dcae1b1bffae, type: 2}
