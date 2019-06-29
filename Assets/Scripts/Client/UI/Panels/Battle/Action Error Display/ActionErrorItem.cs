@@ -28,7 +28,7 @@ namespace Client
         {
             CastResult = spellCastResult;
 
-            errorLabel.text = spellCastResult.ToString();
+            errorLabel.text = LocalizationReference.Localize(spellCastResult);
             errorLabel.fontSize = displaySettings.FontSize;
             targetLifeTime = displaySettings.LifeTime;
             transform.localScale = Vector3.one;

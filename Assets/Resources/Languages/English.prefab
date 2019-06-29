@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1118845444342601878
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 247111598827873581}
+  - component: {fileID: 1473081199023907086}
+  m_Layer: 0
+  m_Name: English
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &247111598827873581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118845444342601878}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -31.488686, y: 2.9163196, z: 5.501439}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1473081199023907086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118845444342601878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2abf267847f5e0f42a8c31332fcdd18a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  languageType: 0
+  entries:
+  - StringReference: {fileID: 11400000, guid: fa5e7ba80087b50448d277f0fa248701, type: 2}
+    Value: Player does not exist
+  - StringReference: {fileID: 11400000, guid: a94b4e3ae8b5bb547abc189d14f3b510, type: 2}
+    Value: Invalid target
+  - StringReference: {fileID: 11400000, guid: 2ee78155435fc20468084c90ffd0b527, type: 2}
+    Value: Can't cast while dead
+  - StringReference: {fileID: 11400000, guid: 36f40c387c83d4f428866eb0dae4f77a, type: 2}
+    Value: Out of range
+  - StringReference: {fileID: 11400000, guid: 1d084137052605e4f997a00f517e9172, type: 2}
+    Value: Target is already dead
+  - StringReference: {fileID: 11400000, guid: fd9989455d7eaa14e8e1a988d6057889, type: 2}
+    Value: Can't target player
+  - StringReference: {fileID: 11400000, guid: 7ae200e7abc5b9c44a07082c6486328d, type: 2}
+    Value: Spell is not ready yet
+  - StringReference: {fileID: 11400000, guid: 088d6c33d46342a4ea8f1cbf9af0175a, type: 2}
+    Value: Can only target dead

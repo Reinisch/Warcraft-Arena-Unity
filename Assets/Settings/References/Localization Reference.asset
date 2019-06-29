@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e6c9e1fe5109847ad11d37e30c223c, type: 3}
+  m_Name: Localization Reference
+  m_EditorClassIdentifier: 
+  defaultLanguage: 0
+  spellCastResults:
+  - SpellCastResult: 10
+    LocalizedString: {fileID: 11400000, guid: fa5e7ba80087b50448d277f0fa248701, type: 2}
+  - SpellCastResult: 6
+    LocalizedString: {fileID: 11400000, guid: a94b4e3ae8b5bb547abc189d14f3b510, type: 2}
+  - SpellCastResult: 9
+    LocalizedString: {fileID: 11400000, guid: 2ee78155435fc20468084c90ffd0b527, type: 2}
+  - SpellCastResult: 48
+    LocalizedString: {fileID: 11400000, guid: 1d084137052605e4f997a00f517e9172, type: 2}
+  - SpellCastResult: 40
+    LocalizedString: {fileID: 11400000, guid: 36f40c387c83d4f428866eb0dae4f77a, type: 2}
+  - SpellCastResult: 53
+    LocalizedString: {fileID: 11400000, guid: fd9989455d7eaa14e8e1a988d6057889, type: 2}
+  - SpellCastResult: 30
+    LocalizedString: {fileID: 11400000, guid: 7ae200e7abc5b9c44a07082c6486328d, type: 2}
+  - SpellCastResult: 54
+    LocalizedString: {fileID: 11400000, guid: 088d6c33d46342a4ea8f1cbf9af0175a, type: 2}

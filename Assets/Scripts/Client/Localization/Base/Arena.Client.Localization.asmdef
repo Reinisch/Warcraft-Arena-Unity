@@ -1,12 +1,9 @@
 {
-    "name": "Arena.Client",
+    "name": "Arena.Client.Localization",
     "references": [
-        "Arena.Core",
-        "Arena.Common",
-        "Unity.TextMeshPro",
-        "Arena.Client.Effects",
-        "Arena.Client.UI",
-        "Arena.Client.Localization"
+        "GUID:93b24e5ace5bf8149b18e4ee0e8b3986",
+        "GUID:a284d292de88366448b0c312a762d5b3",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
