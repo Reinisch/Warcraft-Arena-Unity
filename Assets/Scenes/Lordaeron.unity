@@ -913,6 +913,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 1528644669}
     customNameId: Dummy Ten
+    customScale: 2
 --- !u!114 &1115088534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -930,6 +931,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 807606279}
     customNameId: Dummy Nine
+    customScale: 2
 --- !u!114 &1115088535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,6 +949,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 807606279}
     customNameId: Dummy Eight
+    customScale: 2
 --- !u!114 &1115088536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -964,6 +967,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 1516511730}
     customNameId: Dummy Seven
+    customScale: 3
 --- !u!114 &1115088537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,6 +985,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 124852104}
     customNameId: Dummy Six
+    customScale: 2
 --- !u!114 &1115088538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -998,6 +1003,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 1663585053}
     customNameId: Dummy Five
+    customScale: 2
 --- !u!114 &1115088539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1015,6 +1021,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 367259507}
     customNameId: Dummy Four
+    customScale: 1
 --- !u!114 &1115088540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1032,6 +1039,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 1745147651}
     customNameId: Dummy Three
+    customScale: 2
 --- !u!114 &1115088541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1049,6 +1057,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 1892784424}
     customNameId: Dummy Two
+    customScale: 2
 --- !u!114 &1115088542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1066,6 +1075,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 1597766180}
     customNameId: Dummy One
+    customScale: 2
 --- !u!114 &1115088543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1083,6 +1093,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 1316949214}
     customNameId: Dummy Twenty
+    customScale: 1.5
 --- !u!114 &1115088544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1100,6 +1111,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 762751006}
     customNameId: Dummy Nineteen
+    customScale: 2
 --- !u!114 &1115088545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1117,6 +1129,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 1376170248}
     customNameId: Dummy Eighteen
+    customScale: 2.5
 --- !u!114 &1115088546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1134,6 +1147,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 2123078853}
     customNameId: Dummy Seventeen
+    customScale: 3
 --- !u!114 &1115088547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1151,6 +1165,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 937470650}
     customNameId: Dummy Sixteen
+    customScale: 4
 --- !u!114 &1115088548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1168,6 +1183,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 1559358378}
     customNameId: Dummy Fifteen
+    customScale: 3
 --- !u!114 &1115088549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1185,6 +1201,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 1943771239}
     customNameId: Dummy Fourteen
+    customScale: 2.5
 --- !u!114 &1115088550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1202,6 +1219,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 800920973}
     customNameId: Dummy Thirteen
+    customScale: 2
 --- !u!114 &1115088551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1219,6 +1237,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 600385116}
     customNameId: Dummy Twelve
+    customScale: 1.5
 --- !u!114 &1115088552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1236,6 +1255,7 @@ MonoBehaviour:
   customSpawnSettings:
     spawnPoint: {fileID: 144293978}
     customNameId: Dummy Eleven
+    customScale: 1
 --- !u!1 &1235808311
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
-﻿using System;
-using Common;
+﻿using Common;
 using JetBrains.Annotations;
 using UnityEngine;
+
 using EventHandler = Common.EventHandler;
 
 namespace Client

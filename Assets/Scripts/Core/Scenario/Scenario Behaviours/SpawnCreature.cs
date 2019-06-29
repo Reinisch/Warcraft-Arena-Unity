@@ -32,7 +32,8 @@ namespace Core.Scenario
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
                 FactionId = Balance.DefaultFaction.FactionId,
-                CustomNameId = customSpawnSettings.CustomNameId
+                CustomNameId = customSpawnSettings.CustomNameId,
+                Scale = customSpawnSettings.CustomScale
             });
 
             creature.BoltEntity.TakeControl();
