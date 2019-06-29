@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.ComponentModel;
+using Common;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
@@ -22,12 +23,12 @@ namespace Client
         {
             buttonContent.Initialize(this);
 
-            EventHandler.RegisterEvent(hotkeyInput, GameEvents.HotkeyPressed, OnHotkeyPressed);
+            EventHandler.RegisterEvent<HotkeyState>(hotkeyInput, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
         }
 
         public void Denitialize()
         {
-            EventHandler.UnregisterEvent(hotkeyInput, GameEvents.HotkeyPressed, OnHotkeyPressed);
+            EventHandler.UnregisterEvent<HotkeyState>(hotkeyInput, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
 
             buttonContent.Deinitialize();
         }
@@ -37,34 +38,30 @@ namespace Client
             buttonContent.UpdateButton();
         }
 
-        [UsedImplicitly]
+        [UsedImplicitly, Description("Also called from manually pressing button.")]
         public void Click()
         {
-            pressSound?.Play();
-            buttonContent.Activate();
+            if (!buttonContent.IsAlreadyPressed)
+            {
+                pressSound?.Play();
+                buttonContent.Activate();
+            }
         }
 
         public void OnPointerDown(PointerEventData data)
         {
-            /*if (InterfaceManager.Instance.ButtonController.IsDragging)
-            {
-                InterfaceManager.Instance.ButtonController.DropItem(buttonContent);
-                buttonContent.Enable();
-            }*/
         }
 
         public void OnDrop(PointerEventData data)
         {
-            /*if (InterfaceManager.Instance.ButtonController.IsDragging)
-            {
-                InterfaceManager.Instance.ButtonController.DropItem(buttonContent);
-                buttonContent.Enable();
-            }*/
         }
 
-        private void OnHotkeyPressed()
+        private void OnHotkeyStateChanged(HotkeyState state)
         {
-            Click();
+            if(state == HotkeyState.Pressed)
+                Click();
+
+            buttonContent.HandleHotkeyState(state);
         }
     }
 }

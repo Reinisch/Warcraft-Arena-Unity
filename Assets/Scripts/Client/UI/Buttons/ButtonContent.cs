@@ -7,12 +7,13 @@ using UnityEngine;
 
 namespace Client
 {
-    public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IPointerDownHandler
+    public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private InputReference input;
         [SerializeField, UsedImplicitly] private Image contentImage;
+        [SerializeField, UsedImplicitly] private Button button;
         [SerializeField, UsedImplicitly] private ButtonContentType contentType;
         [SerializeField, UsedImplicitly] private int itemId;
 
@@ -20,8 +21,15 @@ namespace Client
         public ButtonContentType ContentType => contentType;
         public Image ContentImage => contentImage;
 
+        private PointerEventData manualPointerData;
+        private bool isPointerDown;
+        private bool isHotkeyDown;
+
+        public bool IsAlreadyPressed => isPointerDown || isHotkeyDown;
+
         public void Initialize(ButtonSlot buttonSlot)
         {
+            manualPointerData = new PointerEventData(EventSystem.current);
             ButtonSlot = buttonSlot;
 
             switch (contentType)
@@ -42,6 +50,8 @@ namespace Client
         public void Deinitialize()
         {
             ButtonSlot = null;
+            isHotkeyDown = false;
+            isPointerDown = false;
         }
 
         public void UpdateButton()
@@ -114,12 +124,29 @@ namespace Client
             enabled = false;
         }
 
+        public void HandleHotkeyState(HotkeyState state)
+        {
+            isHotkeyDown = state == HotkeyState.Pressed;
+            if (isHotkeyDown && !isPointerDown)
+                button.OnPointerDown(manualPointerData);
+            else if (!isHotkeyDown && !isPointerDown)
+                button.OnPointerUp(manualPointerData);
+        }
+
         public void OnPointerEnter(PointerEventData data)
         {
         }
 
         public void OnPointerDown(PointerEventData data)
         {
+            isPointerDown = true;
+        }
+
+        public void OnPointerUp(PointerEventData data)
+        {
+            isPointerDown = false;
+            if (isHotkeyDown)
+                button.OnPointerDown(manualPointerData);
         }
 
         public void OnPointerExit(PointerEventData data)

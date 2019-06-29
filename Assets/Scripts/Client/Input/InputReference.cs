@@ -21,10 +21,12 @@ namespace Client
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
 
             globalActions.ForEach(globalAction => globalAction.Register());
+            hotkeys.ForEach(hotkey => hotkey.Register());
         }
 
         protected override void OnUnregister()
         {
+            hotkeys.ForEach(hotkey => hotkey.Unregister());
             globalActions.ForEach(globalAction => globalAction.Unregister());
 
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
@@ -33,9 +35,7 @@ namespace Client
 
         protected override void OnUpdate(float deltaTime)
         {
-            foreach (var hotkey in hotkeys)
-                if (hotkey.IsPressed())
-                    EventHandler.ExecuteEvent(hotkey, GameEvents.HotkeyPressed);
+            hotkeys.ForEach(hotkey => hotkey.DoUpdate());
         }
 
         private void OnWorldInitialized(WorldManager worldManager)

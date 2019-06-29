@@ -27,6 +27,6 @@
         UnitTargetChanged,
         UnitFactionChanged,
 
-        HotkeyPressed
+        HotkeyStateChanged
     }
 }

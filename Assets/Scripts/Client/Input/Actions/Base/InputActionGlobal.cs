@@ -29,17 +29,17 @@ namespace Client
 
         public void Register()
         {
-            EventHandler.RegisterEvent(hotkey, GameEvents.HotkeyPressed, OnHotkeyPressed);
+            EventHandler.RegisterEvent<HotkeyState>(hotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
         }
 
         public void Unregister()
         {
-            EventHandler.UnregisterEvent(hotkey, GameEvents.HotkeyPressed, OnHotkeyPressed);
+            EventHandler.UnregisterEvent<HotkeyState>(hotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
         }
 
-        private void OnHotkeyPressed()
+        private void OnHotkeyStateChanged(HotkeyState state)
         {
-            if (blockedBy.Exists(blocker => blocker.IsApplicable))
+            if (state == HotkeyState.Released || blockedBy.Exists(blocker => blocker.IsApplicable))
                 return;
 
             action.Execute();
