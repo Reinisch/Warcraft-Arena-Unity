@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Client.Localization;
 using Client.UI;
 using Common;
 using Core;
@@ -41,7 +42,9 @@ namespace Client
             public void Process(LobbyPanel panel)
             {
                 if (DisconnectReason.HasValue)
-                    panel.statusLabel.text = string.Format(LocalizationUtils.LobbyDisconnectedReasonStringFormat, DisconnectReason.Value);
+                    panel.statusLabel.SetString(panel.disconnectedReasonString, DisconnectReason.Value);
+                else
+                    panel.statusLabel.SetEmpty();
 
                 if (AutoStartClient)
                     panel.OnClientButtonClicked();
@@ -59,11 +62,21 @@ namespace Client
         [SerializeField, UsedImplicitly] private TMP_InputField playerNameInput;
         [SerializeField, UsedImplicitly] private TMP_InputField serverNameInput;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI selectedMapLabel;
-        [SerializeField, UsedImplicitly] private TextMeshProUGUI statusLabel;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI versionName;
+        [SerializeField, UsedImplicitly] private LocalizedTextMeshProUGUI statusLabel;
         [SerializeField, UsedImplicitly] private TMP_Dropdown regionDropdown;
         [SerializeField, UsedImplicitly] private GameObject startClientTooltip;
         [SerializeField, UsedImplicitly] private GameObject noSessionsFoundTooltip;
+
+        [SerializeField, UsedImplicitly] private LocalizedString disconnectedReasonString;
+        [SerializeField, UsedImplicitly] private LocalizedString connectionStartString;
+        [SerializeField, UsedImplicitly] private LocalizedString connectSuccessString;
+        [SerializeField, UsedImplicitly] private LocalizedString clientStartString;
+        [SerializeField, UsedImplicitly] private LocalizedString serverStartString;
+        [SerializeField, UsedImplicitly] private LocalizedString serverStartFailedString;
+        [SerializeField, UsedImplicitly] private LocalizedString serverStartSuccessString;
+        [SerializeField, UsedImplicitly] private LocalizedString clientStartFailedString;
+        [SerializeField, UsedImplicitly] private LocalizedString clientStartSuccessString;
 
         private readonly List<LobbyMapSlot> mapSlots = new List<LobbyMapSlot>();
         private readonly List<LobbySessionSlot> sessionSlots = new List<LobbySessionSlot>();
@@ -178,7 +191,7 @@ namespace Client
 
         private void OnLobbySessionSlotSelected(LobbySessionSlot lobbySessionSlot)
         {
-            statusLabel.text = LocalizationUtils.LobbyConnectionStartString;
+            statusLabel.SetString(connectionStartString);
 
             UpdateInputState(false);
 
@@ -191,8 +204,7 @@ namespace Client
 
             startClientTooltip.SetActive(true);
             noSessionsFoundTooltip.SetActive(false);
-
-            statusLabel.text = LocalizationUtils.LobbyClientStartString;
+            statusLabel.SetString(clientStartString);
 
             UpdateInputState(false);
 
@@ -201,7 +213,7 @@ namespace Client
 
         private void OnServerButtonClicked()
         {
-            statusLabel.text = LocalizationUtils.LobbyServerStartString;
+            statusLabel.SetString(serverStartString);
 
             UpdateInputState(false);
 
@@ -210,7 +222,7 @@ namespace Client
 
         private void OnClientButtonClicked()
         {
-            statusLabel.text = LocalizationUtils.LobbyClientStartString;
+            statusLabel.SetString(clientStartString);
 
             UpdateInputState(false);
 
@@ -219,14 +231,14 @@ namespace Client
 
         private void OnServerStartFail()
         {
-            statusLabel.text = LocalizationUtils.LobbyServerStartFailedString;
+            statusLabel.SetString(serverStartFailedString);
 
             UpdateInputState(true);
         }
 
         private void OnServerStartSuccess()
         {
-            statusLabel.text = LocalizationUtils.LobbyServerStartSuccessString;
+            statusLabel.SetString(serverStartSuccessString);
 
             UpdateInputState(true);
 
@@ -235,7 +247,7 @@ namespace Client
 
         private void OnClientStartFail()
         {
-            statusLabel.text = LocalizationUtils.LobbyClientStartFailedString;
+            statusLabel.SetString(clientStartFailedString);
             startClientTooltip.SetActive(true);
 
             UpdateInputState(true);
@@ -243,7 +255,7 @@ namespace Client
 
         private void OnClientStartSuccess()
         {
-            statusLabel.text = LocalizationUtils.LobbyClientStartSuccessString;
+            statusLabel.SetString(clientStartSuccessString);
             startClientTooltip.SetActive(false);
             noSessionsFoundTooltip.SetActive(photonReference.Sessions.Count == 0);
 
@@ -252,14 +264,14 @@ namespace Client
 
         private void OnConnectFail(ClientConnectFailReason failReason)
         {
-            statusLabel.text = LocalizationUtils.ClientConnectFailedString(failReason);
+            statusLabel.SetString(LocalizationReference.Localize(failReason));
 
             UpdateInputState(true);
         }
 
         private void OnConnectSuccess()
         {
-            statusLabel.text = LocalizationUtils.LobbyClientConnectSuccessString;
+            statusLabel.SetString(connectSuccessString);
 
             UpdateInputState(true);
 

@@ -24,6 +24,7 @@ namespace Client.Localization
                 entry.StringReference.Value = entry.Value;
         }
 
+#if UNITY_EDITOR
         [ContextMenu("Add missing strings"), UsedImplicitly]
         private void AddMissingStrings()
         {
@@ -51,5 +52,6 @@ namespace Client.Localization
                 if (string.IsNullOrEmpty(entry.Value) && englishStrings.ContainsKey(entry.StringReference))
                     entry.Value = englishStrings[entry.StringReference];
         }
+#endif
     }
 }

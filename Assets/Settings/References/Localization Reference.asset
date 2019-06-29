@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Localization Reference
   m_EditorClassIdentifier: 
   defaultLanguage: 0
+  missingStringPlaceholder: {fileID: 11400000, guid: 986e308e59e320b449a92da15d69f686,
+    type: 2}
   spellCastResults:
   - SpellCastResult: 10
     LocalizedString: {fileID: 11400000, guid: fa5e7ba80087b50448d277f0fa248701, type: 2}
@@ -30,3 +32,20 @@ MonoBehaviour:
     LocalizedString: {fileID: 11400000, guid: 7ae200e7abc5b9c44a07082c6486328d, type: 2}
   - SpellCastResult: 54
     LocalizedString: {fileID: 11400000, guid: 088d6c33d46342a4ea8f1cbf9af0175a, type: 2}
+  clientConnectFailReasons:
+  - FailReason: 0
+    LocalizedString: {fileID: 11400000, guid: 35bdb3f22e4c2ab4590a4828e7e25267, type: 2}
+  - FailReason: 1
+    LocalizedString: {fileID: 11400000, guid: d02357fd6a1ffde48980dbdc20a4c752, type: 2}
+  - FailReason: 2
+    LocalizedString: {fileID: 11400000, guid: db3ee458b836c3343951a67a5f34f8e8, type: 2}
+  - FailReason: 3
+    LocalizedString: {fileID: 11400000, guid: 15c251ebc8ed785459963f5f8f144f1d, type: 2}
+  - FailReason: 4
+    LocalizedString: {fileID: 11400000, guid: 1ea39d4f935003c4bac2c538c6ff14fc, type: 2}
+  - FailReason: 5
+    LocalizedString: {fileID: 11400000, guid: 2ef7a0d7de3cbfa4c8cb855f757bcd10, type: 2}
+  - FailReason: 6
+    LocalizedString: {fileID: 11400000, guid: 5abad0f7644f45d4b8901e7bf6ad63f5, type: 2}
+  - FailReason: 7
+    LocalizedString: {fileID: 11400000, guid: 301902de4cd73c544a009efb646f9c54, type: 2}

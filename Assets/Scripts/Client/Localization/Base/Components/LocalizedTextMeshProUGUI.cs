@@ -5,15 +5,17 @@ using TMPro;
 
 namespace Client.Localization
 {
-    [RequireComponent(typeof(TextMeshPro))]
-    public class LocalizedTextMeshPro : LocalizedBehaviour
+    [RequireComponent(typeof(TextMeshProUGUI))]
+    public class LocalizedTextMeshProUGUI : LocalizedBehaviour
     {
-        [SerializeField, UsedImplicitly, HideInInspector] private TextMeshPro textMeshPro;
+        [SerializeField, UsedImplicitly, HideInInspector] private TextMeshProUGUI textMeshPro;
+
+        public TextMeshProUGUI TextMeshPro => textMeshPro;
 
         [UsedImplicitly]
         private void OnValidate()
         {
-            textMeshPro = GetComponent<TextMeshPro>();
+            textMeshPro = GetComponent<TextMeshProUGUI>();
 
             Assert.IsNotNull(textMeshPro, $"Broken localization component reference at {this.GetPath()}");
         }

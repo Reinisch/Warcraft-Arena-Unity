@@ -127,15 +127,15 @@ namespace Game
 
         private void OnDisconnectedFromMaster()
         {
-            ProcessDisconnect(false, DisconnectReason.DisconnectedFromMaster);
+            ProcessDisconnect(DisconnectReason.DisconnectedFromMaster);
         }
 
         private void OnDisconnectedFromHost(UdpConnectionDisconnectReason udpDisconnectReason)
         {
-            ProcessDisconnect(true, udpDisconnectReason.ToDisconnectReason());
+            ProcessDisconnect(udpDisconnectReason.ToDisconnectReason());
         }
 
-        private void ProcessDisconnect(bool autoStartClient, DisconnectReason disconnectReason)
+        private void ProcessDisconnect(DisconnectReason disconnectReason)
         {
             worldManager.Dispose();
             worldManager = null;
@@ -144,7 +144,7 @@ namespace Game
             HasClientLogic = false;
 
             interfaceReference.HideScreen<BattleScreen>();
-            interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(autoStartClient, disconnectReason));
+            interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(false, disconnectReason));
         }
     }
 }

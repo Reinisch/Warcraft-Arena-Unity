@@ -61,3 +61,39 @@ MonoBehaviour:
     Value: Spell is not ready yet
   - StringReference: {fileID: 11400000, guid: 088d6c33d46342a4ea8f1cbf9af0175a, type: 2}
     Value: Can only target dead
+  - StringReference: {fileID: 11400000, guid: 301902de4cd73c544a009efb646f9c54, type: 2}
+    Value: Failed to connect, connection timeout!
+  - StringReference: {fileID: 11400000, guid: 2ef7a0d7de3cbfa4c8cb855f757bcd10, type: 2}
+    Value: Failed to connect to master!
+  - StringReference: {fileID: 11400000, guid: 5abad0f7644f45d4b8901e7bf6ad63f5, type: 2}
+    Value: Failed to connect to session!
+  - StringReference: {fileID: 11400000, guid: d02357fd6a1ffde48980dbdc20a4c752, type: 2}
+    Value: Failed to connect, invalid client token!
+  - StringReference: {fileID: 11400000, guid: db3ee458b836c3343951a67a5f34f8e8, type: 2}
+    Value: Failed to connect, invalid version!
+  - StringReference: {fileID: 11400000, guid: 35bdb3f22e4c2ab4590a4828e7e25267, type: 2}
+    Value: Failed to connect!
+  - StringReference: {fileID: 11400000, guid: 1ea39d4f935003c4bac2c538c6ff14fc, type: 2}
+    Value: Failed to connect, server refused!
+  - StringReference: {fileID: 11400000, guid: 15c251ebc8ed785459963f5f8f144f1d, type: 2}
+    Value: Failed to connect, unsupported device!
+  - StringReference: {fileID: 11400000, guid: 91fd42b1d5b604a458c87482dc0358fa, type: 2}
+    Value: Connected!
+  - StringReference: {fileID: 11400000, guid: 183e5d3287962f14fb304b77401f3068, type: 2}
+    Value: Starting client...
+  - StringReference: {fileID: 11400000, guid: 11794971af0e1634db3bdadaa7ce2865, type: 2}
+    Value: Client failed to start
+  - StringReference: {fileID: 11400000, guid: a068ae1a9234de4448fe078c77db4d27, type: 2}
+    Value: Client started!
+  - StringReference: {fileID: 11400000, guid: ddacd692e96ec574296ee39d01fc4c0e, type: 2}
+    Value: Connecting...
+  - StringReference: {fileID: 11400000, guid: b763abb0b2dac524285608b9c2d946d9, type: 2}
+    Value: 'Session ended! Reason: {0}'
+  - StringReference: {fileID: 11400000, guid: 65ed5518faa7f124a83a010dda80c774, type: 2}
+    Value: Starting server...
+  - StringReference: {fileID: 11400000, guid: 009a6c86e8fb5c646a5925425e8a57a6, type: 2}
+    Value: Server failed to start
+  - StringReference: {fileID: 11400000, guid: 38f76d0e6788183429ae5b420020f8db, type: 2}
+    Value: Server started!
+  - StringReference: {fileID: 11400000, guid: 986e308e59e320b449a92da15d69f686, type: 2}
+    Value: Missing Localization
