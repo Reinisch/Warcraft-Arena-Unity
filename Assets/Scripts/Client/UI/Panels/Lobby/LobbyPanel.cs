@@ -170,6 +170,34 @@ namespace Client
             base.PanelHidden();
         }
 
+        private void StartClient(bool forceRestart)
+        {
+            photonReference.StartClient(OnClientStartSuccess, OnClientStartFail, forceRestart);
+
+            void OnClientStartFail()
+            {
+                statusLabel.SetString(clientStartFailedString);
+                startClientTooltip.SetActive(true);
+
+                UpdateInputState(true);
+            }
+
+            void OnClientStartSuccess()
+            {
+                statusLabel.SetString(clientStartSuccessString);
+                startClientTooltip.SetActive(false);
+                noSessionsFoundTooltip.SetActive(photonReference.Sessions.Count == 0);
+
+                UpdateInputState(true);
+            }
+        }
+
+        private void ResetSessions()
+        {
+            foreach (var session in sessionSlots)
+                session.SetSession(null);
+        }
+
         private void OnPlayerNameChanged(string newName)
         {
             PlayerPrefs.SetString(PrefUtils.PlayerNamePref, newName);
@@ -196,6 +224,22 @@ namespace Client
             UpdateInputState(false);
 
             photonReference.StartConnection(lobbySessionSlot.UdpSession, new ClientConnectionToken(playerNameInput.text), OnConnectSuccess, OnConnectFail);
+
+            void OnConnectFail(ClientConnectFailReason failReason)
+            {
+                statusLabel.SetString(LocalizationReference.Localize(failReason));
+
+                UpdateInputState(true);
+            }
+
+            void OnConnectSuccess()
+            {
+                statusLabel.SetString(connectSuccessString);
+
+                UpdateInputState(true);
+
+                WindowController.HidePanel<LobbyPanel>();
+            }
         }
 
         private void OnRegionDropdownChanged(int index)
@@ -208,9 +252,9 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonReference.StartClient(OnClientStartSuccess, OnClientStartFail, true);
+            StartClient(true);
         }
-
+        
         private void OnServerButtonClicked()
         {
             statusLabel.SetString(serverStartString);
@@ -218,6 +262,22 @@ namespace Client
             UpdateInputState(false);
 
             photonReference.StartServer(new ServerRoomToken(serverNameInput.text, playerNameInput.text, selectedMapSlot.MapDefinition.MapName), OnServerStartSuccess, OnServerStartFail);
+
+            void OnServerStartFail()
+            {
+                statusLabel.SetString(serverStartFailedString);
+
+                UpdateInputState(true);
+            }
+
+            void OnServerStartSuccess()
+            {
+                statusLabel.SetString(serverStartSuccessString);
+
+                UpdateInputState(true);
+
+                WindowController.HidePanel<LobbyPanel>();
+            }
         }
 
         private void OnClientButtonClicked()
@@ -226,56 +286,7 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonReference.StartClient(OnClientStartSuccess, OnClientStartFail, false);
-        }
-
-        private void OnServerStartFail()
-        {
-            statusLabel.SetString(serverStartFailedString);
-
-            UpdateInputState(true);
-        }
-
-        private void OnServerStartSuccess()
-        {
-            statusLabel.SetString(serverStartSuccessString);
-
-            UpdateInputState(true);
-
-            WindowController.HidePanel<LobbyPanel>();
-        }
-
-        private void OnClientStartFail()
-        {
-            statusLabel.SetString(clientStartFailedString);
-            startClientTooltip.SetActive(true);
-
-            UpdateInputState(true);
-        }
-
-        private void OnClientStartSuccess()
-        {
-            statusLabel.SetString(clientStartSuccessString);
-            startClientTooltip.SetActive(false);
-            noSessionsFoundTooltip.SetActive(photonReference.Sessions.Count == 0);
-
-            UpdateInputState(true);
-        }
-
-        private void OnConnectFail(ClientConnectFailReason failReason)
-        {
-            statusLabel.SetString(LocalizationReference.Localize(failReason));
-
-            UpdateInputState(true);
-        }
-
-        private void OnConnectSuccess()
-        {
-            statusLabel.SetString(connectSuccessString);
-
-            UpdateInputState(true);
-
-            WindowController.HidePanel<LobbyPanel>();
+            StartClient(false);
         }
 
         private void OnPhotonControllerSessionListUpdated()
@@ -301,12 +312,6 @@ namespace Client
 
             startClientTooltip.SetActive(false);
             noSessionsFoundTooltip.SetActive(photonReference.Sessions.Count == 0);
-        }
-
-        private void ResetSessions()
-        {
-            foreach (var session in sessionSlots)
-                session.SetSession(null);
         }
     }
 }

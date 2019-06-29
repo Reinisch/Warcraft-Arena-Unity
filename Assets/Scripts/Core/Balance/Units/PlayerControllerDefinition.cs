@@ -12,18 +12,9 @@ namespace Core
         private float rotateSpeed = 250.0f;
         [SerializeField, UsedImplicitly]
         private float baseGroundCheckDistance = 0.2f;
-        [SerializeField, UsedImplicitly]
-        private float layerShiftDistance = 0.35f;
-        [SerializeField, UsedImplicitly]
-        private float movementCorrectionDistance = 0.15f;
-        [SerializeField, UsedImplicitly]
-        private float correctionDampening = 0.8f;
 
         public float JumpSpeed => jumpSpeed;
         public float RotateSpeed => rotateSpeed;
         public float BaseGroundCheckDistance => baseGroundCheckDistance;
-        public float LayerShiftDistance => layerShiftDistance;
-        public float MovementCorrectionDistance => movementCorrectionDistance;
-        public float CorrectionDampening => correctionDampening;
     }
 }

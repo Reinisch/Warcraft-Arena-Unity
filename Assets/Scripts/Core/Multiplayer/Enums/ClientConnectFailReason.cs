@@ -2,7 +2,7 @@
 {
     public enum ClientConnectFailReason
     {
-        None,
+        None = ConnectRefusedReason.None,
         InvalidToken = ConnectRefusedReason.InvalidToken,
         InvalidVersion = ConnectRefusedReason.InvalidVersion,
         UnsupportedDevice = ConnectRefusedReason.UnsupportedDevice,

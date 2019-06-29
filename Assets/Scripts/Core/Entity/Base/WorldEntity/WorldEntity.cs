@@ -102,10 +102,5 @@ namespace Core
         {
             Rotation = Quaternion.LookRotation(position - Position);
         }
-
-        public int DistanceSortOrder(WorldEntity targetX, WorldEntity targetY)
-        {
-            return DistanceTo(targetX).CompareTo(DistanceTo(targetY));
-        }
     }
 }
