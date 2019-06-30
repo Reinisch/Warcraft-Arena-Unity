@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core;
+using UnityEngine;
 
 namespace Client
 {
@@ -14,6 +15,7 @@ namespace Client
             private readonly Player referer;
 
             private int bestTargetPrevousIndex;
+            private float bestTargetDistance;
 
             public Unit BestTarget { get; private set; }
 
@@ -23,6 +25,21 @@ namespace Client
                 this.previousTargets = previousTargets;
                 this.options = options;
                 this.referer = referer;
+
+                switch (options.Distance)
+                {
+                    case TargetingDistance.Any:
+                        bestTargetPrevousIndex = int.MaxValue;
+                        break;
+                    case TargetingDistance.Near:
+                        bestTargetDistance = float.MaxValue;
+                        break;
+                    case TargetingDistance.Far:
+                        bestTargetDistance = float.MinValue;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(options.Distance));
+                }
             }
 
             public void Dispose()
@@ -54,11 +71,53 @@ namespace Client
                 if (!unit.InRangeSqr(referer, settings.TargetRangeSqr))
                     return;
 
-                int unitPreviousIndex = previousTargets.IndexOf(unit);
-                if (BestTarget == null || unitPreviousIndex < bestTargetPrevousIndex)
+                if (!options.DeathState.HasTargetFlag(TargetingDeathState.Alive) && unit.IsAlive)
+                    return;
+
+                if (!options.DeathState.HasTargetFlag(TargetingDeathState.Dead) && unit.IsDead)
+                    return;
+
+                if (options.MaxReferringAngle < 180.0f)
                 {
-                    BestTarget = unit;
-                    bestTargetPrevousIndex = unitPreviousIndex;
+                    Vector3 refererDirection = Vector3.ProjectOnPlane(referer.transform.forward, Vector3.up);
+                    Vector3 targetDirection = Vector3.ProjectOnPlane(unit.Position - referer.Position, Vector3.up);
+                    if (Vector3.Angle(refererDirection, targetDirection) > options.MaxReferringAngle)
+                        return;
+                }
+
+                SelectBestTarget(unit);
+            }
+
+            private void SelectBestTarget(Unit nextTarget)
+            {
+                switch (options.Distance)
+                {
+                    case TargetingDistance.Any:
+                        int unitPreviousIndex = previousTargets.IndexOf(nextTarget);
+                        if (BestTarget == null || unitPreviousIndex < bestTargetPrevousIndex)
+                        {
+                            BestTarget = nextTarget;
+                            bestTargetPrevousIndex = unitPreviousIndex;
+                        }
+                        break;
+                    case TargetingDistance.Near:
+                        float nextTargetNearDistance = referer.DistanceTo(nextTarget);
+                        if (BestTarget == null || nextTargetNearDistance < bestTargetDistance)
+                        {
+                            BestTarget = nextTarget;
+                            bestTargetDistance = nextTargetNearDistance;
+                        }
+                        break;
+                    case TargetingDistance.Far:
+                        float nextTargetFarDistance = referer.DistanceTo(nextTarget);
+                        if (BestTarget == null || nextTargetFarDistance > bestTargetDistance)
+                        {
+                            BestTarget = nextTarget;
+                            bestTargetDistance = nextTargetFarDistance;
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(options.Distance));
                 }
             }
         }
