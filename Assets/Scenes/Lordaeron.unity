@@ -145,7 +145,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 124852103}
   m_LocalRotation: {x: 0, y: 0.9354441, z: -0, w: -0.35347468}
-  m_LocalPosition: {x: -33.09, y: 2.07, z: 4.510001}
+  m_LocalPosition: {x: -33.09, y: 1.58, z: 4.510001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1115088532}
@@ -500,7 +500,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 538277479}
   m_LocalRotation: {x: 0, y: 0.9992291, z: -0, w: -0.03925978}
-  m_LocalPosition: {x: -36.19, y: 1.95, z: -1.01}
+  m_LocalPosition: {x: -36.19, y: 1.05, z: -1.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1115088532}
@@ -929,7 +929,7 @@ MonoBehaviour:
   creaturePrototype: {fileID: 8793749810161454766, guid: 67a385f84ad93c9498537e30de8e11b8,
     type: 3}
   customSpawnSettings:
-    spawnPoint: {fileID: 807606279}
+    spawnPoint: {fileID: 538277480}
     customNameId: Dummy Nine
     customScale: 2
 --- !u!114 &1115088535
@@ -1522,7 +1522,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1516511729}
   m_LocalRotation: {x: 0, y: 0.8750425, z: -0, w: -0.4840461}
-  m_LocalPosition: {x: -31.51, y: 1.74, z: 5.38}
+  m_LocalPosition: {x: -31.51, y: 1.62, z: 5.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1115088532}
@@ -1703,7 +1703,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663585052}
   m_LocalRotation: {x: 0, y: 0.9722271, z: -0, w: -0.23403935}
-  m_LocalPosition: {x: -35.06, y: 1.96, z: 2.210001}
+  m_LocalPosition: {x: -35.06, y: 1.15, z: 2.210001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1115088532}

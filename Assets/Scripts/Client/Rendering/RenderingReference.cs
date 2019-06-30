@@ -14,6 +14,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
         [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
         [SerializeField, UsedImplicitly] private SpellVisualController spellVisualController;
+        [SerializeField, UsedImplicitly] private SelectionCircleController selectionCircleController;
         [SerializeField, UsedImplicitly] private List<SpellVisualSettings> spellVisualSettings;
 
         private readonly Dictionary<int, SpellVisualSettings> spellVisualSettingsById = new Dictionary<int, SpellVisualSettings>();
@@ -29,6 +30,7 @@ namespace Core
 
             floatingTextController.Initialize();
             spellVisualController.Initialize();
+            selectionCircleController.Initialize();
 
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
@@ -39,6 +41,7 @@ namespace Core
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
             EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
 
+            selectionCircleController.Deinitialize();
             floatingTextController.Deinitialize();
             spellVisualController.Deinitialize();
 
@@ -53,6 +56,11 @@ namespace Core
 
             floatingTextController.DoUpdate(deltaTime);
             spellVisualController.DoUpdate(deltaTime);
+        }
+
+        public bool TryFind(Unit unit, out UnitRenderer unitRenderer)
+        {
+            return unitRenderers.TryGetValue(unit.Id, out unitRenderer);
         }
 
         private void OnWorldInitialized(WorldManager worldManager)
@@ -121,6 +129,7 @@ namespace Core
                 var unitRenderer = unitEntity.GetComponentInChildren<UnitRenderer>();
                 unitRenderer.Initialize(unitEntity);
                 unitRenderers.Add(unitEntity.Id, unitRenderer);
+                selectionCircleController.HandleRendererAttach(unitRenderer);
             }
         }
 
@@ -131,6 +140,7 @@ namespace Core
                 unitRenderer.Deinitialize();
                 unitRenderers.Remove(unitEntity.Id);
                 spellVisualController.HandleRendererDetach(unitRenderer);
+                selectionCircleController.HandleRendererDetach(unitRenderer);
             }
         }
     }

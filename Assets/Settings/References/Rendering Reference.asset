@@ -20,6 +20,15 @@ MonoBehaviour:
     preinstantiatedCount: 20
   spellVisualController:
     defaultTargetTag: 2
+  selectionCircleController:
+    selectionCirclePrototype: {fileID: 11939280, guid: dc884a6ec589ce249acc9b5326859165,
+      type: 3}
+    renderingReference: {fileID: 11400000}
+    photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
+    playerCircleSettings: {fileID: 11400000, guid: 98a751b25d9928a45bdc81364cb01ed7,
+      type: 2}
+    targetCircleSettings: {fileID: 11400000, guid: 69d99f2d9141714428272b398771ae99,
+      type: 2}
   spellVisualSettings:
   - spellInfo: {fileID: 11400000, guid: 61bea5aabb7db454cb7e24918a3e903d, type: 2}
     spellIcon: {fileID: 21300000, guid: 3955e93a0bd8b5540ab40d9349ba72c9, type: 3}

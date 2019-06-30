@@ -333,7 +333,7 @@ MonoBehaviour:
   collisionLayers:
     serializedVersion: 2
     m_Bits: 256
-  target: {fileID: 0}
+  targetCamera: {fileID: 558238703}
 --- !u!82 &558238706
 AudioSource:
   m_ObjectHideFlags: 0

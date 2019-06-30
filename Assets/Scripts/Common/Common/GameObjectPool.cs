@@ -61,7 +61,7 @@ namespace Common
             }
         }
 
-        private T TakeOrCreate<T>(T prototype, Vector3 position, Quaternion rotation, Transform parent) where T : MonoBehaviour
+        private T TakeOrCreate<T>(T prototype, Vector3 position, Quaternion rotation, Transform parent) where T : Behaviour
         {
             return TakeOrCreate(prototype.gameObject, position, rotation, parent).GetComponent<T>();
         }
@@ -116,7 +116,7 @@ namespace Common
                 Instance.ProcessPooling(Instantiate(prototype, Vector3.zero, Quaternion.identity), protoId);
         }
 
-        public static void PreInstantiate<T>(T prototypeBehaviour, int preinstantiatedCount) where T: MonoBehaviour
+        public static void PreInstantiate<T>(T prototypeBehaviour, int preinstantiatedCount) where T: Behaviour
         {
             PreInstantiate(prototypeBehaviour.gameObject, preinstantiatedCount);
         }
@@ -126,9 +126,16 @@ namespace Common
             return Instance != null ? Instance.TakeOrCreate(prototype, position, rotation, parent) : Instantiate(prototype, position, rotation, parent);
         }
 
-        public static T Take<T>(T prototype, Vector3 position, Quaternion rotation, Transform parent = null) where T: MonoBehaviour
+        public static T Take<T>(T prototype, Vector3 position, Quaternion rotation, Transform parent = null) where T: Behaviour
         {
             return Instance != null ? Instance.TakeOrCreate(prototype, position, rotation, parent) : Instantiate(prototype, position, rotation, parent);
+        }
+
+        public static T Take<T>(T prototype) where T : Behaviour
+        {
+            return Instance != null 
+                ? Instance.TakeOrCreate(prototype, prototype.transform.localPosition, prototype.transform.rotation, null)
+                : Instantiate(prototype, prototype.transform.localPosition, prototype.transform.rotation, null);
         }
 
         public static void Return(GameObject takenObject, bool destroyed)
@@ -138,7 +145,7 @@ namespace Common
                 Destroy(takenObject);
         }
 
-        public static void Return<T>(T takenObject, bool destroyed) where T: MonoBehaviour
+        public static void Return<T>(T takenObject, bool destroyed) where T: Behaviour
         {
             Return(takenObject.gameObject, destroyed);
         }

@@ -11,11 +11,11 @@ namespace Client
         [SerializeField, UsedImplicitly] private TagContainer tagContainer;
         [SerializeField, UsedImplicitly] private Animator animator;
 
-        private Unit Unit { get; set; }
         private IUnitState UnitState { get; set; }
 
         public TagContainer TagContainer => tagContainer;
         public Animator Animator => animator;
+        public Unit Unit { get; private set; }
 
         public void Initialize(Unit unit)
         {
