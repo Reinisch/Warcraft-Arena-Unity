@@ -8,6 +8,7 @@ namespace Client
     public class FloatingText : MonoBehaviour
     {
         [SerializeField, UsedImplicitly] private TextMeshPro textMesh;
+        [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private FloatingTextSettings damageSettings;
 
         private float currentLifeTime;
@@ -29,10 +30,11 @@ namespace Client
             transform.localScale = Vector3.one;
             currentLifeTime = 0;
 
-            if (Camera.main != null)
+            WarcraftCamera warcraftCamera = cameraReference.WarcraftCamera;
+            if (warcraftCamera != null)
             {
-                Vector3 direction = transform.position - Camera.main.transform.position;
-                float distance = Vector3.Dot(direction, Camera.main.transform.forward);
+                Vector3 direction = transform.position - warcraftCamera.transform.position;
+                float distance = Vector3.Dot(direction, warcraftCamera.transform.forward);
                 transform.position += Random.insideUnitSphere * damageSettings.RandomOffset * currentSettings.RandomOffsetOverDistance.Evaluate(distance);
             }
             else
@@ -46,13 +48,13 @@ namespace Client
             transform.localScale = Vector3.one * currentSettings.SizeOverTime.Evaluate(currentLifeTime);
             transform.Translate(Vector3.up * currentSettings.FloatingSpeed * deltaTime);
 
-            Camera mainCamera = Camera.main;
-            if (mainCamera != null)
+            WarcraftCamera warcraftCamera = cameraReference.WarcraftCamera;
+            if (warcraftCamera != null)
             {
-                Vector3 direction = transform.position - mainCamera.transform.position;
-                float distance = Vector3.Dot(direction, mainCamera.transform.forward);
+                Vector3 direction = transform.position - warcraftCamera.transform.position;
+                float distance = Vector3.Dot(direction, warcraftCamera.transform.forward);
 
-                transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
+                transform.rotation = Quaternion.LookRotation(warcraftCamera.transform.forward);
                 transform.localScale *= currentSettings.SizeOverDistanceToCamera.Evaluate(distance);
             }
 

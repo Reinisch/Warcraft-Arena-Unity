@@ -10,6 +10,7 @@ namespace Client
     public class InputReference : ScriptableReference
     {
         [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
+        [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private List<HotkeyInputItem> hotkeys;
         [SerializeField, UsedImplicitly] private List<InputActionGlobal> globalActions;
 
@@ -53,7 +54,7 @@ namespace Client
         private void OnPlayerControlGained(Player player)
         {
             Player = player;
-            Player.InputProvider = new ClientControllerMouseKeyboardInput(player);
+            Player.InputProvider = new ClientControllerMouseKeyboardInput(player, cameraReference);
         }
 
         private void OnPlayerControlLost(Player player)

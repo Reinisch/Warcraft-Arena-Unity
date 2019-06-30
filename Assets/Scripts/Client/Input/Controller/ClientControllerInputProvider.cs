@@ -6,10 +6,12 @@ namespace Client
     public class ClientControllerMouseKeyboardInput : IControllerInputProvider
     {
         private readonly Unit unit;
+        private readonly CameraReference cameraReference;
 
-        public ClientControllerMouseKeyboardInput(Unit unit)
+        public ClientControllerMouseKeyboardInput(Unit unit, CameraReference cameraReference)
         {
             this.unit = unit;
+            this.cameraReference = cameraReference;
         }
 
         public void PollInput(out Vector3 inputVelocity, out Quaternion inputRotation, out bool jumping)
@@ -26,7 +28,7 @@ namespace Client
                     return expectedRotation;
 
                 if (Input.GetMouseButton(1))
-                    expectedRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+                    expectedRotation = Quaternion.Euler(0, cameraReference.WarcraftCamera.transform.eulerAngles.y, 0);
                 else
                 {
                     Quaternion turnRotation = Quaternion.Euler(0, Input.GetAxis("Horizontal") * unit.ControllerDefinition.RotateSpeed * Time.unscaledDeltaTime, 0);

@@ -38,7 +38,6 @@ namespace Client
 
                 LocalPlayer = (Player)WorldManager.UnitManager.Find(entity.NetworkId.PackedValue);
                 EventHandler.ExecuteEvent(photon, GameEvents.PlayerControlGained, LocalPlayer);
-                FindObjectOfType<WarcraftCamera>().Target = LocalPlayer; // TODO: implement camera manager
             }
         }
 

@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public class WarcraftCamera : MonoBehaviour
 {
     [SerializeField, UsedImplicitly]

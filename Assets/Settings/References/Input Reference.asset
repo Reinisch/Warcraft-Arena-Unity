@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Input Reference
   m_EditorClassIdentifier: 
   photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
+  cameraReference: {fileID: 11400000, guid: 7ec395dbbe5ff3848a39b67a4e093974, type: 2}
   hotkeys:
   - {fileID: 11400000, guid: da0ca30d1e177d14a9351ca45d955d10, type: 2}
   - {fileID: 11400000, guid: 5daa89dba5d9a134cbfa43b46ea81249, type: 2}
