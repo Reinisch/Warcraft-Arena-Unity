@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a9f92409454067439c2e802923148cf, type: 3}
-  m_Name: Sound Entry - Resurrect Self Cast
+  m_Name: Sound Entry - Blink Cast
   m_EditorClassIdentifier: 
   soundReference: {fileID: 11400000, guid: 9c01542db10d5bc46819a6f11752769e, type: 2}
   settings: {fileID: 11400000, guid: 637188a259c0f8149a47bc2c267d8f46, type: 2}
-  audioClip: {fileID: 8300000, guid: 525297c9408a1ef4fa8d38f74f50b009, type: 3}
+  audioClip: {fileID: 8300000, guid: 50347b99f4db6664582809d2434e418b, type: 3}
   volumeModifier: 1

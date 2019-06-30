@@ -30,5 +30,16 @@ namespace Client
             EventHandler.ExecuteEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, 
                 GameEvents.SpellDamageDone, LocalPlayer, target, spellDamageEvent.DamageAmount, spellDamageEvent.IsCrit);
         }
+
+        public override void OnEvent(SpellPlayerTeleportEvent teleportEvent)
+        {
+            base.OnEvent(teleportEvent);
+
+            if (LocalPlayer != null)
+            {
+                LocalPlayer.Position = teleportEvent.TargetPosition;
+                LocalPlayer.MovementInfo.RemoveMovementFlag(MovementFlags.Ascending);
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Bolt;
 using Common;
 using Core;
+using UnityEngine;
 
 namespace Server
 {
@@ -11,6 +12,7 @@ namespace Server
             EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
             EventHandler.RegisterEvent<Unit, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
+            EventHandler.RegisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
         }
 
         internal override void Dispose()
@@ -18,6 +20,7 @@ namespace Server
             EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
             EventHandler.UnregisterEvent<Unit, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
+            EventHandler.UnregisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
         }
 
         private void OnSpellDamageDone(Unit caster, Unit target, int damageAmount, bool isCrit)
@@ -62,6 +65,16 @@ namespace Server
             unitSpellHitEvent.SpellId = spellInfo.Id;
             unitSpellHitEvent.MissType = (int) missType;
             unitSpellHitEvent.Send();
+        }
+
+        private void OnServerPlayerTeleport(Player player, Vector3 targetPosition)
+        {
+            if (player.BoltEntity.Controller != null)
+            {
+                SpellPlayerTeleportEvent spellTeleportEvent = SpellPlayerTeleportEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
+                spellTeleportEvent.TargetPosition = targetPosition;
+                spellTeleportEvent.Send();
+            }
         }
     }
 }

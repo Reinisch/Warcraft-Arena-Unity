@@ -21,6 +21,7 @@
 
         ServerSpellLaunch,
         ServerSpellHit,
+        ServerPlayerTeleport,
         ServerLaunched,
 
         UnitAttributeChanged,

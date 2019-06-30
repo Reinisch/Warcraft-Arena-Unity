@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 318dfa57d1dd8824ba577616dcbe7fda, type: 3}
-  m_Name: Spell Sound Settings - Kill Creature
+  m_Name: Spell Sound Settings - Blink
   m_EditorClassIdentifier: 
-  spellInfo: {fileID: 11400000, guid: 741d2161be4709047b67749e55031660, type: 2}
+  spellInfo: {fileID: 11400000, guid: ec9e3f15c8fb97a4ea496361fb5f703d, type: 2}
   soundEntries:
   - soundUsageType: 0
-    soundEntry: {fileID: 11400000, guid: e8f6eb3253acc9746b47047e3ff0b563, type: 2}
+    soundEntry: {fileID: 11400000, guid: c57cd1a6ea95958439d3bef6074c49b8, type: 2}

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea804553f634975b3f7b754722ec882, type: 3}
+  m_Name: Blink Teleport Effect
+  m_EditorClassIdentifier: 
+  auraType: 0
+  explicitTargetType: 2
+  mechanic: 0
+  mainTargeting:
+    targetEntities: 0
+    referenceType: 1
+    selectionCategory: 0
+    selectionCheckType: 0
+    directionType: 0
+  secondaryTargeting:
+    targetEntities: 0
+    referenceType: 0
+    selectionCategory: 0
+    selectionCheckType: 0
+    directionType: 0
+  basePoints: 0
+  randomPoints: 0
+  applyAuraPeriod: 0
+  minRadius: 0
+  maxRadius: 0
+  amplitude: 0
+  chainAmplitude: 0
+  horizontalDistance: 15

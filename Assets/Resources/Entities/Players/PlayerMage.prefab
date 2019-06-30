@@ -2808,6 +2808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tagContainer:
+    defaultLaunchTag: 4
     defaultTag: {fileID: 8371027099814355925}
     bottomTag: {fileID: 5014753836250179081}
     footTag: {fileID: 1352448391192996702}

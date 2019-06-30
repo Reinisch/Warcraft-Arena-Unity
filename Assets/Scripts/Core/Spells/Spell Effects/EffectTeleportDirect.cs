@@ -1,6 +1,9 @@
 ﻿using System;
 using JetBrains.Annotations;
 using UnityEngine;
+using Common;
+
+using EventHandler = Common.EventHandler;
 
 namespace Core
 {
@@ -23,7 +26,7 @@ namespace Core
     {
         internal void EffectTeleportDirect(EffectTeleportDirect effect, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
-            if (mode != SpellEffectHandleMode.LaunchTarget)
+            if (mode != SpellEffectHandleMode.HitTarget)
                 return;
 
             if (target == null || !target.IsAlive)
@@ -37,34 +40,34 @@ namespace Core
             Vector3 targetTop = target.UnitCollider.bounds.center + Vector3.up * topCheck;
             Vector3 targetPosition;
 
-#if UNITY_EDITOR
-            Debug.DrawLine(target.UnitCollider.bounds.center, target.UnitCollider.bounds.center + Vector3.up * topCheck, Color.red, 3f);
-            #endif
+            Drawing.DrawLine(target.UnitCollider.bounds.center, target.UnitCollider.bounds.center + Vector3.up * topCheck, Color.red, 3f);
 
             if (Physics.Raycast(target.UnitCollider.bounds.center, Vector3.up, out RaycastHit hitInfo, topCheck, PhysicsReference.Mask.Ground))
                 targetPosition = hitInfo.point - Vector3.up * safeExtentsY;
             else
                 targetPosition = targetTop;
 
-            #if UNITY_EDITOR
-            Debug.DrawLine(targetPosition, targetPosition + target.transform.forward * distance, Color.red, 3f);
-            #endif
+            Drawing.DrawLine(targetPosition, targetPosition + target.transform.forward * distance, Color.red, 3f);
 
             if (Physics.Raycast(targetPosition, target.transform.forward, out hitInfo, distance, PhysicsReference.Mask.Ground))
                 targetPosition = hitInfo.point - target.transform.forward * safeExtentsX;
             else
                 targetPosition = targetPosition + target.transform.forward * distance;
 
-            #if UNITY_EDITOR
-            Debug.DrawLine(targetPosition, targetPosition - Vector3.up * topCheck * 1.5f, Color.red, 3f);
-            #endif
+            Drawing.DrawLine(targetPosition, targetPosition - Vector3.up * topCheck * 1.5f, Color.red, 3f);
 
-            if (Physics.Raycast(targetPosition, -Vector3.up, out hitInfo, topCheck * 1.5f, PhysicsReference.Mask.Ground))
+            if (Physics.Raycast(targetPosition, -Vector3.up, out hitInfo, topCheck * 2f, PhysicsReference.Mask.Ground))
                 targetPosition = hitInfo.point;
             else
-                targetPosition = targetPosition - Vector3.up * topCheck * 1.5f;
+                targetPosition = targetPosition - Vector3.up * topCheck * 2f;
 
-            target.transform.position = targetPosition;
+            if (target is Player player && !player.IsController)
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, player, targetPosition);
+            else
+            {
+                target.MovementInfo.RemoveMovementFlag(MovementFlags.Ascending);
+                target.transform.position = targetPosition;
+            }
         }
     }
 }

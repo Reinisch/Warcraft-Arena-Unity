@@ -184,9 +184,7 @@ namespace Core
             if (hitTarget != null)
             {
                 for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
-                {
                     SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitTarget);
-                }
 
                 if (missType != SpellMissType.None)
                     EffectDamage = 0;
