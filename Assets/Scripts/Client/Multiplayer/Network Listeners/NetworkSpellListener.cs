@@ -24,7 +24,7 @@ namespace Client
         {
             base.OnEvent(spellDamageEvent);
 
-            if (LocalPlayer == null || !WorldManager.UnitManager.TryGet(spellDamageEvent.Target.PackedValue, out Unit target))
+            if (LocalPlayer == null || !WorldManager.UnitManager.TryFind(spellDamageEvent.Target.PackedValue, out Unit target))
                 return;
 
             EventHandler.ExecuteEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, 

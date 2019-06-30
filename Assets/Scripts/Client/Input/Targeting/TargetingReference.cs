@@ -16,6 +16,7 @@ namespace Client
     public partial class TargetingReference : ScriptableReference
     {
         [SerializeField, UsedImplicitly] private InputReference input;
+        [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
         [SerializeField, UsedImplicitly] private TargetingSettings targetingSettings;
 
@@ -42,6 +43,22 @@ namespace Client
 
             world = null;
             player = null;
+        }
+
+        protected override void OnUpdate(float deltaTime)
+        {
+            base.OnUpdate(deltaTime);
+
+            if (!player.ExistsIn(world))
+                return;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = cameraReference.WarcraftCamera.Camera.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out var hit, float.MaxValue, PhysicsReference.Mask.Characters | PhysicsReference.Mask.Ground))
+                    if (world.UnitManager.TryFind(hit.collider, out Unit target))
+                        input.SelectTarget(target);
+            }
         }
 
         private void OnWorldInitialized(WorldManager worldManager)

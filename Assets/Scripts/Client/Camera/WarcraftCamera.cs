@@ -40,7 +40,9 @@ public class WarcraftCamera : MonoBehaviour
     private float zoomDampening = 5.0f;
     [SerializeField, UsedImplicitly]
     private LayerMask collisionLayers = -1;
-    [SerializeField, UsedImplicitly]
+    [SerializeField, UsedImplicitly, HideInInspector]
+    private Camera targetCamera;
+
     private Unit target;
 
     private float xDeg;
@@ -50,6 +52,8 @@ public class WarcraftCamera : MonoBehaviour
     private float correctedDistance;
     private float currentActualHeight;
 
+    public Camera Camera => targetCamera;
+
     public Unit Target
     {
         set
@@ -57,6 +61,12 @@ public class WarcraftCamera : MonoBehaviour
             target = value;
             currentActualHeight = target == null || target.IsAlive ? targetHeight : deadTargetHeight;
         }
+    }
+
+    [UsedImplicitly]
+    private void OnValidate()
+    {
+        targetCamera = GetComponent<Camera>();
     }
 
     [UsedImplicitly]

@@ -35,6 +35,11 @@ namespace Core
             return entity;
         }
 
+        public bool TryFind(Collider unitCollider, out Unit entity)
+        {
+            return unitsByColliders.TryGetValue(unitCollider, out entity);
+        }
+
         internal override void SetScope(BoltConnection connection, bool inScope)
         {
             base.SetScope(connection, inScope);

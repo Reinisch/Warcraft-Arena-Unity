@@ -59,7 +59,7 @@ namespace Core
             return entitiesById.LookupEntry(networkId);
         }
 
-        public bool TryGet(ulong networkId, out T entity)
+        public bool TryFind(ulong networkId, out T entity)
         {
             return entitiesById.TryGetValue(networkId, out entity);
         }
