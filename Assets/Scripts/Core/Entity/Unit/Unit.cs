@@ -671,10 +671,11 @@ namespace Core
                 return null;
 
             // update basepoints with new values - effect amount will be recalculated in ModStackAmount
-            foreach (var spellEffectInfo in foundAura.SpellEffects)
+            for (var index = 0; index < foundAura.SpellEffects.Count; index++)
             {
-                int newBasePoints = baseAmount?[spellEffectInfo.Index] ?? spellEffectInfo.BasePoints;
-                foundAura.AuraEffects[spellEffectInfo.Index].UpdateBaseAmount(newBasePoints);
+                var spellEffectInfo = foundAura.SpellEffects[index];
+                int newBasePoints = baseAmount?[index] ?? spellEffectInfo.BasePoints;
+                foundAura.AuraEffects[index].UpdateBaseAmount(newBasePoints);
             }
 
             // try to increase stack amount

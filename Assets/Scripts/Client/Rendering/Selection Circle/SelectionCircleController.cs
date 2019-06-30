@@ -49,6 +49,7 @@ namespace Client
             targetCircle.Dispose();
 
             playerCircle = targetCircle = null;
+            player = null;
         }
 
         public void HandleRendererAttach(UnitRenderer attachedRenderer)

@@ -12,12 +12,12 @@ namespace Core
         public override SpellEffectType EffectType => SpellEffectType.SchoolDamage;
         public override SpellTargetEntities TargetEntityType => SpellTargetEntities.Unit;
 
-        internal override void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)
+        internal override void Handle(Spell spell, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
-            spell.EffectSchoolDamage(this, target, mode);
+            spell.EffectSchoolDamage(this, effectIndex, target, mode);
         }
 
-        internal int CalculateSpellPower(SpellInfo spellInfo, Unit caster = null, Unit target = null, int basePoints = -1)
+        internal int CalculateSpellPower(SpellInfo spellInfo, int effectIndex, Unit caster = null, Unit target = null, int basePoints = -1)
         {
             basePoints = basePoints == -1 ? BasePoints : basePoints;
 
@@ -28,7 +28,7 @@ namespace Core
 
             float value = basePoints;
             if (caster != null)
-                value = caster.ApplyEffectModifiers(spellInfo, Index, value);
+                value = caster.ApplyEffectModifiers(spellInfo, effectIndex, value);
 
             return (int)value;
         }
@@ -36,14 +36,14 @@ namespace Core
 
     public partial class Spell
     {
-        internal void EffectSchoolDamage(EffectSchoolDamage effect, Unit target, SpellEffectHandleMode mode)
+        internal void EffectSchoolDamage(EffectSchoolDamage effect, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
             if (mode != SpellEffectHandleMode.HitTarget || target == null || !target.IsAlive)
                 return;
 
-            int spellPower = effect.CalculateSpellPower(SpellInfo, Caster, target);
+            int spellPower = effect.CalculateSpellPower(SpellInfo, effectIndex, Caster, target);
             if (SpellInfo.HasAttribute(SpellCustomAttributes.ShareDamage))
-                spellPower /= Mathf.Min(1, ImplicitTargets.TargetCountForEffect(effect.Index));
+                spellPower /= Mathf.Min(1, ImplicitTargets.TargetCountForEffect(effectIndex));
 
             if (OriginalCaster != null)
             {

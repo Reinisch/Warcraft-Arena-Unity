@@ -183,8 +183,10 @@ namespace Core
 
             if (hitTarget != null)
             {
-                foreach (var effect in SpellInfo.Effects)
-                    effect.Handle(this, hitTarget, SpellEffectHandleMode.HitTarget);
+                for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
+                {
+                    SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitTarget);
+                }
 
                 if (missType != SpellMissType.None)
                     EffectDamage = 0;
@@ -228,8 +230,8 @@ namespace Core
             Caster.SpellHistory.HandleCooldowns(SpellInfo);
             SelectImplicitTargets();
 
-            foreach (var effect in SpellInfo.Effects)
-                effect.Handle(this, Caster, SpellEffectHandleMode.Launch);
+            for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
+                SpellInfo.Effects[effectIndex].Handle(this, effectIndex, Caster, SpellEffectHandleMode.Launch);
 
             ImplicitTargets.HandleLaunch(out bool isDelayed, out SpellProcessingToken processingToken);
 
@@ -350,10 +352,11 @@ namespace Core
 
             // also select targets based on spell effects
             int processedAreaEffectsMask = 0;
-            foreach (var effect in SpellInfo.Effects)
+            for (var effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
             {
-                SelectImplicitTargetsForEffect(effect, effect.MainTargeting, ref processedAreaEffectsMask);
-                SelectImplicitTargetsForEffect(effect, effect.SecondaryTargeting, ref processedAreaEffectsMask);
+                var effect = SpellInfo.Effects[effectIndex];
+                SelectImplicitTargetsForEffect(effect, effectIndex, effect.MainTargeting, ref processedAreaEffectsMask);
+                SelectImplicitTargetsForEffect(effect, effectIndex, effect.SecondaryTargeting, ref processedAreaEffectsMask);
 
                 // select implicit target from explicit effect target type
                 switch (effect.ExplicitTargetType)
@@ -395,19 +398,22 @@ namespace Core
             }
         }
 
-        private void SelectImplicitTargetsForEffect(SpellEffectInfo effect, TargetingType targetingType, ref int processedEffectMask)
+        private void SelectImplicitTargetsForEffect(SpellEffectInfo effect, int effectIndex, TargetingType targetingType, ref int processedEffectMask)
         {
-            int effectMask = 1 << effect.Index;
+            int effectMask = 1 << effectIndex;
             if (targetingType.IsAreaLookup)
             {
                 if ((effectMask & processedEffectMask) > 0)
                     return;
 
                 // avoid recalculating similar effects
-                foreach (var otherEffect in SpellInfo.Effects)
+                for (int otherEffectIndex = 0; otherEffectIndex < SpellInfo.Effects.Count; otherEffectIndex++)
+                {
+                    var otherEffect = SpellInfo.Effects[otherEffectIndex];
                     if (effect.MainTargeting == otherEffect.MainTargeting && effect.SecondaryTargeting == otherEffect.SecondaryTargeting)
                         if (Mathf.Approximately(effect.CalcRadius(Caster, this), otherEffect.CalcRadius(Caster, this)))
-                            effectMask |= 1 << otherEffect.Index;
+                            effectMask |= 1 << otherEffectIndex;
+                }
 
                 processedEffectMask |= effectMask;
             }
@@ -415,30 +421,30 @@ namespace Core
             switch (targetingType.SelectionCategory)
             {
                 case SpellTargetSelection.Nearby:
-                    SelectImplicitTargetsNearby(effect, targetingType, effectMask);
+                    SelectImplicitTargetsNearby(effect, effectIndex, targetingType, effectMask);
                     break;
                 case SpellTargetSelection.Cone:
-                    SelectImplicitTargetsInCone(effect, targetingType, effectMask);
+                    SelectImplicitTargetsInCone(effect, effectIndex, targetingType, effectMask);
                     break;
                 case SpellTargetSelection.Area:
-                    SelectImplicitTargetsInArea(effect, targetingType, effectMask);
+                    SelectImplicitTargetsInArea(effect, effectIndex, targetingType, effectMask);
                     break;
                 case SpellTargetSelection.Default:
                     break;
             }
         }
 
-        private void SelectImplicitTargetsNearby(SpellEffectInfo effect, TargetingType targetingType, int effMask)
+        private void SelectImplicitTargetsNearby(SpellEffectInfo effect, int effectIndex, TargetingType targetingType, int effMask)
         {
             throw new NotImplementedException();
         }
 
-        private void SelectImplicitTargetsInCone(SpellEffectInfo effect, TargetingType targetingType, int effMask)
+        private void SelectImplicitTargetsInCone(SpellEffectInfo effect, int effectIndex, TargetingType targetingType, int effMask)
         {
             throw new NotImplementedException();
         }
 
-        private void SelectImplicitTargetsInArea(SpellEffectInfo effect, TargetingType targetingType, int effMask)
+        private void SelectImplicitTargetsInArea(SpellEffectInfo effect, int effectIndex, TargetingType targetingType, int effMask)
         {
             Unit referer = null;
             switch (targetingType.ReferenceType)
@@ -455,7 +461,7 @@ namespace Core
                     {
                         for (int i = ImplicitTargets.Entries.Count - 1; i >= 0; i--)
                         {
-                            if (ImplicitTargets.Entries[i].EffectMask.HasBit(effect.Index))
+                            if (ImplicitTargets.Entries[i].EffectMask.HasBit(effectIndex))
                             {
                                 referer = ImplicitTargets.Entries[i].Target;
                                 break;

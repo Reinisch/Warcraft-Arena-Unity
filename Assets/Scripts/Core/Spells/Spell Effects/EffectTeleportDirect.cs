@@ -13,15 +13,15 @@ namespace Core
         public override SpellEffectType EffectType => SpellEffectType.TeleportDirect;
         public override SpellTargetEntities TargetEntityType => SpellTargetEntities.Unit;
 
-        internal override void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)
+        internal override void Handle(Spell spell, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
-            spell.EffectTeleportDirect(this, target, mode);
+            spell.EffectTeleportDirect(this, effectIndex, target, mode);
         }
     }
 
     public partial class Spell
     {
-        internal void EffectTeleportDirect(EffectTeleportDirect effect, Unit target, SpellEffectHandleMode mode)
+        internal void EffectTeleportDirect(EffectTeleportDirect effect, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
             if (mode != SpellEffectHandleMode.LaunchTarget)
                 return;

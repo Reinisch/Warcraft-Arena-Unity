@@ -25,16 +25,10 @@ namespace Core
             maps.AddRange(definition.MapEntries);
             definition.SpellInfos.ForEach(spellInfo => spellInfosById.Add(spellInfo.Id, spellInfo));
             definition.FactionEntries.ForEach(factionEntry => factionsById.Add(factionEntry.FactionId, factionEntry));
-
-            foreach (var spellInfoEntry in SpellInfosById)
-                spellInfoEntry.Value.Initialize();
         }
 
         protected override void OnUnregister()
         {
-            foreach (var spellInfoEntry in SpellInfosById)
-                spellInfoEntry.Value.Deinitialize();
-
             spellInfosById.Clear();
             factionsById.Clear();
             maps.Clear();

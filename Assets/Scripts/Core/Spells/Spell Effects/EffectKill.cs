@@ -5,7 +5,7 @@
         public override SpellEffectType EffectType => SpellEffectType.Kill;
         public override SpellTargetEntities TargetEntityType => SpellTargetEntities.Unit;
 
-        internal override void Handle(Spell spell, Unit target, SpellEffectHandleMode mode)
+        internal override void Handle(Spell spell, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
             spell.EffectKill(this, target, mode);
         }

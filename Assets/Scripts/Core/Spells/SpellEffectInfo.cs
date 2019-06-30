@@ -1,5 +1,4 @@
-﻿using Common;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core
@@ -36,21 +35,8 @@ namespace Core
 
         public int BasePoints => basePoints;
         public int ApplyAuraPeriod => applyAuraPeriod;
-        public int Index { get; private set; }
 
-        internal void Initialize(SpellInfo spellInfo)
-        {
-            Index = spellInfo.Effects.IndexOf(this);
-
-            Assert.AreNotEqual(Index, -1);
-        }
-
-        internal void Deinitialize()
-        {
-            Index = 0;
-        }
-
-        internal abstract void Handle(Spell spell, Unit target, SpellEffectHandleMode mode);
+        internal abstract void Handle(Spell spell, int effectIndex, Unit target, SpellEffectHandleMode mode);
 
         public bool IsEffect(SpellEffectType effectName)
         {

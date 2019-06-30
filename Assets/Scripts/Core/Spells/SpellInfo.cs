@@ -91,16 +91,6 @@ namespace Core
         public int StackAmount => stackAmount;
         public int MaxAffectedTargets => maxAffectedTargets;
 
-        public void Initialize()
-        {
-            Effects.ForEach(effect => effect.Initialize(this));
-        }
-
-        public void Deinitialize()
-        {
-            Effects.ForEach(effect => effect.Deinitialize());
-        }
-    
         #region Spell info flags and properties
 
         public bool HasEffect(SpellEffectType effectType)
@@ -278,7 +268,7 @@ namespace Core
             if (SpellDispel == SpellDispelType.Enrage)
                 return AuraStateType.Enrage;
 
-            if (SchoolMask.HasFlag(SpellSchoolMask.Frost))
+            if (SchoolMask.HasTargetFlag(SpellSchoolMask.Frost))
                 if (Effects.Exists(effect => effect.IsAura() && (effect.AuraType == AuraType.ModStun || effect.AuraType == AuraType.ModRoot)))
                     return AuraStateType.Frozen;
 
@@ -292,32 +282,6 @@ namespace Core
                 return effect.Mechanic;
 
             return Mechanic != 0 ? Mechanic : SpellMechanics.None;
-        }
-
-        public uint GetEffectMechanicMask(int effIndex)
-        {
-            uint mask = 0;
-            if (Mechanic != 0)
-                mask |= (uint)(1 << (int)Mechanic);
-
-            foreach (var spellEffectInfo in Effects)
-                if (spellEffectInfo != null && spellEffectInfo.Index == effIndex && spellEffectInfo.Mechanic != 0)
-                    mask |= (uint) (1 << (int) spellEffectInfo.Mechanic);
-
-            return mask;
-        }
-
-        public uint GetSpellMechanicMaskByEffectMask(int effectMask)
-        {
-            uint mask = 0;
-            if (Mechanic != 0)
-                mask |= (uint)(1 << (int)Mechanic);
-
-            foreach (var spellEffectInfo in Effects)
-                if (spellEffectInfo != null && (effectMask & (1 << spellEffectInfo.Index)) != 0 && spellEffectInfo.Mechanic != 0)
-                    mask |= (uint)(1 << (int)spellEffectInfo.Mechanic);
-
-            return mask;
         }
 
         #endregion
