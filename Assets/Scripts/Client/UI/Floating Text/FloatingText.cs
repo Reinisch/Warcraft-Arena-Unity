@@ -58,6 +58,7 @@ namespace Client
                 transform.localScale *= currentSettings.SizeOverDistanceToCamera.Evaluate(distance);
             }
 
+            textMesh.alpha = currentSettings.AlphaOverTime.Evaluate(currentLifeTime);
             return currentLifeTime >= targetLifeTime;
         }
     }
