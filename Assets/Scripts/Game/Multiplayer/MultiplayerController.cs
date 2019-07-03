@@ -212,7 +212,7 @@ namespace Game
 
             if (worldManager.HasServerLogic)
                 boltServerListener.Deinitialize();
-            if (worldManager.HasServerLogic)
+            if (worldManager.HasClientLogic)
                 boltClientListener.Deinitialize();
 
             this.worldManager = null;

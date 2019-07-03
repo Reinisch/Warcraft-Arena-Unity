@@ -34,20 +34,10 @@ namespace Client
 
             spellVisualSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
             spellVisualSettings.ForEach(visual => visual.Initialize());
-
-            nameplateController.Initialize();
-            floatingTextController.Initialize();
-            spellVisualController.Initialize();
-            selectionCircleController.Initialize();
         }
 
         protected override void OnUnregister()
         {
-            nameplateController.Deinitialize();
-            selectionCircleController.Deinitialize();
-            floatingTextController.Deinitialize();
-            spellVisualController.Deinitialize();
-
             spellVisualSettings.ForEach(visual => visual.Deinitialize());
             spellVisualSettingsById.Clear();
 
@@ -75,6 +65,11 @@ namespace Client
 
                 EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
+
+                nameplateController.Initialize();
+                floatingTextController.Initialize();
+                spellVisualController.Initialize();
+                selectionCircleController.Initialize();
             }
         }
 
@@ -82,6 +77,11 @@ namespace Client
         {
             if (world.HasClientLogic)
             {
+                nameplateController.Deinitialize();
+                selectionCircleController.Deinitialize();
+                floatingTextController.Deinitialize();
+                spellVisualController.Deinitialize();
+
                 EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
 
