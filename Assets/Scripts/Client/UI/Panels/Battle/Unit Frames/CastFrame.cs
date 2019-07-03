@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Client.Spells;
+using Core;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
@@ -9,8 +10,10 @@ namespace Client
     public class CastFrame : MonoBehaviour
     {
         [SerializeField, UsedImplicitly] private BalanceReference balanceReference;
+        [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellLabel;
+        [SerializeField, UsedImplicitly] private Image spellIcon;
         [SerializeField, UsedImplicitly] private Slider castSlider;
 
         private Unit caster;
@@ -68,6 +71,11 @@ namespace Client
                 spellLabel.text = spellInfo.SpellName;
             else
                 spellLabel.text = string.Empty;
+
+            if (isCasting && rendering.SpellVisualSettingsById.TryGetValue(caster.EntityState.SpellCast.Id, out SpellVisualSettings settings))
+                spellIcon.sprite = settings.SpellIcon;
+            else
+                spellIcon.sprite = rendering.DefaultSpellIcon;
         }
     }
 }
