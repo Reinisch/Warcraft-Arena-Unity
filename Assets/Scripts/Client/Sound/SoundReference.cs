@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Client
 {
     [CreateAssetMenu(fileName = "Sound Reference", menuName = "Game Data/Scriptable/Sound", order = 4)]
-    public class SoundReference : ScriptableReference
+    public class SoundReference : ScriptableReferenceClient
     {
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private string soundContainerTag;
@@ -20,6 +20,8 @@ namespace Client
 
         protected override void OnRegistered()
         {
+            base.OnRegistered();
+
             soundContainer = GameObject.FindGameObjectWithTag(soundContainerTag).transform;
 
             foreach (var soundSetting in soundSettings)
@@ -27,40 +29,40 @@ namespace Client
 
             foreach (var spellSetting in spellSettings)
                 spellSettingsByInfo[spellSetting.SpellInfo] = spellSetting;
-
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
         }
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
-
             foreach (var soundSourceEntry in sourcesBySettings)
                 Destroy(soundSourceEntry.Value);
 
             spellSettingsByInfo.Clear();
             sourcesBySettings.Clear();
             soundContainer = null;
+
+            base.OnUnregister();
         }
 
-        private void OnWorldInitialized(WorldManager worldManager)
+        protected override void OnWorldInitialized(WorldManager world)
         {
-            if (worldManager.HasClientLogic)
+            base.OnWorldInitialized(world);
+
+            if (world.HasClientLogic)
             {
                 EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
             }
         }
 
-        private void OnWorldDeinitializing(WorldManager worldManager)
+        protected override void OnWorldDeinitializing(WorldManager world)
         {
-            if (worldManager.HasClientLogic)
+            if (world.HasClientLogic)
             {
                 EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
             }
+
+            base.OnWorldDeinitializing(world);
         }
 
         private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken)

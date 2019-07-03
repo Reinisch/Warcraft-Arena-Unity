@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Bolt;
-using Common;
 using UnityEngine;
 
 namespace Core
@@ -17,27 +16,16 @@ namespace Core
             base.Dispose();
         }
 
-        public void Accept(IUnitVisitor unitVisitor)
+        public bool TryFind(Collider unitCollider, out Unit entity)
         {
-            for (int i = 0; i < Entities.Count; i++)
-                Entities[i].Accept(unitVisitor);
+            return unitsByColliders.TryGetValue(unitCollider, out entity);
         }
 
-        public Unit Find(Collider unitCollider)
-        {
-            return unitsByColliders.LookupEntry(unitCollider);
-        }
-
-        public override TEntity Create<TEntity>(PrefabId prefabId, Entity.CreateToken createToken = null)
+        internal TEntity Create<TEntity>(PrefabId prefabId, Entity.CreateToken createToken = null) where TEntity : Unit
         {
             TEntity entity = BoltNetwork.Instantiate(prefabId, createToken).GetComponent<TEntity>();
             entity.HandleSpawn();
             return entity;
-        }
-
-        public bool TryFind(Collider unitCollider, out Unit entity)
-        {
-            return unitsByColliders.TryGetValue(unitCollider, out entity);
         }
 
         internal override void SetScope(BoltConnection connection, bool inScope)

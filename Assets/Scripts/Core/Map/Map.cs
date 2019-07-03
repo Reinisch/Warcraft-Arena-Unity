@@ -80,8 +80,7 @@ namespace Core
             Assert.IsFalse(hitCount == raycastResults.Length, "Raycast results reached maximum!");
             for (int i = 0; i < hitCount; i++)
             {
-                var targetUnit = WorldManager.UnitManager.Find(raycastResults[i]);
-                if (targetUnit == null || targetUnit.Map != this)
+                if (!WorldManager.UnitManager.TryFind(raycastResults[i], out Unit targetUnit) || targetUnit.Map != this)
                     continue;
 
                 switch (checkType)

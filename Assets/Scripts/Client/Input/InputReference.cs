@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -7,19 +6,15 @@ using UnityEngine;
 namespace Client
 {
     [CreateAssetMenu(fileName = "Input Reference", menuName = "Game Data/Scriptable/Input", order = 1)]
-    public class InputReference : ScriptableReference
+    public class InputReference : ScriptableReferenceClient
     {
-        [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
         [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private List<HotkeyInputItem> hotkeys;
         [SerializeField, UsedImplicitly] private List<InputActionGlobal> globalActions;
 
-        internal Player Player { get; private set; }
-
         protected override void OnRegistered()
         {
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+            base.OnRegistered();
 
             globalActions.ForEach(globalAction => globalAction.Register());
             hotkeys.ForEach(hotkey => hotkey.Register());
@@ -30,8 +25,7 @@ namespace Client
             hotkeys.ForEach(hotkey => hotkey.Unregister());
             globalActions.ForEach(globalAction => globalAction.Unregister());
 
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+            base.OnUnregister();
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -39,28 +33,18 @@ namespace Client
             hotkeys.ForEach(hotkey => hotkey.DoUpdate());
         }
 
-        private void OnWorldInitialized(WorldManager worldManager)
+        protected override void OnPlayerControlGained(Player player)
         {
-            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
-        }
+            base.OnPlayerControlGained(player);
 
-        private void OnWorldDeinitializing(WorldManager worldManager)
-        {
-            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
-        }
-
-        private void OnPlayerControlGained(Player player)
-        {
-            Player = player;
             Player.InputProvider = new ClientControllerMouseKeyboardInput(player, cameraReference);
         }
 
-        private void OnPlayerControlLost(Player player)
+        protected override void OnPlayerControlLost(Player player)
         {
             Player.InputProvider = null;
-            Player = null;
+
+            base.OnPlayerControlLost(player);
         }
 
         public void SelectTarget(Unit target)

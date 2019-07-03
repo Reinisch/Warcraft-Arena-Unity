@@ -76,12 +76,12 @@ namespace Client
             floatingText.transform.position = (damageTag ?? defaultTag).position;
         }
 
-        public void ApplyPositioning(Nameplate namePlate)
+        public void ApplyPositioning(Nameplate nameplate)
         {
             Transform targetTag = nameplateTag ?? defaultTag;
 
-            namePlate.transform.SetParent(targetTag);
-            namePlate.transform.position = targetTag.position;
+            nameplate.transform.SetParent(targetTag);
+            nameplate.transform.position = targetTag.position;
         }
     }
 }

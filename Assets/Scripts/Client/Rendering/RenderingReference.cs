@@ -4,16 +4,16 @@ using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
+
 using EventHandler = Common.EventHandler;
 
 namespace Client
 {
     [CreateAssetMenu(fileName = "Rendering Reference", menuName = "Game Data/Scriptable/Rendering", order = 1)]
-    public partial class RenderingReference : ScriptableReference
-    {
-        [SerializeField, UsedImplicitly] private BalanceReference balance;
-        [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
+    public partial class RenderingReference : ScriptableReferenceClient
+    { 
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
+        [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private NameplateController nameplateController;
         [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
         [SerializeField, UsedImplicitly] private SpellVisualController spellVisualController;
@@ -25,13 +25,13 @@ namespace Client
         private readonly List<UnitRenderer> unitRenderers = new List<UnitRenderer>();
         private readonly List<IUnitRendererHandler> unitRendererHandlers = new List<IUnitRendererHandler>();
 
-        public Player Player { get; set; }
-
         public Sprite DefaultSpellIcon => defaultSpellIcon;
         public IReadOnlyDictionary<int, SpellVisualSettings> SpellVisualSettingsById => spellVisualSettingsById;
 
         protected override void OnRegistered()
         {
+            base.OnRegistered();
+
             spellVisualSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
             spellVisualSettings.ForEach(visual => visual.Initialize());
 
@@ -39,20 +39,10 @@ namespace Client
             floatingTextController.Initialize();
             spellVisualController.Initialize();
             selectionCircleController.Initialize();
-
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
-            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
         }
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
-
             nameplateController.Deinitialize();
             selectionCircleController.Deinitialize();
             floatingTextController.Deinitialize();
@@ -60,6 +50,8 @@ namespace Client
 
             spellVisualSettings.ForEach(visual => visual.Deinitialize());
             spellVisualSettingsById.Clear();
+
+            base.OnUnregister();
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -67,37 +59,34 @@ namespace Client
             foreach (var unitRenderer in unitRenderers)
                 unitRenderer.DoUpdate(deltaTime);
 
-            nameplateController.DoUpdate(deltaTime);
+            nameplateController.DoUpdate();
             floatingTextController.DoUpdate(deltaTime);
             spellVisualController.DoUpdate(deltaTime);
         }
-
-        public bool TryFind(Unit unit, out UnitRenderer unitRenderer)
+        
+        protected override void OnWorldInitialized(WorldManager world)
         {
-            return unitRenderersById.TryGetValue(unit.Id, out unitRenderer);
-        }
+            base.OnWorldInitialized(world);
 
-        private void OnWorldInitialized(WorldManager worldManager)
-        {
-            if (worldManager.HasClientLogic)
+            if (world.HasClientLogic)
             {
-                worldManager.UnitManager.EventEntityAttached += OnEventEntityAttached;
-                worldManager.UnitManager.EventEntityDetach += OnEventEntityDetach;
+                world.UnitManager.EventEntityAttached += OnEventEntityAttached;
+                world.UnitManager.EventEntityDetach += OnEventEntityDetach;
 
                 EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
             }
         }
 
-        private void OnWorldDeinitializing(WorldManager worldManager)
+        protected override void OnWorldDeinitializing(WorldManager world)
         {
-            if (worldManager.HasClientLogic)
+            if (world.HasClientLogic)
             {
                 EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
 
-                worldManager.UnitManager.EventEntityAttached -= OnEventEntityAttached;
-                worldManager.UnitManager.EventEntityDetach -= OnEventEntityDetach;
+                world.UnitManager.EventEntityAttached -= OnEventEntityAttached;
+                world.UnitManager.EventEntityDetach -= OnEventEntityDetach;
 
                 foreach (UnitRenderer unitRenderer in unitRenderers)
                     unitRenderer.Deinitialize();
@@ -105,20 +94,29 @@ namespace Client
                 unitRenderersById.Clear();
                 unitRenderers.Clear();
             }
+
+            base.OnWorldDeinitializing(world);
         }
 
-        private void OnPlayerControlGained(Player player)
+        protected override void OnPlayerControlGained(Player player)
         {
-            Player = player;
+            base.OnPlayerControlGained(player);
 
             nameplateController.HandlePlayerControlGained();
+            selectionCircleController.HandlePlayerControlGained();
         }
 
-        private void OnPlayerControlLost(Player player)
+        protected override void OnPlayerControlLost(Player player)
         {
             nameplateController.HandlePlayerControlLost();
+            selectionCircleController.HandlePlayerControlLost();
 
-            Player = null;
+            base.OnPlayerControlLost(player);
+        }
+
+        private bool TryFind(Unit unit, out UnitRenderer unitRenderer)
+        {
+            return unitRenderersById.TryGetValue(unit.Id, out unitRenderer);
         }
 
         private void OnSpellDamageDone(Unit caster, Unit target, int damageAmount, bool isCrit)

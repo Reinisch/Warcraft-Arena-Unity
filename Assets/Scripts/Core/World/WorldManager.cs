@@ -9,9 +9,9 @@ namespace Core
         private readonly IPrefabPool defaultPool = new DefaultPrefabPool();
 
         internal SpellManager SpellManager { get; }
+        internal MapManager MapManager { get; }
 
         public UnitManager UnitManager { get; }
-        public MapManager MapManager { get; }
 
         public bool HasServerLogic { get; protected set; }
         public bool HasClientLogic { get; protected set; }

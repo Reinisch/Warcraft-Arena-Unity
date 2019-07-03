@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bolt;
 using Common;
 
 namespace Core
@@ -17,11 +16,6 @@ namespace Core
         {
             while (Entities.Count > 0)
                 Destroy(Entities[0]);
-        }
-
-        public virtual TEntity Create<TEntity>(PrefabId prefabId, Entity.CreateToken createToken = null) where TEntity : T
-        {
-            return BoltNetwork.Instantiate(prefabId, createToken).GetComponent<TEntity>();
         }
 
         public void Attach(T entity)

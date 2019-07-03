@@ -25,7 +25,6 @@ namespace Client
             }
         }
 
-        [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
         [SerializeField, UsedImplicitly] private UnitFrame playerUnitFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetUnitFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetTargetUnitFrame;
@@ -42,8 +41,8 @@ namespace Client
             actionBars.ForEach(actionBar => actionBar.Initialize());
             actionErrorDisplay.Initialize();
 
-            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
+            EventHandler.RegisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlGained, OnPlayerControlGained);
+            EventHandler.RegisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlLost, OnPlayerControlLost);
 
             playerCastFrame.UpdateCaster(localPlayer);
             playerUnitFrame.UpdateUnit(localPlayer);
@@ -53,8 +52,8 @@ namespace Client
 
         protected override void PanelDeinitialized()
         {
-            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
+            EventHandler.UnregisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlGained, OnPlayerControlGained);
+            EventHandler.UnregisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlLost, OnPlayerControlLost);
 
             actionErrorDisplay.Deinitialize();
             actionBars.ForEach(actionBar => actionBar.Denitialize());

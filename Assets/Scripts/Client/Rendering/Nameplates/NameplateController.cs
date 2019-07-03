@@ -34,6 +34,7 @@ namespace Client
                 }
 
                 activeNameplates.Clear();
+                activeNameplateByRenderers.Clear();
             }
 
             public void HandleUnitRendererAttach(UnitRenderer attachedRenderer)
@@ -66,7 +67,7 @@ namespace Client
                 EventHandler.UnregisterEvent(rendering.Player, GameEvents.UnitTargetChanged, OnPlayerTargetChanged);
             }
 
-            public void DoUpdate(float deltaTime)
+            public void DoUpdate()
             {
                 for (int i = activeNameplates.Count - 1; i >= 0; i--)
                     activeNameplates[i].DoUpdate();

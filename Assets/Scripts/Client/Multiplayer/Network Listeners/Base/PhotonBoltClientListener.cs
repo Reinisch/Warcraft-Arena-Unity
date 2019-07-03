@@ -1,7 +1,6 @@
 ﻿using Common;
 using Core;
 using JetBrains.Annotations;
-using UnityEngine;
 
 using Assert = Common.Assert;
 using EventHandler = Common.EventHandler;
@@ -11,8 +10,6 @@ namespace Client
     [UsedImplicitly]
     public partial class PhotonBoltClientListener : PhotonBoltBaseListener
     {
-        [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
-
         private Player LocalPlayer { get; set; }
 
         public new void Initialize(WorldManager worldManager)
@@ -37,7 +34,7 @@ namespace Client
                 Assert.IsNull(LocalPlayer, "Gained control of another player while already controlling one!");
 
                 LocalPlayer = (Player)WorldManager.UnitManager.Find(entity.NetworkId.PackedValue);
-                EventHandler.ExecuteEvent(photon, GameEvents.PlayerControlGained, LocalPlayer);
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.PlayerControlGained, LocalPlayer);
             }
         }
 
@@ -49,7 +46,7 @@ namespace Client
             {
                 Assert.IsTrue(LocalPlayer.BoltEntity == entity, "Lost control of non-local player!");
 
-                EventHandler.ExecuteEvent(photon, GameEvents.PlayerControlLost, LocalPlayer);
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.PlayerControlLost, LocalPlayer);
                 LocalPlayer = null;
             }
         }

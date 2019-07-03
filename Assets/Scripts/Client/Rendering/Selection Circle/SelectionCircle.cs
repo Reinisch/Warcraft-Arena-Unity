@@ -4,81 +4,84 @@ using UnityEngine;
 
 namespace Client
 {
-    public partial class SelectionCircleController
+    public partial class RenderingReference
     {
-        private class SelectionCircle
+        private partial class SelectionCircleController
         {
-            private const string MaterialColorProperty = "_Color";
-
-            private Unit circledUnit;
-            private UnitRenderer circledRenderer;
-            private Projector circleProjector;
-
-            private readonly SelectionCircleController controller;
-            private readonly SelectionCircleSettings settings;
-
-            public SelectionCircle(SelectionCircleController controller, SelectionCircleSettings settings)
+            private class SelectionCircle
             {
-                this.controller = controller;
-                this.settings = settings;
+                private const string MaterialColorProperty = "_Color";
 
-                circleProjector = GameObjectPool.Take(controller.selectionCirclePrototype);
-                circleProjector.material = Object.Instantiate(circleProjector.material);
-                circleProjector.gameObject.SetActive(false);
-            }
+                private Unit circledUnit;
+                private UnitRenderer circledRenderer;
+                private Projector circleProjector;
 
-            public void Dispose()
-            {
-                GameObjectPool.Return(circleProjector, false);
+                private readonly SelectionCircleController controller;
+                private readonly SelectionCircleSettings settings;
 
-                circledRenderer = null;
-                circledUnit = null;
-                circleProjector = null;
-            }
+                public SelectionCircle(SelectionCircleController controller, SelectionCircleSettings settings)
+                {
+                    this.controller = controller;
+                    this.settings = settings;
 
-            public void UpdateUnit(Unit newUnit)
-            {
-                if (circledRenderer != null && circledUnit != newUnit)
-                    Detach();
+                    circleProjector = GameObjectPool.Take(controller.selectionCirclePrototype);
+                    circleProjector.material = Instantiate(circleProjector.material);
+                    circleProjector.gameObject.SetActive(false);
+                }
 
-                circledUnit = newUnit;
-                if (circledUnit != null && controller.renderingReference.TryFind(circledUnit, out circledRenderer))
-                    HandleRendererAttach(circledRenderer);
-            }
+                public void Dispose()
+                {
+                    GameObjectPool.Return(circleProjector, false);
 
-            public void HandleRendererAttach(UnitRenderer attachedRenderer)
-            {
-                if (attachedRenderer.Unit == circledUnit)
-                    Attach(attachedRenderer);
-            }
+                    circledRenderer = null;
+                    circledUnit = null;
+                    circleProjector = null;
+                }
 
-            public void HandleRendererDetach(UnitRenderer detachedRenderer)
-            {
-                if (circledRenderer == detachedRenderer)
-                    Detach();
-            }
+                public void UpdateUnit(Unit newUnit)
+                {
+                    if (circledRenderer != null && circledUnit != newUnit)
+                        Detach();
 
-            private void Attach(UnitRenderer attachedRenderer)
-            {
-                circleProjector.gameObject.SetActive(true);
-                circleProjector.transform.SetParent(attachedRenderer.transform, false);
-                circleProjector.transform.position = circledRenderer.TagContainer.FindTag(settings.TargetTag);
+                    circledUnit = newUnit;
+                    if (circledUnit != null && controller.renderingReference.TryFind(circledUnit, out circledRenderer))
+                        HandleRendererAttach(circledRenderer);
+                }
 
-                if (circledUnit.IsHostileTo(controller.player))
-                    circleProjector.material.SetColor(MaterialColorProperty, settings.EnemyColor);
-                else if (circledUnit.IsFriendlyTo(controller.player))
-                    circleProjector.material.SetColor(MaterialColorProperty, settings.FriendlyColor);
-                else
-                    circleProjector.material.SetColor(MaterialColorProperty, settings.NeutralColor);
+                public void HandleRendererAttach(UnitRenderer attachedRenderer)
+                {
+                    if (attachedRenderer.Unit == circledUnit)
+                        Attach(attachedRenderer);
+                }
 
-                circledRenderer = attachedRenderer;
-            }
+                public void HandleRendererDetach(UnitRenderer detachedRenderer)
+                {
+                    if (circledRenderer == detachedRenderer)
+                        Detach();
+                }
 
-            private void Detach()
-            {
-                circleProjector.gameObject.SetActive(false);
-                circleProjector.transform.SetParent(null, false);
-                circledRenderer = null;
+                private void Attach(UnitRenderer attachedRenderer)
+                {
+                    circleProjector.gameObject.SetActive(true);
+                    circleProjector.transform.SetParent(attachedRenderer.transform, false);
+                    circleProjector.transform.position = circledRenderer.TagContainer.FindTag(settings.TargetTag);
+
+                    if (circledUnit.IsHostileTo(controller.renderingReference.Player))
+                        circleProjector.material.SetColor(MaterialColorProperty, settings.EnemyColor);
+                    else if (circledUnit.IsFriendlyTo(controller.renderingReference.Player))
+                        circleProjector.material.SetColor(MaterialColorProperty, settings.FriendlyColor);
+                    else
+                        circleProjector.material.SetColor(MaterialColorProperty, settings.NeutralColor);
+
+                    circledRenderer = attachedRenderer;
+                }
+
+                private void Detach()
+                {
+                    circleProjector.gameObject.SetActive(false);
+                    circleProjector.transform.SetParent(null, false);
+                    circledRenderer = null;
+                }
             }
         }
     }

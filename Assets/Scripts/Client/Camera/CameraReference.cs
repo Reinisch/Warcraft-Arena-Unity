@@ -1,43 +1,39 @@
-﻿using Common;
-using Core;
-using JetBrains.Annotations;
+﻿using Core;
 using UnityEngine;
-
-using EventHandler = Common.EventHandler;
 
 namespace Client
 {
     [CreateAssetMenu(fileName = "Camera Reference", menuName = "Game Data/Scriptable/Camera", order = 12)]
-    public class CameraReference : ScriptableReference
+    public class CameraReference : ScriptableReferenceClient
     {
-        [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
-
         public WarcraftCamera WarcraftCamera { get; private set; }
 
         protected override void OnRegistered()
         {
-            WarcraftCamera = FindObjectOfType<WarcraftCamera>();
+            base.OnRegistered();
 
-            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
+            WarcraftCamera = FindObjectOfType<WarcraftCamera>();
         }
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
-
             WarcraftCamera = null;
+
+            base.OnUnregister();
         }
 
-        private void OnPlayerControlGained(Player player)
+        protected override void OnPlayerControlGained(Player player)
         {
+            base.OnPlayerControlGained(player);
+
             WarcraftCamera.Target = player;
         }
 
-        private void OnPlayerControlLost(Player player)
+        protected override void OnPlayerControlLost(Player player)
         {
             WarcraftCamera.Target = null;
+
+            base.OnPlayerControlLost(player);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Common;
-using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -8,85 +7,74 @@ using EventHandler = Common.EventHandler;
 
 namespace Client
 {
-    [Serializable]
-    public partial class SelectionCircleController
+    public partial class RenderingReference
     {
-        [SerializeField, UsedImplicitly] private Projector selectionCirclePrototype;
-        [SerializeField, UsedImplicitly] private RenderingReference renderingReference;
-        [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
-        [SerializeField, UsedImplicitly] private SelectionCircleSettings playerCircleSettings;
-        [SerializeField, UsedImplicitly] private SelectionCircleSettings targetCircleSettings;
-
-        private SelectionCircle playerCircle;
-        private SelectionCircle targetCircle;
-
-        private Player player;
-
-        private readonly Action onPlayerTargetChanged;
-
-        private SelectionCircleController()
+        [Serializable]
+        private partial class SelectionCircleController
         {
-            onPlayerTargetChanged = OnPlayerTargetChanged;
-        }
+            [SerializeField, UsedImplicitly] private Projector selectionCirclePrototype;
+            [SerializeField, UsedImplicitly] private RenderingReference renderingReference;
+            [SerializeField, UsedImplicitly] private SelectionCircleSettings playerCircleSettings;
+            [SerializeField, UsedImplicitly] private SelectionCircleSettings targetCircleSettings;
 
-        public void Initialize()
-        {
-            GameObjectPool.PreInstantiate(selectionCirclePrototype, 2);
+            private SelectionCircle playerCircle;
+            private SelectionCircle targetCircle;
 
-            playerCircle = new SelectionCircle(this, playerCircleSettings);
-            targetCircle = new SelectionCircle(this, targetCircleSettings);
+            private readonly Action onPlayerTargetChanged;
 
-            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.RegisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
-        }
+            private SelectionCircleController()
+            {
+                onPlayerTargetChanged = OnPlayerTargetChanged;
+            }
 
-        public void Deinitialize()
-        {
-            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.UnregisterEvent<Player>(photon, GameEvents.PlayerControlLost, OnPlayerControlLost);
+            public void Initialize()
+            {
+                GameObjectPool.PreInstantiate(selectionCirclePrototype, 2);
 
-            playerCircle.Dispose();
-            targetCircle.Dispose();
+                playerCircle = new SelectionCircle(this, playerCircleSettings);
+                targetCircle = new SelectionCircle(this, targetCircleSettings);
+            }
 
-            playerCircle = targetCircle = null;
-            player = null;
-        }
+            public void Deinitialize()
+            {
+                playerCircle.Dispose();
+                targetCircle.Dispose();
 
-        public void HandleRendererAttach(UnitRenderer attachedRenderer)
-        {
-            playerCircle.HandleRendererAttach(attachedRenderer);
-            targetCircle.HandleRendererAttach(attachedRenderer);
-        }
+                playerCircle = targetCircle = null;
+            }
 
-        public void HandleRendererDetach(UnitRenderer detachedRenderer)
-        {
-            playerCircle.HandleRendererDetach(detachedRenderer);
-            targetCircle.HandleRendererDetach(detachedRenderer);
-        }
+            public void HandleRendererAttach(UnitRenderer attachedRenderer)
+            {
+                playerCircle.HandleRendererAttach(attachedRenderer);
+                targetCircle.HandleRendererAttach(attachedRenderer);
+            }
 
-        private void OnPlayerControlGained(Player player)
-        {
-            this.player = player;
+            public void HandleRendererDetach(UnitRenderer detachedRenderer)
+            {
+                playerCircle.HandleRendererDetach(detachedRenderer);
+                targetCircle.HandleRendererDetach(detachedRenderer);
+            }
 
-            playerCircle.UpdateUnit(player);
-            targetCircle.UpdateUnit(player.Target);
+            public void HandlePlayerControlGained()
+            {
+                playerCircle.UpdateUnit(renderingReference.Player);
+                targetCircle.UpdateUnit(renderingReference.Player.Target);
 
-            EventHandler.RegisterEvent(player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
-        }
+                EventHandler.RegisterEvent(renderingReference.Player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
+            }
 
-        private void OnPlayerControlLost(Player player)
-        {
-            this.player = null;
+            public void HandlePlayerControlLost()
+            {
+                playerCircle.UpdateUnit(null);
+                targetCircle.UpdateUnit(null);
 
-            playerCircle.UpdateUnit(null);
-            targetCircle.UpdateUnit(null);
+                EventHandler.UnregisterEvent(renderingReference.Player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
+            }
 
-            EventHandler.UnregisterEvent(player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
-        }
-
-        private void OnPlayerTargetChanged()
-        {
-            targetCircle.UpdateUnit(player.Target);
+            private void OnPlayerTargetChanged()
+            {
+                targetCircle.UpdateUnit(renderingReference.Player.Target);
+            }
         }
     }
 }
