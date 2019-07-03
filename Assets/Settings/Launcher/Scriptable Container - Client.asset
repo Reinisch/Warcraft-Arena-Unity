@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Scriptable Container - Client
   m_EditorClassIdentifier: 
   scriptableReferences:
+  - {fileID: 11400000, guid: f2f935428bc2d43428eb48db485e8822, type: 2}
   - {fileID: 11400000, guid: bc534b915b952ff4c910e58a96b38c6f, type: 2}
   - {fileID: 11400000, guid: 51440bf8a2e490643b370222e6272106, type: 2}
   - {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}

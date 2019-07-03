@@ -21,6 +21,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private RenderingReference renderReference;
         [SerializeField, UsedImplicitly] private NameplateSettings nameplateSettings;
+        [SerializeField, UsedImplicitly] private GameOptionBool showDeselectedHealthOption;
 
         private readonly Action<EntityAttributes> onAttributeChangedAction;
         private readonly Action onFactionChangedAction;
@@ -58,9 +59,12 @@ namespace Client
             Player referer = renderReference.Player;
             Unit target = UnitRenderer.Unit;
 
-            generalCanvasGroup.alpha = referer.Target == target
+            bool isSelected = referer.Target == target;
+            generalCanvasGroup.alpha = isSelected
                 ? HostilitySettings.SelectedGeneralAlpha
                 : HostilitySettings.DeselectedGeneralAlpha;
+
+            healthFrame.gameObject.SetActive(HostilitySettings.ShowHealth && (isSelected || showDeselectedHealthOption.Value));
         }
 
         public void DoUpdate()
@@ -135,7 +139,6 @@ namespace Client
 
             castFrame.gameObject.SetActive(HostilitySettings.ShowCast);
             unitName.gameObject.SetActive(HostilitySettings.ShowName);
-            healthFrame.gameObject.SetActive(HostilitySettings.ShowHealth);
             health.FillImage.color = HostilitySettings.HealthColor;
             unitName.color = HostilitySettings.NameColor;
 

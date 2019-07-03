@@ -36,16 +36,16 @@ MonoBehaviour:
     showHealth: 1
     healthColor: {r: 1, g: 1, b: 0, a: 1}
     nameColor: {r: 1, g: 1, b: 0, a: 1}
-    selectedGeneralAlpha: 1
+    selectedGeneralAlpha: 0.8
     deselectedGeneralAlpha: 0.2
     applyScaling: 1
   enemy:
     showName: 1
     showCast: 1
     showHealth: 1
-    healthColor: {r: 1, g: 0, b: 0, a: 1}
-    nameColor: {r: 1, g: 0, b: 0, a: 1}
-    selectedGeneralAlpha: 1
+    healthColor: {r: 1, g: 0.31822497, b: 0, a: 1}
+    nameColor: {r: 1, g: 0.18314421, b: 0, a: 1}
+    selectedGeneralAlpha: 0.7
     deselectedGeneralAlpha: 0.2
     applyScaling: 1
   scaleOverDistance:
@@ -64,16 +64,16 @@ MonoBehaviour:
       time: 5
       value: 1
       inSlope: -0
-      outSlope: 0.08
+      outSlope: 0.04
       tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 30
-      value: 3
-      inSlope: 0.08
-      outSlope: 0.08
+      value: 2
+      inSlope: 0.04
+      outSlope: 0.04
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
