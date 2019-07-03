@@ -158,9 +158,9 @@ namespace Core
 
         public override void Attached()
         {
-            EntityState = entity.GetState<IUnitState>();
-
             base.Attached();
+
+            EntityState = entity.GetState<IUnitState>();
 
             foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
                 speedRates[moveType] = 1.0f;
@@ -178,7 +178,6 @@ namespace Core
 
             ThreatManager = new ThreatManager(this);
             MovementInfo.Attached(EntityState, this);
-            WorldManager.UnitManager.Attach(this);
 
             SpellHistory = new SpellHistory(this);
             SpellCast = new SpellCast(this);
@@ -186,6 +185,7 @@ namespace Core
             SetMap(WorldManager.FindMap(1));
 
             WorldManager.UnitManager.EventEntityDetach += OnEntityDetach;
+            WorldManager.UnitManager.Attach(this);
         }
 
         public override void Detached()

@@ -42,13 +42,13 @@ namespace Core
         {
             playerState = entity.GetState<IPlayerState>();
 
-            base.Attached();
-
             createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
 
             if (!IsOwner)
                 playerState.AddCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
+
+            base.Attached();
         }
 
         public override void Detached()

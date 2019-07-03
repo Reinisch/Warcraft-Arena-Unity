@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: Rendering Reference
   m_EditorClassIdentifier: 
   balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
+  photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
   defaultSpellIcon: {fileID: 21300000, guid: 76cd4c99ae5fb62478da1b60870f7f63, type: 3}
+  nameplateController:
+    rendering: {fileID: 11400000}
+    nameplatePrototype: {fileID: 4237749462972623577, guid: 6938372095c24704a884bf0e6ad7c457,
+      type: 3}
+    preinstantiatedCount: 20
   floatingTextController:
     floatingTextPrototype: {fileID: -8634052330400144900, guid: 9efdc7d820990e04a99c7ec5a9614892,
       type: 3}

@@ -45,10 +45,10 @@ namespace Core
 
         public override void Attached()
         {
-            base.Attached();
-
             createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
+
+            base.Attached();
         }
 
         public override void Detached()

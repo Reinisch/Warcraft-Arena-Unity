@@ -15,6 +15,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private Transform rightHandTag;
         [SerializeField, UsedImplicitly] private Transform leftHandTag;
         [SerializeField, UsedImplicitly] private Transform damageTag;
+        [SerializeField, UsedImplicitly] private Transform nameplateTag;
 
         public Vector3 FindTag(EffectTagType tagType)
         {
@@ -73,6 +74,14 @@ namespace Client
         public void ApplyPositioning(FloatingText floatingText)
         {
             floatingText.transform.position = (damageTag ?? defaultTag).position;
+        }
+
+        public void ApplyPositioning(Nameplate namePlate)
+        {
+            Transform targetTag = nameplateTag ?? defaultTag;
+
+            namePlate.transform.SetParent(targetTag);
+            namePlate.transform.position = targetTag.position;
         }
     }
 }

@@ -39,10 +39,9 @@ namespace Core
 
         public override void Attached()
         {
-            worldEntityState = entity.GetState<IWorldEntityState>();
-
             base.Attached();
 
+            worldEntityState = entity.GetState<IWorldEntityState>();
             worldEntityState.SetTransforms(worldEntityState.Transform, transform);
 
             if (entity.AttachToken is CreateToken createInfo)
