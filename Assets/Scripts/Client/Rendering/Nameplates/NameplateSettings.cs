@@ -14,7 +14,8 @@ namespace Client
             [SerializeField, UsedImplicitly] private bool showCast;
             [SerializeField, UsedImplicitly] private bool showHealth;
             [SerializeField, UsedImplicitly] private Color healthColor;
-            [SerializeField, UsedImplicitly] private Color nameColor;
+            [SerializeField, UsedImplicitly] private Color nameWithoutPlateColor;
+            [SerializeField, UsedImplicitly] private Color nameWithPlateColor;
             [SerializeField, UsedImplicitly] private float selectedGeneralAlpha;
             [SerializeField, UsedImplicitly] private float deselectedGeneralAlpha;
             [SerializeField, UsedImplicitly] private bool applyScaling;
@@ -23,7 +24,8 @@ namespace Client
             public bool ShowCast => showCast;
             public bool ShowHealth => showHealth;
             public Color HealthColor => healthColor;
-            public Color NameColor => nameColor;
+            public Color NameWithoutPlateColor => nameWithoutPlateColor;
+            public Color NameWithPlateColor => nameWithPlateColor;
             public float SelectedGeneralAlpha => selectedGeneralAlpha;
             public float DeselectedGeneralAlpha => deselectedGeneralAlpha;
             public bool ApplyScaling => applyScaling;

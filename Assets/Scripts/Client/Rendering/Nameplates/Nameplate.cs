@@ -65,6 +65,7 @@ namespace Client
                 : HostilitySettings.DeselectedGeneralAlpha;
 
             healthFrame.gameObject.SetActive(HostilitySettings.ShowHealth && (isSelected || showDeselectedHealthOption.Value));
+            unitName.color = healthFrame.activeSelf ? HostilitySettings.NameWithPlateColor : HostilitySettings.NameWithoutPlateColor;
         }
 
         public void DoUpdate()
@@ -140,7 +141,7 @@ namespace Client
             castFrame.gameObject.SetActive(HostilitySettings.ShowCast);
             unitName.gameObject.SetActive(HostilitySettings.ShowName);
             health.FillImage.color = HostilitySettings.HealthColor;
-            unitName.color = HostilitySettings.NameColor;
+            unitName.color = HostilitySettings.NameWithoutPlateColor;
 
             UpdateSelection();
 

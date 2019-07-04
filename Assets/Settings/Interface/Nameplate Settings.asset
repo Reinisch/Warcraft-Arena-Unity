@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Nameplate Settings
   m_EditorClassIdentifier: 
   self:
-    showName: 1
+    showName: 0
     showCast: 0
     showHealth: 0
     healthColor: {r: 0, g: 1, b: 0.19607843, a: 1}
-    nameColor: {r: 0.40784314, g: 0.6117647, b: 0.78431374, a: 1}
+    nameWithoutPlateColor: {r: 0, g: 1, b: 0.19607843, a: 1}
+    nameWithPlateColor: {r: 1, g: 1, b: 1, a: 1}
     selectedGeneralAlpha: 1
     deselectedGeneralAlpha: 1
     applyScaling: 0
@@ -26,7 +27,8 @@ MonoBehaviour:
     showCast: 1
     showHealth: 0
     healthColor: {r: 0, g: 1, b: 0, a: 1}
-    nameColor: {r: 0, g: 0.88235295, b: 0, a: 1}
+    nameWithoutPlateColor: {r: 0, g: 1, b: 0, a: 1}
+    nameWithPlateColor: {r: 1, g: 1, b: 1, a: 1}
     selectedGeneralAlpha: 1
     deselectedGeneralAlpha: 0.33
     applyScaling: 0
@@ -35,8 +37,9 @@ MonoBehaviour:
     showCast: 1
     showHealth: 1
     healthColor: {r: 1, g: 1, b: 0, a: 1}
-    nameColor: {r: 1, g: 1, b: 0, a: 1}
-    selectedGeneralAlpha: 0.8
+    nameWithoutPlateColor: {r: 1, g: 1, b: 0, a: 1}
+    nameWithPlateColor: {r: 1, g: 1, b: 1, a: 1}
+    selectedGeneralAlpha: 0.9
     deselectedGeneralAlpha: 0.2
     applyScaling: 1
   enemy:
@@ -44,8 +47,9 @@ MonoBehaviour:
     showCast: 1
     showHealth: 1
     healthColor: {r: 1, g: 0.31822497, b: 0, a: 1}
-    nameColor: {r: 1, g: 0.18314421, b: 0, a: 1}
-    selectedGeneralAlpha: 0.7
+    nameWithoutPlateColor: {r: 0.9529412, g: 0.26729915, b: 0.1882353, a: 1}
+    nameWithPlateColor: {r: 1, g: 1, b: 1, a: 1}
+    selectedGeneralAlpha: 0.9
     deselectedGeneralAlpha: 0.2
     applyScaling: 1
   scaleOverDistance:
