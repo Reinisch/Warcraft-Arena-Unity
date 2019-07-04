@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundReference: {fileID: 11400000, guid: 9c01542db10d5bc46819a6f11752769e, type: 2}
   settings: {fileID: 11400000, guid: 637188a259c0f8149a47bc2c267d8f46, type: 2}
-  audioClip: {fileID: 8300000, guid: 8c644446984534c40849595b5111924c, type: 3}
+  audioClip: {fileID: 8300000, guid: b6d4bac91604f0f4e8a0b667ae4aafac, type: 3}
   volumeModifier: 1

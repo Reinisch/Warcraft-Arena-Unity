@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aaaeca2ae2944448b75382fb5b2127f, type: 3}
   m_Name: Rendering Reference
   m_EditorClassIdentifier: 
-  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
-  photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
   defaultSpellIcon: {fileID: 21300000, guid: 76cd4c99ae5fb62478da1b60870f7f63, type: 3}
+  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   nameplateController:
     rendering: {fileID: 11400000}
     nameplatePrototype: {fileID: 4237749462972623577, guid: 6938372095c24704a884bf0e6ad7c457,
@@ -30,7 +29,6 @@ MonoBehaviour:
     selectionCirclePrototype: {fileID: 11939280, guid: dc884a6ec589ce249acc9b5326859165,
       type: 3}
     renderingReference: {fileID: 11400000}
-    photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
     playerCircleSettings: {fileID: 11400000, guid: 98a751b25d9928a45bdc81364cb01ed7,
       type: 2}
     targetCircleSettings: {fileID: 11400000, guid: 69d99f2d9141714428272b398771ae99,
@@ -43,10 +41,6 @@ MonoBehaviour:
       visualUsageType: 0
       tagType: 0
       effectSettings: {fileID: 11400000, guid: 4ff8660a04a17d24c8dbd62a38ffe038, type: 2}
-    - attachToTag: 0
-      visualUsageType: 1
-      tagType: 2
-      effectSettings: {fileID: 11400000, guid: 92df711169a7dda48bad346faedbe155, type: 2}
   - spellInfo: {fileID: 11400000, guid: d0450f64f06f7b24aa8b9238f776c2a5, type: 2}
     spellIcon: {fileID: 21300000, guid: b7e6e4be9de99284f997490d3f2da355, type: 3}
     visualEffects:
@@ -73,11 +67,7 @@ MonoBehaviour:
       effectSettings: {fileID: 11400000, guid: 92df711169a7dda48bad346faedbe155, type: 2}
   - spellInfo: {fileID: 11400000, guid: 741d2161be4709047b67749e55031660, type: 2}
     spellIcon: {fileID: 21300000, guid: 352df4cb88d800146bc89863e4bad670, type: 3}
-    visualEffects:
-    - attachToTag: 0
-      visualUsageType: 1
-      tagType: 3
-      effectSettings: {fileID: 11400000, guid: 92df711169a7dda48bad346faedbe155, type: 2}
+    visualEffects: []
   - spellInfo: {fileID: 11400000, guid: ec9e3f15c8fb97a4ea496361fb5f703d, type: 2}
     spellIcon: {fileID: 21300000, guid: dfdb300a2a1841642a5f9c45d434ba19, type: 3}
     visualEffects: []
