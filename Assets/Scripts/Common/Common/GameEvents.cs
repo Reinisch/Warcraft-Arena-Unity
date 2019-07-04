@@ -28,6 +28,7 @@
         UnitTargetChanged,
         UnitFactionChanged,
 
-        HotkeyStateChanged
+        HotkeyStateChanged,
+        GameOptionChanged
     }
 }

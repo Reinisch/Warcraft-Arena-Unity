@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d9a0467908c8449a857e9aeabc4e64, type: 3}
   m_Name: Input Reference
   m_EditorClassIdentifier: 
-  photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
   cameraReference: {fileID: 11400000, guid: 7ec395dbbe5ff3848a39b67a4e093974, type: 2}
   hotkeys:
   - {fileID: 11400000, guid: da0ca30d1e177d14a9351ca45d955d10, type: 2}
@@ -47,8 +46,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9039a6be9ba381c4b90e3d0f02624b6a, type: 2}
   - {fileID: 11400000, guid: 86751c2715c62064d902365472221b54, type: 2}
   - {fileID: 11400000, guid: 7d8c9c48c2a72d541aa40a0bbe6e7349, type: 2}
+  - {fileID: 11400000, guid: 206ac9f1a5580344cacc111dba2569a2, type: 2}
   globalActions:
   - {fileID: 11400000, guid: 77a1ffee748e6014bb5d69b05a3eec1d, type: 2}
   - {fileID: 11400000, guid: bb0c0d02a25b74f45b631e11d9be9ad9, type: 2}
   - {fileID: 11400000, guid: 6924b0c5b103ca741a269b14fc41b812, type: 2}
   - {fileID: 11400000, guid: 6c11ac7bc2ab40f42a2b7f0d228b5355, type: 2}
+  - {fileID: 11400000, guid: f16f9947db57e834eb6ebca1d3ef6b4d, type: 2}

@@ -18,6 +18,8 @@ MonoBehaviour:
     rendering: {fileID: 11400000}
     nameplatePrototype: {fileID: 4237749462972623577, guid: 6938372095c24704a884bf0e6ad7c457,
       type: 3}
+    showDeselectedHealthOption: {fileID: 11400000, guid: 3ecb75c2f46c15241a6bb91c416d4332,
+      type: 2}
     preinstantiatedCount: 20
   floatingTextController:
     floatingTextPrototype: {fileID: -8634052330400144900, guid: 9efdc7d820990e04a99c7ec5a9614892,

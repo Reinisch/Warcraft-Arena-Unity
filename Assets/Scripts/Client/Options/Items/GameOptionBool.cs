@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Common;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client
@@ -19,6 +20,15 @@ namespace Client
         public override void Save()
         {
             PlayerPrefs.SetInt(name, Value ? 1 : 0);
+        }
+
+        public void Toggle()
+        {
+            currentValue = !currentValue;
+
+            Save();
+
+            EventHandler.ExecuteEvent(this, GameEvents.GameOptionChanged);
         }
     }
 }

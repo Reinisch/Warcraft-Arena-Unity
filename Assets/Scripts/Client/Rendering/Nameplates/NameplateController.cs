@@ -15,6 +15,7 @@ namespace Client
         {
             [SerializeField, UsedImplicitly] private RenderingReference rendering;
             [SerializeField, UsedImplicitly] private Nameplate nameplatePrototype;
+            [SerializeField, UsedImplicitly] private GameOptionBool showDeselectedHealthOption;
             [SerializeField, UsedImplicitly] private int preinstantiatedCount = 20;
 
             private readonly List<Nameplate> activeNameplates = new List<Nameplate>();
@@ -23,10 +24,14 @@ namespace Client
             public void Initialize()
             {
                 GameObjectPool.PreInstantiate(nameplatePrototype.gameObject, preinstantiatedCount);
+
+                EventHandler.RegisterEvent(showDeselectedHealthOption, GameEvents.GameOptionChanged, OnHealthOptionChanged);
             }
 
             public void Deinitialize()
             {
+                EventHandler.UnregisterEvent(showDeselectedHealthOption, GameEvents.GameOptionChanged, OnHealthOptionChanged);
+
                 for (int i = activeNameplates.Count - 1; i >= 0; i--)
                 {
                     GameObjectPool.Return(activeNameplates[i], true);
@@ -86,6 +91,12 @@ namespace Client
             private void OnPlayerTargetChanged()
             {
                 activeNameplates.ForEach(nameplate => nameplate.UpdateSelection());
+            }
+
+            private void OnHealthOptionChanged()
+            {
+                for (int i = activeNameplates.Count - 1; i >= 0; i--)
+                    activeNameplates[i].UpdateSelection();
             }
         }
     }
