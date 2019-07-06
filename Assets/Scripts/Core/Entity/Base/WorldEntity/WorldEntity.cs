@@ -87,7 +87,17 @@ namespace Core
             return Vector3.Distance(Position, position);
         }
 
+        public float DistanceSqrTo(Vector3 position)
+        {
+            return Vector3.SqrMagnitude(Position - position);
+        }
+
         public float DistanceTo(WorldEntity target)
+        {
+            return DistanceTo(target.Position);
+        }
+
+        public float DistanceSqrTo(WorldEntity target)
         {
             return DistanceTo(target.Position);
         }

@@ -47,7 +47,7 @@ MonoBehaviour:
     showCast: 1
     showHealth: 1
     healthColor: {r: 1, g: 0.31822497, b: 0, a: 1}
-    nameWithoutPlateColor: {r: 0.9529412, g: 0.26729915, b: 0.1882353, a: 1}
+    nameWithoutPlateColor: {r: 0.9529412, g: 0.39725983, b: 0.2980392, a: 1}
     nameWithPlateColor: {r: 1, g: 1, b: 1, a: 1}
     selectedGeneralAlpha: 0.9
     deselectedGeneralAlpha: 0.2
@@ -85,3 +85,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  maxDistance: 60
+  detailedDistance: 30
+  distanceThreshold: 5
+  maxDistanceSqr: 60
+  detailedDistanceSqr: 30
+  outrangeThresholdSqr: 5

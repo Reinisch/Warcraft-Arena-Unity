@@ -26,8 +26,10 @@ namespace Client
         private readonly Action<EntityAttributes> onAttributeChangedAction;
         private readonly Action onFactionChangedAction;
 
-        private UnitRenderer UnitRenderer { get; set; }
+        private bool InDetailRange { get; set; }
         private NameplateSettings.HostilitySettings HostilitySettings { get; set; }
+
+        public UnitRenderer UnitRenderer { get; private set; }
 
         private Nameplate()
         {
@@ -64,18 +66,33 @@ namespace Client
                 ? HostilitySettings.SelectedGeneralAlpha
                 : HostilitySettings.DeselectedGeneralAlpha;
 
-            healthFrame.gameObject.SetActive(HostilitySettings.ShowHealth && (isSelected || showDeselectedHealthOption.Value));
+            bool showDetails = InDetailRange || isSelected;
+            castFrame.gameObject.SetActive(showDetails && HostilitySettings.ShowCast);
+            healthFrame.gameObject.SetActive(showDetails && HostilitySettings.ShowHealth && (isSelected || showDeselectedHealthOption.Value));
             unitName.color = healthFrame.activeSelf ? HostilitySettings.NameWithPlateColor : HostilitySettings.NameWithoutPlateColor;
         }
 
-        public void DoUpdate()
+        public bool DoUpdate()
         {
+            float distanceToPlayer = renderReference.Player.DistanceTo(UnitRenderer.Unit);
             transform.rotation = Quaternion.LookRotation(canvas.worldCamera.transform.forward);
 
             if (castFrame.gameObject.activeSelf)
                 castFrame.DoUpdate();
 
+            if (distanceToPlayer > nameplateSettings.MaxDistance + nameplateSettings.DistanceThreshold)
+                return false;
+
+            bool inDetailRange = distanceToPlayer < nameplateSettings.DetailedDistance;
+            if (InDetailRange != inDetailRange)
+            {
+                InDetailRange = inDetailRange;
+                UpdateSelection();
+            }
+
             ApplyScaling();
+
+            return true;
         }
 
         private void ApplyScaling()
@@ -138,10 +155,11 @@ namespace Client
             else
                 HostilitySettings = nameplateSettings.Neutral;
 
-            castFrame.gameObject.SetActive(HostilitySettings.ShowCast);
             unitName.gameObject.SetActive(HostilitySettings.ShowName);
             health.FillImage.color = HostilitySettings.HealthColor;
             unitName.color = HostilitySettings.NameWithoutPlateColor;
+
+            InDetailRange = referer.DistanceTo(target) < nameplateSettings.DetailedDistance;
 
             UpdateSelection();
 

@@ -15,10 +15,12 @@ namespace Client
         {
             [SerializeField, UsedImplicitly] private RenderingReference rendering;
             [SerializeField, UsedImplicitly] private Nameplate nameplatePrototype;
+            [SerializeField, UsedImplicitly] private NameplateSettings settings;
             [SerializeField, UsedImplicitly] private GameOptionBool showDeselectedHealthOption;
             [SerializeField, UsedImplicitly] private int preinstantiatedCount = 20;
 
             private readonly List<Nameplate> activeNameplates = new List<Nameplate>();
+            private readonly List<UnitRenderer> unplatedRenderers = new List<UnitRenderer>();
             private readonly Dictionary<UnitRenderer, Nameplate> activeNameplateByRenderers = new Dictionary<UnitRenderer, Nameplate>();
 
             public void Initialize()
@@ -40,22 +42,23 @@ namespace Client
 
                 activeNameplates.Clear();
                 activeNameplateByRenderers.Clear();
+                unplatedRenderers.Clear();
             }
 
             public void HandleUnitRendererAttach(UnitRenderer attachedRenderer)
             {
-                SpawnNameplate(attachedRenderer);
+                if (rendering.Player.DistanceSqrTo(attachedRenderer.Unit) < settings.MaxDistanceSqr)
+                    SpawnNameplate(attachedRenderer);
+                else
+                    unplatedRenderers.Add(attachedRenderer);
             }
 
             public void HandleUnitRendererDetach(UnitRenderer detachedRenderer)
             {
-                if (activeNameplateByRenderers.TryGetValue(detachedRenderer, out Nameplate nameplate))
-                {
-                    activeNameplateByRenderers.Remove(detachedRenderer);
-                    activeNameplates.Remove(nameplate);
+                unplatedRenderers.Remove(detachedRenderer);
 
-                    GameObjectPool.Return(nameplate, false);
-                }
+                if (activeNameplateByRenderers.TryGetValue(detachedRenderer, out Nameplate nameplate))
+                    DespawnNameplate(nameplate);
             }
 
             public void HandlePlayerControlGained()
@@ -74,8 +77,24 @@ namespace Client
 
             public void DoUpdate()
             {
+                for (int i = unplatedRenderers.Count - 1; i >= 0; i--)
+                {
+                    if (rendering.Player.DistanceSqrTo(unplatedRenderers[i].Unit) < settings.MaxDistanceSqr)
+                    {
+                        SpawnNameplate(unplatedRenderers[i]);
+                        unplatedRenderers.RemoveAt(i);
+                    }
+                }
+
                 for (int i = activeNameplates.Count - 1; i >= 0; i--)
-                    activeNameplates[i].DoUpdate();
+                {
+                    if (!activeNameplates[i].DoUpdate())
+                    {
+                        unplatedRenderers.Add(activeNameplates[i].UnitRenderer);
+
+                        DespawnNameplate(activeNameplates[i]);
+                    }
+                }
             }
 
             private void SpawnNameplate(UnitRenderer targetRenderer)
@@ -86,6 +105,14 @@ namespace Client
 
                 activeNameplates.Add(newNameplate);
                 activeNameplateByRenderers.Add(targetRenderer, newNameplate);
+            }
+
+            private void DespawnNameplate(Nameplate nameplate)
+            {
+                activeNameplateByRenderers.Remove(nameplate.UnitRenderer);
+                activeNameplates.Remove(nameplate);
+
+                GameObjectPool.Return(nameplate, false);
             }
 
             private void OnPlayerTargetChanged()
