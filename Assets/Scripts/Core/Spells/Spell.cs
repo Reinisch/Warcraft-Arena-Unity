@@ -87,8 +87,11 @@ namespace Core
                     {
                         Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
                         Launch();
+                        break;
                     }
-                    else if (!SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.MovementInfo.IsMoving)
+
+                    bool mayBeInterruptedByMove = CastTime - CastTimeLeft > MovementUtils.SpellMovementInterruptThreshold;
+                    if (mayBeInterruptedByMove && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.MovementInfo.IsMoving)
                     {
                         Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
                         Cancel();
@@ -152,9 +155,7 @@ namespace Core
             if (result != SpellCastResult.Success)
                 return result;
 
-            Cast();
-
-            return result;
+            return Cast();
         }
 
         private void ProcessTarget(SpellTargetEntry targetEntry)
@@ -210,23 +211,25 @@ namespace Core
             }
         }
         
-        private void Cast()
+        private SpellCastResult Cast()
         {
             ExecutionState = SpellExecutionState.Casting;
 
             CastTime = SpellInfo.CastTime;
             CastTimeLeft = CastTime;
+
+            // cast if needed, if already casting launch instead, should only be possible with CanCastWhileCasting
+            bool instantCast = CastTime <= 0.0f || Caster.SpellCast.IsCasting || spellCastFlags.HasTargetFlag(SpellCastFlags.CastDirectly);
+
+            if (!instantCast && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.MovementInfo.IsMoving)
+                return SpellCastResult.Moving;
+
             Caster.SpellHistory.StartGlobalCooldown(SpellInfo);
 
-            if (CastTime <= 0.0f)
-            {
+            if (instantCast)
                 Launch();
-                return;
-            }
 
-            // cannot cast two spells at the same time, launch instead, should only be possible with CanCastWhileCasting
-            if (Caster.SpellCast.IsCasting || spellCastFlags.HasTargetFlag(SpellCastFlags.CastDirectly))
-                Launch();
+            return SpellCastResult.Success;
         }
 
         private void Launch()

@@ -25,7 +25,7 @@
         Interrupted,
         LevelRequirement,
         LineOfSight,
-        Moving,
+        Moving = 23,
         NotBehind,
         NotFlying,
         NotHere,

@@ -6,6 +6,7 @@ namespace Core
     {
         public const float SpeedCharge = 42.0f;
         public const int SplineStepsPerSegment = 3;
+        public const int SpellMovementInterruptThreshold = 200;
 
         public const float GridCellSwitchDifference = 1.0f;
         public const float MaxHeight = 100.0f;

@@ -97,3 +97,5 @@ MonoBehaviour:
     Value: Server started!
   - StringReference: {fileID: 11400000, guid: 986e308e59e320b449a92da15d69f686, type: 2}
     Value: Missing Localization
+  - StringReference: {fileID: 11400000, guid: eba3455c8a4912f4a8c7752453a7f34d, type: 2}
+    Value: Can't cast while moving
