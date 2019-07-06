@@ -8,9 +8,11 @@ namespace Core
         private readonly Unit owner;
 
         private Dictionary<int, SpellCooldown> SpellCooldowns { get; set; }
-        private float GlobalCooldown { get; set; }
 
-        public bool HasGlobalCooldown => GlobalCooldown > 0.0f;
+        public int GlobalCooldown { get; private set; }
+        public int GlobalCooldownLeft { get; private set; }
+        public float GlobalCooldownRatio => (float) GlobalCooldownLeft / GlobalCooldown;
+        public bool HasGlobalCooldown => GlobalCooldownLeft > 0;
 
         public SpellHistory(Unit owner)
         {
@@ -24,9 +26,27 @@ namespace Core
             SpellCooldowns.Clear();
         }
 
+        internal void DoUpdate(int deltaTime)
+        {
+            if (GlobalCooldownLeft > 0)
+                GlobalCooldownLeft = Mathf.Clamp(GlobalCooldownLeft - deltaTime, 0, GlobalCooldownLeft);
+        }
+
         public bool IsReady(SpellInfo spellInfo) => !HasCooldown(spellInfo.Id);
 
         public bool HasCooldown(int spellInfoId) => SpellCooldowns.ContainsKey(spellInfoId);
+
+        public void StartGlobalCooldown(SpellInfo spellInfo)
+        {
+            if (spellInfo.HasAttribute(SpellExtraAttributes.DoesNotTriggerGcd))
+                return;
+
+            if (GlobalCooldownLeft > spellInfo.GlobalCooldownTime)
+                return;
+
+            GlobalCooldown = spellInfo.GlobalCooldownTime;
+            GlobalCooldownLeft = GlobalCooldown;
+        }
 
         internal void HandleCooldowns(SpellInfo spellInfo)
         {
@@ -36,7 +56,7 @@ namespace Core
 
         internal void StartCooldown(SpellInfo spellInfo)
         {
-            float cooldown = spellInfo.RecoveryTime;
+            float cooldown = spellInfo.CooldownTime;
 
             float currentTime = Time.time;
 

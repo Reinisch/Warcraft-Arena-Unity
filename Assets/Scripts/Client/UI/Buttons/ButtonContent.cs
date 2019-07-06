@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Core;
 using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
 
 namespace Client
@@ -13,6 +14,8 @@ namespace Client
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private InputReference input;
         [SerializeField, UsedImplicitly] private Image contentImage;
+        [SerializeField, UsedImplicitly] private Image cooldownImage;
+        [SerializeField, UsedImplicitly] private TextMeshProUGUI cooldownText;
         [SerializeField, UsedImplicitly] private Button button;
         [SerializeField, UsedImplicitly] private ButtonContentType contentType;
         [SerializeField, UsedImplicitly] private int itemId;
@@ -25,6 +28,8 @@ namespace Client
         private bool isPointerDown;
         private bool isHotkeyDown;
 
+        private SpellInfo spellInfo;
+
         public bool IsAlreadyPressed => isPointerDown || isHotkeyDown;
 
         public void Initialize(ButtonSlot buttonSlot)
@@ -32,19 +37,7 @@ namespace Client
             manualPointerData = new PointerEventData(EventSystem.current);
             ButtonSlot = buttonSlot;
 
-            switch (contentType)
-            {
-                case ButtonContentType.Spell when balance.SpellInfosById.ContainsKey(itemId):
-                    ContentImage.sprite = rendering.SpellVisualSettingsById.ContainsKey(itemId)
-                        ? rendering.SpellVisualSettingsById[itemId].SpellIcon
-                        : rendering.DefaultSpellIcon;
-                    break;
-                case ButtonContentType.Empty:
-                    Remove();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(contentType), $"Unknown button content: {contentType} with id: {itemId}");
-            }
+            UpdateContent();
         }
 
         public void Deinitialize()
@@ -54,47 +47,18 @@ namespace Client
             isPointerDown = false;
         }
 
-        public void UpdateButton()
+        public void DoUpdate()
         {
-            /*if (spell != null)
+            switch (contentType)
             {
-                if (spell.spellCooldown.HasCooldown)
-                {
-                    if (hasCooldown == false)
-                    {
-                        Image.color = new Color(Image.color.r / 2, Image.color.g / 2, Image.color.b / 2, Image.color.a);
-                        hasCooldown = true;
-                    }
-                    double timeLeft = spell.spellCooldown.timeLeft;
-                    if (timeLeft > 1)
-                        timeLeft = Math.Round(timeLeft, 0);
-                    else
-                        timeLeft = Math.Round(timeLeft, 1);
-    
-                    if (timeLeft != 0)
-                    {
-                        ButtonSlot.TimerText.text = timeLeft.ToString();
-                        ButtonSlot.CooldownShade.fillAmount = spell.spellCooldown.timeLeft / spell.spellCooldown.duration;
-                    }
-                    else
-                    {
-                        Image.color = new Color(Image.color.r * 2, Image.color.g * 2, Image.color.b * 2, Image.color.a);
-                        ButtonSlot.CooldownShade.fillAmount = 0;
-                        ButtonSlot.TimerText.text = "";
-                        hasCooldown = false;
-                    }
-                }
-                else
-                {
-                    if (hasCooldown)
-                    {
-                        Image.color = new Color(Image.color.r * 2, Image.color.g * 2, Image.color.b * 2, Image.color.a);
-                        ButtonSlot.CooldownShade.fillAmount = 0;
-                        ButtonSlot.TimerText.text = "";
-                        hasCooldown = false;
-                    }
-                }
-            }*/
+                case ButtonContentType.Spell:
+                    UpdateSpell();
+                    break;
+                case ButtonContentType.Empty:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(contentType), $"Unknown button content: {contentType} with id: {itemId}");
+            }
         }
 
         public void Activate()
@@ -119,8 +83,11 @@ namespace Client
             contentType = ButtonContentType.Empty;
             itemId = 0;
 
+            spellInfo = null;
             ContentImage.sprite = null;
             ContentImage.enabled = false;
+            cooldownText.text = string.Empty;
+            cooldownImage.fillAmount = 0;
             enabled = false;
         }
 
@@ -167,6 +134,45 @@ namespace Client
 
         public void Replace(ButtonContent newContent)
         {
+        }
+
+        private void UpdateContent()
+        {
+            switch (contentType)
+            {
+                case ButtonContentType.Spell when balance.SpellInfosById.ContainsKey(itemId):
+                    spellInfo = balance.SpellInfosById[itemId];
+                    ContentImage.sprite = rendering.SpellVisualSettingsById.ContainsKey(itemId)
+                        ? rendering.SpellVisualSettingsById[itemId].SpellIcon
+                        : rendering.DefaultSpellIcon;
+                    break;
+                case ButtonContentType.Spell:
+                case ButtonContentType.Empty:
+                    Remove();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(contentType), $"Unknown button content: {contentType} with id: {itemId}");
+            }
+        }
+
+        private void UpdateSpell()
+        {
+            Player player = input.Player;
+            if (player == null)
+                return;
+
+            if (!player.SpellHistory.HasGlobalCooldown || spellInfo.HasAttribute(SpellExtraAttributes.IgnoreGcd))
+            {
+                cooldownText.text = string.Empty;
+                cooldownImage.fillAmount = 0;
+            }
+            else
+            {
+                //double timeLeft = player.SpellHistory.GlobalCooldownLeft / 1000.0d;
+                //timeLeft = Math.Round(timeLeft, timeLeft > 1.0d ? 0 : 1);
+                cooldownText.text = string.Empty;
+                cooldownImage.fillAmount = player.SpellHistory.GlobalCooldownRatio;
+            }
         }
     }
 }

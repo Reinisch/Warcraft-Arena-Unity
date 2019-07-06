@@ -31,8 +31,9 @@ namespace Core
 
         [SerializeField, UsedImplicitly] private int duration;
         [SerializeField, UsedImplicitly] private int maxDuration;
-        [SerializeField, UsedImplicitly] private int recoveryTime;
-        [SerializeField, UsedImplicitly] private int categoryRecoveryTime;
+        [SerializeField, UsedImplicitly] private int cooldownTime;
+        [SerializeField, UsedImplicitly] private int categoryCooldownTime;
+        [SerializeField, UsedImplicitly] private int globalCooldownTime;
         [SerializeField, UsedImplicitly] private int castTime;
         [SerializeField, UsedImplicitly] private int minCastTime;
 
@@ -77,8 +78,9 @@ namespace Core
 
         public int Duration => duration;
         public int MaxDuration => maxDuration;
-        public int RecoveryTime => recoveryTime;
-        public int CategoryRecoveryTime => categoryRecoveryTime;
+        public int CooldownTime => cooldownTime;
+        public int CategoryCooldownTime => categoryCooldownTime;
+        public int GlobalCooldownTime => globalCooldownTime;
         public int CastTime => castTime;
         public int MinCastTime => minCastTime;
 
@@ -345,7 +347,7 @@ namespace Core
 
         public int GetRecoveryTime()
         {
-            return RecoveryTime > CategoryRecoveryTime ? RecoveryTime : CategoryRecoveryTime;
+            return CooldownTime > CategoryCooldownTime ? CooldownTime : CategoryCooldownTime;
         }
 
         public List<SpellResourceCost> CalcPowerCost(Unit caster, SpellSchoolMask schoolMask)

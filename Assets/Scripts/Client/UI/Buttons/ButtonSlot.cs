@@ -35,7 +35,7 @@ namespace Client
 
         public void DoUpdate()
         {
-            buttonContent.UpdateButton();
+            buttonContent.DoUpdate();
         }
 
         [UsedImplicitly, Description("Also called from manually pressing button.")]

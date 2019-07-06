@@ -219,6 +219,7 @@ namespace Core
         {
             base.DoUpdate(deltaTime);
 
+            SpellHistory.DoUpdate(deltaTime);
             controller.DoUpdate();
         }
 

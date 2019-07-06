@@ -19,7 +19,7 @@ namespace Core
         OnlyVisibleToCaster = 1 << 11,
         CanTargetUntargetable = 1 << 12,
         DispelCharges = 1 << 13,
-        SpecialDelayCalculation = 1 << 14,
-        DisabledWhileActive = 1 << 15
+        DoesNotTriggerGcd = 1 << 14,
+        IgnoreGcd = 1 << 15
     }
 }

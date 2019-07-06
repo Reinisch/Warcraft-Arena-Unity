@@ -22,15 +22,16 @@ MonoBehaviour:
   schoolMask: 0
   preventionType: 1
   attributes: 0
-  attributesExtra: 72
+  attributesExtra: 32840
   attributesCustom: 0
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0
   duration: 0
   maxDuration: 0
-  recoveryTime: 0
-  categoryRecoveryTime: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 0
   castTime: 0
   minCastTime: 0
   minRangeHostile: 0

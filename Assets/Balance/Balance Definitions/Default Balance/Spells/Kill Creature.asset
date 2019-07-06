@@ -29,8 +29,9 @@ MonoBehaviour:
   interruptFlags: 0
   duration: 0
   maxDuration: 0
-  recoveryTime: 0
-  categoryRecoveryTime: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 500
   castTime: 0
   minCastTime: 0
   minRangeHostile: 0

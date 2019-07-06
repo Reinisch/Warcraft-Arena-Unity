@@ -43,6 +43,9 @@ namespace Core
             if (info.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
                 spellCastFlags = spellCastFlags | SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
 
+            if (info.HasAttribute(SpellExtraAttributes.IgnoreGcd))
+                spellCastFlags |= SpellCastFlags.IgnoreGcd;
+
             CanReflect = SpellInfo.DamageClass == SpellDamageClass.Magic && !SpellInfo.HasAttribute(SpellAttributes.CantBeReflected) &&
                 !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive() && !SpellInfo.IsPositive();
 
@@ -149,10 +152,7 @@ namespace Core
             if (result != SpellCastResult.Success)
                 return result;
 
-            if (SpellInfo.CastTime > 0.0f)
-                Cast();
-            else
-                Launch();
+            Cast();
 
             return result;
         }
@@ -216,6 +216,13 @@ namespace Core
 
             CastTime = SpellInfo.CastTime;
             CastTimeLeft = CastTime;
+            Caster.SpellHistory.StartGlobalCooldown(SpellInfo);
+
+            if (CastTime <= 0.0f)
+            {
+                Launch();
+                return;
+            }
 
             // cannot cast two spells at the same time, launch instead, should only be possible with CanCastWhileCasting
             if (Caster.SpellCast.IsCasting || spellCastFlags.HasTargetFlag(SpellCastFlags.CastDirectly))
