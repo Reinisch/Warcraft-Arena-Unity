@@ -30,7 +30,7 @@ namespace Server
                 return;
             }
 
-            SpellCastResult castResult = caster.CastSpell(spellInfo);
+            SpellCastResult castResult = caster.CastSpell(spellInfo, new SpellCastingOptions(movementFlags: (MovementFlags)spellCastRequest.MovementFlags));
             if (castResult != SpellCastResult.Success)
             {
                 spellCastAnswer.Result = (int)castResult;

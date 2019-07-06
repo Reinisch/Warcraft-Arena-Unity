@@ -29,6 +29,8 @@ namespace Core
         public const int VertexSize = 3;
         public const int InvalidPolyref = 0;
 
+        public static bool IsMoving(this MovementFlags movementFlags) => (movementFlags & MovementFlags.MaskMoving) != 0;
+
         public static float ComputeFallTime(float pathLength, bool isSafeFall)
         {
             if (pathLength < 0.0f)

@@ -12,6 +12,7 @@ namespace Core
         private readonly SpellManager spellManager;
         private readonly SpellSchoolMask spellSchoolMask;
         private readonly SpellCastFlags spellCastFlags;
+        private readonly MovementFlags casterMovementFlags;
 
         private SpellExplicitTargets ExplicitTargets { get; }
         private SpellImplicitTargets ImplicitTargets { get; }
@@ -28,12 +29,13 @@ namespace Core
         internal SpellState SpellState { get; set; }
         internal SpellExecutionState ExecutionState { get; private set; }
 
-        internal Spell(Unit caster, SpellInfo info, SpellExplicitTargets explicitTargets, SpellCastFlags spellFlags)
+        internal Spell(Unit caster, SpellInfo info, SpellCastingOptions options)
         {
             Logging.LogSpell($"Created new spell, current count: {++SpellManager.SpellAliveCount}");
 
             spellManager = caster.WorldManager.SpellManager;
-            spellCastFlags = spellFlags;
+            spellCastFlags = options.SpellFlags;
+            casterMovementFlags = options.MovementFlags ?? caster.MovementInfo.Flags;
             spellSchoolMask = info.SchoolMask;
 
             CastTime = CastTimeLeft = EffectDamage = EffectHealing = 0;
@@ -49,7 +51,7 @@ namespace Core
             CanReflect = SpellInfo.DamageClass == SpellDamageClass.Magic && !SpellInfo.HasAttribute(SpellAttributes.CantBeReflected) &&
                 !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive() && !SpellInfo.IsPositive();
 
-            ExplicitTargets = explicitTargets ?? new SpellExplicitTargets();
+            ExplicitTargets = options.Targets ?? new SpellExplicitTargets();
             ImplicitTargets = new SpellImplicitTargets(this);
 
             spellManager.Add(this);
@@ -220,8 +222,7 @@ namespace Core
 
             // cast if needed, if already casting launch instead, should only be possible with CanCastWhileCasting
             bool instantCast = CastTime <= 0.0f || Caster.SpellCast.IsCasting || spellCastFlags.HasTargetFlag(SpellCastFlags.CastDirectly);
-
-            if (!instantCast && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.MovementInfo.IsMoving)
+            if (casterMovementFlags.IsMoving() && !instantCast && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving))
                 return SpellCastResult.Moving;
 
             Caster.SpellHistory.StartGlobalCooldown(SpellInfo);

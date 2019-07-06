@@ -61,13 +61,20 @@ namespace Client
 
         public void CastSpell(int spellId)
         {
+            if (!Player.ExistsIn(World))
+                return;
+
             SpellCastRequestEvent spellCastRequest = SpellCastRequestEvent.Create(Bolt.GlobalTargets.OnlyServer);
             spellCastRequest.SpellId = spellId;
+            spellCastRequest.MovementFlags = (int) Player.MovementInfo.Flags;
             spellCastRequest.Send();
         }
 
         public void StopCasting()
         {
+            if (!Player.ExistsIn(World))
+                return;
+
             SpellCastCancelRequestEvent.Create(Bolt.GlobalTargets.OnlyServer).Send();
         }
 

@@ -390,9 +390,9 @@ namespace Core
 
         #region Spell Handling
 
-        internal SpellCastResult CastSpell(SpellInfo spellInfo, SpellExplicitTargets targets = null, SpellCastFlags spellFlags = 0)
+        internal SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastingOptions castOptions)
         {
-            Spell spell = new Spell(this, spellInfo, targets, spellFlags);
+            Spell spell = new Spell(this, spellInfo, castOptions);
 
             SpellCastResult castResult = spell.Prepare();
             if (castResult != SpellCastResult.Success)

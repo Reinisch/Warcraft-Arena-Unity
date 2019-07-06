@@ -8,10 +8,9 @@
         private IMoveState localMoveState;
         private Unit unit;
 
-        private MovementFlags Flags { get; set; }
-
+        public MovementFlags Flags { get; private set; }
         public bool Jumping { get; set; }
-        public bool IsMoving => (Flags & MovementFlags.MaskMoving) != 0;
+        public bool IsMoving => Flags.IsMoving();
 
         public void Attached(IUnitState unitState, Unit unit)
         {

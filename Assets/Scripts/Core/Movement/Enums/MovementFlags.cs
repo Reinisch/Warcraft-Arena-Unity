@@ -3,7 +3,7 @@
 namespace Core
 {
     /// <summary>
-    /// Compressed to 12 bits in UnitState and MoveState.
+    /// Compressed to 12 bits in UnitState and MoveState, SpellCastRequestEvent.
     /// </summary>
     [Flags]
     public enum MovementFlags
