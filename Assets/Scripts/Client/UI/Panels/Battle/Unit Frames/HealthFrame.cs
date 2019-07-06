@@ -27,9 +27,9 @@ namespace Client
             }
         }
 
-        public float CurrentFrameAlpha { get => frameCanvasGroup.alpha; set => frameCanvasGroup.alpha = value; }
         public float TargetFrameAlpha { get; set; }
-        public float AlphaTransitionSpeed { get; set; } = 2.0f;
+        public float CurrentFrameAlpha { private get => frameCanvasGroup.alpha; set => frameCanvasGroup.alpha = value; }
+        public float AlphaTransitionSpeed { private get; set; } = 2.0f;
 
         public AttributeBar HealthBar => healthBar;
 

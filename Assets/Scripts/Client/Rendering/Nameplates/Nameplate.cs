@@ -53,7 +53,7 @@ namespace Client
             canvas.enabled = UnitRenderer != null;
         }
 
-        public void UpdateSelection()
+        public void UpdateSelection(bool instantAlphaTransition = false)
         {
             Player referer = renderReference.Player;
             Unit target = UnitRenderer.Unit;
@@ -67,7 +67,7 @@ namespace Client
             unitName.color = showHealth ? HostilitySettings.NameWithPlateColor : HostilitySettings.NameWithoutPlateColor;
 
             healthFrame.TargetFrameAlpha = showHealth ? 1.0f : 0.0f;
-            if (isSelected && showHealth)
+            if (instantAlphaTransition || isSelected && showHealth)
                 healthFrame.CurrentFrameAlpha = healthFrame.TargetFrameAlpha;
         }
 
@@ -118,6 +118,7 @@ namespace Client
             unitName.text = unitRenderer.Unit.Name;
             castFrame.UpdateCaster(unitRenderer.Unit);
             healthFrame.Unit = unitRenderer.Unit;
+            healthFrame.AlphaTransitionSpeed = nameplateSettings.HealthAlphaTrasitionSpeed;
 
             OnFactionChanged();
 
@@ -154,7 +155,7 @@ namespace Client
 
             InDetailRange = referer.DistanceTo(target) < nameplateSettings.DetailedDistance;
 
-            UpdateSelection();
+            UpdateSelection(true);
 
             ApplyScaling();
         }

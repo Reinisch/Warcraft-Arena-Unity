@@ -39,9 +39,8 @@ namespace Client
         [SerializeField, UsedImplicitly] private float maxDistance;
         [SerializeField, UsedImplicitly] private float detailedDistance;
         [SerializeField, UsedImplicitly] private float distanceThreshold;
+        [SerializeField, UsedImplicitly] private float healthAlphaTrasitionSpeed;
         [SerializeField, UsedImplicitly, HideInInspector] private float maxDistanceSqr;
-        [SerializeField, UsedImplicitly, HideInInspector] private float detailedDistanceSqr;
-        [SerializeField, UsedImplicitly, HideInInspector] private float outrangeThresholdSqr;
 
         public HostilitySettings Self => self;
         public HostilitySettings Friendly => friendly;
@@ -52,15 +51,12 @@ namespace Client
         public float DetailedDistance => detailedDistance;
         public float DistanceThreshold => distanceThreshold;
         public float MaxDistanceSqr => maxDistanceSqr;
-        public float DetailedDistanceSqr => detailedDistanceSqr;
-        public float OutrangeThresholdSqr => outrangeThresholdSqr;
+        public float HealthAlphaTrasitionSpeed => healthAlphaTrasitionSpeed;
 
         [UsedImplicitly]
         private void OnValidate()
         {
             maxDistanceSqr = maxDistance;
-            detailedDistanceSqr = detailedDistance;
-            outrangeThresholdSqr = distanceThreshold;
         }
     }
 }

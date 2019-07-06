@@ -88,6 +88,5 @@ MonoBehaviour:
   maxDistance: 60
   detailedDistance: 30
   distanceThreshold: 5
+  healthAlphaTrasitionSpeed: 2.5
   maxDistanceSqr: 60
-  detailedDistanceSqr: 30
-  outrangeThresholdSqr: 5
