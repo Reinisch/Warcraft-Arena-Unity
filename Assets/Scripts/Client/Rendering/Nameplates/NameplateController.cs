@@ -75,7 +75,7 @@ namespace Client
                 EventHandler.UnregisterEvent(rendering.Player, GameEvents.UnitTargetChanged, OnPlayerTargetChanged);
             }
 
-            public void DoUpdate()
+            public void DoUpdate(float deltaTime)
             {
                 for (int i = unplatedRenderers.Count - 1; i >= 0; i--)
                 {
@@ -88,10 +88,9 @@ namespace Client
 
                 for (int i = activeNameplates.Count - 1; i >= 0; i--)
                 {
-                    if (!activeNameplates[i].DoUpdate())
+                    if (!activeNameplates[i].DoUpdate(deltaTime))
                     {
                         unplatedRenderers.Add(activeNameplates[i].UnitRenderer);
-
                         DespawnNameplate(activeNameplates[i]);
                     }
                 }

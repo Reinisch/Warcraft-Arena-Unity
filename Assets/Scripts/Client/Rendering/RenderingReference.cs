@@ -49,7 +49,7 @@ namespace Client
             foreach (var unitRenderer in unitRenderers)
                 unitRenderer.DoUpdate(deltaTime);
 
-            nameplateController.DoUpdate();
+            nameplateController.DoUpdate(deltaTime);
             floatingTextController.DoUpdate(deltaTime);
             spellVisualController.DoUpdate(deltaTime);
         }

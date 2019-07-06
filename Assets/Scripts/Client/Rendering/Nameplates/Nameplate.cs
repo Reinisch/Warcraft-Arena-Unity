@@ -13,8 +13,7 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private Canvas canvas;
         [SerializeField, UsedImplicitly] private CanvasGroup generalCanvasGroup;
-        [SerializeField, UsedImplicitly] private AttributeBar health;
-        [SerializeField, UsedImplicitly] private GameObject healthFrame;
+        [SerializeField, UsedImplicitly] private HealthFrame healthFrame;
         [SerializeField, UsedImplicitly] private GameObject contentFrame;
         [SerializeField, UsedImplicitly] private CastFrame castFrame;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI unitName;
@@ -23,7 +22,6 @@ namespace Client
         [SerializeField, UsedImplicitly] private NameplateSettings nameplateSettings;
         [SerializeField, UsedImplicitly] private GameOptionBool showDeselectedHealthOption;
 
-        private readonly Action<EntityAttributes> onAttributeChangedAction;
         private readonly Action onFactionChangedAction;
 
         private bool InDetailRange { get; set; }
@@ -33,7 +31,6 @@ namespace Client
 
         private Nameplate()
         {
-            onAttributeChangedAction = OnAttributeChanged;
             onFactionChangedAction = OnFactionChanged;
         }
 
@@ -62,21 +59,24 @@ namespace Client
             Unit target = UnitRenderer.Unit;
 
             bool isSelected = referer.Target == target;
-            generalCanvasGroup.alpha = isSelected
-                ? HostilitySettings.SelectedGeneralAlpha
-                : HostilitySettings.DeselectedGeneralAlpha;
-
             bool showDetails = InDetailRange || isSelected;
+            bool showHealth = showDetails && HostilitySettings.ShowHealth && (isSelected || showDeselectedHealthOption.Value);
+
+            generalCanvasGroup.alpha = isSelected ? HostilitySettings.SelectedGeneralAlpha : HostilitySettings.DeselectedGeneralAlpha;
             castFrame.gameObject.SetActive(showDetails && HostilitySettings.ShowCast);
-            healthFrame.gameObject.SetActive(showDetails && HostilitySettings.ShowHealth && (isSelected || showDeselectedHealthOption.Value));
-            unitName.color = healthFrame.activeSelf ? HostilitySettings.NameWithPlateColor : HostilitySettings.NameWithoutPlateColor;
+            unitName.color = showHealth ? HostilitySettings.NameWithPlateColor : HostilitySettings.NameWithoutPlateColor;
+
+            healthFrame.TargetFrameAlpha = showHealth ? 1.0f : 0.0f;
+            if (isSelected && showHealth)
+                healthFrame.CurrentFrameAlpha = healthFrame.TargetFrameAlpha;
         }
 
-        public bool DoUpdate()
+        public bool DoUpdate(float deltaTime)
         {
             float distanceToPlayer = renderReference.Player.DistanceTo(UnitRenderer.Unit);
             transform.rotation = Quaternion.LookRotation(canvas.worldCamera.transform.forward);
 
+            healthFrame.DoUpdate(deltaTime);
             if (castFrame.gameObject.activeSelf)
                 castFrame.DoUpdate();
 
@@ -117,28 +117,21 @@ namespace Client
 
             unitName.text = unitRenderer.Unit.Name;
             castFrame.UpdateCaster(unitRenderer.Unit);
+            healthFrame.Unit = unitRenderer.Unit;
 
-            OnAttributeChanged(EntityAttributes.Health);
             OnFactionChanged();
 
-            EventHandler.RegisterEvent(UnitRenderer.Unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
             EventHandler.RegisterEvent(UnitRenderer.Unit, GameEvents.UnitFactionChanged, onFactionChangedAction);
         }
 
         private void Deinitialize()
         {
             EventHandler.RegisterEvent(UnitRenderer.Unit, GameEvents.UnitFactionChanged, onFactionChangedAction);
-            EventHandler.UnregisterEvent(UnitRenderer.Unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
 
             castFrame.UpdateCaster(null);
+            healthFrame.Unit = null;
 
             UnitRenderer = null;
-        }
-
-        private void OnAttributeChanged(EntityAttributes attributeType)
-        {
-            if (attributeType == EntityAttributes.Health || attributeType == EntityAttributes.MaxHealth)
-                health.Ratio = UnitRenderer.Unit.HealthRatio;
         }
 
         private void OnFactionChanged()
@@ -156,7 +149,7 @@ namespace Client
                 HostilitySettings = nameplateSettings.Neutral;
 
             unitName.gameObject.SetActive(HostilitySettings.ShowName);
-            health.FillImage.color = HostilitySettings.HealthColor;
+            healthFrame.HealthBar.FillImage.color = HostilitySettings.HealthColor;
             unitName.color = HostilitySettings.NameWithoutPlateColor;
 
             InDetailRange = referer.DistanceTo(target) < nameplateSettings.DetailedDistance;

@@ -141,8 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 7923332233528264068}
   generalCanvasGroup: {fileID: 3662168371871093192}
-  health: {fileID: 643503724812707625}
-  healthFrame: {fileID: 9217751846384958086}
+  healthFrame: {fileID: 7602491069641291433}
   contentFrame: {fileID: 1609385048972084374}
   castFrame: {fileID: 5286543151840290411}
   unitName: {fileID: 2014926800352644438}
@@ -1342,6 +1341,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 271763054548855453}
+  - component: {fileID: 224064428966510485}
+  - component: {fileID: 7602491069641291433}
   m_Layer: 5
   m_Name: Health Frame
   m_TagString: Untagged
@@ -1371,3 +1372,29 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 2.1}
   m_SizeDelta: {x: 128.65, y: 15.5}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &224064428966510485
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9217751846384958086}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &7602491069641291433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9217751846384958086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83e2d51f20164a044b911cc426f5ac25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frameCanvasGroup: {fileID: 224064428966510485}
+  healthBar: {fileID: 643503724812707625}
