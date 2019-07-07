@@ -236,7 +236,7 @@ namespace Core
         private void Launch()
         {
             ExecutionState = SpellExecutionState.Processing;
-            Caster.SpellHistory.HandleCooldowns(SpellInfo);
+            Caster.SpellHistory.StartCooldown(SpellInfo);
             SelectImplicitTargets();
 
             for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)

@@ -5,9 +5,9 @@ namespace Core
 {
     public class SpellHistory
     {
+        private readonly Dictionary<int, SpellCooldown> spellCooldownsById = new Dictionary<int, SpellCooldown>();
+        private readonly List<SpellCooldown> spellCooldowns = new List< SpellCooldown>();
         private Unit unit;
-
-        private Dictionary<int, SpellCooldown> SpellCooldowns { get; set; }
 
         public int GlobalCooldown { get; private set; }
         public int GlobalCooldownLeft { get; private set; }
@@ -18,15 +18,14 @@ namespace Core
         {
             this.unit = unit;
 
-            SpellCooldowns = new Dictionary<int, SpellCooldown>();
-
             if (!unit.IsOwner)
                 unit.EntityState.AddCallback(nameof(unit.EntityState.GlobalCooldown), OnGlobalCooldownChanged);
         }
 
         internal void Dispose()
         {
-            SpellCooldowns.Clear();
+            spellCooldowns.Clear();
+            spellCooldownsById.Clear();
 
             unit = null;
         }
@@ -35,11 +34,17 @@ namespace Core
         {
             if (GlobalCooldownLeft > 0)
                 GlobalCooldownLeft = Mathf.Clamp(GlobalCooldownLeft - deltaTime, 0, GlobalCooldownLeft);
+
+            foreach (SpellCooldown cooldown in spellCooldowns)
+            {
+                if (cooldown.CooldownLeft > 0 && !cooldown.OnHold)
+                    cooldown.CooldownLeft -= deltaTime;
+            }
         }
 
-        public bool IsReady(SpellInfo spellInfo) => !HasCooldown(spellInfo.Id);
+        public bool IsReady(SpellInfo spellInfo) => !HasCooldown(spellInfo.Id, out _);
 
-        public bool HasCooldown(int spellInfoId) => SpellCooldowns.ContainsKey(spellInfoId);
+        public bool HasCooldown(int spellInfoId, out SpellCooldown cooldown) => spellCooldownsById.TryGetValue(spellInfoId, out cooldown) && cooldown.CooldownLeft > 0;
 
         internal void StartGlobalCooldown(SpellInfo spellInfo)
         {
@@ -56,41 +61,28 @@ namespace Core
             unit.EntityState.GlobalCooldown.ServerFrame = BoltNetwork.ServerFrame;
         }
 
-        internal void HandleCooldowns(SpellInfo spellInfo)
-        {
-            if (!spellInfo.IsPassive())
-                StartCooldown(spellInfo);
-        }
-
         internal void StartCooldown(SpellInfo spellInfo)
         {
-            float cooldown = spellInfo.CooldownTime;
-
-            float currentTime = Time.time;
-
-            // replace negative cooldowns by 0
-            if (cooldown < 0)
-                cooldown = 0;
-
-            // no cooldown after applying spell mods
-            if (cooldown == 0)
+            if (spellInfo.IsPassive())
                 return;
 
-            float recTime = currentTime + cooldown;
+            int cooldownLeft = spellInfo.CooldownTime;
 
-            // self spell cooldown
-            if (recTime != currentTime)
-                AddCooldown(spellInfo.Id, recTime);
-        }
+            if (cooldownLeft < 0)
+                cooldownLeft = 0;
 
-        internal void AddCooldown(int spellId, float cooldownEnd)
-        {
-            SpellCooldown spellCooldown = new SpellCooldown(spellId, cooldownEnd);
-
-            if (SpellCooldowns.ContainsKey(spellId))
-                SpellCooldowns[spellId] = spellCooldown;
+            if (spellCooldownsById.TryGetValue(spellInfo.Id, out SpellCooldown spellCooldown))
+            {
+                spellCooldown.Cooldown = cooldownLeft;
+                spellCooldown.CooldownLeft = cooldownLeft;
+                spellCooldown.OnHold = false;
+            }
             else
-                SpellCooldowns.Add(spellId, spellCooldown);
+            {
+                var newCooldown = new SpellCooldown(cooldownLeft, cooldownLeft);
+                spellCooldownsById[spellInfo.Id] = newCooldown;
+                spellCooldowns.Add(newCooldown);
+            }
         }
 
         private void OnGlobalCooldownChanged()

@@ -12,6 +12,9 @@ namespace Common
         public const int Year = Month * 12;
         public const int InMilliseconds = 1000;
 
+        public const int HourInMilliseconds = Hour * InMilliseconds;
+        public const int DayInMilliseconds = Day * InMilliseconds;
+
         public static long NowInMilliseconds => DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
     }
 }

@@ -27,7 +27,7 @@ namespace Client
         private PointerEventData manualPointerData;
         private bool isPointerDown;
         private bool isHotkeyDown;
-
+        private bool showingTimer;
         private SpellInfo spellInfo;
 
         public bool IsAlreadyPressed => isPointerDown || isHotkeyDown;
@@ -161,17 +161,40 @@ namespace Client
             if (player == null)
                 return;
 
+            int cooldownTimeLeft;
+            int cooldownTime;
+            bool showTimer = showingTimer;
+
             if (!player.SpellHistory.HasGlobalCooldown || spellInfo.HasAttribute(SpellExtraAttributes.IgnoreGcd))
+                cooldownTimeLeft = cooldownTime = 0;
+            else
+            {
+                cooldownTimeLeft = player.SpellHistory.GlobalCooldownLeft;
+                cooldownTime = player.SpellHistory.GlobalCooldown;
+            }
+
+            if (player.SpellHistory.HasCooldown(spellInfo.Id, out SpellCooldown spellCooldown) && spellCooldown.CooldownLeft > cooldownTimeLeft)
+            {
+                showTimer = true;
+                cooldownTimeLeft = spellCooldown.CooldownLeft;
+                cooldownTime = spellCooldown.Cooldown;
+            }
+
+            if (cooldownTimeLeft == 0)
             {
                 cooldownText.text = string.Empty;
                 cooldownImage.fillAmount = 0;
+                showingTimer = false;
             }
             else
             {
-                //double timeLeft = player.SpellHistory.GlobalCooldownLeft / 1000.0d;
-                //timeLeft = Math.Round(timeLeft, timeLeft > 1.0d ? 0 : 1);
-                cooldownText.text = string.Empty;
-                cooldownImage.fillAmount = player.SpellHistory.GlobalCooldownRatio;
+                if (showTimer)
+                    cooldownText.text = $"{(float) Math.Round(cooldownTimeLeft / 1000.0d, cooldownTimeLeft >= 1000 ? 0 : 1)}";
+                else
+                    cooldownText.text = string.Empty;
+
+                cooldownImage.fillAmount = (float) cooldownTimeLeft / cooldownTime;
+                showingTimer = showTimer;
             }
         }
     }

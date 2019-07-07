@@ -2,14 +2,14 @@
 {
     public class SpellCooldown
     {
-        public int SpellId { get; set; }
-        public float CooldownEnd { get; set; }
-        public bool OnHold { get; set; }
+        public int Cooldown { get; internal set; }
+        public int CooldownLeft { get; internal set; }
+        public bool OnHold { get; internal set; }
 
-        public SpellCooldown(int spellId, float cooldownEnd, bool onHold = false)
+        public SpellCooldown(int cooldown, int cooldownLeft, bool onHold = false)
         {
-            SpellId = spellId;
-            CooldownEnd = cooldownEnd;
+            Cooldown = cooldown;
+            CooldownLeft = cooldownLeft;
             OnHold = onHold;
         }
     }
