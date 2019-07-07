@@ -25,10 +25,13 @@ namespace Client
         public Image ContentImage => contentImage;
 
         private PointerEventData manualPointerData;
+        private SpellInfo spellInfo;
+
         private bool isPointerDown;
         private bool isHotkeyDown;
+
+        private char[] timerText = { ' ', ' ', ' ' };
         private bool showingTimer;
-        private SpellInfo spellInfo;
 
         public bool IsAlreadyPressed => isPointerDown || isHotkeyDown;
 
@@ -182,16 +185,16 @@ namespace Client
 
             if (cooldownTimeLeft == 0)
             {
-                cooldownText.text = string.Empty;
+                cooldownText.SetCharArray(timerText, 0, 0);
                 cooldownImage.fillAmount = 0;
                 showingTimer = false;
             }
             else
             {
                 if (showTimer)
-                    cooldownText.text = $"{(float) Math.Round(cooldownTimeLeft / 1000.0d, cooldownTimeLeft >= 1000 ? 0 : 1)}";
+                    cooldownText.SetCharArray(timerText.SetSpellCooldownNonAlloc(cooldownTimeLeft, out int length), 0, length);
                 else
-                    cooldownText.text = string.Empty;
+                    cooldownText.SetCharArray(timerText, 0, 0);
 
                 cooldownImage.fillAmount = (float) cooldownTimeLeft / cooldownTime;
                 showingTimer = showTimer;

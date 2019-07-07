@@ -4,7 +4,8 @@ namespace Common
 {
     public static class TimeUtils
     {
-        public const int Minute = 60;
+        public const int Second = 1;
+        public const int Minute = Second * 60;
         public const int Hour = Minute * 60;
         public const int Day = Hour * 24;
         public const int Week = Day * 7;
@@ -12,6 +13,8 @@ namespace Common
         public const int Year = Month * 12;
         public const int InMilliseconds = 1000;
 
+        public const int SecondInMilliseconds = Second * InMilliseconds;
+        public const int MinuteInMilliseconds = Minute * InMilliseconds;
         public const int HourInMilliseconds = Hour * InMilliseconds;
         public const int DayInMilliseconds = Day * InMilliseconds;
 
