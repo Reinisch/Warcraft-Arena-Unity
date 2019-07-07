@@ -5,7 +5,7 @@ namespace Core
 {
     public class SpellHistory
     {
-        private readonly Unit owner;
+        private Unit unit;
 
         private Dictionary<int, SpellCooldown> SpellCooldowns { get; set; }
 
@@ -14,16 +14,21 @@ namespace Core
         public float GlobalCooldownRatio => (float) GlobalCooldownLeft / GlobalCooldown;
         public bool HasGlobalCooldown => GlobalCooldownLeft > 0;
 
-        public SpellHistory(Unit owner)
+        public SpellHistory(Unit unit)
         {
-            this.owner = owner;
+            this.unit = unit;
 
             SpellCooldowns = new Dictionary<int, SpellCooldown>();
+
+            if (!unit.IsOwner)
+                unit.EntityState.AddCallback(nameof(unit.EntityState.GlobalCooldown), OnGlobalCooldownChanged);
         }
 
         internal void Dispose()
         {
             SpellCooldowns.Clear();
+
+            unit = null;
         }
 
         internal void DoUpdate(int deltaTime)
@@ -36,7 +41,7 @@ namespace Core
 
         public bool HasCooldown(int spellInfoId) => SpellCooldowns.ContainsKey(spellInfoId);
 
-        public void StartGlobalCooldown(SpellInfo spellInfo)
+        internal void StartGlobalCooldown(SpellInfo spellInfo)
         {
             if (spellInfo.HasAttribute(SpellExtraAttributes.DoesNotTriggerGcd))
                 return;
@@ -46,6 +51,9 @@ namespace Core
 
             GlobalCooldown = spellInfo.GlobalCooldownTime;
             GlobalCooldownLeft = GlobalCooldown;
+
+            unit.EntityState.GlobalCooldown.CooldownTime = GlobalCooldown;
+            unit.EntityState.GlobalCooldown.ServerFrame = BoltNetwork.ServerFrame;
         }
 
         internal void HandleCooldowns(SpellInfo spellInfo)
@@ -83,6 +91,25 @@ namespace Core
                 SpellCooldowns[spellId] = spellCooldown;
             else
                 SpellCooldowns.Add(spellId, spellCooldown);
+        }
+
+        private void OnGlobalCooldownChanged()
+        {
+            if (!unit.IsController)
+                return;
+
+            GlobalCooldown = unit.EntityState.GlobalCooldown.CooldownTime;
+
+            int expectedGlobalFrames = (int)(GlobalCooldown / BoltNetwork.FrameDeltaTime / 1000.0f);
+            if (expectedGlobalFrames > 0)
+            {
+                int globalServerFrame = unit.EntityState.GlobalCooldown.ServerFrame;
+                float cooldownLeftRatio = 1 - Mathf.Clamp01((float) (BoltNetwork.ServerFrame - globalServerFrame) / expectedGlobalFrames);
+
+                GlobalCooldownLeft = Mathf.RoundToInt(cooldownLeftRatio * GlobalCooldown);
+            }
+            else
+                GlobalCooldownLeft = 0;
         }
     }
 }
