@@ -4,16 +4,16 @@ namespace Core
 {
     public abstract class PhotonBoltBaseListener : GlobalEventListener
     {
-        protected WorldManager WorldManager;
+        protected WorldManager World;
 
         protected void Initialize(WorldManager worldManager)
         {
-            WorldManager = worldManager;
+            World = worldManager;
         }
 
         protected void Deinitialize()
         {
-            WorldManager = null;
+            World = null;
         }
 
         public override bool PersistBetweenStartupAndShutdown()

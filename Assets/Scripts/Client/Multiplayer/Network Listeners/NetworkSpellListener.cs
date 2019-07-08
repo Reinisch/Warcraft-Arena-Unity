@@ -24,7 +24,7 @@ namespace Client
         {
             base.OnEvent(spellDamageEvent);
 
-            if (LocalPlayer == null || !WorldManager.UnitManager.TryFind(spellDamageEvent.Target.PackedValue, out Unit target))
+            if (LocalPlayer == null || !World.UnitManager.TryFind(spellDamageEvent.Target.PackedValue, out Unit target))
                 return;
 
             EventHandler.ExecuteEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, 
@@ -40,6 +40,14 @@ namespace Client
                 LocalPlayer.Position = teleportEvent.TargetPosition;
                 LocalPlayer.MovementInfo.RemoveMovementFlag(MovementFlags.Ascending);
             }
+        }
+
+        public override void OnEvent(SpellCooldownEvent cooldownEvent)
+        {
+            base.OnEvent(cooldownEvent);
+
+            if (LocalPlayer.ExistsIn(World))
+                LocalPlayer.SpellHistory.Handle(cooldownEvent);
         }
     }
 }

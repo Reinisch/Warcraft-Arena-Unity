@@ -21,6 +21,7 @@
 
         ServerSpellLaunch,
         ServerSpellHit,
+        ServerSpellCooldown,
         ServerPlayerTeleport,
         ServerLaunched,
 

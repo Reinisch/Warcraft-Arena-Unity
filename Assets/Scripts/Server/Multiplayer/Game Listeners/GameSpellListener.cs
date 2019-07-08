@@ -13,6 +13,7 @@ namespace Server
             EventHandler.RegisterEvent<Unit, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.RegisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
+            EventHandler.RegisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
         }
 
         internal override void Dispose()
@@ -21,6 +22,7 @@ namespace Server
             EventHandler.UnregisterEvent<Unit, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.UnregisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
+            EventHandler.UnregisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
         }
 
         private void OnSpellDamageDone(Unit caster, Unit target, int damageAmount, bool isCrit)
@@ -74,6 +76,18 @@ namespace Server
                 SpellPlayerTeleportEvent spellTeleportEvent = SpellPlayerTeleportEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
                 spellTeleportEvent.TargetPosition = targetPosition;
                 spellTeleportEvent.Send();
+            }
+        }
+
+        private void OnServerSpellCooldown(Player player, SpellCooldown cooldown)
+        {
+            if (player.BoltEntity.Controller != null)
+            {
+                SpellCooldownEvent spellCooldownEvent = SpellCooldownEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
+                spellCooldownEvent.SpellId = cooldown.SpellId;
+                spellCooldownEvent.CooldownTime = cooldown.Cooldown;
+                spellCooldownEvent.ServerFrame = BoltNetwork.ServerFrame;
+                spellCooldownEvent.Send();
             }
         }
     }

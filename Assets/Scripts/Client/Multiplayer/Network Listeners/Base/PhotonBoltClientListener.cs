@@ -33,7 +33,7 @@ namespace Client
             {
                 Assert.IsNull(LocalPlayer, "Gained control of another player while already controlling one!");
 
-                LocalPlayer = (Player)WorldManager.UnitManager.Find(entity.NetworkId.PackedValue);
+                LocalPlayer = (Player)World.UnitManager.Find(entity.NetworkId.PackedValue);
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.PlayerControlGained, LocalPlayer);
             }
         }

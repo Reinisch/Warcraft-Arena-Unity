@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Common;
 using UnityEngine;
 
 namespace Core
@@ -11,7 +12,6 @@ namespace Core
 
         public int GlobalCooldown { get; private set; }
         public int GlobalCooldownLeft { get; private set; }
-        public float GlobalCooldownRatio => (float) GlobalCooldownLeft / GlobalCooldown;
         public bool HasGlobalCooldown => GlobalCooldownLeft > 0;
 
         public SpellHistory(Unit unit)
@@ -46,6 +46,20 @@ namespace Core
 
         public bool HasCooldown(int spellInfoId, out SpellCooldown cooldown) => spellCooldownsById.TryGetValue(spellInfoId, out cooldown) && cooldown.CooldownLeft > 0;
 
+        public void Handle(SpellCooldownEvent cooldownEvent)
+        {
+            int expectedCooldownFrames = (int)(cooldownEvent.CooldownTime / BoltNetwork.FrameDeltaTime / 1000.0f);
+            int framesPassed = BoltNetwork.ServerFrame - cooldownEvent.ServerFrame;
+
+            if (framesPassed > expectedCooldownFrames || expectedCooldownFrames < 1)
+                return;
+
+            float cooldownProgressLeft = 1.0f - (float) framesPassed / expectedCooldownFrames;
+            int cooldownTimeLeft = Mathf.RoundToInt(cooldownEvent.CooldownTime * cooldownProgressLeft);
+
+            AddCooldown(cooldownEvent.SpellId, cooldownEvent.CooldownTime, cooldownTimeLeft);
+        }
+
         internal void StartGlobalCooldown(SpellInfo spellInfo)
         {
             if (spellInfo.HasAttribute(SpellExtraAttributes.DoesNotTriggerGcd))
@@ -67,21 +81,30 @@ namespace Core
                 return;
 
             int cooldownLeft = spellInfo.CooldownTime;
+            if (cooldownLeft <= 0)
+                return;
 
-            if (cooldownLeft < 0)
-                cooldownLeft = 0;
+            SpellCooldown spellCooldown = AddCooldown(spellInfo.Id, cooldownLeft, cooldownLeft);
 
-            if (spellCooldownsById.TryGetValue(spellInfo.Id, out SpellCooldown spellCooldown))
+            if (unit is Player player && player.BoltEntity.Controller != null)
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, player, spellCooldown);
+        }
+
+        private SpellCooldown AddCooldown(int spellId, int cooldownTime, int cooldownTimeLeft)
+        {
+            if (spellCooldownsById.TryGetValue(spellId, out SpellCooldown spellCooldown))
             {
-                spellCooldown.Cooldown = cooldownLeft;
-                spellCooldown.CooldownLeft = cooldownLeft;
+                spellCooldown.Cooldown = cooldownTime;
+                spellCooldown.CooldownLeft = cooldownTimeLeft;
                 spellCooldown.OnHold = false;
+                return spellCooldown;
             }
             else
             {
-                var newCooldown = new SpellCooldown(cooldownLeft, cooldownLeft);
-                spellCooldownsById[spellInfo.Id] = newCooldown;
+                var newCooldown = new SpellCooldown(cooldownTime, cooldownTimeLeft, spellId);
+                spellCooldownsById[spellId] = newCooldown;
                 spellCooldowns.Add(newCooldown);
+                return newCooldown;
             }
         }
 

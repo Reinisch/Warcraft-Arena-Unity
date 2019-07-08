@@ -30,7 +30,7 @@ namespace Client
         private bool isPointerDown;
         private bool isHotkeyDown;
 
-        private char[] timerText = { ' ', ' ', ' ' };
+        private readonly char[] timerText = { ' ', ' ', ' ' };
         private bool showingTimer;
 
         public bool IsAlreadyPressed => isPointerDown || isHotkeyDown;
