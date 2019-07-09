@@ -6,7 +6,7 @@
         {
             base.OnEvent(targetingRequest);
 
-            WorldManager.FindPlayer(targetingRequest.RaisedBy)?.UpdateTarget(targetingRequest.TargetId.PackedValue, updateState: true);
+            World.FindPlayer(targetingRequest.RaisedBy)?.UpdateTarget(targetingRequest.TargetId.PackedValue, updateState: true);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System;
+using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -6,31 +7,44 @@ namespace Core
 {
     public class EffectSchoolDamage : SpellEffectInfo
     {
-        [SerializeField, UsedImplicitly, Header("School Damage")] private int bonusDamage;
+        [Header("School Damage")]
+        [SerializeField, UsedImplicitly] private int baseValue;
+        [SerializeField, UsedImplicitly] private uint baseVariance;
+        [SerializeField, UsedImplicitly] private uint additionalValue;
+        [SerializeField, UsedImplicitly] private SpellDamageCalculationType calculationType;
 
-        public int BonusDamage => bonusDamage;
+        public override float Value => baseValue;
         public override SpellEffectType EffectType => SpellEffectType.SchoolDamage;
-        public override SpellTargetEntities TargetEntityType => SpellTargetEntities.Unit;
 
         internal override void Handle(Spell spell, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
             spell.EffectSchoolDamage(this, effectIndex, target, mode);
         }
 
-        internal int CalculateSpellPower(SpellInfo spellInfo, int effectIndex, Unit caster = null, Unit target = null, int basePoints = -1)
+        internal int CalculateSpellDamage(SpellInfo spellInfo, int effectIndex, Unit caster = null, Unit target = null)
         {
-            basePoints = basePoints == -1 ? BasePoints : basePoints;
+            int rolledValue = RandomUtils.Next(baseValue, (int) (baseValue + baseVariance));
+            int baseDamage = 0;
 
-            if (Mathf.Abs(RandomPoints) <= 1)
-                basePoints += RandomPoints;
-            else
-                basePoints += RandomPoints > 0 ? RandomUtils.Next(1, RandomPoints + 1) : RandomUtils.Next(RandomPoints, 1);
+            switch (calculationType)
+            {
+                case SpellDamageCalculationType.Direct:
+                    baseDamage = (int) (rolledValue + additionalValue);
+                    break;
+                case SpellDamageCalculationType.SpellPowerPercent:
+                    if (caster == null)
+                        break;
 
-            float value = basePoints;
+                    baseDamage = (int) (additionalValue + caster.SpellPower.ApplyPercentage(rolledValue));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(calculationType), $"Unknown damage calculation type: {calculationType}");
+            }
+
             if (caster != null)
-                value = caster.ApplyEffectModifiers(spellInfo, effectIndex, value);
+                baseDamage = Mathf.CeilToInt(caster.ApplyEffectModifiers(spellInfo, effectIndex, baseDamage));
 
-            return (int)value;
+            return baseDamage;
         }
     }
 
@@ -41,18 +55,17 @@ namespace Core
             if (mode != SpellEffectHandleMode.HitTarget || target == null || !target.IsAlive)
                 return;
 
-            int spellPower = effect.CalculateSpellPower(SpellInfo, effectIndex, Caster, target);
+            int spellDamage = effect.CalculateSpellDamage(SpellInfo, effectIndex, Caster, target);
             if (SpellInfo.HasAttribute(SpellCustomAttributes.ShareDamage))
-                spellPower /= Mathf.Min(1, ImplicitTargets.TargetCountForEffect(effectIndex));
+                spellDamage /= Mathf.Min(1, ImplicitTargets.TargetCountForEffect(effectIndex));
 
             if (OriginalCaster != null)
             {
-                int bonus = OriginalCaster.SpellDamageBonusDone(target, SpellInfo, spellPower, SpellDamageType.Direct, effect);
-                spellPower += bonus;
-                spellPower = target.SpellDamageBonusTaken(OriginalCaster, SpellInfo, spellPower, SpellDamageType.Direct, effect);
+                spellDamage += OriginalCaster.SpellDamageBonusDone(target, SpellInfo, spellDamage, SpellDamageType.Direct, effect);
+                spellDamage = target.SpellDamageBonusTaken(OriginalCaster, SpellInfo, spellDamage, SpellDamageType.Direct, effect);
             }
 
-            EffectDamage += spellPower + effect.BonusDamage;
+            EffectDamage += spellDamage;
         }
     }
 }

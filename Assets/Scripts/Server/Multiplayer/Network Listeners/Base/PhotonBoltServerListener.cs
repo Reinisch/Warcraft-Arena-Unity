@@ -11,7 +11,7 @@ namespace Server
     {
         [SerializeField, UsedImplicitly] private BalanceReference balance;
 
-        private new WorldServerManager WorldManager { get; set; }
+        private new WorldServerManager World { get; set; }
         private ServerLaunchState LaunchState { get; set; }
         private ServerRoomToken ServerToken { get; set; }
 
@@ -19,14 +19,14 @@ namespace Server
         {
             base.Initialize(worldManager);
 
-            WorldManager = worldManager;
-            WorldManager.MapManager.EventMapInitialized += OnMapInitialized;
+            World = worldManager;
+            World.MapManager.EventMapInitialized += OnMapInitialized;
         }
 
         public new void Deinitialize()
         {
-            WorldManager.MapManager.EventMapInitialized -= OnMapInitialized;
-            WorldManager = null;
+            World.MapManager.EventMapInitialized -= OnMapInitialized;
+            World = null;
             LaunchState = 0;
 
             base.Deinitialize();
@@ -36,7 +36,7 @@ namespace Server
         {
             base.SceneLoadRemoteDone(connection);
 
-            WorldManager.CreatePlayer(connection);
+            World.CreatePlayer(connection);
         }
 
         public override void SessionCreated(UdpSession session)
@@ -76,28 +76,28 @@ namespace Server
         {
             base.Connected(boltConnection);
 
-            WorldManager.SetScope(boltConnection, true);
+            World.SetScope(boltConnection, true);
         }
 
         public override void Disconnected(BoltConnection boltConnection)
         {
             base.Disconnected(boltConnection);
 
-            WorldManager.SetNetworkState(boltConnection, PlayerNetworkState.Disconnected);
+            World.SetNetworkState(boltConnection, PlayerNetworkState.Disconnected);
         }
 
         public override void EntityAttached(BoltEntity entity)
         {
             base.EntityAttached(entity);
 
-            WorldManager.EntityAttached(entity);
+            World.EntityAttached(entity);
         }
 
         public override void EntityDetached(BoltEntity entity)
         {
             base.EntityDetached(entity);
 
-            WorldManager.EntityDetached(entity);
+            World.EntityDetached(entity);
         }
 
         private void OnMapInitialized()
@@ -110,7 +110,7 @@ namespace Server
             LaunchState |= state;
 
             if (LaunchState == ServerLaunchState.Complete)
-                WorldManager.ServerLaunched(ServerToken);
+                World.ServerLaunched(ServerToken);
         }
     }
 }

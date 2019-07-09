@@ -66,7 +66,6 @@ namespace Core
         public int GetEffIndex() { return effIndex; }
         public int GetBaseAmount() { return baseAmount; }
 
-        public AuraType GetAuraType() { return GetSpellEffectInfo().AuraType; }
         public int GetAmount() { return amount; }
         public void SetAmount(int amount) { this.amount = amount; canBeRecalculated = false; }
         public void UpdateBaseAmount(int baseAmount)

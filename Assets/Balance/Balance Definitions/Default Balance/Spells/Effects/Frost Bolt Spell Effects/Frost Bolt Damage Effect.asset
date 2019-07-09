@@ -27,11 +27,9 @@ MonoBehaviour:
     selectionCategory: 0
     selectionCheckType: 0
     directionType: 0
-  basePoints: 400
-  randomPoints: 0
-  applyAuraPeriod: 0
   minRadius: 0
   maxRadius: 0
-  amplitude: 0
-  chainAmplitude: 0
-  bonusDamage: 0
+  baseValue: 100
+  baseVariance: 20
+  additionalValue: 300
+  calculationType: 1

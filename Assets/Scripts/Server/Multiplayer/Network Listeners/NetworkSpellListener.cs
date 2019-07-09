@@ -9,7 +9,7 @@ namespace Server
         {
             base.OnEvent(spellCastRequest);
 
-            Player caster = WorldManager.FindPlayer(spellCastRequest.RaisedBy);
+            Player caster = World.FindPlayer(spellCastRequest.RaisedBy);
             SpellCastRequestAnswerEvent spellCastAnswer = spellCastRequest.FromSelf
                 ? SpellCastRequestAnswerEvent.Create(GlobalTargets.OnlyServer)
                 : SpellCastRequestAnswerEvent.Create(spellCastRequest.RaisedBy);
@@ -42,7 +42,7 @@ namespace Server
         {
             base.OnEvent(spellCancelRequest);
 
-            Player caster = WorldManager.FindPlayer(spellCancelRequest.RaisedBy);
+            Player caster = World.FindPlayer(spellCancelRequest.RaisedBy);
             if (caster != null && caster.SpellCast.IsCasting)
                 caster.SpellCast.Cancel();
         }

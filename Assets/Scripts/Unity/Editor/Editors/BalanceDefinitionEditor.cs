@@ -147,7 +147,7 @@ public class BalanceDefinitionEditor : Editor
         {
             SpellEffectInfo drawnSpellEffectInfo = balanceDefinition.SpellInfos[spellInfoIndex].Effects[index];
             string spellEffectInfoTypeName = ObjectNames.NicifyVariableName(drawnSpellEffectInfo.EffectType.ToString());
-            EditorGUI.LabelField(rect, $"Type: {spellEffectInfoTypeName} Value: {drawnSpellEffectInfo.BasePoints}");
+            EditorGUI.LabelField(rect, $"Type: {spellEffectInfoTypeName} Value: {drawnSpellEffectInfo.Value}");
 
             if (active)
                 spellEffectIndex = index;

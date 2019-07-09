@@ -5,36 +5,23 @@ namespace Core
 {
     public abstract class SpellEffectInfo : ScriptableObject
     {
-        [SerializeField, UsedImplicitly, Header("Base Effect")] private AuraType auraType;
-        [SerializeField, UsedImplicitly] private SpellExplicitTargetType explicitTargetType;
-        [SerializeField, UsedImplicitly] private SpellMechanics mechanic;
+        [Header("Base Effect")]
         [SerializeField, UsedImplicitly] private TargetingType mainTargeting;
         [SerializeField, UsedImplicitly] private TargetingType secondaryTargeting;
+        [SerializeField, UsedImplicitly] private SpellExplicitTargetType explicitTargetType;
 
-        [SerializeField, UsedImplicitly] private int basePoints;
-        [SerializeField, UsedImplicitly] private int randomPoints;
-        [SerializeField, UsedImplicitly] private int applyAuraPeriod;
         [SerializeField, UsedImplicitly] private float minRadius;
         [SerializeField, UsedImplicitly] private float maxRadius;
-        [SerializeField, UsedImplicitly] private float amplitude;
-        [SerializeField, UsedImplicitly] private float chainAmplitude;
 
         private float MinRadius => minRadius;
         private float MaxRadius => maxRadius;
 
-        protected int RandomPoints => randomPoints;
-
+        public abstract float Value { get; }
         public abstract SpellEffectType EffectType { get; }
-        public abstract SpellTargetEntities TargetEntityType { get; }
 
         public SpellExplicitTargetType ExplicitTargetType => explicitTargetType;
         public TargetingType MainTargeting => mainTargeting;
         public TargetingType SecondaryTargeting => secondaryTargeting;
-        public AuraType AuraType => auraType;
-        public SpellMechanics Mechanic => mechanic;
-
-        public int BasePoints => basePoints;
-        public int ApplyAuraPeriod => applyAuraPeriod;
 
         internal abstract void Handle(Spell spell, int effectIndex, Unit target, SpellEffectHandleMode mode);
 
@@ -45,12 +32,12 @@ namespace Core
 
         public bool IsAura()
         {
-            return (IsUnitOwnedAuraEffect() || EffectType == SpellEffectType.PersistentAreaAura) && AuraType != AuraType.None;
+            return IsUnitOwnedAuraEffect() || EffectType == SpellEffectType.PersistentAreaAura;
         }
 
         public bool IsAura(AuraType aura)
         {
-            return IsAura() && AuraType == aura;
+            return IsAura();
         }
 
         public bool IsTargetingArea()

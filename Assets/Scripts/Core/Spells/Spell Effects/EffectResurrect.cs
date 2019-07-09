@@ -8,8 +8,9 @@ namespace Core
         [SerializeField, UsedImplicitly, Header("Resurrect")] private int healthPercent = 20;
 
         public int HealthPercent => healthPercent;
+
+        public override float Value => HealthPercent;
         public override SpellEffectType EffectType => SpellEffectType.Resurrect;
-        public override SpellTargetEntities TargetEntityType => SpellTargetEntities.Unit;
 
         internal override void Handle(Spell spell, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {

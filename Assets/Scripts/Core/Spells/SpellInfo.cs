@@ -271,19 +271,10 @@ namespace Core
                 return AuraStateType.Enrage;
 
             if (SchoolMask.HasTargetFlag(SpellSchoolMask.Frost))
-                if (Effects.Exists(effect => effect.IsAura() && (effect.AuraType == AuraType.ModStun || effect.AuraType == AuraType.ModRoot)))
+                if (Effects.Exists(effect => effect.IsAura() && (effect.IsAura(AuraType.ModStun) || effect.IsAura(AuraType.ModRoot))))
                     return AuraStateType.Frozen;
 
             return AuraStateType.None;
-        }
-
-        public SpellMechanics GetEffectMechanic(int effIndex)
-        {
-            SpellEffectInfo effect = Effects[effIndex];
-            if (effect.Mechanic != 0)
-                return effect.Mechanic;
-
-            return Mechanic != 0 ? Mechanic : SpellMechanics.None;
         }
 
         #endregion
@@ -303,31 +294,6 @@ namespace Core
             return range;
         }
 
-        public int GetMaxTicks()
-        {
-            int dotDuration = Duration;
-            if (dotDuration == 0)
-                return 1;
-
-            // 200% limit
-            if (dotDuration > 30000)
-                dotDuration = 30000;
-
-            foreach (var effect in Effects)
-                if (effect != null && effect.EffectType == SpellEffectType.ApplyAura)
-                    switch (effect.AuraType)
-                    {
-                        case AuraType.PeriodicDamage:
-                        case AuraType.PeriodicHeal:
-                        case AuraType.PeriodicLeech:
-                            if (effect.ApplyAuraPeriod != 0)
-                                return dotDuration / effect.ApplyAuraPeriod;
-                            break;
-                    }
-
-            return 6;
-        }
-
         public int CalcCastTime(byte level = 0, Spell spell = null)
         {
             int resultCastTime = CastTime;
@@ -343,11 +309,6 @@ namespace Core
                 resultCastTime = 0;
 
             return resultCastTime > 0 ? resultCastTime : 0;
-        }
-
-        public int GetRecoveryTime()
-        {
-            return CooldownTime > CategoryCooldownTime ? CooldownTime : CategoryCooldownTime;
         }
 
         public List<SpellResourceCost> CalcPowerCost(Unit caster, SpellSchoolMask schoolMask)

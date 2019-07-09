@@ -65,6 +65,7 @@ namespace Core
         private EntityAttributeInt mana;
         private EntityAttributeInt maxMana;
         private EntityAttributeInt level;
+        private EntityAttributeInt spellPower;
         private EntityAttributeFloat modHaste;
         private EntityAttributeFloat modRangedHaste;
         private EntityAttributeFloat modSpellHaste;
@@ -99,6 +100,7 @@ namespace Core
         public int BaseMana => mana.Base;
         public int Mana => mana.Value;
         public int MaxMana => maxMana.Value;
+        public int SpellPower => spellPower.Value;
         public bool HasFullHealth => health.Value == maxHealth.Value;
         public float HealthRatio => maxHealth.Value > 0 ? (float)Health / MaxHealth : 0.0f;
         public float HealthPercent => 100.0f * HealthRatio;
@@ -145,6 +147,7 @@ namespace Core
             mana = new EntityAttributeInt(this, unitAttributeDefinition.BaseMana, int.MaxValue, EntityAttributes.Power);
             maxMana = new EntityAttributeInt(this, unitAttributeDefinition.BaseMaxMana, int.MaxValue, EntityAttributes.MaxPower);
             level = new EntityAttributeInt(this, 1, int.MaxValue, EntityAttributes.Level);
+            spellPower = new EntityAttributeInt(this, unitAttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
             modHaste = new EntityAttributeFloat(this, 1.0f, float.MaxValue, EntityAttributes.ModHaste);
             modRangedHaste = new EntityAttributeFloat(this, 1.0f, float.MaxValue, EntityAttributes.ModRangedHaste);
             modSpellHaste = new EntityAttributeFloat(this, 1.0f, float.MaxValue, EntityAttributes.ModSpellHaste);
@@ -675,7 +678,7 @@ namespace Core
             for (var index = 0; index < foundAura.SpellEffects.Count; index++)
             {
                 var spellEffectInfo = foundAura.SpellEffects[index];
-                int newBasePoints = baseAmount?[index] ?? spellEffectInfo.BasePoints;
+                int newBasePoints = baseAmount?[index] ?? (int) spellEffectInfo.Value;
                 foundAura.AuraEffects[index].UpdateBaseAmount(newBasePoints);
             }
 

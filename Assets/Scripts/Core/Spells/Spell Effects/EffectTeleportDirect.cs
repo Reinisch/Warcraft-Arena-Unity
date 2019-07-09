@@ -13,8 +13,8 @@ namespace Core
 
         public float HorizontalDistance => horizontalDistance;
 
+        public override float Value => HorizontalDistance;
         public override SpellEffectType EffectType => SpellEffectType.TeleportDirect;
-        public override SpellTargetEntities TargetEntityType => SpellTargetEntities.Unit;
 
         internal override void Handle(Spell spell, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {

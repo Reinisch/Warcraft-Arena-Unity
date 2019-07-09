@@ -16,6 +16,7 @@ MonoBehaviour:
   baseMaxHealth: 100000000
   baseMana: 100
   baseMaxMana: 100
+  baseSpellPower: 10
   critPercentage: 5
   rangedCritPercentage: 5
   spellCritPercentage: 5
