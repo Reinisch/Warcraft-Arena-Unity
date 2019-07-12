@@ -1,6 +1,6 @@
 ﻿namespace Core
 {
-    public enum AuraType
+    public enum AuraEffectType
     {
         None = 0,
         BindSight = 1,

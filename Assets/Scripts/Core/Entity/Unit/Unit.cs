@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Common;
 using JetBrains.Annotations;
@@ -39,7 +38,7 @@ namespace Core
             public void Attached(Unit unit)
             {
                 unit.deathState = DeathState;
-                unit.Faction = unit.Balance.FactionsById[FactionId];
+                unit.faction = unit.Balance.FactionsById[FactionId];
 
                 unit.EntityState.DeathState = (int) DeathState;
                 unit.EntityState.Faction.FreeForAll = FreeForAll;
@@ -57,8 +56,13 @@ namespace Core
         private UnitAttributeDefinition unitAttributeDefinition;
         [SerializeField, UsedImplicitly]
         private UnitMovementDefinition unitMovementDefinition;
-        private DeathState deathState;
 
+        private FactionDefinition faction;
+        private UnitFlags unitFlags;
+        private DeathState deathState;
+        private AuraInterruptFlags auraInterruptFlags;
+        private ulong targetId;
+        
         private CreateToken createToken;
         private EntityAttributeInt health;
         private EntityAttributeInt maxHealth;
@@ -74,35 +78,36 @@ namespace Core
         private EntityAttributeFloat rangedCritPercentage;
         private EntityAttributeFloat spellCritPercentage;
 
-        private readonly Dictionary<int, List<Aura>> ownedAuras = new Dictionary<int, List<Aura>>();
-        private readonly Dictionary<StatType, float> createStats = new Dictionary<StatType, float>();
         private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
-        private readonly List<AuraApplication> visibleAuras = new List<AuraApplication>();
+        private readonly Dictionary<AuraStateType, List<AuraApplication>> auraApplicationsByAuraState = new Dictionary<AuraStateType, List<AuraApplication>>();
+        private readonly Dictionary<AuraEffectType, List<AuraEffect>> auraEffectsByAuraType = new Dictionary<AuraEffectType, List<AuraEffect>>();
+        private readonly Dictionary<int, List<Aura>> ownedAurasById = new Dictionary<int, List<Aura>>();
+        private readonly Dictionary<int, List<AuraApplication>> auraApplicationsByAuraId = new Dictionary<int, List<AuraApplication>>();
+        private readonly List<AuraApplication> interruptableAuraApplications = new List<AuraApplication>();
+        private readonly List<AuraApplication> auraApplications = new List<AuraApplication>();
+        private readonly List<Aura> ownedAuras = new List<Aura>();
 
         private ThreatManager ThreatManager { get; set; }
         private UnitState UnitState { get; set; }
-        internal UnitAI AI { get; private set; }
+
+        internal IReadOnlyList<AuraApplication> AuraApplications => auraApplications;
         internal WarcraftController Controller => controller;
 
         public Unit Target { get; private set; }
-        public ulong TargetId { get; private set; }
-        public UnitFlags UnitFlags { get; private set; }
-        public FactionDefinition Faction { get; private set; }
-        public SpellHistory SpellHistory { get; private set; }
         public SpellCast SpellCast { get; private set; }
         public IUnitState EntityState { get; private set; }
+        public SpellHistory SpellHistory { get; private set; }
         public CapsuleCollider UnitCollider => unitCollider;
         public PlayerControllerDefinition ControllerDefinition => controller.ControllerDefinition;
 
-        public int Level => level.Value;
         public int Health => health.Value;
         public int MaxHealth => maxHealth.Value;
         public int BaseMana => mana.Base;
         public int Mana => mana.Value;
         public int MaxMana => maxMana.Value;
         public int SpellPower => spellPower.Value;
-        public bool HasFullHealth => health.Value == maxHealth.Value;
         public float HealthRatio => maxHealth.Value > 0 ? (float)Health / MaxHealth : 0.0f;
+        public bool HasFullHealth => health.Value == maxHealth.Value;
         public float HealthPercent => 100.0f * HealthRatio;
 
         public float ModHaste => modHaste.Value;
@@ -116,15 +121,10 @@ namespace Core
         public bool IsMovementBlocked => HasState(UnitState.Root) || HasState(UnitState.Stunned);
         public bool IsAlive => deathState == DeathState.Alive;
         public bool IsDead => deathState == DeathState.Dead;
-        public bool IsInCombat => UnitFlags.HasTargetFlag(UnitFlags.InCombat);
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitState.Moving);
         public bool IsFreeForAll => EntityState.Faction.FreeForAll;
-        public bool IsFeared => HasAuraType(AuraType.ModFear);
-        public bool IsFrozen => HasAuraWithMechanic(SpellMechanics.Freeze);
-        public SpellResourceType PowerType => SpellResourceType.Mana;
 
-        public bool HasSpell(int spellId) => true;
         public bool HealthBelowPercent(int percent) => health.Value < CountPercentFromMaxHealth(percent);
         public bool HealthAbovePercent(int percent) => health.Value > CountPercentFromMaxHealth(percent);
         public bool HealthAbovePercentHealed(int percent, int healAmount) => health.Value + healAmount > CountPercentFromMaxHealth(percent);
@@ -156,7 +156,7 @@ namespace Core
             rangedCritPercentage = new EntityAttributeFloat(this, 1.0f, unitAttributeDefinition.RangedCritPercentage, EntityAttributes.RangedCritPercentage);
             spellCritPercentage = new EntityAttributeFloat(this, 1.0f, unitAttributeDefinition.SpellCritPercentage, EntityAttributes.SpellCritPercentage);
 
-            Faction = Balance.DefaultFaction;
+            faction = Balance.DefaultFaction;
         }
 
         public override void Attached()
@@ -200,14 +200,14 @@ namespace Core
 
             WorldManager.UnitManager.EventEntityDetach -= OnEntityDetach;
 
-            SpellHistory.Dispose();
-            SpellCast.Dispose();
+            SpellHistory.Detached();
+            SpellCast.Detached();
 
             EntityState.RemoveAllCallbacks();
 
             ResetMap();
 
-            ThreatManager.Dispose();
+            ThreatManager.Detached();
             WorldManager.UnitManager.Detach(this);
             MovementInfo.Detached();
 
@@ -216,14 +216,30 @@ namespace Core
             base.Detached();
         }
 
-        public abstract void Accept(IUnitVisitor unitVisitor);
-
         internal override void DoUpdate(int deltaTime)
         {
             base.DoUpdate(deltaTime);
 
             SpellHistory.DoUpdate(deltaTime);
-            controller.DoUpdate();
+            Controller.DoUpdate();
+
+            for (int i = 0; i < ownedAuras.Count; i++)
+            {
+                Aura auraToUpdate = ownedAuras[i];
+                if (auraToUpdate.Updated)
+                    continue;
+
+                auraToUpdate.DoUpdate(deltaTime);
+
+                if (auraToUpdate.IsExpired)
+                    RemoveOwnedAura(auraToUpdate, AuraRemoveMode.Expired);
+
+                if (i >= ownedAuras.Count || auraToUpdate != ownedAuras[i])
+                    i = 0;
+            }
+
+            for (int i = 0; i < ownedAuras.Count; i++)
+                ownedAuras[i].LateUpdate();
         }
 
         internal void HandleSpawn()
@@ -235,8 +251,8 @@ namespace Core
 
         internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
         {
-            TargetId = newTarget?.Id ?? newTargetId;
-            Target = newTarget ?? WorldManager.UnitManager.Find(TargetId);
+            targetId = newTarget?.Id ?? newTargetId;
+            Target = newTarget ?? WorldManager.UnitManager.Find(targetId);
 
             if (updateState)
                 EntityState.TargetId = Target?.BoltEntity.NetworkId ?? default;
@@ -252,7 +268,7 @@ namespace Core
             if (unit.IsFreeForAll && IsFreeForAll)
                 return true;
 
-            return Faction.HostileFactions.Contains(unit.Faction);
+            return faction.HostileFactions.Contains(unit.faction);
         }
 
         public bool IsFriendlyTo(Unit unit)
@@ -263,7 +279,7 @@ namespace Core
             if (unit.IsFreeForAll && IsFreeForAll)
                 return false;
 
-            return Faction.FriendlyFactions.Contains(unit.Faction);
+            return faction.FriendlyFactions.Contains(unit.faction);
         }
 
         #region Attribute Handling
@@ -274,9 +290,11 @@ namespace Core
 
         internal void RemoveState(UnitState state) { UnitState &= ~state; }
 
-        internal void SetFlag(UnitFlags flag) => UnitFlags |= flag;
+        internal void SetFlag(UnitFlags flag) => unitFlags |= flag;
 
-        internal void RemoveFlag(UnitFlags flag) => UnitFlags &= ~flag;
+        internal void RemoveFlag(UnitFlags flag) => unitFlags &= ~flag;
+
+        internal bool HasFlag(UnitFlags flag) => (unitFlags & flag) == flag;
 
         internal void AddFlag(MovementFlags f) { MovementInfo.AddMovementFlag(f); }
 
@@ -616,7 +634,11 @@ namespace Core
 
         internal bool IsImmunedToDamage(SpellInfo spellProto) { return false; }
 
-        internal bool IsImmunedToSpellEffect(SpellInfo spellProto, int index) { return false; }
+        internal bool IsImmuneToSpell(SpellInfo spellInfo, Unit caster) { return false; }
+
+        internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster) { return false; }
+
+        internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffect, Unit caster) { return false; }
 
         internal uint CalcSpellResistance(Unit victim, SpellSchoolMask schoolMask, SpellInfo spellProto) { return 0; }
 
@@ -651,7 +673,7 @@ namespace Core
 
         internal int CalcSpellDuration(SpellInfo spellProto) { return 0; }
 
-        internal int ModSpellDuration(SpellInfo spellProto, Unit target, int duration, bool positive, uint effectMask) { return 0; }
+        internal int ModSpellDuration(SpellInfo spellInfo, Unit target, int duration) { return duration; }
 
         internal void ModSpellCastTime(SpellInfo spellProto, ref int castTime, Spell spell = null) { }
 
@@ -661,99 +683,159 @@ namespace Core
 
         #region Aura Handling
 
-        internal Aura TryStackingOrRefreshingExistingAura(SpellInfo newAuraSpellInfo, ulong originalCasterId, ulong targetCasterId, List<int> baseAmount = null)
-        {
-            Assert.IsTrue(originalCasterId != 0 || targetCasterId != 0);
-
-            // check if these can stack anyway
-            if (originalCasterId == 0 && !newAuraSpellInfo.IsStackableOnOneSlotWithDifferentCasters())
-                originalCasterId = targetCasterId;
-
-            // find current aura from spell and change it's stack amount, or refresh it's duration
-            var foundAura = FindOwnedAura(newAuraSpellInfo.Id, originalCasterId);
-            if (foundAura == null)
-                return null;
-
-            // update basepoints with new values - effect amount will be recalculated in ModStackAmount
-            for (var index = 0; index < foundAura.SpellEffects.Count; index++)
-            {
-                var spellEffectInfo = foundAura.SpellEffects[index];
-                int newBasePoints = baseAmount?[index] ?? (int) spellEffectInfo.Value;
-                foundAura.AuraEffects[index].UpdateBaseAmount(newBasePoints);
-            }
-
-            // try to increase stack amount
-            foundAura.ModStackAmount(1);
-            return foundAura;
-        }
-
         internal Aura FindOwnedAura(int spellId, ulong casterId, Aura exceptAura = null)
         {
-            if (!ownedAuras.ContainsKey(spellId))
-                return null;
+            if (ownedAurasById.TryGetValue(spellId, out List<Aura> ownedAuraList))
+                foreach (Aura aura in ownedAuraList)
+                    if (aura.CasterId == casterId && exceptAura != aura)
+                        return aura;
 
-            return ownedAuras[spellId].Find(sameSpellAura => sameSpellAura.CasterId == casterId && exceptAura != sameSpellAura);
+            return null;
         }
 
-        internal void AddAura(UnitAura aura, Unit caster)
+        internal void AddOwnedAura(Aura aura)
         {
-            if (!ownedAuras.ContainsKey(aura.SpellInfo.Id))
-                ownedAuras[aura.SpellInfo.Id] = new List<Aura>();
+            ownedAuras.Add(aura);
+            ownedAurasById.Insert(aura.Info.Id, aura);
 
-            ownedAuras[aura.SpellInfo.Id].Add(aura);
+            RemoveNonStackableAuras(aura);
         }
 
-        internal AuraApplication CreateAuraApplication(Aura aura, uint effMask) { return null; }
+        internal void ApplyAuraApplication(AuraApplication auraApplication)
+        {
+            Aura aura = auraApplication.Aura;
 
-        internal void ApplyAuraEffect(Aura aura, byte effIndex) { }
+            RemoveNonStackableAuras(aura);
 
-        internal void ApplyAura(AuraApplication application, uint effMask) { }
+            if (auraApplication.IsRemoved)
+                return;
 
-        internal void UnapplyAura(AuraRemoveMode removeMode) { }
+            HandleStateContainingAura(auraApplication, true);
+            HandleInterruptableAura(auraApplication, true);
+            aura.RegisterForTarget(this, auraApplication);
 
-        internal void UnapplyAura(AuraApplication application, AuraRemoveMode removeMode) { }
+            if (aura.Info.StateType != AuraStateType.None)
+                ModifyAuraState(aura.Info.StateType, true);
 
-        internal void RegisterAuraEffect(AuraEffect auraEffect, bool apply) { }
+            for (int i = 0; i < aura.EffectsInfos.Count; i++)
+                if (auraApplication.EffectsToApply.HasBit(i) && !auraApplication.IsRemoved)
+                    auraApplication.HandleEffect(i, true);
 
-        internal void RemoveOwnedAura(AuraRemoveMode removeMode = AuraRemoveMode.Default) { }
+            if (!auraApplication.IsRemoved)
+            {
+                auraApplications.Add(auraApplication);
+                auraApplicationsByAuraId.Insert(aura.Info.Id, auraApplication);
+            }
+        }
 
-        internal void RemoveOwnedAura(uint spellId, AuraRemoveMode removeMode = AuraRemoveMode.Default) { }
+        internal void UnapplyAuraApplication(AuraApplication auraApplication, AuraRemoveMode removeMode)
+        {
+            Aura aura = auraApplication.Aura;
 
-        internal void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode = AuraRemoveMode.Default) { }
+            auraApplicationsByAuraId.Delete(aura.Info.Id, auraApplication);
+            auraApplications.Remove(auraApplication);
 
-        internal void RemoveAura(AuraRemoveMode mode = AuraRemoveMode.Default) { }
+            HandleInterruptableAura(auraApplication, false);
+            HandleStateContainingAura(auraApplication, false);
+            aura.UnregisterForTarget(this, auraApplication);
+            auraApplication.Remove(removeMode);
 
-        internal void RemoveAura(AuraApplication application, AuraRemoveMode mode = AuraRemoveMode.Default) { }
+            for (int i = 0; i < aura.EffectsInfos.Count; i++)
+                if (auraApplication.AppliedEffectMask.HasBit(i))
+                    auraApplication.HandleEffect(i, false);
 
-        internal void RemoveAura(Aura aura, AuraRemoveMode mode = AuraRemoveMode.Default) { }
+            Assert.IsTrue(auraApplication.AppliedEffectMask == 0);
+        }
 
-        internal void RemoveAppliedAuras(Predicate<AuraApplication> check) { }
+        private void HandleInterruptableAura(AuraApplication auraApplication, bool added)
+        {
+            if (!auraApplication.Aura.Info.HasInterruptFlags)
+                return;
 
-        internal void RemoveOwnedAuras(Predicate<Aura> check) { }
+            if (added)
+            {
+                interruptableAuraApplications.Add(auraApplication);
+                auraInterruptFlags |= auraApplication.Aura.Info.InterruptFlags;
+            }
+            else
+            {
+                interruptableAuraApplications.Remove(auraApplication);
 
-        internal void RemoveAppliedAuras(uint spellId, Predicate<AuraApplication> check) { }
+                auraInterruptFlags = 0;
+                foreach (AuraApplication interruptableAura in interruptableAuraApplications)
+                    auraInterruptFlags |= interruptableAura.Aura.Info.InterruptFlags;
+            }
+        }
 
-        internal void RemoveOwnedAuras(uint spellId, Predicate<Aura> check) { }
+        private void HandleStateContainingAura(AuraApplication auraApplication, bool added)
+        {
+            AuraStateType stateType = auraApplication.Aura.Info.StateType;
+            if (stateType == AuraStateType.None)
+                return;
 
-        internal void RemoveAurasByType(AuraType auraType, Predicate<AuraApplication> check) { }
+            if (added)
+            {
+                auraApplicationsByAuraState.Insert(stateType, auraApplication);
 
-        internal void RemoveAurasByType(AuraType auraType, bool negative = true, bool positive = true) { }
+                ModifyAuraState(stateType, true);
+            }
+            else
+            {
+                auraApplicationsByAuraState.Delete(stateType, auraApplication);
 
-        internal void RemoveMovementImpairingAuras() { }
+                ModifyAuraState(stateType, auraApplicationsByAuraState.ContainsKey(stateType));
+            }
+        }
 
-        internal bool HasAura(int spellId) { return false; }
+        private void HandleAuraEffectRegistration(AuraEffect auraEffect, bool added)
+        {
+            if (added)
+                auraEffectsByAuraType.Insert(auraEffect.EffectInfo.AuraEffectType, auraEffect);
+            else
+                auraEffectsByAuraType.Delete(auraEffect.EffectInfo.AuraEffectType, auraEffect);
+        }
 
-        internal bool HasAuraEffect(int spellId) { return false; }
+        private void RemoveNonStackableAuras(Aura aura)
+        {
+            for (int i = AuraApplications.Count - 1; i >= 0; i--)
+                if (!AuraApplications[i].Aura.CanStackWith(aura))
+                    RemoveAura(AuraApplications[i], AuraRemoveMode.Default);
+        }
 
-        internal bool HasAuraType(AuraType auraType) { return false; }
+        private void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode)
+        {
+            ownedAuras.Remove(aura);
 
-        internal bool HasAuraWithMechanic(SpellMechanics mechanic) { return false; }
+            aura.Remove(removeMode);
+        }
+
+        internal void RemoveAura(AuraApplication application, AuraRemoveMode mode)
+        {
+            if (!application.IsRemoved)
+            {
+                UnapplyAuraApplication(application, mode);
+
+                if (application.Aura.Owner == this)
+                    RemoveOwnedAura(application.Aura, mode);
+            }
+        }
+
+        internal void RemoveAura(Aura aura, AuraRemoveMode mode)
+        {
+            if (aura.IsRemoved && aura.ApplicationsByTargetId.TryGetValue(Id, out AuraApplication auraApplication))
+                RemoveAura(auraApplication, mode);
+        }
+
+        internal bool HasAuraType(AuraEffectType auraEffectType)
+        {
+            return auraEffectsByAuraType.ContainsKey(auraEffectType);
+        }
 
         #endregion
 
         private void OnEntityDetach(Unit entity)
         {
-            if (TargetId == entity.Id || Target == entity)
+            if (targetId == entity.Id || Target == entity)
                 UpdateTarget(updateState: true);
         }
 
@@ -774,7 +856,7 @@ namespace Core
 
         private void OnFactionChanged()
         {
-            Faction = Balance.FactionsById[EntityState.Faction.Id];
+            faction = Balance.FactionsById[EntityState.Faction.Id];
 
             EventHandler.ExecuteEvent(this, GameEvents.UnitFactionChanged);
         }

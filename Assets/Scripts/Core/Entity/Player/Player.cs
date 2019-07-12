@@ -59,7 +59,7 @@ namespace Core
             base.Detached();
         }
 
-        public override void Accept(IUnitVisitor visitor) => visitor.Visit(this);
+        public virtual void Accept(IUnitVisitor visitor) => visitor.Visit(this);
 
         public void SetTarget(Unit target)
         {

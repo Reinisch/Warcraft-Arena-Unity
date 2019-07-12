@@ -35,7 +35,7 @@ namespace Core
             return IsUnitOwnedAuraEffect() || EffectType == SpellEffectType.PersistentAreaAura;
         }
 
-        public bool IsAura(AuraType aura)
+        public bool IsAura(AuraEffectType auraEffect)
         {
             return IsAura();
         }

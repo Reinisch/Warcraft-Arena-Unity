@@ -58,7 +58,7 @@ namespace Core
             base.Detached();
         }
 
-        public override void Accept(IUnitVisitor unitVisitor)
+        public virtual void Accept(IUnitVisitor unitVisitor)
         {
             unitVisitor.Visit(this);
         }

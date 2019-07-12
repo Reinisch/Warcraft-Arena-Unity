@@ -2,7 +2,7 @@
 {
     public enum AuraRemoveMode
     {
-        None,
+        None = 0,
         Default,
         Cancel,
         Dispel,

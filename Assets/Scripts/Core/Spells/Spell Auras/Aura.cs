@@ -1,152 +1,177 @@
-﻿using System.Collections.Generic;
-using Common;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Core
 {
     public class Aura
     {
-        private int maxDuration;
-        private bool isSingleTarget;
+        private const int UpdateTargetInterval = 500;
 
-        private Dictionary<ulong, AuraApplication> applications = new Dictionary<ulong, AuraApplication>();
-        public List<AuraEffect> AuraEffects { get; } = new List<AuraEffect>();
-        public List<SpellEffectInfo> SpellEffects { get; } = new List<SpellEffectInfo>();
-        public SpellInfo SpellInfo { get; private set; }
-        public ulong CastId { get; private set; }
-        public ulong CasterId { get; private set; }
-        public int SpellVisualId { get; private set; }
+        private readonly List<Unit> tempRemovableTargets = new List<Unit>();
+        private readonly HashSet<Unit> tempUpdatedTargets = new HashSet<Unit>();
+        private readonly List<AuraEffect> effects = new List<AuraEffect>();
+        private readonly List<AuraEffectInfo> effectInfos = new List<AuraEffectInfo>();
+        private readonly List<AuraApplication> applications = new List<AuraApplication>();
+        private readonly Dictionary<ulong, AuraApplication> applicationsByTargetId = new Dictionary<ulong, AuraApplication>();
 
-        public Unit Caster => null;
-        public Unit Owner { get; private set; }
+        private int updateInvervalLeft;
 
-        public Aura(SpellInfo spellproto, ulong castId, Unit owner, Unit caster)
+        internal bool Updated { get; private set; }
+
+        public IReadOnlyDictionary<ulong, AuraApplication> ApplicationsByTargetId => applicationsByTargetId;
+        public IReadOnlyList<AuraApplication> Applications => applications;
+        public IReadOnlyList<AuraEffectInfo> EffectsInfos => effectInfos;
+        public IReadOnlyList<AuraEffect> Effects => effects;
+
+        public Unit Owner { get; }
+        public Unit Caster { get; }
+        public AuraInfo Info { get; }
+        public ulong CasterId { get; }
+
+        public int Duration { get; internal set; }
+        public int MaxDuration { get; internal set; }
+        public bool IsRemoved { get; private set; }
+        public bool IsExpired => Duration == 0;
+
+        private Aura(AuraInfo auraInfo, Unit owner, Unit caster)
         {
+            Info = auraInfo;
+            Caster = caster;
+            Owner = owner;
+            CasterId = caster?.Id ?? 0;
+
+            effectInfos.AddRange(auraInfo.AuraEffects);
+
+            for (int index = 0; index < effectInfos.Count; index++)
+                effects.Add(effectInfos[index].CreateEffect(this, Caster, index));
+
+            Owner.AddOwnedAura(this);
         }
 
-        #region Aura types
-
-        public bool HasMoreThanOneEffectForType(AuraType auraType)
+        internal void DoUpdate(int deltaTime)
         {
-            return false;
+            if (Duration > 0 && (Duration -= deltaTime) < 0)
+                Duration = 0;
+
+            if (updateInvervalLeft <= deltaTime)
+                UpdateTargets();
+            else
+                updateInvervalLeft -= deltaTime;
+
+            foreach (AuraEffect effect in effects)
+                effect.Update(deltaTime);
+
+            Updated = true;
         }
 
-        public bool IsArea()
+        internal void LateUpdate()
         {
-            return false;
+            Updated = false;
         }
 
-        public bool IsPassive()
+        internal static Aura TryRefreshStackOrCreate(AuraInfo auraInfo, Unit owner, Unit originalCaster)
         {
-            return false;
-        }
+            var ownedAura = owner.FindOwnedAura(auraInfo.Id, originalCaster.Id);
+            var updateAura = ownedAura ?? new Aura(auraInfo, owner, originalCaster);
 
-        public bool IsRemoved()
-        {
-            return false;
-        }
-
-        public bool IsSingleTarget()
-        {
-            return isSingleTarget;
-        }
-
-        public bool IsSingleTargetWith(Aura aura)
-        {
-            return false;
-        }
-
-        public void SetIsSingleTarget(bool val)
-        {
-            isSingleTarget = val;
-        }
-
-        #endregion
-
-        #region Application, updates and removal
-
-        public static Aura TryRefreshStackOrCreate(SpellInfo spellProto, Unit owner, ref bool refresh, List<int> baseAmount, ulong castId, ulong targetCasterId, ulong originalCasterId)
-        {
-            Assert.IsNotNull(spellProto);
-            Assert.IsNotNull(owner);
-            Assert.IsTrue(originalCasterId != 0 || targetCasterId != 0);
-
-            if (refresh)
-                refresh = false;
-
-            var foundAura = owner.TryStackingOrRefreshingExistingAura(spellProto, originalCasterId, targetCasterId, baseAmount);
-            if (foundAura == null)
-                return Create(spellProto, owner, baseAmount, castId, originalCasterId, targetCasterId);
-
-            if (foundAura.IsRemoved())
+            if (updateAura.IsRemoved)
                 return null;
 
-            refresh = true;
-            return foundAura;
+            updateAura.UpdateTargets();
+            return updateAura;
         }
 
-        public static Aura Create(SpellInfo spellProto, Unit owner, List<int> baseAmount, ulong castId, ulong originalCasterId, ulong targetCasterId)
+        internal void RegisterForTarget(Unit target, AuraApplication auraApplication)
         {
-            Assert.IsNotNull(spellProto);
-            Assert.IsNotNull(owner);
-            Assert.IsTrue(originalCasterId != 0 || targetCasterId != 0);
-
-            if (originalCasterId == 0)
-                originalCasterId = targetCasterId;
-
-            Unit caster = owner.Id == originalCasterId ? owner : owner.Map.FindMapEntity<Unit>(originalCasterId);
-            Aura aura = new UnitAura(spellProto, owner, caster, baseAmount, castId);
-            return aura.IsRemoved() ? null : aura;
+            applications.Add(auraApplication);
+            applicationsByTargetId.Add(target.Id, auraApplication);
         }
 
-        public virtual void ApplyForTarget(Unit target, Unit caster, AuraApplication auraApp)
+        internal void UnregisterForTarget(Unit target, AuraApplication auraApplication)
         {
+            applications.Remove(auraApplication);
+            applicationsByTargetId.Remove(target.Id);
         }
 
-        public virtual void UnapplyForTarget(Unit target, Unit caster, AuraApplication auraApp)
+        internal void Remove(AuraRemoveMode removeMode = AuraRemoveMode.Default)
         {
+            IsRemoved = true;
+
+            while (applications.Count > 0)
+            {
+                AuraApplication applicationToRemove = applications[0];
+                Unit target = applicationToRemove.Target;
+
+                target.UnapplyAuraApplication(applicationToRemove, removeMode);
+            }
         }
 
-        public virtual void Remove(AuraRemoveMode removeMode = AuraRemoveMode.Default)
+        private void UpdateTargets()
         {
+            updateInvervalLeft = UpdateTargetInterval;
+
+            switch (Info.TargetingMode)
+            {
+                case AuraTargetingMode.Single:
+                    AddUnitToAura(Owner);
+                    break;
+                case AuraTargetingMode.AreaFriend:
+                    throw new NotImplementedException();
+                case AuraTargetingMode.AreaEnemy:
+                    throw new NotImplementedException();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            // remove targets not present in new update
+            for (int i = applications.Count - 1; i >= 0; i--)
+                if (!tempUpdatedTargets.Contains(applications[i].Target))
+                    tempRemovableTargets.Add(applications[i].Target);
+
+            // unapply aura for removed targets
+            foreach (Unit removableUnit in tempRemovableTargets)
+                if (applicationsByTargetId.TryGetValue(removableUnit.Id, out AuraApplication removableApplication))
+                    removableUnit.UnapplyAuraApplication(removableApplication, AuraRemoveMode.Default);
+
+            tempUpdatedTargets.Clear();
+            tempRemovableTargets.Clear();
         }
 
-        #endregion
-
-        #region Charges and stacks
-
-        public void SetCharges(ushort charges)
+        private void AddUnitToAura(Unit unit)
         {
+            tempUpdatedTargets.Add(unit);
+
+            if (applicationsByTargetId.ContainsKey(unit.Id) || unit.IsImmuneToAura(Info, Caster))
+                return;
+
+            // check effect for immunity
+            int auraEffectMask = 0;
+            for (int i = 0; i < effectInfos.Count; i++)
+                if (!unit.IsImmuneToAuraEffect(effectInfos[i], Caster))
+                    auraEffectMask = auraEffectMask.SetBit(i);
+
+            if (auraEffectMask == 0)
+                return;
+
+            // check for non stackable auras
+            if (unit != Owner)
+                for (int i = 0; i < unit.AuraApplications.Count; i++)
+                    if (!CanStackWith(unit.AuraApplications[i].Aura))
+                        return;
+
+            unit.ApplyAuraApplication(new AuraApplication(unit, Caster, this, auraEffectMask));
         }
 
-        public ushort CalcMaxCharges(Unit caster)
+        internal bool CanStackWith(Aura existingAura)
         {
-            return 0;
-        }
+            if (this == existingAura)
+                return true;
 
-        public ushort CalcMaxCharges()
-        {
-            return CalcMaxCharges(Caster);
-        }
+            bool sameCaster = CasterId == existingAura.CasterId;
+            if (!sameCaster && !Info.HasAttribute(AuraAttributes.StackForAnyCasters))
+                return false;
 
-        public bool ModCharges(int num, AuraRemoveMode removeMode = AuraRemoveMode.Default)
-        {
             return true;
         }
-
-        public bool DropCharge(AuraRemoveMode removeMode = AuraRemoveMode.Default)
-        {
-            return ModCharges(-1, removeMode);
-        }
-
-        public void SetStackAmount(uint num)
-        {
-        }
-
-        public bool ModStackAmount(int num, AuraRemoveMode removeMode = AuraRemoveMode.Default)
-        {
-            return false;
-        }
-
-        #endregion
     }
 }

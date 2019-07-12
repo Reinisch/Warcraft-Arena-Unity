@@ -22,7 +22,7 @@ namespace Core
                 unit.EntityState.AddCallback(nameof(unit.EntityState.GlobalCooldown), OnGlobalCooldownChanged);
         }
 
-        internal void Dispose()
+        internal void Detached()
         {
             spellCooldowns.Clear();
             spellCooldownsById.Clear();

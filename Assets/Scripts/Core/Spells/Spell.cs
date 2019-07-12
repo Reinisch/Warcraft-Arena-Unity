@@ -186,8 +186,7 @@ namespace Core
 
             if (hitTarget != null)
             {
-                for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
-                    SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitTarget);
+                missType = ProcessSpellHit(hitTarget);
 
                 if (missType != SpellMissType.None)
                     EffectDamage = 0;
@@ -212,7 +211,18 @@ namespace Core
                 caster.DamageBySpell(damageInfoInfo);
             }
         }
-        
+
+        private SpellMissType ProcessSpellHit(Unit target)
+        {
+            if (SpellInfo.Speed > 0 && target.IsImmuneToSpell(SpellInfo, Caster))
+                return SpellMissType.Immune;
+
+            for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
+                SpellInfo.Effects[effectIndex].Handle(this, effectIndex, target, SpellEffectHandleMode.HitTarget);
+
+            return SpellMissType.None;
+        }
+
         private SpellCastResult Cast()
         {
             ExecutionState = SpellExecutionState.Casting;

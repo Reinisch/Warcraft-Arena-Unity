@@ -17,7 +17,7 @@ namespace Core
             Owner = owner;
         }
 
-        public void Dispose()
+        public void Detached()
         {
             Owner = null;
         }

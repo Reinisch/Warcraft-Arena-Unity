@@ -29,7 +29,7 @@
             unitState = caster.EntityState;
         }
 
-        internal void Dispose()
+        internal void Detached()
         {
             Cancel();
         }

@@ -91,6 +91,10 @@ namespace Core
 
         public static bool HasBit(this int mask, int index) => (mask & (1 << index)) == index;
 
+        public static int SetBit(this int mask, int index) => mask | (1 << index);
+
+        public static int SetBit(this int mask, int index, bool set) => set ? mask | (1 << index) : mask & ~(1 << index);
+
         #endregion
     }
 }

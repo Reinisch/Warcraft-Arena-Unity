@@ -26,7 +26,7 @@ MonoBehaviour:
   attributesCustom: 0
   targetEntityTypeMask: 8
   rangedFlags: 1
-  interruptFlags: 0
+  interruptFlags: 1
   duration: 0
   maxDuration: 0
   cooldownTime: 10000

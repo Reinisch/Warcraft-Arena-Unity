@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Common;
 using Core.Conditions;
 using JetBrains.Annotations;
@@ -8,7 +7,7 @@ using UnityEngine;
 namespace Core
 {
     [UsedImplicitly, CreateAssetMenu(fileName = "Spell Info", menuName = "Game Data/Spells/Spell Info", order = 1)]
-    public class SpellInfo : ScriptableObject
+    public sealed class SpellInfo : ScriptableObject
     {
         [SerializeField, UsedImplicitly] private int id;
         [SerializeField, UsedImplicitly] private string spellName;
@@ -100,9 +99,9 @@ namespace Core
             return Effects.Exists(effect => effect.EffectType == effectType);
         }
 
-        public bool HasAura(AuraType aura)
+        public bool HasAura(AuraEffectType auraEffect)
         {
-            return Effects.Exists(effect => effect.IsAura(aura));
+            return Effects.Exists(effect => effect.IsAura(auraEffect));
         }
 
         public bool HasAreaAuraEffect()
@@ -205,11 +204,6 @@ namespace Core
 
         #region Usage checks
 
-        public SpellCastResult CheckLocation(uint mapId, uint zoneId, uint areaId, Player player = null)
-        {
-            throw new NotImplementedException();
-        }
-
         public SpellCastResult CheckTarget(Unit caster, Unit target, Spell spell, bool isImplicit = true)
         {
             if (HasAttribute(SpellAttributes.CantTargetSelf) && caster == target)
@@ -230,7 +224,7 @@ namespace Core
             if (target.HasState(UnitState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInFlightTarget))
                 return SpellCastResult.BadTargets;
 
-            if (target.HasAuraType(AuraType.PreventResurrection))
+            if (target.HasAuraType(AuraEffectType.PreventResurrection))
                 if (HasEffect(SpellEffectType.SelfResurrect) || HasEffect(SpellEffectType.Resurrect))
                     return SpellCastResult.TargetCannotBeResurrected;
 
@@ -258,23 +252,6 @@ namespace Core
             }
 
             return SpellCastResult.Success;
-        }
-
-        #endregion
-
-        #region School, mechanics, spellDispel and states
-
-        public AuraStateType GetAuraState()
-        {
-            // Enrage aura state
-            if (SpellDispel == SpellDispelType.Enrage)
-                return AuraStateType.Enrage;
-
-            if (SchoolMask.HasTargetFlag(SpellSchoolMask.Frost))
-                if (Effects.Exists(effect => effect.IsAura() && (effect.IsAura(AuraType.ModStun) || effect.IsAura(AuraType.ModRoot))))
-                    return AuraStateType.Frozen;
-
-            return AuraStateType.None;
         }
 
         #endregion
