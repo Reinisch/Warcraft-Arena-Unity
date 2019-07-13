@@ -44,7 +44,6 @@ namespace Core
 
         [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos = new List<SpellEffectInfo>();
         [SerializeField, UsedImplicitly] private List<SpellPowerEntry> spellPowerEntries = new List<SpellPowerEntry>();
-        [SerializeField, UsedImplicitly] private List<SpellProcsPerMinuteModifier> procsPerMinuteModifiers;
         [SerializeField, UsedImplicitly] private List<SpellCastCondition> targetingConditions;
 
         /// <summary>
@@ -71,7 +70,6 @@ namespace Core
 
         public List<SpellPowerEntry> PowerCosts => spellPowerEntries;
         public List<SpellEffectInfo> Effects => spellEffectInfos;
-        public List<SpellProcsPerMinuteModifier> ProcsPerMinuteModifiers => procsPerMinuteModifiers;
 
         public int CooldownTime => cooldownTime;
         public int CategoryCooldownTime => categoryCooldownTime;
@@ -84,11 +82,6 @@ namespace Core
         public float MaxRangeHostile => maxRangeHostile;
         public float MaxRangeFriend => maxRangeFriend;
         public float Speed => speed;
-
-        public int StackAmount => stackAmount;
-        public int MaxAffectedTargets => maxAffectedTargets;
-
-        #region Spell info flags and properties
 
         public bool HasEffect(SpellEffectType effectType)
         {
@@ -133,11 +126,6 @@ namespace Core
         public bool IsPassive()
         {
             return HasAttribute(SpellAttributes.Passive);
-        }
-
-        public bool IsStackableOnOneSlotWithDifferentCasters()
-        {
-            return StackAmount > 1 && !HasAttribute(SpellAttributes.StackForDiffCasters);
         }
 
         public bool IsDeathPersistent()
@@ -196,10 +184,6 @@ namespace Core
             return HasAttribute(SpellExtraAttributes.SingleTargetSpell);
         }
 
-        #endregion
-
-        #region Usage checks
-
         public SpellCastResult CheckTarget(Unit caster, Unit target, Spell spell, bool isImplicit = true)
         {
             if (HasAttribute(SpellAttributes.CantTargetSelf) && caster == target)
@@ -249,10 +233,6 @@ namespace Core
 
             return SpellCastResult.Success;
         }
-
-        #endregion
-
-        #region Range, durations and cost
 
         public float GetMinRange(bool positive)
         {
@@ -350,87 +330,5 @@ namespace Core
 
             return costs;
         }
-
-        public float CalcProcPPM(Unit caster)
-        {
-            float ppm = 1.0f;
-            if (caster == null)
-                return ppm;
-
-            foreach (var mod in ProcsPerMinuteModifiers)
-            {
-                switch (mod.Type)
-                {
-                    case SpellProcsPerMinuteModType.Haste:
-                    {
-                        ppm *= 1.0f + CalcPPMHasteMod(mod, caster);
-                        break;
-                    }
-                    case SpellProcsPerMinuteModType.Crit:
-                    {
-                        ppm *= 1.0f + CalcPPMCritMod(mod, caster);
-                        break;
-                    }
-                    case SpellProcsPerMinuteModType.Spec:
-                    {
-                        if(caster is Player player && player.SpecId == mod.Parameter)
-                            ppm *= 1.0f + mod.Value;
-                        break;
-                    }
-                }
-            }
-
-            return ppm;
-        }
-
-        public static float CalcPPMHasteMod(SpellProcsPerMinuteModifier mod, Unit caster)
-        {
-            float haste = caster.ModHaste;
-            float rangedHaste = caster.ModRangedHaste;
-            float spellHaste = caster.ModSpellHaste;
-            float regenHaste = caster.ModRegenHaste;
-
-            switch (mod.Parameter)
-            {
-                case 1:
-                    return (1.0f / haste - 1.0f) * mod.Value;
-                case 2:
-                    return (1.0f / rangedHaste - 1.0f) * mod.Value;
-                case 3:
-                    return (1.0f / spellHaste - 1.0f) * mod.Value;
-                case 4:
-                    return (1.0f / regenHaste - 1.0f) * mod.Value;
-                case 5:
-                    return (1.0f / Mathf.Min(haste, rangedHaste, spellHaste, regenHaste) - 1.0f) * mod.Value;
-            }
-
-            return 0.0f;
-        }
-
-        public static float CalcPPMCritMod(SpellProcsPerMinuteModifier mod, Unit caster)
-        {
-            if (!(caster is Player))
-                return 0.0f;
-
-            float crit = caster.CritPercentage;
-            float rangedCrit = caster.RangedCritPercentage;
-            float spellCrit = caster.SpellCritPercentage;
-
-            switch (mod.Parameter)
-            {
-                case 1:
-                    return crit * mod.Value * 0.01f;
-                case 2:
-                    return rangedCrit * mod.Value * 0.01f;
-                case 3:
-                    return spellCrit * mod.Value * 0.01f;
-                case 4:
-                    return Mathf.Min(crit, rangedCrit, spellCrit) * mod.Value * 0.01f;
-            }
-
-            return 0.0f;
-        }
-
-        #endregion
     }
 }

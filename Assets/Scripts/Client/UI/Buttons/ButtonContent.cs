@@ -192,7 +192,7 @@ namespace Client
             else
             {
                 if (showTimer)
-                    cooldownText.SetCharArray(timerText.SetSpellCooldownNonAlloc(cooldownTimeLeft, out int length), 0, length);
+                    cooldownText.SetCharArray(timerText.SetSpellTimerNonAlloc(cooldownTimeLeft, out int length), 0, length);
                 else
                     cooldownText.SetCharArray(timerText, 0, 0);
 

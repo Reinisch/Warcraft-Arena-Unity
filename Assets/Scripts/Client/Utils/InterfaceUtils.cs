@@ -5,7 +5,7 @@ namespace Client
 {
     public static class InterfaceUtils
     {
-        public static char[] SetSpellCooldownNonAlloc(this char[] charArray, int milliseconds, out int length)
+        public static char[] SetSpellTimerNonAlloc(this char[] charArray, int milliseconds, out int length)
         {
             if (charArray.Length < 3)
                 Array.Resize(ref charArray, 3);

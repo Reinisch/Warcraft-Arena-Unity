@@ -28,8 +28,11 @@ namespace Core
         public AuraInfo Info { get; }
         public ulong CasterId { get; }
 
-        public int Duration { get; internal set; }
-        public int MaxDuration { get; internal set; }
+        public int Duration { get; private set; }
+        public int MaxDuration { get; private set; }
+
+        public int RefreshDuration { get; private set; }
+        public int RefreshServerFrame { get; private set; }
         public bool IsRemoved { get; private set; }
         public bool IsExpired => Duration == 0;
 
@@ -40,8 +43,7 @@ namespace Core
             Owner = owner;
             CasterId = caster?.Id ?? 0;
 
-            Duration = auraInfo.Duration;
-            MaxDuration = auraInfo.MaxDuration;
+            UpdateDuration(auraInfo.Duration, auraInfo.MaxDuration);
 
             effectInfos.AddRange(auraInfo.AuraEffects);
 
@@ -131,6 +133,17 @@ namespace Core
 
             tempUpdatedTargets.Clear();
             tempRemovableTargets.Clear();
+        }
+
+        internal void UpdateDuration(int duration, int maxDuration)
+        {
+            Duration = duration;
+            MaxDuration = maxDuration;
+
+            RefreshServerFrame = BoltNetwork.ServerFrame;
+            RefreshDuration = Duration;
+
+            Owner.NeedUpdateVisibleAuras = true;
         }
 
         internal bool CanStackWith(Aura existingAura)

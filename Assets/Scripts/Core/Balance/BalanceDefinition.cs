@@ -12,11 +12,14 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private List<SpellInfo> spellInfos = new List<SpellInfo>();
         [SerializeField, UsedImplicitly]
+        private List<AuraInfo> auraInfo = new List<AuraInfo>();
+        [SerializeField, UsedImplicitly]
         private List<MapDefinition> mapEntries;
         [SerializeField, UsedImplicitly]
         private List<FactionDefinition> factionEntries;
 
         public List<SpellInfo> SpellInfos => spellInfos;
+        public List<AuraInfo> AuraInfos => auraInfo;
         public List<MapDefinition> MapEntries => mapEntries;
         public List<FactionDefinition> FactionEntries => factionEntries;
         public FactionDefinition DefaultFaction => defaultFaction;

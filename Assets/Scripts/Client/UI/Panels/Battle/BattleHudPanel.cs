@@ -28,6 +28,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private UnitFrame playerUnitFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetUnitFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetTargetUnitFrame;
+        [SerializeField, UsedImplicitly] private BuffDisplayFrame playerBuffDisplayFrame;
         [SerializeField, UsedImplicitly] private CastFrame playerCastFrame;
         [SerializeField, UsedImplicitly] private ActionErrorDisplay actionErrorDisplay;
         [SerializeField, UsedImplicitly] private List<ActionBar> actionBars;
@@ -47,6 +48,7 @@ namespace Client
             playerCastFrame.UpdateCaster(localPlayer);
             playerUnitFrame.UpdateUnit(localPlayer);
             playerUnitFrame.SetTargetUnitFrame(playerTargetUnitFrame);
+            playerUnitFrame.SetBuffDIsplayFrame(playerBuffDisplayFrame);
             playerTargetUnitFrame.SetTargetUnitFrame(playerTargetTargetUnitFrame);
         }
 
@@ -60,6 +62,7 @@ namespace Client
 
             playerUnitFrame.UpdateUnit(null);
             playerTargetUnitFrame.UpdateUnit(null);
+            playerBuffDisplayFrame.UpdateUnit(null);
             playerTargetTargetUnitFrame.UpdateUnit(null);
             playerCastFrame.UpdateCaster(null);
 
@@ -74,6 +77,7 @@ namespace Client
 
             playerCastFrame.DoUpdate();
             actionErrorDisplay.DoUpdate(deltaTime);
+            playerBuffDisplayFrame.DoUpdate(deltaTime);
 
             if (localPlayer != null)
                 foreach (var actionBar in actionBars)

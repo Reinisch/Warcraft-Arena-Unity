@@ -12,6 +12,7 @@ namespace Core
         [SerializeField, UsedImplicitly, HideInInspector] private int id;
         [SerializeField, UsedImplicitly] private int duration;
         [SerializeField, UsedImplicitly] private int maxDuration;
+        [SerializeField, UsedImplicitly] private int maxStack;
         [SerializeField, UsedImplicitly] private int maxCharges;
         [SerializeField, UsedImplicitly] private int baseCharges;
 
@@ -39,6 +40,11 @@ namespace Core
         public bool HasAttribute(AuraAttributes attribute)
         {
             return (attributes & attribute) != 0;
+        }
+
+        public bool IsStackableOnOneSlotWithDifferentCasters()
+        {
+            return maxStack > 1 && !HasAttribute(AuraAttributes.StackForAnyCasters);
         }
     }
 }

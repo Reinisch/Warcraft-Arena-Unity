@@ -3,7 +3,6 @@ using Common;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace Client
@@ -15,7 +14,6 @@ namespace Client
         [SerializeField, UsedImplicitly] private ButtonContent buttonContent;
         [SerializeField, UsedImplicitly] private SoundEntry pressSound;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI timerText;
-        [SerializeField, UsedImplicitly] private Image cooldownShade;
 
         public RectTransform RectTransform => rectTransform;
 

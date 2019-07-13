@@ -25,18 +25,7 @@ namespace Core
             if (mode != SpellEffectHandleMode.HitTarget || target == null || OriginalCaster == null)
                 return;
 
-            Aura spellAura = target.RefreshOrCreateAura(effect.AuraInfo, OriginalCaster);
-            if (spellAura != null)
-            {
-                int duration = spellAura.MaxDuration;
-                duration = OriginalCaster.ModifyAuraDuration(spellAura.Info, target, duration);
-
-                if (duration != spellAura.Duration)
-                {
-                    spellAura.MaxDuration = duration;
-                    spellAura.Duration = duration;
-                }
-            }
+            target.RefreshOrCreateAura(effect.AuraInfo, OriginalCaster);
         }
     }
 }

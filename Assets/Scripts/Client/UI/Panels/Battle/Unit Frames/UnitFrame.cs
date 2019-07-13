@@ -21,6 +21,7 @@ namespace Client
         private readonly Action<EntityAttributes> onAttributeChangedAction;
         private readonly Action onUnitTargetChanged;
         private UnitFrame targetUnitFrame;
+        private BuffDisplayFrame unitBuffDisplayFrame;
         private Unit unit;
 
         private UnitFrame()
@@ -34,6 +35,13 @@ namespace Client
             targetUnitFrame = unitFrame;
 
             targetUnitFrame.UpdateUnit(unit?.Target);
+        }
+
+        public void SetBuffDIsplayFrame(BuffDisplayFrame buffDisplayFrame)
+        {
+            unitBuffDisplayFrame = buffDisplayFrame;
+
+            unitBuffDisplayFrame.UpdateUnit(unit);
         }
 
         public void UpdateUnit(Unit newUnit)
@@ -61,7 +69,8 @@ namespace Client
             this.unit = unit;
             unitName.text = unit.Name;
             targetUnitFrame?.UpdateUnit(unit.Target);
-            
+            unitBuffDisplayFrame?.UpdateUnit(unit);
+
             OnAttributeChanged(EntityAttributes.Health);
             OnAttributeChanged(EntityAttributes.Power);
 
@@ -75,6 +84,8 @@ namespace Client
             EventHandler.UnregisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
 
             targetUnitFrame?.UpdateUnit(null);
+            unitBuffDisplayFrame?.UpdateUnit(null);
+
             unit = null;
         }
 

@@ -133,6 +133,7 @@ namespace Core
 
         internal IReadOnlyList<AuraApplication> AuraApplications => auraApplications;
         internal WarcraftController Controller => controller;
+        internal bool NeedUpdateVisibleAuras { get;  set; }
 
         public Unit Target { get; private set; }
         public SpellCast SpellCast { get; private set; }
@@ -289,6 +290,8 @@ namespace Core
 
             for (int i = 0; i < ownedAuras.Count; i++)
                 ownedAuras[i].LateUpdate();
+
+            HandleVisibleAuras();
         }
 
         internal void HandleSpawn()
@@ -740,7 +743,7 @@ namespace Core
             return modifier;
         }
 
-        internal Aura RefreshOrCreateAura(AuraInfo auraInfo, Unit originalCaster)
+        internal void RefreshOrCreateAura(AuraInfo auraInfo, Unit originalCaster)
         {
             var ownedAura = FindOwnedAura();
             if (ownedAura == null)
@@ -750,10 +753,15 @@ namespace Core
             }
 
             if (ownedAura.IsRemoved)
-                return null;
+                return;
+
+            int duration = ownedAura.MaxDuration;
+            duration = originalCaster.ModifyAuraDuration(ownedAura.Info, this, duration);
+
+            if (duration != ownedAura.Duration)
+                ownedAura.UpdateDuration(duration, duration);
 
             ownedAura.UpdateTargets();
-            return ownedAura;
 
             Aura FindOwnedAura()
             {
@@ -780,6 +788,7 @@ namespace Core
             HandleAuraEffects(auraApplication, true);
 
             auraApplication.Aura.RegisterForTarget(this, auraApplication);
+            NeedUpdateVisibleAuras = true;
         }
 
         internal void UnapplyAuraApplication(AuraApplication auraApplication, AuraRemoveMode removeMode)
@@ -793,6 +802,7 @@ namespace Core
 
             auraApplication.Aura.UnregisterForTarget(this, auraApplication);
             auraApplication.RemoveMode = removeMode;
+            NeedUpdateVisibleAuras = true;
 
             Logging.LogAura($"Unapplied application for target: {Name} for aura: {auraApplication.Aura.Info.name}");
         }
@@ -809,12 +819,33 @@ namespace Core
 
         private void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode)
         {
+            NeedUpdateVisibleAuras = true;
             ownedAuras.Remove(aura);
             ownedAurasById.Delete(aura.Info.Id, aura);
 
             aura.Remove(removeMode);
 
             Logging.LogAura($"Removed owned aura {aura.Info.name} for target: {Name} with mode: {removeMode}");
+        }
+
+        private void HandleVisibleAuras()
+        {
+            if (!NeedUpdateVisibleAuras)
+                return;
+
+            NeedUpdateVisibleAuras = false;
+
+            int visibleSlots = Mathf.Min(EntityState.VisibleAuras.Length, auraApplications.Count);
+            for (int i = 0; i < visibleSlots; i++)
+            {
+                EntityState.VisibleAuras[i].AuraId = auraApplications[i].Aura.Info.Id;
+                EntityState.VisibleAuras[i].RefreshFrame = auraApplications[i].Aura.RefreshServerFrame;
+                EntityState.VisibleAuras[i].Duration = auraApplications[i].Aura.RefreshDuration;
+                EntityState.VisibleAuras[i].MaxDuration = auraApplications[i].Aura.MaxDuration;
+            }
+
+            for (int i = visibleSlots; i < EntityState.VisibleAuras.Length; i++)
+                EntityState.VisibleAuras[i].AuraId = 0;
         }
 
         private void HandleInterruptableAura(AuraApplication auraApplication, bool added)

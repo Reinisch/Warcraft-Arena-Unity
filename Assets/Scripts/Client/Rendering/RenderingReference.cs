@@ -19,19 +19,23 @@ namespace Client
         [SerializeField, UsedImplicitly] private SpellVisualController spellVisualController;
         [SerializeField, UsedImplicitly] private SelectionCircleController selectionCircleController;
         [SerializeField, UsedImplicitly] private List<SpellVisualSettings> spellVisualSettings;
+        [SerializeField, UsedImplicitly] private List<AuraVisualSettings> auraVisualSettings;
 
         private readonly Dictionary<int, SpellVisualSettings> spellVisualSettingsById = new Dictionary<int, SpellVisualSettings>();
+        private readonly Dictionary<int, AuraVisualSettings> auraVisualSettingsById = new Dictionary<int, AuraVisualSettings>();
         private readonly Dictionary<ulong, UnitRenderer> unitRenderersById = new Dictionary<ulong, UnitRenderer>();
         private readonly List<UnitRenderer> unitRenderers = new List<UnitRenderer>();
         private readonly List<IUnitRendererHandler> unitRendererHandlers = new List<IUnitRendererHandler>();
 
         public Sprite DefaultSpellIcon => defaultSpellIcon;
         public IReadOnlyDictionary<int, SpellVisualSettings> SpellVisualSettingsById => spellVisualSettingsById;
+        public IReadOnlyDictionary<int, AuraVisualSettings> AuraVisualSettingsById => auraVisualSettingsById;
 
         protected override void OnRegistered()
         {
             base.OnRegistered();
 
+            auraVisualSettings.ForEach(visual => auraVisualSettingsById.Add(visual.AuraInfo.Id, visual));
             spellVisualSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
             spellVisualSettings.ForEach(visual => visual.Initialize());
         }
@@ -40,6 +44,7 @@ namespace Client
         {
             spellVisualSettings.ForEach(visual => visual.Deinitialize());
             spellVisualSettingsById.Clear();
+            auraVisualSettingsById.Clear();
 
             base.OnUnregister();
         }
