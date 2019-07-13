@@ -2,8 +2,6 @@
 {
     public class MovementInfo
     {
-        private const string MovementFlagsUnitStatePropertyName = "MovementFlags";
-
         private IUnitState unitState;
         private IMoveState localMoveState;
         private Unit unit;
@@ -17,14 +15,14 @@
             this.unitState = unitState;
             this.unit = unit;
 
-            if (!unit.WorldManager.HasServerLogic)
-                unitState.AddCallback(MovementFlagsUnitStatePropertyName, OnUnitStateFlagsChanged);
+            if (!unit.IsOwner)
+                unitState.AddCallback(nameof(unitState.MovementFlags), OnUnitStateFlagsChanged);
         }
 
         public void Detached()
         {
-            if (!unit.WorldManager.HasServerLogic)
-                unitState.RemoveCallback(MovementFlagsUnitStatePropertyName, OnUnitStateFlagsChanged);
+            if (!unit.IsOwner)
+                unitState.RemoveCallback(nameof(unitState.MovementFlags), OnUnitStateFlagsChanged);
 
             DetachedMoveState();
 
@@ -36,16 +34,16 @@
         {
             this.localMoveState = localMoveState;
 
-            if (unit.WorldManager.HasServerLogic)
-                localMoveState.AddCallback(MovementFlagsUnitStatePropertyName, OnLocalMoveStateFlagsChanged);
+            if (unit.IsOwner)
+                localMoveState.AddCallback(nameof(unitState.MovementFlags), OnLocalMoveStateFlagsChanged);
         }
 
         public void DetachedMoveState()
         {
             if (localMoveState != null)
             {
-                if (unit.WorldManager.HasServerLogic)
-                    localMoveState.RemoveCallback(MovementFlagsUnitStatePropertyName, OnLocalMoveStateFlagsChanged);
+                if (unit.IsOwner)
+                    localMoveState.RemoveCallback(nameof(unitState.MovementFlags), OnLocalMoveStateFlagsChanged);
 
                 localMoveState = null;
             }

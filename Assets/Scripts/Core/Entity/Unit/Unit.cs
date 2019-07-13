@@ -13,9 +13,9 @@ namespace Core
     {
         public new class CreateToken : WorldEntity.CreateToken
         {
-            public DeathState DeathState;
-            public bool FreeForAll;
-            public int FactionId;
+            public DeathState DeathState { private get; set; }
+            public bool FreeForAll { private get; set; }
+            public int FactionId { private get; set; }
 
             public override void Read(UdpPacket packet)
             {
@@ -35,16 +35,11 @@ namespace Core
                 packet.WriteBool(FreeForAll);
             }
 
-            public void Attached(Unit unit)
+            protected void Attached(Unit unit)
             {
-                unit.deathState = DeathState;
-                unit.faction = unit.Balance.FactionsById[FactionId];
-
-                unit.EntityState.DeathState = (int) DeathState;
-                unit.EntityState.Faction.FreeForAll = FreeForAll;
-                unit.EntityState.Faction.Id = FactionId;
-
-                unit.OnFactionChanged();
+                unit.DeathState = DeathState;
+                unit.Faction = unit.Balance.FactionsById[FactionId];
+                unit.FreeForAll = FreeForAll;
             }
         }
 
@@ -62,7 +57,8 @@ namespace Core
         private DeathState deathState;
         private AuraInterruptFlags auraInterruptFlags;
         private ulong targetId;
-        
+        private bool freeForAll;
+
         private CreateToken createToken;
         private EntityAttributeInt health;
         private EntityAttributeInt maxHealth;
@@ -89,6 +85,51 @@ namespace Core
 
         private ThreatManager ThreatManager { get; set; }
         private UnitState UnitState { get; set; }
+
+        private bool FreeForAll
+        {
+            get => freeForAll;
+            set
+            {
+                freeForAll = value;
+
+                if (IsOwner)
+                {
+                    EntityState.Faction.FreeForAll = value;
+                    createToken.FreeForAll = value;
+                }
+            }
+        }
+        
+        private DeathState DeathState
+        {
+            get => deathState;
+            set
+            {
+                deathState = value;
+
+                if (IsOwner)
+                {
+                    EntityState.DeathState = (int)value;
+                    createToken.DeathState = value;
+                }
+            }
+        }
+
+        private FactionDefinition Faction
+        {
+            get => faction;
+            set
+            {
+                faction = value;
+
+                if (IsOwner)
+                {
+                    EntityState.Faction.Id = value.FactionId;
+                    createToken.FactionId = value.FactionId;
+                }
+            }
+        }
 
         internal IReadOnlyList<AuraApplication> AuraApplications => auraApplications;
         internal WarcraftController Controller => controller;
@@ -119,11 +160,10 @@ namespace Core
         public float SpellCritPercentage => spellCritPercentage.Value;
 
         public bool IsMovementBlocked => HasState(UnitState.Root) || HasState(UnitState.Stunned);
-        public bool IsAlive => deathState == DeathState.Alive;
-        public bool IsDead => deathState == DeathState.Dead;
+        public bool IsAlive => DeathState == DeathState.Alive;
+        public bool IsDead => DeathState == DeathState.Dead;
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitState.Moving);
-        public bool IsFreeForAll => EntityState.Faction.FreeForAll;
 
         public bool HealthBelowPercent(int percent) => health.Value < CountPercentFromMaxHealth(percent);
         public bool HealthAbovePercent(int percent) => health.Value > CountPercentFromMaxHealth(percent);
@@ -159,17 +199,35 @@ namespace Core
             faction = Balance.DefaultFaction;
         }
 
-        public override void Attached()
+        public sealed override void Attached()
         {
             base.Attached();
 
+            HandleAttach();
+
+            WorldManager.UnitManager.Attach(this);
+
+        }
+
+        public sealed override void Detached()
+        {
+            // called twice on client (from Detached Photon callback and manual in UnitManager.Dispose)
+            // if he needs to instantly destroy current world and avoid any events
+            if (!IsValid)
+                return;
+
+            HandleDetach();
+
+            base.Detached();
+        }
+
+        protected virtual void HandleAttach()
+        {
+            createToken = (CreateToken) entity.AttachToken;
             EntityState = entity.GetState<IUnitState>();
 
             foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
                 speedRates[moveType] = 1.0f;
-
-            createToken = (CreateToken)entity.AttachToken;
-            createToken.Attached(this);
 
             if (!IsOwner)
             {
@@ -188,16 +246,10 @@ namespace Core
             SetMap(WorldManager.FindMap(1));
 
             WorldManager.UnitManager.EventEntityDetach += OnEntityDetach;
-            WorldManager.UnitManager.Attach(this);
         }
 
-        public override void Detached()
+        protected virtual void HandleDetach()
         {
-            // called twice on client (from Detached Photon callback and manual in UnitManager.Dispose)
-            // if he needs to instantly destroy current world and avoid any events
-            if (!IsValid)
-                return;
-
             WorldManager.UnitManager.EventEntityDetach -= OnEntityDetach;
 
             SpellHistory.Detached();
@@ -212,8 +264,6 @@ namespace Core
             MovementInfo.Detached();
 
             createToken = null;
-
-            base.Detached();
         }
 
         internal override void DoUpdate(int deltaTime)
@@ -265,10 +315,10 @@ namespace Core
             if (unit == this)
                 return false;
 
-            if (unit.IsFreeForAll && IsFreeForAll)
+            if (unit.FreeForAll && FreeForAll)
                 return true;
 
-            return faction.HostileFactions.Contains(unit.faction);
+            return Faction.HostileFactions.Contains(unit.Faction);
         }
 
         public bool IsFriendlyTo(Unit unit)
@@ -276,10 +326,10 @@ namespace Core
             if (unit == this)
                 return true;
 
-            if (unit.IsFreeForAll && IsFreeForAll)
+            if (unit.FreeForAll && FreeForAll)
                 return false;
 
-            return faction.FriendlyFactions.Contains(unit.faction);
+            return Faction.FriendlyFactions.Contains(unit.Faction);
         }
 
         #region Attribute Handling
@@ -486,10 +536,7 @@ namespace Core
 
         internal void ModifyDeathState(DeathState newState)
         {
-            if (deathState == newState)
-                return;
-
-            EntityState.DeathState = (int)(createToken.DeathState = deathState = newState);
+            DeathState = newState;
 
             if (IsDead && SpellCast.IsCasting)
                 SpellCast.Cancel();
@@ -841,7 +888,7 @@ namespace Core
 
         private void OnDeathStateChanged()
         {
-            deathState = (DeathState)EntityState.DeathState;
+            DeathState = (DeathState)EntityState.DeathState;
         }
 
         private void OnHealthStateChanged()
@@ -856,7 +903,8 @@ namespace Core
 
         private void OnFactionChanged()
         {
-            faction = Balance.FactionsById[EntityState.Faction.Id];
+            Faction = Balance.FactionsById[EntityState.Faction.Id];
+            FreeForAll = EntityState.Faction.FreeForAll;
 
             EventHandler.ExecuteEvent(this, GameEvents.UnitFactionChanged);
         }

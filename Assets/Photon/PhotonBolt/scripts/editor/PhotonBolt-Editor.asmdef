@@ -1,0 +1,10 @@
+{
+    "name": "PhotonBolt-Editor",
+    "references": [
+        "PhotonBolt"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

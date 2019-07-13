@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Bolt;
+using Bolt.Matchmaking;
 using Client;
 using Common;
 using Core;
@@ -35,7 +36,7 @@ namespace Game
         private BoltConfig config;
         private State state;
 
-        public override string Version => "1.0.6";
+        public override string Version => "1.0.7";
 
         protected override void OnRegistered()
         {
@@ -268,8 +269,7 @@ namespace Game
             {
                 onStartSuccess?.Invoke();
 
-                BoltNetwork.SetServerInfo(Guid.NewGuid().ToString(), serverToken);
-                BoltNetwork.LoadScene(serverToken.Map);
+                BoltMatchmaking.CreateSession(Guid.NewGuid().ToString(), serverToken, serverToken.Map);
             }
             else
             {

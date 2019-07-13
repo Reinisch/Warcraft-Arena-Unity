@@ -1,0 +1,8 @@
+{
+    "name": "PhotonBolt",
+    "references": [
+        "PhotonRealtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}

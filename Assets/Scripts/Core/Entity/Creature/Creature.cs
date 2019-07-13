@@ -29,6 +29,8 @@ namespace Core
 
             public void Attached(Creature creature)
             {
+                base.Attached(creature);
+
                 creature.Name = CustomNameId;
                 creature.transform.localScale = new Vector3(Scale, Scale, Scale);
             }
@@ -43,22 +45,22 @@ namespace Core
 
         public override string Name { get => string.IsNullOrEmpty(customNameId) ? creatureDefinition.CreatureNameId : customNameId; internal set => customNameId = value; }
 
-        public override void Attached()
+        protected override void HandleAttach()
         {
+            base.HandleAttach();
+
             createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
-
-            base.Attached();
         }
 
-        public override void Detached()
+        protected override void HandleDetach()
         {
             createToken = null;
 
-            base.Detached();
+            base.HandleDetach();
         }
 
-        public virtual void Accept(IUnitVisitor unitVisitor)
+        public void Accept(IUnitVisitor unitVisitor)
         {
             unitVisitor.Visit(this);
         }

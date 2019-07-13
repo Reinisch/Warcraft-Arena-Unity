@@ -6,7 +6,7 @@ namespace Core
     {
         public new class CreateToken : Unit.CreateToken
         {
-            public string PlayerName { get; set; }
+            public string PlayerName { private get; set; }
 
             public override void Read(UdpPacket packet)
             {
@@ -24,6 +24,8 @@ namespace Core
 
             public void Attached(Player player)
             {
+                base.Attached(player);
+
                 player.Name = PlayerName;
             }
         }
@@ -34,12 +36,28 @@ namespace Core
 
         internal override bool AutoScoped => true;
 
+        public override string Name
+        {
+            get => playerName;
+            internal set
+            {
+                playerName = value;
+
+                if (IsOwner)
+                {
+                    playerState.PlayerName = value;
+                    createToken.PlayerName = value;
+                }
+            } 
+        }
+
         public IControllerInputProvider InputProvider { set => Controller.InputProvider = value; }
-        public override string Name { get => playerName; internal set => playerState.PlayerName = playerName = value; }
         public int SpecId { get; } = 1;
 
-        public override void Attached()
+        protected override void HandleAttach()
         {
+            base.HandleAttach();
+
             playerState = entity.GetState<IPlayerState>();
 
             createToken = (CreateToken)entity.AttachToken;
@@ -47,16 +65,14 @@ namespace Core
 
             if (!IsOwner)
                 playerState.AddCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
-
-            base.Attached();
         }
 
-        public override void Detached()
+        protected override void HandleDetach()
         {
             createToken = null;
             playerState = null;
 
-            base.Detached();
+            base.HandleDetach();
         }
 
         public virtual void Accept(IUnitVisitor visitor) => visitor.Visit(this);
