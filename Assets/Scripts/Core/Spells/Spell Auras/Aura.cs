@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common;
 
 namespace Core
 {
     public class Aura
     {
         private const int UpdateTargetInterval = 500;
+        private static int AuraAliveCount;
 
         private readonly List<Unit> tempRemovableTargets = new List<Unit>();
         private readonly HashSet<Unit> tempUpdatedTargets = new HashSet<Unit>();
@@ -18,8 +20,6 @@ namespace Core
 
         internal bool Updated { get; private set; }
 
-        public IReadOnlyDictionary<ulong, AuraApplication> ApplicationsByTargetId => applicationsByTargetId;
-        public IReadOnlyList<AuraApplication> Applications => applications;
         public IReadOnlyList<AuraEffectInfo> EffectsInfos => effectInfos;
         public IReadOnlyList<AuraEffect> Effects => effects;
 
@@ -33,19 +33,27 @@ namespace Core
         public bool IsRemoved { get; private set; }
         public bool IsExpired => Duration == 0;
 
-        private Aura(AuraInfo auraInfo, Unit owner, Unit caster)
+        internal Aura(AuraInfo auraInfo, Unit owner, Unit caster)
         {
             Info = auraInfo;
             Caster = caster;
             Owner = owner;
             CasterId = caster?.Id ?? 0;
 
+            Duration = auraInfo.Duration;
+            MaxDuration = auraInfo.MaxDuration;
+
             effectInfos.AddRange(auraInfo.AuraEffects);
 
             for (int index = 0; index < effectInfos.Count; index++)
                 effects.Add(effectInfos[index].CreateEffect(this, Caster, index));
 
-            Owner.AddOwnedAura(this);
+            Logging.LogAura($"Created aura {Info.name} for target: {Owner.Name}, current count: {++AuraAliveCount}");
+        }
+
+        ~Aura()
+        {
+            Logging.LogAura($"Finalized aura, current count: {--AuraAliveCount}");
         }
 
         internal void DoUpdate(int deltaTime)
@@ -67,18 +75,6 @@ namespace Core
         internal void LateUpdate()
         {
             Updated = false;
-        }
-
-        internal static Aura TryRefreshStackOrCreate(AuraInfo auraInfo, Unit owner, Unit originalCaster)
-        {
-            var ownedAura = owner.FindOwnedAura(auraInfo.Id, originalCaster.Id);
-            var updateAura = ownedAura ?? new Aura(auraInfo, owner, originalCaster);
-
-            if (updateAura.IsRemoved)
-                return null;
-
-            updateAura.UpdateTargets();
-            return updateAura;
         }
 
         internal void RegisterForTarget(Unit target, AuraApplication auraApplication)
@@ -106,7 +102,7 @@ namespace Core
             }
         }
 
-        private void UpdateTargets()
+        internal void UpdateTargets()
         {
             updateInvervalLeft = UpdateTargetInterval;
 
@@ -137,6 +133,18 @@ namespace Core
             tempRemovableTargets.Clear();
         }
 
+        internal bool CanStackWith(Aura existingAura)
+        {
+            if (this == existingAura)
+                return true;
+
+            bool sameCaster = CasterId == existingAura.CasterId;
+            if (!sameCaster && !Info.HasAttribute(AuraAttributes.StackForAnyCasters))
+                return false;
+
+            return true;
+        }
+
         private void AddUnitToAura(Unit unit)
         {
             tempUpdatedTargets.Add(unit);
@@ -160,18 +168,6 @@ namespace Core
                         return;
 
             unit.ApplyAuraApplication(new AuraApplication(unit, Caster, this, auraEffectMask));
-        }
-
-        internal bool CanStackWith(Aura existingAura)
-        {
-            if (this == existingAura)
-                return true;
-
-            bool sameCaster = CasterId == existingAura.CasterId;
-            if (!sameCaster && !Info.HasAttribute(AuraAttributes.StackForAnyCasters))
-                return false;
-
-            return true;
         }
     }
 }

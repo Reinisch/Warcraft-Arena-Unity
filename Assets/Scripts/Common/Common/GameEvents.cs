@@ -19,6 +19,7 @@
 
         ClientSpellFailed,
 
+        ServerPlayerSpeedChanged,
         ServerSpellLaunch,
         ServerSpellHit,
         ServerSpellCooldown,

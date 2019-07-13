@@ -82,6 +82,11 @@ namespace Core
             UpdateTarget(newTarget:target);
         }
 
+        public void Handle(PlayerSpeedRateChangedEvent speedChangeEvent)
+        {
+            SetSpeedRate((UnitMoveType) speedChangeEvent.MoveType, speedChangeEvent.SpeedRate);
+        }
+
         private void OnPlayerNameChanged()
         {
             Name = playerState.PlayerName;

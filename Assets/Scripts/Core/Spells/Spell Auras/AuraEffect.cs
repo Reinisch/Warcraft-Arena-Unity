@@ -1,39 +1,30 @@
 ﻿namespace Core
 {
-    public class AuraEffect
+    public abstract class AuraEffect
     {
         private int index;
-        private int baseAmount;
-        private int amount;
+        private float baseValue;
 
-        public Unit Caster => Aura.Caster;
-        public AuraEffectInfo EffectInfo { get; }
+        public float Value { get; }
+
         public Aura Aura { get; }
+        public AuraEffectInfo EffectInfo { get; }
 
-        public AuraEffect(Aura aura, AuraEffectInfo effectInfo, int index, int baseAmount, Unit caster)
+        public AuraEffect(Aura aura, AuraEffectInfo effectInfo, int index, float baseValue)
         {
             Aura = aura;
             EffectInfo = effectInfo;
 
             this.index = index;
-            this.baseAmount = baseAmount;
-        }
+            this.baseValue = baseValue;
 
-        public void HandleEffect(AuraApplication auraApplication, AuraEffectHandleMode mode, bool apply)
-        {
-
+            Value = baseValue;
         }
 
         public void Update(int deltaTime)
         {
         }
 
-        public void HandleAuraModIncreaseSpeed(AuraApplication auraApplication, AuraEffectHandleMode mode, bool apply)
-        {
-        }
-
-        public void HandleAuraModDecreaseSpeed(AuraApplication auraApplication, AuraEffectHandleMode mode, bool apply)
-        {
-        }
+        public abstract void HandleEffect(AuraApplication auraApplication, AuraEffectHandleMode mode, bool apply);
     }
 }

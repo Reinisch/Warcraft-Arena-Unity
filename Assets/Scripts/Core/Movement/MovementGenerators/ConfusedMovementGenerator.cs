@@ -24,7 +24,6 @@ namespace Core
             if (!unit.IsAlive || unit.IsStopped)
                 return;
 
-            unit.StopMoving();
             unit.AddState(UnitState.Move);
         }
 
@@ -35,7 +34,6 @@ namespace Core
             if (!unit.IsAlive || unit.IsStopped)
                 return;
 
-            unit.StopMoving();
             unit.AddState(UnitState.Confused | UnitState.ConfusedMove);
         }
 
@@ -67,7 +65,6 @@ namespace Core
         {
             player.RemoveFlag(UnitFlags.Confused);
             player.RemoveState(UnitState.Confused | UnitState.ConfusedMove);
-            player.StopMoving();
         }
     }
 

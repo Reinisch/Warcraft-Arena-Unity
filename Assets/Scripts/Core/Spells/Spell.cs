@@ -9,6 +9,8 @@ namespace Core
 {
     public partial class Spell
     {
+        private static int SpellAliveCount;
+
         private readonly SpellManager spellManager;
         private readonly SpellSchoolMask spellSchoolMask;
         private readonly SpellCastFlags spellCastFlags;
@@ -31,7 +33,7 @@ namespace Core
 
         internal Spell(Unit caster, SpellInfo info, SpellCastingOptions options)
         {
-            Logging.LogSpell($"Created new spell, current count: {++SpellManager.SpellAliveCount}");
+            Logging.LogSpell($"Created new spell, current count: {++SpellAliveCount}");
 
             spellManager = caster.WorldManager.SpellManager;
             spellCastFlags = options.SpellFlags;
@@ -59,7 +61,7 @@ namespace Core
 
         ~Spell()
         {
-            Logging.LogSpell($"Finalized another spell, current count: {--SpellManager.SpellAliveCount}");
+            Logging.LogSpell($"Finalized another spell, current count: {--SpellAliveCount}");
         }
 
         internal void Dispose()

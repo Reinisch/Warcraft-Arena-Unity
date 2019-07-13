@@ -11,6 +11,7 @@ namespace Server
         private readonly Dictionary<BoltConnection, PlayerServerInfo> playerInfosByConnection = new Dictionary<BoltConnection, PlayerServerInfo>();
         private readonly Dictionary<ulong, PlayerServerInfo> playerInfosByPlayerId = new Dictionary<ulong, PlayerServerInfo>();
         private readonly GameSpellListener spellListener;
+        private readonly GamePlayerListener playerListener;
 
         private PlayerServerInfo serverPlayerInfo;
         private ServerRoomToken serverRoomToken;
@@ -23,12 +24,14 @@ namespace Server
             HasClientLogic = hasClientLogic;
 
             spellListener = new GameSpellListener(this);
+            playerListener = new GamePlayerListener(this);
         }
 
         public override void Dispose()
         {
             serverRoomToken = null;
             spellListener.Dispose();
+            playerListener.Dispose();
 
             playerInfos.Clear();
             playerInfosByConnection.Clear();

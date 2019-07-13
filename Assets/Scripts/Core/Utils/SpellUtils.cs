@@ -53,5 +53,10 @@
         {
             return (baseFlags & flag) != 0;
         }
+
+        public static bool IsRemoved(this AuraRemoveMode mode)
+        {
+            return mode != AuraRemoveMode.None;
+        }
     }
 }

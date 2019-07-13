@@ -206,7 +206,6 @@ namespace Core
             HandleAttach();
 
             WorldManager.UnitManager.Attach(this);
-
         }
 
         public sealed override void Detached()
@@ -364,85 +363,44 @@ namespace Core
             return delta;
         }
 
-        internal void SetPowerType(SpellResourceType spellResource) { }
-
-        internal void SetPower(SpellResourceType spellResource, int value) { }
-
-        internal void SetMaxPower(SpellResourceType spellResource, int value) { }
-
-        internal int ModifyPower(SpellResourceType spellResource, int value) { return 0; }
-
-        internal int ModifyPowerPercent(SpellResourceType spellResource, float percent, bool apply = true) { return 0; }
-
         internal void UpdateSpeed(UnitMoveType type)
         {
-            int mainSpeedMod = 0;
-            float stackBonus = 1.0f;
-            float nonStackBonus = 1.0f;
-
+            float increaseModifier = 0.0f;
+            float nonStackModifier = 100f;
+            float stackMultiplier = 100f;
+            
+            // increases only affect running movement
             switch (type)
             {
-                // only apply debuffs
                 case UnitMoveType.RunBack:
                     break;
+                case UnitMoveType.Walk:
+                    break;
                 case UnitMoveType.Run:
-                    mainSpeedMod = /*GetMaxPositiveAuraModifier(SPELL_AURA_MOD_INCREASE_SPEED)*/0;
-                    stackBonus = /*GetTotalAuraMultiplier(SPELL_AURA_MOD_SPEED_ALWAYS)*/0;
-                    nonStackBonus += /*GetMaxPositiveAuraModifier(SPELL_AURA_MOD_SPEED_NOT_STACK) / 100.0f*/0;
+                    increaseModifier = MaxPositiveAuraModifier(AuraEffectType.SpeedIncreaseModifier);
+                    nonStackModifier += MaxPositiveAuraModifier(AuraEffectType.SpeedNonStackableModifier);
+                    stackMultiplier = TotalAuraMultiplier(AuraEffectType.SpeedStackableMultiplier);
                     break;
                 default:
-                    Debug.LogErrorFormat("Characters::UpdateSpeed: Unsupported move type - {0}", type);
                     return;
             }
 
-            // now we ready for speed calculation
-            float speed = Mathf.Max(nonStackBonus, stackBonus);
-            if (mainSpeedMod != 0)
-                speed *= mainSpeedMod;
+            // calculate increased speed
+            float speedRate = 1.0f.ApplyPercentage(Mathf.Max(nonStackModifier, stackMultiplier));
+            if (!Mathf.Approximately(increaseModifier, 0.0f))
+                speedRate = speedRate.ApplyPercentage(100.0f + increaseModifier);
 
-            switch (type)
-            {
-                case UnitMoveType.Run:
-                    // Normalize speed by 191 aura SPELL_AURA_USE_NORMAL_MOVEMENT_SPEED if need #TODO
-                    int normalization/* = GetMaxPositiveAuraModifier(SPELL_AURA_USE_NORMAL_MOVEMENT_SPEED)*/ = 0;
-                    if (normalization > 0)
-                    {
-                        // Use speed from aura
-                        float maxSpeed = normalization / unitMovementDefinition.BaseSpeedByType(type);
-                        if (speed > maxSpeed)
-                            speed = maxSpeed;
-                    }
+            // apply strongest slow effect
+            float slowPercent = MaxNegativeAuraModifier(AuraEffectType.ModDecreaseSpeed);
+            if (slowPercent > 0.0f)
+                speedRate = speedRate.ApplyPercentage(slowPercent);
 
-                    // force minimum speed rate @ aura 437 SPELL_AURA_MOD_MINIMUM_SPEED_RATE
-                    int minSpeedModRate = /*GetMaxPositiveAuraModifier(SPELL_AURA_MOD_MINIMUM_SPEED_RATE)*/0;
-                    if (minSpeedModRate != 0)
-                    {
-                        float minSpeed = minSpeedModRate / unitMovementDefinition.BaseSpeedByType(type);
-                        if (speed < minSpeed)
-                            speed = minSpeed;
-                    }
-                    break;
-            }
+            // check for minimum speed aura
+            float minSpeedPercent = MaxPositiveAuraModifier(AuraEffectType.ModMinimumSpeed);
+            if (minSpeedPercent > 0)
+                speedRate = Mathf.Max(speedRate, 1.0f.ApplyPercentage(minSpeedPercent));
 
-            // Apply strongest slow aura mod to speed
-            int slow = /*GetMaxNegativeAuraModifier(SPELL_AURA_MOD_DECREASE_SPEED)*/0;
-            if (slow != 0)
-                speed *= slow;
-
-            float minSpeedMod = /*(float)GetMaxPositiveAuraModifier(SPELL_AURA_MOD_MINIMUM_SPEED)*/0;
-            if (minSpeedMod > 0)
-            {
-                float minSpeed = minSpeedMod / 100.0f;
-                if (speed < minSpeed)
-                    speed = minSpeed;
-            }
-
-            SetSpeedRate(type, speed);
-        }
-
-        internal void SetSpeed(UnitMoveType type, float newValue)
-        {
-            SetSpeedRate(type, newValue / unitMovementDefinition.BaseSpeedByType(type));
+            SetSpeedRate(type, speedRate);
         }
 
         internal void SetSpeedRate(UnitMoveType type, float rate)
@@ -451,11 +409,10 @@ namespace Core
                 rate = 0.0f;
 
             speedRates[type] = rate;
+
+            if (IsOwner && this is Player player)
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, player, type, rate);
         }
-
-        internal void StopMoving() { }
-
-        internal void SetControlled(bool apply, UnitState state) { }
 
         #endregion
 
@@ -718,9 +675,7 @@ namespace Core
             return value;
         }
 
-        internal int CalcSpellDuration(SpellInfo spellProto) { return 0; }
-
-        internal int ModSpellDuration(SpellInfo spellInfo, Unit target, int duration) { return duration; }
+        internal int ModifyAuraDuration(AuraInfo auraInfo, Unit target, int duration) { return duration; }
 
         internal void ModSpellCastTime(SpellInfo spellProto, ref int castTime, Spell spell = null) { }
 
@@ -728,70 +683,138 @@ namespace Core
 
         #endregion
 
-        #region Aura Handling
-
-        internal Aura FindOwnedAura(int spellId, ulong casterId, Aura exceptAura = null)
+        internal bool HasAuraType(AuraEffectType auraEffectType)
         {
-            if (ownedAurasById.TryGetValue(spellId, out List<Aura> ownedAuraList))
-                foreach (Aura aura in ownedAuraList)
-                    if (aura.CasterId == casterId && exceptAura != aura)
-                        return aura;
-
-            return null;
+            return auraEffectsByAuraType.ContainsKey(auraEffectType);
         }
 
-        internal void AddOwnedAura(Aura aura)
+        internal float TotalAuraModifier(AuraEffectType auraType)
+        {
+            if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
+                return 0.0f;
+
+            float modifier = 0.0f;
+
+            foreach (AuraEffect auraEffect in auraEffects)
+                modifier += auraEffect.Value;
+
+            return modifier;
+        }
+
+        internal float TotalAuraMultiplier(AuraEffectType auraType)
+        {
+            if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
+                return 1.0f;
+
+            float multiplier = 1.0f;
+
+            foreach (AuraEffect auraEffect in auraEffects)
+                multiplier = multiplier.AddPercentage(auraEffect.Value);
+
+            return multiplier;
+        }
+
+        internal float MaxPositiveAuraModifier(AuraEffectType auraType)
+        {
+            if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
+                return 0.0f;
+
+            float modifier = 0.0f;
+
+            foreach (AuraEffect auraEffect in auraEffects)
+                modifier = Mathf.Max(modifier, auraEffect.Value);
+
+            return modifier;
+        }
+
+        internal float MaxNegativeAuraModifier(AuraEffectType auraType)
+        {
+            if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
+                return 0.0f;
+
+            float modifier = 0.0f;
+
+            foreach (AuraEffect auraEffect in auraEffects)
+                modifier = Mathf.Min(modifier, auraEffect.Value);
+
+            return modifier;
+        }
+
+        internal Aura RefreshOrCreateAura(AuraInfo auraInfo, Unit originalCaster)
+        {
+            var ownedAura = FindOwnedAura();
+            if (ownedAura == null)
+            {
+                ownedAura = new Aura(auraInfo, this, originalCaster);
+                AddOwnedAura(ownedAura);
+            }
+
+            if (ownedAura.IsRemoved)
+                return null;
+
+            ownedAura.UpdateTargets();
+            return ownedAura;
+
+            Aura FindOwnedAura()
+            {
+                if (ownedAurasById.TryGetValue(auraInfo.Id, out List<Aura> ownedAuraList))
+                    foreach (Aura aura in ownedAuraList)
+                        if (aura.CasterId == originalCaster.Id)
+                            return aura;
+
+                return null;
+            }
+        }
+
+        internal void ApplyAuraApplication(AuraApplication auraApplication)
+        {
+            Logging.LogAura($"Applying application for target: {Name} for aura: {auraApplication.Aura.Info.name}");
+
+            RemoveNonStackableAuras(auraApplication.Aura);
+
+            auraApplications.Add(auraApplication);
+            auraApplicationsByAuraId.Insert(auraApplication.Aura.Info.Id, auraApplication);
+
+            HandleStateContainingAura(auraApplication, true);
+            HandleInterruptableAura(auraApplication, true);
+            HandleAuraEffects(auraApplication, true);
+
+            auraApplication.Aura.RegisterForTarget(this, auraApplication);
+        }
+
+        internal void UnapplyAuraApplication(AuraApplication auraApplication, AuraRemoveMode removeMode)
+        {
+            auraApplicationsByAuraId.Delete(auraApplication.Aura.Info.Id, auraApplication);
+            auraApplications.Remove(auraApplication);
+
+            HandleInterruptableAura(auraApplication, false);
+            HandleStateContainingAura(auraApplication, false);
+            HandleAuraEffects(auraApplication, false);
+
+            auraApplication.Aura.UnregisterForTarget(this, auraApplication);
+            auraApplication.RemoveMode = removeMode;
+
+            Logging.LogAura($"Unapplied application for target: {Name} for aura: {auraApplication.Aura.Info.name}");
+        }
+        
+        private void AddOwnedAura(Aura aura)
         {
             ownedAuras.Add(aura);
             ownedAurasById.Insert(aura.Info.Id, aura);
 
             RemoveNonStackableAuras(aura);
+
+            Logging.LogAura($"Added owned aura {aura.Info.name} for target: {Name}");
         }
 
-        internal void ApplyAuraApplication(AuraApplication auraApplication)
+        private void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode)
         {
-            Aura aura = auraApplication.Aura;
+            ownedAuras.Remove(aura);
+            ownedAurasById.Delete(aura.Info.Id, aura);
 
-            RemoveNonStackableAuras(aura);
+            aura.Remove(removeMode);
 
-            if (auraApplication.IsRemoved)
-                return;
-
-            HandleStateContainingAura(auraApplication, true);
-            HandleInterruptableAura(auraApplication, true);
-            aura.RegisterForTarget(this, auraApplication);
-
-            if (aura.Info.StateType != AuraStateType.None)
-                ModifyAuraState(aura.Info.StateType, true);
-
-            for (int i = 0; i < aura.EffectsInfos.Count; i++)
-                if (auraApplication.EffectsToApply.HasBit(i) && !auraApplication.IsRemoved)
-                    auraApplication.HandleEffect(i, true);
-
-            if (!auraApplication.IsRemoved)
-            {
-                auraApplications.Add(auraApplication);
-                auraApplicationsByAuraId.Insert(aura.Info.Id, auraApplication);
-            }
-        }
-
-        internal void UnapplyAuraApplication(AuraApplication auraApplication, AuraRemoveMode removeMode)
-        {
-            Aura aura = auraApplication.Aura;
-
-            auraApplicationsByAuraId.Delete(aura.Info.Id, auraApplication);
-            auraApplications.Remove(auraApplication);
-
-            HandleInterruptableAura(auraApplication, false);
-            HandleStateContainingAura(auraApplication, false);
-            aura.UnregisterForTarget(this, auraApplication);
-            auraApplication.Remove(removeMode);
-
-            for (int i = 0; i < aura.EffectsInfos.Count; i++)
-                if (auraApplication.AppliedEffectMask.HasBit(i))
-                    auraApplication.HandleEffect(i, false);
-
-            Assert.IsTrue(auraApplication.AppliedEffectMask == 0);
+            Logging.LogAura($"Removed owned aura {aura.Info.name} for target: {Name} with mode: {removeMode}");
         }
 
         private void HandleInterruptableAura(AuraApplication auraApplication, bool added)
@@ -823,23 +846,43 @@ namespace Core
             if (added)
             {
                 auraApplicationsByAuraState.Insert(stateType, auraApplication);
-
                 ModifyAuraState(stateType, true);
             }
             else
             {
                 auraApplicationsByAuraState.Delete(stateType, auraApplication);
-
                 ModifyAuraState(stateType, auraApplicationsByAuraState.ContainsKey(stateType));
             }
         }
 
-        private void HandleAuraEffectRegistration(AuraEffect auraEffect, bool added)
+        private void HandleAuraEffects(AuraApplication auraApplication, bool added)
         {
             if (added)
-                auraEffectsByAuraType.Insert(auraEffect.EffectInfo.AuraEffectType, auraEffect);
+            {
+                for (int i = 0; i < auraApplication.Aura.EffectsInfos.Count; i++)
+                {
+                    if (auraApplication.EffectsToApply.HasBit(i) && !auraApplication.RemoveMode.IsRemoved())
+                    {
+                        AuraEffect addedEffect = auraApplication.Aura.Effects[i];
+                        auraEffectsByAuraType.Insert(addedEffect.EffectInfo.AuraEffectType, addedEffect);
+
+                        auraApplication.HandleEffect(i, true);
+                    }
+                }
+            }
             else
-                auraEffectsByAuraType.Delete(auraEffect.EffectInfo.AuraEffectType, auraEffect);
+            {
+                for (int i = 0; i < auraApplication.Aura.EffectsInfos.Count; i++)
+                {
+                    if (auraApplication.AppliedEffectMask.HasBit(i))
+                    {
+                        AuraEffect removedEffect = auraApplication.Aura.Effects[i];
+                        auraEffectsByAuraType.Delete(removedEffect.EffectInfo.AuraEffectType, removedEffect);
+
+                        auraApplication.HandleEffect(i, false);
+                    }
+                }
+            }
         }
 
         private void RemoveNonStackableAuras(Aura aura)
@@ -849,16 +892,9 @@ namespace Core
                     RemoveAura(AuraApplications[i], AuraRemoveMode.Default);
         }
 
-        private void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode)
+        private void RemoveAura(AuraApplication application, AuraRemoveMode mode)
         {
-            ownedAuras.Remove(aura);
-
-            aura.Remove(removeMode);
-        }
-
-        internal void RemoveAura(AuraApplication application, AuraRemoveMode mode)
-        {
-            if (!application.IsRemoved)
+            if (!application.RemoveMode.IsRemoved())
             {
                 UnapplyAuraApplication(application, mode);
 
@@ -867,24 +903,13 @@ namespace Core
             }
         }
 
-        internal void RemoveAura(Aura aura, AuraRemoveMode mode)
-        {
-            if (aura.IsRemoved && aura.ApplicationsByTargetId.TryGetValue(Id, out AuraApplication auraApplication))
-                RemoveAura(auraApplication, mode);
-        }
-
-        internal bool HasAuraType(AuraEffectType auraEffectType)
-        {
-            return auraEffectsByAuraType.ContainsKey(auraEffectType);
-        }
-
-        #endregion
-
         private void OnEntityDetach(Unit entity)
         {
             if (targetId == entity.Id || Target == entity)
                 UpdateTarget(updateState: true);
         }
+
+        #region State Events
 
         private void OnDeathStateChanged()
         {
@@ -908,5 +933,7 @@ namespace Core
 
             EventHandler.ExecuteEvent(this, GameEvents.UnitFactionChanged);
         }
+
+        #endregion
     }
 }

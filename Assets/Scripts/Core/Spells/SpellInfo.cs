@@ -28,8 +28,6 @@ namespace Core
         [SerializeField, EnumFlag, UsedImplicitly] private SpellRangeFlags rangedFlags;
         [SerializeField, EnumFlag, UsedImplicitly] private SpellInterruptFlags interruptFlags;
 
-        [SerializeField, UsedImplicitly] private int duration;
-        [SerializeField, UsedImplicitly] private int maxDuration;
         [SerializeField, UsedImplicitly] private int cooldownTime;
         [SerializeField, UsedImplicitly] private int categoryCooldownTime;
         [SerializeField, UsedImplicitly] private int globalCooldownTime;
@@ -75,8 +73,6 @@ namespace Core
         public List<SpellEffectInfo> Effects => spellEffectInfos;
         public List<SpellProcsPerMinuteModifier> ProcsPerMinuteModifiers => procsPerMinuteModifiers;
 
-        public int Duration => duration;
-        public int MaxDuration => maxDuration;
         public int CooldownTime => cooldownTime;
         public int CategoryCooldownTime => categoryCooldownTime;
         public int GlobalCooldownTime => globalCooldownTime;

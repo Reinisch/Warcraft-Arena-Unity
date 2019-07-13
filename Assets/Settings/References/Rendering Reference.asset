@@ -74,3 +74,6 @@ MonoBehaviour:
   - spellInfo: {fileID: 11400000, guid: ec9e3f15c8fb97a4ea496361fb5f703d, type: 2}
     spellIcon: {fileID: 21300000, guid: dfdb300a2a1841642a5f9c45d434ba19, type: 3}
     visualEffects: []
+  - spellInfo: {fileID: 11400000, guid: d76f3f10631a0334795fa104d4bbcd41, type: 2}
+    spellIcon: {fileID: 21300000, guid: 9934614611b90854391b2b214683b6bb, type: 3}
+    visualEffects: []

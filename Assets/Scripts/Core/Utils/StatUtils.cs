@@ -4,18 +4,10 @@ namespace Core
 {
     public static class StatUtils
     {
-        public const float ContactDistance = 0.5f;
-        public const float InteractionDistance = 5.0f;
-        public const float AttackDistance = 5.0f;
-        public const float InspectDistance = 28.0f;
-        public const float TradeDistance = 11.11f;
-        public const float SightRangeUnit = 50.0f;
         public const float DefaultCombatReach = 1.5f;
         public const float MinMeleeReach = 3.0f;
         public const float NominalMeleeRange = 5.0f;
-        public const float DefaultPhase = 169;
-        public const int CorpseReclaimRadius = 50;
-        public const int AIDefaultCooldown = 5000;
+
         public static readonly UnitMoveType[] UnitMoveTypes = (UnitMoveType[]) Enum.GetValues(typeof(UnitMoveType));
 
         public static bool HasTargetFlag(this UnitFlags baseFlags, UnitFlags flag)
@@ -25,71 +17,71 @@ namespace Core
 
         #region Percentage calculations
 
-        public static int CalculatePercentage(this int baseValue, float pct)
+        public static int CalculatePercentage(this int baseValue, float percent)
         {
-            return (int)(baseValue * pct / 100.0f);
+            return (int)(baseValue * percent / 100.0f);
         }
 
-        public static uint CalculatePercentage(this uint baseValue, float pct)
+        public static uint CalculatePercentage(this uint baseValue, float percent)
         {
-            return (uint)(baseValue * pct / 100.0f);
+            return (uint)(baseValue * percent / 100.0f);
         }
 
-        public static long CalculatePercentage(this long baseValue, float pct)
+        public static long CalculatePercentage(this long baseValue, float percent)
         {
-            return (long)(baseValue * pct / 100.0f);
+            return (long)(baseValue * percent / 100.0f);
         }
 
-        public static float CalculatePercentage(this float baseValue, float pct)
+        public static float CalculatePercentage(this float baseValue, float percent)
         {
-            return baseValue * (pct) / 100.0f;
+            return baseValue * (percent) / 100.0f;
         }
 
-        public static int AddPercentage(this int baseValue, float pct)
+        public static int AddPercentage(this int baseValue, float percent)
         {
-            return baseValue + CalculatePercentage(baseValue, pct);
+            return baseValue + CalculatePercentage(baseValue, percent);
         }
 
-        public static uint AddPercentage(this uint baseValue, float pct)
+        public static uint AddPercentage(this uint baseValue, float percent)
         {
-            return baseValue + CalculatePercentage(baseValue, pct);
+            return baseValue + CalculatePercentage(baseValue, percent);
         }
 
-        public static long AddPercentage(this long baseValue, float pct)
+        public static long AddPercentage(this long baseValue, float percent)
         {
-            return baseValue + CalculatePercentage(baseValue, pct);
+            return baseValue + CalculatePercentage(baseValue, percent);
         }
 
-        public static float AddPercentage(this float baseValue, float pct)
+        public static float AddPercentage(this float baseValue, float percent)
         {
-            return baseValue + CalculatePercentage(baseValue, pct);
+            return baseValue + CalculatePercentage(baseValue, percent);
         }
 
-        public static int ApplyPercentage(this int baseValue, float pct)
+        public static int ApplyPercentage(this int baseValue, float percent)
         {
-            return CalculatePercentage(baseValue, pct);
+            return CalculatePercentage(baseValue, percent);
         }
 
-        public static uint ApplyPercentage(this uint baseValue, float pct)
+        public static uint ApplyPercentage(this uint baseValue, float percent)
         {
-            return CalculatePercentage(baseValue, pct);
+            return CalculatePercentage(baseValue, percent);
         }
 
-        public static long ApplyPercentage(this long baseValue, float pct)
+        public static long ApplyPercentage(this long baseValue, float percent)
         {
-            return CalculatePercentage(baseValue, pct);
+            return CalculatePercentage(baseValue, percent);
         }
 
-        public static float ApplyPercentage(this float baseValue, float pct)
+        public static float ApplyPercentage(this float baseValue, float percent)
         {
-            return CalculatePercentage(baseValue, pct);
+            return CalculatePercentage(baseValue, percent);
         }
 
         #endregion
 
         #region Binary helpers
 
-        public static bool HasBit(this int mask, int index) => (mask & (1 << index)) == index;
+        public static bool HasBit(this int mask, int index) => (mask & (1 << index)) > 0;
 
         public static int SetBit(this int mask, int index) => mask | (1 << index);
 

@@ -25,17 +25,19 @@ namespace Core
         public BoltEntity BoltEntity => entity;
         public bool IsOwner => entity.IsOwner;
         public bool IsController => entity.HasControl;
-        public ulong Id => entity.NetworkId.PackedValue;
+        public ulong Id { get; private set; }
 
         [UsedImplicitly]
         protected virtual void Awake()
         {
+            Id = 0;
         }
 
         public override void Attached()
         {
             base.Attached();
 
+            Id = entity.NetworkId.PackedValue;
             IsValid = true;
         }
 

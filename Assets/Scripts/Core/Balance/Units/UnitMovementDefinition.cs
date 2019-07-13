@@ -15,8 +15,6 @@ namespace Core
         private float runBackSpeed = 4.5f;
         [SerializeField, UsedImplicitly]
         private float turnRate = 250.0f;
-        [SerializeField, UsedImplicitly]
-        private float pitchRate = 250.0f;
 
         public float WalkSpeed => walkSpeed;
         public float RunSpeed => runSpeed;
@@ -33,10 +31,6 @@ namespace Core
                     return runSpeed;
                 case UnitMoveType.RunBack:
                     return runBackSpeed;
-                case UnitMoveType.TurnRate:
-                    return turnRate;
-                case UnitMoveType.PitchRate:
-                    return pitchRate;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(moveType), moveType, "Unknown movement type!");
             }
