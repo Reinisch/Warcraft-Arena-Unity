@@ -86,3 +86,7 @@ MonoBehaviour:
     auraIcon: {fileID: 21300000, guid: bc56b0330219a274fb0356fb6a2abdcd, type: 3}
     tagType: 1
     effectSettings: {fileID: 0}
+  - auraInfo: {fileID: 11400000, guid: 2541b84f9246da547b1ffe4cd291045c, type: 2}
+    auraIcon: {fileID: 21300000, guid: dfdb300a2a1841642a5f9c45d434ba19, type: 3}
+    tagType: 1
+    effectSettings: {fileID: 0}

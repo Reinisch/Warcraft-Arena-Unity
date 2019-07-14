@@ -10,11 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bea804553f634975b3f7b754722ec882, type: 3}
-  m_Name: Blink Teleport Effect
+  m_Name: Blink Effect Teleport
   m_EditorClassIdentifier: 
-  auraType: 0
-  explicitTargetType: 2
-  mechanic: 0
   mainTargeting:
     targetEntities: 0
     referenceType: 1
@@ -27,11 +24,7 @@ MonoBehaviour:
     selectionCategory: 0
     selectionCheckType: 0
     directionType: 0
-  basePoints: 0
-  randomPoints: 0
-  applyAuraPeriod: 0
+  explicitTargetType: 2
   minRadius: 0
   maxRadius: 0
-  amplitude: 0
-  chainAmplitude: 0
   horizontalDistance: 15
