@@ -9,6 +9,7 @@
 
         public Aura Aura { get; }
         public AuraEffectInfo EffectInfo { get; }
+        public abstract AuraEffectHandleGroup HandleGroup { get; }
 
         public AuraEffect(Aura aura, AuraEffectInfo effectInfo, int index, float baseValue)
         {

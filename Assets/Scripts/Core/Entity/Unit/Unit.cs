@@ -84,6 +84,9 @@ namespace Core
         private readonly HashSet<AuraApplication> auraApplicationSet = new HashSet<AuraApplication>();
         private readonly List<Aura> ownedAuras = new List<Aura>();
 
+        private readonly HashSet<AuraEffectHandleGroup> tempAuraHandleGroups = new HashSet<AuraEffectHandleGroup>();
+        private readonly List<int> tempAuraEffectsToHandle = new List<int>();
+
         private ThreatManager ThreatManager { get; set; }
         private UnitState UnitState { get; set; }
 
@@ -310,13 +313,6 @@ namespace Core
             HandleVisibleAuras();
         }
 
-        internal void HandleSpawn()
-        {
-            ModifyDeathState(DeathState.Alive);
-
-            SetHealth(MaxHealth);
-        }
-
         internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
         {
             targetId = newTarget?.Id ?? newTargetId;
@@ -350,8 +346,6 @@ namespace Core
             return Faction.FriendlyFactions.Contains(unit.Faction);
         }
 
-        #region Attribute Handling
-
         internal void AddState(UnitState state) { UnitState |= state; }
 
         internal bool HasState(UnitState state) { return (UnitState & state) != 0; }
@@ -364,12 +358,6 @@ namespace Core
 
         internal bool HasFlag(UnitFlags flag) => (unitFlags & flag) == flag;
 
-        internal void AddFlag(MovementFlags flag) { MovementInfo.AddMovementFlag(flag); }
-
-        internal void RemoveFlag(MovementFlags flag) { MovementInfo.RemoveMovementFlag(flag); }
-
-        internal bool HasFlag(MovementFlags flag) { return MovementInfo.HasMovementFlag(flag); }
-        
         internal int ModifyHealth(int delta)
         {
             return SetHealth(Health + delta);
@@ -430,13 +418,14 @@ namespace Core
             if (rate < 0)
                 rate = 0.0f;
 
-            speedRates[type] = rate;
+            if (!Mathf.Approximately(speedRates[type], rate))
+            {
+                speedRates[type] = rate;
 
-            if (IsOwner && this is Player player)
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, player, type, rate);
+                if (IsOwner && this is Player player)
+                    EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, player, type, rate);
+            }
         }
-
-        #endregion
 
         #region Spell Handling
 
@@ -915,14 +904,12 @@ namespace Core
         {
             if (added)
             {
-                for (int i = 0; i < auraApplication.Aura.EffectsInfos.Count; i++)
+                for (int i = 0; i < auraApplication.Aura.Effects.Count; i++)
                 {
-                    if (auraApplication.EffectsToApply.HasBit(i) && !auraApplication.RemoveMode.IsRemoved())
+                    if (auraApplication.EffectsToApply.HasBit(i) && !auraApplication.AppliedEffectMask.HasBit(i))
                     {
-                        AuraEffect addedEffect = auraApplication.Aura.Effects[i];
-                        auraEffectsByAuraType.Insert(addedEffect.EffectInfo.AuraEffectType, addedEffect);
-
-                        auraApplication.HandleEffect(i, true);
+                        auraEffectsByAuraType.Insert(auraApplication.Aura.Effects[i].EffectInfo.AuraEffectType, auraApplication.Aura.Effects[i]);
+                        tempAuraEffectsToHandle.Add(i);
                     }
                 }
             }
@@ -932,13 +919,17 @@ namespace Core
                 {
                     if (auraApplication.AppliedEffectMask.HasBit(i))
                     {
-                        AuraEffect removedEffect = auraApplication.Aura.Effects[i];
-                        auraEffectsByAuraType.Delete(removedEffect.EffectInfo.AuraEffectType, removedEffect);
-
-                        auraApplication.HandleEffect(i, false);
+                        auraEffectsByAuraType.Delete(auraApplication.Aura.Effects[i].EffectInfo.AuraEffectType, auraApplication.Aura.Effects[i]);
+                        tempAuraEffectsToHandle.Add(i);
                     }
                 }
             }
+
+            for (int i = 0; i < tempAuraEffectsToHandle.Count; i++)
+                auraApplication.HandleEffect(tempAuraEffectsToHandle[i], added, tempAuraHandleGroups);
+
+            tempAuraEffectsToHandle.Clear();
+            tempAuraHandleGroups.Clear();
         }
 
         private void RemoveNonStackableAuras(Aura aura)

@@ -24,7 +24,8 @@ namespace Core
         internal TEntity Create<TEntity>(PrefabId prefabId, Entity.CreateToken createToken = null) where TEntity : Unit
         {
             TEntity entity = BoltNetwork.Instantiate(prefabId, createToken).GetComponent<TEntity>();
-            entity.HandleSpawn();
+            entity.ModifyDeathState(DeathState.Alive);
+            entity.SetHealth(entity.MaxHealth);
             return entity;
         }
 
