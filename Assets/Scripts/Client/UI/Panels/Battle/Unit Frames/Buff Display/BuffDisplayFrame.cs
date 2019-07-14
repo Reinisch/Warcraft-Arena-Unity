@@ -31,7 +31,8 @@ namespace Client
                 buffSlots[i].UpdateState(null);
             }
 
-            ResizeIcons();
+            float cellSize = transform.GetComponent<RectTransform>().rect.width / buffColls;
+            grid.cellSize = new Vector2(cellSize, cellSize);
         }
 
         public void DoUpdate(float deltaTime)
@@ -57,6 +58,13 @@ namespace Client
         {
             this.unit = unit;
 
+            int visibleBuffs = Mathf.Min(buffSlots.Length, unit.EntityState.VisibleAuras.Length);
+            for (int i = 0; i < visibleBuffs; i++)
+                buffSlots[i].UpdateState(unit.EntityState.VisibleAuras[i]);
+
+            for (int i = visibleBuffs; i < buffSlots.Length; i++)
+                buffSlots[i].UpdateState(null);
+
             unit.EntityState.AddCallback($"{nameof(unit.EntityState.VisibleAuras)}[]", OnVisibleAurasChanged);
         }
 
@@ -64,13 +72,10 @@ namespace Client
         {
             unit.EntityState.RemoveCallback($"{nameof(unit.EntityState.VisibleAuras)}[]", OnVisibleAurasChanged);
 
-            unit = null;
-        }
+            for (int i = 0; i < buffSlots.Length; i++)
+                buffSlots[i].UpdateState(null);
 
-        private void ResizeIcons()
-        {
-            float cellSize = transform.GetComponent<RectTransform>().rect.width / buffColls;
-            grid.cellSize = new Vector2(cellSize, cellSize);
+            unit = null;
         }
 
         private void OnVisibleAurasChanged(IState state, string propertyPath, ArrayIndices arrayIndices)

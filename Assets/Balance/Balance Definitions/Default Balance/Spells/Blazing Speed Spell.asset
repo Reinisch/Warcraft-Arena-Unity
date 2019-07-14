@@ -27,7 +27,7 @@ MonoBehaviour:
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0
-  cooldownTime: 1000
+  cooldownTime: 100
   categoryCooldownTime: 0
   globalCooldownTime: 0
   castTime: 0
@@ -42,5 +42,4 @@ MonoBehaviour:
   spellEffectInfos:
   - {fileID: 11400000, guid: 86a7f93b999553f41b68e56f58b48c7c, type: 2}
   spellPowerEntries: []
-  procsPerMinuteModifiers: []
   targetingConditions: []

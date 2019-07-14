@@ -13,6 +13,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private Image cooldownImage;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI cooldownText;
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
+        [SerializeField, UsedImplicitly] private bool displayTimer;
 
         private readonly char[] timerText = { ' ', ' ', ' ' };
         private readonly char[] emptyTimerText = { ' ', ' ', ' ' };
@@ -32,6 +33,9 @@ namespace Client
                 canvasGroup.alpha = 0.0f;
                 return;
             }
+
+            if (!displayTimer)
+                cooldownText.SetCharArray(emptyTimerText, 0, 0);
 
             canvasGroup.alpha = 1.0f;
             auraInfoId = auraState.AuraId;
@@ -75,10 +79,13 @@ namespace Client
                         durationLeft = 0;
                 }
 
-                if (durationLeft < 1000)
-                    cooldownText.SetCharArray(timerText.SetSpellTimerNonAlloc(durationLeft, out int length), 0, length);
-                else
-                    cooldownText.SetCharArray(emptyTimerText, 0, 0);
+                if (displayTimer)
+                {
+                    if (durationLeft < 1000)
+                        cooldownText.SetCharArray(timerText.SetSpellTimerNonAlloc(durationLeft, out int length), 0, length);
+                    else
+                        cooldownText.SetCharArray(emptyTimerText, 0, 0);
+                }
 
                 cooldownImage.fillAmount = (float)durationLeft / maxDuration;
             }

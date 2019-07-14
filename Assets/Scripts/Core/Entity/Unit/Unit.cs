@@ -746,6 +746,10 @@ namespace Core
         internal void RefreshOrCreateAura(AuraInfo auraInfo, Unit originalCaster)
         {
             var ownedAura = FindOwnedAura();
+
+            if (ownedAura != null && ownedAura.Info.HasAttribute(AuraAttributes.StackSameAuraInMultipleSlots))
+                ownedAura = null;
+
             if (ownedAura == null)
             {
                 ownedAura = new Aura(auraInfo, this, originalCaster);

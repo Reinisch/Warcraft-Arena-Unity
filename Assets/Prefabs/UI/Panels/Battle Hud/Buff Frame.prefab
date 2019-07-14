@@ -27,7 +27,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7504758134020996732}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -66,11 +66,11 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 2
   m_StartCorner: 1
-  m_StartAxis: 0
+  m_StartAxis: 1
   m_CellSize: {x: 32, y: 32}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
-  m_ConstraintCount: 7
+  m_ConstraintCount: 10
 --- !u!114 &7504758132959910575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,9 +87,8 @@ MonoBehaviour:
     type: 3}
   grid: {fileID: 7504758134020996723}
   canvasGroup: {fileID: 2931470378800198815}
-  buffRows: 2
-  buffColls: 7
-  buffCount: 14
+  buffRows: 3
+  buffColls: 10
 --- !u!225 &2931470378800198815
 CanvasGroup:
   m_ObjectHideFlags: 0

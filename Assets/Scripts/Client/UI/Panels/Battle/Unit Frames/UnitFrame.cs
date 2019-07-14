@@ -37,7 +37,7 @@ namespace Client
             targetUnitFrame.UpdateUnit(unit?.Target);
         }
 
-        public void SetBuffDIsplayFrame(BuffDisplayFrame buffDisplayFrame)
+        public void SetBuffDisplayFrame(BuffDisplayFrame buffDisplayFrame)
         {
             unitBuffDisplayFrame = buffDisplayFrame;
 

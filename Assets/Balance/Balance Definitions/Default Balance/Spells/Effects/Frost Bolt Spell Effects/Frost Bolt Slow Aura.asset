@@ -10,17 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
-  m_Name: Blazing Speed Aura
+  m_Name: Frost Bolt Slow Aura
   m_EditorClassIdentifier: 
-  id: 11898
-  duration: 1500
-  maxDuration: 1500
+  id: 0
+  duration: 0
+  maxDuration: 0
   maxStack: 0
-  maxCharges: 1
-  baseCharges: 1
+  maxCharges: 0
+  baseCharges: 0
   stateType: 0
-  targetingMode: 1
+  targetingMode: 0
   interruptFlags: 0
-  attributes: 16
-  auraEffects:
-  - {fileID: 11400000, guid: 8842cd55add77d546adbb3a85c6ce079, type: 2}
+  attributes: 0
+  auraEffects: []
