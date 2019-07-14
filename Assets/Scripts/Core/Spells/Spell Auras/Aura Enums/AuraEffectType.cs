@@ -34,7 +34,7 @@
         ModStat = 29,
         ModSkill = 30,
         SpeedIncreaseModifier = 31,
-        ModIncreaseMountedSpeed = 32,
+        SpeedSupressSlowEffects = 32,
         SpeedDecreaseModifier = 33,
         ModIncreaseHealth = 34,
         ModIncreaseEnergy = 35,

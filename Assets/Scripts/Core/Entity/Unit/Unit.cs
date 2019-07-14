@@ -382,7 +382,7 @@ namespace Core
                 case UnitMoveType.Run:
                     increaseModifier = MaxPositiveAuraModifier(AuraEffectType.SpeedIncreaseModifier);
                     nonStackModifier += MaxPositiveAuraModifier(AuraEffectType.SpeedNonStackableModifier);
-                    stackMultiplier = TotalAuraMultiplier(AuraEffectType.SpeedStackableMultiplier);
+                    stackMultiplier = 100.0f * TotalAuraMultiplier(AuraEffectType.SpeedStackableMultiplier);
                     break;
                 default:
                     return;
@@ -393,10 +393,13 @@ namespace Core
             if (!Mathf.Approximately(increaseModifier, 0.0f))
                 speedRate = speedRate.ApplyPercentage(100.0f + increaseModifier);
 
-            // apply strongest slow effect
-            float slowPercent = Mathf.Clamp(MaxPositiveAuraModifier(AuraEffectType.SpeedDecreaseModifier), 0.0f, 99.9f);
-            if (slowPercent > 0.0f)
-                speedRate = speedRate.ApplyPercentage(100.0f - slowPercent);
+            if (!HasAuraType(AuraEffectType.SpeedSupressSlowEffects))
+            {
+                // apply strongest slow effect
+                float slowPercent = Mathf.Clamp(MaxPositiveAuraModifier(AuraEffectType.SpeedDecreaseModifier), 0.0f, 99.9f);
+                if (slowPercent > 0.0f)
+                    speedRate = speedRate.ApplyPercentage(100.0f - slowPercent);
+            }
 
             // check for minimum speed aura
             float minSpeedPercent = MaxPositiveAuraModifier(AuraEffectType.ModMinimumSpeed);
