@@ -152,7 +152,7 @@ namespace Core
                 return true;
 
             bool sameCaster = CasterId == existingAura.CasterId;
-            if (!sameCaster && !Info.HasAttribute(AuraAttributes.StackForAnyCasters))
+            if (!sameCaster && Info == existingAura.Info && !Info.HasAttribute(AuraAttributes.StackForAnyCasters))
                 return false;
 
             return true;
