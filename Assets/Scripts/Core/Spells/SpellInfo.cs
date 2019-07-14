@@ -7,17 +7,15 @@ using UnityEngine;
 namespace Core
 {
     [UsedImplicitly, CreateAssetMenu(fileName = "Spell Info", menuName = "Game Data/Spells/Spell Info", order = 1)]
-    public sealed class SpellInfo : ScriptableObject
+    public sealed class SpellInfo : ScriptableUniqueInfo<SpellInfo>
     {
-        [SerializeField, UsedImplicitly] private int id;
         [SerializeField, UsedImplicitly] private string spellName;
-
-        [SerializeField, EnumFlag, UsedImplicitly] private SpellCastTargetFlags explicitCastTargets;
         [SerializeField, UsedImplicitly] private SpellExplicitTargetType explicitTargetType;
         [SerializeField, UsedImplicitly] private SpellDamageClass damageClass;
         [SerializeField, UsedImplicitly] private SpellDispelType spellDispel;
         [SerializeField, UsedImplicitly] private SpellMechanics mechanic;
 
+        [SerializeField, EnumFlag, UsedImplicitly] private SpellCastTargetFlags explicitCastTargets;
         [SerializeField, EnumFlag, UsedImplicitly] private SpellSchoolMask schoolMask;
         [SerializeField, EnumFlag, UsedImplicitly] private SpellPreventionType preventionType;
         [SerializeField, EnumFlag, UsedImplicitly] private SpellAttributes attributes;
@@ -49,7 +47,7 @@ namespace Core
         /// <summary>
         /// Compressed to 8 bits in Spell Events.
         /// </summary>
-        public int Id => id;
+        public new int Id => base.Id;
         public string SpellName => spellName;
 
         public SpellExplicitTargetType ExplicitTargetType => explicitTargetType;

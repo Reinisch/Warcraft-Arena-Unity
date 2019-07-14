@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
   m_Name: Frost Bolt Slow Aura
   m_EditorClassIdentifier: 
-  id: -705082
+  id: 1
   duration: 5000
   maxDuration: 5000
   maxStack: 1

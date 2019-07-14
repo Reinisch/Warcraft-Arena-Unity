@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
   m_Name: Blazing Speed Aura
   m_EditorClassIdentifier: 
-  id: 11898
+  id: 2
   duration: 1500
   maxDuration: 1500
-  maxStack: 0
+  maxStack: 1
   maxCharges: 1
   baseCharges: 1
   stateType: 0

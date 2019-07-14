@@ -6,10 +6,9 @@ using Common;
 namespace Core
 {
     [UsedImplicitly, CreateAssetMenu(fileName = "Aura Info", menuName = "Game Data/Spells/Auras/Aura Info", order = 1)]
-    public sealed class AuraInfo : ScriptableObject
+    public sealed class AuraInfo : ScriptableUniqueInfo<AuraInfo>
     {
         [Header("Aura Info")]
-        [SerializeField, UsedImplicitly, HideInInspector] private int id;
         [SerializeField, UsedImplicitly] private int duration;
         [SerializeField, UsedImplicitly] private int maxDuration;
         [SerializeField, UsedImplicitly] private int maxStack;
@@ -22,7 +21,7 @@ namespace Core
         [SerializeField, UsedImplicitly, EnumFlag] private AuraAttributes attributes;
         [SerializeField, UsedImplicitly] private List<AuraEffectInfo> auraEffects;
 
-        public int Id => id;
+        public new int Id => base.Id;
         public int Duration => duration;
         public int MaxDuration => maxDuration;
         public bool HasInterruptFlags => interruptFlags != 0;
@@ -30,12 +29,6 @@ namespace Core
         public AuraTargetingMode TargetingMode => targetingMode;
         public AuraInterruptFlags InterruptFlags => interruptFlags;
         public IReadOnlyList<AuraEffectInfo> AuraEffects => auraEffects;
-
-        [UsedImplicitly]
-        private void OnValidate()
-        {
-            id = GetInstanceID();
-        }
 
         public bool HasAttribute(AuraAttributes attribute)
         {
