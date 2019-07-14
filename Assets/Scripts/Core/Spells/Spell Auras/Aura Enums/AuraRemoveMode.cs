@@ -7,6 +7,7 @@
         Cancel,
         Dispel,
         Expired,
-        Death
+        Death,
+        Detach
     }
 }

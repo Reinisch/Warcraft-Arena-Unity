@@ -81,6 +81,7 @@ namespace Core
         private readonly Dictionary<int, List<AuraApplication>> auraApplicationsByAuraId = new Dictionary<int, List<AuraApplication>>();
         private readonly List<AuraApplication> interruptableAuraApplications = new List<AuraApplication>();
         private readonly List<AuraApplication> auraApplications = new List<AuraApplication>();
+        private readonly HashSet<AuraApplication> auraApplicationSet = new HashSet<AuraApplication>();
         private readonly List<Aura> ownedAuras = new List<Aura>();
 
         private ThreatManager ThreatManager { get; set; }
@@ -252,6 +253,21 @@ namespace Core
         {
             WorldManager.UnitManager.EventEntityDetach -= OnEntityDetach;
 
+            while (ownedAuras.Count > 0)
+                RemoveOwnedAura(ownedAuras[0], AuraRemoveMode.Detach);
+
+            while (auraApplications.Count > 0)
+                RemoveAura(auraApplications[0], AuraRemoveMode.Detach);
+
+            Assert.IsTrue(auraApplicationsByAuraState.Count == 0);
+            Assert.IsTrue(auraEffectsByAuraType.Count == 0);
+            Assert.IsTrue(ownedAurasById.Count == 0);
+            Assert.IsTrue(auraApplicationsByAuraId.Count == 0);
+            Assert.IsTrue(interruptableAuraApplications.Count == 0);
+            Assert.IsTrue(auraApplications.Count == 0);
+            Assert.IsTrue(auraApplicationSet.Count == 0);
+            Assert.IsTrue(ownedAuras.Count == 0);
+
             SpellHistory.Detached();
             SpellCast.Detached();
 
@@ -348,11 +364,11 @@ namespace Core
 
         internal bool HasFlag(UnitFlags flag) => (unitFlags & flag) == flag;
 
-        internal void AddFlag(MovementFlags f) { MovementInfo.AddMovementFlag(f); }
+        internal void AddFlag(MovementFlags flag) { MovementInfo.AddMovementFlag(flag); }
 
-        internal void RemoveFlag(MovementFlags f) { MovementInfo.RemoveMovementFlag(f); }
+        internal void RemoveFlag(MovementFlags flag) { MovementInfo.RemoveMovementFlag(flag); }
 
-        internal bool HasFlag(MovementFlags f) { return MovementInfo.HasMovementFlag(f); }
+        internal bool HasFlag(MovementFlags flag) { return MovementInfo.HasMovementFlag(flag); }
         
         internal int ModifyHealth(int delta)
         {
@@ -788,6 +804,7 @@ namespace Core
             RemoveNonStackableAuras(auraApplication.Aura);
 
             auraApplications.Add(auraApplication);
+            auraApplicationSet.Add(auraApplication);
             auraApplicationsByAuraId.Insert(auraApplication.Aura.Info.Id, auraApplication);
 
             HandleStateContainingAura(auraApplication, true);
@@ -802,6 +819,7 @@ namespace Core
         {
             auraApplicationsByAuraId.Delete(auraApplication.Aura.Info.Id, auraApplication);
             auraApplications.Remove(auraApplication);
+            auraApplicationSet.Remove(auraApplication);
 
             HandleInterruptableAura(auraApplication, false);
             HandleStateContainingAura(auraApplication, false);
@@ -925,14 +943,19 @@ namespace Core
 
         private void RemoveNonStackableAuras(Aura aura)
         {
-            for (int i = AuraApplications.Count - 1; i >= 0; i--)
-                if (!AuraApplications[i].Aura.CanStackWith(aura))
-                    RemoveAura(AuraApplications[i], AuraRemoveMode.Default);
+            for (int i = 0; i < auraApplications.Count; i++)
+            {
+                if (!auraApplications[i].Aura.CanStackWith(aura))
+                {
+                    RemoveAura(auraApplications[i], AuraRemoveMode.Default);
+                    i = 0;
+                }
+            }
         }
 
         private void RemoveAura(AuraApplication application, AuraRemoveMode mode)
         {
-            if (!application.RemoveMode.IsRemoved())
+            if (auraApplicationSet.Contains(application))
             {
                 UnapplyAuraApplication(application, mode);
 
