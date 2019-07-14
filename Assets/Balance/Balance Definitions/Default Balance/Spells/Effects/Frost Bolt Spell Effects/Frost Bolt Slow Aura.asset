@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
   m_Name: Frost Bolt Slow Aura
   m_EditorClassIdentifier: 
-  id: 0
-  duration: 0
-  maxDuration: 0
-  maxStack: 0
-  maxCharges: 0
-  baseCharges: 0
+  id: -705082
+  duration: 5000
+  maxDuration: 5000
+  maxStack: 1
+  maxCharges: 1
+  baseCharges: 1
   stateType: 0
-  targetingMode: 0
+  targetingMode: 1
   interruptFlags: 0
   attributes: 0
-  auraEffects: []
+  auraEffects:
+  - {fileID: 11400000, guid: 807033eb49a7ccf47b2f82516411ef52, type: 2}

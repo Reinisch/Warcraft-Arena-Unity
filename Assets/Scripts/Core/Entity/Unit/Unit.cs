@@ -394,9 +394,9 @@ namespace Core
                 speedRate = speedRate.ApplyPercentage(100.0f + increaseModifier);
 
             // apply strongest slow effect
-            float slowPercent = MaxNegativeAuraModifier(AuraEffectType.ModDecreaseSpeed);
+            float slowPercent = Mathf.Clamp(MaxPositiveAuraModifier(AuraEffectType.SpeedDecreaseModifier), 0.0f, 99.9f);
             if (slowPercent > 0.0f)
-                speedRate = speedRate.ApplyPercentage(slowPercent);
+                speedRate = speedRate.ApplyPercentage(100.0f - slowPercent);
 
             // check for minimum speed aura
             float minSpeedPercent = MaxPositiveAuraModifier(AuraEffectType.ModMinimumSpeed);

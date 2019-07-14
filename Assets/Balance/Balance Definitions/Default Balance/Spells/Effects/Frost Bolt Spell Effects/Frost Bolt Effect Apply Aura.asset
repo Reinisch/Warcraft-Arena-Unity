@@ -9,27 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
-  m_Name: Frost Bolt Damage Effect
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Frost Bolt Effect Apply Aura
   m_EditorClassIdentifier: 
-  auraType: 0
-  explicitTargetType: 1
-  mechanic: 0
   mainTargeting:
     targetEntities: 0
-    referenceType: 0
+    referenceType: 2
     selectionCategory: 0
     selectionCheckType: 0
     directionType: 0
   secondaryTargeting:
     targetEntities: 0
-    referenceType: 0
+    referenceType: 1
     selectionCategory: 0
     selectionCheckType: 0
     directionType: 0
+  explicitTargetType: 0
   minRadius: 0
   maxRadius: 0
-  baseValue: 100
-  baseVariance: 20
-  additionalValue: 300
-  calculationType: 1
+  auraInfo: {fileID: 11400000, guid: ca3d587e8a759e3479ed468d096452cb, type: 2}

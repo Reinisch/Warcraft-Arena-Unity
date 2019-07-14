@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
-  m_Name: Blazing Speed Spell Effect
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Frost Bolt Effect Damage
   m_EditorClassIdentifier: 
   mainTargeting:
     targetEntities: 0
-    referenceType: 1
+    referenceType: 0
     selectionCategory: 0
-    selectionCheckType: 3
+    selectionCheckType: 0
     directionType: 0
   secondaryTargeting:
     targetEntities: 0
@@ -24,7 +24,10 @@ MonoBehaviour:
     selectionCategory: 0
     selectionCheckType: 0
     directionType: 0
-  explicitTargetType: 2
+  explicitTargetType: 1
   minRadius: 0
   maxRadius: 0
-  auraInfo: {fileID: 11400000, guid: 7203cc91ffe08ff4599fbba97afacfd2, type: 2}
+  baseValue: 100
+  baseVariance: 20
+  additionalValue: 300
+  calculationType: 1

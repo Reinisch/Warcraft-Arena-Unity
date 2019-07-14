@@ -35,7 +35,7 @@
         ModSkill = 30,
         SpeedIncreaseModifier = 31,
         ModIncreaseMountedSpeed = 32,
-        ModDecreaseSpeed = 33,
+        SpeedDecreaseModifier = 33,
         ModIncreaseHealth = 34,
         ModIncreaseEnergy = 35,
         ModShapeshift = 36,
