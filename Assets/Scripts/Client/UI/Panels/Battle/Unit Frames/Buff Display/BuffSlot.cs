@@ -18,76 +18,47 @@ namespace Client
         private readonly char[] timerText = { ' ', ' ', ' ' };
         private readonly char[] emptyTimerText = { ' ', ' ', ' ' };
 
-        private int auraInfoId;
-        private int serverRefreshFrame;
-        private int refreshDuration;
-        private int maxDuration;
+        private IVisibleAura currentAura;
 
-        private int durationLeft;
-
-        public void UpdateState(VisibleAuraState auraState)
+        public void UpdateAura(IVisibleAura visibleAura)
         {
-            if (auraState == null || auraState.AuraId == 0)
-            {
-                auraInfoId = 0;
+            currentAura = visibleAura;
+
+            if (currentAura == null || !visibleAura.HasActiveAura)
                 canvasGroup.alpha = 0.0f;
-                return;
-            }
-
-            if (!displayTimer)
-                cooldownText.SetCharArray(emptyTimerText, 0, 0);
-
-            canvasGroup.alpha = 1.0f;
-            auraInfoId = auraState.AuraId;
-            serverRefreshFrame = auraState.RefreshFrame;
-            refreshDuration = auraState.Duration;
-            maxDuration = auraState.MaxDuration;
-
-            int expectedCooldownFrames = (int)(refreshDuration / BoltNetwork.FrameDeltaTime / 1000.0f);
-            int framesPassed = BoltNetwork.ServerFrame - serverRefreshFrame;
-            if (framesPassed > expectedCooldownFrames || expectedCooldownFrames < 1)
-                durationLeft = 0;
             else
             {
-                var cooldownProgressLeft = 1.0f - (float)framesPassed / expectedCooldownFrames;
-                durationLeft = Mathf.RoundToInt(refreshDuration * cooldownProgressLeft);
-            }
+                if (!displayTimer)
+                    cooldownText.SetCharArray(emptyTimerText, 0, 0);
 
-            contentImage.sprite = rendering.AuraVisualSettingsById.TryGetValue(auraInfoId, out AuraVisualSettings settings)
-                ? settings.AuraIcon
-                : rendering.DefaultSpellIcon;
+                canvasGroup.alpha = 1.0f;
+                contentImage.sprite = rendering.AuraVisualSettingsById.TryGetValue(visibleAura.AuraId, out AuraVisualSettings settings)
+                    ? settings.AuraIcon
+                    : rendering.DefaultSpellIcon;
+            }
         }
 
-        public void DoUpdate(float deltaTime)
+        public void DoUpdate()
         {
-            if(auraInfoId == 0)
+            if(currentAura == null)
                 return;
 
-            if (maxDuration == 0)
+            if (currentAura.MaxDuration == 0)
             {
                 cooldownText.SetCharArray(timerText, 0, 0);
                 cooldownImage.fillAmount = 0.0f;
             }
             else
             {
-                if (durationLeft > 0)
-                {
-                    int deltaInMilliseconds = (int) (deltaTime * 1000.0f);
-                    if (durationLeft > deltaInMilliseconds)
-                        durationLeft -= deltaInMilliseconds;
-                    else
-                        durationLeft = 0;
-                }
-
                 if (displayTimer)
                 {
-                    if (durationLeft < 1000)
-                        cooldownText.SetCharArray(timerText.SetSpellTimerNonAlloc(durationLeft, out int length), 0, length);
+                    if (currentAura.DurationLeft < 1000)
+                        cooldownText.SetCharArray(timerText.SetSpellTimerNonAlloc(currentAura.DurationLeft, out int length), 0, length);
                     else
                         cooldownText.SetCharArray(emptyTimerText, 0, 0);
                 }
 
-                cooldownImage.fillAmount = (float)durationLeft / maxDuration;
+                cooldownImage.fillAmount = (float)currentAura.DurationLeft / currentAura.MaxDuration;
             }
         }
     }

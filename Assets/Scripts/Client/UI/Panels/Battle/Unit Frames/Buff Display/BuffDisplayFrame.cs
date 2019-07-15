@@ -1,4 +1,4 @@
-﻿using Bolt;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Core;
@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace Client
 {
-    public class BuffDisplayFrame : MonoBehaviour 
+    public class BuffDisplayFrame : MonoBehaviour, IVisibleAuraHandler
     {
         [SerializeField, UsedImplicitly] private BuffSlot buffSlotPrototype;
         [SerializeField, UsedImplicitly] private GridLayoutGroup grid;
@@ -14,9 +14,12 @@ namespace Client
         [SerializeField, UsedImplicitly] private int buffRows;
         [SerializeField, UsedImplicitly] private int buffColls;
 
+        private readonly List<IVisibleAura> visibleAuras = new List<IVisibleAura>();
         private BuffSlot[] buffSlots;
-        private Unit unit;
+
+        private bool needsUpdate;
         private int maxBuffs;
+        private Unit unit;
 
         [UsedImplicitly]
         private void Awake()
@@ -28,17 +31,45 @@ namespace Client
             for (int i = 0; i < buffRows * buffColls; i++)
             {
                 buffSlots[i] = Instantiate(buffSlotPrototype, transform);
-                buffSlots[i].UpdateState(null);
+                buffSlots[i].UpdateAura(null);
             }
 
             float cellSize = transform.GetComponent<RectTransform>().rect.width / buffColls;
             grid.cellSize = new Vector2(cellSize, cellSize);
         }
 
-        public void DoUpdate(float deltaTime)
+        public void DoUpdate()
         {
+            if (needsUpdate)
+            {
+                needsUpdate = false;
+
+                int visibleCount = Mathf.Min(buffSlots.Length, visibleAuras.Count);
+                for (int i = 0; i < visibleCount; i++)
+                    buffSlots[i].UpdateAura(visibleAuras[i]);
+
+                for (int i = visibleCount; i < buffSlots.Length; i++)
+                    buffSlots[i].UpdateAura(null);
+            }
+
             for (int i = 0; i < buffSlots.Length; i++)
-                buffSlots[i].DoUpdate(deltaTime);
+                buffSlots[i].DoUpdate();
+        }
+
+        public void AuraApplied(IVisibleAura visibleAura)
+        {
+            needsUpdate = true;
+            visibleAuras.Add(visibleAura);
+        }
+
+        public void AuraUnapplied(IVisibleAura visibleAura)
+        {
+            visibleAuras.Remove(visibleAura);
+            needsUpdate = true;
+        }
+
+        public void AuraRefreshed(IVisibleAura visibleAura)
+        {
         }
 
         public void UpdateUnit(Unit newUnit)
@@ -58,35 +89,17 @@ namespace Client
         {
             this.unit = unit;
 
-            int visibleBuffs = Mathf.Min(buffSlots.Length, unit.EntityState.VisibleAuras.Length);
-            for (int i = 0; i < visibleBuffs; i++)
-                buffSlots[i].UpdateState(unit.EntityState.VisibleAuras[i]);
-
-            for (int i = visibleBuffs; i < buffSlots.Length; i++)
-                buffSlots[i].UpdateState(null);
-
-            unit.EntityState.AddCallback($"{nameof(unit.EntityState.VisibleAuras)}[]", OnVisibleAurasChanged);
+            unit.FindBehaviour<AuraControllerClient>().AddHandler(this);
         }
 
         private void DeinitializeUnit()
         {
-            unit.EntityState.RemoveCallback($"{nameof(unit.EntityState.VisibleAuras)}[]", OnVisibleAurasChanged);
+            unit.FindBehaviour<AuraControllerClient>().RemoveHandler(this);
 
             for (int i = 0; i < buffSlots.Length; i++)
-                buffSlots[i].UpdateState(null);
+                buffSlots[i].UpdateAura(null);
 
             unit = null;
-        }
-
-        private void OnVisibleAurasChanged(IState state, string propertyPath, ArrayIndices arrayIndices)
-        {
-            for (int i = 0; i < arrayIndices.Length; i++)
-            {
-                int index = arrayIndices[i];
-
-                if (index < buffSlots.Length)
-                    buffSlots[index].UpdateState(unit.EntityState.VisibleAuras[index]);
-            }
         }
     }
 }

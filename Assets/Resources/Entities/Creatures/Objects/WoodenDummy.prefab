@@ -85,8 +85,9 @@ GameObject:
   m_Component:
   - component: {fileID: 845485024815860341}
   - component: {fileID: 8793749810161454766}
-  - component: {fileID: 845485024815860167}
+  - component: {fileID: -8026284028472188865}
   - component: {fileID: 845485024815860170}
+  - component: {fileID: 845485024815860167}
   - component: {fileID: 845485024815860285}
   - component: {fileID: 845485024815860282}
   m_Layer: 9
@@ -131,7 +132,40 @@ MonoBehaviour:
     type: 2}
   unitMovementDefinition: {fileID: 11400000, guid: 4dfbd44b5dd771148a0bba3405cc2f25,
     type: 2}
+  unitBehaviours:
+  - {fileID: -8026284028472188865}
   creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+--- !u!114 &-8026284028472188865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845485024815860542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc8809d6790259948ba6de7564b33d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &845485024815860170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845485024815860542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb07d2c9afffce4b9439c4518121fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
+  physics: {fileID: 11400000, guid: fc3ecd93c0de16f449cfc6fa9a90cc32, type: 2}
+  controllerDefinition: {fileID: 11400000, guid: 58b44ed081fe2bc49ac23003a9c3bfb0,
+    type: 2}
+  unitRigidbody: {fileID: 845485024815860282}
+  groundChecker: {fileID: 845485024815860166}
+  unit: {fileID: 8793749810161454766}
 --- !u!114 &845485024815860167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,25 +195,6 @@ MonoBehaviour:
   _entityBehaviourQueryOption: 3
   _entityPriorityCalculatorQueryOption: 1
   _entityReplicationFilterQueryOption: 1
---- !u!114 &845485024815860170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 845485024815860542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eb07d2c9afffce4b9439c4518121fc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
-  physics: {fileID: 11400000, guid: fc3ecd93c0de16f449cfc6fa9a90cc32, type: 2}
-  controllerDefinition: {fileID: 11400000, guid: 58b44ed081fe2bc49ac23003a9c3bfb0,
-    type: 2}
-  unitRigidbody: {fileID: 845485024815860282}
-  groundChecker: {fileID: 845485024815860166}
-  unit: {fileID: 8793749810161454766}
 --- !u!136 &845485024815860285
 CapsuleCollider:
   m_ObjectHideFlags: 0

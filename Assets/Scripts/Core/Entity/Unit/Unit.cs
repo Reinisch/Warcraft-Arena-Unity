@@ -186,6 +186,7 @@ namespace Core
         public float GetPowerPercent(SpellResourceType type) => GetMaxPower(type) > 0 ? 100.0f * GetPower(type) / GetMaxPower(type) : 0.0f;
         public int GetPower(SpellResourceType type) => mana.Value;
         public int GetMaxPower(SpellResourceType type) => maxMana.Value;
+        public T FindBehaviour<T>() where T : UnitBehaviour => behaviourController.FindBehaviour<T>();
 
         [UsedImplicitly]
         protected override void Awake()
@@ -257,8 +258,6 @@ namespace Core
 
             return Faction.FriendlyFactions.Contains(unit.Faction);
         }
-
-        public T FindBehaviour<T>() where T : UnitBehaviour => behaviourController.FindBehaviour<T>();
 
         protected virtual void HandleAttach()
         {

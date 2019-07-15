@@ -80,8 +80,8 @@ namespace Client
 
             playerCastFrame.DoUpdate();
             actionErrorDisplay.DoUpdate(deltaTime);
-            playerBuffDisplayFrame.DoUpdate(deltaTime);
-            targetBuffDisplayFrame.DoUpdate(deltaTime);
+            playerBuffDisplayFrame.DoUpdate();
+            targetBuffDisplayFrame.DoUpdate();
 
             if (localPlayer != null)
                 foreach (var actionBar in actionBars)
