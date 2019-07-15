@@ -9,7 +9,7 @@ using EventHandler = Common.EventHandler;
 
 namespace Core
 {
-    public abstract class Unit : WorldEntity
+    public abstract partial class Unit : WorldEntity
     {
         public new class CreateToken : WorldEntity.CreateToken
         {
@@ -74,6 +74,8 @@ namespace Core
         private EntityAttributeFloat rangedCritPercentage;
         private EntityAttributeFloat spellCritPercentage;
 
+        private readonly VisibleAuraController visibleAuraController = new VisibleAuraController();
+
         private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
         private readonly Dictionary<AuraStateType, List<AuraApplication>> auraApplicationsByAuraState = new Dictionary<AuraStateType, List<AuraApplication>>();
         private readonly Dictionary<AuraEffectType, List<AuraEffect>> auraEffectsByAuraType = new Dictionary<AuraEffectType, List<AuraEffect>>();
@@ -137,7 +139,7 @@ namespace Core
 
         internal IReadOnlyList<AuraApplication> AuraApplications => auraApplications;
         internal WarcraftController Controller => controller;
-        internal bool NeedUpdateVisibleAuras { get;  set; }
+        internal bool NeedUpdateVisibleAuras { set => visibleAuraController.NeedUpdateVisibleAuras = value; }
 
         public Unit Target { get; private set; }
         public SpellCast SpellCast { get; private set; }
@@ -225,6 +227,28 @@ namespace Core
             base.Detached();
         }
 
+        public bool IsHostileTo(Unit unit)
+        {
+            if (unit == this)
+                return false;
+
+            if (unit.FreeForAll && FreeForAll)
+                return true;
+
+            return Faction.HostileFactions.Contains(unit.Faction);
+        }
+
+        public bool IsFriendlyTo(Unit unit)
+        {
+            if (unit == this)
+                return true;
+
+            if (unit.FreeForAll && FreeForAll)
+                return false;
+
+            return Faction.FriendlyFactions.Contains(unit.Faction);
+        }
+
         protected virtual void HandleAttach()
         {
             createToken = (CreateToken) entity.AttachToken;
@@ -240,6 +264,8 @@ namespace Core
                 EntityState.AddCallback(nameof(EntityState.TargetId), OnTargetIdChanged);
                 EntityState.AddCallback(nameof(EntityState.Faction), OnFactionChanged);
             }
+            else
+                visibleAuraController.HandleUnitAttach(this);
 
             ThreatManager = new ThreatManager(this);
             MovementInfo.Attached(EntityState, this);
@@ -270,6 +296,9 @@ namespace Core
             Assert.IsTrue(auraApplications.Count == 0);
             Assert.IsTrue(auraApplicationSet.Count == 0);
             Assert.IsTrue(ownedAuras.Count == 0);
+
+            if (IsOwner)
+                visibleAuraController.HandleUnitDetach();
 
             SpellHistory.Detached();
             SpellCast.Detached();
@@ -310,7 +339,8 @@ namespace Core
             for (int i = 0; i < ownedAuras.Count; i++)
                 ownedAuras[i].LateUpdate();
 
-            HandleVisibleAuras();
+            if (IsOwner)
+                visibleAuraController.DoUpdate();
         }
 
         internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
@@ -322,28 +352,6 @@ namespace Core
                 EntityState.TargetId = Target?.BoltEntity.NetworkId ?? default;
 
             EventHandler.ExecuteEvent(this, GameEvents.UnitTargetChanged);
-        }
-
-        public bool IsHostileTo(Unit unit)
-        {
-            if (unit == this)
-                return false;
-
-            if (unit.FreeForAll && FreeForAll)
-                return true;
-
-            return Faction.HostileFactions.Contains(unit.Faction);
-        }
-
-        public bool IsFriendlyTo(Unit unit)
-        {
-            if (unit == this)
-                return true;
-
-            if (unit.FreeForAll && FreeForAll)
-                return false;
-
-            return Faction.FriendlyFactions.Contains(unit.Faction);
         }
 
         internal void AddState(UnitState state) { UnitState |= state; }
@@ -801,7 +809,7 @@ namespace Core
             HandleAuraEffects(auraApplication, true);
 
             auraApplication.Aura.RegisterForTarget(this, auraApplication);
-            NeedUpdateVisibleAuras = true;
+            visibleAuraController.HandleAuraApplication(auraApplication, true);
         }
 
         internal void UnapplyAuraApplication(AuraApplication auraApplication, AuraRemoveMode removeMode)
@@ -816,7 +824,7 @@ namespace Core
 
             auraApplication.Aura.UnregisterForTarget(this, auraApplication);
             auraApplication.RemoveMode = removeMode;
-            NeedUpdateVisibleAuras = true;
+            visibleAuraController.HandleAuraApplication(auraApplication, false);
 
             Logging.LogAura($"Unapplied application for target: {Name} for aura: {auraApplication.Aura.Info.name}");
         }
@@ -833,33 +841,12 @@ namespace Core
 
         private void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode)
         {
-            NeedUpdateVisibleAuras = true;
             ownedAuras.Remove(aura);
             ownedAurasById.Delete(aura.Info.Id, aura);
 
             aura.Remove(removeMode);
 
             Logging.LogAura($"Removed owned aura {aura.Info.name} for target: {Name} with mode: {removeMode}");
-        }
-
-        private void HandleVisibleAuras()
-        {
-            if (!NeedUpdateVisibleAuras)
-                return;
-
-            NeedUpdateVisibleAuras = false;
-
-            int visibleSlots = Mathf.Min(EntityState.VisibleAuras.Length, auraApplications.Count);
-            for (int i = 0; i < visibleSlots; i++)
-            {
-                EntityState.VisibleAuras[i].AuraId = auraApplications[i].Aura.Info.Id;
-                EntityState.VisibleAuras[i].RefreshFrame = auraApplications[i].Aura.RefreshServerFrame;
-                EntityState.VisibleAuras[i].Duration = auraApplications[i].Aura.RefreshDuration;
-                EntityState.VisibleAuras[i].MaxDuration = auraApplications[i].Aura.MaxDuration;
-            }
-
-            for (int i = visibleSlots; i < EntityState.VisibleAuras.Length; i++)
-                EntityState.VisibleAuras[i].AuraId = 0;
         }
 
         private void HandleInterruptableAura(AuraApplication auraApplication, bool added)

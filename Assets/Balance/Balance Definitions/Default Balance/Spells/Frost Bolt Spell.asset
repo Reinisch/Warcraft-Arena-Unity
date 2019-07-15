@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   spellName: Frost Bolt
-  explicitCastTargets: 4
   explicitTargetType: 1
   damageClass: 1
   spellDispel: 0
   mechanic: 0
-  schoolMask: 16
+  explicitCastTargets: 4
+  schoolMask: 4
   preventionType: -1
   attributes: 0
   attributesExtra: 0
-  attributesCustom: 0
+  attributesCustom: 1024
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0

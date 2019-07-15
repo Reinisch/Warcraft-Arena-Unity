@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 7
   spellName: Blink
-  explicitCastTargets: 8
   explicitTargetType: 2
   damageClass: 0
   spellDispel: 0
   mechanic: 0
+  explicitCastTargets: 8
   schoolMask: 0
   preventionType: 1
   attributes: 0
@@ -27,8 +27,6 @@ MonoBehaviour:
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0
-  duration: 0
-  maxDuration: 0
   cooldownTime: 2000
   categoryCooldownTime: 0
   globalCooldownTime: 0
@@ -43,6 +41,6 @@ MonoBehaviour:
   maxAffectedTargets: 1
   spellEffectInfos:
   - {fileID: 11400000, guid: 2ad19f83d3ee5e04b969f4e2b2ff3845, type: 2}
+  - {fileID: 11400000, guid: b516321a6c019614cac3312f115cc7d4, type: 2}
   spellPowerEntries: []
-  procsPerMinuteModifiers: []
   targetingConditions: []
