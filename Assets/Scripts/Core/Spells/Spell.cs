@@ -35,7 +35,7 @@ namespace Core
         {
             Logging.LogSpell($"Created new spell, current count: {++SpellAliveCount}");
 
-            spellManager = caster.WorldManager.SpellManager;
+            spellManager = caster.World.SpellManager;
             spellCastFlags = options.SpellFlags;
             casterMovementFlags = options.MovementFlags ?? caster.MovementInfo.Flags;
             spellSchoolMask = info.SchoolMask;

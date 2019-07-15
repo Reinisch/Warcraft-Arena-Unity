@@ -77,10 +77,10 @@
 
         private void UpdateMovementState()
         {
-            if(localMoveState != null && !unit.WorldManager.HasServerLogic)
+            if(localMoveState != null && !unit.World.HasServerLogic)
                 localMoveState.MovementFlags = (int)Flags;
 
-            if (unit.WorldManager.HasServerLogic)
+            if (unit.World.HasServerLogic)
                 unitState.MovementFlags = (int)Flags;
         }
 

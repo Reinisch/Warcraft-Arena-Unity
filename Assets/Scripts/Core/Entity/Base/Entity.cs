@@ -19,7 +19,7 @@ namespace Core
         protected BalanceReference Balance => balance;
         protected bool IsValid { get; private set; }
 
-        internal WorldManager WorldManager { get; private set; }
+        internal WorldManager World { get; private set; }
         internal abstract bool AutoScoped { get; }
 
         public BoltEntity BoltEntity => entity;
@@ -54,12 +54,12 @@ namespace Core
 
         internal void TakenFromPool(WorldManager worldManager)
         {
-            WorldManager = worldManager;
+            World = worldManager;
         }
 
         internal void ReturnedToPool()
         {
-            WorldManager = null;
+            World = null;
         }
     }
 }

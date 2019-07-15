@@ -51,6 +51,8 @@ namespace Core
         private UnitAttributeDefinition unitAttributeDefinition;
         [SerializeField, UsedImplicitly]
         private UnitMovementDefinition unitMovementDefinition;
+        [SerializeField, UsedImplicitly]
+        private List<UnitBehaviour> unitBehaviours;
 
         private FactionDefinition faction;
         private UnitFlags unitFlags;
@@ -75,6 +77,7 @@ namespace Core
         private EntityAttributeFloat spellCritPercentage;
 
         private readonly VisibleAuraController visibleAuraController = new VisibleAuraController();
+        private readonly BehaviourController behaviourController = new BehaviourController();
 
         private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
         private readonly Dictionary<AuraStateType, List<AuraApplication>> auraApplicationsByAuraState = new Dictionary<AuraStateType, List<AuraApplication>>();
@@ -211,20 +214,26 @@ namespace Core
             base.Attached();
 
             HandleAttach();
+            
+            behaviourController.HandleUnitAttach(this);
 
-            WorldManager.UnitManager.Attach(this);
+            World.UnitManager.Attach(this);
         }
 
         public sealed override void Detached()
         {
             // called twice on client (from Detached Photon callback and manual in UnitManager.Dispose)
             // if he needs to instantly destroy current world and avoid any events
-            if (!IsValid)
-                return;
+            if (IsValid)
+            {
+                World.UnitManager.Detach(this);
 
-            HandleDetach();
+                behaviourController.HandleUnitDetach();
 
-            base.Detached();
+                HandleDetach();
+
+                base.Detached();
+            }
         }
 
         public bool IsHostileTo(Unit unit)
@@ -249,6 +258,8 @@ namespace Core
             return Faction.FriendlyFactions.Contains(unit.Faction);
         }
 
+        public T FindBehaviour<T>() where T : UnitBehaviour => behaviourController.FindBehaviour<T>();
+
         protected virtual void HandleAttach()
         {
             createToken = (CreateToken) entity.AttachToken;
@@ -264,8 +275,6 @@ namespace Core
                 EntityState.AddCallback(nameof(EntityState.TargetId), OnTargetIdChanged);
                 EntityState.AddCallback(nameof(EntityState.Faction), OnFactionChanged);
             }
-            else
-                visibleAuraController.HandleUnitAttach(this);
 
             ThreatManager = new ThreatManager(this);
             MovementInfo.Attached(EntityState, this);
@@ -273,14 +282,14 @@ namespace Core
             SpellHistory = new SpellHistory(this);
             SpellCast = new SpellCast(this);
 
-            SetMap(WorldManager.FindMap(1));
+            SetMap(World.FindMap(1));
 
-            WorldManager.UnitManager.EventEntityDetach += OnEntityDetach;
+            World.UnitManager.EventEntityDetach += OnEntityDetach;
         }
 
         protected virtual void HandleDetach()
         {
-            WorldManager.UnitManager.EventEntityDetach -= OnEntityDetach;
+            World.UnitManager.EventEntityDetach -= OnEntityDetach;
 
             while (ownedAuras.Count > 0)
                 RemoveOwnedAura(ownedAuras[0], AuraRemoveMode.Detach);
@@ -297,9 +306,6 @@ namespace Core
             Assert.IsTrue(auraApplicationSet.Count == 0);
             Assert.IsTrue(ownedAuras.Count == 0);
 
-            if (IsOwner)
-                visibleAuraController.HandleUnitDetach();
-
             SpellHistory.Detached();
             SpellCast.Detached();
 
@@ -308,7 +314,6 @@ namespace Core
             ResetMap();
 
             ThreatManager.Detached();
-            WorldManager.UnitManager.Detach(this);
             MovementInfo.Detached();
 
             createToken = null;
@@ -339,14 +344,13 @@ namespace Core
             for (int i = 0; i < ownedAuras.Count; i++)
                 ownedAuras[i].LateUpdate();
 
-            if (IsOwner)
-                visibleAuraController.DoUpdate();
+            behaviourController.DoUpdate(deltaTime);
         }
 
         internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
         {
             targetId = newTarget?.Id ?? newTargetId;
-            Target = newTarget ?? WorldManager.UnitManager.Find(targetId);
+            Target = newTarget ?? World.UnitManager.Find(targetId);
 
             if (updateState)
                 EntityState.TargetId = Target?.BoltEntity.NetworkId ?? default;
@@ -444,7 +448,7 @@ namespace Core
             SpellCastResult castResult = spell.Prepare();
             if (castResult != SpellCastResult.Success)
             {
-                WorldManager.SpellManager.Remove(spell);
+                World.SpellManager.Remove(spell);
                 return castResult;
             }
 

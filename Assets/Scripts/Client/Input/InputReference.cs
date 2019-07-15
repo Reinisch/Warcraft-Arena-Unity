@@ -49,7 +49,7 @@ namespace Client
 
         public void SelectTarget(Unit target)
         {
-            if (Player == null)
+            if (!Player.ExistsIn(World))
                 return;
 
             Player.SetTarget(target);

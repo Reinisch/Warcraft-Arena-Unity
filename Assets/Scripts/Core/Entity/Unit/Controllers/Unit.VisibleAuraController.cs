@@ -4,7 +4,7 @@ namespace Core
 {
     public abstract partial class Unit
     {
-        private class VisibleAuraController
+        private class VisibleAuraController : IUnitBehaviour
         {
             private IUnitState unitState;
 
@@ -13,50 +13,12 @@ namespace Core
             private readonly List<int> availableSlots = new List<int>();
             private AuraApplication[] applicationSlots;
 
-            public bool NeedUpdateVisibleAuras { private get; set; }
+            internal bool NeedUpdateVisibleAuras { private get; set; }
 
-            public void DoUpdate()
-            {
-                if (!NeedUpdateVisibleAuras)
-                    return;
+            public bool HasClientLogic => false;
+            public bool HasServerLogic => true;
 
-                NeedUpdateVisibleAuras = false;
-
-                for (int i = 0; i < applicationSlots.Length; i++)
-                {
-                    AuraApplication applicationInSlot = applicationSlots[i];
-                    if (applicationInSlot == null)
-                        unitState.VisibleAuras[i].AuraId = 0;
-                    else
-                    {
-                        unitState.VisibleAuras[i].AuraId = applicationInSlot.Aura.Info.Id;
-                        unitState.VisibleAuras[i].RefreshFrame = applicationInSlot.Aura.RefreshServerFrame;
-                        unitState.VisibleAuras[i].Duration = applicationInSlot.Aura.RefreshDuration;
-                        unitState.VisibleAuras[i].MaxDuration = applicationInSlot.Aura.MaxDuration;
-                    }
-                }
-            }
-
-            public void HandleUnitAttach(Unit unit)
-            {
-                unitState = unit.EntityState;
-
-                applicationSlots = new AuraApplication[unitState.VisibleAuras.Length];
-                for (int i = 0; i < unitState.VisibleAuras.Length; i++)
-                    availableSlots.Add(i);
-            }
-
-            public void HandleUnitDetach()
-            {
-                availableSlots.Clear();
-                unslottedApplications.Clear();
-                visibleSlotsByApplication.Clear();
-
-                applicationSlots = null;
-                unitState = null;
-            }
-
-            public void HandleAuraApplication(AuraApplication auraApplication, bool applied)
+            internal void HandleAuraApplication(AuraApplication auraApplication, bool applied)
             {
                 if (applied)
                 {
@@ -92,6 +54,47 @@ namespace Core
                 }
 
                 NeedUpdateVisibleAuras = true;
+            }
+
+            void IUnitBehaviour.DoUpdate(int deltaTime)
+            {
+                if (!NeedUpdateVisibleAuras)
+                    return;
+
+                NeedUpdateVisibleAuras = false;
+
+                for (int i = 0; i < applicationSlots.Length; i++)
+                {
+                    AuraApplication applicationInSlot = applicationSlots[i];
+                    if (applicationInSlot == null)
+                        unitState.VisibleAuras[i].AuraId = 0;
+                    else
+                    {
+                        unitState.VisibleAuras[i].AuraId = applicationInSlot.Aura.Info.Id;
+                        unitState.VisibleAuras[i].RefreshFrame = applicationInSlot.Aura.RefreshServerFrame;
+                        unitState.VisibleAuras[i].Duration = applicationInSlot.Aura.RefreshDuration;
+                        unitState.VisibleAuras[i].MaxDuration = applicationInSlot.Aura.MaxDuration;
+                    }
+                }
+            }
+
+            void IUnitBehaviour.HandleUnitAttach(Unit unit)
+            {
+                unitState = unit.EntityState;
+
+                applicationSlots = new AuraApplication[unitState.VisibleAuras.Length];
+                for (int i = 0; i < unitState.VisibleAuras.Length; i++)
+                    availableSlots.Add(i);
+            }
+
+            void IUnitBehaviour.HandleUnitDetach()
+            {
+                availableSlots.Clear();
+                unslottedApplications.Clear();
+                visibleSlotsByApplication.Clear();
+
+                applicationSlots = null;
+                unitState = null;
             }
         }
     }
