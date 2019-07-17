@@ -51,7 +51,7 @@ namespace Core
             } 
         }
 
-        public IControllerInputProvider InputProvider { set => Controller.InputProvider = value; }
+        public IControllerInputProvider InputProvider { set => CharacterController.InputProvider = value; }
         public int SpecId { get; } = 1;
 
         protected override void HandleAttach()

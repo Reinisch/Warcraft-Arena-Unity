@@ -21,7 +21,8 @@ namespace Core
                 foreach (UnitBehaviour unitBehaviour in unit.unitBehaviours)
                     TryAddBehaviour(unitBehaviour, unit);
 
-                TryAddBehaviour(unit.visibleAuraController, unit);
+                TryAddBehaviour(unit.ApplicationAuraController, unit);
+                TryAddBehaviour(unit.VisibleAuraController, unit);
 
                 foreach (IUnitBehaviour unitBehaviour in activeBehaviours)
                     unitBehaviour.HandleUnitAttach(unit);

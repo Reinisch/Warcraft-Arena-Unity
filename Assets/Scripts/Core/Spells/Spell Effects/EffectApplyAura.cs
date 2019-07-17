@@ -25,7 +25,7 @@ namespace Core
             if (mode != SpellEffectHandleMode.HitTarget || target == null || OriginalCaster == null)
                 return;
 
-            target.RefreshOrCreateAura(effect.AuraInfo, OriginalCaster);
+            target.ApplicationAuraController.RefreshOrCreateAura(effect.AuraInfo, OriginalCaster);
         }
     }
 }

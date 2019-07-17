@@ -34,7 +34,7 @@ namespace Core
             base.SetScope(connection, inScope);
 
             foreach (Player player in players)
-                player.Controller.ClientMoveState?.SetScope(connection, false);
+                player.CharacterController.ClientMoveState?.SetScope(connection, false);
         }
 
         protected override void EntityAttached(Unit entity)

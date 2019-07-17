@@ -100,7 +100,7 @@ namespace Core
                 AuraApplication applicationToRemove = applications[0];
                 Unit target = applicationToRemove.Target;
 
-                target.UnapplyAuraApplication(applicationToRemove, removeMode);
+                target.ApplicationAuraController.UnapplyAuraApplication(applicationToRemove, removeMode);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Core
             // unapply aura for removed targets
             foreach (Unit removableUnit in tempRemovableTargets)
                 if (applicationsByTargetId.TryGetValue(removableUnit.Id, out AuraApplication removableApplication))
-                    removableUnit.UnapplyAuraApplication(removableApplication, AuraRemoveMode.Default);
+                    removableUnit.ApplicationAuraController.UnapplyAuraApplication(removableApplication, AuraRemoveMode.Default);
 
             tempUpdatedTargets.Clear();
             tempRemovableTargets.Clear();
@@ -180,7 +180,7 @@ namespace Core
                     if (!CanStackWith(unit.AuraApplications[i].Aura))
                         return;
 
-            unit.ApplyAuraApplication(new AuraApplication(unit, Caster, this, auraEffectMask));
+            unit.ApplicationAuraController.ApplyAuraApplication(new AuraApplication(unit, Caster, this, auraEffectMask));
         }
     }
 }

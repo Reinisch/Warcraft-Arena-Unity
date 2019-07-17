@@ -4,7 +4,7 @@ namespace Core
 {
     public abstract partial class Unit
     {
-        private class VisibleAuraController : IUnitBehaviour
+        internal class AuraVisibleController : IUnitBehaviour
         {
             private IUnitState unitState;
 
