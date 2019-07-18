@@ -52,7 +52,6 @@ namespace Core
         }
 
         public IControllerInputProvider InputProvider { set => CharacterController.InputProvider = value; }
-        public int SpecId { get; } = 1;
 
         protected override void HandleAttach()
         {
@@ -79,12 +78,12 @@ namespace Core
 
         public void SetTarget(Unit target)
         {
-            UpdateTarget(newTarget:target);
+            AttributeUnitController.UpdateTarget(newTarget:target);
         }
 
         public void Handle(PlayerSpeedRateChangedEvent speedChangeEvent)
         {
-            SetSpeedRate((UnitMoveType) speedChangeEvent.MoveType, speedChangeEvent.SpeedRate);
+            AttributeUnitController.UpdateSpeedRate((UnitMoveType) speedChangeEvent.MoveType, speedChangeEvent.SpeedRate);
         }
 
         private void OnPlayerNameChanged()

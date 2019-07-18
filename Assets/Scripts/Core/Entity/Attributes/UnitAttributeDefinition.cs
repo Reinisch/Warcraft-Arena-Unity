@@ -11,19 +11,13 @@ namespace Core
         [UsedImplicitly, SerializeField] private int baseMana;
         [UsedImplicitly, SerializeField] private int baseMaxMana;
         [UsedImplicitly, SerializeField] private int baseSpellPower;
-
         [UsedImplicitly, SerializeField] private float critPercentage;
-        [UsedImplicitly, SerializeField] private float rangedCritPercentage;
-        [UsedImplicitly, SerializeField] private float spellCritPercentage;
 
         internal int BaseHealth => baseHealth;
         internal int BaseMaxHealth => baseMaxHealth;
         internal int BaseMana => baseMana;
         internal int BaseMaxMana => baseMaxMana;
         internal int BaseSpellPower => baseSpellPower;
-
         internal float CritPercentage => critPercentage;
-        internal float RangedCritPercentage => rangedCritPercentage;
-        internal float SpellCritPercentage => spellCritPercentage;
     }
 }

@@ -15,10 +15,14 @@ namespace Client
         public new void Initialize(WorldManager worldManager)
         {
             base.Initialize(worldManager);
+
+            World.UnitManager.EventEntityDetach += OnEntityDetach;
         }
 
         public new void Deinitialize()
         {
+            World.UnitManager.EventEntityDetach -= OnEntityDetach;
+
             if (LocalPlayer != null)
                 ControlOfEntityLost(LocalPlayer.BoltEntity);
 
@@ -51,14 +55,10 @@ namespace Client
             }
         }
 
-        public override void EntityDetached(BoltEntity entity)
+        private void OnEntityDetach(Unit unit)
         {
-            base.EntityDetached(entity);
-
-            if (LocalPlayer != null && LocalPlayer.BoltEntity == entity)
-            {
+            if (LocalPlayer == unit)
                 ControlOfEntityLost(LocalPlayer.BoltEntity);
-            }
         }
     }
 }

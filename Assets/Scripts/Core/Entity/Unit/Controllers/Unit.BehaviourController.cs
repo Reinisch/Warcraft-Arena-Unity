@@ -18,20 +18,22 @@ namespace Core
 
             internal void HandleUnitAttach(Unit unit)
             {
-                foreach (UnitBehaviour unitBehaviour in unit.unitBehaviours)
-                    TryAddBehaviour(unitBehaviour, unit);
-
+                TryAddBehaviour(unit.AttributeUnitController, unit);
+                TryAddBehaviour(unit.ThreatUnitController, unit);
                 TryAddBehaviour(unit.ApplicationAuraController, unit);
                 TryAddBehaviour(unit.VisibleAuraController, unit);
 
-                foreach (IUnitBehaviour unitBehaviour in activeBehaviours)
-                    unitBehaviour.HandleUnitAttach(unit);
+                foreach (UnitBehaviour unitBehaviour in unit.unitBehaviours)
+                    TryAddBehaviour(unitBehaviour, unit);
+
+                for (int i = 0; i < activeBehaviours.Count; i++)
+                    activeBehaviours[i].HandleUnitAttach(unit);
             }
 
             internal void HandleUnitDetach()
             {
-                foreach (IUnitBehaviour unitBehaviour in activeBehaviours)
-                    unitBehaviour.HandleUnitDetach();
+                for (int i = activeBehaviours.Count - 1; i >= 0; i--)
+                    activeBehaviours[i].HandleUnitDetach();
 
                 activeBehaviours.Clear();
                 activeBehavioursByType.Clear();

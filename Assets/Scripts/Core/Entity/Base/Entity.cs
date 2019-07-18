@@ -27,12 +27,6 @@ namespace Core
         public bool IsController => entity.HasControl;
         public ulong Id { get; private set; }
 
-        [UsedImplicitly]
-        protected virtual void Awake()
-        {
-            Id = 0;
-        }
-
         public override void Attached()
         {
             base.Attached();

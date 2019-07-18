@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Common;
 using JetBrains.Annotations;
 using UdpKit;
@@ -54,149 +53,70 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private List<UnitBehaviour> unitBehaviours;
 
-        private FactionDefinition faction;
-        private UnitFlags unitFlags;
-        private DeathState deathState;
-        private ulong targetId;
-        private bool freeForAll;
-
         private CreateToken createToken;
-        private EntityAttributeInt health;
-        private EntityAttributeInt maxHealth;
-        private EntityAttributeInt mana;
-        private EntityAttributeInt maxMana;
-        private EntityAttributeInt level;
-        private EntityAttributeInt spellPower;
-        private EntityAttributeFloat modHaste;
-        private EntityAttributeFloat modRangedHaste;
-        private EntityAttributeFloat modSpellHaste;
-        private EntityAttributeFloat modRegenHaste;
-        private EntityAttributeFloat critPercentage;
-        private EntityAttributeFloat rangedCritPercentage;
-        private EntityAttributeFloat spellCritPercentage;
+        private UnitFlags unitFlags;
+        private UnitState unitState;
 
         private readonly BehaviourController behaviourController = new BehaviourController();
-        private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
-        
-        private ThreatManager ThreatManager { get; set; }
-        private UnitState UnitState { get; set; }
-
-        private bool FreeForAll
-        {
-            get => freeForAll;
-            set
-            {
-                freeForAll = value;
-
-                if (IsOwner)
-                {
-                    EntityState.Faction.FreeForAll = value;
-                    createToken.FreeForAll = value;
-                }
-            }
-        }
-        
-        private DeathState DeathState
-        {
-            get => deathState;
-            set
-            {
-                deathState = value;
-
-                if (IsOwner)
-                {
-                    EntityState.DeathState = (int)value;
-                    createToken.DeathState = value;
-                }
-            }
-        }
-
-        private FactionDefinition Faction
-        {
-            get => faction;
-            set
-            {
-                faction = value;
-
-                if (IsOwner)
-                {
-                    EntityState.Faction.Id = value.FactionId;
-                    createToken.FactionId = value.FactionId;
-                }
-            }
-        }
 
         internal AuraApplicationController ApplicationAuraController { get; } = new AuraApplicationController();
         internal AuraVisibleController VisibleAuraController { get; } = new AuraVisibleController();
+        internal AttributeController AttributeUnitController { get; } = new AttributeController();
+        internal ThreatController ThreatUnitController { get; } = new ThreatController();
         internal WarcraftController CharacterController => controller;
 
-        internal IReadOnlyList<AuraApplication> AuraApplications => ApplicationAuraController.AuraApplications;
         internal bool NeedUpdateVisibleAuras { set => VisibleAuraController.NeedUpdateVisibleAuras = value; }
+        internal FactionDefinition Faction { get => AttributeUnitController.Faction; set => AttributeUnitController.Faction = value; }
+        internal DeathState DeathState { get => AttributeUnitController.DeathState; set => AttributeUnitController.DeathState = value; }
+        internal bool FreeForAll { get => AttributeUnitController.FreeForAll; set => AttributeUnitController.FreeForAll = value; }
 
-        public Unit Target { get; private set; }
+        internal IReadOnlyDictionary<UnitMoveType, float> SpeedRates => AttributeUnitController.SpeedRates;
+        internal IReadOnlyList<AuraApplication> AuraApplications => ApplicationAuraController.AuraApplications;
+        internal EntityAttributeInt HealthAttribute => AttributeUnitController.Health;
+        internal EntityAttributeInt MaxHealthAttribute => AttributeUnitController.MaxHealth;
+        internal EntityAttributeInt ManaAttribute => AttributeUnitController.Mana;
+        internal EntityAttributeInt MaxManaAttribute => AttributeUnitController.MaxMana;
+        internal EntityAttributeInt LevelAttribute => AttributeUnitController.Level;
+        internal EntityAttributeInt SpellPowerAttribute => AttributeUnitController.SpellPower;
+        internal EntityAttributeFloat ModHasteAttribute => AttributeUnitController.ModHaste;
+        internal EntityAttributeFloat ModRegenHasteAttribute => AttributeUnitController.ModRegenHaste;
+        internal EntityAttributeFloat CritPercentageAttribute => AttributeUnitController.CritPercentage;
+
         public SpellCast SpellCast { get; private set; }
         public IUnitState EntityState { get; private set; }
         public SpellHistory SpellHistory { get; private set; }
+
+        public Unit Target => AttributeUnitController.Target;
         public CapsuleCollider UnitCollider => unitCollider;
         public PlayerControllerDefinition ControllerDefinition => controller.ControllerDefinition;
 
-        public int Health => health.Value;
-        public int MaxHealth => maxHealth.Value;
-        public int BaseMana => mana.Base;
-        public int Mana => mana.Value;
-        public int MaxMana => maxMana.Value;
-        public int SpellPower => spellPower.Value;
-        public float HealthRatio => maxHealth.Value > 0 ? (float)Health / MaxHealth : 0.0f;
-        public bool HasFullHealth => health.Value == maxHealth.Value;
-        public float HealthPercent => 100.0f * HealthRatio;
-
-        public float ModHaste => modHaste.Value;
-        public float ModRangedHaste => modRangedHaste.Value;
-        public float ModSpellHaste => modSpellHaste.Value;
-        public float ModRegenHaste => modRegenHaste.Value;
-        public float CritPercentage => critPercentage.Value;
-        public float RangedCritPercentage => rangedCritPercentage.Value;
-        public float SpellCritPercentage => spellCritPercentage.Value;
-
+        public int Level => LevelAttribute.Value;
+        public int Health => HealthAttribute.Value;
+        public int MaxHealth => MaxHealthAttribute.Value;
+        public int BaseMana => ManaAttribute.Base;
+        public int Mana => ManaAttribute.Value;
+        public int MaxMana => MaxManaAttribute.Value;
+        public int SpellPower => SpellPowerAttribute.Value;
+        public float ModHaste => ModHasteAttribute.Value;
+        public float ModRegenHaste => ModRegenHasteAttribute.Value;
+        public float CritPercentage => CritPercentageAttribute.Value;
+        public float HealthRatio => MaxHealth > 0 ? (float)Health / MaxHealth : 0.0f;
         public bool IsMovementBlocked => HasState(UnitState.Root) || HasState(UnitState.Stunned);
         public bool IsAlive => DeathState == DeathState.Alive;
         public bool IsDead => DeathState == DeathState.Dead;
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitState.Moving);
 
-        public bool HealthBelowPercent(int percent) => health.Value < CountPercentFromMaxHealth(percent);
-        public bool HealthAbovePercent(int percent) => health.Value > CountPercentFromMaxHealth(percent);
-        public bool HealthAbovePercentHealed(int percent, int healAmount) => health.Value + healAmount > CountPercentFromMaxHealth(percent);
-        public bool HealthBelowPercentDamaged(int percent, int damageAmount) => health.Value - damageAmount < CountPercentFromMaxHealth(percent);
-        public long CountPercentFromMaxHealth(int percent) => maxHealth.Value.CalculatePercentage(percent);
-        public long CountPercentFromCurrentHealth(int percent) => health.Value.CalculatePercentage(percent);
-        public float GetSpeed(UnitMoveType type) => speedRates[type] * unitMovementDefinition.BaseSpeedByType(type);
-        public float GetSpeedRate(UnitMoveType type) => speedRates[type];
+        public bool HealthBelowPercent(int percent) => Health < CountPercentFromMaxHealth(percent);
+        public bool HealthAbovePercent(int percent) => Health > CountPercentFromMaxHealth(percent);
+        public bool HealthAbovePercentHealed(int percent, int healAmount) => Health + healAmount > CountPercentFromMaxHealth(percent);
+        public bool HealthBelowPercentDamaged(int percent, int damageAmount) => Health - damageAmount < CountPercentFromMaxHealth(percent);
+        public long CountPercentFromMaxHealth(int percent) => MaxHealth.CalculatePercentage(percent);
+        public long CountPercentFromCurrentHealth(int percent) => Health.CalculatePercentage(percent);
+        public float GetSpeed(UnitMoveType type) => SpeedRates[type] * unitMovementDefinition.BaseSpeedByType(type);
         public float GetPowerPercent(SpellResourceType type) => GetMaxPower(type) > 0 ? 100.0f * GetPower(type) / GetMaxPower(type) : 0.0f;
-        public int GetPower(SpellResourceType type) => mana.Value;
-        public int GetMaxPower(SpellResourceType type) => maxMana.Value;
-
-        [UsedImplicitly]
-        protected override void Awake()
-        {
-            base.Awake();
-
-            health = new EntityAttributeInt(this, unitAttributeDefinition.BaseHealth, int.MaxValue, EntityAttributes.Health);
-            maxHealth = new EntityAttributeInt(this, unitAttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
-            mana = new EntityAttributeInt(this, unitAttributeDefinition.BaseMana, int.MaxValue, EntityAttributes.Power);
-            maxMana = new EntityAttributeInt(this, unitAttributeDefinition.BaseMaxMana, int.MaxValue, EntityAttributes.MaxPower);
-            level = new EntityAttributeInt(this, 1, int.MaxValue, EntityAttributes.Level);
-            spellPower = new EntityAttributeInt(this, unitAttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
-            modHaste = new EntityAttributeFloat(this, 1.0f, float.MaxValue, EntityAttributes.ModHaste);
-            modRangedHaste = new EntityAttributeFloat(this, 1.0f, float.MaxValue, EntityAttributes.ModRangedHaste);
-            modSpellHaste = new EntityAttributeFloat(this, 1.0f, float.MaxValue, EntityAttributes.ModSpellHaste);
-            modRegenHaste = new EntityAttributeFloat(this, 1.0f, float.MaxValue, EntityAttributes.ModRegenHaste);
-            critPercentage = new EntityAttributeFloat(this, unitAttributeDefinition.CritPercentage, float.MaxValue, EntityAttributes.CritPercentage);
-            rangedCritPercentage = new EntityAttributeFloat(this, 1.0f, unitAttributeDefinition.RangedCritPercentage, EntityAttributes.RangedCritPercentage);
-            spellCritPercentage = new EntityAttributeFloat(this, 1.0f, unitAttributeDefinition.SpellCritPercentage, EntityAttributes.SpellCritPercentage);
-
-            faction = Balance.DefaultFaction;
-        }
+        public int GetPower(SpellResourceType type) => Mana;
+        public int GetMaxPower(SpellResourceType type) => MaxMana;
 
         public sealed override void Attached()
         {
@@ -251,35 +171,21 @@ namespace Core
 
         protected virtual void HandleAttach()
         {
+            AttributeUnitController.InitializeAttributes(this);
+
             createToken = (CreateToken) entity.AttachToken;
             EntityState = entity.GetState<IUnitState>();
 
-            foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
-                speedRates[moveType] = 1.0f;
-
-            if (!IsOwner)
-            {
-                EntityState.AddCallback(nameof(EntityState.DeathState), OnDeathStateChanged);
-                EntityState.AddCallback(nameof(EntityState.Health), OnHealthStateChanged);
-                EntityState.AddCallback(nameof(EntityState.TargetId), OnTargetIdChanged);
-                EntityState.AddCallback(nameof(EntityState.Faction), OnFactionChanged);
-            }
-
-            ThreatManager = new ThreatManager(this);
             MovementInfo.Attached(EntityState, this);
 
             SpellHistory = new SpellHistory(this);
             SpellCast = new SpellCast(this);
 
             SetMap(World.FindMap(1));
-
-            World.UnitManager.EventEntityDetach += OnEntityDetach;
         }
 
         protected virtual void HandleDetach()
         {
-            World.UnitManager.EventEntityDetach -= OnEntityDetach;
-
             SpellHistory.Detached();
             SpellCast.Detached();
 
@@ -287,7 +193,6 @@ namespace Core
 
             ResetMap();
 
-            ThreatManager.Detached();
             MovementInfo.Detached();
 
             createToken = null;
@@ -313,28 +218,25 @@ namespace Core
 
         internal float MaxNegativeAuraModifier(AuraEffectType auraType) => ApplicationAuraController.MaxNegativeAuraModifier(auraType);
 
-        internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
-        {
-            targetId = newTarget?.Id ?? newTargetId;
-            Target = newTarget ?? World.UnitManager.Find(targetId);
+        internal void AddState(UnitState state) { unitState |= state; }
 
-            if (updateState)
-                EntityState.TargetId = Target?.BoltEntity.NetworkId ?? default;
+        internal bool HasState(UnitState state) { return (unitState & state) != 0; }
 
-            EventHandler.ExecuteEvent(this, GameEvents.UnitTargetChanged);
-        }
-
-        internal void AddState(UnitState state) { UnitState |= state; }
-
-        internal bool HasState(UnitState state) { return (UnitState & state) != 0; }
-
-        internal void RemoveState(UnitState state) { UnitState &= ~state; }
+        internal void RemoveState(UnitState state) { unitState &= ~state; }
 
         internal void SetFlag(UnitFlags flag) => unitFlags |= flag;
 
         internal void RemoveFlag(UnitFlags flag) => unitFlags &= ~flag;
 
         internal bool HasFlag(UnitFlags flag) => (unitFlags & flag) == flag;
+
+        internal void ModifyDeathState(DeathState newState)
+        {
+            DeathState = newState;
+
+            if (IsDead && SpellCast.IsCasting)
+                SpellCast.Cancel();
+        }
 
         internal int ModifyHealth(int delta)
         {
@@ -343,66 +245,41 @@ namespace Core
 
         internal int SetHealth(int value)
         {
-            int delta = health.Set(Mathf.Clamp(value, 0, maxHealth.Value));
-            EntityState.Health = health.Value;
+            int delta = HealthAttribute.Set(Mathf.Clamp(value, 0, MaxHealth));
+            EntityState.Health = Health;
             return delta;
         }
 
-        internal void UpdateSpeed(UnitMoveType type)
+        internal int DealDamage(Unit target, int damageAmount)
         {
-            float increaseModifier = 0.0f;
-            float nonStackModifier = 100f;
-            float stackMultiplier = 100f;
-            
-            // increases only affect running movement
-            switch (type)
+            if (damageAmount < 1)
+                return 0;
+
+            int healthValue = target.Health;
+            if (healthValue <= damageAmount)
             {
-                case UnitMoveType.RunBack:
-                    break;
-                case UnitMoveType.Walk:
-                    break;
-                case UnitMoveType.Run:
-                    increaseModifier = MaxPositiveAuraModifier(AuraEffectType.SpeedIncreaseModifier);
-                    nonStackModifier += MaxPositiveAuraModifier(AuraEffectType.SpeedNonStackableModifier);
-                    stackMultiplier = 100.0f * TotalAuraMultiplier(AuraEffectType.SpeedStackableMultiplier);
-                    break;
-                default:
-                    return;
+                Kill(target);
+                return healthValue;
             }
 
-            // calculate increased speed
-            float speedRate = 1.0f.ApplyPercentage(Mathf.Max(nonStackModifier, stackMultiplier));
-            if (!Mathf.Approximately(increaseModifier, 0.0f))
-                speedRate = speedRate.ApplyPercentage(100.0f + increaseModifier);
-
-            if (!HasAuraType(AuraEffectType.SpeedSupressSlowEffects))
-            {
-                // apply strongest slow effect
-                float slowPercent = Mathf.Clamp(MaxPositiveAuraModifier(AuraEffectType.SpeedDecreaseModifier), 0.0f, 99.9f);
-                if (slowPercent > 0.0f)
-                    speedRate = speedRate.ApplyPercentage(100.0f - slowPercent);
-            }
-
-            // check for minimum speed aura
-            float minSpeedPercent = MaxPositiveAuraModifier(AuraEffectType.ModMinimumSpeed);
-            if (minSpeedPercent > 0)
-                speedRate = Mathf.Max(speedRate, 1.0f.ApplyPercentage(minSpeedPercent));
-
-            SetSpeedRate(type, speedRate);
+            return target.ModifyHealth(-damageAmount);
         }
 
-        internal void SetSpeedRate(UnitMoveType type, float rate)
+        internal int DealHeal(Unit target, int healAmount)
         {
-            if (rate < 0)
-                rate = 0.0f;
+            if (healAmount < 1)
+                return 0;
 
-            if (!Mathf.Approximately(speedRates[type], rate))
-            {
-                speedRates[type] = rate;
+            return target.ModifyHealth(healAmount);
+        }
 
-                if (IsOwner && this is Player player)
-                    EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, player, type, rate);
-            }
+        internal void Kill(Unit victim)
+        {
+            if (victim.Health <= 0)
+                return;
+
+            victim.SetHealth(0);
+            victim.ModifyDeathState(DeathState.Dead);
         }
 
         #region Spell Handling
@@ -446,46 +323,6 @@ namespace Core
         internal int HealBySpell(Unit target, SpellInfo spellInfo, int healAmount, bool critical = false)
         {
             return DealHeal(target, healAmount);
-        }
-
-        internal int DealDamage(Unit target, int damageAmount)
-        {
-            if (damageAmount < 1)
-                return 0;
-
-            int healthValue = target.Health;
-            if (healthValue <= damageAmount)
-            {
-                Kill(target);
-                return healthValue;
-            }
-
-            return target.ModifyHealth(-damageAmount);
-        }
-
-        internal int DealHeal(Unit target, int healAmount)
-        {
-            if(healAmount < 1)
-                return 0;
-
-            return target.ModifyHealth(healAmount);
-        }
-
-        internal void Kill(Unit victim)
-        {
-            if (victim.Health <= 0)
-                return;
-
-            victim.SetHealth(0);
-            victim.ModifyDeathState(DeathState.Dead);
-        }
-
-        internal void ModifyDeathState(DeathState newState)
-        {
-            DeathState = newState;
-
-            if (IsDead && SpellCast.IsCasting)
-                SpellCast.Cancel();
         }
 
         internal int CalculateSpellDamageTaken(SpellCastDamageInfo damageInfoInfo, int damage, SpellInfo spellInfo)
@@ -578,19 +415,11 @@ namespace Core
             return spellInfo.GetMaxRange(!IsHostileTo(target));
         }
 
-        internal bool HasAuraState(AuraStateType flag, SpellInfo spellProto = null, Unit caster = null) { return false; }
-
         internal Unit GetMagicHitRedirectTarget(Unit victim, SpellInfo spellProto) { return null; }
 
         internal Unit GetMeleeHitRedirectTarget(Unit victim, SpellInfo spellProto = null) { return null; }
 
-        internal int SpellBaseDamageBonusDone(SpellSchoolMask schoolMask) { return 0; }
-
-        internal int SpellBaseDamageBonusTaken(SpellSchoolMask schoolMask) { return 0; }
-
         internal int SpellDamageBonusDone(Unit victim, SpellInfo spellProto, int damage, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1) { return 0; }
-
-        internal float SpellDamagePctDone(Unit victim, SpellInfo spellProto, SpellDamageType damagetype) { return 0.0f; }
 
         internal void ApplySpellMod(SpellInfo spellInfo, SpellModifierType modifierType, ref int value) { }
 
@@ -601,25 +430,15 @@ namespace Core
             return damage;
         }
 
-        internal int SpellBaseHealingBonusDone(SpellSchoolMask schoolMask) { return 0; }
-
-        internal int SpellBaseHealingBonusTaken(SpellSchoolMask schoolMask) { return 0; }
-
         internal uint SpellHealingBonusDone(Unit victim, SpellInfo spellProto, uint healamount, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1) { return 0; }
 
         internal uint SpellHealingBonusTaken(Unit caster, SpellInfo spellProto, uint healamount, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1) { return 0; }
 
         internal float SpellHealingPercentDone(Unit victim, SpellInfo spellProto) { return 0.0f; }
 
-        internal bool IsSpellBlocked(Unit victim, SpellInfo spellProto, WeaponAttackType attackType = WeaponAttackType.BaseAttack) { return false; }
-
         internal bool IsSpellCrit(Unit victim, SpellInfo spellProto, SpellSchoolMask schoolMask, WeaponAttackType attackType = WeaponAttackType.BaseAttack) { return false; }
 
-        internal float GetUnitSpellCriticalChance(Unit victim, SpellInfo spellProto, SpellSchoolMask schoolMask, WeaponAttackType attackType = WeaponAttackType.BaseAttack) { return 0.0f; }
-
         internal int SpellCriticalHealingBonus(SpellInfo spellProto, int damage, Unit victim) { return 0; }
-
-        internal void ApplySpellDispelImmunity(SpellInfo spellProto, SpellDispelType spellDispelType, bool apply) { }
 
         internal bool IsImmunedToDamage(SpellSchoolMask meleeSchoolMask) { return false; }
 
@@ -630,8 +449,6 @@ namespace Core
         internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster) { return false; }
 
         internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffect, Unit caster) { return false; }
-
-        internal uint CalcSpellResistance(Unit victim, SpellSchoolMask schoolMask, SpellInfo spellProto) { return 0; }
 
         internal void CalcAbsorbResist(Unit victim, SpellSchoolMask schoolMask, SpellDamageType damagetype, int damage, ref int absorb, ref int resist, SpellInfo spellProto = null) { }
 
@@ -667,39 +484,6 @@ namespace Core
         internal void ModSpellCastTime(SpellInfo spellProto, ref int castTime, Spell spell = null) { }
 
         internal void ModSpellDurationTime(SpellInfo spellProto, ref int castTime, Spell spell = null) { }
-
-        #endregion
-
-        private void OnEntityDetach(Unit entity)
-        {
-            if (targetId == entity.Id || Target == entity)
-                UpdateTarget(updateState: true);
-        }
-
-        #region State Events
-
-        private void OnDeathStateChanged()
-        {
-            DeathState = (DeathState)EntityState.DeathState;
-        }
-
-        private void OnHealthStateChanged()
-        {
-            SetHealth(EntityState.Health);
-        }
-
-        private void OnTargetIdChanged()
-        {
-            UpdateTarget(EntityState.TargetId.PackedValue);
-        }
-
-        private void OnFactionChanged()
-        {
-            Faction = Balance.FactionsById[EntityState.Faction.Id];
-            FreeForAll = EntityState.Faction.FreeForAll;
-
-            EventHandler.ExecuteEvent(this, GameEvents.UnitFactionChanged);
-        }
 
         #endregion
     }

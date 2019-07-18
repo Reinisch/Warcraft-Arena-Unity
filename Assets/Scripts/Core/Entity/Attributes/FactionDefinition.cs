@@ -13,10 +13,29 @@ namespace Core
         [UsedImplicitly, SerializeField] private List<FactionDefinition> hostileFactions;
         [UsedImplicitly, SerializeField] private List<FactionDefinition> friendlyFactions;
 
-        public IReadOnlyCollection<FactionDefinition> HostileFactions => hostileFactions;
-        public IReadOnlyCollection<FactionDefinition> FriendlyFactions => friendlyFactions;
+        public HashSet<FactionDefinition> HostileFactions { get; } = new HashSet<FactionDefinition>();
+        public HashSet<FactionDefinition> FriendlyFactions { get; } = new HashSet<FactionDefinition>();
         public string LocalizationId => localizationId;
         public int FactionId => factionId;
         public Team Team => team;
+
+        [UsedImplicitly]
+        private void OnEnable()
+        {
+            HostileFactions.Clear();
+            FriendlyFactions.Clear();
+
+            foreach (FactionDefinition hostileFaction in hostileFactions)
+                HostileFactions.Add(hostileFaction);
+
+            foreach (FactionDefinition friendlyFaction in friendlyFactions)
+                FriendlyFactions.Add(friendlyFaction);
+        }
+
+        [UsedImplicitly]
+        private void OnValidate()
+        {
+            OnEnable();
+        }
     }
 }
