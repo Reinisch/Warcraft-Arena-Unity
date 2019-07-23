@@ -9,21 +9,33 @@ namespace Server
         internal GamePlayerListener(WorldServerManager worldServerManager) : base(worldServerManager)
         {
             EventHandler.RegisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
+            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerRootChanged);
         }
 
         internal override void Dispose()
         {
             EventHandler.RegisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
+            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerRootChanged);
         }
 
         private void OnPlayerSpeedChanged(Player player, UnitMoveType moveType, float rate)
         {
             if (player.BoltEntity.Controller != null)
             {
-                PlayerSpeedRateChangedEvent spellTeleportEvent = PlayerSpeedRateChangedEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
-                spellTeleportEvent.MoveType = (int) moveType;
-                spellTeleportEvent.SpeedRate = rate;
-                spellTeleportEvent.Send();
+                PlayerSpeedRateChangedEvent speedChangeEvent = PlayerSpeedRateChangedEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
+                speedChangeEvent.MoveType = (int) moveType;
+                speedChangeEvent.SpeedRate = rate;
+                speedChangeEvent.Send();
+            }
+        }
+
+        private void OnPlayerRootChanged(Player player, bool applied)
+        {
+            if (player.BoltEntity.Controller != null)
+            {
+                PlayerRootChangedEvent rootChangedEvent = PlayerRootChangedEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
+                rootChangedEvent.Applied = applied;
+                rootChangedEvent.Send();
             }
         }
     }

@@ -165,7 +165,6 @@ MonoBehaviour:
     type: 2}
   unitRigidbody: {fileID: 845485024815860282}
   groundChecker: {fileID: 845485024815860166}
-  unit: {fileID: 8793749810161454766}
 --- !u!114 &845485024815860167
 MonoBehaviour:
   m_ObjectHideFlags: 0

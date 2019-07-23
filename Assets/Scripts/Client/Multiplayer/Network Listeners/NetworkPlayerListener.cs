@@ -8,5 +8,12 @@
 
             LocalPlayer?.Handle(speedChangeEvent);
         }
+
+        public override void OnEvent(PlayerRootChangedEvent rootChangeEvent)
+        {
+            base.OnEvent(rootChangeEvent);
+
+            LocalPlayer?.Handle(rootChangeEvent);
+        }
     }
 }

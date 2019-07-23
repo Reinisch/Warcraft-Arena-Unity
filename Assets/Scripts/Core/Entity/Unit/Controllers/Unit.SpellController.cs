@@ -9,7 +9,7 @@ namespace Core
         {
             private Unit unit;
 
-            public SpellCast SpellCast { get; private set; }
+            public SpellCast Cast { get; private set; }
             public SpellHistory SpellHistory { get; private set; }
 
             public bool HasClientLogic => true;
@@ -25,13 +25,13 @@ namespace Core
                 this.unit = unit;
 
                 SpellHistory = new SpellHistory(unit, unit.entityState);
-                SpellCast = new SpellCast(unit, unit.entityState);
+                Cast = new SpellCast(unit, unit.entityState);
             }
 
             void IUnitBehaviour.HandleUnitDetach()
             {
                 SpellHistory.Detached();
-                SpellCast.Detached();
+                Cast.Detached();
 
                 unit = null;
             }

@@ -44,6 +44,9 @@ namespace Core
             {
                 InputProvider.PollInput(out inputVelocity, out var inputRotation, out var shouldJump);
 
+                if (shouldJump && unit.IsMovementBlocked)
+                    shouldJump = false;
+
                 Vector3 rawInputVelocity = Vector3.zero;
 
                 if (!unit.IsAlive)
@@ -182,6 +185,11 @@ namespace Core
             ClientMoveState = null;
         }
 
+        internal void StopMoving()
+        {
+            unitRigidbody.velocity = Vector3.zero;
+        }
+
         private void ProcessMovement()
         {
             unit.UnitCollider.radius = 0.2f;
@@ -225,14 +233,11 @@ namespace Core
                         if (!unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && inputVelocity.y <= 0)
                         {
                             unitRigidbody.AddForce(Vector3.down * unitRigidbody.velocity.magnitude, ForceMode.VelocityChange);
-                            Mathf.Asin(hitInfo.normal.y);
                             groundNormal = hitInfo.normal;
                         }
                         else
                         {
                             groundNormal = Vector3.up;
-                            Mathf.Asin(Vector3.up.y);
-
                             if (unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
                             {
                                 unit.MovementInfo.RemoveMovementFlag(MovementFlags.Flying);
@@ -243,8 +248,6 @@ namespace Core
                     else
                     {
                         groundNormal = hitInfo.normal;
-                        Mathf.Asin(hitInfo.normal.y);
-
                         if (unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
                         {
                             unit.MovementInfo.RemoveMovementFlag(MovementFlags.Flying);

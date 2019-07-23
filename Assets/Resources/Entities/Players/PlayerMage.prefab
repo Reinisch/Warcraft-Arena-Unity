@@ -2206,7 +2206,6 @@ MonoBehaviour:
     type: 2}
   unitRigidbody: {fileID: 1530}
   groundChecker: {fileID: 1542}
-  unit: {fileID: 1545}
 --- !u!114 &1543
 MonoBehaviour:
   m_ObjectHideFlags: 0

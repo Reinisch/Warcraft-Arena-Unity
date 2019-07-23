@@ -1,4 +1,6 @@
-﻿namespace Core
+﻿using Common;
+
+namespace Core
 {
     public abstract class AuraEffect
     {
@@ -26,6 +28,9 @@
         {
         }
 
-        public abstract void HandleEffect(AuraApplication auraApplication, AuraEffectHandleMode mode, bool apply);
+        public virtual void HandleEffect(AuraApplication auraApplication, AuraEffectHandleMode mode, bool apply)
+        {
+            Logging.LogAura($"Handle aura effect {EffectInfo.name} for target: {auraApplication.Target.Name} in mode {mode}, applying: {apply}");
+        }
     }
 }

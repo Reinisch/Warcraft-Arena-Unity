@@ -1,6 +1,4 @@
-﻿using Common;
-
-namespace Core.AuraEffects
+﻿namespace Core.AuraEffects
 {
     public class AuraEffectSharedSpeedChange : AuraEffect
     {
@@ -12,7 +10,7 @@ namespace Core.AuraEffects
 
         public override void HandleEffect(AuraApplication auraApplication, AuraEffectHandleMode mode, bool apply)
         {
-            Logging.LogAura($"Handle aura effect {EffectInfo.name} for target: {auraApplication.Target.Name} in mode {mode}, applying: {apply}");
+            base.HandleEffect(auraApplication, mode, apply);
 
             auraApplication.Target.Attributes.UpdateSpeed(UnitMoveType.Run);
         }

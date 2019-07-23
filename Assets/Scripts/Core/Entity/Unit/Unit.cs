@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UdpKit;
 using Bolt;
+using Common;
 
 namespace Core
 {
@@ -72,7 +73,7 @@ namespace Core
         internal IReadOnlyList<AuraApplication> AuraApplications => Auras.AuraApplications;
 
         public Unit Target => Attributes.Target;
-        public SpellCast SpellCast => Spells.SpellCast;
+        public SpellCast SpellCast => Spells.Cast;
         public SpellHistory SpellHistory => Spells.SpellHistory;
         public CapsuleCollider UnitCollider => unitCollider;
         public PlayerControllerDefinition ControllerDefinition => characterController.ControllerDefinition;
@@ -143,6 +144,9 @@ namespace Core
         {
             ResetMap();
 
+            controlState = 0;
+            unitFlags = 0;
+
             MovementInfo.Detached();
             behaviourController.HandleUnitDetach();
         }
@@ -209,6 +213,96 @@ namespace Core
         internal bool HasState(UnitControlState state) { return (controlState & state) != 0; }
 
         internal void RemoveState(UnitControlState state) { controlState &= ~state; }
+
+        internal void UpdateControlState(UnitControlState state, bool applied)
+        {
+            if (applied && HasState(state))
+                return;
+
+            if (!applied && !HasState(state))
+                return;
+
+            if (applied)
+            {
+                AddState(state);
+
+                switch (state)
+                {
+                    case UnitControlState.Stunned:
+                        UpdateStunState(true);
+                        break;
+                    case UnitControlState.Root:
+                        if(!HasState(UnitControlState.Stunned))
+                            UpdateRootState(true);
+                        break;
+                }
+            }
+            else
+            {
+                switch (state)
+                {
+                    case UnitControlState.Stunned:
+                        if (!HasAuraType(AuraEffectType.StunState))
+                        {
+                            UpdateStunState(false);
+                            RemoveState(state);
+                        }
+                        break;
+                    case UnitControlState.Root:
+                        if (!HasAuraType(AuraEffectType.RootState) && !HasState(UnitControlState.Stunned))
+                        {
+                            UpdateRootState(false);
+                            RemoveState(state);
+                        }
+                        break;
+                    default:
+                        RemoveState(state);
+                        break;
+                }
+            }
+        }
+
+        private void UpdateStunState(bool applied)
+        {
+            if (applied)
+            {
+                SpellCast.Cancel();
+                StopMoving();
+
+                SetFlag(UnitFlags.Stunned);
+
+                UpdateRootState(true);
+            }
+            else
+            {
+                RemoveFlag(UnitFlags.Stunned);
+
+                if (!HasState(UnitControlState.Root))
+                    UpdateRootState(false);
+            }
+        }
+
+        private void UpdateRootState(bool applied)
+        {
+            if (applied)
+            {
+                StopMoving();
+
+                MovementInfo.AddMovementFlag(MovementFlags.Root);
+            }
+            else
+                MovementInfo.RemoveMovementFlag(MovementFlags.Root);
+
+            if (IsOwner && this is Player rootedPlayer)
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, rootedPlayer, applied);
+        }
+
+        private void StopMoving()
+        {
+            MovementInfo.RemoveMovementFlag(MovementFlags.MaskMoving);
+
+            CharacterController.StopMoving();
+        }
 
         internal void SetFlag(UnitFlags flag) => unitFlags |= flag;
 

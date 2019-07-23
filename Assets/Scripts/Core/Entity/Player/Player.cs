@@ -89,6 +89,14 @@ namespace Core
             Attributes.UpdateSpeedRate((UnitMoveType) speedChangeEvent.MoveType, speedChangeEvent.SpeedRate);
         }
 
+        public void Handle(PlayerRootChangedEvent rootChangeEvent)
+        {
+            if (rootChangeEvent.Applied)
+                AddState(UnitControlState.Root);
+            else
+                RemoveState(UnitControlState.Root);
+        }
+
         private void OnPlayerNameChanged()
         {
             Name = playerState.PlayerName;

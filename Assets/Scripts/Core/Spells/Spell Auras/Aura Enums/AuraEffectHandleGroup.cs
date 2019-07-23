@@ -2,6 +2,7 @@
 {
     public enum AuraEffectHandleGroup
     {
-        SpeedChange = 1
+        SpeedChange = 1,
+        RootStateChange = 2
     }
 }
