@@ -25,7 +25,7 @@ namespace Core
         {
             TEntity entity = BoltNetwork.Instantiate(prefabId, createToken).GetComponent<TEntity>();
             entity.ModifyDeathState(DeathState.Alive);
-            entity.SetHealth(entity.MaxHealth);
+            entity.Attributes.SetHealth(entity.MaxHealth);
             return entity;
         }
 

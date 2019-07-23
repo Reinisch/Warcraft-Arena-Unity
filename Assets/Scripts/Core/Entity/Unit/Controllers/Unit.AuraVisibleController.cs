@@ -80,7 +80,7 @@ namespace Core
 
             void IUnitBehaviour.HandleUnitAttach(Unit unit)
             {
-                unitState = unit.EntityState;
+                unitState = unit.entityState;
 
                 applicationSlots = new AuraApplication[unitState.VisibleAuras.Length];
                 for (int i = 0; i < unitState.VisibleAuras.Length; i++)

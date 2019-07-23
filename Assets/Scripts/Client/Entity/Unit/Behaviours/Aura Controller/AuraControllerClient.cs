@@ -43,7 +43,7 @@ namespace Client
 
                 if (changedSlots[i])
                 {
-                    auraSlots[i].SetState(Unit.EntityState.VisibleAuras[i]);
+                    auraSlots[i].SetState(Unit.GetVisibleAura(i));
                     changedSlots[i] = false;
                 }
             }
@@ -53,19 +53,19 @@ namespace Client
         {
             base.OnAttach();
 
-            Array.Resize(ref changedSlots, Unit.EntityState.VisibleAuras.Length);
-            Array.Resize(ref auraSlots, Unit.EntityState.VisibleAuras.Length);
+            Array.Resize(ref changedSlots, Unit.VisibleAuraMaxCount);
+            Array.Resize(ref auraSlots, Unit.VisibleAuraMaxCount);
 
             for (int i = 0; i < auraSlots.Length; i++)
                 auraSlots[i] = new Slot(this);
 
             changedSlots.Fill(true);
-            Unit.EntityState.AddCallback($"{nameof(Unit.EntityState.VisibleAuras)}[]", OnVisibleAurasChanged);
+            Unit.AddCallback($"{nameof(IUnitState.VisibleAuras)}[]", OnVisibleAurasChanged);
         }
 
         protected override void OnDetach()
         {
-            Unit.EntityState.RemoveCallback($"{nameof(Unit.EntityState.VisibleAuras)}[]", OnVisibleAurasChanged);
+            Unit.RemoveCallback($"{nameof(IUnitState.VisibleAuras)}[]", OnVisibleAurasChanged);
             changedSlots.Fill(false);
             auraSlots.Fill(null);
 

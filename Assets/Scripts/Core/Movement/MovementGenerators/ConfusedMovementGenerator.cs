@@ -18,13 +18,13 @@ namespace Core
 
         public override void DoInitialize(TUnit unit)
         {
-            unit.AddState(UnitState.Confused);
+            unit.AddState(UnitControlState.Confused);
             unit.SetFlag(UnitFlags.Confused);
 
             if (!unit.IsAlive || unit.IsStopped)
                 return;
 
-            unit.AddState(UnitState.Move);
+            unit.AddState(UnitControlState.Move);
         }
 
         public override void DoReset(TUnit unit)
@@ -34,25 +34,25 @@ namespace Core
             if (!unit.IsAlive || unit.IsStopped)
                 return;
 
-            unit.AddState(UnitState.Confused | UnitState.ConfusedMove);
+            unit.AddState(UnitControlState.Confused | UnitControlState.ConfusedMove);
         }
 
         public override bool DoUpdate(TUnit unit, uint timeDiff)
         {
-            if (unit.HasState(UnitState.Root | UnitState.Stunned | UnitState.Distracted))
+            if (unit.HasState(UnitControlState.Root | UnitControlState.Stunned | UnitControlState.Distracted))
                 return true;
 
             if (NextMoveTime.Passed)
             {
                 // currently moving, update location
-                unit.AddState(UnitState.ConfusedMove);
+                unit.AddState(UnitControlState.ConfusedMove);
                 NextMoveTime.Reset(RandomUtils.Next(800, 1500));
             }
             else
             {
                 NextMoveTime.Update(timeDiff);
                 if (NextMoveTime.Passed)
-                    unit.AddState(UnitState.ConfusedMove);
+                    unit.AddState(UnitControlState.ConfusedMove);
             }
 
             return true;
@@ -64,7 +64,7 @@ namespace Core
         public override void DoDeinitialize(Player player)
         {
             player.RemoveFlag(UnitFlags.Confused);
-            player.RemoveState(UnitState.Confused | UnitState.ConfusedMove);
+            player.RemoveState(UnitControlState.Confused | UnitControlState.ConfusedMove);
         }
     }
 
@@ -73,7 +73,7 @@ namespace Core
         public override void DoDeinitialize(Creature creature)
         {
             creature.RemoveFlag(UnitFlags.Confused);
-            creature.RemoveState(UnitState.Confused | UnitState.ConfusedMove);
+            creature.RemoveState(UnitControlState.Confused | UnitControlState.ConfusedMove);
         }
     }
 }

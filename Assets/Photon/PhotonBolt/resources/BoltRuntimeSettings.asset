@@ -34,9 +34,9 @@ MonoBehaviour:
     commandQueueSize: 60
     commandRedundancy: 6
     commandPingMultiplier: 1.25
-    useNetworkSimulation: 0
+    useNetworkSimulation: 1
     simulatedLoss: 0.02
-    simulatedPingMean: 200
+    simulatedPingMean: 400
     simulatedPingJitter: 10
     simulatedRandomFunction: 0
     connectionTimeout: 100000

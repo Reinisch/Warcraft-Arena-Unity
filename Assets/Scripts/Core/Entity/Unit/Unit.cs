@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
-using UdpKit;
 using UnityEngine;
+using UdpKit;
+using Bolt;
 
 namespace Core
 {
@@ -51,8 +52,9 @@ namespace Core
         private List<UnitBehaviour> unitBehaviours;
 
         private CreateToken createToken;
+        private UnitControlState controlState;
+        private IUnitState entityState;
         private UnitFlags unitFlags;
-        private UnitState unitState;
 
         private readonly BehaviourController behaviourController = new BehaviourController();
 
@@ -63,23 +65,11 @@ namespace Core
         internal SpellController Spells { get; } = new SpellController();
         internal WarcraftCharacterController CharacterController => characterController;
 
+        internal bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
         internal FactionDefinition Faction { get => Attributes.Faction; set => Attributes.Faction = value; }
         internal DeathState DeathState { get => Attributes.DeathState; set => Attributes.DeathState = value; }
-        internal bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
-
         internal IReadOnlyDictionary<UnitMoveType, float> SpeedRates => Attributes.SpeedRates;
         internal IReadOnlyList<AuraApplication> AuraApplications => Auras.AuraApplications;
-        internal EntityAttributeInt HealthAttribute => Attributes.Health;
-        internal EntityAttributeInt MaxHealthAttribute => Attributes.MaxHealth;
-        internal EntityAttributeInt ManaAttribute => Attributes.Mana;
-        internal EntityAttributeInt MaxManaAttribute => Attributes.MaxMana;
-        internal EntityAttributeInt LevelAttribute => Attributes.Level;
-        internal EntityAttributeInt SpellPowerAttribute => Attributes.SpellPower;
-        internal EntityAttributeFloat ModHasteAttribute => Attributes.ModHaste;
-        internal EntityAttributeFloat ModRegenHasteAttribute => Attributes.ModRegenHaste;
-        internal EntityAttributeFloat CritPercentageAttribute => Attributes.CritPercentage;
-
-        public IUnitState EntityState { get; private set; }
 
         public Unit Target => Attributes.Target;
         public SpellCast SpellCast => Spells.SpellCast;
@@ -87,22 +77,23 @@ namespace Core
         public CapsuleCollider UnitCollider => unitCollider;
         public PlayerControllerDefinition ControllerDefinition => characterController.ControllerDefinition;
 
-        public int Level => LevelAttribute.Value;
-        public int Health => HealthAttribute.Value;
-        public int MaxHealth => MaxHealthAttribute.Value;
-        public int BaseMana => ManaAttribute.Base;
-        public int Mana => ManaAttribute.Value;
-        public int MaxMana => MaxManaAttribute.Value;
-        public int SpellPower => SpellPowerAttribute.Value;
-        public float ModHaste => ModHasteAttribute.Value;
-        public float ModRegenHaste => ModRegenHasteAttribute.Value;
-        public float CritPercentage => CritPercentageAttribute.Value;
+        public int Level => Attributes.Level.Value;
+        public int Health => Attributes.Health.Value;
+        public int MaxHealth => Attributes.MaxHealth.Value;
+        public int BaseMana => Attributes.Mana.Base;
+        public int Mana => Attributes.Mana.Value;
+        public int MaxMana => Attributes.MaxMana.Value;
+        public int SpellPower => Attributes.SpellPower.Value;
+        public int VisibleAuraMaxCount => entityState.VisibleAuras.Length;
+        public float ModHaste => Attributes.ModHaste.Value;
+        public float ModRegenHaste => Attributes.ModRegenHaste.Value;
+        public float CritPercentage => Attributes.CritPercentage.Value;
         public float HealthRatio => MaxHealth > 0 ? (float)Health / MaxHealth : 0.0f;
-        public bool IsMovementBlocked => HasState(UnitState.Root) || HasState(UnitState.Stunned);
+        public bool IsMovementBlocked => HasState(UnitControlState.Root) || HasState(UnitControlState.Stunned);
         public bool IsAlive => DeathState == DeathState.Alive;
         public bool IsDead => DeathState == DeathState.Dead;
         public bool IsControlledByPlayer => this is Player;
-        public bool IsStopped => !HasState(UnitState.Moving);
+        public bool IsStopped => !HasState(UnitControlState.Moving);
 
         public bool HealthBelowPercent(int percent) => Health < MaxHealth.CalculatePercentage(percent);
         public bool HealthAbovePercent(int percent) => Health > MaxHealth.CalculatePercentage(percent);
@@ -112,6 +103,7 @@ namespace Core
         public float GetPowerPercent(SpellResourceType type) => GetMaxPower(type) > 0 ? 100.0f * GetPower(type) / GetMaxPower(type) : 0.0f;
         public int GetPower(SpellResourceType type) => Mana;
         public int GetMaxPower(SpellResourceType type) => MaxMana;
+        public VisibleAuraState GetVisibleAura(int index) => entityState.VisibleAuras[index];
 
         public sealed override void Attached()
         {
@@ -119,8 +111,6 @@ namespace Core
 
             HandleAttach();
             
-            behaviourController.HandleUnitAttach(this);
-
             World.UnitManager.Attach(this);
         }
 
@@ -132,8 +122,6 @@ namespace Core
             {
                 World.UnitManager.Detach(this);
 
-                behaviourController.HandleUnitDetach();
-
                 HandleDetach();
 
                 base.Detached();
@@ -142,25 +130,21 @@ namespace Core
 
         protected virtual void HandleAttach()
         {
-            Attributes.InitializeAttributes(this);
+            createToken = (CreateToken)entity.AttachToken;
+            entityState = entity.GetState<IUnitState>();
 
-            createToken = (CreateToken) entity.AttachToken;
-            EntityState = entity.GetState<IUnitState>();
-
-            MovementInfo.Attached(this);
+            behaviourController.HandleUnitAttach(this);
+            MovementInfo.Attached(this, entityState);
 
             SetMap(World.FindMap(1));
         }
 
         protected virtual void HandleDetach()
         {
-            EntityState.RemoveAllCallbacks();
-
             ResetMap();
 
             MovementInfo.Detached();
-
-            createToken = null;
+            behaviourController.HandleUnitDetach();
         }
 
         internal override void DoUpdate(int deltaTime)
@@ -192,6 +176,14 @@ namespace Core
             return Faction.FriendlyFactions.Contains(unit.Faction);
         }
 
+        public void AddCallback(string path, PropertyCallback propertyCallback) => entityState.AddCallback(path, propertyCallback);
+
+        public void AddCallback(string path, PropertyCallbackSimple propertyCallback) => entityState.AddCallback(path, propertyCallback);
+
+        public void RemoveCallback(string path, PropertyCallback propertyCallback) => entityState.RemoveCallback(path, propertyCallback);
+
+        public void RemoveCallback(string path, PropertyCallbackSimple propertyCallback) => entityState.RemoveCallback(path, propertyCallback);
+
         public T FindBehaviour<T>() where T : UnitBehaviour => behaviourController.FindBehaviour<T>();
 
         internal bool HasAuraType(AuraEffectType auraEffectType) => Auras.HasAuraType(auraEffectType);
@@ -212,11 +204,11 @@ namespace Core
 
         internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffectInfo, Unit caster) => Spells.IsImmuneToAuraEffect(auraEffectInfo, caster);
 
-        internal void AddState(UnitState state) { unitState |= state; }
+        internal void AddState(UnitControlState state) { controlState |= state; }
 
-        internal bool HasState(UnitState state) { return (unitState & state) != 0; }
+        internal bool HasState(UnitControlState state) { return (controlState & state) != 0; }
 
-        internal void RemoveState(UnitState state) { unitState &= ~state; }
+        internal void RemoveState(UnitControlState state) { controlState &= ~state; }
 
         internal void SetFlag(UnitFlags flag) => unitFlags |= flag;
 
@@ -234,14 +226,7 @@ namespace Core
 
         internal int ModifyHealth(int delta)
         {
-            return SetHealth(Health + delta);
-        }
-
-        internal int SetHealth(int value)
-        {
-            int delta = HealthAttribute.Set(Mathf.Clamp(value, 0, MaxHealth));
-            EntityState.Health = Health;
-            return delta;
+            return Attributes.SetHealth(Health + delta);
         }
 
         internal int DealDamage(Unit target, int damageAmount)
@@ -272,7 +257,7 @@ namespace Core
             if (victim.Health <= 0)
                 return;
 
-            victim.SetHealth(0);
+            victim.Attributes.SetHealth(0);
             victim.ModifyDeathState(DeathState.Dead);
         }
     }

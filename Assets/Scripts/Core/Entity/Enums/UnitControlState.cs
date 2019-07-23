@@ -3,7 +3,7 @@
 namespace Core
 {
     [Flags]
-    public enum UnitState
+    public enum UnitControlState
     {
         Died = 1 << 0,
         Stunned = 1 << 1,

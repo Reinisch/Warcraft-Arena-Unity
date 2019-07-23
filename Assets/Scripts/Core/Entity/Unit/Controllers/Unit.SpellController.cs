@@ -24,8 +24,8 @@ namespace Core
             {
                 this.unit = unit;
 
-                SpellHistory = new SpellHistory(unit);
-                SpellCast = new SpellCast(unit);
+                SpellHistory = new SpellHistory(unit, unit.entityState);
+                SpellCast = new SpellCast(unit, unit.entityState);
             }
 
             void IUnitBehaviour.HandleUnitDetach()

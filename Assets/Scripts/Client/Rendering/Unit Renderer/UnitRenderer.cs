@@ -11,8 +11,6 @@ namespace Client
         [SerializeField, UsedImplicitly] private TagContainer tagContainer;
         [SerializeField, UsedImplicitly] private Animator animator;
 
-        private IUnitState UnitState { get; set; }
-
         public TagContainer TagContainer => tagContainer;
         public Animator Animator => animator;
         public Unit Unit { get; private set; }
@@ -22,9 +20,8 @@ namespace Client
             Unit = unit;
 
             Unit.BoltEntity.AddEventListener(this);
-            UnitState = entity.GetState<IUnitState>();
-            UnitState.AddCallback(nameof(UnitState.DeathState), OnDeathStateChanged);
-            UnitState.AddCallback(nameof(UnitState.SpellCast), OnSpellCastChanged);
+            Unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
+            Unit.AddCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
 
             if (Unit.IsDead)
             {
@@ -37,10 +34,10 @@ namespace Client
         public void Deinitialize()
         {
             Unit.BoltEntity.RemoveEventListener(this);
-            UnitState.RemoveAllCallbacks();
+            Unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
+            Unit.RemoveCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
 
             Unit = null;
-            UnitState = null;
 
             Animator.WriteDefaultValues();
         }
@@ -114,7 +111,7 @@ namespace Client
 
         private void OnSpellCastChanged()
         {
-            animator.SetBool("Casting", UnitState.SpellCast.Id != 0);
+            animator.SetBool("Casting", Unit.SpellCast.State.Id != 0);
         }
 
         [UsedImplicitly]

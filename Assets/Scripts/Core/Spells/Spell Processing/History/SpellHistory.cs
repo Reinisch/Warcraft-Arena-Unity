@@ -8,29 +8,29 @@ namespace Core
     {
         private readonly Dictionary<int, SpellCooldown> spellCooldownsById = new Dictionary<int, SpellCooldown>();
         private readonly List<SpellCooldown> spellCooldowns = new List< SpellCooldown>();
-        private Unit unit;
+        private readonly Unit caster;
+        private readonly IUnitState casterState;
 
         public int GlobalCooldown { get; private set; }
         public int GlobalCooldownLeft { get; private set; }
         public bool HasGlobalCooldown => GlobalCooldownLeft > 0;
 
-        public SpellHistory(Unit unit)
+        internal SpellHistory(Unit unit, IUnitState unitState)
         {
-            this.unit = unit;
+            caster = unit;
+            casterState = unitState;
 
-            if (!unit.IsOwner)
-                unit.EntityState.AddCallback(nameof(IUnitState.GlobalCooldown), OnGlobalCooldownChanged);
+            if (!caster.IsOwner)
+                caster.AddCallback(nameof(IUnitState.GlobalCooldown), OnGlobalCooldownChanged);
         }
 
         internal void Detached()
         {
-            if (!unit.IsOwner)
-                unit.EntityState.RemoveCallback(nameof(IUnitState.GlobalCooldown), OnGlobalCooldownChanged);
+            if (!caster.IsOwner)
+                caster.RemoveCallback(nameof(IUnitState.GlobalCooldown), OnGlobalCooldownChanged);
 
             spellCooldowns.Clear();
             spellCooldownsById.Clear();
-
-            unit = null;
         }
 
         internal void DoUpdate(int deltaTime)
@@ -74,8 +74,8 @@ namespace Core
             GlobalCooldown = spellInfo.GlobalCooldownTime;
             GlobalCooldownLeft = GlobalCooldown;
 
-            unit.EntityState.GlobalCooldown.CooldownTime = GlobalCooldown;
-            unit.EntityState.GlobalCooldown.ServerFrame = BoltNetwork.ServerFrame;
+            casterState.GlobalCooldown.CooldownTime = GlobalCooldown;
+            casterState.GlobalCooldown.ServerFrame = BoltNetwork.ServerFrame;
         }
 
         internal void StartCooldown(SpellInfo spellInfo)
@@ -89,7 +89,7 @@ namespace Core
 
             SpellCooldown spellCooldown = AddCooldown(spellInfo.Id, cooldownLeft, cooldownLeft);
 
-            if (unit is Player player && player.BoltEntity.Controller != null)
+            if (caster is Player player && player.BoltEntity.Controller != null)
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, player, spellCooldown);
         }
 
@@ -113,15 +113,15 @@ namespace Core
 
         private void OnGlobalCooldownChanged()
         {
-            if (!unit.IsController)
+            if (!caster.IsController)
                 return;
 
-            GlobalCooldown = unit.EntityState.GlobalCooldown.CooldownTime;
+            GlobalCooldown = casterState.GlobalCooldown.CooldownTime;
 
             int expectedGlobalFrames = (int)(GlobalCooldown / BoltNetwork.FrameDeltaTime / 1000.0f);
             if (expectedGlobalFrames > 0)
             {
-                int globalServerFrame = unit.EntityState.GlobalCooldown.ServerFrame;
+                int globalServerFrame = casterState.GlobalCooldown.ServerFrame;
                 float cooldownLeftRatio = 1 - Mathf.Clamp01((float) (BoltNetwork.ServerFrame - globalServerFrame) / expectedGlobalFrames);
 
                 GlobalCooldownLeft = Mathf.RoundToInt(cooldownLeftRatio * GlobalCooldown);

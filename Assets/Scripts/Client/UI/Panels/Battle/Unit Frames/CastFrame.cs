@@ -26,8 +26,8 @@ namespace Client
             if (!isCasting)
                 return;
 
-            int expectedCastFrames = (int) (caster.EntityState.SpellCast.CastTime / BoltNetwork.FrameDeltaTime / 1000.0f);
-            castSlider.value = (float) (BoltNetwork.ServerFrame - caster.EntityState.SpellCast.ServerFrame) / expectedCastFrames;
+            int expectedCastFrames = (int) (caster.SpellCast.State.CastTime / BoltNetwork.FrameDeltaTime / 1000.0f);
+            castSlider.value = (float) (BoltNetwork.ServerFrame - caster.SpellCast.State.ServerFrame) / expectedCastFrames;
         }
 
         public void UpdateCaster(Unit newCaster)
@@ -47,13 +47,14 @@ namespace Client
         {
             this.caster = caster;
 
-            caster.EntityState.AddCallback(nameof(caster.EntityState.SpellCast), OnSpellCastChanged);
+            caster.AddCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
         }
 
         private void DeinitializeCaster()
         {
+            caster.RemoveCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
+
             isCasting = false;
-            caster.EntityState.RemoveCallback(nameof(caster.EntityState.SpellCast), OnSpellCastChanged);
             caster = null;
         }
 
@@ -66,13 +67,13 @@ namespace Client
 
         private void OnSpellCastChanged()
         {
-            isCasting = caster.EntityState.SpellCast.Id != 0;
-            if (isCasting && balanceReference.SpellInfosById.TryGetValue(caster.EntityState.SpellCast.Id, out SpellInfo spellInfo))
+            isCasting = caster.SpellCast.State.Id != 0;
+            if (isCasting && balanceReference.SpellInfosById.TryGetValue(caster.SpellCast.State.Id, out SpellInfo spellInfo))
                 spellLabel.text = spellInfo.SpellName;
             else
                 spellLabel.text = string.Empty;
 
-            if (isCasting && rendering.SpellVisualSettingsById.TryGetValue(caster.EntityState.SpellCast.Id, out SpellVisualSettings settings))
+            if (isCasting && rendering.SpellVisualSettingsById.TryGetValue(caster.SpellCast.State.Id, out SpellVisualSettings settings))
                 spellIcon.sprite = settings.SpellIcon;
             else
                 spellIcon.sprite = rendering.DefaultSpellIcon;

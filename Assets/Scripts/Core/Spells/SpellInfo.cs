@@ -199,7 +199,7 @@ namespace Core
             if (target != caster && (caster.IsControlledByPlayer || !IsPositive()) && target is Player player && !player.IsVisible)
                 return SpellCastResult.BmOrInvisGod;
 
-            if (target.HasState(UnitState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInFlightTarget))
+            if (target.HasState(UnitControlState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInFlightTarget))
                 return SpellCastResult.BadTargets;
 
             if (target.HasAuraType(AuraEffectType.PreventResurrection))

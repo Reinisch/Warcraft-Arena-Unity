@@ -8,8 +8,8 @@
             Finished
         }
 
-        private readonly IUnitState unitState;
         private readonly Unit caster;
+        private readonly IUnitState casterState;
         private Spell currentSpell;
 
         internal bool IsCasting
@@ -19,14 +19,16 @@
                 if (caster.IsOwner)
                     return currentSpell != null && currentSpell.ExecutionState == SpellExecutionState.Casting;
 
-                return unitState.SpellCast.Id != 0;
+                return casterState.SpellCast.Id != 0;
             }
         }
 
-        internal SpellCast(Unit caster)
+        public SpellCastState State => casterState.SpellCast;
+
+        internal SpellCast(Unit caster, IUnitState casterState)
         {
             this.caster = caster;
-            unitState = caster.EntityState;
+            this.casterState = casterState;
         }
 
         internal void Detached()
@@ -40,12 +42,12 @@
             {
                 case HandleMode.Started:
                     currentSpell = spell;
-                    unitState.SpellCast.Id = spell.SpellInfo.Id;
-                    unitState.SpellCast.ServerFrame = BoltNetwork.ServerFrame;
-                    unitState.SpellCast.CastTime = spell.CastTime;
+                    casterState.SpellCast.Id = spell.SpellInfo.Id;
+                    casterState.SpellCast.ServerFrame = BoltNetwork.ServerFrame;
+                    casterState.SpellCast.CastTime = spell.CastTime;
                     break;
                 case HandleMode.Finished:
-                    unitState.SpellCast.Id = 0;
+                    casterState.SpellCast.Id = 0;
                     currentSpell = null;
                     break;
             }

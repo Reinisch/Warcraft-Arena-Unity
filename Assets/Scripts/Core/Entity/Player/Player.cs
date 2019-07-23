@@ -68,6 +68,9 @@ namespace Core
 
         protected override void HandleDetach()
         {
+            if (!IsOwner)
+                playerState.RemoveCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
+
             createToken = null;
             playerState = null;
 

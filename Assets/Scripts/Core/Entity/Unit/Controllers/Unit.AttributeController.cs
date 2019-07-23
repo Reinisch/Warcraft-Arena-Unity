@@ -9,6 +9,7 @@ namespace Core
         internal class AttributeController : IUnitBehaviour
         {
             private Unit unit;
+            private IUnitState unitState;
             private bool initialized;
 
             private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
@@ -42,7 +43,7 @@ namespace Core
 
                     if (unit.IsOwner)
                     {
-                        unit.EntityState.Faction.Id = value.FactionId;
+                        unitState.Faction.Id = value.FactionId;
                         unit.createToken.FactionId = value.FactionId;
                     }
                 }
@@ -57,7 +58,7 @@ namespace Core
 
                     if (unit.IsOwner)
                     {
-                        unit.EntityState.DeathState = (int)value;
+                        unitState.DeathState = (int)value;
                         unit.createToken.DeathState = value;
                     }
                 }
@@ -72,52 +73,92 @@ namespace Core
 
                     if (unit.IsOwner)
                     {
-                        unit.EntityState.Faction.FreeForAll = value;
+                        unitState.Faction.FreeForAll = value;
                         unit.createToken.FreeForAll = value;
                     }
                 }
             }
 
-            internal void InitializeAttributes(Unit unit)
+            void IUnitBehaviour.DoUpdate(int deltaTime)
+            {
+            }
+
+            void IUnitBehaviour.HandleUnitAttach(Unit unit)
             {
                 this.unit = unit;
-                faction = unit.Balance.DefaultFaction;
+                unitState = unit.entityState;
 
-                if (initialized)
+                InitializeAttributes();
+
+                foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
+                    speedRates[moveType] = 1.0f;
+
+                if (!unit.IsOwner)
                 {
-                    Health.Reset();
-                    MaxHealth.Reset();
-                    Mana.Reset();
-                    MaxMana.Reset();
-                    Level.Reset();
-                    SpellPower.Reset();
-                    ModHaste.Reset();
-                    ModRegenHaste.Reset();
-                    CritPercentage.Reset();
+                    unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
+                    unit.AddCallback(nameof(IUnitState.Health), OnHealthStateChanged);
+                    unit.AddCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
+                    unit.AddCallback(nameof(IUnitState.Faction), OnFactionChanged);
                 }
-                else
-                {
-                    initialized = true;
 
-                    Health = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseHealth, int.MaxValue, EntityAttributes.Health);
-                    MaxHealth = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
-                    Mana = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMana, int.MaxValue, EntityAttributes.Power);
-                    MaxMana = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMaxMana, int.MaxValue, EntityAttributes.MaxPower);
-                    Level = new EntityAttributeInt(unit, 1, int.MaxValue, EntityAttributes.Level);
-                    SpellPower = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
-                    ModHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModHaste);
-                    ModRegenHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModRegenHaste);
-                    CritPercentage = new EntityAttributeFloat(unit, unit.unitAttributeDefinition.CritPercentage, float.MaxValue, EntityAttributes.CritPercentage);
+                unit.World.UnitManager.EventEntityDetach += OnEntityDetach;
+
+                void InitializeAttributes()
+                {
+                    faction = unit.Balance.DefaultFaction;
+
+                    if (initialized)
+                    {
+                        Health.Reset();
+                        MaxHealth.Reset();
+                        Mana.Reset();
+                        MaxMana.Reset();
+                        Level.Reset();
+                        SpellPower.Reset();
+                        ModHaste.Reset();
+                        ModRegenHaste.Reset();
+                        CritPercentage.Reset();
+                    }
+                    else
+                    {
+                        initialized = true;
+
+                        Health = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseHealth, int.MaxValue, EntityAttributes.Health);
+                        MaxHealth = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
+                        Mana = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMana, int.MaxValue, EntityAttributes.Power);
+                        MaxMana = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMaxMana, int.MaxValue, EntityAttributes.MaxPower);
+                        Level = new EntityAttributeInt(unit, 1, int.MaxValue, EntityAttributes.Level);
+                        SpellPower = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
+                        ModHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModHaste);
+                        ModRegenHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModRegenHaste);
+                        CritPercentage = new EntityAttributeFloat(unit, unit.unitAttributeDefinition.CritPercentage, float.MaxValue, EntityAttributes.CritPercentage);
+                    }
                 }
             }
 
+            void IUnitBehaviour.HandleUnitDetach()
+            {
+                unit.World.UnitManager.EventEntityDetach -= OnEntityDetach;
+
+                if (!unit.IsOwner)
+                {
+                    unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
+                    unit.RemoveCallback(nameof(IUnitState.Health), OnHealthStateChanged);
+                    unit.RemoveCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
+                    unit.RemoveCallback(nameof(IUnitState.Faction), OnFactionChanged);
+                }
+
+                unitState = null;
+                unit = null;
+            }
+            
             internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
             {
                 targetId = newTarget?.Id ?? newTargetId;
                 Target = newTarget ?? unit.World.UnitManager.Find(targetId);
 
                 if (updateState)
-                    unit.EntityState.TargetId = Target?.BoltEntity.NetworkId ?? default;
+                    unitState.TargetId = Target?.BoltEntity.NetworkId ?? default;
 
                 EventHandler.ExecuteEvent(unit, GameEvents.UnitTargetChanged);
             }
@@ -179,62 +220,32 @@ namespace Core
                 }
             }
 
-            void IUnitBehaviour.DoUpdate(int deltaTime)
+            internal int SetHealth(int value)
             {
-            }
-
-            void IUnitBehaviour.HandleUnitAttach(Unit unit)
-            {
-                this.unit = unit;
-
-                foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
-                    speedRates[moveType] = 1.0f;
-
-                if (!unit.IsOwner)
-                {
-                    unit.EntityState.AddCallback(nameof(EntityState.DeathState), OnDeathStateChanged);
-                    unit.EntityState.AddCallback(nameof(EntityState.Health), OnHealthStateChanged);
-                    unit.EntityState.AddCallback(nameof(EntityState.TargetId), OnTargetIdChanged);
-                    unit.EntityState.AddCallback(nameof(EntityState.Faction), OnFactionChanged);
-                }
-
-                unit.World.UnitManager.EventEntityDetach += OnEntityDetach;
-            }
-
-            void IUnitBehaviour.HandleUnitDetach()
-            {
-                unit.World.UnitManager.EventEntityDetach -= OnEntityDetach;
-
-                if (!unit.IsOwner)
-                {
-                    unit.EntityState.RemoveCallback(nameof(EntityState.DeathState), OnDeathStateChanged);
-                    unit.EntityState.RemoveCallback(nameof(EntityState.Health), OnHealthStateChanged);
-                    unit.EntityState.RemoveCallback(nameof(EntityState.TargetId), OnTargetIdChanged);
-                    unit.EntityState.RemoveCallback(nameof(EntityState.Faction), OnFactionChanged);
-                }
-
-                unit = null;
+                int delta = Health.Set(Mathf.Clamp(value, 0, MaxHealth.Value));
+                unitState.Health = Health.Value;
+                return delta;
             }
 
             private void OnDeathStateChanged()
             {
-                DeathState = (DeathState)unit.EntityState.DeathState;
+                DeathState = (DeathState)unitState.DeathState;
             }
 
             private void OnHealthStateChanged()
             {
-                unit.SetHealth(unit.EntityState.Health);
+                SetHealth(unitState.Health);
             }
 
             private void OnTargetIdChanged()
             {
-                UpdateTarget(unit.EntityState.TargetId.PackedValue);
+                UpdateTarget(unitState.TargetId.PackedValue);
             }
 
             private void OnFactionChanged()
             {
-                Faction = unit.Balance.FactionsById[unit.EntityState.Faction.Id];
-                FreeForAll = unit.EntityState.Faction.FreeForAll;
+                Faction = unit.Balance.FactionsById[unitState.Faction.Id];
+                FreeForAll = unitState.Faction.FreeForAll;
 
                 EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
             }
