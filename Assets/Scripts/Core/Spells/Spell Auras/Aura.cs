@@ -100,7 +100,7 @@ namespace Core
                 AuraApplication applicationToRemove = applications[0];
                 Unit target = applicationToRemove.Target;
 
-                target.ApplicationAuraController.UnapplyAuraApplication(applicationToRemove, removeMode);
+                target.Auras.UnapplyAuraApplication(applicationToRemove, removeMode);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Core
             // unapply aura for removed targets
             foreach (Unit removableUnit in tempRemovableTargets)
                 if (applicationsByTargetId.TryGetValue(removableUnit.Id, out AuraApplication removableApplication))
-                    removableUnit.ApplicationAuraController.UnapplyAuraApplication(removableApplication, AuraRemoveMode.Default);
+                    removableUnit.Auras.UnapplyAuraApplication(removableApplication, AuraRemoveMode.Default);
 
             tempUpdatedTargets.Clear();
             tempRemovableTargets.Clear();
@@ -143,7 +143,7 @@ namespace Core
             RefreshServerFrame = BoltNetwork.ServerFrame;
             RefreshDuration = Duration;
 
-            Owner.NeedUpdateVisibleAuras = true;
+            Owner.VisibleAuras.NeedUpdate = true;
         }
 
         internal bool CanStackWith(Aura existingAura)
@@ -180,7 +180,7 @@ namespace Core
                     if (!CanStackWith(unit.AuraApplications[i].Aura))
                         return;
 
-            unit.ApplicationAuraController.ApplyAuraApplication(new AuraApplication(unit, Caster, this, auraEffectMask));
+            unit.Auras.ApplyAuraApplication(new AuraApplication(unit, Caster, this, auraEffectMask));
         }
     }
 }

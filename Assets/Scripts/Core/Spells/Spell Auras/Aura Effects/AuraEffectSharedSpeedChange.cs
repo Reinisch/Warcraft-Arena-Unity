@@ -14,7 +14,7 @@ namespace Core.AuraEffects
         {
             Logging.LogAura($"Handle aura effect {EffectInfo.name} for target: {auraApplication.Target.Name} in mode {mode}, applying: {apply}");
 
-            auraApplication.Target.AttributeUnitController.UpdateSpeed(UnitMoveType.Run);
+            auraApplication.Target.Attributes.UpdateSpeed(UnitMoveType.Run);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Core
             private readonly List<int> availableSlots = new List<int>();
             private AuraApplication[] applicationSlots;
 
-            internal bool NeedUpdateVisibleAuras { private get; set; }
+            internal bool NeedUpdate { private get; set; }
 
             public bool HasClientLogic => false;
             public bool HasServerLogic => true;
@@ -53,15 +53,15 @@ namespace Core
                         unslottedApplications.Remove(auraApplication);
                 }
 
-                NeedUpdateVisibleAuras = true;
+                NeedUpdate = true;
             }
 
             void IUnitBehaviour.DoUpdate(int deltaTime)
             {
-                if (!NeedUpdateVisibleAuras)
+                if (!NeedUpdate)
                     return;
 
-                NeedUpdateVisibleAuras = false;
+                NeedUpdate = false;
 
                 for (int i = 0; i < applicationSlots.Length; i++)
                 {

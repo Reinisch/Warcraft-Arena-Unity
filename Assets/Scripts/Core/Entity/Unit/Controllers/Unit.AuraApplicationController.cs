@@ -102,7 +102,7 @@ namespace Core
                     return;
 
                 int duration = ownedAura.MaxDuration;
-                duration = originalCaster.ModifyAuraDuration(ownedAura.Info, unit, duration);
+                duration = originalCaster.Spells.ModifyAuraDuration(ownedAura.Info, unit, duration);
 
                 if (duration != ownedAura.Duration)
                     ownedAura.UpdateDuration(duration, duration);
@@ -135,7 +135,7 @@ namespace Core
                 HandleAuraEffects(auraApplication, true);
 
                 auraApplication.Aura.RegisterForTarget(unit, auraApplication);
-                unit.VisibleAuraController.HandleAuraApplication(auraApplication, true);
+                unit.VisibleAuras.HandleAuraApplication(auraApplication, true);
             }
 
             internal void UnapplyAuraApplication(AuraApplication auraApplication, AuraRemoveMode removeMode)
@@ -150,7 +150,7 @@ namespace Core
 
                 auraApplication.Aura.UnregisterForTarget(unit, auraApplication);
                 auraApplication.RemoveMode = removeMode;
-                unit.VisibleAuraController.HandleAuraApplication(auraApplication, false);
+                unit.VisibleAuras.HandleAuraApplication(auraApplication, false);
 
                 Logging.LogAura($"Unapplied application for target: {unit.Name} for aura: {auraApplication.Aura.Info.name}");
             }

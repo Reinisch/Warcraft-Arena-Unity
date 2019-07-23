@@ -78,12 +78,12 @@ namespace Core
 
         public void SetTarget(Unit target)
         {
-            AttributeUnitController.UpdateTarget(newTarget:target);
+            Attributes.UpdateTarget(newTarget:target);
         }
 
         public void Handle(PlayerSpeedRateChangedEvent speedChangeEvent)
         {
-            AttributeUnitController.UpdateSpeedRate((UnitMoveType) speedChangeEvent.MoveType, speedChangeEvent.SpeedRate);
+            Attributes.UpdateSpeedRate((UnitMoveType) speedChangeEvent.MoveType, speedChangeEvent.SpeedRate);
         }
 
         private void OnPlayerNameChanged()

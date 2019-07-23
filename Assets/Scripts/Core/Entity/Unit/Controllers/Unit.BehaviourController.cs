@@ -18,11 +18,12 @@ namespace Core
 
             internal void HandleUnitAttach(Unit unit)
             {
-                TryAddBehaviour(unit.AttributeUnitController, unit);
+                TryAddBehaviour(unit.Attributes, unit);
                 TryAddBehaviour(unit.CharacterController, unit);
-                TryAddBehaviour(unit.ThreatUnitController, unit);
-                TryAddBehaviour(unit.ApplicationAuraController, unit);
-                TryAddBehaviour(unit.VisibleAuraController, unit);
+                TryAddBehaviour(unit.Threat, unit);
+                TryAddBehaviour(unit.Spells, unit);
+                TryAddBehaviour(unit.Auras, unit);
+                TryAddBehaviour(unit.VisibleAuras, unit);
 
                 foreach (UnitBehaviour unitBehaviour in unit.unitBehaviours)
                     TryAddBehaviour(unitBehaviour, unit);

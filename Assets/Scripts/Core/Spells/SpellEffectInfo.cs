@@ -74,7 +74,7 @@ namespace Core
             float radius = MinRadius == 0 ? MaxRadius : MinRadius;
             if (caster != null && spell != null)
             {
-                caster.ApplySpellMod(spell.SpellInfo, SpellModifierType.Radius, ref radius);
+                caster.Spells.ApplySpellModifier(spell.SpellInfo, SpellModifierType.Radius, ref radius);
                 radius = Mathf.Clamp(radius, MinRadius, MaxRadius);
             }
 

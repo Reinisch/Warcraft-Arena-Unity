@@ -36,7 +36,7 @@ namespace Game
         private BoltConfig config;
         private State state;
 
-        public override string Version => "1.0.8";
+        public override string Version => "1.0.9";
 
         protected override void OnRegistered()
         {

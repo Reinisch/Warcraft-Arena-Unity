@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
-using Common;
 using JetBrains.Annotations;
 using UdpKit;
 using UnityEngine;
-
-using EventHandler = Common.EventHandler;
 
 namespace Core
 {
@@ -59,34 +56,34 @@ namespace Core
 
         private readonly BehaviourController behaviourController = new BehaviourController();
 
-        internal AuraApplicationController ApplicationAuraController { get; } = new AuraApplicationController();
-        internal AuraVisibleController VisibleAuraController { get; } = new AuraVisibleController();
-        internal AttributeController AttributeUnitController { get; } = new AttributeController();
-        internal ThreatController ThreatUnitController { get; } = new ThreatController();
+        internal AuraVisibleController VisibleAuras { get; } = new AuraVisibleController();
+        internal AuraApplicationController Auras { get; } = new AuraApplicationController();
+        internal AttributeController Attributes { get; } = new AttributeController();
+        internal ThreatController Threat { get; } = new ThreatController();
+        internal SpellController Spells { get; } = new SpellController();
         internal WarcraftCharacterController CharacterController => characterController;
 
-        internal bool NeedUpdateVisibleAuras { set => VisibleAuraController.NeedUpdateVisibleAuras = value; }
-        internal FactionDefinition Faction { get => AttributeUnitController.Faction; set => AttributeUnitController.Faction = value; }
-        internal DeathState DeathState { get => AttributeUnitController.DeathState; set => AttributeUnitController.DeathState = value; }
-        internal bool FreeForAll { get => AttributeUnitController.FreeForAll; set => AttributeUnitController.FreeForAll = value; }
+        internal FactionDefinition Faction { get => Attributes.Faction; set => Attributes.Faction = value; }
+        internal DeathState DeathState { get => Attributes.DeathState; set => Attributes.DeathState = value; }
+        internal bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
 
-        internal IReadOnlyDictionary<UnitMoveType, float> SpeedRates => AttributeUnitController.SpeedRates;
-        internal IReadOnlyList<AuraApplication> AuraApplications => ApplicationAuraController.AuraApplications;
-        internal EntityAttributeInt HealthAttribute => AttributeUnitController.Health;
-        internal EntityAttributeInt MaxHealthAttribute => AttributeUnitController.MaxHealth;
-        internal EntityAttributeInt ManaAttribute => AttributeUnitController.Mana;
-        internal EntityAttributeInt MaxManaAttribute => AttributeUnitController.MaxMana;
-        internal EntityAttributeInt LevelAttribute => AttributeUnitController.Level;
-        internal EntityAttributeInt SpellPowerAttribute => AttributeUnitController.SpellPower;
-        internal EntityAttributeFloat ModHasteAttribute => AttributeUnitController.ModHaste;
-        internal EntityAttributeFloat ModRegenHasteAttribute => AttributeUnitController.ModRegenHaste;
-        internal EntityAttributeFloat CritPercentageAttribute => AttributeUnitController.CritPercentage;
+        internal IReadOnlyDictionary<UnitMoveType, float> SpeedRates => Attributes.SpeedRates;
+        internal IReadOnlyList<AuraApplication> AuraApplications => Auras.AuraApplications;
+        internal EntityAttributeInt HealthAttribute => Attributes.Health;
+        internal EntityAttributeInt MaxHealthAttribute => Attributes.MaxHealth;
+        internal EntityAttributeInt ManaAttribute => Attributes.Mana;
+        internal EntityAttributeInt MaxManaAttribute => Attributes.MaxMana;
+        internal EntityAttributeInt LevelAttribute => Attributes.Level;
+        internal EntityAttributeInt SpellPowerAttribute => Attributes.SpellPower;
+        internal EntityAttributeFloat ModHasteAttribute => Attributes.ModHaste;
+        internal EntityAttributeFloat ModRegenHasteAttribute => Attributes.ModRegenHaste;
+        internal EntityAttributeFloat CritPercentageAttribute => Attributes.CritPercentage;
 
-        public SpellCast SpellCast { get; private set; }
         public IUnitState EntityState { get; private set; }
-        public SpellHistory SpellHistory { get; private set; }
 
-        public Unit Target => AttributeUnitController.Target;
+        public Unit Target => Attributes.Target;
+        public SpellCast SpellCast => Spells.SpellCast;
+        public SpellHistory SpellHistory => Spells.SpellHistory;
         public CapsuleCollider UnitCollider => unitCollider;
         public PlayerControllerDefinition ControllerDefinition => characterController.ControllerDefinition;
 
@@ -143,6 +140,36 @@ namespace Core
             }
         }
 
+        protected virtual void HandleAttach()
+        {
+            Attributes.InitializeAttributes(this);
+
+            createToken = (CreateToken) entity.AttachToken;
+            EntityState = entity.GetState<IUnitState>();
+
+            MovementInfo.Attached(this);
+
+            SetMap(World.FindMap(1));
+        }
+
+        protected virtual void HandleDetach()
+        {
+            EntityState.RemoveAllCallbacks();
+
+            ResetMap();
+
+            MovementInfo.Detached();
+
+            createToken = null;
+        }
+
+        internal override void DoUpdate(int deltaTime)
+        {
+            base.DoUpdate(deltaTime);
+
+            behaviourController.DoUpdate(deltaTime);
+        }
+
         public bool IsHostileTo(Unit unit)
         {
             if (unit == this)
@@ -167,53 +194,23 @@ namespace Core
 
         public T FindBehaviour<T>() where T : UnitBehaviour => behaviourController.FindBehaviour<T>();
 
-        protected virtual void HandleAttach()
-        {
-            AttributeUnitController.InitializeAttributes(this);
+        internal bool HasAuraType(AuraEffectType auraEffectType) => Auras.HasAuraType(auraEffectType);
 
-            createToken = (CreateToken) entity.AttachToken;
-            EntityState = entity.GetState<IUnitState>();
+        internal float TotalAuraModifier(AuraEffectType auraType) => Auras.TotalAuraModifier(auraType);
 
-            MovementInfo.Attached(EntityState, this);
+        internal float TotalAuraMultiplier(AuraEffectType auraType) => Auras.TotalAuraMultiplier(auraType);
 
-            SpellHistory = new SpellHistory(this);
-            SpellCast = new SpellCast(this);
+        internal float MaxPositiveAuraModifier(AuraEffectType auraType) => Auras.MaxPositiveAuraModifier(auraType);
 
-            SetMap(World.FindMap(1));
-        }
+        internal float MaxNegativeAuraModifier(AuraEffectType auraType) => Auras.MaxNegativeAuraModifier(auraType);
 
-        protected virtual void HandleDetach()
-        {
-            SpellHistory.Detached();
-            SpellCast.Detached();
+        internal bool IsImmunedToDamage(SpellInfo spellInfo) => Spells.IsImmunedToDamage(spellInfo);
 
-            EntityState.RemoveAllCallbacks();
+        internal bool IsImmuneToSpell(SpellInfo spellInfo, Unit caster) => Spells.IsImmuneToSpell(spellInfo, caster);
 
-            ResetMap();
+        internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster) => Spells.IsImmuneToAura(auraInfo, caster);
 
-            MovementInfo.Detached();
-
-            createToken = null;
-        }
-
-        internal override void DoUpdate(int deltaTime)
-        {
-            base.DoUpdate(deltaTime);
-
-            SpellHistory.DoUpdate(deltaTime);
-
-            behaviourController.DoUpdate(deltaTime);
-        }
-
-        internal bool HasAuraType(AuraEffectType auraEffectType) => ApplicationAuraController.HasAuraType(auraEffectType);
-
-        internal float TotalAuraModifier(AuraEffectType auraType) => ApplicationAuraController.TotalAuraModifier(auraType);
-
-        internal float TotalAuraMultiplier(AuraEffectType auraType) => ApplicationAuraController.TotalAuraMultiplier(auraType);
-
-        internal float MaxPositiveAuraModifier(AuraEffectType auraType) => ApplicationAuraController.MaxPositiveAuraModifier(auraType);
-
-        internal float MaxNegativeAuraModifier(AuraEffectType auraType) => ApplicationAuraController.MaxNegativeAuraModifier(auraType);
+        internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffectInfo, Unit caster) => Spells.IsImmuneToAuraEffect(auraEffectInfo, caster);
 
         internal void AddState(UnitState state) { unitState |= state; }
 
@@ -278,179 +275,5 @@ namespace Core
             victim.SetHealth(0);
             victim.ModifyDeathState(DeathState.Dead);
         }
-
-        #region Spell Handling
-
-        internal SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastingOptions castOptions)
-        {
-            Spell spell = new Spell(this, spellInfo, castOptions);
-
-            SpellCastResult castResult = spell.Prepare();
-            if (castResult != SpellCastResult.Success)
-            {
-                World.SpellManager.Remove(spell);
-                return castResult;
-            }
-
-            switch (spell.ExecutionState)
-            {
-                case SpellExecutionState.Casting:
-                    SpellCast.HandleSpellCast(spell, SpellCast.HandleMode.Started);
-                    break;
-                case SpellExecutionState.Processing:
-                    return castResult;
-                case SpellExecutionState.Completed:
-                    return castResult;
-            }
-            
-            return SpellCastResult.Success;
-        }
-
-        internal int DamageBySpell(SpellCastDamageInfo damageInfoInfo)
-        {
-            Unit victim = damageInfoInfo.Target;
-            if (victim == null || !victim.IsAlive)
-                return 0;
-
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, this, victim, damageInfoInfo.Damage, damageInfoInfo.HitInfo == HitType.CriticalHit);
-
-            return DealDamage(victim, damageInfoInfo.Damage);
-        }
-
-        internal int HealBySpell(Unit target, SpellInfo spellInfo, int healAmount, bool critical = false)
-        {
-            return DealHeal(target, healAmount);
-        }
-
-        internal int CalculateSpellDamageTaken(SpellCastDamageInfo damageInfoInfo, int damage, SpellInfo spellInfo)
-        {
-            if (damage < 0)
-                return 0;
-
-            Unit victim = damageInfoInfo.Target;
-            if (victim == null || !victim.IsAlive)
-                return 0;
-
-            SpellSchoolMask damageSchoolMask = damageInfoInfo.SchoolMask;
-
-            if (damage > 0)
-            {
-                int absorb = damageInfoInfo.Absorb;
-                int resist = damageInfoInfo.Resist;
-                CalcAbsorbResist(victim, damageSchoolMask, SpellDamageType.Direct, damage, ref absorb, ref resist, spellInfo);
-                damageInfoInfo.Absorb = absorb;
-                damageInfoInfo.Resist = resist;
-                damage -= damageInfoInfo.Absorb + damageInfoInfo.Resist;
-            }
-            else
-                damage = 0;
-
-            return damageInfoInfo.Damage = damage;
-        }
-        
-        internal SpellMissType SpellHitResult(Unit victim, SpellInfo spellInfo, bool canReflect = false)
-        {
-            if (victim.IsImmuneToSpell(spellInfo, this))
-                return SpellMissType.Immune;
-
-            if (this == victim)
-                return SpellMissType.None;
-
-            // all positive spells can`t miss
-            if (spellInfo.IsPositive() && !IsHostileTo(victim))
-                return SpellMissType.None;
-
-            return SpellMissType.None;
-        }
-
-        internal float GetSpellMinRangeForTarget(Unit target, SpellInfo spellInfo)
-        {
-            if (Mathf.Approximately(spellInfo.MinRangeFriend, spellInfo.MinRangeHostile))
-                return spellInfo.GetMinRange(false);
-            if (target == null)
-                return spellInfo.GetMinRange(true);
-            return spellInfo.GetMinRange(!IsHostileTo(target));
-        }
-
-        internal float GetSpellMaxRangeForTarget(Unit target, SpellInfo spellInfo)
-        {
-            if (Mathf.Approximately(spellInfo.MaxRangeFriend, spellInfo.MaxRangeHostile))
-                return spellInfo.GetMaxRange(false);
-            if (target == null)
-                return spellInfo.GetMaxRange(true);
-            return spellInfo.GetMaxRange(!IsHostileTo(target));
-        }
-
-        internal Unit GetMagicHitRedirectTarget(Unit victim, SpellInfo spellProto) { return null; }
-
-        internal Unit GetMeleeHitRedirectTarget(Unit victim, SpellInfo spellProto = null) { return null; }
-
-        internal int SpellDamageBonusDone(Unit victim, SpellInfo spellProto, int damage, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1) { return 0; }
-
-        internal void ApplySpellMod(SpellInfo spellInfo, SpellModifierType modifierType, ref int value) { }
-
-        internal void ApplySpellMod(SpellInfo spellInfo, SpellModifierType modifierType, ref float value) { }
-
-        internal int SpellDamageBonusTaken(Unit caster, SpellInfo spellProto, int damage, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1)
-        {
-            return damage;
-        }
-
-        internal uint SpellHealingBonusDone(Unit victim, SpellInfo spellProto, uint healamount, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1) { return 0; }
-
-        internal uint SpellHealingBonusTaken(Unit caster, SpellInfo spellProto, uint healamount, SpellDamageType damagetype, SpellEffectInfo effect, uint stack = 1) { return 0; }
-
-        internal float SpellHealingPercentDone(Unit victim, SpellInfo spellProto) { return 0.0f; }
-
-        internal bool IsSpellCrit(Unit victim, SpellInfo spellProto, SpellSchoolMask schoolMask, WeaponAttackType attackType = WeaponAttackType.BaseAttack) { return false; }
-
-        internal int SpellCriticalHealingBonus(SpellInfo spellProto, int damage, Unit victim) { return 0; }
-
-        internal bool IsImmunedToDamage(SpellSchoolMask meleeSchoolMask) { return false; }
-
-        internal bool IsImmunedToDamage(SpellInfo spellProto) { return false; }
-
-        internal bool IsImmuneToSpell(SpellInfo spellInfo, Unit caster) { return false; }
-
-        internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster) { return false; }
-
-        internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffect, Unit caster) { return false; }
-
-        internal void CalcAbsorbResist(Unit victim, SpellSchoolMask schoolMask, SpellDamageType damagetype, int damage, ref int absorb, ref int resist, SpellInfo spellProto = null) { }
-
-        internal void CalcHealAbsorb(Unit victim, SpellInfo spellProto, ref int healAmount, ref int absorb) { }
-
-        internal float ApplyEffectModifiers(SpellInfo spellProto, int effectIndex, float value)
-        {
-            //var modOwner = this;
-            /*modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_ALL_EFFECTS, value);
-            switch (effect_index)
-            {
-                case 0:
-                    modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_EFFECT1, value);
-                    break;
-                case 1:
-                    modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_EFFECT2, value);
-                    break;
-                case 2:
-                    modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_EFFECT3, value);
-                    break;
-                case 3:
-                    modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_EFFECT4, value);
-                    break;
-                case 4:
-                    modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_EFFECT5, value);
-                    break;
-            }*/
-            return value;
-        }
-
-        internal int ModifyAuraDuration(AuraInfo auraInfo, Unit target, int duration) { return duration; }
-
-        internal void ModSpellCastTime(SpellInfo spellProto, ref int castTime, Spell spell = null) { }
-
-        internal void ModSpellDurationTime(SpellInfo spellProto, ref int castTime, Spell spell = null) { }
-
-        #endregion
     }
 }

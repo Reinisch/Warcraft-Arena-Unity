@@ -201,16 +201,16 @@ namespace Core
                 bool crit = targetEntry.Crit;
                 int addhealth = EffectHealing;
                 if (crit)
-                    addhealth = caster.SpellCriticalHealingBonus(SpellInfo, addhealth, null);
+                    addhealth = caster.Spells.SpellCriticalHealingBonus(SpellInfo, addhealth, null);
 
-                int gain = caster.HealBySpell(targetEntry.Target, SpellInfo, addhealth, crit);
+                int gain = caster.Spells.HealBySpell(targetEntry.Target, SpellInfo, addhealth, crit);
                 EffectHealing = gain;
             }
             else if (EffectDamage > 0)
             {
                 SpellCastDamageInfo damageInfoInfo = new SpellCastDamageInfo(caster, targetEntry.Target, SpellInfo.Id, spellSchoolMask);
-                EffectDamage = caster.CalculateSpellDamageTaken(damageInfoInfo, EffectDamage, SpellInfo);
-                caster.DamageBySpell(damageInfoInfo);
+                EffectDamage = caster.Spells.CalculateSpellDamageTaken(damageInfoInfo, EffectDamage, SpellInfo);
+                caster.Spells.DamageBySpell(damageInfoInfo);
             }
         }
 
@@ -329,8 +329,8 @@ namespace Core
                 if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Ranged))
                     meleeRange = StatUtils.MinMeleeReach;
 
-                minRange = Caster.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
-                maxRange = Caster.GetSpellMaxRangeForTarget(target, SpellInfo);
+                minRange = Caster.Spells.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
+                maxRange = Caster.Spells.GetSpellMaxRangeForTarget(target, SpellInfo);
             }
 
             maxRange += rangeMod;
@@ -403,11 +403,11 @@ namespace Core
                     switch (SpellInfo.DamageClass)
                     {
                         case SpellDamageClass.Magic:
-                            redirectTarget = Caster.GetMagicHitRedirectTarget(target, SpellInfo);
+                            redirectTarget = Caster.Spells.GetMagicHitRedirectTarget(target, SpellInfo);
                             break;
                         case SpellDamageClass.Melee:
                         case SpellDamageClass.Ranged:
-                            redirectTarget = Caster.GetMeleeHitRedirectTarget(target, SpellInfo);
+                            redirectTarget = Caster.Spells.GetMeleeHitRedirectTarget(target, SpellInfo);
                             break;
                         default:
                             redirectTarget = null;

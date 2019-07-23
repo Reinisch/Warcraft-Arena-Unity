@@ -2,7 +2,6 @@
 {
     public class MovementInfo
     {
-        private IUnitState unitState;
         private IMoveState localMoveState;
         private Unit unit;
 
@@ -10,23 +9,21 @@
         public bool Jumping { get; set; }
         public bool IsMoving => Flags.IsMoving();
 
-        public void Attached(IUnitState unitState, Unit unit)
+        public void Attached(Unit unit)
         {
-            this.unitState = unitState;
             this.unit = unit;
 
             if (!unit.IsOwner)
-                unitState.AddCallback(nameof(unitState.MovementFlags), OnUnitStateFlagsChanged);
+                unit.EntityState.AddCallback(nameof(unit.EntityState.MovementFlags), OnUnitStateFlagsChanged);
         }
 
         public void Detached()
         {
             if (!unit.IsOwner)
-                unitState.RemoveCallback(nameof(unitState.MovementFlags), OnUnitStateFlagsChanged);
+                unit.EntityState.RemoveCallback(nameof(unit.EntityState.MovementFlags), OnUnitStateFlagsChanged);
 
             DetachedMoveState();
 
-            unitState = null;
             unit = null;
         }
 
@@ -35,7 +32,7 @@
             this.localMoveState = localMoveState;
 
             if (unit.IsOwner)
-                localMoveState.AddCallback(nameof(unitState.MovementFlags), OnLocalMoveStateFlagsChanged);
+                localMoveState.AddCallback(nameof(unit.EntityState.MovementFlags), OnLocalMoveStateFlagsChanged);
         }
 
         public void DetachedMoveState()
@@ -43,7 +40,7 @@
             if (localMoveState != null)
             {
                 if (unit.IsOwner)
-                    localMoveState.RemoveCallback(nameof(unitState.MovementFlags), OnLocalMoveStateFlagsChanged);
+                    localMoveState.RemoveCallback(nameof(unit.EntityState.MovementFlags), OnLocalMoveStateFlagsChanged);
 
                 localMoveState = null;
             }
@@ -81,7 +78,7 @@
                 localMoveState.MovementFlags = (int)Flags;
 
             if (unit.World.HasServerLogic)
-                unitState.MovementFlags = (int)Flags;
+                unit.EntityState.MovementFlags = (int)Flags;
         }
 
         private void OnLocalMoveStateFlagsChanged()
@@ -91,7 +88,7 @@
 
         private void OnUnitStateFlagsChanged()
         {
-            SetFlags((MovementFlags)unitState.MovementFlags);
+            SetFlags((MovementFlags)unit.EntityState.MovementFlags);
         }
     }
 }

@@ -241,7 +241,7 @@ namespace Core
         {
             float range = positive ? MaxRangeFriend : MaxRangeHostile;
             if (caster != null && spell != null)
-                caster.ApplySpellMod(spell.SpellInfo, SpellModifierType.Range, ref range);
+                caster.Spells.ApplySpellModifier(spell.SpellInfo, SpellModifierType.Range, ref range);
             return range;
         }
 
@@ -251,7 +251,8 @@ namespace Core
             if (resultCastTime <= 0)
                 return 0;
 
-            spell?.Caster.ModSpellCastTime(this, ref resultCastTime, spell);
+            if(spell != null)
+                resultCastTime = spell.Caster.Spells.ModifySpellCastTime(this, resultCastTime, spell);
 
             if (resultCastTime < MinCastTime)
                 resultCastTime = MinCastTime;
@@ -299,7 +300,7 @@ namespace Core
                     }
                 }
 
-                caster.ApplySpellMod(this, SpellModifierType.Cost, ref powerCost);
+                caster.Spells.ApplySpellModifier(this, SpellModifierType.Cost, ref powerCost);
 
                 if (power.SpellResourceType == SpellResourceType.Health)
                 {

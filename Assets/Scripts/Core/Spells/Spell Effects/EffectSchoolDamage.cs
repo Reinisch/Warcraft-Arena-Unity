@@ -42,7 +42,7 @@ namespace Core
             }
 
             if (caster != null)
-                baseDamage = Mathf.CeilToInt(caster.ApplyEffectModifiers(spellInfo, effectIndex, baseDamage));
+                baseDamage = Mathf.CeilToInt(caster.Spells.ApplyEffectModifiers(spellInfo, baseDamage));
 
             return baseDamage;
         }
@@ -61,8 +61,8 @@ namespace Core
 
             if (OriginalCaster != null)
             {
-                spellDamage += OriginalCaster.SpellDamageBonusDone(target, SpellInfo, spellDamage, SpellDamageType.Direct, effect);
-                spellDamage = target.SpellDamageBonusTaken(OriginalCaster, SpellInfo, spellDamage, SpellDamageType.Direct, effect);
+                spellDamage += OriginalCaster.Spells.SpellDamageBonusDone(target, SpellInfo, spellDamage, SpellDamageType.Direct, effect);
+                spellDamage = target.Spells.SpellDamageBonusTaken(OriginalCaster, SpellInfo, spellDamage, SpellDamageType.Direct, effect);
             }
 
             EffectDamage += spellDamage;

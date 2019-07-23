@@ -59,7 +59,7 @@ namespace Core
                 // calculate hit result
                 if (spell.OriginalCaster != null)
                 {
-                    targetEntry.MissCondition = spell.OriginalCaster.SpellHitResult(targetEntry.Target, spell.SpellInfo, spell.CanReflect);
+                    targetEntry.MissCondition = spell.OriginalCaster.Spells.SpellHitResult(targetEntry.Target, spell.SpellInfo, spell.CanReflect);
                     if (targetEntry.MissCondition != SpellMissType.Immune)
                         targetEntry.MissCondition = SpellMissType.None;
                 }

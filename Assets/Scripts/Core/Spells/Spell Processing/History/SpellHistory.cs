@@ -19,11 +19,14 @@ namespace Core
             this.unit = unit;
 
             if (!unit.IsOwner)
-                unit.EntityState.AddCallback(nameof(unit.EntityState.GlobalCooldown), OnGlobalCooldownChanged);
+                unit.EntityState.AddCallback(nameof(IUnitState.GlobalCooldown), OnGlobalCooldownChanged);
         }
 
         internal void Detached()
         {
+            if (!unit.IsOwner)
+                unit.EntityState.RemoveCallback(nameof(IUnitState.GlobalCooldown), OnGlobalCooldownChanged);
+
             spellCooldowns.Clear();
             spellCooldownsById.Clear();
 
