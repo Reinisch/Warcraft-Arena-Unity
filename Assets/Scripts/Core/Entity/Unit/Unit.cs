@@ -45,7 +45,7 @@ namespace Core
         [SerializeField, UsedImplicitly, Header(nameof(Unit)), Space(10)]
         private CapsuleCollider unitCollider;
         [SerializeField, UsedImplicitly]
-        private WarcraftController controller;
+        private WarcraftCharacterController characterController;
         [SerializeField, UsedImplicitly]
         private UnitAttributeDefinition unitAttributeDefinition;
         [SerializeField, UsedImplicitly]
@@ -63,7 +63,7 @@ namespace Core
         internal AuraVisibleController VisibleAuraController { get; } = new AuraVisibleController();
         internal AttributeController AttributeUnitController { get; } = new AttributeController();
         internal ThreatController ThreatUnitController { get; } = new ThreatController();
-        internal WarcraftController CharacterController => controller;
+        internal WarcraftCharacterController CharacterController => characterController;
 
         internal bool NeedUpdateVisibleAuras { set => VisibleAuraController.NeedUpdateVisibleAuras = value; }
         internal FactionDefinition Faction { get => AttributeUnitController.Faction; set => AttributeUnitController.Faction = value; }
@@ -88,7 +88,7 @@ namespace Core
 
         public Unit Target => AttributeUnitController.Target;
         public CapsuleCollider UnitCollider => unitCollider;
-        public PlayerControllerDefinition ControllerDefinition => controller.ControllerDefinition;
+        public PlayerControllerDefinition ControllerDefinition => characterController.ControllerDefinition;
 
         public int Level => LevelAttribute.Value;
         public int Health => HealthAttribute.Value;
@@ -107,12 +107,10 @@ namespace Core
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitState.Moving);
 
-        public bool HealthBelowPercent(int percent) => Health < CountPercentFromMaxHealth(percent);
-        public bool HealthAbovePercent(int percent) => Health > CountPercentFromMaxHealth(percent);
-        public bool HealthAbovePercentHealed(int percent, int healAmount) => Health + healAmount > CountPercentFromMaxHealth(percent);
-        public bool HealthBelowPercentDamaged(int percent, int damageAmount) => Health - damageAmount < CountPercentFromMaxHealth(percent);
-        public long CountPercentFromMaxHealth(int percent) => MaxHealth.CalculatePercentage(percent);
-        public long CountPercentFromCurrentHealth(int percent) => Health.CalculatePercentage(percent);
+        public bool HealthBelowPercent(int percent) => Health < MaxHealth.CalculatePercentage(percent);
+        public bool HealthAbovePercent(int percent) => Health > MaxHealth.CalculatePercentage(percent);
+        public bool HealthAbovePercentHealed(int percent, int healAmount) => Health + healAmount > MaxHealth.CalculatePercentage(percent);
+        public bool HealthBelowPercentDamaged(int percent, int damageAmount) => Health - damageAmount < MaxHealth.CalculatePercentage(percent);
         public float GetSpeed(UnitMoveType type) => SpeedRates[type] * unitMovementDefinition.BaseSpeedByType(type);
         public float GetPowerPercent(SpellResourceType type) => GetMaxPower(type) > 0 ? 100.0f * GetPower(type) / GetMaxPower(type) : 0.0f;
         public int GetPower(SpellResourceType type) => Mana;
@@ -203,7 +201,6 @@ namespace Core
             base.DoUpdate(deltaTime);
 
             SpellHistory.DoUpdate(deltaTime);
-            CharacterController.DoUpdate();
 
             behaviourController.DoUpdate(deltaTime);
         }
@@ -353,47 +350,16 @@ namespace Core
         
         internal SpellMissType SpellHitResult(Unit victim, SpellInfo spellInfo, bool canReflect = false)
         {
-            // Check for immune
-            /*if (victim->IsImmunedToSpell(spellInfo))
-                return SPELL_MISS_IMMUNE;*/
-
-            // All positive spells can`t miss
-            if (spellInfo.IsPositive() && !IsHostileTo(victim)) // prevent from affecting enemy by "positive" spell
-                return SpellMissType.None;
-
-            // Check for immune
-            /*if (victim->IsImmunedToDamage(spellInfo))
-                return SPELL_MISS_IMMUNE;*/
+            if (victim.IsImmuneToSpell(spellInfo, this))
+                return SpellMissType.Immune;
 
             if (this == victim)
                 return SpellMissType.None;
 
-            // Try victim reflect spell
-            /*if (CanReflect)
-            {
-                int32 reflectchance = victim->GetTotalAuraModifier(SPELL_AURA_REFLECT_SPELLS);
-                    Unit::AuraEffectList const& mReflectSpellsSchool = victim->GetAuraEffectsByType(SPELL_AURA_REFLECT_SPELLS_SCHOOL);
-                for (Unit::AuraEffectList::const_iterator i = mReflectSpellsSchool.begin(); i != mReflectSpellsSchool.end(); ++i)
-                    if ((*i)->GetMiscValue() & spellInfo->GetSchoolMask())
-                        reflectchance += (*i)->GetAmount();
-                if (reflectchance > 0 && roll_chance_i(reflectchance))
-                {
-                    // Start triggers for remove charges if need (trigger only for victim, and mark as active spell)
-                    ProcDamageAndSpell(victim, PROC_FLAG_NONE, PROC_FLAG_TAKEN_SPELL_MAGIC_DMG_CLASS_NEG, PROC_EX_REFLECT, 1, BASE_ATTACK, spellInfo);
-                    return SPELL_MISS_REFLECT;
-                }
-            }*/
+            // all positive spells can`t miss
+            if (spellInfo.IsPositive() && !IsHostileTo(victim))
+                return SpellMissType.None;
 
-            /*switch (spellInfo->DmgClass)
-            {
-                case SPELL_DAMAGE_CLASS_RANGED:
-                case SPELL_DAMAGE_CLASS_MELEE:
-                    return MeleeSpellHitResult(victim, spellInfo);
-                case SPELL_DAMAGE_CLASS_NONE:
-                    return SPELL_MISS_NONE;
-                case SPELL_DAMAGE_CLASS_MAGIC:
-                    return MagicSpellHitResult(victim, spellInfo);
-            }*/
             return SpellMissType.None;
         }
 

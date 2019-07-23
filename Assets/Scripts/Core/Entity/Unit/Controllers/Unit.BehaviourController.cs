@@ -19,6 +19,7 @@ namespace Core
             internal void HandleUnitAttach(Unit unit)
             {
                 TryAddBehaviour(unit.AttributeUnitController, unit);
+                TryAddBehaviour(unit.CharacterController, unit);
                 TryAddBehaviour(unit.ThreatUnitController, unit);
                 TryAddBehaviour(unit.ApplicationAuraController, unit);
                 TryAddBehaviour(unit.VisibleAuraController, unit);
