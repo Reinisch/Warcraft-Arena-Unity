@@ -90,6 +90,7 @@ namespace Client
                     }
 
                     effectEntity.gameObject.SetActive(false);
+                    effectEntity.transform.parent = reference.containerTransform;
                 }
             }
             

@@ -6,10 +6,13 @@ using UnityEngine;
 
 namespace Client
 {
-    public class UnitRenderer : EntityEventListener<IUnitState>
+    public sealed partial class UnitRenderer : EntityEventListener<IUnitState>
     {
+        [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private TagContainer tagContainer;
         [SerializeField, UsedImplicitly] private Animator animator;
+
+        private readonly AuraEffectController auraEffectController = new AuraEffectController();
 
         public TagContainer TagContainer => tagContainer;
         public Animator Animator => animator;
@@ -29,10 +32,14 @@ namespace Client
                 animator.Play("Death", 0, 1.0f);
                 animator.Play("Death", 1, 1.0f);
             }
+
+            auraEffectController.HandleAttach(this);
         }
 
         public void Deinitialize()
         {
+            auraEffectController.HandleDetach();
+
             Unit.BoltEntity.RemoveEventListener(this);
             Unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
             Unit.RemoveCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);

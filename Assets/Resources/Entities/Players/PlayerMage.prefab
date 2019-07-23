@@ -2822,6 +2822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c5f975624e42547915d9df07c2d75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
   tagContainer:
     defaultLaunchTag: 4
     defaultTag: {fileID: 8371027099814355925}

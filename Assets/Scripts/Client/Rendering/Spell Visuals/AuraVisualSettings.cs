@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Client.Spells
 {
     [Serializable]
-    public class AuraVisualSettings
+    public class AuraVisualSettings : IEffectPositionerSettings
     {
         [SerializeField, UsedImplicitly] private AuraInfo auraInfo;
         [SerializeField, UsedImplicitly] private Sprite auraIcon;
@@ -15,7 +15,8 @@ namespace Client.Spells
 
         public AuraInfo AuraInfo => auraInfo;
         public Sprite AuraIcon => auraIcon;
-        public EffectTagType TtagType => tagType;
         public EffectSettings EffectSettings => effectSettings;
+        public EffectTagType EffectTagType => tagType;
+        public bool AttachToTag => true;
     }
 }
