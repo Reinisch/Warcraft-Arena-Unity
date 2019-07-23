@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client
@@ -6,6 +7,7 @@ namespace Client
     internal class EffectEntity : MonoBehaviour, IEffectEntity
     {
         [SerializeField, UsedImplicitly] private ParticleSystem mainParticleSystem;
+        [SerializeField, UsedImplicitly] private List<ParticleSystem> replayableSystems;
 
         private EffectSettings effectSettings;
 
@@ -58,6 +60,12 @@ namespace Client
         public bool IsPlaying(long playId) => State == EffectState.Active && playId == PlayId;
 
         public void Stop(long playId) => Stop(playId, false);
+
+        public void Replay(long playId)
+        {
+            if (PlayId == playId || State == EffectState.Active)
+                replayableSystems.ForEach(system => system.Play());
+        }
 
         [UsedImplicitly]
         private void OnDestroy()

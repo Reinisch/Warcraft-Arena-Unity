@@ -8,5 +8,6 @@ namespace Client
 
         bool IsPlaying(long playId);
         void Stop(long playId);
+        void Replay(long playId);
     }
 }

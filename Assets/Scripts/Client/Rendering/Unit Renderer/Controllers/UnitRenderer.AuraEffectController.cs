@@ -23,6 +23,11 @@ namespace Client
                 {
                     EffectEntity.Stop(PlayId);
                 }
+
+                public void Replay()
+                {
+                    EffectEntity.Replay(PlayId);
+                }
             }
 
             private UnitRenderer unitRenderer;
@@ -78,6 +83,8 @@ namespace Client
 
             public void AuraRefreshed(IVisibleAura visibleAura)
             {
+                if (effectByAuraId.TryGetValue(visibleAura.AuraId, out SpellVisualAuraState activeState))
+                    activeState.Replay();
             }
         }
     }

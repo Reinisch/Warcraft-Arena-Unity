@@ -4799,6 +4799,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainParticleSystem: {fileID: 2181488693316487539}
+  replayableSystems:
+  - {fileID: 4802107040996252903}
 --- !u!1 &5240525076314774763
 GameObject:
   m_ObjectHideFlags: 0
