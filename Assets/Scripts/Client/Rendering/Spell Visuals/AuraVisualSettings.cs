@@ -18,5 +18,7 @@ namespace Client.Spells
         public EffectSettings EffectSettings => effectSettings;
         public EffectTagType EffectTagType => tagType;
         public bool AttachToTag => true;
+        public bool KeepOriginalRotation => true;
+        public bool KeepAliveWithNoParticles => true;
     }
 }

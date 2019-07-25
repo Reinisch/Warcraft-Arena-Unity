@@ -11,8 +11,7 @@ namespace Client.Spells
         {
             Cast,
             Projectile,
-            Impact,
-            Aura,
+            Impact
         }
 
         [SerializeField, UsedImplicitly] private bool attachToTag;
@@ -20,9 +19,11 @@ namespace Client.Spells
         [SerializeField, UsedImplicitly] private EffectTagType tagType;
         [SerializeField, UsedImplicitly] private EffectSettings effectSettings;
 
-        public bool AttachToTag => attachToTag;
         public UsageType VisualUsageType => visualUsageType;
         public EffectTagType EffectTagType => tagType;
         public EffectSettings EffectSettings => effectSettings;
+        public bool AttachToTag => attachToTag;
+        public bool KeepOriginalRotation => false;
+        public bool KeepAliveWithNoParticles => visualUsageType == UsageType.Projectile;
     }
 }

@@ -10,11 +10,14 @@ namespace Client
         [SerializeField, UsedImplicitly] private List<ParticleSystem> replayableSystems;
 
         private EffectSettings effectSettings;
+        private Quaternion originalRotation;
 
         internal EffectState State { get; private set; }
         internal long PlayId { get; private set; }
 
         public Transform Transform => transform;
+        public bool KeepOriginalRotation { private get; set; }
+        public bool KeepAliveWithNoParticles { private get; set; }
 
         internal void Initialize(EffectSettings effectSettings)
         {
@@ -30,8 +33,13 @@ namespace Client
 
         internal void DoUpdate()
         {
-            if (State == EffectState.Active && !mainParticleSystem.IsAlive(true))
-                Stop(PlayId, false);
+            if (State == EffectState.Active)
+            {
+                if (!KeepAliveWithNoParticles && !mainParticleSystem.IsAlive(true))
+                    Stop(PlayId, false);
+                else if (KeepOriginalRotation)
+                    transform.rotation = originalRotation;
+            }
         }
 
         internal void Play(long playId)
@@ -40,6 +48,7 @@ namespace Client
 
             mainParticleSystem.Stop(true);
             mainParticleSystem.Play(true);
+            originalRotation = transform.rotation;
 
             State = EffectState.Active;
         }

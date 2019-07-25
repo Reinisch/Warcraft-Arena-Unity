@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Client.Spells;
 using Common;
+using UnityEngine;
 
 namespace Client
 {
@@ -62,7 +63,9 @@ namespace Client
                 if (auraVisualSettings.EffectSettings == null)
                     return;
 
-                IEffectEntity newEffect = auraVisualSettings.EffectSettings.PlayEffect(unitRenderer.transform.position, unitRenderer.transform.rotation, out long playId);
+                Vector3 effectDirection = Vector3.ProjectOnPlane(unitRenderer.transform.forward, Vector3.up);
+                Quaternion effectRotation = Quaternion.LookRotation(effectDirection);
+                IEffectEntity newEffect = auraVisualSettings.EffectSettings.PlayEffect(unitRenderer.transform.position, effectRotation, out long playId);
                 if (newEffect != null)
                 {
                     unitRenderer.TagContainer.ApplyPositioning(newEffect, auraVisualSettings);

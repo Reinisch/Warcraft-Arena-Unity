@@ -68,6 +68,8 @@ namespace Client
             if(settings.AttachToTag)
                 effectEntity.Transform.SetParent(targetTag);
 
+            effectEntity.KeepAliveWithNoParticles = settings.KeepAliveWithNoParticles;
+            effectEntity.KeepOriginalRotation = settings.KeepOriginalRotation;
             effectEntity.Transform.position = targetTag.position;
         }
 
