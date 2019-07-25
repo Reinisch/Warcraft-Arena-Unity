@@ -20,6 +20,11 @@ namespace Client
                     EffectEntity = effectEntity;
                 }
 
+                public void Fade()
+                {
+                    EffectEntity.Fade(PlayId);
+                }
+
                 public void Stop()
                 {
                     EffectEntity.Stop(PlayId);
@@ -31,6 +36,7 @@ namespace Client
                 }
             }
 
+            private bool isDetaching;
             private UnitRenderer unitRenderer;
             private readonly Dictionary<int, List<IVisibleAura>> aurasByAuraId = new Dictionary<int, List<IVisibleAura>>();
             private readonly Dictionary<int, SpellVisualAuraState> effectByAuraId = new Dictionary<int, SpellVisualAuraState>();
@@ -43,11 +49,13 @@ namespace Client
 
             public void HandleDetach()
             {
+                isDetaching = true;
                 unitRenderer.Unit.FindBehaviour<AuraControllerClient>().RemoveHandler(this);
                 unitRenderer = null;
 
                 Assert.IsTrue(aurasByAuraId.Count == 0);
                 Assert.IsTrue(effectByAuraId.Count == 0);
+                isDetaching = false;
             }
 
             public void AuraApplied(IVisibleAura visibleAura)
@@ -80,7 +88,11 @@ namespace Client
                 if (aurasByAuraId.ContainsKey(visibleAura.AuraId) || !effectByAuraId.TryGetValue(visibleAura.AuraId, out SpellVisualAuraState visualToRemove))
                     return;
 
-                visualToRemove.Stop();
+                if (isDetaching)
+                    visualToRemove.Stop();
+                else
+                    visualToRemove.Fade();
+
                 effectByAuraId.Remove(visibleAura.AuraId);
             }
 

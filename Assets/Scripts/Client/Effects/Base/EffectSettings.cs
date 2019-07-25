@@ -26,9 +26,14 @@ namespace Client
             EffectContainer = null;
         }
 
-        internal void StopEffect(EffectEntity effectEntity, bool isDestroyed)
+        internal void HandleStop(EffectEntity effectEntity, bool isDestroyed)
         {
-            EffectContainer.Stop(effectEntity, isDestroyed);
+            EffectContainer.HandleStop(effectEntity, isDestroyed);
+        }
+
+        internal void HandleFade(EffectEntity effectEntity)
+        {
+            EffectContainer.HandleFade(effectEntity);
         }
 
         public IEffectEntity PlayEffect(Vector3 position, Quaternion rotation, Transform parent = null)

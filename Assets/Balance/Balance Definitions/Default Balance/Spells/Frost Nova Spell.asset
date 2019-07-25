@@ -27,10 +27,10 @@ MonoBehaviour:
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 1
-  cooldownTime: 1500
+  cooldownTime: 3000
   categoryCooldownTime: 0
   globalCooldownTime: 1000
-  castTime: 300
+  castTime: 0
   minCastTime: 0
   minRangeHostile: 0
   minRangeFriend: 0

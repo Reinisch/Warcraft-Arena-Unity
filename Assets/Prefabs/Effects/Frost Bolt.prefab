@@ -4762,6 +4762,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7762495873230310159}
   - component: {fileID: 2775892212625397497}
+  - component: {fileID: -7212735587047939584}
+  - component: {fileID: 856848301802751154}
   m_Layer: 0
   m_Name: Frost Bolt
   m_TagString: Untagged
@@ -4797,7 +4799,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3121d824815a004d97b0c6674710b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainParticleSystem: {fileID: 4181270189215308662}
+  behaviours:
+  - {fileID: -7212735587047939584}
+  - {fileID: 856848301802751154}
+--- !u!114 &-7212735587047939584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179840976877207132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c427c9abe7cbd1248ae63c2d5c15a7bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedParticleSystems:
+  - {fileID: 4181270189215308662}
+--- !u!114 &856848301802751154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179840976877207132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68af4d687c9daec4d96ee4c7b0d96a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 2429767076096449918}
+  playState: Flying
+  fadeState: Fade
+  hasPlayState: 1
+  hasFadeState: 1
 --- !u!1001 &2429767076089161758
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4807,7 +4842,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 4d3bb0f4e15ee214fbaa5577a88da448, type: 3}
       propertyPath: m_Name
-      value: Frostbolt
+      value: Frost Bolt
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4d3bb0f4e15ee214fbaa5577a88da448, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4869,11 +4904,29 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 934376dfe8fc08f418656540f1bc4287, type: 2}
+    - target: {fileID: 400012, guid: 4d3bb0f4e15ee214fbaa5577a88da448, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 400012, guid: 4d3bb0f4e15ee214fbaa5577a88da448, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 400012, guid: 4d3bb0f4e15ee214fbaa5577a88da448, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -180
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d3bb0f4e15ee214fbaa5577a88da448, type: 3}
 --- !u!4 &2429767076089295518 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4d3bb0f4e15ee214fbaa5577a88da448,
+    type: 3}
+  m_PrefabInstance: {fileID: 2429767076089161758}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2429767076096449918 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9500000, guid: 4d3bb0f4e15ee214fbaa5577a88da448,
     type: 3}
   m_PrefabInstance: {fileID: 2429767076089161758}
   m_PrefabAsset: {fileID: 0}

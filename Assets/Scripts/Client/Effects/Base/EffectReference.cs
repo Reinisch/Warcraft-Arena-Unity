@@ -62,19 +62,24 @@ namespace Client
                 idleEffects.RemoveAt(0);
 
                 activeEffects.Add(effectToPlay);
-                effectToPlay.Play(reference.nextPlayId++);
                 effectToPlay.gameObject.SetActive(true);
+                effectToPlay.Play(reference.nextPlayId++);
 
                 return effectToPlay;
             }
 
-            internal void Stop(EffectEntity effectEntity, bool isDestroyed)
+            internal void HandleFade(EffectEntity effectEntity)
+            {
+                effectEntity.transform.parent = reference.containerTransform;
+            }
+
+            internal void HandleStop(EffectEntity effectEntity, bool isDestroyed)
             {
                 if (isDestroyed)
                 {
-                    if (effectEntity.State == EffectState.Active)
+                    if (effectEntity.State.IsPlaying())
                         activeEffects.Remove(effectEntity);
-                    else if (effectEntity.State == EffectState.Idle)
+                    else if (effectEntity.State.IsIdle())
                         idleEffects.Remove(effectEntity);
 
                     effectEntity.Deinitialize();
@@ -82,8 +87,8 @@ namespace Client
                 }
                 else
                 {
-                    Assert.IsTrue(effectEntity.State == EffectState.Active, $"Stopped effect with invalid state: {effectEntity.State} at: {effectEntity.GetPath()}!");
-                    if (effectEntity.State == EffectState.Active)
+                    Assert.IsTrue(effectEntity.State.IsPlaying(), $"Stopped effect with invalid state: {effectEntity.State} at: {effectEntity.GetPath()}!");
+                    if (effectEntity.State.IsPlaying())
                     {
                         activeEffects.Remove(effectEntity);
                         idleEffects.Add(effectEntity);

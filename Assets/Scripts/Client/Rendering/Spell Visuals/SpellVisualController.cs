@@ -23,7 +23,7 @@ namespace Client
 
             public void Deinitialize()
             {
-                activeProjectiles.ForEach(visual => visual.HandleFinish());
+                activeProjectiles.ForEach(visual => visual.HandleFinish(true));
                 activeProjectiles.Clear();
             }
 
@@ -32,7 +32,7 @@ namespace Client
                 for (int i = activeProjectiles.Count - 1; i >= 0; i--)
                     if (activeProjectiles[i].DoUpdate())
                     {
-                        activeProjectiles[i].HandleFinish();
+                        activeProjectiles[i].HandleFinish(false);
                         activeProjectiles.RemoveAt(i);
                     }
             }

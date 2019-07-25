@@ -6,8 +6,7 @@ namespace Client
 {
     internal class EffectEntity : MonoBehaviour, IEffectEntity
     {
-        [SerializeField, UsedImplicitly] private ParticleSystem mainParticleSystem;
-        [SerializeField, UsedImplicitly] private List<ParticleSystem> replayableSystems;
+        [SerializeField, UsedImplicitly] private List<EffectBehaviour> behaviours;
 
         private EffectSettings effectSettings;
         private Quaternion originalRotation;
@@ -17,7 +16,7 @@ namespace Client
 
         public Transform Transform => transform;
         public bool KeepOriginalRotation { private get; set; }
-        public bool KeepAliveWithNoParticles { private get; set; }
+        public bool KeepAliveWithNoParticles { get; set; }
 
         internal void Initialize(EffectSettings effectSettings)
         {
@@ -33,47 +32,68 @@ namespace Client
 
         internal void DoUpdate()
         {
-            if (State == EffectState.Active)
-            {
-                if (!KeepAliveWithNoParticles && !mainParticleSystem.IsAlive(true))
-                    Stop(PlayId, false);
-                else if (KeepOriginalRotation)
-                    transform.rotation = originalRotation;
-            }
+            if (!State.IsPlaying())
+                return;
+
+            bool keepAlive = false;
+            foreach (EffectBehaviour effectBehaviour in behaviours)
+                effectBehaviour.DoUpdate(this, ref keepAlive);
+
+            if (KeepOriginalRotation)
+                transform.rotation = originalRotation;
+
+            if (!keepAlive)
+                Stop(PlayId, false);
         }
 
         internal void Play(long playId)
         {
             PlayId = playId;
+            State = EffectState.Active;
 
-            mainParticleSystem.Stop(true);
-            mainParticleSystem.Play(true);
             originalRotation = transform.rotation;
 
-            State = EffectState.Active;
+            foreach (EffectBehaviour effectBehaviour in behaviours)
+                effectBehaviour.Play(PlayId);
         }
 
         private void Stop(long playId, bool isDestroyed)
         {
-            if (!isDestroyed && State != EffectState.Active)
+            if (!isDestroyed && !State.IsPlaying())
                 return;
 
-            if (PlayId == playId || isDestroyed)
+            if (isDestroyed)
             {
-                effectSettings?.StopEffect(this, isDestroyed);
-
-                State = isDestroyed ? EffectState.Unused : EffectState.Idle;
+                effectSettings?.HandleStop(this, true);
+                State = EffectState.Unused;
+            }
+            else if (PlayId == playId)
+            {
+                effectSettings?.HandleStop(this, false);
+                State = EffectState.Idle;
             }
         }
 
         public bool IsPlaying(long playId) => State == EffectState.Active && playId == PlayId;
 
+        public bool IsFading(long playId) => State == EffectState.Fading && playId == PlayId;
+
         public void Stop(long playId) => Stop(playId, false);
+
+        public void Fade(long playId)
+        {
+            if (State == EffectState.Active && PlayId == playId)
+            {
+                effectSettings?.HandleFade(this);
+                behaviours.ForEach(behaviour => behaviour.Fade());
+                State = EffectState.Fading;
+            }
+        }
 
         public void Replay(long playId)
         {
-            if (PlayId == playId || State == EffectState.Active)
-                replayableSystems.ForEach(system => system.Play());
+            if (PlayId == playId && State.IsPlaying())
+                behaviours.ForEach(behaviour => behaviour.Replay());
         }
 
         [UsedImplicitly]

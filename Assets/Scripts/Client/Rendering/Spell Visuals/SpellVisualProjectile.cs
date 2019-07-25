@@ -48,9 +48,12 @@ namespace Client
                     return false;
                 }
 
-                public void HandleFinish()
+                public void HandleFinish(bool instant)
                 {
-                    projectile?.Stop(playId);
+                    if(instant)
+                        projectile?.Stop(playId);
+                    else
+                        projectile?.Fade(playId);
 
                     TargetRenderer = null;
                     Settings = null;

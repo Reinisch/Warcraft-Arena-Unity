@@ -116,7 +116,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.7
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -866,7 +866,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 20
+      scalar: 15
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1305,7 +1305,7 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 0}
-        key1: {r: 1, g: 1, b: 1, a: 1}
+        key1: {r: 1, g: 1, b: 1, a: 0.47058824}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4763,6 +4763,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2181488694587037852}
   - component: {fileID: 2181488694587037855}
+  - component: {fileID: -1564406348702431489}
+  - component: {fileID: 8158872857973766872}
+  - component: {fileID: 7455649888232566035}
   m_Layer: 0
   m_Name: Frost Nova State
   m_TagString: Untagged
@@ -4798,9 +4801,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3121d824815a004d97b0c6674710b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainParticleSystem: {fileID: 2181488693316487539}
+  behaviours:
+  - {fileID: -1564406348702431489}
+  - {fileID: 8158872857973766872}
+  - {fileID: 7455649888232566035}
+--- !u!114 &-1564406348702431489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2181488694587037854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e89e1c6daa096f6438cf0f6dacc603ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   replayableSystems:
   - {fileID: 4802107040996252903}
+  - {fileID: 4802107040996252903}
+--- !u!114 &8158872857973766872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2181488694587037854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68af4d687c9daec4d96ee4c7b0d96a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3870425411772651056}
+  playState: Impact
+  fadeState: Fade
+  hasPlayState: 1
+  hasFadeState: 1
+--- !u!114 &7455649888232566035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2181488694587037854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c427c9abe7cbd1248ae63c2d5c15a7bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedParticleSystems:
+  - {fileID: 2181488693316487539}
 --- !u!1 &5240525076314774763
 GameObject:
   m_ObjectHideFlags: 0
@@ -9655,11 +9705,27 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 71b9a441430e4fa488cc506686ac8211, type: 2}
+    - target: {fileID: -8547301517160132100, guid: 9e8bc1393ad3b3e49ae0121a964c3d4d,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8547301517160132100, guid: 9e8bc1393ad3b3e49ae0121a964c3d4d,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e8bc1393ad3b3e49ae0121a964c3d4d, type: 3}
 --- !u!4 &6574271008525400906 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 9e8bc1393ad3b3e49ae0121a964c3d4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2181488694980481104}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3870425411772651056 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 9e8bc1393ad3b3e49ae0121a964c3d4d,
     type: 3}
   m_PrefabInstance: {fileID: 2181488694980481104}
   m_PrefabAsset: {fileID: 0}
