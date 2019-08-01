@@ -140,13 +140,13 @@ namespace Core
 
             internal Unit GetMeleeHitRedirectTarget(Unit victim, SpellInfo spellInfo = null) { return null; }
 
-            internal int SpellDamageBonusDone(Unit victim, SpellInfo spellInfo, int damage, SpellDamageType damageType, SpellEffectInfo effect, uint stack = 1) { return 0; }
+            internal int SpellDamageBonusDone(Unit victim, SpellInfo spellInfo, float damage, SpellDamageType damageType, SpellEffectInfo effect, uint stack = 1) { return 0; }
 
             internal void ApplySpellModifier(SpellInfo spellInfo, SpellModifierType modifierType, ref int value) { }
 
             internal void ApplySpellModifier(SpellInfo spellInfo, SpellModifierType modifierType, ref float value) { }
 
-            internal int SpellDamageBonusTaken(Unit caster, SpellInfo spellInfo, int damage, SpellDamageType damageType, SpellEffectInfo effect, uint stack = 1)
+            internal float SpellDamageBonusTaken(Unit caster, SpellInfo spellInfo, float damage, SpellDamageType damageType, SpellEffectInfo effect, uint stack = 1)
             {
                 return damage;
             }

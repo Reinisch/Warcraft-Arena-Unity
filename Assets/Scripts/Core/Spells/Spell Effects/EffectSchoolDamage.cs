@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Common;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -12,9 +13,11 @@ namespace Core
         [SerializeField, UsedImplicitly] private uint baseVariance;
         [SerializeField, UsedImplicitly] private uint additionalValue;
         [SerializeField, UsedImplicitly] private SpellDamageCalculationType calculationType;
+        [SerializeField, UsedImplicitly] private List<ConditionalModifier> conditionalModifiers;
 
         public override float Value => baseValue;
         public override SpellEffectType EffectType => SpellEffectType.SchoolDamage;
+        public IReadOnlyList<ConditionalModifier> ConditionalModifiers => conditionalModifiers;
 
         internal override void Handle(Spell spell, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
@@ -24,27 +27,27 @@ namespace Core
         internal int CalculateSpellDamage(SpellInfo spellInfo, int effectIndex, Unit caster = null, Unit target = null)
         {
             int rolledValue = RandomUtils.Next(baseValue, (int) (baseValue + baseVariance));
-            int baseDamage = 0;
+            float baseDamage = 0;
 
             switch (calculationType)
             {
                 case SpellDamageCalculationType.Direct:
-                    baseDamage = (int) (rolledValue + additionalValue);
+                    baseDamage = (rolledValue + additionalValue);
                     break;
                 case SpellDamageCalculationType.SpellPowerPercent:
                     if (caster == null)
                         break;
 
-                    baseDamage = (int) (additionalValue + caster.SpellPower.ApplyPercentage(rolledValue));
+                    baseDamage = (additionalValue + caster.SpellPower.ApplyPercentage(rolledValue));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(calculationType), $"Unknown damage calculation type: {calculationType}");
             }
 
             if (caster != null)
-                baseDamage = Mathf.CeilToInt(caster.Spells.ApplyEffectModifiers(spellInfo, baseDamage));
+                baseDamage = caster.Spells.ApplyEffectModifiers(spellInfo, baseDamage);
 
-            return baseDamage;
+            return (int) baseDamage;
         }
     }
 
@@ -55,7 +58,7 @@ namespace Core
             if (mode != SpellEffectHandleMode.HitTarget || target == null || !target.IsAlive)
                 return;
 
-            int spellDamage = effect.CalculateSpellDamage(SpellInfo, effectIndex, Caster, target);
+            float spellDamage = effect.CalculateSpellDamage(SpellInfo, effectIndex, Caster, target);
             if (SpellInfo.HasAttribute(SpellCustomAttributes.ShareDamage))
                 spellDamage /= Mathf.Min(1, ImplicitTargets.TargetCountForEffect(effectIndex));
 
@@ -65,7 +68,14 @@ namespace Core
                 spellDamage = target.Spells.SpellDamageBonusTaken(OriginalCaster, SpellInfo, spellDamage, SpellDamageType.Direct, effect);
             }
 
-            EffectDamage += spellDamage;
+            for (var i = 0; i < effect.ConditionalModifiers.Count; i++)
+            {
+                ConditionalModifier modifier = effect.ConditionalModifiers[i];
+                if (modifier.Condition.With(Caster, target, this).IsApplicableAndValid)
+                    modifier.Modify(ref spellDamage);
+            }
+
+            EffectDamage += (int) spellDamage;
         }
     }
 }

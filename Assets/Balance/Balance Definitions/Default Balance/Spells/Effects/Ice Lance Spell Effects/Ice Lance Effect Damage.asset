@@ -27,7 +27,11 @@ MonoBehaviour:
   explicitTargetType: 1
   minRadius: 0
   maxRadius: 0
-  baseValue: 160
-  baseVariance: 40
-  additionalValue: 300
+  baseValue: 50
+  baseVariance: 25
+  additionalValue: 100
   calculationType: 1
+  conditionalModifiers:
+  - value: 400
+    condition: {fileID: 11400000, guid: 42ad932369977e643988136a75670233, type: 2}
+    applicationType: 2
