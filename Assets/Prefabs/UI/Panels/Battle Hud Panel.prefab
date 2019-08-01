@@ -4365,6 +4365,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ActionBar 1 Slot 12
       objectReference: {fileID: 0}
+    - target: {fileID: 1511359627925074366, guid: 21ebeba363099dc4abaa33b236b50228,
+        type: 3}
+      propertyPath: itemId
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 1589566653470654109, guid: 21ebeba363099dc4abaa33b236b50228,
         type: 3}
       propertyPath: itemId

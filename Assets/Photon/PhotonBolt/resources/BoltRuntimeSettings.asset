@@ -36,7 +36,7 @@ MonoBehaviour:
     commandPingMultiplier: 1.25
     useNetworkSimulation: 1
     simulatedLoss: 0.02
-    simulatedPingMean: 400
+    simulatedPingMean: 150
     simulatedPingJitter: 10
     simulatedRandomFunction: 0
     connectionTimeout: 100000

@@ -77,6 +77,13 @@ MonoBehaviour:
   - spellInfo: {fileID: 11400000, guid: d76f3f10631a0334795fa104d4bbcd41, type: 2}
     spellIcon: {fileID: 21300000, guid: 9934614611b90854391b2b214683b6bb, type: 3}
     visualEffects: []
+  - spellInfo: {fileID: 11400000, guid: f9b96553606ffe349b7f310d89d1f3e7, type: 2}
+    spellIcon: {fileID: 21300000, guid: 623b129decabefd419da68ab8adcf992, type: 3}
+    visualEffects:
+    - attachToTag: 0
+      visualUsageType: 1
+      tagType: 3
+      effectSettings: {fileID: 11400000, guid: 34659681473eb62449eb11524b45a095, type: 2}
   auraVisualSettings:
   - auraInfo: {fileID: 11400000, guid: 7203cc91ffe08ff4599fbba97afacfd2, type: 2}
     auraIcon: {fileID: 21300000, guid: 9934614611b90854391b2b214683b6bb, type: 3}
