@@ -26,7 +26,7 @@
         LevelRequirement,
         LineOfSight,
         Moving = 23,
-        NotBehind,
+        NotFrozen = 24,
         NotFlying,
         NotHere,
         NotInfront,

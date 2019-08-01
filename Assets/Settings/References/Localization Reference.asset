@@ -34,6 +34,8 @@ MonoBehaviour:
     LocalizedString: {fileID: 11400000, guid: 088d6c33d46342a4ea8f1cbf9af0175a, type: 2}
   - SpellCastResult: 23
     LocalizedString: {fileID: 11400000, guid: eba3455c8a4912f4a8c7752453a7f34d, type: 2}
+  - SpellCastResult: 24
+    LocalizedString: {fileID: 11400000, guid: b6521444fb6c6194ba691e77524fa1d3, type: 2}
   clientConnectFailReasons:
   - FailReason: 0
     LocalizedString: {fileID: 11400000, guid: 35bdb3f22e4c2ab4590a4828e7e25267, type: 2}

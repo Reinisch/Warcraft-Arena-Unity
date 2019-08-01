@@ -33,6 +33,11 @@ namespace Core
                 return auraEffectsByAuraType.ContainsKey(auraEffectType);
             }
 
+            internal bool HasAuraState(AuraStateType auraStateType)
+            {
+                return auraApplicationsByAuraState.ContainsKey(auraStateType);
+            }
+
             internal float TotalAuraModifier(AuraEffectType auraType)
             {
                 if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))

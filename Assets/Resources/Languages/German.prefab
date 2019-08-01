@@ -99,3 +99,5 @@ MonoBehaviour:
     Value: Missing Localization
   - StringReference: {fileID: 11400000, guid: eba3455c8a4912f4a8c7752453a7f34d, type: 2}
     Value: Can't cast while moving
+  - StringReference: {fileID: 11400000, guid: b6521444fb6c6194ba691e77524fa1d3, type: 2}
+    Value: Target is not frozen

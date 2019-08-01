@@ -27,7 +27,7 @@ MonoBehaviour:
   explicitTargetType: 1
   minRadius: 0
   maxRadius: 0
-  baseValue: 40
-  baseVariance: 10
-  additionalValue: 100
+  baseValue: 160
+  baseVariance: 40
+  additionalValue: 300
   calculationType: 1

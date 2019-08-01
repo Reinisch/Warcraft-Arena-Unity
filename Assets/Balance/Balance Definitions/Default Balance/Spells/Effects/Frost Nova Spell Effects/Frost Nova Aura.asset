@@ -18,7 +18,7 @@ MonoBehaviour:
   maxStack: 1
   maxCharges: 1
   baseCharges: 1
-  stateType: 4
+  stateType: 1
   targetingMode: 1
   interruptFlags: 2
   attributes: 0

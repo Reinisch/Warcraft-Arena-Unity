@@ -192,6 +192,8 @@ namespace Core
 
         internal bool HasAuraType(AuraEffectType auraEffectType) => Auras.HasAuraType(auraEffectType);
 
+        internal bool HasAuraState(AuraStateType auraStateType) => Auras.HasAuraState(auraStateType);
+
         internal float TotalAuraModifier(AuraEffectType auraType) => Auras.TotalAuraModifier(auraType);
 
         internal float TotalAuraMultiplier(AuraEffectType auraType) => Auras.TotalAuraMultiplier(auraType);
