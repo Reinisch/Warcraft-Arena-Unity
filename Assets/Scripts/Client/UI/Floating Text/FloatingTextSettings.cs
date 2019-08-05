@@ -10,6 +10,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private float randomOffset = 0.2f;
         [SerializeField, UsedImplicitly] private float floatingSpeed = 3;
         [SerializeField, UsedImplicitly] private int fontSize = 120;
+        [SerializeField, UsedImplicitly] private Color fontColor;
         [SerializeField, UsedImplicitly] private AnimationCurve sizeOverTime;
         [SerializeField, UsedImplicitly] private AnimationCurve alphaOverTime;
         [SerializeField, UsedImplicitly] private AnimationCurve sizeOverDistanceToCamera;
@@ -19,6 +20,7 @@ namespace Client
         public float RandomOffset => randomOffset;
         public float FloatingSpeed => floatingSpeed;
         public int FontSize => fontSize;
+        public Color FontColor => fontColor;
         public AnimationCurve SizeOverTime => sizeOverTime;
         public AnimationCurve AlphaOverTime => alphaOverTime;
         public AnimationCurve SizeOverDistanceToCamera => sizeOverDistanceToCamera;

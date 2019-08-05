@@ -10,6 +10,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private TextMeshPro textMesh;
         [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private FloatingTextSettings damageSettings;
+        [SerializeField, UsedImplicitly] private FloatingTextSettings damageCritSettings;
 
         private float currentLifeTime;
         private float targetLifeTime;
@@ -21,12 +22,13 @@ namespace Client
             GameObjectPool.Return(this, true);
         }
 
-        public void SetDamage(int damageAmount)
+        public void SetDamage(int damageAmount, bool isCrit)
         {
+            currentSettings = isCrit ? damageCritSettings : damageSettings;
             textMesh.text = damageAmount.ToString();
-            textMesh.fontSize = damageSettings.FontSize;
-            targetLifeTime = damageSettings.LifeTime;
-            currentSettings = damageSettings;
+            textMesh.fontSize = currentSettings.FontSize;
+            textMesh.color = currentSettings.FontColor;
+            targetLifeTime = currentSettings.LifeTime;
             transform.localScale = Vector3.one;
             currentLifeTime = 0;
 
@@ -35,10 +37,10 @@ namespace Client
             {
                 Vector3 direction = transform.position - warcraftCamera.transform.position;
                 float distance = Vector3.Dot(direction, warcraftCamera.transform.forward);
-                transform.position += Random.insideUnitSphere * damageSettings.RandomOffset * currentSettings.RandomOffsetOverDistance.Evaluate(distance);
+                transform.position += Random.insideUnitSphere * currentSettings.RandomOffset * currentSettings.RandomOffsetOverDistance.Evaluate(distance);
             }
             else
-                transform.position += Random.insideUnitSphere * damageSettings.RandomOffset;
+                transform.position += Random.insideUnitSphere * currentSettings.RandomOffset;
         }
 
         public bool DoUpdate(float deltaTime)

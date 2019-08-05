@@ -32,11 +32,11 @@ namespace Client
             activeTexts.Clear();
         }
 
-        public void SpawnDamageText(UnitRenderer targetRenderer, int damageAmount)
+        public void SpawnDamageText(UnitRenderer targetRenderer, int damageAmount, bool isCrit)
         {
             FloatingText damageText = GameObjectPool.Take(floatingTextPrototype, targetRenderer.transform.position, targetRenderer.transform.rotation);
             targetRenderer.TagContainer.ApplyPositioning(damageText);
-            damageText.SetDamage(damageAmount);
+            damageText.SetDamage(damageAmount, isCrit);
             activeTexts.Add(damageText);
         }
 

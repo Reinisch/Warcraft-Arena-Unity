@@ -67,7 +67,7 @@ namespace Core
                 if (victim == null || !victim.IsAlive)
                     return 0;
 
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, unit, victim, damageInfoInfo.Damage, damageInfoInfo.HitInfo == HitType.CriticalHit);
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, unit, victim, damageInfoInfo.Damage, damageInfoInfo.HitInfo.HasTargetFlag(HitType.CriticalHit));
 
                 return unit.DealDamage(victim, damageInfoInfo.Damage);
             }

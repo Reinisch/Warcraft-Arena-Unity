@@ -34,6 +34,11 @@
             return (baseFlags & flag) == flag;
         }
 
+        public static bool HasTargetFlag(this HitType baseFlags, HitType flag)
+        {
+            return (baseFlags & flag) == flag;
+        }
+
         public static bool HasTargetFlag(this SpellCastFlags baseFlags, SpellCastFlags flag)
         {
             return (baseFlags & flag) == flag;

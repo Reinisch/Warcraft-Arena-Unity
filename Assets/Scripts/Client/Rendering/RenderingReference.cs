@@ -132,7 +132,7 @@ namespace Client
             if (!unitRenderersById.TryGetValue(target.Id, out UnitRenderer targetRenderer))
                 return;
 
-            floatingTextController.SpawnDamageText(targetRenderer, damageAmount);
+            floatingTextController.SpawnDamageText(targetRenderer, damageAmount, isCrit);
         }
 
         private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken)
