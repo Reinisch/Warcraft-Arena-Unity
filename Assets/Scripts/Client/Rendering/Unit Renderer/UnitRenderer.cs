@@ -80,6 +80,23 @@ namespace Client
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHit, Unit, spellHitEvent.SpellId);
         }
 
+        public void TriggerInstantCast()
+        {
+            if (Animator.GetBool(AnimatorUtils.ResurrectingAnimationParam) || Animator.GetBool(AnimatorUtils.DyingAnimationParam))
+                return;
+
+            Animator.Play(AnimatorUtils.SpellCastAnimationState, 0, 0.1f);
+            Animator.ResetTrigger(AnimatorUtils.SpellCastAnimationTrigger);
+
+            // Switch leg animation for casting
+            if (!animator.GetBool("Grounded"))
+                animator.Play("Air", 1);
+            else if (animator.GetFloat("Speed") > 0.1f)
+                animator.Play("Run", 1);
+            else
+                animator.Play("Cast", 1, 0.1f);
+        }
+
         private void UpdateAnimations(float deltaTime)
         {
             if (!Unit.IsAlive)
@@ -119,16 +136,6 @@ namespace Client
         private void OnSpellCastChanged()
         {
             animator.SetBool("Casting", Unit.SpellCast.State.Id != 0);
-        }
-
-        [UsedImplicitly]
-        private void TriggerInstantCast()
-        {
-            // Switch leg animation for casting
-            if (animator.GetBool("Grounded"))
-                animator.Play(animator.GetFloat("Speed") > 0.1f ? "Run" : "Cast", 1);
-            else
-                animator.Play("Air", 1);
         }
     }
 }

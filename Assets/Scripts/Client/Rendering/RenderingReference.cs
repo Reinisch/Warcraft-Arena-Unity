@@ -140,7 +140,7 @@ namespace Client
             if (!unitRenderersById.TryGetValue(caster.Id, out UnitRenderer casterRenderer))
                 return;
 
-            casterRenderer.Animator.SetTrigger(AnimatorUtils.SpellCastAnimationTrigger);
+            casterRenderer.TriggerInstantCast();
 
             if (!SpellVisualSettingsById.TryGetValue(spellId, out SpellVisualSettings spellVisuals))
                 return;
