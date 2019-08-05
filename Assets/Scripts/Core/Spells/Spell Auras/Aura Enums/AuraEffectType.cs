@@ -167,7 +167,7 @@
         ModSpellDamageOfStatPercent = 174,
         ModSpellHealingOfStatPercent = 175,
         SpiritOfRedemption = 176,
-        AOECharm = 177,
+        ModAttackerSpellCritChanceForCaster = 177,
         ModAttackerSpellCritChance = 179,
         ModFlatSpellDamageVersus = 180,
         ModResistanceOfStatPercent = 182,

@@ -54,7 +54,7 @@ namespace Core
             isDelayed = false;
             processingToken = null;
 
-            foreach (var targetEntry in Entries)
+            foreach (SpellTargetEntry targetEntry in Entries)
             {
                 // calculate hit result
                 if (spell.OriginalCaster != null)
@@ -79,6 +79,8 @@ namespace Core
                 }
                 else
                     targetEntry.Delay = 0;
+
+                targetEntry.Crit = spell.Caster.Spells.IsSpellCrit(targetEntry.Target, spell.SpellInfo, spell.SchoolMask);
 
                 isDelayed |= targetEntry.Delay > 0;
             }

@@ -12,7 +12,6 @@ namespace Core
         private static int SpellAliveCount;
 
         private readonly SpellManager spellManager;
-        private readonly SpellSchoolMask spellSchoolMask;
         private readonly SpellCastFlags spellCastFlags;
         private readonly MovementFlags casterMovementFlags;
 
@@ -24,6 +23,7 @@ namespace Core
         private int EffectHealing { get; set; }
 
         internal bool CanReflect { get; }
+        internal SpellSchoolMask SchoolMask { get; }
         internal int CastTime { get; private set; }
         internal Unit Caster { get; private set; }
         internal Unit OriginalCaster { get; private set; }
@@ -38,7 +38,7 @@ namespace Core
             spellManager = caster.World.SpellManager;
             spellCastFlags = options.SpellFlags;
             casterMovementFlags = options.MovementFlags ?? caster.MovementInfo.Flags;
-            spellSchoolMask = info.SchoolMask;
+            SchoolMask = info.SchoolMask;
 
             CastTime = CastTimeLeft = EffectDamage = EffectHealing = 0;
             Caster = OriginalCaster = caster;
@@ -201,15 +201,15 @@ namespace Core
                 bool crit = targetEntry.Crit;
                 int addhealth = EffectHealing;
                 if (crit)
-                    addhealth = caster.Spells.SpellCriticalHealingBonus(SpellInfo, addhealth, null);
+                    addhealth = caster.Spells.SpellCriticalHealingBonus(addhealth);
 
                 int gain = caster.Spells.HealBySpell(targetEntry.Target, SpellInfo, addhealth, crit);
                 EffectHealing = gain;
             }
             else if (EffectDamage > 0)
             {
-                SpellCastDamageInfo damageInfoInfo = new SpellCastDamageInfo(caster, targetEntry.Target, SpellInfo.Id, spellSchoolMask);
-                EffectDamage = caster.Spells.CalculateSpellDamageTaken(damageInfoInfo, EffectDamage, SpellInfo);
+                SpellCastDamageInfo damageInfoInfo = new SpellCastDamageInfo(caster, targetEntry.Target, SpellInfo.Id, SchoolMask);
+                EffectDamage = caster.Spells.CalculateSpellDamageTaken(damageInfoInfo, SpellInfo, EffectDamage, targetEntry.Crit);
                 caster.Spells.DamageBySpell(damageInfoInfo);
             }
         }

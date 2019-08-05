@@ -77,30 +77,36 @@ namespace Core
                 return unit.DealHeal(target, healAmount);
             }
 
-            internal int CalculateSpellDamageTaken(SpellCastDamageInfo damageInfoInfo, int damage, SpellInfo spellInfo)
+            internal int CalculateSpellDamageTaken(SpellCastDamageInfo damageInfo, SpellInfo spellInfo, int damage, bool crit)
             {
                 if (damage < 0)
                     return 0;
 
-                Unit victim = damageInfoInfo.Target;
+                Unit victim = damageInfo.Target;
                 if (victim == null || !victim.IsAlive)
                     return 0;
 
-                SpellSchoolMask damageSchoolMask = damageInfoInfo.SchoolMask;
+                SpellSchoolMask damageSchoolMask = damageInfo.SchoolMask;
+
+                if (!spellInfo.HasAttribute(SpellExtraAttributes.FixedDamage) && crit)
+                {
+                    damageInfo.HitInfo |= HitType.CriticalHit;
+                    damage = SpellCriticalDamageBonus(spellInfo, damage);
+                }
 
                 if (damage > 0)
                 {
-                    int absorb = damageInfoInfo.Absorb;
-                    int resist = damageInfoInfo.Resist;
+                    int absorb = damageInfo.Absorb;
+                    int resist = damageInfo.Resist;
                     CalcAbsorbResist(victim, damageSchoolMask, SpellDamageType.Direct, damage, ref absorb, ref resist, spellInfo);
-                    damageInfoInfo.Absorb = absorb;
-                    damageInfoInfo.Resist = resist;
-                    damage -= damageInfoInfo.Absorb + damageInfoInfo.Resist;
+                    damageInfo.Absorb = absorb;
+                    damageInfo.Resist = resist;
+                    damage -= damageInfo.Absorb + damageInfo.Resist;
                 }
                 else
                     damage = 0;
 
-                return damageInfoInfo.Damage = damage;
+                return damageInfo.Damage = damage;
             }
 
             internal SpellMissType SpellHitResult(Unit victim, SpellInfo spellInfo, bool canReflect = false)
@@ -157,9 +163,76 @@ namespace Core
 
             internal float SpellHealingPercentDone(Unit victim, SpellInfo spellInfo) { return 0.0f; }
 
-            internal bool IsSpellCrit(Unit victim, SpellInfo spellInfo, SpellSchoolMask schoolMask, WeaponAttackType attackType = WeaponAttackType.BaseAttack) { return false; }
+            internal bool IsSpellCrit(Unit victim, SpellInfo spellInfo, SpellSchoolMask schoolMask)
+            {
+                float critChance = CalculateSpellCriticalChance(victim, spellInfo, schoolMask);
+                return RandomUtils.CheckSuccessPercent(critChance);
+            }
 
-            internal int SpellCriticalHealingBonus(SpellInfo spellInfo, int damage, Unit victim) { return 0; }
+            private float CalculateSpellCriticalChance(Unit victim, SpellInfo spellInfo, SpellSchoolMask schoolMask)
+            {
+                if (spellInfo.HasAttribute(SpellAttributes.CantCrit) || spellInfo.DamageClass == SpellDamageClass.None)
+                    return 0.0f;
+
+                if (spellInfo.HasAttribute(SpellAttributes.AlwaysCrit))
+                    return 100.0f;
+
+                float critChance = unit.CritPercentage;
+                if (victim == null)
+                    return Mathf.Max(critChance, 0.0f);
+
+                switch (spellInfo.DamageClass)
+                {
+                    case SpellDamageClass.Magic:
+                        if (!spellInfo.IsPositive())
+                            critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerSpellCritChance);
+                        goto default;
+                    case SpellDamageClass.Melee:
+                        if (!spellInfo.IsPositive())
+                            critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerMeleeCritChance);
+                        goto default;
+                    case SpellDamageClass.Ranged:
+                        if (!spellInfo.IsPositive())
+                            critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerRangedCritChance);
+                        goto default;
+                    default:
+                        critChance += victim.Auras.TotalAuraModifierForCaster(AuraEffectType.ModAttackerSpellCritChanceForCaster, unit.Id);
+                        critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerSpellAndWeaponCritChance);
+                        break;
+                }
+
+                return Mathf.Max(critChance, 0.0f);
+            }
+
+            internal int SpellCriticalHealingBonus(int healing)
+            {
+                return (int)(2 * healing * unit.TotalAuraMultiplier(AuraEffectType.ModCriticalHealingAmount));
+            }
+
+            internal int SpellCriticalDamageBonus(SpellInfo spellInfo, int damage)
+            {
+                int critBonus = damage;
+                float critModifier = 0.0f;
+
+                switch (spellInfo.DamageClass)
+                {
+                    case SpellDamageClass.Melee:
+                    case SpellDamageClass.Ranged:
+                        critBonus += damage / 2;
+                        break;
+                    case SpellDamageClass.Magic:
+                    case SpellDamageClass.None:
+                        critBonus += damage;
+                        break;
+                }
+
+                critModifier += (unit.TotalAuraMultiplier(AuraEffectType.ModCritDamageBonus) - 1.0f) * 100.0f;
+
+                if (critModifier > 0.0f)
+                    critBonus = critBonus.AddPercentage(critModifier);
+
+                return Mathf.Max(0, critBonus);
+            }
 
             internal bool IsImmunedToDamage(SpellInfo spellInfo) { return false; }
 

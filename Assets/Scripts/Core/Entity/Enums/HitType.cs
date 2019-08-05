@@ -1,14 +1,14 @@
-﻿namespace Core
+﻿using System;
+
+namespace Core
 {
+    [Flags]
     public enum HitType
     {
-        NormalSwing = 0x00000000,
-        AffectsVictim = 0x00000001,
-        Offhand = 0x00000002,
-        Miss = 0x00000004,
-        FullAbsorb = 0x00000008,
-        PartialAbsorb = 0x00000010,
-        CriticalHit = 0x00000020,
-        RageGain = 0x00000040,
+        NormalSwing = 1 << 0,
+        Miss = 1 << 1,
+        FullAbsorb = 1 << 2,
+        PartialAbsorb = 1 << 3,
+        CriticalHit = 1 << 4,
     }
 }

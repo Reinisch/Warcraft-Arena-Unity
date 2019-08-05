@@ -15,6 +15,11 @@ namespace Common
             return Random.NextDouble() < chance;
         }
 
+        public static bool CheckSuccessPercent(float percent)
+        {
+            return CheckSuccess(percent / 100.0f);
+        }
+
         public static int Next(int maxValue)
         {
             return Random.Next(maxValue);

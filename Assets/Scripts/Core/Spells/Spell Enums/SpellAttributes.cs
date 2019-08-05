@@ -17,7 +17,7 @@ namespace Core
         CantTargetSelf = 1 << 9,
         CanTargetDead = 1 << 10,
         CantCrit = 1 << 11,
-        TriggeredCanTriggerProc = 1 << 12,
+        AlwaysCrit = 1 << 12,
         CanProcWithTriggered = 1 << 13,
         CantTriggerProc = 1 << 14,
         DisableProc = 1 << 15,

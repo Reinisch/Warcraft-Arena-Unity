@@ -51,6 +51,20 @@ namespace Core
                 return modifier;
             }
 
+            internal float TotalAuraModifierForCaster(AuraEffectType auraType, ulong casterId)
+            {
+                if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
+                    return 0.0f;
+
+                float modifier = 0.0f;
+
+                foreach (AuraEffect auraEffect in auraEffects)
+                    if (auraEffect.Aura.CasterId == casterId)
+                        modifier += auraEffect.Value;
+
+                return modifier;
+            }
+
             internal float TotalAuraMultiplier(AuraEffectType auraType)
             {
                 if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))

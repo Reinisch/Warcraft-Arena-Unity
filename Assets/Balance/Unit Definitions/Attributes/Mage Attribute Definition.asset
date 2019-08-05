@@ -17,6 +17,4 @@ MonoBehaviour:
   baseMana: 100
   baseMaxMana: 100
   baseSpellPower: 100
-  critPercentage: 5
-  rangedCritPercentage: 5
-  spellCritPercentage: 5
+  critPercentage: 25
