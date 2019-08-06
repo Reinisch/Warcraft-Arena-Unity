@@ -84,6 +84,9 @@ MonoBehaviour:
       visualUsageType: 1
       tagType: 3
       effectSettings: {fileID: 11400000, guid: 34659681473eb62449eb11524b45a095, type: 2}
+  - spellInfo: {fileID: 11400000, guid: 31e9e8fa7baaff14a837e1702e031edc, type: 2}
+    spellIcon: {fileID: 21300000, guid: 2693df8af6e164145a5e6880e439a783, type: 3}
+    visualEffects: []
   auraVisualSettings:
   - auraInfo: {fileID: 11400000, guid: 7203cc91ffe08ff4599fbba97afacfd2, type: 2}
     auraIcon: {fileID: 21300000, guid: 9934614611b90854391b2b214683b6bb, type: 3}
@@ -101,3 +104,7 @@ MonoBehaviour:
     auraIcon: {fileID: 21300000, guid: 3955e93a0bd8b5540ab40d9349ba72c9, type: 3}
     tagType: 1
     effectSettings: {fileID: 11400000, guid: 0139fd421a8c28f46bcf61d589dc6657, type: 2}
+  - auraInfo: {fileID: 11400000, guid: 280455af3690a384ea06ebdf50e6a07b, type: 2}
+    auraIcon: {fileID: 21300000, guid: 2693df8af6e164145a5e6880e439a783, type: 3}
+    tagType: 1
+    effectSettings: {fileID: 0}

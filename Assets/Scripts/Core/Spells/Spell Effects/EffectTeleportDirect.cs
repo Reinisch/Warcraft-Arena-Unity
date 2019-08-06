@@ -7,6 +7,7 @@ using EventHandler = Common.EventHandler;
 
 namespace Core
 {
+    [UsedImplicitly, CreateAssetMenu(fileName = "Effect Teleport Direct", menuName = "Game Data/Spells/Effects/Teleport Direct", order = 5)]
     public class EffectTeleportDirect : SpellEffectInfo
     {
         [SerializeField, UsedImplicitly] private float horizontalDistance;

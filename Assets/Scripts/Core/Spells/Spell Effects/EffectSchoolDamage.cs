@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Core
 {
+    [UsedImplicitly, CreateAssetMenu(fileName = "Effect School Damage", menuName = "Game Data/Spells/Effects/School Damage", order = 4)]
     public class EffectSchoolDamage : SpellEffectInfo
     {
         [Header("School Damage")]

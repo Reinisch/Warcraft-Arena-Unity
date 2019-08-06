@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Core
 {
+    [UsedImplicitly, CreateAssetMenu(fileName = "Effect Apply Aura", menuName = "Game Data/Spells/Effects/Apply Aura", order = 1)]
     public class EffectApplyAura : SpellEffectInfo
     {
         [SerializeField, UsedImplicitly, Header("Apply Aura")] private AuraInfo auraInfo;

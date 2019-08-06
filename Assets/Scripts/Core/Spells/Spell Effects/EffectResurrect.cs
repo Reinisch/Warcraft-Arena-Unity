@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Core
 {
+    [UsedImplicitly, CreateAssetMenu(fileName = "Effect Resurrect", menuName = "Game Data/Spells/Effects/Resurrect", order = 3)]
     public class EffectResurrect : SpellEffectInfo
     {
         [SerializeField, UsedImplicitly, Header("Resurrect")] private int healthPercent = 20;

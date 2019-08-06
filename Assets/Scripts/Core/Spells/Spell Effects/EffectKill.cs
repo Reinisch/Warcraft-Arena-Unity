@@ -1,5 +1,9 @@
-﻿namespace Core
+﻿using JetBrains.Annotations;
+using UnityEngine;
+
+namespace Core
 {
+    [UsedImplicitly, CreateAssetMenu(fileName = "Effect Kill", menuName = "Game Data/Spells/Effects/Kill", order = 2)]
     public class EffectKill : SpellEffectInfo
     {
         public override float Value => 1;
