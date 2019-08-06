@@ -156,7 +156,7 @@
         NoPvpCredit = 159,
         ModHealthRegenInCombat = 161,
         PowerBurn = 162,
-        ModCritDamageBonus = 163,
+        ModifyCritDamageBonus = 163,
         MeleeAttackPowerAttackerBonus = 165,
         ModAttackPowerPct = 166,
         ModRangedAttackPowerPct = 167,

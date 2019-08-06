@@ -91,7 +91,7 @@ namespace Core
                 if (!spellInfo.HasAttribute(SpellExtraAttributes.FixedDamage) && crit)
                 {
                     damageInfo.HitInfo |= HitType.CriticalHit;
-                    damage = SpellCriticalDamageBonus(spellInfo, damage);
+                    damage = CalculateSpellCriticalDamage(spellInfo, damage);
                 }
 
                 if (damage > 0)
@@ -209,29 +209,30 @@ namespace Core
                 return (int)(2 * healing * unit.TotalAuraMultiplier(AuraEffectType.ModCriticalHealingAmount));
             }
 
-            internal int SpellCriticalDamageBonus(SpellInfo spellInfo, int damage)
+            internal int CalculateSpellCriticalDamage(SpellInfo spellInfo, int damage)
             {
-                int critBonus = damage;
+                int critBonus = 0;
                 float critModifier = 0.0f;
 
                 switch (spellInfo.DamageClass)
                 {
                     case SpellDamageClass.Melee:
                     case SpellDamageClass.Ranged:
-                        critBonus += damage / 2;
+                        critBonus = damage / 2;
                         break;
                     case SpellDamageClass.Magic:
                     case SpellDamageClass.None:
-                        critBonus += damage;
+                        critBonus = damage;
                         break;
                 }
 
-                critModifier += (unit.TotalAuraMultiplier(AuraEffectType.ModCritDamageBonus) - 1.0f) * 100.0f;
+                critModifier += (unit.TotalAuraMultiplier(AuraEffectType.ModifyCritDamageBonus) - 1.0f) * 100.0f;
+                critModifier = Mathf.Clamp(critModifier, -100.0f, float.MaxValue);
 
-                if (critModifier > 0.0f)
+                if (!Mathf.Approximately(critModifier, 0.0f))
                     critBonus = critBonus.AddPercentage(critModifier);
 
-                return Mathf.Max(0, critBonus);
+                return Mathf.Max(0, damage + critBonus);
             }
 
             internal bool IsImmunedToDamage(SpellInfo spellInfo) { return false; }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core.AuraEffects
 {
-    [UsedImplicitly, CreateAssetMenu(fileName = "Aura Effect Increase Speed", menuName = "Game Data/Spells/Auras/Effects/Speed Increase", order = 1)]
+    [UsedImplicitly, CreateAssetMenu(fileName = "Aura Effect Increase Speed", menuName = "Game Data/Spells/Auras/Effects/Speed Increase", order = 2)]
     public class AuraEffectInfoIncreaseSpeed : AuraEffectInfo
     {
         [SerializeField, UsedImplicitly, Range(1.0f, 500.0f)] private float increasePercent;
