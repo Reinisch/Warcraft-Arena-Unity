@@ -229,7 +229,7 @@ namespace Core
         {
             ExecutionState = SpellExecutionState.Casting;
 
-            CastTime = SpellInfo.CastTime;
+            CastTime = Caster.Spells.ModifySpellCastTime(SpellInfo, SpellInfo.CastTime);
             CastTimeLeft = CastTime;
 
             // cast if needed, if already casting launch instead, should only be possible with CanCastWhileCasting

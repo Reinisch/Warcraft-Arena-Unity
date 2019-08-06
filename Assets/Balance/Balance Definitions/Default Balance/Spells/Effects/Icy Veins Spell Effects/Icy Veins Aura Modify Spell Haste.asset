@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52403191ebd261a449ef9d695a4eba05, type: 3}
-  m_Name: Icy Veins Aura Modify Crit Damage Bonus
+  m_Script: {fileID: 11500000, guid: e744fa6fbe31085439f4e9929b8552cd, type: 3}
+  m_Name: Icy Veins Aura Modify Spell Haste
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
-  critDamagePercentageMultiplier: 50
+  castTimePercentageModifier: -50

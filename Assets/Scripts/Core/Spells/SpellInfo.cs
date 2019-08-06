@@ -245,24 +245,6 @@ namespace Core
             return range;
         }
 
-        public int CalcCastTime(byte level = 0, Spell spell = null)
-        {
-            int resultCastTime = CastTime;
-            if (resultCastTime <= 0)
-                return 0;
-
-            if(spell != null)
-                resultCastTime = spell.Caster.Spells.ModifySpellCastTime(this, resultCastTime, spell);
-
-            if (resultCastTime < MinCastTime)
-                resultCastTime = MinCastTime;
-
-            if (resultCastTime < 0)
-                resultCastTime = 0;
-
-            return resultCastTime > 0 ? resultCastTime : 0;
-        }
-
         public List<SpellResourceCost> CalcPowerCost(Unit caster, SpellSchoolMask schoolMask)
         {
             var powers = PowerCosts;

@@ -24,3 +24,4 @@ MonoBehaviour:
   attributes: 0
   auraEffects:
   - {fileID: 11400000, guid: 03aaa010e25927e4497908ba8c4e952e, type: 2}
+  - {fileID: 11400000, guid: 21763f2016a23664c81e2b1fbb177d7b, type: 2}

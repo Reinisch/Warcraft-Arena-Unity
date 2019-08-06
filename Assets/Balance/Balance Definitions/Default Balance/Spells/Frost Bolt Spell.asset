@@ -30,8 +30,8 @@ MonoBehaviour:
   cooldownTime: 0
   categoryCooldownTime: 0
   globalCooldownTime: 500
-  castTime: 800
-  minCastTime: 0
+  castTime: 1200
+  minCastTime: 500
   minRangeHostile: 0
   minRangeFriend: 0
   maxRangeHostile: 30

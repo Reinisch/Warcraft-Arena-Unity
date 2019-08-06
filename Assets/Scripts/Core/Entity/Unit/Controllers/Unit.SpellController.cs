@@ -251,7 +251,22 @@ namespace Core
 
             internal int ModifyAuraDuration(AuraInfo auraInfo, Unit target, int duration) { return duration; }
 
-            internal int ModifySpellCastTime(SpellInfo spellInfo, int castTime, Spell spell = null) { return castTime; }
+            internal int ModifySpellCastTime(SpellInfo spellInfo, int castTime)
+            {
+                int resultCastTime = castTime;
+                if (resultCastTime <= 0)
+                    return 0;
+
+                resultCastTime = Mathf.RoundToInt(castTime * unit.Attributes.ModHaste.Value);
+
+                if (resultCastTime < spellInfo.MinCastTime)
+                    resultCastTime = spellInfo.MinCastTime;
+
+                if (resultCastTime < 0)
+                    resultCastTime = 0;
+
+                return resultCastTime;
+            }
         }
     }
 }

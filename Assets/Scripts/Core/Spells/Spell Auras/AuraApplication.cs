@@ -39,7 +39,9 @@ namespace Core
             if (!handleGroups.Contains(effectToHandle.HandleGroup))
             {
                 Aura.Effects[auraEffectIndex].HandleEffect(this, AuraEffectHandleMode.Normal, apply);
-                handleGroups.Add(effectToHandle.HandleGroup);
+
+                if (effectToHandle.HandleGroup != AuraEffectHandleGroup.Unique)
+                    handleGroups.Add(effectToHandle.HandleGroup);
             }
         }
     }
