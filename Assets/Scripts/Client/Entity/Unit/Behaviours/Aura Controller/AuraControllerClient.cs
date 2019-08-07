@@ -68,6 +68,7 @@ namespace Client
             Unit.RemoveCallback($"{nameof(IUnitState.VisibleAuras)}[]", OnVisibleAurasChanged);
             changedSlots.Fill(false);
             auraSlots.Fill(null);
+            activeAuras.Clear();
 
             base.OnDetach();
         }
