@@ -81,7 +81,7 @@ namespace Core
 
         public void SetTarget(Unit target)
         {
-            Attributes.UpdateTarget(newTarget:target);
+            Attributes.UpdateTarget(newTarget: target, updateState: World.HasServerLogic);
         }
 
         public void Handle(PlayerSpeedRateChangedEvent speedChangeEvent)
