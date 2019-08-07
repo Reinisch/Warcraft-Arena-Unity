@@ -16,7 +16,8 @@
         {
             base.SceneLoadLocalDone(map);
 
-            World.MapManager.InitializeLoadedMap(1);
+            if (BoltNetwork.IsConnected)
+                World.MapManager.InitializeLoadedMap(1);
         }
     }
 }

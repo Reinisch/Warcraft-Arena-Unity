@@ -121,7 +121,8 @@ namespace Game
         {
             base.SceneLoadLocalDone(map);
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, map, networkingMode);
+            if(BoltNetwork.IsConnected)
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, map, networkingMode);
         }
 
         public override void Connected(BoltConnection connection)
@@ -141,7 +142,9 @@ namespace Game
 
             if (networkingMode == GameManager.NetworkingMode.Client)
             {
-                Debug.LogError("Disconnected: reason: " + connection.DisconnectReason + " from " + connection);
+                StopAllCoroutines();
+
+                Debug.LogError("Disconnected: reason: " + connection.DisconnectReason);
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, connection.DisconnectReason);
             }
         }

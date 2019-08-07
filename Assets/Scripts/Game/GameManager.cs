@@ -137,7 +137,7 @@ namespace Game
 
         private void ProcessDisconnect(DisconnectReason disconnectReason)
         {
-            worldManager.Dispose();
+            worldManager?.Dispose();
             worldManager = null;
 
             HasServerLogic = false;
