@@ -98,7 +98,8 @@ namespace Core
                     unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
                     unit.AddCallback(nameof(IUnitState.Health), OnHealthStateChanged);
                     unit.AddCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
-                    unit.AddCallback(nameof(IUnitState.Faction), OnFactionChanged);
+                    unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
+                    unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
 
                 unit.World.UnitManager.EventEntityDetach += OnEntityDetach;
@@ -145,7 +146,8 @@ namespace Core
                     unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
                     unit.RemoveCallback(nameof(IUnitState.Health), OnHealthStateChanged);
                     unit.RemoveCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
-                    unit.RemoveCallback(nameof(IUnitState.Faction), OnFactionChanged);
+                    unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
+                    unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
 
                 unitState = null;
@@ -242,9 +244,15 @@ namespace Core
                 UpdateTarget(unitState.TargetId.PackedValue);
             }
 
-            private void OnFactionChanged()
+            private void OnFactionIdChanged()
             {
                 Faction = unit.Balance.FactionsById[unitState.Faction.Id];
+
+                EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
+            }
+
+            private void OnFactionFreeForAllChanged()
+            {
                 FreeForAll = unitState.Faction.FreeForAll;
 
                 EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
