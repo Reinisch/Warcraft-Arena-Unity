@@ -6,5 +6,6 @@
         SpeedChange = 1,
         RootStateChange = 2,
         BasicModifier = 3,
+        PeriodicDamage = 4,
     }
 }

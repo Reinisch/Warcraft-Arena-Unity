@@ -23,7 +23,7 @@ namespace Core
 
             EffectsToApply = auraEffectMask;
 
-            Logging.LogAura($"Created new application for target: {target.Name} for aura: {Aura.Info.name}, current count: {++ApplicationAliveCount}");
+            Logging.LogAura($"Created new application for target: {target.Name} for aura: {Aura.AuraInfo.name}, current count: {++ApplicationAliveCount}");
         }
 
         ~AuraApplication()

@@ -9,8 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59b09348badfe3745a62b94099ca0063, type: 3}
-  m_Name: Living Bomb Aura Decrease Speed
+  m_Script: {fileID: 11500000, guid: d045db0cacab33d4799982e5c41253f8, type: 3}
+  m_Name: Living Bomb Aura Periodic Damage
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
-  decreasePercent: 10
+  period: 500
+  startPeriodicOnApply: 1
+  baseValue: 50
+  additionalValue: 10
+  schoolMask: 4
+  calculationType: 1
+  conditionalModifiers: []

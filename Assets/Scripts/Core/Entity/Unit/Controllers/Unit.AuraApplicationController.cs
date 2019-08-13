@@ -104,16 +104,16 @@ namespace Core
                 return modifier;
             }
 
-            internal void RefreshOrCreateAura(AuraInfo auraInfo, Unit originalCaster)
+            internal void RefreshOrCreateAura(AuraInfo auraInfo, SpellInfo spellInfo, Unit originalCaster)
             {
                 var ownedAura = FindOwnedAura();
 
-                if (ownedAura != null && ownedAura.Info.HasAttribute(AuraAttributes.StackSameAuraInMultipleSlots))
+                if (ownedAura != null && ownedAura.AuraInfo.HasAttribute(AuraAttributes.StackSameAuraInMultipleSlots))
                     ownedAura = null;
 
                 if (ownedAura == null)
                 {
-                    ownedAura = new Aura(auraInfo, unit, originalCaster);
+                    ownedAura = new Aura(auraInfo, spellInfo, unit, originalCaster);
                     AddOwnedAura(ownedAura);
                 }
 
@@ -121,7 +121,7 @@ namespace Core
                     return;
 
                 int duration = ownedAura.MaxDuration;
-                duration = originalCaster.Spells.ModifyAuraDuration(ownedAura.Info, unit, duration);
+                duration = originalCaster.Spells.ModifyAuraDuration(ownedAura.AuraInfo, unit, duration);
 
                 if (duration != ownedAura.Duration)
                     ownedAura.UpdateDuration(duration, duration);
@@ -141,13 +141,13 @@ namespace Core
 
             internal void ApplyAuraApplication(AuraApplication auraApplication)
             {
-                Logging.LogAura($"Applying application for target: {unit.Name} for aura: {auraApplication.Aura.Info.name}");
+                Logging.LogAura($"Applying application for target: {unit.Name} for aura: {auraApplication.Aura.AuraInfo.name}");
 
                 RemoveNonStackableAuras(auraApplication.Aura);
 
                 auraApplications.Add(auraApplication);
                 auraApplicationSet.Add(auraApplication);
-                auraApplicationsByAuraId.Insert(auraApplication.Aura.Info.Id, auraApplication);
+                auraApplicationsByAuraId.Insert(auraApplication.Aura.AuraInfo.Id, auraApplication);
 
                 HandleStateContainingAura(auraApplication, true);
                 HandleInterruptableAura(auraApplication, true);
@@ -159,7 +159,7 @@ namespace Core
 
             internal void UnapplyAuraApplication(AuraApplication auraApplication, AuraRemoveMode removeMode)
             {
-                auraApplicationsByAuraId.Delete(auraApplication.Aura.Info.Id, auraApplication);
+                auraApplicationsByAuraId.Delete(auraApplication.Aura.AuraInfo.Id, auraApplication);
                 auraApplications.Remove(auraApplication);
                 auraApplicationSet.Remove(auraApplication);
 
@@ -171,38 +171,38 @@ namespace Core
                 auraApplication.RemoveMode = removeMode;
                 unit.VisibleAuras.HandleAuraApplication(auraApplication, false);
 
-                Logging.LogAura($"Unapplied application for target: {unit.Name} for aura: {auraApplication.Aura.Info.name}");
+                Logging.LogAura($"Unapplied application for target: {unit.Name} for aura: {auraApplication.Aura.AuraInfo.name}");
             }
 
             private void AddOwnedAura(Aura aura)
             {
                 ownedAuras.Add(aura);
-                ownedAurasById.Insert(aura.Info.Id, aura);
+                ownedAurasById.Insert(aura.AuraInfo.Id, aura);
 
                 RemoveNonStackableAuras(aura);
 
-                Logging.LogAura($"Added owned aura {aura.Info.name} for target: {unit.Name}");
+                Logging.LogAura($"Added owned aura {aura.AuraInfo.name} for target: {unit.Name}");
             }
 
             private void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode)
             {
                 ownedAuras.Remove(aura);
-                ownedAurasById.Delete(aura.Info.Id, aura);
+                ownedAurasById.Delete(aura.AuraInfo.Id, aura);
 
                 aura.Remove(removeMode);
 
-                Logging.LogAura($"Removed owned aura {aura.Info.name} for target: {unit.Name} with mode: {removeMode}");
+                Logging.LogAura($"Removed owned aura {aura.AuraInfo.name} for target: {unit.Name} with mode: {removeMode}");
             }
 
             private void HandleInterruptableAura(AuraApplication auraApplication, bool added)
             {
-                if (!auraApplication.Aura.Info.HasInterruptFlags)
+                if (!auraApplication.Aura.AuraInfo.HasInterruptFlags)
                     return;
 
                 if (added)
                 {
                     interruptableAuraApplications.Add(auraApplication);
-                    auraInterruptFlags |= auraApplication.Aura.Info.InterruptFlags;
+                    auraInterruptFlags |= auraApplication.Aura.AuraInfo.InterruptFlags;
                 }
                 else
                 {
@@ -210,13 +210,13 @@ namespace Core
 
                     auraInterruptFlags = 0;
                     foreach (AuraApplication interruptableAura in interruptableAuraApplications)
-                        auraInterruptFlags |= interruptableAura.Aura.Info.InterruptFlags;
+                        auraInterruptFlags |= interruptableAura.Aura.AuraInfo.InterruptFlags;
                 }
             }
 
             private void HandleStateContainingAura(AuraApplication auraApplication, bool added)
             {
-                AuraStateType stateType = auraApplication.Aura.Info.StateType;
+                AuraStateType stateType = auraApplication.Aura.AuraInfo.StateType;
                 if (stateType == AuraStateType.None)
                     return;
 

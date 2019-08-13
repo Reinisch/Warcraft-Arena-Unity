@@ -70,7 +70,7 @@ namespace Core
                         unitState.VisibleAuras[i].AuraId = 0;
                     else
                     {
-                        unitState.VisibleAuras[i].AuraId = applicationInSlot.Aura.Info.Id;
+                        unitState.VisibleAuras[i].AuraId = applicationInSlot.Aura.AuraInfo.Id;
                         unitState.VisibleAuras[i].RefreshFrame = applicationInSlot.Aura.RefreshServerFrame;
                         unitState.VisibleAuras[i].Duration = applicationInSlot.Aura.RefreshDuration;
                         unitState.VisibleAuras[i].MaxDuration = applicationInSlot.Aura.MaxDuration;

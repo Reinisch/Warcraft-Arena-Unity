@@ -12,5 +12,6 @@ namespace Core
         StackSameAuraInMultipleSlots = 1 << 4,
         StackForAnyCasters = 1 << 5,
         DeathPersistent = 1 << 6,
+        HasteAffectsDuration = 1 << 7,
     }
 }

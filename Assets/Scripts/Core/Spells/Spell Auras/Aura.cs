@@ -20,12 +20,14 @@ namespace Core
 
         internal bool Updated { get; private set; }
 
+        public IReadOnlyList<AuraApplication> Applications => applications;
         public IReadOnlyList<AuraEffectInfo> EffectsInfos => effectInfos;
         public IReadOnlyList<AuraEffect> Effects => effects;
 
         public Unit Owner { get; }
         public Unit Caster { get; }
-        public AuraInfo Info { get; }
+        public AuraInfo AuraInfo { get; }
+        public SpellInfo SpellInfo { get; }
         public ulong CasterId { get; }
 
         public int Duration { get; private set; }
@@ -36,9 +38,10 @@ namespace Core
         public bool IsRemoved { get; private set; }
         public bool IsExpired => Duration == 0;
 
-        internal Aura(AuraInfo auraInfo, Unit owner, Unit caster)
+        internal Aura(AuraInfo auraInfo, SpellInfo spellInfo, Unit owner, Unit caster)
         {
-            Info = auraInfo;
+            AuraInfo = auraInfo;
+            SpellInfo = spellInfo;
             Caster = caster;
             Owner = owner;
             CasterId = caster?.Id ?? 0;
@@ -50,7 +53,7 @@ namespace Core
             for (int index = 0; index < effectInfos.Count; index++)
                 effects.Add(effectInfos[index].CreateEffect(this, Caster, index));
 
-            Logging.LogAura($"Created aura {Info.name} for target: {Owner.Name}, current count: {++AuraAliveCount}");
+            Logging.LogAura($"Created aura {AuraInfo.name} for target: {Owner.Name}, current count: {++AuraAliveCount}");
         }
 
         ~Aura()
@@ -108,7 +111,7 @@ namespace Core
         {
             updateInvervalLeft = UpdateTargetInterval;
 
-            switch (Info.TargetingMode)
+            switch (AuraInfo.TargetingMode)
             {
                 case AuraTargetingMode.Single:
                     AddUnitToAura(Owner);
@@ -152,7 +155,7 @@ namespace Core
                 return true;
 
             bool sameCaster = CasterId == existingAura.CasterId;
-            if (!sameCaster && Info == existingAura.Info && !Info.HasAttribute(AuraAttributes.StackForAnyCasters))
+            if (!sameCaster && AuraInfo == existingAura.AuraInfo && !AuraInfo.HasAttribute(AuraAttributes.StackForAnyCasters))
                 return false;
 
             return true;
@@ -162,7 +165,7 @@ namespace Core
         {
             tempUpdatedTargets.Add(unit);
 
-            if (applicationsByTargetId.ContainsKey(unit.Id) || unit.IsImmuneToAura(Info, Caster))
+            if (applicationsByTargetId.ContainsKey(unit.Id) || unit.IsImmuneToAura(AuraInfo, Caster))
                 return;
 
             // check effect for immunity

@@ -4,27 +4,25 @@ namespace Core
 {
     public abstract class AuraEffect
     {
-        private int index;
-        private float baseValue;
-
+        public int Index { get; }
         public float Value { get; }
+        public float BaseValue { get; }
 
         public Aura Aura { get; }
         public AuraEffectInfo EffectInfo { get; }
         public abstract AuraEffectHandleGroup HandleGroup { get; }
 
-        public AuraEffect(Aura aura, AuraEffectInfo effectInfo, int index, float baseValue)
+        protected AuraEffect(Aura aura, AuraEffectInfo effectInfo, int index, float baseValue)
         {
             Aura = aura;
             EffectInfo = effectInfo;
 
-            this.index = index;
-            this.baseValue = baseValue;
-
+            Index = index;
+            BaseValue = baseValue;
             Value = baseValue;
         }
 
-        public void Update(int deltaTime)
+        public virtual void Update(int deltaTime)
         {
         }
 

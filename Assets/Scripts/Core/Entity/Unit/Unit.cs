@@ -204,6 +204,8 @@ namespace Core
 
         internal bool IsImmunedToDamage(SpellInfo spellInfo) => Spells.IsImmunedToDamage(spellInfo);
 
+        internal bool IsImmunedToDamage(AuraInfo auraInfo) => Spells.IsImmunedToDamage(auraInfo);
+
         internal bool IsImmuneToSpell(SpellInfo spellInfo, Unit caster) => Spells.IsImmuneToSpell(spellInfo, caster);
 
         internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster) => Spells.IsImmuneToAura(auraInfo, caster);

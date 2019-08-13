@@ -65,8 +65,8 @@ namespace Core
 
             if (OriginalCaster != null)
             {
-                spellDamage += OriginalCaster.Spells.SpellDamageBonusDone(target, SpellInfo, spellDamage, SpellDamageType.Direct, effect);
-                spellDamage = target.Spells.SpellDamageBonusTaken(OriginalCaster, SpellInfo, spellDamage, SpellDamageType.Direct, effect);
+                spellDamage = OriginalCaster.Spells.SpellDamageBonusDone(target, SpellInfo, spellDamage, SpellDamageType.Direct);
+                spellDamage = target.Spells.SpellDamageBonusTaken(OriginalCaster, SpellInfo, spellDamage, SpellDamageType.Direct);
             }
 
             for (var i = 0; i < effect.ConditionalModifiers.Count; i++)

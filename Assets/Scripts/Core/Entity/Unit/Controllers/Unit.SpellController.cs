@@ -146,15 +146,18 @@ namespace Core
 
             internal Unit GetMeleeHitRedirectTarget(Unit victim, SpellInfo spellInfo = null) { return null; }
 
-            internal int SpellDamageBonusDone(Unit victim, SpellInfo spellInfo, float damage, SpellDamageType damageType, SpellEffectInfo effect, uint stack = 1) { return 0; }
+            internal int SpellDamageBonusDone(Unit victim, SpellInfo spellInfo, float damage, SpellDamageType damageType, uint stack = 1)
+            {
+                return (int)damage;
+            }
 
             internal void ApplySpellModifier(SpellInfo spellInfo, SpellModifierType modifierType, ref int value) { }
 
             internal void ApplySpellModifier(SpellInfo spellInfo, SpellModifierType modifierType, ref float value) { }
 
-            internal float SpellDamageBonusTaken(Unit caster, SpellInfo spellInfo, float damage, SpellDamageType damageType, SpellEffectInfo effect, uint stack = 1)
+            internal int SpellDamageBonusTaken(Unit caster, SpellInfo spellInfo, float damage, SpellDamageType damageType, uint stack = 1)
             {
-                return damage;
+                return (int)damage;
             }
 
             internal uint SpellHealingBonusDone(Unit victim, SpellInfo spellInfo, uint healAmount, SpellDamageType damageType, SpellEffectInfo effect, uint stack = 1) { return 0; }
@@ -236,6 +239,8 @@ namespace Core
             }
 
             internal bool IsImmunedToDamage(SpellInfo spellInfo) { return false; }
+
+            internal bool IsImmunedToDamage(AuraInfo auraInfo) { return false; }
 
             internal bool IsImmuneToSpell(SpellInfo spellInfo, Unit caster) { return false; }
 
