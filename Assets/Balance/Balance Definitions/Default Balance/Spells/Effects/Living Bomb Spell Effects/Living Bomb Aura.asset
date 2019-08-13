@@ -21,6 +21,6 @@ MonoBehaviour:
   stateType: 0
   targetingMode: 1
   interruptFlags: 0
-  attributes: 0
+  attributes: 128
   auraEffects:
   - {fileID: 11400000, guid: 034f6c38bbe4a04479279dbda7917e37, type: 2}
