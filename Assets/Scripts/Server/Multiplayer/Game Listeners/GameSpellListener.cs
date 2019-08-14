@@ -10,7 +10,7 @@ namespace Server
         internal GameSpellListener(WorldServerManager worldServerManager) : base(worldServerManager)
         {
             EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
-            EventHandler.RegisterEvent<Unit, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
+            EventHandler.RegisterEvent<Unit, Vector3, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.RegisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
             EventHandler.RegisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
@@ -19,7 +19,7 @@ namespace Server
         internal override void Dispose()
         {
             EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
-            EventHandler.UnregisterEvent<Unit, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
+            EventHandler.UnregisterEvent<Unit, Vector3, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.UnregisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
             EventHandler.UnregisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
@@ -43,11 +43,12 @@ namespace Server
             unitSpellDemageEvent.Send();
         }
 
-        private void OnServerSpellLaunch(Unit caster, SpellInfo spellInfo, IProtocolToken processingToken)
+        private void OnServerSpellLaunch(Unit caster, Vector3 source, SpellInfo spellInfo, IProtocolToken processingToken)
         {
             UnitSpellLaunchEvent unitCastEvent = UnitSpellLaunchEvent.Create(caster.BoltEntity, EntityTargets.Everyone);
             unitCastEvent.SpellId = spellInfo.Id;
             unitCastEvent.ProcessingEntries = processingToken;
+            unitCastEvent.Source = source;
             unitCastEvent.Send();
 
             SpellCastRequestAnswerEvent spellCastAnswer = caster.IsController
@@ -57,6 +58,7 @@ namespace Server
             spellCastAnswer.SpellId = spellInfo.Id;
             spellCastAnswer.Result = (int) SpellCastResult.Success;
             spellCastAnswer.ProcessingEntries = processingToken;
+            spellCastAnswer.Source = source;
             spellCastAnswer.Send();
         }
 

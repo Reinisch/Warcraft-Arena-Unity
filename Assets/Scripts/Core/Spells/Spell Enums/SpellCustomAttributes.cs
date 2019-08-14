@@ -16,10 +16,10 @@ namespace Core
         Charge = 1 << 8,
         Pickpocket = 1 << 0,
         Negative = 1 << 10,
-        IgnoreArmor = 1 << 11,
+        CastWithoutAnimation = 1 << 11,
         ReqTargetFacingCaster = 1 << 12,
         ReqCasterBehindTarget = 1 << 13,
         AllowInFlightTarget = 1 << 14,
-        NeedsAmmoData = 1 << 15,
+        LaunchSourceIsExplicit = 1 << 15,
     }
 }

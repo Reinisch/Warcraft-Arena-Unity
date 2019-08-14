@@ -17,7 +17,6 @@ namespace Core
 
         private SpellExplicitTargets ExplicitTargets { get; }
         private SpellImplicitTargets ImplicitTargets { get; }
-
         private int CastTimeLeft { get; set; }
         private int EffectDamage { get; set; }
         private int EffectHealing { get; set; }
@@ -255,7 +254,7 @@ namespace Core
 
             ImplicitTargets.HandleLaunch(out bool isDelayed, out SpellProcessingToken processingToken);
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, SpellInfo, processingToken);
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, ExplicitTargets.Source, SpellInfo, processingToken);
 
             if (!isDelayed)
             {
@@ -354,6 +353,8 @@ namespace Core
         
         private void PrepareExplicitTarget()
         {
+            ExplicitTargets.Source = Caster.Position;
+
             // initializes client-provided targets, corrects and automatically attempts to set required target.
             bool targetsUnits = SpellInfo.ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask);
 
@@ -372,6 +373,9 @@ namespace Core
                 if (ExplicitTargets.Target == null && SpellInfo.ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitAlly))
                     ExplicitTargets.Target = Caster;
             }
+
+            if (ExplicitTargets.Target != null && SpellInfo.HasAttribute(SpellCustomAttributes.LaunchSourceIsExplicit))
+                ExplicitTargets.Source = ExplicitTargets.Target.Position;
         }
 
         private void SelectImplicitTargets()

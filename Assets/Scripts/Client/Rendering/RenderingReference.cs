@@ -69,7 +69,7 @@ namespace Client
                 world.UnitManager.EventEntityDetach += OnEventEntityDetach;
 
                 EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
-                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
 
                 nameplateController.Initialize();
                 floatingTextController.Initialize();
@@ -88,7 +88,7 @@ namespace Client
                 spellVisualController.Deinitialize();
 
                 EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
-                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
 
                 world.UnitManager.EventEntityAttached -= OnEventEntityAttached;
                 world.UnitManager.EventEntityDetach -= OnEventEntityDetach;
@@ -135,12 +135,16 @@ namespace Client
             floatingTextController.SpawnDamageText(targetRenderer, damageAmount, isCrit);
         }
 
-        private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken)
+        private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken, Vector3 source)
         {
+            if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
+                return;
+
             if (!unitRenderersById.TryGetValue(caster.Id, out UnitRenderer casterRenderer))
                 return;
 
-            casterRenderer.TriggerInstantCast();
+            if (!spellInfo.HasAttribute(SpellCustomAttributes.CastWithoutAnimation))
+                casterRenderer.TriggerInstantCast();
 
             if (!SpellVisualSettingsById.TryGetValue(spellId, out SpellVisualSettings spellVisuals))
                 return;

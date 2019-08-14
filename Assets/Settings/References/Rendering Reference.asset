@@ -90,6 +90,9 @@ MonoBehaviour:
   - spellInfo: {fileID: 11400000, guid: b1e257063d9cca242850b0dfa3ffe7b7, type: 2}
     spellIcon: {fileID: 21300000, guid: ab63ff2eaa8f07d4b9841a56aabac7f1, type: 3}
     visualEffects: []
+  - spellInfo: {fileID: 11400000, guid: 5392bb18832ef55419933fd4c8fca00e, type: 2}
+    spellIcon: {fileID: 21300000, guid: ab63ff2eaa8f07d4b9841a56aabac7f1, type: 3}
+    visualEffects: []
   auraVisualSettings:
   - auraInfo: {fileID: 11400000, guid: 7203cc91ffe08ff4599fbba97afacfd2, type: 2}
     auraIcon: {fileID: 21300000, guid: 9934614611b90854391b2b214683b6bb, type: 3}
