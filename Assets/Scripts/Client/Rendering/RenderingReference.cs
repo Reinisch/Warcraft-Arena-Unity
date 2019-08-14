@@ -155,7 +155,11 @@ namespace Client
                         spellVisualController.SpawnVisual(casterRenderer, targetRenderer, settings, processingToken.ServerFrame, entry.Item2);
 
             if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Cast, out EffectSpellSettings spellVisualEffect))
-                spellVisualEffect.EffectSettings.PlayEffect(caster.Position, caster.Rotation)?.ApplyPositioning(casterRenderer.TagContainer, spellVisualEffect);
+            {
+                IEffectEntity effectEntity = spellVisualEffect.EffectSettings.PlayEffect(source + Vector3.up, caster.Rotation);
+                if (effectEntity != null && !spellInfo.HasAttribute(SpellCustomAttributes.LaunchSourceIsExplicit))
+                    effectEntity.ApplyPositioning(casterRenderer.TagContainer, spellVisualEffect);
+            }
         }
 
         private void OnEventEntityAttached(WorldEntity worldEntity)
