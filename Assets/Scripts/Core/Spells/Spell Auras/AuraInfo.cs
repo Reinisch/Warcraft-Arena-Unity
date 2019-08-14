@@ -20,6 +20,7 @@ namespace Core
         [SerializeField, UsedImplicitly, EnumFlag] private AuraInterruptFlags interruptFlags;
         [SerializeField, UsedImplicitly, EnumFlag] private AuraAttributes attributes;
         [SerializeField, UsedImplicitly] private List<AuraEffectInfo> auraEffects;
+        [SerializeField, UsedImplicitly] private List<AuraScriptable> auraScriptables;
 
         public new int Id => base.Id;
         public int Duration => duration;
@@ -29,6 +30,8 @@ namespace Core
         public AuraTargetingMode TargetingMode => targetingMode;
         public AuraInterruptFlags InterruptFlags => interruptFlags;
         public IReadOnlyList<AuraEffectInfo> AuraEffects => auraEffects;
+
+        internal IReadOnlyList<AuraScriptable> AuraScriptables => auraScriptables;
 
         public bool HasAttribute(AuraAttributes attribute)
         {

@@ -44,8 +44,11 @@ namespace Core
             Caster = OriginalCaster = caster;
             SpellInfo = info;
 
+            if (spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
+                spellCastFlags |= SpellCastFlags.IgnoreTargetCheck | SpellCastFlags.IgnoreRangeCheck;
+
             if (info.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
-                spellCastFlags = spellCastFlags | SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
+                spellCastFlags |= SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
 
             if (info.HasAttribute(SpellExtraAttributes.IgnoreGcd))
                 spellCastFlags |= SpellCastFlags.IgnoreGcd;
@@ -152,10 +155,6 @@ namespace Core
             PrepareExplicitTarget();
 
             SpellCastResult result = ValidateCast();
-
-            if (spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreTargetCheck) && result == SpellCastResult.BadTargets)
-                result = SpellCastResult.Success;
-
             if (result != SpellCastResult.Success)
                 return result;
 
@@ -276,6 +275,9 @@ namespace Core
 
         private SpellCastResult ValidateCast()
         {
+            if (spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
+                return SpellCastResult.Success;
+
             // check death state
             if (!Caster.IsAlive && !SpellInfo.IsPassive() && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileDead))
                 return SpellCastResult.CasterDead;
@@ -296,15 +298,18 @@ namespace Core
             if (castResult != SpellCastResult.Success)
                 return castResult;
 
-            castResult = SpellInfo.CheckExplicitTarget(Caster, ExplicitTargets.Target);
-            if (castResult != SpellCastResult.Success)
-                return castResult;
-
-            if (ExplicitTargets.Target != null)
+            if (!spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreTargetCheck))
             {
-                castResult = SpellInfo.CheckTarget(Caster, ExplicitTargets.Target, this, false);
+                castResult = SpellInfo.CheckExplicitTarget(Caster, ExplicitTargets.Target);
                 if (castResult != SpellCastResult.Success)
                     return castResult;
+
+                if (ExplicitTargets.Target != null)
+                {
+                    castResult = SpellInfo.CheckTarget(Caster, ExplicitTargets.Target, this, false);
+                    if (castResult != SpellCastResult.Success)
+                        return castResult;
+                }
             }
 
             return SpellCastResult.Success;
@@ -312,6 +317,9 @@ namespace Core
 
         private SpellCastResult ValidateRange()
         {
+            if (spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreRangeCheck))
+                return SpellCastResult.Success;
+
             if (SpellInfo.ExplicitTargetType != SpellExplicitTargetType.Target || ExplicitTargets.Target == null || ExplicitTargets.Target == Caster)
                 return SpellCastResult.Success;
 
@@ -467,16 +475,16 @@ namespace Core
 
         private void SelectImplicitTargetsInArea(SpellEffectInfo effect, int effectIndex, TargetingType targetingType, int effMask)
         {
-            Unit referer = null;
+            Unit targetReference = null;
             switch (targetingType.ReferenceType)
             {
                 case SpellTargetReferences.Source:
                 case SpellTargetReferences.Dest:
                 case SpellTargetReferences.Caster:
-                    referer = Caster;
+                    targetReference = Caster;
                     break;
                 case SpellTargetReferences.Target:
-                    referer = ExplicitTargets.Target;
+                    targetReference = ExplicitTargets.Target;
                     break;
                 case SpellTargetReferences.Last:
                     {
@@ -484,7 +492,7 @@ namespace Core
                         {
                             if (ImplicitTargets.Entries[i].EffectMask.HasBit(effectIndex))
                             {
-                                referer = ImplicitTargets.Entries[i].Target;
+                                targetReference = ImplicitTargets.Entries[i].Target;
                                 break;
                             }
                         }
@@ -494,7 +502,7 @@ namespace Core
                     return;
             }
 
-            if (referer == null)
+            if (targetReference == null)
                 return;
 
             Vector3 center;
@@ -505,7 +513,7 @@ namespace Core
                 case SpellTargetReferences.Caster:
                 case SpellTargetReferences.Target:
                 case SpellTargetReferences.Last:
-                    center = referer.Position;
+                    center = targetReference.Position;
                     break;
                 default:
                     throw new NotImplementedException($"Not implemented AreaTargets with {targetingType.ReferenceType} for {targetingType.TargetEntities}");
@@ -513,7 +521,7 @@ namespace Core
 
             List<Unit> targets = new List<Unit>();
             float radius = effect.CalcRadius(Caster, this);
-            Caster.Map.SearchAreaTargets(targets, radius, center, referer, targetingType.SelectionCheckType);
+            Caster.Map.SearchAreaTargets(targets, radius, center, Caster, targetingType.SelectionCheckType);
 
             foreach (var unit in targets)
                 ImplicitTargets.AddTargetIfNotExists(unit);

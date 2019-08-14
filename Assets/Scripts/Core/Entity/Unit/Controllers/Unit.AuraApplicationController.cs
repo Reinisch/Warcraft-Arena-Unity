@@ -155,6 +155,9 @@ namespace Core
 
                 auraApplication.Aura.RegisterForTarget(unit, auraApplication);
                 unit.VisibleAuras.HandleAuraApplication(auraApplication, true);
+
+                for (int i = 0; i < auraApplication.Aura.AuraInfo.AuraScriptables.Count; i++)
+                    auraApplication.Aura.AuraInfo.AuraScriptables[i].AuraApplicationApplied(auraApplication);
             }
 
             internal void UnapplyAuraApplication(AuraApplication auraApplication, AuraRemoveMode removeMode)
@@ -170,6 +173,9 @@ namespace Core
                 auraApplication.Aura.UnregisterForTarget(unit, auraApplication);
                 auraApplication.RemoveMode = removeMode;
                 unit.VisibleAuras.HandleAuraApplication(auraApplication, false);
+
+                for (int i = 0; i < auraApplication.Aura.AuraInfo.AuraScriptables.Count; i++)
+                    auraApplication.Aura.AuraInfo.AuraScriptables[i].AuraApplicationRemoved(auraApplication);
 
                 Logging.LogAura($"Unapplied application for target: {unit.Name} for aura: {auraApplication.Aura.AuraInfo.name}");
             }

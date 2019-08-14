@@ -21,7 +21,8 @@ namespace Core
         IgnoreCasterAuras = 1 << 13,
         DisallowProcEvents = 1 << 14,
         DontReportCastError = 1 << 15,
-        IgnoreEquippedItemRequirement = 1 << 16,
-        IgnoreTargetCheck = 1 << 17
+        IgnoreRangeCheck = 1 << 16,
+        IgnoreTargetCheck = 1 << 17,
+        TriggeredByAura = 1 << 18
     }
 }
