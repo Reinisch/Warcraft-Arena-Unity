@@ -36,7 +36,7 @@ namespace Core.AuraEffects
                     if (caster == null)
                         break;
 
-                    baseDamage = (additionalValue + caster.SpellPower.ApplyPercentage(baseValue));
+                    baseDamage = additionalValue + caster.SpellPower.ApplyPercentage(baseValue);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(calculationType), $"Unknown damage calculation type: {calculationType}");

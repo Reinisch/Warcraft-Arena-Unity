@@ -320,6 +320,9 @@ namespace Core
 
             if (IsDead && SpellCast.IsCasting)
                 SpellCast.Cancel();
+
+            if (newState == DeathState.Dead)
+                Auras.RemoveNonDeathPersistentAuras();
         }
 
         internal int ModifyHealth(int delta)

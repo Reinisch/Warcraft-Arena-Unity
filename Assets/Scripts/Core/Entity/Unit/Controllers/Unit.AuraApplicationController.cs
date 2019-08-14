@@ -174,6 +174,13 @@ namespace Core
                 Logging.LogAura($"Unapplied application for target: {unit.Name} for aura: {auraApplication.Aura.AuraInfo.name}");
             }
 
+            internal void RemoveNonDeathPersistentAuras()
+            {
+                for (int i = ownedAuras.Count - 1; i >= 0; i--)
+                    if (!ownedAuras[i].AuraInfo.HasAttribute(AuraAttributes.DeathPersistent))
+                        RemoveOwnedAura(ownedAuras[0], AuraRemoveMode.Death);
+            }
+
             private void AddOwnedAura(Aura aura)
             {
                 ownedAuras.Add(aura);
