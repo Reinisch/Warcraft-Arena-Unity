@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 496c2a810048b7b4bae7cca511a438a5, type: 3}
-  m_Name: Effect Settings - Fire Nova
+  m_Name: Effect Settings - Living Bomb Area
   m_EditorClassIdentifier: 
   reference: {fileID: 11400000, guid: 51440bf8a2e490643b370222e6272106, type: 2}
-  prototype: {fileID: 2775892212625397497, guid: 09a9a5e8b0d1e4a4eb09f5f992ae2647,
+  prototype: {fileID: 8482667921972997547, guid: 4e925d80b4490d14ba372b4c4555bd3e,
     type: 3}
   maxAmount: 10

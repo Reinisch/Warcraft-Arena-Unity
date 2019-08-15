@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Living Bomb Aura
   m_EditorClassIdentifier: 
   id: 6
-  duration: 12000
-  maxDuration: 12000
+  duration: 5000
+  maxDuration: 5000
   maxStack: 1
   maxCharges: 1
   baseCharges: 1

@@ -26,7 +26,7 @@ MonoBehaviour:
     directionType: 0
   explicitTargetType: 0
   minRadius: 0
-  maxRadius: 10
+  maxRadius: 8
   baseValue: 400
   baseVariance: 100
   additionalValue: 0
