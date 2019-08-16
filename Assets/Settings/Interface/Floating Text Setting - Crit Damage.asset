@@ -15,7 +15,7 @@ MonoBehaviour:
   lifeTime: 1.2
   randomOffset: 0.5
   floatingSpeed: 1
-  fontSize: 5
+  fontSize: 4
   fontColor: {r: 1, g: 0.7623552, b: 0.21568626, a: 1}
   sizeOverTime:
     serializedVersion: 2

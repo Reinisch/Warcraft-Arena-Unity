@@ -70,6 +70,7 @@ namespace Client
 
                 EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.RegisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
 
                 nameplateController.Initialize();
                 floatingTextController.Initialize();
@@ -89,6 +90,7 @@ namespace Client
 
                 EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
 
                 world.UnitManager.EventEntityAttached -= OnEventEntityAttached;
                 world.UnitManager.EventEntityDetach -= OnEventEntityDetach;
@@ -159,6 +161,21 @@ namespace Client
                 IEffectEntity effectEntity = spellVisualEffect.EffectSettings.PlayEffect(source + Vector3.up, caster.Rotation);
                 if (effectEntity != null && !spellInfo.HasAttribute(SpellCustomAttributes.LaunchSourceIsExplicit))
                     effectEntity.ApplyPositioning(casterRenderer.TagContainer, spellVisualEffect);
+            }
+        }
+
+        private void OnSpellHit(Unit target, int spellId)
+        {
+            if (!unitRenderersById.TryGetValue(target.Id, out UnitRenderer targetRenderer))
+                return;
+
+            if (!SpellVisualSettingsById.TryGetValue(spellId, out SpellVisualSettings spellVisuals))
+                return;
+
+            if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Impact, out EffectSpellSettings spellVisualEffect))
+            {
+                IEffectEntity effectEntity = spellVisualEffect.EffectSettings.PlayEffect(target.Position, target.Rotation);
+                effectEntity?.ApplyPositioning(targetRenderer.TagContainer, spellVisualEffect);
             }
         }
 
