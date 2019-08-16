@@ -1,12 +1,11 @@
-﻿using System;
-using Core;
+﻿using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client.Spells
 {
-    [Serializable]
-    public class AuraVisualSettings : IEffectPositionerSettings
+    [UsedImplicitly, CreateAssetMenu(fileName = "Aura Effect Settings", menuName = "Game Data/Visuals/Aura Effect Settings", order = 3)]
+    public class AuraEffectSettings : ScriptableObject, IEffectPositionerSettings
     {
         [SerializeField, UsedImplicitly] private AuraInfo auraInfo;
         [SerializeField, UsedImplicitly] private Sprite auraIcon;
@@ -22,3 +21,4 @@ namespace Client.Spells
         public bool KeepAliveWithNoParticles => true;
     }
 }
+

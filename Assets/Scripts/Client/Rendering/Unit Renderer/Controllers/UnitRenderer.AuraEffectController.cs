@@ -65,18 +65,18 @@ namespace Client
                 if (effectByAuraId.ContainsKey(visibleAura.AuraId))
                     return;
 
-                if (!unitRenderer.rendering.AuraVisualSettingsById.TryGetValue(visibleAura.AuraId, out AuraVisualSettings auraVisualSettings))
+                if (!unitRenderer.rendering.AuraVisualSettingsById.TryGetValue(visibleAura.AuraId, out AuraEffectSettings settings))
                     return;
 
-                if (auraVisualSettings.EffectSettings == null)
+                if (settings.EffectSettings == null)
                     return;
 
                 Vector3 effectDirection = Vector3.ProjectOnPlane(unitRenderer.transform.forward, Vector3.up);
                 Quaternion effectRotation = Quaternion.LookRotation(effectDirection);
-                IEffectEntity newEffect = auraVisualSettings.EffectSettings.PlayEffect(unitRenderer.transform.position, effectRotation, out long playId);
+                IEffectEntity newEffect = settings.EffectSettings.PlayEffect(unitRenderer.transform.position, effectRotation, out long playId);
                 if (newEffect != null)
                 {
-                    unitRenderer.TagContainer.ApplyPositioning(newEffect, auraVisualSettings);
+                    unitRenderer.TagContainer.ApplyPositioning(newEffect, settings);
                     effectByAuraId[visibleAura.AuraId] = new SpellVisualAuraState(playId, newEffect);
                 }
             }

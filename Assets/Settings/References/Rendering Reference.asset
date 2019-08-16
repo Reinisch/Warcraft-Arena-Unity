@@ -36,93 +36,23 @@ MonoBehaviour:
       type: 2}
     targetCircleSettings: {fileID: 11400000, guid: 69d99f2d9141714428272b398771ae99,
       type: 2}
-  spellVisualSettings:
-  - spellInfo: {fileID: 11400000, guid: 61bea5aabb7db454cb7e24918a3e903d, type: 2}
-    spellIcon: {fileID: 21300000, guid: 3955e93a0bd8b5540ab40d9349ba72c9, type: 3}
-    visualEffects:
-    - attachToTag: 0
-      visualUsageType: 0
-      tagType: 0
-      effectSettings: {fileID: 11400000, guid: 4ff8660a04a17d24c8dbd62a38ffe038, type: 2}
-  - spellInfo: {fileID: 11400000, guid: d0450f64f06f7b24aa8b9238f776c2a5, type: 2}
-    spellIcon: {fileID: 21300000, guid: b7e6e4be9de99284f997490d3f2da355, type: 3}
-    visualEffects:
-    - attachToTag: 0
-      visualUsageType: 0
-      tagType: 0
-      effectSettings: {fileID: 11400000, guid: 4ff8660a04a17d24c8dbd62a38ffe038, type: 2}
-  - spellInfo: {fileID: 11400000, guid: 1260b6b3e47f7ff4ead8ab59f5fdae56, type: 2}
-    spellIcon: {fileID: 21300000, guid: 3cd33fdcbaeb08842ba5183d7485c149, type: 3}
-    visualEffects:
-    - attachToTag: 0
-      visualUsageType: 0
-      tagType: 0
-      effectSettings: {fileID: 11400000, guid: 4ff8660a04a17d24c8dbd62a38ffe038, type: 2}
-  - spellInfo: {fileID: 11400000, guid: f3d84b42c86ef574f9389831a1eb2bb2, type: 2}
-    spellIcon: {fileID: 21300000, guid: 2fc6452a0fc4a994db0be561993f5a80, type: 3}
-    visualEffects:
-    - attachToTag: 0
-      visualUsageType: 2
-      tagType: 2
-      effectSettings: {fileID: 11400000, guid: 835970d0e55acf149989747907276117, type: 2}
-  - spellInfo: {fileID: 11400000, guid: d48ac7529195b144fb2ecfd0f17a74fc, type: 2}
-    spellIcon: {fileID: 21300000, guid: bc56b0330219a274fb0356fb6a2abdcd, type: 3}
-    visualEffects:
-    - attachToTag: 0
-      visualUsageType: 1
-      tagType: 3
-      effectSettings: {fileID: 11400000, guid: 92df711169a7dda48bad346faedbe155, type: 2}
-  - spellInfo: {fileID: 11400000, guid: 741d2161be4709047b67749e55031660, type: 2}
-    spellIcon: {fileID: 21300000, guid: 352df4cb88d800146bc89863e4bad670, type: 3}
-    visualEffects: []
-  - spellInfo: {fileID: 11400000, guid: ec9e3f15c8fb97a4ea496361fb5f703d, type: 2}
-    spellIcon: {fileID: 21300000, guid: dfdb300a2a1841642a5f9c45d434ba19, type: 3}
-    visualEffects: []
-  - spellInfo: {fileID: 11400000, guid: d76f3f10631a0334795fa104d4bbcd41, type: 2}
-    spellIcon: {fileID: 21300000, guid: 9934614611b90854391b2b214683b6bb, type: 3}
-    visualEffects: []
-  - spellInfo: {fileID: 11400000, guid: f9b96553606ffe349b7f310d89d1f3e7, type: 2}
-    spellIcon: {fileID: 21300000, guid: 623b129decabefd419da68ab8adcf992, type: 3}
-    visualEffects:
-    - attachToTag: 0
-      visualUsageType: 1
-      tagType: 3
-      effectSettings: {fileID: 11400000, guid: 34659681473eb62449eb11524b45a095, type: 2}
-  - spellInfo: {fileID: 11400000, guid: 31e9e8fa7baaff14a837e1702e031edc, type: 2}
-    spellIcon: {fileID: 21300000, guid: 2693df8af6e164145a5e6880e439a783, type: 3}
-    visualEffects: []
-  - spellInfo: {fileID: 11400000, guid: b1e257063d9cca242850b0dfa3ffe7b7, type: 2}
-    spellIcon: {fileID: 21300000, guid: ab63ff2eaa8f07d4b9841a56aabac7f1, type: 3}
-    visualEffects: []
-  - spellInfo: {fileID: 11400000, guid: 5392bb18832ef55419933fd4c8fca00e, type: 2}
-    spellIcon: {fileID: 21300000, guid: ab63ff2eaa8f07d4b9841a56aabac7f1, type: 3}
-    visualEffects:
-    - attachToTag: 0
-      visualUsageType: 0
-      tagType: 0
-      effectSettings: {fileID: 11400000, guid: 03801fda18eb8f74eac4ee111c6e0c66, type: 2}
-  auraVisualSettings:
-  - auraInfo: {fileID: 11400000, guid: 7203cc91ffe08ff4599fbba97afacfd2, type: 2}
-    auraIcon: {fileID: 21300000, guid: 9934614611b90854391b2b214683b6bb, type: 3}
-    tagType: 1
-    effectSettings: {fileID: 0}
-  - auraInfo: {fileID: 11400000, guid: ca3d587e8a759e3479ed468d096452cb, type: 2}
-    auraIcon: {fileID: 21300000, guid: bc56b0330219a274fb0356fb6a2abdcd, type: 3}
-    tagType: 1
-    effectSettings: {fileID: 0}
-  - auraInfo: {fileID: 11400000, guid: 2541b84f9246da547b1ffe4cd291045c, type: 2}
-    auraIcon: {fileID: 21300000, guid: dfdb300a2a1841642a5f9c45d434ba19, type: 3}
-    tagType: 1
-    effectSettings: {fileID: 0}
-  - auraInfo: {fileID: 11400000, guid: 00fce9316a186844980c6d8d49404260, type: 2}
-    auraIcon: {fileID: 21300000, guid: 3955e93a0bd8b5540ab40d9349ba72c9, type: 3}
-    tagType: 1
-    effectSettings: {fileID: 11400000, guid: 0139fd421a8c28f46bcf61d589dc6657, type: 2}
-  - auraInfo: {fileID: 11400000, guid: 280455af3690a384ea06ebdf50e6a07b, type: 2}
-    auraIcon: {fileID: 21300000, guid: 2693df8af6e164145a5e6880e439a783, type: 3}
-    tagType: 1
-    effectSettings: {fileID: 0}
-  - auraInfo: {fileID: 11400000, guid: 0108c300b529c6e45b67688d08f0cee3, type: 2}
-    auraIcon: {fileID: 21300000, guid: ab63ff2eaa8f07d4b9841a56aabac7f1, type: 3}
-    tagType: 2
-    effectSettings: {fileID: 0}
+  spellEffectSettings:
+  - {fileID: 11400000, guid: 343ed82112bcfa5449de8c04e491f167, type: 2}
+  - {fileID: 11400000, guid: 248314ec8db1fc443ab04d2791ed71b0, type: 2}
+  - {fileID: 11400000, guid: 9f8631a0c71ef5b49a8aad690687982d, type: 2}
+  - {fileID: 11400000, guid: abeaff18fdf983c4e86acfe3153980ed, type: 2}
+  - {fileID: 11400000, guid: 9a8bf2f475500fc40a27a870b88efcd2, type: 2}
+  - {fileID: 11400000, guid: 8fed2282fbe0ea241aa521dfe7cdfd21, type: 2}
+  - {fileID: 11400000, guid: 74939f623f6cc4d45bb958efcedd2f5f, type: 2}
+  - {fileID: 11400000, guid: fa8a162b7fa44074d97b3b52b0ddbd8e, type: 2}
+  - {fileID: 11400000, guid: 3e70f97bb5d201f4fac273263375064e, type: 2}
+  - {fileID: 11400000, guid: 7402b310fb35dcf4aa6373e0b360436b, type: 2}
+  - {fileID: 11400000, guid: 8bf3b51e429503a4d821bbdf369063a5, type: 2}
+  - {fileID: 11400000, guid: f99c8619d3d2dc546bf19ed57913253b, type: 2}
+  auraEffectSettings:
+  - {fileID: 11400000, guid: 81c714e7642f53944ad5911a9e63b01c, type: 2}
+  - {fileID: 11400000, guid: ddc68973ea3c4644cb68098caa4a237b, type: 2}
+  - {fileID: 11400000, guid: 4cd63d4fdd232e94b8228c702bb35833, type: 2}
+  - {fileID: 11400000, guid: 0e7c2b7330730e44b948d76d40725cda, type: 2}
+  - {fileID: 11400000, guid: 61e5b1250a394ef4f828fe788c22187b, type: 2}
+  - {fileID: 11400000, guid: fb0179001492b9e419988cc8bd6c8551, type: 2}

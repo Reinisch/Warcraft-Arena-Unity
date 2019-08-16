@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59b09348badfe3745a62b94099ca0063, type: 3}
-  m_Name: Frost Bolt Slow Aura Decrease Speed
+  m_Name: Frost Bolt Aura Decrease Speed
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
   decreasePercent: 50

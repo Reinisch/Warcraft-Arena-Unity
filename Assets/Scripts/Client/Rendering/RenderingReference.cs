@@ -18,31 +18,31 @@ namespace Client
         [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
         [SerializeField, UsedImplicitly] private SpellVisualController spellVisualController;
         [SerializeField, UsedImplicitly] private SelectionCircleController selectionCircleController;
-        [SerializeField, UsedImplicitly] private List<SpellVisualSettings> spellVisualSettings;
-        [SerializeField, UsedImplicitly] private List<AuraVisualSettings> auraVisualSettings;
+        [SerializeField, UsedImplicitly] private List<SpellEffectSettings> spellEffectSettings;
+        [SerializeField, UsedImplicitly] private List<AuraEffectSettings> auraEffectSettings;
 
-        private readonly Dictionary<int, SpellVisualSettings> spellVisualSettingsById = new Dictionary<int, SpellVisualSettings>();
-        private readonly Dictionary<int, AuraVisualSettings> auraVisualSettingsById = new Dictionary<int, AuraVisualSettings>();
+        private readonly Dictionary<int, SpellEffectSettings> spellVisualSettingsById = new Dictionary<int, SpellEffectSettings>();
+        private readonly Dictionary<int, AuraEffectSettings> auraVisualSettingsById = new Dictionary<int, AuraEffectSettings>();
         private readonly Dictionary<ulong, UnitRenderer> unitRenderersById = new Dictionary<ulong, UnitRenderer>();
         private readonly List<UnitRenderer> unitRenderers = new List<UnitRenderer>();
         private readonly List<IUnitRendererHandler> unitRendererHandlers = new List<IUnitRendererHandler>();
 
         public Sprite DefaultSpellIcon => defaultSpellIcon;
-        public IReadOnlyDictionary<int, SpellVisualSettings> SpellVisualSettingsById => spellVisualSettingsById;
-        public IReadOnlyDictionary<int, AuraVisualSettings> AuraVisualSettingsById => auraVisualSettingsById;
+        public IReadOnlyDictionary<int, SpellEffectSettings> SpellVisualSettingsById => spellVisualSettingsById;
+        public IReadOnlyDictionary<int, AuraEffectSettings> AuraVisualSettingsById => auraVisualSettingsById;
 
         protected override void OnRegistered()
         {
             base.OnRegistered();
 
-            auraVisualSettings.ForEach(visual => auraVisualSettingsById.Add(visual.AuraInfo.Id, visual));
-            spellVisualSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
-            spellVisualSettings.ForEach(visual => visual.Initialize());
+            auraEffectSettings.ForEach(visual => auraVisualSettingsById.Add(visual.AuraInfo.Id, visual));
+            spellEffectSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
+            spellEffectSettings.ForEach(visual => visual.Initialize());
         }
 
         protected override void OnUnregister()
         {
-            spellVisualSettings.ForEach(visual => visual.Deinitialize());
+            spellEffectSettings.ForEach(visual => visual.Deinitialize());
             spellVisualSettingsById.Clear();
             auraVisualSettingsById.Clear();
 
@@ -148,7 +148,7 @@ namespace Client
             if (!spellInfo.HasAttribute(SpellCustomAttributes.CastWithoutAnimation))
                 casterRenderer.TriggerInstantCast();
 
-            if (!SpellVisualSettingsById.TryGetValue(spellId, out SpellVisualSettings spellVisuals))
+            if (!SpellVisualSettingsById.TryGetValue(spellId, out SpellEffectSettings spellVisuals))
                 return;
 
             if (processingToken != null && spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Projectile, out EffectSpellSettings settings))
@@ -169,7 +169,7 @@ namespace Client
             if (!unitRenderersById.TryGetValue(target.Id, out UnitRenderer targetRenderer))
                 return;
 
-            if (!SpellVisualSettingsById.TryGetValue(spellId, out SpellVisualSettings spellVisuals))
+            if (!SpellVisualSettingsById.TryGetValue(spellId, out SpellEffectSettings spellVisuals))
                 return;
 
             if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Impact, out EffectSpellSettings spellVisualEffect))
@@ -226,5 +226,32 @@ namespace Client
 
             unitRendererHandlers.Remove(unitRendererHandler);
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Collect Spell Effects"), UsedImplicitly]
+        private void CollectSpellEffectSettings()
+        {
+            spellEffectSettings.Clear();
+
+            foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{nameof(SpellEffectSettings)}", null))
+                spellEffectSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<SpellEffectSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
+        }
+
+        [ContextMenu("Collect Aura Effects"), UsedImplicitly]
+        private void CollectAuraEffectSettings()
+        {
+            auraEffectSettings.Clear();
+
+            foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{nameof(AuraEffectSettings)}", null))
+                auraEffectSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<AuraEffectSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
+        }
+
+        [ContextMenu("Collect Everything"), UsedImplicitly]
+        private void CollectEverything()
+        {
+            CollectAuraEffectSettings();
+            CollectSpellEffectSettings();
+        }
+#endif
     }
 }

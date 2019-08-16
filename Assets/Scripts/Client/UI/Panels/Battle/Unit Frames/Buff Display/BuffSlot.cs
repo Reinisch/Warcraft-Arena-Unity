@@ -32,7 +32,7 @@ namespace Client
                     cooldownText.SetCharArray(emptyTimerText, 0, 0);
 
                 canvasGroup.alpha = 1.0f;
-                contentImage.sprite = rendering.AuraVisualSettingsById.TryGetValue(visibleAura.AuraId, out AuraVisualSettings settings)
+                contentImage.sprite = rendering.AuraVisualSettingsById.TryGetValue(visibleAura.AuraId, out AuraEffectSettings settings)
                     ? settings.AuraIcon
                     : rendering.DefaultSpellIcon;
             }

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client.Spells
 {
-    [Serializable]
-    public class SpellVisualSettings
+    [UsedImplicitly, CreateAssetMenu(fileName = "Spell Effect Settings", menuName = "Game Data/Visuals/Spell Effect Settings", order = 2)]
+    public class SpellEffectSettings : ScriptableObject
     {
         [SerializeField, UsedImplicitly] private SpellInfo spellInfo;
         [SerializeField, UsedImplicitly] private Sprite spellIcon;
@@ -30,3 +29,4 @@ namespace Client.Spells
         }
     }
 }
+

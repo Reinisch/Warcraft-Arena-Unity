@@ -73,7 +73,7 @@ namespace Client
             else
                 spellLabel.text = string.Empty;
 
-            if (isCasting && rendering.SpellVisualSettingsById.TryGetValue(caster.SpellCast.State.Id, out SpellVisualSettings settings))
+            if (isCasting && rendering.SpellVisualSettingsById.TryGetValue(caster.SpellCast.State.Id, out SpellEffectSettings settings))
                 spellIcon.sprite = settings.SpellIcon;
             else
                 spellIcon.sprite = rendering.DefaultSpellIcon;
