@@ -38,6 +38,11 @@ namespace Core
                 return auraApplicationsByAuraState.ContainsKey(auraStateType);
             }
 
+            internal IReadOnlyList<AuraEffect> GetAuraEffects(AuraEffectType auraEffectType)
+            {
+                return auraEffectsByAuraType.TryGetValue(auraEffectType, out List<AuraEffect> effectList) ? effectList : null;
+            }
+
             internal float TotalAuraModifier(AuraEffectType auraType)
             {
                 if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
@@ -114,7 +119,12 @@ namespace Core
                 if (ownedAura == null)
                 {
                     ownedAura = new Aura(auraInfo, spellInfo, unit, originalCaster);
-                    AddOwnedAura(ownedAura);
+                    ownedAuras.Add(ownedAura);
+                    ownedAurasById.Insert(ownedAura.AuraInfo.Id, ownedAura);
+
+                    Logging.LogAura($"Added owned aura {ownedAura.AuraInfo.name} for target: {unit.Name}");
+
+                    RemoveNonStackableAuras(ownedAura);
                 }
 
                 if (ownedAura.IsRemoved)
@@ -137,6 +147,14 @@ namespace Core
 
                     return null;
                 }
+            }
+
+            internal void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode)
+            {
+                ownedAuras.Remove(aura);
+                ownedAurasById.Delete(aura.AuraInfo.Id, aura);
+
+                Logging.LogAura($"Removed owned aura {aura.AuraInfo.name} for target: {unit.Name} with mode: {removeMode}");
             }
 
             internal void ApplyAuraApplication(AuraApplication auraApplication)
@@ -184,27 +202,7 @@ namespace Core
             {
                 for (int i = ownedAuras.Count - 1; i >= 0; i--)
                     if (!ownedAuras[i].AuraInfo.HasAttribute(AuraAttributes.DeathPersistent))
-                        RemoveOwnedAura(ownedAuras[0], AuraRemoveMode.Death);
-            }
-
-            private void AddOwnedAura(Aura aura)
-            {
-                ownedAuras.Add(aura);
-                ownedAurasById.Insert(aura.AuraInfo.Id, aura);
-
-                RemoveNonStackableAuras(aura);
-
-                Logging.LogAura($"Added owned aura {aura.AuraInfo.name} for target: {unit.Name}");
-            }
-
-            private void RemoveOwnedAura(Aura aura, AuraRemoveMode removeMode)
-            {
-                ownedAuras.Remove(aura);
-                ownedAurasById.Delete(aura.AuraInfo.Id, aura);
-
-                aura.Remove(removeMode);
-
-                Logging.LogAura($"Removed owned aura {aura.AuraInfo.name} for target: {unit.Name} with mode: {removeMode}");
+                        ownedAuras[0].Remove(AuraRemoveMode.Death);
             }
 
             private void HandleInterruptableAura(AuraApplication auraApplication, bool added)
@@ -283,20 +281,20 @@ namespace Core
                 {
                     if (!auraApplications[i].Aura.CanStackWith(aura))
                     {
-                        RemoveAura(auraApplications[i], AuraRemoveMode.Default);
+                        RemoveAuraWithApplication(auraApplications[i], AuraRemoveMode.Default);
                         i = 0;
                     }
                 }
             }
 
-            private void RemoveAura(AuraApplication application, AuraRemoveMode mode)
+            private void RemoveAuraWithApplication(AuraApplication application, AuraRemoveMode mode)
             {
                 if (auraApplicationSet.Contains(application))
                 {
                     UnapplyAuraApplication(application, mode);
 
                     if (application.Aura.Owner == unit)
-                        RemoveOwnedAura(application.Aura, mode);
+                        application.Aura.Remove(mode);
                 }
             }
 
@@ -315,7 +313,7 @@ namespace Core
                     auraToUpdate.DoUpdate(deltaTime);
 
                     if (auraToUpdate.IsExpired)
-                        RemoveOwnedAura(auraToUpdate, AuraRemoveMode.Expired);
+                        auraToUpdate.Remove(AuraRemoveMode.Expired);
 
                     if (i >= ownedAuras.Count || auraToUpdate != ownedAuras[i])
                         i = 0;
@@ -333,10 +331,10 @@ namespace Core
             void IUnitBehaviour.HandleUnitDetach()
             {
                 while (ownedAuras.Count > 0)
-                    RemoveOwnedAura(ownedAuras[0], AuraRemoveMode.Detach);
+                    ownedAuras[0].Remove(AuraRemoveMode.Detach);
 
                 while (auraApplications.Count > 0)
-                    RemoveAura(auraApplications[0], AuraRemoveMode.Detach);
+                    RemoveAuraWithApplication(auraApplications[0], AuraRemoveMode.Detach);
 
                 Assert.IsTrue(auraApplicationsByAuraState.Count == 0);
                 Assert.IsTrue(auraEffectsByAuraType.Count == 0);

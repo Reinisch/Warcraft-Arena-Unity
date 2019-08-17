@@ -2,11 +2,11 @@
 {
     internal abstract class BaseGameListener
     {
-        protected readonly WorldServerManager WorldServerManager;
+        protected readonly WorldServerManager World;
 
-        internal BaseGameListener(WorldServerManager worldServerManager)
+        internal BaseGameListener(WorldServerManager world)
         {
-            WorldServerManager = worldServerManager;
+            World = world;
         }
 
         internal abstract void Dispose();

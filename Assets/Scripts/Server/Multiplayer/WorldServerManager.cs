@@ -169,5 +169,7 @@ namespace Server
         {
             return boltConnection == null ? serverPlayerInfo?.Player : playerInfosByConnection.LookupEntry(boltConnection)?.Player;
         }
+
+        public bool IsControlledByHuman(Player player) => playerInfosByPlayerId.ContainsKey(player.Id);
     }
 }

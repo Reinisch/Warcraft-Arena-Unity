@@ -20,6 +20,7 @@ namespace Core
 
         internal bool Updated { get; private set; }
 
+        public IReadOnlyDictionary<ulong, AuraApplication> ApplicationsByTargetId => applicationsByTargetId;
         public IReadOnlyList<AuraApplication> Applications => applications;
         public IReadOnlyList<AuraEffectInfo> EffectsInfos => effectInfos;
         public IReadOnlyList<AuraEffect> Effects => effects;
@@ -101,10 +102,10 @@ namespace Core
             while (applications.Count > 0)
             {
                 AuraApplication applicationToRemove = applications[0];
-                Unit target = applicationToRemove.Target;
-
-                target.Auras.UnapplyAuraApplication(applicationToRemove, removeMode);
+                applicationToRemove.Target.Auras.UnapplyAuraApplication(applicationToRemove, removeMode);
             }
+
+            Owner.Auras.RemoveOwnedAura(this, removeMode);
         }
 
         internal void UpdateTargets()

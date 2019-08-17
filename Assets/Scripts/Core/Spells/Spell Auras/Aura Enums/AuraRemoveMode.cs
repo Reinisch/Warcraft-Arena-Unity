@@ -8,6 +8,7 @@
         Dispel,
         Expired,
         Death,
-        Detach
+        Detach,
+        Spell
     }
 }

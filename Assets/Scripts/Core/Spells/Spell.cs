@@ -201,14 +201,11 @@ namespace Core
                 if (crit)
                     addhealth = caster.Spells.SpellCriticalHealingBonus(addhealth);
 
-                int gain = caster.Spells.HealBySpell(targetEntry.Target, SpellInfo, addhealth, crit);
-                EffectHealing = gain;
+                caster.Spells.HealBySpell(targetEntry.Target, SpellInfo, addhealth, crit);
             }
             else if (EffectDamage > 0)
             {
-                SpellCastDamageInfo damageInfoInfo = new SpellCastDamageInfo(caster, targetEntry.Target, SpellInfo.Id, SchoolMask);
-                EffectDamage = caster.Spells.CalculateSpellDamageTaken(damageInfoInfo, SpellInfo, EffectDamage, targetEntry.Crit);
-                caster.Spells.DamageBySpell(damageInfoInfo);
+                caster.Spells.DamageBySpell(new SpellDamageInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectDamage, targetEntry.Crit, SchoolMask, SpellDamageType.Direct));
             }
         }
 

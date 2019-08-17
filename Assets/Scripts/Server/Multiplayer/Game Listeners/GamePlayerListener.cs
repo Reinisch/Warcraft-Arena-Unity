@@ -6,7 +6,7 @@ namespace Server
 {
     internal class GamePlayerListener : BaseGameListener
     {
-        internal GamePlayerListener(WorldServerManager worldServerManager) : base(worldServerManager)
+        internal GamePlayerListener(WorldServerManager world) : base(world)
         {
             EventHandler.RegisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
             EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);

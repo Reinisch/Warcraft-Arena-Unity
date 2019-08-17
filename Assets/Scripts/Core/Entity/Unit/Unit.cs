@@ -194,6 +194,8 @@ namespace Core
 
         internal bool HasAuraState(AuraStateType auraStateType) => Auras.HasAuraState(auraStateType);
 
+        internal IReadOnlyList<AuraEffect> GetAuraEffects(AuraEffectType auraEffectType) => Auras.GetAuraEffects(auraEffectType);
+
         internal float TotalAuraModifier(AuraEffectType auraType) => Auras.TotalAuraModifier(auraType);
 
         internal float TotalAuraMultiplier(AuraEffectType auraType) => Auras.TotalAuraMultiplier(auraType);

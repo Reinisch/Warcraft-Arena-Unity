@@ -5,8 +5,8 @@ namespace Core
     public abstract class AuraEffect
     {
         public int Index { get; }
-        public float Value { get; }
         public float BaseValue { get; }
+        public float Value { get; private set; }
 
         public Aura Aura { get; }
         public AuraEffectInfo EffectInfo { get; }
@@ -29,6 +29,11 @@ namespace Core
         public virtual void HandleEffect(AuraApplication auraApplication, AuraEffectHandleMode mode, bool apply)
         {
             Logging.LogAura($"Handle aura effect {EffectInfo.name} for target: {auraApplication.Target.Name} in mode {mode}, applying: {apply}");
+        }
+
+        public void ModifyValue(float delta)
+        {
+            Value += delta;
         }
     }
 }

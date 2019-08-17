@@ -25,6 +25,7 @@
         ServerSpellHit,
         ServerSpellCooldown,
         ServerPlayerTeleport,
+        ServerDamageDone,
         ServerLaunched,
 
         UnitAttributeChanged,

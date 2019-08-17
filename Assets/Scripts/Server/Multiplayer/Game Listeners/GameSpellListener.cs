@@ -7,9 +7,9 @@ namespace Server
 {
     internal class GameSpellListener : BaseGameListener
     {
-        internal GameSpellListener(WorldServerManager worldServerManager) : base(worldServerManager)
+        internal GameSpellListener(WorldServerManager world) : base(world)
         {
-            EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
+            EventHandler.RegisterEvent<SpellDamageInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, OnSpellDamageDone);
             EventHandler.RegisterEvent<Unit, Vector3, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.RegisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
@@ -18,28 +18,31 @@ namespace Server
 
         internal override void Dispose()
         {
-            EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
+            EventHandler.UnregisterEvent<SpellDamageInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, OnSpellDamageDone);
             EventHandler.UnregisterEvent<Unit, Vector3, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.UnregisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
             EventHandler.UnregisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
         }
 
-        private void OnSpellDamageDone(Unit caster, Unit target, int damageAmount, bool isCrit)
+        private void OnSpellDamageDone(SpellDamageInfo damageInfo)
         {
-            if (caster is Player player && player.BoltEntity.Controller != null)
+            if (damageInfo.Caster is Player player && World.IsControlledByHuman(player))
             {
-                SpellDamageDoneEvent spellDamageEvent = SpellDamageDoneEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
-                spellDamageEvent.Target = target.BoltEntity.NetworkId;
-                spellDamageEvent.DamageAmount = damageAmount;
-                spellDamageEvent.IsCrit = isCrit;
+                SpellDamageDoneEvent spellDamageEvent = player.IsController
+                    ? SpellDamageDoneEvent.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered)
+                    : SpellDamageDoneEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
+
+                spellDamageEvent.Target = damageInfo.Target.BoltEntity.NetworkId;
+                spellDamageEvent.DamageAmount = (int)damageInfo.Damage;
+                spellDamageEvent.IsCrit = damageInfo.HasCrit;
                 spellDamageEvent.Send();
             }
 
-            UnitSpellDamageEvent unitSpellDemageEvent = UnitSpellDamageEvent.Create(target.BoltEntity, EntityTargets.Everyone);
-            unitSpellDemageEvent.CasterId = caster.BoltEntity.NetworkId;
-            unitSpellDemageEvent.Damage = damageAmount;
-            unitSpellDemageEvent.IsCrit = isCrit;
+            UnitSpellDamageEvent unitSpellDemageEvent = UnitSpellDamageEvent.Create(damageInfo.Target.BoltEntity, EntityTargets.Everyone);
+            unitSpellDemageEvent.CasterId = damageInfo.Caster.BoltEntity.NetworkId;
+            unitSpellDemageEvent.Damage = (int)damageInfo.Damage;
+            unitSpellDemageEvent.IsCrit = damageInfo.HasCrit;
             unitSpellDemageEvent.Send();
         }
 

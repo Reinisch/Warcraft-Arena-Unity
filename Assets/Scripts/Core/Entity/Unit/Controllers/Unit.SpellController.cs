@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.Collections.Generic;
+using Common;
 using UnityEngine;
 
 namespace Core
@@ -61,52 +62,39 @@ namespace Core
                 return SpellCastResult.Success;
             }
 
-            internal int DamageBySpell(SpellCastDamageInfo damageInfoInfo)
+            internal void DamageBySpell(SpellDamageInfo damageInfo)
             {
-                Unit victim = damageInfoInfo.Target;
-                if (victim == null || !victim.IsAlive)
-                    return 0;
+                unit.Spells.CalculateSpellDamageTaken(damageInfo);
 
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, unit, victim, damageInfoInfo.Damage, damageInfoInfo.HitInfo.HasTargetFlag(HitType.CriticalHit));
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, damageInfo);
 
-                return unit.DealDamage(victim, damageInfoInfo.Damage);
+                unit.DealDamage(damageInfo.Target, (int)damageInfo.Damage);
             }
 
-            internal int HealBySpell(Unit target, SpellInfo spellInfo, int healAmount, bool critical = false)
+            internal void HealBySpell(Unit target, SpellInfo spellInfo, int healAmount, bool critical = false)
             {
-                return unit.DealHeal(target, healAmount);
+                unit.DealHeal(target, healAmount);
             }
 
-            internal int CalculateSpellDamageTaken(SpellCastDamageInfo damageInfo, SpellInfo spellInfo, int damage, bool crit)
+            internal void CalculateSpellDamageTaken(SpellDamageInfo damageInfo)
             {
-                if (damage < 0)
-                    return 0;
+                if (damageInfo.Damage == 0 || !damageInfo.Target.IsAlive)
+                    return;
 
-                Unit victim = damageInfo.Target;
-                if (victim == null || !victim.IsAlive)
-                    return 0;
+                Unit caster = damageInfo.Caster;
+                Unit target = damageInfo.Target;
+                SpellInfo spellInfo = damageInfo.SpellInfo;
 
-                SpellSchoolMask damageSchoolMask = damageInfo.SchoolMask;
+                damageInfo.UpdateDamage(caster.Spells.SpellDamageBonusDone(target, spellInfo, damageInfo.Damage, damageInfo.SpellDamageType));
+                damageInfo.UpdateDamage(target.Spells.SpellDamageBonusTaken(caster, spellInfo, damageInfo.Damage, damageInfo.SpellDamageType));
 
-                if (!spellInfo.HasAttribute(SpellExtraAttributes.FixedDamage) && crit)
+                if (!spellInfo.HasAttribute(SpellExtraAttributes.FixedDamage) && damageInfo.HasCrit)
                 {
-                    damageInfo.HitInfo |= HitType.CriticalHit;
-                    damage = CalculateSpellCriticalDamage(spellInfo, damage);
+                    uint criticalDamage = CalculateSpellCriticalDamage(spellInfo, damageInfo.Damage);
+                    damageInfo.UpdateOriginalDamage(criticalDamage);
                 }
 
-                if (damage > 0)
-                {
-                    int absorb = damageInfo.Absorb;
-                    int resist = damageInfo.Resist;
-                    CalcAbsorbResist(victim, damageSchoolMask, SpellDamageType.Direct, damage, ref absorb, ref resist, spellInfo);
-                    damageInfo.Absorb = absorb;
-                    damageInfo.Resist = resist;
-                    damage -= damageInfo.Absorb + damageInfo.Resist;
-                }
-                else
-                    damage = 0;
-
-                return damageInfo.Damage = damage;
+                HandleAbsorb(damageInfo);
             }
 
             internal SpellMissType SpellHitResult(Unit victim, SpellInfo spellInfo, bool canReflect = false)
@@ -146,18 +134,18 @@ namespace Core
 
             internal Unit GetMeleeHitRedirectTarget(Unit victim, SpellInfo spellInfo = null) { return null; }
 
-            internal int SpellDamageBonusDone(Unit victim, SpellInfo spellInfo, float damage, SpellDamageType damageType, uint stack = 1)
+            internal uint SpellDamageBonusDone(Unit victim, SpellInfo spellInfo, uint damage, SpellDamageType damageType, uint stack = 1)
             {
-                return (int)damage;
+                return damage;
             }
 
             internal void ApplySpellModifier(SpellInfo spellInfo, SpellModifierType modifierType, ref int value) { }
 
             internal void ApplySpellModifier(SpellInfo spellInfo, SpellModifierType modifierType, ref float value) { }
 
-            internal int SpellDamageBonusTaken(Unit caster, SpellInfo spellInfo, float damage, SpellDamageType damageType, uint stack = 1)
+            internal uint SpellDamageBonusTaken(Unit caster, SpellInfo spellInfo, uint damage, SpellDamageType damageType, uint stack = 1)
             {
-                return (int)damage;
+                return damage;
             }
 
             internal uint SpellHealingBonusDone(Unit victim, SpellInfo spellInfo, uint healAmount, SpellDamageType damageType, SpellEffectInfo effect, uint stack = 1) { return 0; }
@@ -212,9 +200,9 @@ namespace Core
                 return (int)(2 * healing * unit.TotalAuraMultiplier(AuraEffectType.ModCriticalHealingAmount));
             }
 
-            internal int CalculateSpellCriticalDamage(SpellInfo spellInfo, int damage)
+            internal uint CalculateSpellCriticalDamage(SpellInfo spellInfo, uint damage)
             {
-                int critBonus = 0;
+                uint critBonus = 0;
                 float critModifier = 0.0f;
 
                 switch (spellInfo.DamageClass)
@@ -235,7 +223,36 @@ namespace Core
                 if (!Mathf.Approximately(critModifier, 0.0f))
                     critBonus = critBonus.AddPercentage(critModifier);
 
-                return Mathf.Max(0, damage + critBonus);
+                return System.Math.Max(0, damage + critBonus);
+            }
+
+            internal void HandleAbsorb(SpellDamageInfo damageInfo)
+            {
+                if (damageInfo.Target.IsDead || damageInfo.Damage == 0)
+                    return;
+
+                Unit target = damageInfo.Target;
+                IReadOnlyList<AuraEffect> absorbEffects = target.GetAuraEffects(AuraEffectType.SchoolAbsorb);
+                if (absorbEffects == null)
+                    return;
+
+                var absorbEffectCopies = new List<AuraEffect>(absorbEffects);
+                for (int index = 0; index < absorbEffectCopies.Count; index++)
+                {
+                    AuraEffect absorbEffect = absorbEffectCopies[index];
+                    if (!absorbEffect.Aura.ApplicationsByTargetId.ContainsKey(target.Id))
+                        continue;
+                    if (absorbEffect.Value <= 0.0f)
+                        continue;
+
+                    uint availableAbsorb = (uint)Mathf.CeilToInt(absorbEffect.Value);
+                    uint effectiveAbsorb = System.Math.Min(availableAbsorb, damageInfo.Damage);
+                    damageInfo.AbsorbDamage(effectiveAbsorb);
+                    absorbEffect.ModifyValue(-effectiveAbsorb);
+
+                    if (absorbEffect.Value <= 0.0f)
+                        absorbEffect.Aura.Remove(AuraRemoveMode.Spell);
+                }
             }
 
             internal bool IsImmunedToDamage(SpellInfo spellInfo) { return false; }
@@ -247,8 +264,6 @@ namespace Core
             internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster) { return false; }
 
             internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffectInfo, Unit caster) { return false; }
-
-            internal void CalcAbsorbResist(Unit victim, SpellSchoolMask schoolMask, SpellDamageType damageType, int damage, ref int absorb, ref int resist, SpellInfo spellInfo = null) { }
 
             internal void CalcHealAbsorb(Unit victim, SpellInfo spellInfo, ref int healAmount, ref int absorb) { }
 

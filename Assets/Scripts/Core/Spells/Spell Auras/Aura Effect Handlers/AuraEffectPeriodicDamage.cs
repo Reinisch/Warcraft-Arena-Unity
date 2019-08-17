@@ -1,6 +1,4 @@
-﻿using Common;
-
-namespace Core.AuraEffects
+﻿namespace Core.AuraEffects
 {
     public class AuraEffectPeriodicDamage : AuraEffectPeriodic
     {
@@ -20,17 +18,9 @@ namespace Core.AuraEffects
             if (target.HasState(UnitControlState.Isolated) || target.IsImmunedToDamage(Aura.AuraInfo))
                 return;
 
-            int damage = EffectInfo.CalculateSpellDamage(caster);
-            damage = caster.Spells.SpellDamageBonusDone(target, Aura.SpellInfo, damage, SpellDamageType.Dot);
-            damage = target.Spells.SpellDamageBonusTaken(caster, Aura.SpellInfo, damage, SpellDamageType.Dot);
-
-            bool isCrit = caster.Spells.IsSpellCrit(target, Aura.SpellInfo, EffectInfo.SpellSchoolMask);
-            if (isCrit)
-                damage = caster.Spells.CalculateSpellCriticalDamage(Aura.SpellInfo, damage);
-
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, caster, target, damage, isCrit);
-
-            caster.DealDamage(target, damage);
+            int originalDamage = EffectInfo.CalculateSpellDamage(caster);
+            bool hasCrit = caster.Spells.IsSpellCrit(target, Aura.SpellInfo, EffectInfo.SpellSchoolMask);
+            caster.Spells.DamageBySpell(new SpellDamageInfo(caster, target, Aura.SpellInfo, (uint)originalDamage, hasCrit, EffectInfo.SpellSchoolMask, SpellDamageType.Dot));
         }
     }
 }
