@@ -68,7 +68,7 @@
         FeignDeath = 66,
         ModDisarm = 67,
         ModStalked = 68,
-        SchoolAbsorb = 69,
+        AbsorbDamage = 69,
         ExtraAttacks = 70,
         ModPowerCostSchoolPct = 72,
         ModPowerCostSchool = 73,

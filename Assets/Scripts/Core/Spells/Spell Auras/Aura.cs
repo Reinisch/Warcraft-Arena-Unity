@@ -52,7 +52,11 @@ namespace Core
             effectInfos.AddRange(auraInfo.AuraEffects);
 
             for (int index = 0; index < effectInfos.Count; index++)
-                effects.Add(effectInfos[index].CreateEffect(this, Caster, index));
+            {
+                AuraEffect newEffect = effectInfos[index].CreateEffect(this, Caster, index);
+                newEffect.CalculateValue();
+                effects.Add(newEffect);
+            }
 
             Logging.LogAura($"Created aura {AuraInfo.name} for target: {Owner.Name}, current count: {++AuraAliveCount}");
         }

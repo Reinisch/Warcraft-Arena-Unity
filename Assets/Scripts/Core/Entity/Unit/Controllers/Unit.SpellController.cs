@@ -232,7 +232,7 @@ namespace Core
                     return;
 
                 Unit target = damageInfo.Target;
-                IReadOnlyList<AuraEffect> absorbEffects = target.GetAuraEffects(AuraEffectType.SchoolAbsorb);
+                IReadOnlyList<AuraEffect> absorbEffects = target.GetAuraEffects(AuraEffectType.AbsorbDamage);
                 if (absorbEffects == null)
                     return;
 

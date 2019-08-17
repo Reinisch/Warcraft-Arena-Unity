@@ -5,8 +5,8 @@ namespace Core
     public abstract class AuraEffect
     {
         public int Index { get; }
-        public float BaseValue { get; }
-        public float Value { get; private set; }
+        public float BaseValue { get; protected set; }
+        public float Value { get; protected set; }
 
         public Aura Aura { get; }
         public AuraEffectInfo EffectInfo { get; }
@@ -18,8 +18,7 @@ namespace Core
             EffectInfo = effectInfo;
 
             Index = index;
-            BaseValue = baseValue;
-            Value = baseValue;
+            Value = BaseValue = baseValue;
         }
 
         public virtual void Update(int deltaTime)
@@ -34,6 +33,11 @@ namespace Core
         public void ModifyValue(float delta)
         {
             Value += delta;
+        }
+
+        internal virtual void CalculateValue()
+        {
+            Value = BaseValue;
         }
     }
 }
