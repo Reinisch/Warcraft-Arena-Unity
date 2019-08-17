@@ -266,48 +266,6 @@ namespace Core
             }
         }
 
-        private void UpdateStunState(bool applied)
-        {
-            if (applied)
-            {
-                SpellCast.Cancel();
-                StopMoving();
-
-                SetFlag(UnitFlags.Stunned);
-
-                UpdateRootState(true);
-            }
-            else
-            {
-                RemoveFlag(UnitFlags.Stunned);
-
-                if (!HasState(UnitControlState.Root))
-                    UpdateRootState(false);
-            }
-        }
-
-        private void UpdateRootState(bool applied)
-        {
-            if (applied)
-            {
-                StopMoving();
-
-                MovementInfo.AddMovementFlag(MovementFlags.Root);
-            }
-            else
-                MovementInfo.RemoveMovementFlag(MovementFlags.Root);
-
-            if (IsOwner && this is Player rootedPlayer)
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, rootedPlayer, applied);
-        }
-
-        private void StopMoving()
-        {
-            MovementInfo.RemoveMovementFlag(MovementFlags.MaskMoving);
-
-            CharacterController.StopMoving();
-        }
-
         internal void SetFlag(UnitFlags flag) => unitFlags |= flag;
 
         internal void RemoveFlag(UnitFlags flag) => unitFlags &= ~flag;
@@ -360,6 +318,48 @@ namespace Core
 
             victim.Attributes.SetHealth(0);
             victim.ModifyDeathState(DeathState.Dead);
+        }
+
+        protected void StopMoving()
+        {
+            MovementInfo.RemoveMovementFlag(MovementFlags.MaskMoving);
+
+            CharacterController.StopMoving();
+        }
+
+        private void UpdateStunState(bool applied)
+        {
+            if (applied)
+            {
+                SpellCast.Cancel();
+                StopMoving();
+
+                SetFlag(UnitFlags.Stunned);
+
+                UpdateRootState(true);
+            }
+            else
+            {
+                RemoveFlag(UnitFlags.Stunned);
+
+                if (!HasState(UnitControlState.Root))
+                    UpdateRootState(false);
+            }
+        }
+
+        private void UpdateRootState(bool applied)
+        {
+            if (applied)
+            {
+                StopMoving();
+
+                MovementInfo.AddMovementFlag(MovementFlags.Root);
+            }
+            else
+                MovementInfo.RemoveMovementFlag(MovementFlags.Root);
+
+            if (IsOwner && this is Player rootedPlayer)
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, rootedPlayer, applied);
         }
     }
 }

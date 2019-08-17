@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   spellName: Resurrect Self
-  explicitCastTargets: 8
   explicitTargetType: 2
   damageClass: 1
   spellDispel: 0
   mechanic: 0
+  explicitCastTargets: 8
   schoolMask: 0
   preventionType: 0
   attributes: 2
@@ -27,11 +27,9 @@ MonoBehaviour:
   targetEntityTypeMask: 16
   rangedFlags: 1
   interruptFlags: 0
-  duration: 0
-  maxDuration: 0
   cooldownTime: 20000
   categoryCooldownTime: 0
-  globalCooldownTime: 0
+  globalCooldownTime: 1000
   castTime: 0
   minCastTime: 0
   minRangeHostile: 0
@@ -44,6 +42,5 @@ MonoBehaviour:
   spellEffectInfos:
   - {fileID: 11400000, guid: fbade2fec7415644aa5baa910ab6d181, type: 2}
   spellPowerEntries: []
-  procsPerMinuteModifiers: []
   targetingConditions:
   - {fileID: 11400000, guid: 758926f2ccbcbc94ea545f9c58fb5cbd, type: 2}

@@ -92,7 +92,11 @@ namespace Core
         public void Handle(PlayerRootChangedEvent rootChangeEvent)
         {
             if (rootChangeEvent.Applied)
+            {
+                StopMoving();
+
                 AddState(UnitControlState.Root);
+            }
             else
                 RemoveState(UnitControlState.Root);
         }

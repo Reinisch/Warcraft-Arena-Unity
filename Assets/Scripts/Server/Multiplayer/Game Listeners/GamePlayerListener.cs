@@ -9,13 +9,13 @@ namespace Server
         internal GamePlayerListener(WorldServerManager worldServerManager) : base(worldServerManager)
         {
             EventHandler.RegisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
-            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerRootChanged);
+            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);
         }
 
         internal override void Dispose()
         {
-            EventHandler.RegisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
-            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerRootChanged);
+            EventHandler.UnregisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
+            EventHandler.UnregisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);
         }
 
         private void OnPlayerSpeedChanged(Player player, UnitMoveType moveType, float rate)
