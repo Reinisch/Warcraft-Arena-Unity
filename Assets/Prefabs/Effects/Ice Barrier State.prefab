@@ -117,6 +117,7 @@ MonoBehaviour:
   fadeState: Fade
   hasPlayState: 1
   hasFadeState: 1
+  replayPlayState: 1
 --- !u!114 &8913406492160747876
 MonoBehaviour:
   m_ObjectHideFlags: 0

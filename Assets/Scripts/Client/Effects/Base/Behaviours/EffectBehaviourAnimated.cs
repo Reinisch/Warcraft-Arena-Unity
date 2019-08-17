@@ -10,6 +10,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private string fadeState;
         [SerializeField, UsedImplicitly] private bool hasPlayState;
         [SerializeField, UsedImplicitly] private bool hasFadeState;
+        [SerializeField, UsedImplicitly] private bool replayPlayState;
 
         private int playHash = -1;
         private int fadeHash = -1;
@@ -25,6 +26,14 @@ namespace Client
                 fadeHash = Animator.StringToHash(fadeState);
 
             if (hasPlayState)
+                animator.Play(playHash, 0);
+        }
+
+        protected override void OnReplay()
+        {
+            base.OnReplay();
+
+            if (hasPlayState && replayPlayState)
                 animator.Play(playHash, 0);
         }
 
