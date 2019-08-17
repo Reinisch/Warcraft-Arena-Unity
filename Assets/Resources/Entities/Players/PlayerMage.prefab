@@ -2788,6 +2788,7 @@ Transform:
   - {fileID: 1411}
   - {fileID: 8752534715829847588}
   - {fileID: 3248476063125780362}
+  - {fileID: 3885831379877529917}
   m_Father: {fileID: 1461}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2829,6 +2830,7 @@ MonoBehaviour:
     bottomTag: {fileID: 5014753836250179081}
     footTag: {fileID: 1352448391192996702}
     impactTag: {fileID: 8371027099814355925}
+    impactStaticTag: {fileID: 3885831379877529917}
     rightHandTag: {fileID: 6127596920682890874}
     leftHandTag: {fileID: 4466349247261424963}
     damageTag: {fileID: 8752534715829847588}
@@ -5417,6 +5419,36 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1429}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4091960332231741836
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3885831379877529917}
+  m_Layer: 0
+  m_Name: tag_impact_static
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3885831379877529917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4091960332231741836}
+  m_LocalRotation: {x: -0.008999295, y: 0.9674374, z: -0.039718334, w: 0.24981289}
+  m_LocalPosition: {x: 0.006, y: 0.65776396, z: -0.055}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1466}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7319096899118975712

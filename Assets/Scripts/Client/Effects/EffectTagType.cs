@@ -5,6 +5,7 @@
         Bottom,
         Foot,
         Impact,
+        ImpactStatic,
         RightHand,
         LeftHand
     }

@@ -12,6 +12,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private Transform bottomTag;
         [SerializeField, UsedImplicitly] private Transform footTag;
         [SerializeField, UsedImplicitly] private Transform impactTag;
+        [SerializeField, UsedImplicitly] private Transform impactStaticTag;
         [SerializeField, UsedImplicitly] private Transform rightHandTag;
         [SerializeField, UsedImplicitly] private Transform leftHandTag;
         [SerializeField, UsedImplicitly] private Transform damageTag;
@@ -27,6 +28,8 @@ namespace Client
                     return (footTag ?? defaultTag).position;
                 case EffectTagType.Impact:
                     return (impactTag ?? defaultTag).position;
+                case EffectTagType.ImpactStatic:
+                    return (impactStaticTag ?? defaultTag).position;
                 case EffectTagType.RightHand:
                     return (rightHandTag ?? defaultTag).position;
                 case EffectTagType.LeftHand:
@@ -54,6 +57,9 @@ namespace Client
                     break;
                 case EffectTagType.Impact:
                     targetTag = impactTag ?? defaultTag;
+                    break;
+                case EffectTagType.ImpactStatic:
+                    targetTag = impactStaticTag ?? defaultTag;
                     break;
                 case EffectTagType.RightHand:
                     targetTag = rightHandTag ?? defaultTag;
