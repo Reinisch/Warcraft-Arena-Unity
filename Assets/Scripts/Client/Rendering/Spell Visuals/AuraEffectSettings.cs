@@ -11,13 +11,14 @@ namespace Client.Spells
         [SerializeField, UsedImplicitly] private Sprite auraIcon;
         [SerializeField, UsedImplicitly] private EffectTagType tagType;
         [SerializeField, UsedImplicitly] private EffectSettings effectSettings;
+        [SerializeField, UsedImplicitly] private bool keepOriginalRotation = true;
 
         public AuraInfo AuraInfo => auraInfo;
         public Sprite AuraIcon => auraIcon;
         public EffectSettings EffectSettings => effectSettings;
         public EffectTagType EffectTagType => tagType;
         public bool AttachToTag => true;
-        public bool KeepOriginalRotation => true;
+        public bool KeepOriginalRotation => keepOriginalRotation;
         public bool KeepAliveWithNoParticles => true;
     }
 }
