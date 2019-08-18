@@ -16,6 +16,7 @@
         SpellLaunched,
         SpellHit,
         SpellDamageDone,
+        SpellHealingDone,
 
         ClientSpellFailed,
 
@@ -26,6 +27,7 @@
         ServerSpellCooldown,
         ServerPlayerTeleport,
         ServerDamageDone,
+        ServerHealingDone,
         ServerLaunched,
 
         UnitAttributeChanged,

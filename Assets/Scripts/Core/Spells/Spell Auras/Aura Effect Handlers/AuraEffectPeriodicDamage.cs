@@ -20,7 +20,7 @@
 
             int originalDamage = EffectInfo.CalculateSpellDamage(caster);
             bool hasCrit = caster.Spells.IsSpellCrit(target, Aura.SpellInfo, EffectInfo.SpellSchoolMask);
-            caster.Spells.DamageBySpell(new SpellDamageInfo(caster, target, Aura.SpellInfo, (uint)originalDamage, hasCrit, EffectInfo.SpellSchoolMask, SpellDamageType.Dot));
+            caster.Spells.DamageBySpell(new SpellDamageInfo(caster, target, Aura.SpellInfo, (uint)originalDamage, hasCrit, SpellDamageType.Dot));
         }
     }
 }

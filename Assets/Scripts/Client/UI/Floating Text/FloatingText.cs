@@ -11,6 +11,8 @@ namespace Client
         [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private FloatingTextSettings damageSettings;
         [SerializeField, UsedImplicitly] private FloatingTextSettings damageCritSettings;
+        [SerializeField, UsedImplicitly] private FloatingTextSettings healingSettings;
+        [SerializeField, UsedImplicitly] private FloatingTextSettings healingCritSettings;
 
         private float currentLifeTime;
         private float targetLifeTime;
@@ -22,26 +24,9 @@ namespace Client
             GameObjectPool.Return(this, true);
         }
 
-        public void SetDamage(int damageAmount, bool isCrit)
-        {
-            currentSettings = isCrit ? damageCritSettings : damageSettings;
-            textMesh.text = damageAmount.ToString();
-            textMesh.fontSize = currentSettings.FontSize;
-            textMesh.color = currentSettings.FontColor;
-            targetLifeTime = currentSettings.LifeTime;
-            transform.localScale = Vector3.one;
-            currentLifeTime = 0;
+        public void SetDamage(int damageAmount, bool isCrit) => SetText(isCrit ? damageCritSettings : damageSettings, damageAmount);
 
-            WarcraftCamera warcraftCamera = cameraReference.WarcraftCamera;
-            if (warcraftCamera != null)
-            {
-                Vector3 direction = transform.position - warcraftCamera.transform.position;
-                float distance = Vector3.Dot(direction, warcraftCamera.transform.forward);
-                transform.position += Random.insideUnitSphere * currentSettings.RandomOffset * currentSettings.RandomOffsetOverDistance.Evaluate(distance);
-            }
-            else
-                transform.position += Random.insideUnitSphere * currentSettings.RandomOffset;
-        }
+        public void SetHealing(int healingAmount, bool isCrit) => SetText(isCrit ? healingCritSettings : healingSettings, healingAmount);
 
         public bool DoUpdate(float deltaTime)
         {
@@ -62,6 +47,28 @@ namespace Client
 
             textMesh.alpha = currentSettings.AlphaOverTime.Evaluate(currentLifeTime);
             return currentLifeTime >= targetLifeTime;
+        }
+
+        private void SetText(FloatingTextSettings newSettings, int value)
+        {
+            currentSettings = newSettings;
+            textMesh.text = value.ToString();
+            textMesh.font = newSettings.FontAsset;
+            textMesh.fontSize = currentSettings.FontSize;
+            textMesh.color = currentSettings.FontColor;
+            targetLifeTime = currentSettings.LifeTime;
+            transform.localScale = Vector3.one;
+            currentLifeTime = 0;
+
+            WarcraftCamera warcraftCamera = cameraReference.WarcraftCamera;
+            if (warcraftCamera != null)
+            {
+                Vector3 direction = transform.position - warcraftCamera.transform.position;
+                float distance = Vector3.Dot(direction, warcraftCamera.transform.forward);
+                transform.position += Random.insideUnitSphere * currentSettings.RandomOffset * currentSettings.RandomOffsetOverDistance.Evaluate(distance);
+            }
+            else
+                transform.position += Random.insideUnitSphere * currentSettings.RandomOffset;
         }
     }
 }

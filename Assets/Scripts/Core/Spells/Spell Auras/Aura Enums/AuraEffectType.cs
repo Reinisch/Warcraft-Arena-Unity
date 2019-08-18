@@ -269,7 +269,7 @@
         BlockSpellFamily = 297,
         Strangulate = 298,
         ShareDamagePct = 300,
-        SchoolHealAbsorb = 301,
+        AbsorbHeal = 301,
         ModDamageDoneVersusAurastate = 303,
         ModFakeInebriate = 304,
         ModMinimumSpeed = 305,

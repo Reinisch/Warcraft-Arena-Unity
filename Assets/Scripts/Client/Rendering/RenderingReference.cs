@@ -69,6 +69,7 @@ namespace Client
                 world.UnitManager.EventEntityDetach += OnEventEntityDetach;
 
                 EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
+                EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
                 EventHandler.RegisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
 
@@ -89,6 +90,7 @@ namespace Client
                 spellVisualController.Deinitialize();
 
                 EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
+                EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
                 EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
 
@@ -135,6 +137,17 @@ namespace Client
                 return;
 
             floatingTextController.SpawnDamageText(targetRenderer, damageAmount, isCrit);
+        }
+
+        private void OnSpellHealingDone(Unit caster, Unit target, int healingAmount, bool isCrit)
+        {
+            if (!caster.IsController)
+                return;
+
+            if (!unitRenderersById.TryGetValue(target.Id, out UnitRenderer targetRenderer))
+                return;
+
+            floatingTextController.SpawnHealingText(targetRenderer, healingAmount, isCrit);
         }
 
         private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken, Vector3 source)

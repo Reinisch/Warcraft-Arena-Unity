@@ -5,7 +5,7 @@ namespace Core
     [Flags]
     public enum HitType
     {
-        NormalSwing = 1 << 0,
+        Normal = 1 << 0,
         Miss = 1 << 1,
         FullAbsorb = 1 << 2,
         PartialAbsorb = 1 << 3,

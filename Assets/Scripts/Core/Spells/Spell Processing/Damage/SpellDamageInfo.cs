@@ -2,12 +2,10 @@
 
 namespace Core
 {
-    public class SpellDamageInfo
+    public struct SpellDamageInfo
     {
-        public HitType HitInfo { get; set; }
-
+        public HitType HitInfo { get; private set; }
         public SpellDamageType SpellDamageType { get; }
-        public SpellSchoolMask SchoolMask { get; }
         public SpellInfo SpellInfo { get; }
         public Unit Target { get; }
         public Unit Caster { get; }
@@ -18,18 +16,21 @@ namespace Core
         public uint Absorb { get; private set; }
         public uint Resist { get; private set; }
 
-        public SpellDamageInfo(Unit caster, Unit target, SpellInfo spellInfo, uint originalDamage, bool hasCrit, SpellSchoolMask schoolMask, SpellDamageType spellDamageType)
+        public SpellDamageInfo(Unit caster, Unit target, SpellInfo spellInfo, uint originalDamage, bool hasCrit, SpellDamageType spellDamageType)
         {
             Caster = caster;
             Target = target;
             SpellInfo = spellInfo;
 
-            SchoolMask = schoolMask;
             SpellDamageType = spellDamageType;
 
             Damage = originalDamage;
             UnmitigatedDamage = originalDamage;
             HasCrit = hasCrit;
+
+            HitInfo = 0;
+            Absorb = 0;
+            Resist = 0;
 
             if (HasCrit)
                 HitInfo |= HitType.CriticalHit;

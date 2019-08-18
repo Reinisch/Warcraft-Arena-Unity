@@ -30,6 +30,16 @@ namespace Client
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, (Unit)LocalPlayer, target, spellDamageEvent.DamageAmount, spellDamageEvent.IsCrit);
         }
 
+        public override void OnEvent(SpellHealingDoneEvent spellHealingEvent)
+        {
+            base.OnEvent(spellHealingEvent);
+
+            if (LocalPlayer == null || !World.UnitManager.TryFind(spellHealingEvent.Target.PackedValue, out Unit target))
+                return;
+
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, (Unit)LocalPlayer, target, spellHealingEvent.HealAmount, spellHealingEvent.IsCrit);
+        }
+
         public override void OnEvent(SpellPlayerTeleportEvent teleportEvent)
         {
             base.OnEvent(teleportEvent);

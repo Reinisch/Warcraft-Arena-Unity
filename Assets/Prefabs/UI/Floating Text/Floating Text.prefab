@@ -56,6 +56,9 @@ MonoBehaviour:
   cameraReference: {fileID: 11400000, guid: 7ec395dbbe5ff3848a39b67a4e093974, type: 2}
   damageSettings: {fileID: 11400000, guid: 21d0958b95511ca4c94f6dd9a9bde73e, type: 2}
   damageCritSettings: {fileID: 11400000, guid: 3a00946b6c1a7574abb5cc73b7341d92, type: 2}
+  healingSettings: {fileID: 11400000, guid: 68e51e3162d9c5847b2a9c1297d6aa71, type: 2}
+  healingCritSettings: {fileID: 11400000, guid: 5dd366ef6083fa847be82f1ef51d4f31,
+    type: 2}
 --- !u!23 &1958000225788339116
 MeshRenderer:
   m_ObjectHideFlags: 0

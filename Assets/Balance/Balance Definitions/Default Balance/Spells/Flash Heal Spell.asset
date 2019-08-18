@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 14
   spellName: Flash Heal
   explicitTargetType: 1
-  damageClass: 0
+  damageClass: 1
   spellDispel: 0
   mechanic: 0
   explicitCastTargets: 8
@@ -39,6 +39,7 @@ MonoBehaviour:
   speed: 0
   stackAmount: 0
   maxAffectedTargets: 1
-  spellEffectInfos: []
+  spellEffectInfos:
+  - {fileID: 11400000, guid: c4fa93ced93c88847b43245622ebd187, type: 2}
   spellPowerEntries: []
   targetingConditions: []

@@ -10,6 +10,7 @@ namespace Server
         internal GameSpellListener(WorldServerManager world) : base(world)
         {
             EventHandler.RegisterEvent<SpellDamageInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, OnSpellDamageDone);
+            EventHandler.RegisterEvent<SpellHealInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerHealingDone, OnSpellHealingDone);
             EventHandler.RegisterEvent<Unit, Vector3, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.RegisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
@@ -19,6 +20,7 @@ namespace Server
         internal override void Dispose()
         {
             EventHandler.UnregisterEvent<SpellDamageInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, OnSpellDamageDone);
+            EventHandler.UnregisterEvent<SpellHealInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerHealingDone, OnSpellHealingDone);
             EventHandler.UnregisterEvent<Unit, Vector3, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.UnregisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
@@ -44,6 +46,23 @@ namespace Server
             unitSpellDemageEvent.Damage = (int)damageInfo.Damage;
             unitSpellDemageEvent.IsCrit = damageInfo.HasCrit;
             unitSpellDemageEvent.Send();
+        }
+
+        private void OnSpellHealingDone(SpellHealInfo healInfo)
+        {
+            if (healInfo.Healer is Player player && World.IsControlledByHuman(player))
+            {
+                SpellHealingDoneEvent spellDamageEvent = player.IsController
+                    ? SpellHealingDoneEvent.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered)
+                    : SpellHealingDoneEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
+
+                spellDamageEvent.Target = healInfo.Target.BoltEntity.NetworkId;
+                spellDamageEvent.HealAmount = (int)healInfo.Heal;
+                spellDamageEvent.IsCrit = healInfo.HasCrit;
+                spellDamageEvent.Send();
+            }
+
+            // ignore unit healing event, since it currently affects nothing
         }
 
         private void OnServerSpellLaunch(Unit caster, Vector3 source, SpellInfo spellInfo, IProtocolToken processingToken)

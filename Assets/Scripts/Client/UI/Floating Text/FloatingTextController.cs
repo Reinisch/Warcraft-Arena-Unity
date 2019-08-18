@@ -40,6 +40,14 @@ namespace Client
             activeTexts.Add(damageText);
         }
 
+        public void SpawnHealingText(UnitRenderer targetRenderer, int healingAmount, bool isCrit)
+        {
+            FloatingText healingText = GameObjectPool.Take(floatingTextPrototype, targetRenderer.transform.position, targetRenderer.transform.rotation);
+            targetRenderer.TagContainer.ApplyPositioning(healingText);
+            healingText.SetHealing(healingAmount, isCrit);
+            activeTexts.Add(healingText);
+        }
+
         public void DoUpdate(float deltaTime)
         {
             for (int i = activeTexts.Count - 1; i >= 0; i--)

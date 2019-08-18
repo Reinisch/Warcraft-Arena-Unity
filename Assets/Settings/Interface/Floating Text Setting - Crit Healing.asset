@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e289857c00578db40a4afbed85afbd23, type: 3}
-  m_Name: Floating Text Setting - Crit Damage
+  m_Name: Floating Text Setting - Crit Healing
   m_EditorClassIdentifier: 
   lifeTime: 1.2
   randomOffset: 0.5
   floatingSpeed: 1
   fontSize: 4
-  fontColor: {r: 1, g: 0.7623552, b: 0.21568626, a: 1}
-  fontAsset: {fileID: 11400000, guid: bf4c6b4a73c06124b99306c0782fbd85, type: 2}
+  fontColor: {r: 0.19607843, g: 0.5882353, b: 0, a: 1}
+  fontAsset: {fileID: 11400000, guid: 5cdd21a82c43a2a4a9c75f447c89f653, type: 2}
   sizeOverTime:
     serializedVersion: 2
     m_Curve:
