@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Flash Heal Spell
+  m_EditorClassIdentifier: 
+  id: 14
+  spellName: Flash Heal
+  explicitTargetType: 1
+  damageClass: 0
+  spellDispel: 0
+  mechanic: 0
+  explicitCastTargets: 8
+  schoolMask: 2
+  preventionType: 1
+  attributes: 0
+  attributesExtra: 0
+  attributesCustom: 0
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 500
+  castTime: 1500
+  minCastTime: 750
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 0
+  maxRangeFriend: 40
+  speed: 0
+  stackAmount: 0
+  maxAffectedTargets: 1
+  spellEffectInfos: []
+  spellPowerEntries: []
+  targetingConditions: []
