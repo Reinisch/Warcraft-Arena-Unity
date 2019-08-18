@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Renew Effect Apply Aura
+  m_EditorClassIdentifier: 
+  mainTargeting:
+    targetEntities: 0
+    referenceType: 2
+    selectionCategory: 0
+    selectionCheckType: 0
+    directionType: 0
+  secondaryTargeting:
+    targetEntities: 0
+    referenceType: 0
+    selectionCategory: 0
+    selectionCheckType: 0
+    directionType: 0
+  explicitTargetType: 1
+  minRadius: 0
+  maxRadius: 0
+  auraInfo: {fileID: 11400000, guid: 3253288c2a2cfaa4b87d99b7883ace35, type: 2}

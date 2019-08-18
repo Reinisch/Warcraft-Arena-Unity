@@ -10,7 +10,7 @@
         ModConfuse = 5,
         ModCharm = 6,
         ModFear = 7,
-        PeriodicHeal = 8,
+        PeriodicHealing = 8,
         ModAttackspeed = 9,
         ModThreat = 10,
         ModTaunt = 11,
