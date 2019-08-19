@@ -39,6 +39,7 @@ MonoBehaviour:
   spellEffectSettings:
   - {fileID: 11400000, guid: 343ed82112bcfa5449de8c04e491f167, type: 2}
   - {fileID: 11400000, guid: 248314ec8db1fc443ab04d2791ed71b0, type: 2}
+  - {fileID: 11400000, guid: c9a04cce21c36f74295bf39e533a7769, type: 2}
   - {fileID: 11400000, guid: 9f8631a0c71ef5b49a8aad690687982d, type: 2}
   - {fileID: 11400000, guid: 8c45e48ebd14078489c9e58d2b4750e7, type: 2}
   - {fileID: 11400000, guid: abeaff18fdf983c4e86acfe3153980ed, type: 2}
@@ -55,6 +56,7 @@ MonoBehaviour:
   auraEffectSettings:
   - {fileID: 11400000, guid: 81c714e7642f53944ad5911a9e63b01c, type: 2}
   - {fileID: 11400000, guid: ddc68973ea3c4644cb68098caa4a237b, type: 2}
+  - {fileID: 11400000, guid: 9be18eafeb4bdb249a1275730f707c9a, type: 2}
   - {fileID: 11400000, guid: 4cd63d4fdd232e94b8228c702bb35833, type: 2}
   - {fileID: 11400000, guid: 0e7c2b7330730e44b948d76d40725cda, type: 2}
   - {fileID: 11400000, guid: 61dc282d524dbcf4b84121c6ef9f03e6, type: 2}
