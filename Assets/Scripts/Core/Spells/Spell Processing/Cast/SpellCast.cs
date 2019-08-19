@@ -10,14 +10,15 @@
 
         private readonly Unit caster;
         private readonly IUnitState casterState;
-        private Spell currentSpell;
+
+        internal Spell Spell { get; private set; }
 
         internal bool IsCasting
         {
             get
             {
                 if (caster.IsOwner)
-                    return currentSpell != null && currentSpell.ExecutionState == SpellExecutionState.Casting;
+                    return Spell != null && Spell.ExecutionState == SpellExecutionState.Casting;
 
                 return casterState.SpellCast.Id != 0;
             }
@@ -41,25 +42,25 @@
             switch (handleMode)
             {
                 case HandleMode.Started:
-                    currentSpell = spell;
+                    Spell = spell;
                     casterState.SpellCast.Id = spell.SpellInfo.Id;
                     casterState.SpellCast.ServerFrame = BoltNetwork.ServerFrame;
                     casterState.SpellCast.CastTime = spell.CastTime;
                     break;
                 case HandleMode.Finished:
                     casterState.SpellCast.Id = 0;
-                    currentSpell = null;
+                    Spell = null;
                     break;
             }
         }
 
         internal void Cancel()
         {
-            if (currentSpell != null)
+            if (Spell != null)
             {
-                currentSpell.Cancel();
+                Spell.Cancel();
 
-                HandleSpellCast(currentSpell, HandleMode.Finished);
+                HandleSpellCast(Spell, HandleMode.Finished);
             }
         }
     }

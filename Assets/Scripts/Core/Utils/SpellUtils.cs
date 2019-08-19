@@ -39,6 +39,16 @@
             return (baseFlags & flag) == flag;
         }
 
+        public static bool HasTargetFlag(this SpellPreventionType baseFlags, SpellPreventionType flag)
+        {
+            return (baseFlags & flag) == flag;
+        }
+
+        public static bool HasAnyFlag(this SpellPreventionType baseFlags, SpellPreventionType flag)
+        {
+            return (baseFlags & flag) != 0;
+        }
+
         public static bool HasTargetFlag(this SpellCastFlags baseFlags, SpellCastFlags flag)
         {
             return (baseFlags & flag) == flag;

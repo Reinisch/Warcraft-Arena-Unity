@@ -36,6 +36,10 @@ MonoBehaviour:
     LocalizedString: {fileID: 11400000, guid: eba3455c8a4912f4a8c7752453a7f34d, type: 2}
   - SpellCastResult: 24
     LocalizedString: {fileID: 11400000, guid: b6521444fb6c6194ba691e77524fa1d3, type: 2}
+  - SpellCastResult: 41
+    LocalizedString: {fileID: 11400000, guid: 5070e09889e70fd40bd960373fa86162, type: 2}
+  - SpellCastResult: 44
+    LocalizedString: {fileID: 11400000, guid: 55f53c5cd33d7ca4b94014674e0f5fef, type: 2}
   clientConnectFailReasons:
   - FailReason: 0
     LocalizedString: {fileID: 11400000, guid: 35bdb3f22e4c2ab4590a4828e7e25267, type: 2}
