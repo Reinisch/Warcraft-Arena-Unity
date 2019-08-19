@@ -38,7 +38,7 @@
                     target.RemoveFlag(UnitFlags.Silenced);
 
                 if (hasPacify && !target.HasAuraType(AuraEffectType.Pacify) && !target.HasAuraType(AuraEffectType.SilencePacify))
-                    target.RemoveFlag(UnitFlags.Silenced);
+                    target.RemoveFlag(UnitFlags.Pacified);
             }
         }
     }
