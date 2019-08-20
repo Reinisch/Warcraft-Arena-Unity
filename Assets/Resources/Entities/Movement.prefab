@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1409}
   - component: {fileID: 1544}
   m_Layer: 0
-  m_Name: MoveState
+  m_Name: Movement
   m_TagString: Move State
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneGuid: 
   _serializerGuid: e61ac43d-f1f5-45f6-a53c-4d33d0041175
-  _prefabId: 3
+  _prefabId: 2
   _updateRate: 1
   _autoFreezeProxyFrames: 0
   _clientPredicted: 0

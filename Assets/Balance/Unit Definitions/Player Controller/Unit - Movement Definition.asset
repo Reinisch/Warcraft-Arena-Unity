@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 841201e649b398f4a8838c03d593efab, type: 3}
-  m_Name: Unit Movement Definition
+  m_Name: Unit - Movement Definition
   m_EditorClassIdentifier: 
   walkSpeed: 3
   runSpeed: 7
   runBackSpeed: 4.5
   turnRate: 250
-  pitchRate: 250

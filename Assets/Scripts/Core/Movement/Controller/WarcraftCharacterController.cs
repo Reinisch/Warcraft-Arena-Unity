@@ -143,7 +143,7 @@ namespace Core
 
             if (!unit.IsOwner && unit.IsController)
             {
-                BoltEntity localClientMoveState = BoltNetwork.Instantiate(BoltPrefabs.MoveState);
+                BoltEntity localClientMoveState = BoltNetwork.Instantiate(BoltPrefabs.Movement);
                 localClientMoveState.SetScopeAll(false);
                 localClientMoveState.SetScope(BoltNetwork.Server, true);
                 localClientMoveState.AssignControl(BoltNetwork.Server);

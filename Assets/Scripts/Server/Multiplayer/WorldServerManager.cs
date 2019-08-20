@@ -67,7 +67,7 @@ namespace Server
 
         internal void EntityAttached(BoltEntity entity)
         {
-            if (entity.PrefabId == BoltPrefabs.MoveState)
+            if (entity.PrefabId == BoltPrefabs.Movement)
             {
                 entity.SetScopeAll(false);
 
@@ -81,7 +81,7 @@ namespace Server
 
         internal void EntityDetached(BoltEntity entity)
         {
-            if (entity.PrefabId == BoltPrefabs.MoveState)
+            if (entity.PrefabId == BoltPrefabs.Movement)
             {
                 Player player = FindPlayer(entity.Source);
                 if (player == null)
@@ -150,7 +150,7 @@ namespace Server
                 PlayerName = playerName
             };
 
-            Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.PlayerMage, playerCreateToken);
+            Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.Player, playerCreateToken);
             
             if (boltConnection == null)
                 newPlayer.BoltEntity.TakeControl();

@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bea7f28073034bf7b080659998048fca, type: 3}
-  m_Name: Player Controller Definition
+  m_Script: {fileID: 11500000, guid: fa0898825cc923d45a1fb4083a85e1cd, type: 3}
+  m_Name: Attribute Definition - Default Creature
   m_EditorClassIdentifier: 
-  jumpSpeed: 5
-  rotateSpeed: 250
-  baseGroundCheckDistance: 0.2
-  layerShiftDistance: 3
-  movementCorrectionDistance: 1.5
-  correctionDampening: 0.6
+  baseModelId: 2
+  baseHealth: 100000000
+  baseMaxHealth: 100000000
+  baseMana: 100
+  baseMaxMana: 100
+  baseSpellPower: 10
+  critPercentage: 5

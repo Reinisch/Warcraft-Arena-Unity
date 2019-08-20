@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1533}
   - component: {fileID: 1530}
   m_Layer: 9
-  m_Name: PlayerMage
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneGuid: 
   _serializerGuid: 9b45cbe4-54c8-47bb-af36-d7bb319e9410
-  _prefabId: 2
+  _prefabId: 3
   _updateRate: 1
   _autoFreezeProxyFrames: 0
   _clientPredicted: 0
