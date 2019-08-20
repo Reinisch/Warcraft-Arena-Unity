@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa0898825cc923d45a1fb4083a85e1cd, type: 3}
-  m_Name: Dummy Attribute Definition
+  m_Script: {fileID: 11500000, guid: 70c3e51c9894ebc4693e479cf783691d, type: 3}
+  m_Name: Unit Model - Target Dummy
   m_EditorClassIdentifier: 
-  baseModelId: 2
-  baseHealth: 100000000
-  baseMaxHealth: 100000000
-  baseMana: 100
-  baseMaxMana: 100
-  baseSpellPower: 10
-  critPercentage: 5
+  id: 2
+  prototype: {fileID: 1962656272333950005, guid: b405f715f4c021f4b87c9bd0bab2a7cb,
+    type: 3}

@@ -6,6 +6,7 @@ namespace Core
     [CreateAssetMenu(fileName = "Unit Attribute Definition", menuName = "Game Data/Entities/Unit Attribute Definition", order = 1)]
     internal class UnitAttributeDefinition : ScriptableObject
     {
+        [UsedImplicitly, SerializeField] private int baseModelId;
         [UsedImplicitly, SerializeField] private int baseHealth;
         [UsedImplicitly, SerializeField] private int baseMaxHealth;
         [UsedImplicitly, SerializeField] private int baseMana;
@@ -19,5 +20,7 @@ namespace Core
         internal int BaseMaxMana => baseMaxMana;
         internal int BaseSpellPower => baseSpellPower;
         internal float CritPercentage => critPercentage;
+
+        public int BaseModelId => baseModelId;
     }
 }

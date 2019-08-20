@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Rendering Reference
   m_EditorClassIdentifier: 
   defaultSpellIcon: {fileID: 21300000, guid: 76cd4c99ae5fb62478da1b60870f7f63, type: 3}
+  unitRendererPrototype: {fileID: 8283757307345493563, guid: dac238eecc77761418818a22bb332b12,
+    type: 3}
   balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   nameplateController:
     rendering: {fileID: 11400000}
@@ -65,3 +67,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fb0179001492b9e419988cc8bd6c8551, type: 2}
   - {fileID: 11400000, guid: 319e609909d58a44ebecf93e0b341fda, type: 2}
   - {fileID: 11400000, guid: 27e37de3e5c990f46a66f7aa056715e1, type: 2}
+  modelSettings:
+  - {fileID: 11400000, guid: cee96f3e361be5e4eb3deb46c1c4a56b, type: 2}
+  - {fileID: 11400000, guid: 0940a8a89a777c446b664af42eb6760a, type: 2}

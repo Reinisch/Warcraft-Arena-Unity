@@ -33,6 +33,7 @@
         UnitAttributeChanged,
         UnitTargetChanged,
         UnitFactionChanged,
+        UnitModelChanged,
 
         HotkeyStateChanged,
         GameOptionChanged

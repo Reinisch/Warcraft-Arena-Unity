@@ -14,6 +14,8 @@ namespace Core
             public DeathState DeathState { private get; set; }
             public bool FreeForAll { private get; set; }
             public int FactionId { private get; set; }
+            public int ModelId { private get; set; }
+            public float Scale { private get; set; } = 1.0f;
 
             public override void Read(UdpPacket packet)
             {
@@ -21,7 +23,9 @@ namespace Core
 
                 DeathState = (DeathState)packet.ReadInt();
                 FactionId = packet.ReadInt();
+                ModelId = packet.ReadInt();
                 FreeForAll = packet.ReadBool();
+                Scale = packet.ReadFloat();
             }
 
             public override void Write(UdpPacket packet)
@@ -30,7 +34,9 @@ namespace Core
 
                 packet.WriteInt((int)DeathState);
                 packet.WriteInt(FactionId);
+                packet.WriteInt(ModelId);
                 packet.WriteBool(FreeForAll);
+                packet.WriteFloat(Scale);
             }
 
             protected void Attached(Unit unit)
@@ -38,6 +44,8 @@ namespace Core
                 unit.DeathState = DeathState;
                 unit.Faction = unit.Balance.FactionsById[FactionId];
                 unit.FreeForAll = FreeForAll;
+                unit.ModelId = ModelId;
+                unit.Scale = Scale;
             }
         }
 
@@ -66,7 +74,9 @@ namespace Core
         internal SpellController Spells { get; } = new SpellController();
         internal WarcraftCharacterController CharacterController => characterController;
 
+        internal UnitAttributeDefinition AttributeDefinition => unitAttributeDefinition;
         internal bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
+        internal int ModelId { get => Attributes.ModelId; set => Attributes.ModelId = value; }
         internal FactionDefinition Faction { get => Attributes.Faction; set => Attributes.Faction = value; }
         internal DeathState DeathState { get => Attributes.DeathState; set => Attributes.DeathState = value; }
         internal IReadOnlyDictionary<UnitMoveType, float> SpeedRates => Attributes.SpeedRates;
@@ -79,6 +89,7 @@ namespace Core
         public PlayerControllerDefinition ControllerDefinition => characterController.ControllerDefinition;
 
         public int Level => Attributes.Level.Value;
+        public int Model => Attributes.ModelId;
         public int Health => Attributes.Health.Value;
         public int MaxHealth => Attributes.MaxHealth.Value;
         public int BaseMana => Attributes.Mana.Base;
@@ -95,6 +106,7 @@ namespace Core
         public bool IsDead => DeathState == DeathState.Dead;
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitControlState.Moving);
+        public float Scale { get => Attributes.Scale; internal set => Attributes.Scale = value; }
 
         public bool HealthBelowPercent(int percent) => Health < MaxHealth.CalculatePercentage(percent);
         public bool HealthAbovePercent(int percent) => Health > MaxHealth.CalculatePercentage(percent);

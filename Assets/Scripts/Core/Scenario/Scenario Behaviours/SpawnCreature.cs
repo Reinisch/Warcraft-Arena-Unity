@@ -31,6 +31,7 @@ namespace Core.Scenario
                 Rotation = customSpawnSettings.SpawnPoint.rotation,
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
+                ModelId = creaturePrototype.AttributeDefinition.BaseModelId,
                 FactionId = Balance.DefaultFaction.FactionId,
                 CustomNameId = customSpawnSettings.CustomNameId,
                 Scale = customSpawnSettings.CustomScale

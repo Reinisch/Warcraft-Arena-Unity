@@ -9,14 +9,12 @@ namespace Core
         public new class CreateToken : Unit.CreateToken
         {
             public string CustomNameId = string.Empty;
-            public float Scale = 1.0f;
 
             public override void Read(UdpPacket packet)
             {
                 base.Read(packet);
 
                 CustomNameId = packet.ReadString();
-                Scale = packet.ReadFloat();
             }
 
             public override void Write(UdpPacket packet)
@@ -24,7 +22,6 @@ namespace Core
                 base.Write(packet);
 
                 packet.WriteString(CustomNameId);
-                packet.WriteFloat(Scale);
             }
 
             public void Attached(Creature creature)
@@ -32,7 +29,6 @@ namespace Core
                 base.Attached(creature);
 
                 creature.Name = CustomNameId;
-                creature.transform.localScale = new Vector3(Scale, Scale, Scale);
             }
         }
 

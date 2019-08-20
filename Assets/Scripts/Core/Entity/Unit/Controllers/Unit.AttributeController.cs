@@ -9,14 +9,16 @@ namespace Core
         internal class AttributeController : IUnitBehaviour
         {
             private Unit unit;
-            private IUnitState unitState;
-            private bool initialized;
-
-            private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
             private FactionDefinition faction;
             private DeathState deathState;
+            private IUnitState unitState;
+            private bool initialized;
             private bool freeForAll;
             private ulong targetId;
+            private float scale;
+            private int modelId;
+
+            private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
 
             internal EntityAttributeInt Health { get; private set; }
             internal EntityAttributeInt MaxHealth { get; private set; }
@@ -64,6 +66,37 @@ namespace Core
                 }
             }
 
+            internal float Scale
+            {
+                get => scale;
+                set
+                {
+                    scale = value;
+                    unit.transform.localScale = new Vector3(scale, scale, scale);
+
+                    if (unit.IsOwner)
+                    {
+                        unitState.Scale = value;
+                        unit.createToken.Scale = value;
+                    }
+                }
+            }
+
+            internal int ModelId
+            {
+                get => modelId;
+                set
+                {
+                    modelId = value;
+
+                    if (unit.IsOwner)
+                    {
+                        unitState.ModelId = value;
+                        unit.createToken.ModelId = value;
+                    }
+                }
+            }
+
             internal bool FreeForAll
             {
                 get => freeForAll;
@@ -98,6 +131,7 @@ namespace Core
                     unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
                     unit.AddCallback(nameof(IUnitState.Health), OnHealthStateChanged);
                     unit.AddCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
+                    unit.AddCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
@@ -146,6 +180,7 @@ namespace Core
                     unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
                     unit.RemoveCallback(nameof(IUnitState.Health), OnHealthStateChanged);
                     unit.RemoveCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
+                    unit.RemoveCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
@@ -242,6 +277,13 @@ namespace Core
             private void OnTargetIdChanged()
             {
                 UpdateTarget(unitState.TargetId.PackedValue);
+            }
+
+            private void OnModelIdChanged()
+            {
+                ModelId = unitState.ModelId;
+
+                EventHandler.ExecuteEvent(unit, GameEvents.UnitModelChanged);
             }
 
             private void OnFactionIdChanged()

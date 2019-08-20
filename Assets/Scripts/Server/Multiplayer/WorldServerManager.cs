@@ -145,6 +145,7 @@ namespace Server
                 Rotation = spawnPoint.rotation,
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
+                ModelId = 1,
                 FactionId = mainMap.Settings.Balance.DefaultFaction.FactionId,
                 PlayerName = playerName
             };

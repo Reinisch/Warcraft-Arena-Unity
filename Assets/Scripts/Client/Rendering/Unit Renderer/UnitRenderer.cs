@@ -9,29 +9,27 @@ namespace Client
     public sealed partial class UnitRenderer : EntityEventListener<IUnitState>
     {
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
-        [SerializeField, UsedImplicitly] private TagContainer tagContainer;
-        [SerializeField, UsedImplicitly] private Animator animator;
+        [SerializeField, UsedImplicitly] private TagContainer dummyTagContainer;
 
         private readonly AuraEffectController auraEffectController = new AuraEffectController();
+        private UnitModel model;
 
-        public TagContainer TagContainer => tagContainer;
-        public Animator Animator => animator;
+        public TagContainer TagContainer => model == null ? dummyTagContainer : model.TagContainer;
         public Unit Unit { get; private set; }
 
         public void Initialize(Unit unit)
         {
             Unit = unit;
 
+            transform.SetParent(Unit.transform, false);
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+            
+            ReplaceModel(Unit.Model);
+
             Unit.BoltEntity.AddEventListener(this);
             Unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
             Unit.AddCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
-
-            if (Unit.IsDead)
-            {
-                animator.SetBool("IsDead", true);
-                animator.Play("Death", 0, 1.0f);
-                animator.Play("Death", 1, 1.0f);
-            }
 
             auraEffectController.HandleAttach(this);
         }
@@ -44,14 +42,14 @@ namespace Client
             Unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
             Unit.RemoveCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
 
-            Unit = null;
+            ReplaceModel();
 
-            Animator.WriteDefaultValues();
+            Unit = null;
         }
 
         public void DoUpdate(float deltaTime)
         {
-            UpdateAnimations(deltaTime);
+            model?.DoUpdate(deltaTime);
         }
 
         public override void OnEvent(UnitSpellLaunchEvent launchEvent)
@@ -69,8 +67,8 @@ namespace Client
         {
             base.OnEvent(spellDamageEvent);
 
-            Animator.SetBool("WoundedCrit", spellDamageEvent.IsCrit);
-            Animator.SetTrigger("Wound");
+            model?.Animator.SetBool("WoundedCrit", spellDamageEvent.IsCrit);
+            model?.Animator.SetTrigger("Wound");
         }
 
         public override void OnEvent(UnitSpellHitEvent spellHitEvent)
@@ -80,62 +78,46 @@ namespace Client
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHit, Unit, spellHitEvent.SpellId);
         }
 
-        public void TriggerInstantCast()
+        public void TriggerInstantCast() => model?.TriggerInstantCast();
+        
+        private void ReplaceModel(int modelId)
         {
-            if (Animator.GetBool(AnimatorUtils.ResurrectingAnimationParam) || Animator.GetBool(AnimatorUtils.DyingAnimationParam))
+            if (model != null && model.Settings.Id == modelId)
                 return;
 
-            Animator.Play(AnimatorUtils.SpellCastAnimationState, 0, 0.1f);
-            Animator.ResetTrigger(AnimatorUtils.SpellCastAnimationTrigger);
+            if (rendering.ModelSettingsById.TryGetValue(modelId, out UnitModelSettings newModelSettings))
+            {
+                UnitModel newModel = GameObjectPool.Take(newModelSettings.Prototype);
+                newModel.Initialize(this, newModelSettings);
 
-            // Switch leg animation for casting
-            if (!animator.GetBool("Grounded"))
-                animator.Play("Air", 1);
-            else if (animator.GetFloat("Speed") > 0.1f)
-                animator.Play("Run", 1);
+                ReplaceModel(newModel);
+            }
             else
-                animator.Play("Cast", 1, 0.1f);
+                Debug.LogError($"Missing model with id: {modelId}");
         }
 
-        private void UpdateAnimations(float deltaTime)
+        private void ReplaceModel(UnitModel newModel = null)
         {
-            if (!Unit.IsAlive)
+            if (model != null)
             {
-                animator.SetBool("IsDead", true);
-                return;
+                if (newModel != null)
+                    model.TagContainer.TransferChildren(newModel.TagContainer);
+
+                model.Deinitialize();
+                GameObjectPool.Return(model, false);
             }
 
-            if (!Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
-            {
-                Animator.SetBool("Grounded", true);
-
-                float currentStrafe = Animator.GetFloat("Strafe");
-                float strafeTarget = Unit.MovementInfo.HasMovementFlag(MovementFlags.StrafeLeft) ? 0 :
-                    Unit.MovementInfo.HasMovementFlag(MovementFlags.StrafeRight) ? 1 : 0.5f;
-
-                float strafeDelta = 2 * Mathf.Sign(strafeTarget - currentStrafe) * deltaTime;
-                float resultStrafe = Mathf.Clamp(currentStrafe + strafeDelta, 0.0f, 1.0f);
-
-                if (Mathf.Abs(strafeTarget - currentStrafe) > Mathf.Abs(strafeDelta))
-                    Animator.SetFloat("Strafe", resultStrafe);
-
-                if (Unit.MovementInfo.HasMovementFlag(MovementFlags.Forward | MovementFlags.StrafeRight | MovementFlags.StrafeLeft))
-                    Animator.SetFloat("Speed", 1);
-                else
-                    Animator.SetFloat("Speed", Mathf.Clamp(Animator.GetFloat("Speed") - 10 * deltaTime, 0.0f, 1.0f));
-            }
-            else
-                Animator.SetBool("Grounded", false);
+            model = newModel;
         }
 
         private void OnDeathStateChanged()
         {
-            animator.SetBool("IsDead", Unit.IsDead);
+            model?.Animator.SetBool("IsDead", Unit.IsDead);
         }
 
         private void OnSpellCastChanged()
         {
-            animator.SetBool("Casting", Unit.SpellCast.State.Id != 0);
+            model?.Animator.SetBool("Casting", Unit.SpellCast.State.Id != 0);
         }
     }
 }

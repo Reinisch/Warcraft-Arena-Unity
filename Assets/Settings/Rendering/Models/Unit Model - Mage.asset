@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa0898825cc923d45a1fb4083a85e1cd, type: 3}
-  m_Name: Dummy Attribute Definition
+  m_Script: {fileID: 11500000, guid: 70c3e51c9894ebc4693e479cf783691d, type: 3}
+  m_Name: Unit Model - Mage
   m_EditorClassIdentifier: 
-  baseModelId: 2
-  baseHealth: 100000000
-  baseMaxHealth: 100000000
-  baseMana: 100
-  baseMaxMana: 100
-  baseSpellPower: 10
-  critPercentage: 5
+  id: 1
+  prototype: {fileID: 5041366270056931295, guid: 0326704f848dfa94480e00f3a6ea3a02,
+    type: 3}

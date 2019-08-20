@@ -13,6 +13,7 @@ namespace Client
     public partial class RenderingReference : ScriptableReferenceClient
     { 
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
+        [SerializeField, UsedImplicitly] private UnitRenderer unitRendererPrototype;
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private NameplateController nameplateController;
         [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
@@ -20,9 +21,11 @@ namespace Client
         [SerializeField, UsedImplicitly] private SelectionCircleController selectionCircleController;
         [SerializeField, UsedImplicitly] private List<SpellEffectSettings> spellEffectSettings;
         [SerializeField, UsedImplicitly] private List<AuraEffectSettings> auraEffectSettings;
+        [SerializeField, UsedImplicitly] private List<UnitModelSettings> modelSettings;
 
         private readonly Dictionary<int, SpellEffectSettings> spellVisualSettingsById = new Dictionary<int, SpellEffectSettings>();
         private readonly Dictionary<int, AuraEffectSettings> auraVisualSettingsById = new Dictionary<int, AuraEffectSettings>();
+        private readonly Dictionary<int, UnitModelSettings> modelSettingsById = new Dictionary<int, UnitModelSettings>();
         private readonly Dictionary<ulong, UnitRenderer> unitRenderersById = new Dictionary<ulong, UnitRenderer>();
         private readonly List<UnitRenderer> unitRenderers = new List<UnitRenderer>();
         private readonly List<IUnitRendererHandler> unitRendererHandlers = new List<IUnitRendererHandler>();
@@ -30,11 +33,13 @@ namespace Client
         public Sprite DefaultSpellIcon => defaultSpellIcon;
         public IReadOnlyDictionary<int, SpellEffectSettings> SpellVisualSettingsById => spellVisualSettingsById;
         public IReadOnlyDictionary<int, AuraEffectSettings> AuraVisualSettingsById => auraVisualSettingsById;
-        
+        public IReadOnlyDictionary<int, UnitModelSettings> ModelSettingsById => modelSettingsById;
+
         protected override void OnRegistered()
         {
             base.OnRegistered();
 
+            modelSettings.ForEach(model => modelSettingsById.Add(model.Id, model));
             auraEffectSettings.ForEach(visual => auraVisualSettingsById.Add(visual.AuraInfo.Id, visual));
             spellEffectSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
             spellEffectSettings.ForEach(visual => visual.Initialize());
@@ -45,6 +50,7 @@ namespace Client
             spellEffectSettings.ForEach(visual => visual.Deinitialize());
             spellVisualSettingsById.Clear();
             auraVisualSettingsById.Clear();
+            modelSettingsById.Clear();
 
             base.OnUnregister();
         }
@@ -196,7 +202,7 @@ namespace Client
         {
             if (worldEntity is Unit unitEntity)
             {
-                var unitRenderer = unitEntity.GetComponentInChildren<UnitRenderer>();
+                var unitRenderer = GameObjectPool.Take(unitRendererPrototype);
                 unitRenderer.Initialize(unitEntity);
                 unitRenderersById.Add(unitEntity.Id, unitRenderer);
                 unitRenderers.Add(unitRenderer);
@@ -221,6 +227,8 @@ namespace Client
                 unitRenderer.Deinitialize();
                 unitRenderersById.Remove(unitEntity.Id);
                 unitRenderers.Remove(unitRenderer);
+
+                GameObjectPool.Return(unitRenderer, unitRenderer.gameObject == null);
             }
         }
 
@@ -259,11 +267,21 @@ namespace Client
                 auraEffectSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<AuraEffectSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
         }
 
+        [ContextMenu("Collect Unit Models"), UsedImplicitly]
+        private void CollectUnitModelSettings()
+        {
+            modelSettings.Clear();
+
+            foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{nameof(UnitModelSettings)}", null))
+                modelSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<UnitModelSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
+        }
+
         [ContextMenu("Collect Everything"), UsedImplicitly]
         private void CollectEverything()
         {
             CollectAuraEffectSettings();
             CollectSpellEffectSettings();
+            CollectUnitModelSettings();
         }
 #endif
     }
