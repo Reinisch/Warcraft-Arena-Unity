@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Polymorph Spell
+  m_EditorClassIdentifier: 
+  id: 17
+  spellName: Polymorph
+  explicitTargetType: 1
+  damageClass: 0
+  spellDispel: 1
+  mechanic: 17
+  explicitCastTargets: 4
+  schoolMask: 64
+  preventionType: -1
+  attributes: 0
+  attributesExtra: 128
+  attributesCustom: 0
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 1
+  cooldownTime: 3000
+  categoryCooldownTime: 0
+  globalCooldownTime: 0
+  castTime: 1500
+  minCastTime: 750
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 30
+  maxRangeFriend: 0
+  speed: 50
+  stackAmount: 0
+  maxAffectedTargets: 1
+  spellEffectInfos:
+  - {fileID: 11400000, guid: bb365cdd693fd304a85b52c4de0d8c52, type: 2}
+  spellPowerEntries: []
+  targetingConditions: []
