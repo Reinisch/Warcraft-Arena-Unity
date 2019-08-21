@@ -24,12 +24,14 @@ namespace Client
             transform.SetParent(Unit.transform, false);
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
-            
+            transform.localScale = Vector3.one;
+
             ReplaceModel(Unit.Model);
 
             Unit.BoltEntity.AddEventListener(this);
             Unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
             Unit.AddCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
+            EventHandler.RegisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
 
             auraEffectController.HandleAttach(this);
         }
@@ -41,6 +43,7 @@ namespace Client
             Unit.BoltEntity.RemoveEventListener(this);
             Unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
             Unit.RemoveCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
+            EventHandler.UnregisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
 
             ReplaceModel();
 
@@ -79,7 +82,9 @@ namespace Client
         }
 
         public void TriggerInstantCast() => model?.TriggerInstantCast();
-        
+
+        private void OnModelChanged() => ReplaceModel(Unit.Model);
+      
         private void ReplaceModel(int modelId)
         {
             if (model != null && model.Settings.Id == modelId)

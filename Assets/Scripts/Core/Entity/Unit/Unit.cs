@@ -4,6 +4,7 @@ using UnityEngine;
 using UdpKit;
 using Bolt;
 using Common;
+using Core.AuraEffects;
 
 namespace Core
 {
@@ -15,6 +16,7 @@ namespace Core
             public bool FreeForAll { private get; set; }
             public int FactionId { private get; set; }
             public int ModelId { private get; set; }
+            public int OriginalModelId { private get; set; }
             public float Scale { private get; set; } = 1.0f;
 
             public override void Read(UdpPacket packet)
@@ -24,6 +26,7 @@ namespace Core
                 DeathState = (DeathState)packet.ReadInt();
                 FactionId = packet.ReadInt();
                 ModelId = packet.ReadInt();
+                OriginalModelId = packet.ReadInt();
                 FreeForAll = packet.ReadBool();
                 Scale = packet.ReadFloat();
             }
@@ -35,6 +38,7 @@ namespace Core
                 packet.WriteInt((int)DeathState);
                 packet.WriteInt(FactionId);
                 packet.WriteInt(ModelId);
+                packet.WriteInt(OriginalModelId);
                 packet.WriteBool(FreeForAll);
                 packet.WriteFloat(Scale);
             }
@@ -45,6 +49,7 @@ namespace Core
                 unit.Faction = unit.Balance.FactionsById[FactionId];
                 unit.FreeForAll = FreeForAll;
                 unit.ModelId = ModelId;
+                unit.OriginalModelId = OriginalModelId;
                 unit.Scale = Scale;
             }
         }
@@ -75,8 +80,10 @@ namespace Core
         internal WarcraftCharacterController CharacterController => characterController;
 
         internal UnitAttributeDefinition AttributeDefinition => unitAttributeDefinition;
+        internal SpellInfo TransformSpellInfo { get; private set; }
         internal bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
         internal int ModelId { get => Attributes.ModelId; set => Attributes.ModelId = value; }
+        internal int OriginalModelId { get => Attributes.OriginalModelId; set => Attributes.OriginalModelId = value; }
         internal FactionDefinition Faction { get => Attributes.Faction; set => Attributes.Faction = value; }
         internal DeathState DeathState { get => Attributes.DeathState; set => Attributes.DeathState = value; }
         internal IReadOnlyDictionary<UnitMoveType, float> SpeedRates => Attributes.SpeedRates;
@@ -280,6 +287,17 @@ namespace Core
             }
         }
 
+        internal void UpdateTransformSpell(AuraEffectChangeDisplayModel changeDisplayEffect)
+        {
+            TransformSpellInfo = changeDisplayEffect.Aura.SpellInfo;
+            ModelId = changeDisplayEffect.EffectInfo.ModelId;
+        }
+
+        internal void ResetTransformSpell()
+        {
+            TransformSpellInfo = null;
+            ModelId = OriginalModelId;
+        }
         internal void SetFlag(UnitFlags flag) => unitFlags |= flag;
 
         internal void RemoveFlag(UnitFlags flag) => unitFlags &= ~flag;

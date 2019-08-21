@@ -81,6 +81,8 @@ namespace Core
         public float MaxRangeFriend => maxRangeFriend;
         public float Speed => speed;
 
+        public bool IsPositive => !HasAttribute(SpellCustomAttributes.Negative);
+
         public bool HasEffect(SpellEffectType effectType)
         {
             return Effects.Exists(effect => effect.EffectType == effectType);
@@ -129,11 +131,6 @@ namespace Core
         public bool IsDeathPersistent()
         {
             return HasAttribute(SpellAttributes.DeathPersistent);
-        }
-
-        public bool IsPositive()
-        {
-            return !HasAttribute(SpellCustomAttributes.Negative);
         }
 
         public bool IsPositiveEffect(int effIndex)
@@ -196,7 +193,7 @@ namespace Core
             if (HasAttribute(SpellAttributes.OnlyTargetPlayers) && !(target is Player))
                 return SpellCastResult.TargetNotPlayer;
 
-            if (target != caster && (caster.IsControlledByPlayer || !IsPositive()) && target is Player player && !player.IsVisible)
+            if (target != caster && (caster.IsControlledByPlayer || !IsPositive) && target is Player player && !player.IsVisible)
                 return SpellCastResult.BmOrInvisGod;
 
             if (target.HasState(UnitControlState.InFlight) && !HasAttribute(SpellCustomAttributes.AllowInFlightTarget))

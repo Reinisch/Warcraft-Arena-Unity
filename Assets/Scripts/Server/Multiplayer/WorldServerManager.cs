@@ -146,6 +146,7 @@ namespace Server
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
                 ModelId = 1,
+                OriginalModelId = 1,
                 FactionId = mainMap.Settings.Balance.DefaultFaction.FactionId,
                 PlayerName = playerName
             };

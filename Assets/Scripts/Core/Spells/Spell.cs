@@ -53,7 +53,7 @@ namespace Core
                 spellCastFlags |= SpellCastFlags.IgnoreGcd;
 
             CanReflect = SpellInfo.DamageClass == SpellDamageClass.Magic && !SpellInfo.HasAttribute(SpellAttributes.CantBeReflected) &&
-                !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive() && !SpellInfo.IsPositive();
+                !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive() && !SpellInfo.IsPositive;
 
             ExplicitTargets = options.Targets ?? new SpellExplicitTargets();
             ImplicitTargets = new SpellImplicitTargets(this);

@@ -32,6 +32,7 @@ namespace Core.Scenario
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
                 ModelId = creaturePrototype.AttributeDefinition.BaseModelId,
+                OriginalModelId = creaturePrototype.AttributeDefinition.BaseModelId,
                 FactionId = Balance.DefaultFaction.FactionId,
                 CustomNameId = customSpawnSettings.CustomNameId,
                 Scale = customSpawnSettings.CustomScale

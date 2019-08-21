@@ -19,6 +19,7 @@ namespace Client
             transform.SetParent(unitRenderer.transform, false);
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
+            transform.localScale = Vector3.one;
 
             Renderer = unitRenderer;
             Settings = modelSettings;

@@ -30,6 +30,7 @@ namespace Core
             internal EntityAttributeFloat ModRegenHaste { get; private set; }
             internal EntityAttributeFloat CritPercentage { get; private set; }
 
+            internal int OriginalModelId { get; set; }
             internal Unit Target { get; private set; }
             internal IReadOnlyDictionary<UnitMoveType, float> SpeedRates => speedRates;
 
@@ -48,6 +49,8 @@ namespace Core
                         unitState.Faction.Id = value.FactionId;
                         unit.createToken.FactionId = value.FactionId;
                     }
+
+                    EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
                 }
             }
 
@@ -94,6 +97,8 @@ namespace Core
                         unitState.ModelId = value;
                         unit.createToken.ModelId = value;
                     }
+
+                    EventHandler.ExecuteEvent(unit, GameEvents.UnitModelChanged);
                 }
             }
 
@@ -109,6 +114,8 @@ namespace Core
                         unitState.Faction.FreeForAll = value;
                         unit.createToken.FreeForAll = value;
                     }
+
+                    EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
                 }
             }
 
@@ -282,22 +289,16 @@ namespace Core
             private void OnModelIdChanged()
             {
                 ModelId = unitState.ModelId;
-
-                EventHandler.ExecuteEvent(unit, GameEvents.UnitModelChanged);
             }
 
             private void OnFactionIdChanged()
             {
                 Faction = unit.Balance.FactionsById[unitState.Faction.Id];
-
-                EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
             }
 
             private void OnFactionFreeForAllChanged()
             {
                 FreeForAll = unitState.Faction.FreeForAll;
-
-                EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
             }
 
             private void OnEntityDetach(Unit entity)

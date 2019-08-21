@@ -127,7 +127,7 @@ namespace Client
 
         private void Deinitialize()
         {
-            EventHandler.RegisterEvent(UnitRenderer.Unit, GameEvents.UnitFactionChanged, onFactionChangedAction);
+            EventHandler.UnregisterEvent(UnitRenderer.Unit, GameEvents.UnitFactionChanged, onFactionChangedAction);
 
             castFrame.UpdateCaster(null);
             healthFrame.Unit = null;

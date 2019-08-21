@@ -56,7 +56,7 @@
         PeriodicLeech = 53,
         ModHitChance = 54,
         ModSpellHitChance = 55,
-        Transform = 56,
+        ChangeDisplayModel = 56,
         ModSpellCritChance = 57,
         ModIncreaseSwimSpeed = 58,
         ModDamageDoneCreature = 59,

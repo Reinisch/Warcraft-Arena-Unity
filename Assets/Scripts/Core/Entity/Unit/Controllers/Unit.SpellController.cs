@@ -131,7 +131,7 @@ namespace Core
                     return SpellMissType.None;
 
                 // all positive spells can`t miss
-                if (spellInfo.IsPositive() && !unit.IsHostileTo(victim))
+                if (spellInfo.IsPositive && !unit.IsHostileTo(victim))
                     return SpellMissType.None;
 
                 return SpellMissType.None;
@@ -204,15 +204,15 @@ namespace Core
                 switch (spellInfo.DamageClass)
                 {
                     case SpellDamageClass.Magic:
-                        if (!spellInfo.IsPositive())
+                        if (!spellInfo.IsPositive)
                             critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerSpellCritChance);
                         goto default;
                     case SpellDamageClass.Melee:
-                        if (!spellInfo.IsPositive())
+                        if (!spellInfo.IsPositive)
                             critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerMeleeCritChance);
                         goto default;
                     case SpellDamageClass.Ranged:
-                        if (!spellInfo.IsPositive())
+                        if (!spellInfo.IsPositive)
                             critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerRangedCritChance);
                         goto default;
                     default:

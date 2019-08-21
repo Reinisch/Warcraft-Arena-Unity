@@ -23,5 +23,5 @@ MonoBehaviour:
   interruptFlags: 2
   attributes: 0
   auraEffects:
-  - {fileID: 11400000, guid: 8157b524c3bd1b9468cff75b42498d4c, type: 2}
+  - {fileID: 11400000, guid: c29aa2bfa4b643e419fb0b923167f13a, type: 2}
   auraScriptables: []
