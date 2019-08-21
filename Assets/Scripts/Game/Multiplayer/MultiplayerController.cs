@@ -28,7 +28,7 @@ namespace Game
         [SerializeField, UsedImplicitly] private PhotonBoltServerListener boltServerListener;
         [SerializeField, UsedImplicitly] private PhotonBoltClientListener boltClientListener;
 
-        private const float MaxConnectionAttemptTime = 10.0f;
+        private const float MaxConnectionAttemptTime = 20.0f;
 
         private readonly ConnectionAttemptInfo connectionAttemptInfo = new ConnectionAttemptInfo();
         private GameManager.NetworkingMode networkingMode;
