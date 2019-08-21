@@ -41,7 +41,7 @@ MonoBehaviour:
     simulatedRandomFunction: 0
     connectionTimeout: 100000
     connectionRequestTimeout: 50000
-    connectionRequestAttempts: 20
+    connectionRequestAttempts: 50
     disableAutoSceneLoading: 0
     EnableIPv6: 0
   debugClientCount: 2
@@ -71,6 +71,6 @@ MonoBehaviour:
   a2sServerPort: 21777
   enableA2sServer: 1
   RoomUpdateRate: 5
-  RoomCreateTimeout: 10
-  RoomJoinTimeout: 10
+  RoomCreateTimeout: 50
+  RoomJoinTimeout: 50
   enableClientMetrics: 0
