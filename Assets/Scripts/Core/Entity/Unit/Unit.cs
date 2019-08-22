@@ -163,6 +163,7 @@ namespace Core
         {
             ResetMap();
 
+            TransformSpellInfo = null;
             controlState = 0;
             unitFlags = 0;
 
@@ -298,6 +299,7 @@ namespace Core
             TransformSpellInfo = null;
             ModelId = OriginalModelId;
         }
+
         internal void SetFlag(UnitFlags flag) => unitFlags |= flag;
 
         internal void RemoveFlag(UnitFlags flag) => unitFlags &= ~flag;
