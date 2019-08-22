@@ -111,6 +111,7 @@ namespace Client
                 activeNameplateByRenderers.Remove(nameplate.UnitRenderer);
                 activeNameplates.Remove(nameplate);
 
+                nameplate.UpdateUnit(null);
                 GameObjectPool.Return(nameplate, false);
             }
 
