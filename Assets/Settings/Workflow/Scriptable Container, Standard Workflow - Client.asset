@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfbc23906676683449e7a2f5848ba702, type: 3}
-  m_Name: Scriptable Container - Client
+  m_Name: Scriptable Container, Standard Workflow - Client
   m_EditorClassIdentifier: 
   scriptableReferences:
   - {fileID: 11400000, guid: f2f935428bc2d43428eb48db485e8822, type: 2}
@@ -22,3 +22,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ccf630f137a37024798525353afe3883, type: 2}
   - {fileID: 11400000, guid: bc15d202974e60749ad293f590ea9632, type: 2}
   - {fileID: 11400000, guid: 7ec395dbbe5ff3848a39b67a4e093974, type: 2}
+  - {fileID: 11400000, guid: bc66c2a13a78ad447a1add180593d06c, type: 2}

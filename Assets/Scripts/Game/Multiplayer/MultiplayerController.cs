@@ -2,7 +2,6 @@
 using System.Collections;
 using Bolt;
 using Bolt.Matchmaking;
-using Client;
 using Common;
 using Core;
 using Server;
@@ -24,9 +23,9 @@ namespace Game
             Connecting
         }
 
-        [SerializeField, UsedImplicitly] private PhotonBoltSharedListener boltSharedListener;
-        [SerializeField, UsedImplicitly] private PhotonBoltServerListener boltServerListener;
-        [SerializeField, UsedImplicitly] private PhotonBoltClientListener boltClientListener;
+        [SerializeField, UsedImplicitly] private PhotonBoltBaseListener boltSharedListener;
+        [SerializeField, UsedImplicitly] private PhotonBoltBaseListener boltServerListener;
+        [SerializeField, UsedImplicitly] private PhotonBoltBaseListener boltClientListener;
 
         private const float MaxConnectionAttemptTime = 50.0f;
 

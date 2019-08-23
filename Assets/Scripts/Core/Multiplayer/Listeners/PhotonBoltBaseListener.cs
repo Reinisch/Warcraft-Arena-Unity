@@ -2,16 +2,16 @@
 
 namespace Core
 {
-    public abstract class PhotonBoltBaseListener : GlobalEventListener
+    public class PhotonBoltBaseListener : GlobalEventListener
     {
         protected WorldManager World;
 
-        protected void Initialize(WorldManager worldManager)
+        public virtual void Initialize(WorldManager worldManager)
         {
             World = worldManager;
         }
 
-        protected void Deinitialize()
+        public virtual void Deinitialize()
         {
             World = null;
         }

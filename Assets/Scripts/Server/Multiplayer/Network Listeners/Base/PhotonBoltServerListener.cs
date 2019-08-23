@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Server
 {
+    [UsedImplicitly]
     public partial class PhotonBoltServerListener : PhotonBoltBaseListener
     {
         [SerializeField, UsedImplicitly] private BalanceReference balance;
@@ -15,15 +16,15 @@ namespace Server
         private ServerLaunchState LaunchState { get; set; }
         private ServerRoomToken ServerToken { get; set; }
 
-        public void Initialize(WorldServerManager worldManager)
+        public override void Initialize(WorldManager worldManager)
         {
             base.Initialize(worldManager);
 
-            World = worldManager;
+            World = (WorldServerManager)worldManager;
             World.MapManager.EventMapInitialized += OnMapInitialized;
         }
 
-        public new void Deinitialize()
+        public override void Deinitialize()
         {
             World.MapManager.EventMapInitialized -= OnMapInitialized;
             World = null;

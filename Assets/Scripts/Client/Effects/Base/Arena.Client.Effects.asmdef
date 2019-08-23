@@ -11,5 +11,8 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [
+        "CLIENT"
+    ],
+    "versionDefines": []
 }

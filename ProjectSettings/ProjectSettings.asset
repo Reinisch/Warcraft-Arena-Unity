@@ -592,7 +592,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
-    1: CROSS_PLATFORM_INPUT;BOLT_CLOUD;USE_UNITY_ASSERTIONS
+    1: CLIENT;CROSS_PLATFORM_INPUT;BOLT_CLOUD;USE_UNITY_ASSERTIONS
     4: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     7: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     14: CROSS_PLATFORM_INPUT;MOBILE_INPUT
@@ -609,7 +609,8 @@ PlayerSettings:
     Windows Store Apps: 2
     iPhone: 1
   il2cppCompilerConfiguration: {}
-  managedStrippingLevel: {}
+  managedStrippingLevel:
+    Standalone: 0
   incrementalIl2cppBuild:
     iPhone: 0
   allowUnsafeCode: 1

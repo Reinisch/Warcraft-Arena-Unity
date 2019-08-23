@@ -12,14 +12,14 @@ namespace Client
     {
         private Player LocalPlayer { get; set; }
 
-        public new void Initialize(WorldManager worldManager)
+        public override void Initialize(WorldManager worldManager)
         {
             base.Initialize(worldManager);
 
             World.UnitManager.EventEntityDetach += OnEntityDetach;
         }
 
-        public new void Deinitialize()
+        public override void Deinitialize()
         {
             World.UnitManager.EventEntityDetach -= OnEntityDetach;
 

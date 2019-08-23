@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics;
-using Client;
 using Common;
 using Core;
 using JetBrains.Annotations;
-using Server;
-using UdpKit;
 using UnityEngine;
 
 using EventHandler = Common.EventHandler;
@@ -29,22 +26,27 @@ namespace Game
 
         [SerializeField, UsedImplicitly] private UpdatePolicy updatePolicy;
         [SerializeField, UsedImplicitly] private long updateTimeMilliseconds = 20;
-        [SerializeField, UsedImplicitly] private InterfaceReference interfaceReference;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableCoreContainer;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableClientContainer;
 
         private readonly Stopwatch gameTimer = new Stopwatch();
-        private WorldManager worldManager;
+        private WorldManager world;
         private long lastWorldUpdateTime;
         private long lastGameUpdateTime;
-
-        private bool HasServerLogic { get; set; }
-        private bool HasClientLogic { get; set; }
 
         [UsedImplicitly]
         private void Awake()
         {
-            Initialize();
+            DontDestroyOnLoad(gameObject);
+            Assert.RaiseExceptions = Application.isEditor || UnityEngine.Debug.isDebugBuild;
+
+            scriptableCoreContainer.Register();
+            scriptableClientContainer.Register();
+
+            gameTimer.Start();
+
+            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
         }
 
         [UsedImplicitly]
@@ -57,13 +59,13 @@ namespace Game
 
             lastGameUpdateTime = elapsedTime;
 
-            if (worldManager == null)
+            if (world == null)
                 lastWorldUpdateTime = elapsedTime;
             else switch (updatePolicy)
             {
                 case UpdatePolicy.EveryUpdateCall:
                     lastWorldUpdateTime = elapsedTime;
-                    worldManager.DoUpdate(worldTimeDiff);
+                    world.DoUpdate(worldTimeDiff);
                     break;
                 case UpdatePolicy.FixedTimeDelta:
                     if (worldTimeDiff >= updateTimeMilliseconds)
@@ -75,76 +77,29 @@ namespace Game
 
             scriptableCoreContainer.DoUpdate(gameTimeDiff);
 
-            if (HasClientLogic)
+            if (world != null && world.HasClientLogic)
                 scriptableClientContainer.DoUpdate(gameTimeFloatDiff);
         }
 
         [UsedImplicitly]
         private void OnApplicationQuit()
         {
-            Deinitialize();
-        }
+            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
+            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
 
-        private void Initialize()
-        {
-            DontDestroyOnLoad(gameObject);
-            Assert.RaiseExceptions = Application.isEditor || UnityEngine.Debug.isDebugBuild;
-
-            scriptableCoreContainer.Register();
-            scriptableClientContainer.Register();
-
-            gameTimer.Start();
-
-            interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(true));
-
-            EventHandler.RegisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
-            EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
-            EventHandler.RegisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
-        }
-
-        private void Deinitialize()
-        {
-            EventHandler.UnregisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
-            EventHandler.UnregisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
-            EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
-
-            worldManager?.Dispose();
+            world?.Dispose();
             scriptableClientContainer.Unregister();
             scriptableCoreContainer.Unregister();
         }
 
-        private void OnGameMapLoaded(string map, NetworkingMode mode)
+        private void OnWorldInitialized(WorldManager initializedWorld)
         {
-            HasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
-            HasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;
-
-            worldManager = HasServerLogic ? (WorldManager)new WorldServerManager(HasClientLogic) : new WorldClientManager(HasServerLogic);
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, worldManager);
-
-            interfaceReference.HideScreen<LobbyScreen>();
-            interfaceReference.ShowScreen<BattleScreen, BattleHudPanel>();
+            world = initializedWorld;
         }
 
-        private void OnDisconnectedFromMaster()
+        private void OnWorldDeinitializing(WorldManager deinitializingWorld)
         {
-            ProcessDisconnect(DisconnectReason.DisconnectedFromMaster);
-        }
-
-        private void OnDisconnectedFromHost(UdpConnectionDisconnectReason udpDisconnectReason)
-        {
-            ProcessDisconnect(udpDisconnectReason.ToDisconnectReason());
-        }
-
-        private void ProcessDisconnect(DisconnectReason disconnectReason)
-        {
-            worldManager?.Dispose();
-            worldManager = null;
-
-            HasServerLogic = false;
-            HasClientLogic = false;
-
-            interfaceReference.HideScreen<BattleScreen>();
-            interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(false, disconnectReason));
+            world = null;
         }
     }
 }
