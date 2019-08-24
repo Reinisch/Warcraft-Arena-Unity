@@ -5,7 +5,6 @@
         GameMapLoaded,
         DisconnectedFromHost,
         DisconnectedFromMaster,
-        DisconnectHandled,
         SessionListUpdated,
 
         WorldInitialized,

@@ -81,6 +81,7 @@ namespace Client
                     circleProjector.gameObject.SetActive(false);
                     circleProjector.transform.SetParent(null, false);
                     circledRenderer = null;
+                    circledUnit = null;
                 }
             }
         }

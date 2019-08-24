@@ -28,6 +28,8 @@ namespace Server
         {
             World.MapManager.EventMapInitialized -= OnMapInitialized;
             World = null;
+
+            ServerToken = null;
             LaunchState = 0;
 
             base.Deinitialize();

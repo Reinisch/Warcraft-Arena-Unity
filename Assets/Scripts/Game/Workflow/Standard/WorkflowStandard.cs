@@ -6,7 +6,7 @@ using Server;
 using UdpKit;
 using UnityEngine;
 
-namespace Game.Launcher.Standard
+namespace Game.Workflow.Standard
 {
     [CreateAssetMenu(fileName = "Workflow Standard Reference", menuName = "Game Data/Scriptable/Workflow Standard", order = 1)]
     internal class WorkflowStandard : ScriptableReference
@@ -18,7 +18,6 @@ namespace Game.Launcher.Standard
         protected override void OnRegistered()
         {
             EventHandler.RegisterEvent<string, GameManager.NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
-            EventHandler.RegisterEvent<DisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectHandled, OnDisconnectHandled);
             EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
             EventHandler.RegisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
@@ -27,7 +26,6 @@ namespace Game.Launcher.Standard
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<DisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectHandled, OnDisconnectHandled);
             EventHandler.UnregisterEvent<string, GameManager.NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.UnregisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
             EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
@@ -45,12 +43,6 @@ namespace Game.Launcher.Standard
             interfaceReference.ShowScreen<BattleScreen, BattleHudPanel>();
         }
 
-        private void OnDisconnectHandled(DisconnectReason reason)
-        {
-            interfaceReference.HideScreen<BattleScreen>();
-            interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(false, reason));
-        }
-
         private void OnDisconnectedFromMaster()
         {
             ProcessDisconnect(DisconnectReason.DisconnectedFromMaster);
@@ -66,7 +58,8 @@ namespace Game.Launcher.Standard
             worldManager?.Dispose();
             worldManager = null;
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectHandled, disconnectReason);
+            interfaceReference.HideScreen<BattleScreen>();
+            interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(false, disconnectReason));
         }
     }
 }
