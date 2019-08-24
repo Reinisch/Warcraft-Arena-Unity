@@ -29,9 +29,9 @@ namespace Core
             underlyingController = null;
         }
 
-        public void StartServer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail)
+        public void StartServer(ServerRoomToken serverToken, bool withClientLogic, Action onStartSuccess, Action onStartFail)
         {
-            underlyingController.StartServer(serverToken, onStartSuccess, onStartFail);
+            underlyingController.StartServer(serverToken, withClientLogic, onStartSuccess, onStartFail);
         }
 
         public void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action<ClientConnectFailReason> onConnectFail)

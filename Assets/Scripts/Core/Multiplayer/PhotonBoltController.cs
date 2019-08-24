@@ -38,7 +38,7 @@ namespace Core
             return true;
         }
 
-        public abstract void StartServer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail);
+        public abstract void StartServer(ServerRoomToken serverToken, bool withClientLogic, Action onStartSuccess, Action onStartFail);
 
         public abstract void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action<ClientConnectFailReason> onConnectFail);
 

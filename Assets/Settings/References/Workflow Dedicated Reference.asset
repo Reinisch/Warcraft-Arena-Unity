@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfbc23906676683449e7a2f5848ba702, type: 3}
-  m_Name: Scriptable Container, Dedicated Workflow - Client
+  m_Script: {fileID: 11500000, guid: 222b74d149ce2154384a6178a215e818, type: 3}
+  m_Name: Workflow Dedicated Reference
   m_EditorClassIdentifier: 
-  scriptableReferences:
-  - {fileID: 11400000, guid: 29aa6f7a8b4bf57439dfe440e2fe6635, type: 2}
+  photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
+  maxRestartAttempts: 5

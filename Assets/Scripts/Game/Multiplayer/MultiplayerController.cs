@@ -56,10 +56,11 @@ namespace Game
             SetListeners(false, false, false);
         }
 
-        public override void StartServer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail)
+        public override void StartServer(ServerRoomToken serverToken, bool withClientLogic, Action onStartSuccess, Action onStartFail)
         {
             StopAllCoroutines();
 
+            networkingMode = withClientLogic ? GameManager.NetworkingMode.Both : GameManager.NetworkingMode.Server;
             serverToken.Version = Version;
 
             StartCoroutine(StartServerRoutine(serverToken, onStartSuccess, onStartFail));
@@ -69,6 +70,7 @@ namespace Game
         {
             StopAllCoroutines();
 
+            networkingMode = GameManager.NetworkingMode.Client;
             StartCoroutine(StartClientRoutine(onStartSuccess, onStartFail, forceRestart));
         }
 
@@ -76,6 +78,7 @@ namespace Game
         {
             StopAllCoroutines();
 
+            networkingMode = GameManager.NetworkingMode.Client;
             state = State.Connecting;
             token.Version = Version;
 
@@ -98,7 +101,10 @@ namespace Game
         {
             base.BoltStartDone();
 
-            SetListeners(true, BoltNetwork.IsServer, BoltNetwork.IsClient || BoltNetwork.IsServer);
+            bool hasServerLogic = networkingMode == GameManager.NetworkingMode.Server || networkingMode == GameManager.NetworkingMode.Both;
+            bool hasClientLogic = networkingMode == GameManager.NetworkingMode.Client || networkingMode == GameManager.NetworkingMode.Both;
+
+            SetListeners(true, hasServerLogic, hasClientLogic);
         }
 
         public override void BoltStartFailed()
@@ -111,6 +117,8 @@ namespace Game
         public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
         {
             base.BoltShutdownBegin(registerDoneCallback, disconnectReason);
+
+            Debug.LogWarning($"Shutting down with reason: {disconnectReason}");
 
             if (worldManager != null && worldManager.HasServerLogic)
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster);
@@ -231,26 +239,7 @@ namespace Game
             boltServerListener.enabled = server;
             boltClientListener.enabled = client;
 
-            if (server && client)
-            {
-                state = State.Active;
-                networkingMode = GameManager.NetworkingMode.Both;
-            }
-            else if (server)
-            {
-                state = State.Active;
-                networkingMode = GameManager.NetworkingMode.Server;
-            }
-            else if (client)
-            {
-                state = State.Active;
-                networkingMode = GameManager.NetworkingMode.Client;
-            }
-            else
-            {
-                state = State.Inactive;
-                networkingMode = GameManager.NetworkingMode.None;
-            }
+            state = server || client ? State.Active : State.Inactive;
         }
 
         private IEnumerator StartServerRoutine(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail)
@@ -266,6 +255,9 @@ namespace Game
 
             BoltLauncher.StartServer(config);
             yield return new WaitUntil(NetworkIsIdle);
+
+            for (int i = 0; i < 3; i++)
+                yield return new WaitForEndOfFrame();
 
             if (BoltNetwork.IsServer)
             {

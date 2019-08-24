@@ -10,7 +10,7 @@ namespace Core
         Map<Guid, UdpSession> Sessions { get; }
         string Version { get; }
 
-        void StartServer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail);
+        void StartServer(ServerRoomToken serverToken, bool withClientLogic, Action onStartSuccess, Action onStartFail);
         void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action<ClientConnectFailReason> onConnectFail);
         void StartClient(Action onStartSuccess, Action onStartFail, bool forceRestart);
     }

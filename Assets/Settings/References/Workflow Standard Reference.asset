@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f421d697420e99459ba890ce39456f3, type: 3}
-  m_Name: Launcher Standard Reference
+  m_Name: Workflow Standard Reference
   m_EditorClassIdentifier: 
   interfaceReference: {fileID: 11400000, guid: ccf630f137a37024798525353afe3883, type: 2}
