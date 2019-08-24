@@ -25,7 +25,7 @@ namespace Game.Workflow.Dedicated
         {
             Application.targetFrameRate = 60;
 
-            EventHandler.RegisterEvent<string, GameManager.NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnMapLoaded);
+            EventHandler.RegisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnMapLoaded);
             EventHandler.RegisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
             StartServer();
@@ -33,7 +33,7 @@ namespace Game.Workflow.Dedicated
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<string, GameManager.NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnMapLoaded);
+            EventHandler.UnregisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnMapLoaded);
             EventHandler.UnregisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
             restartCount = 0;
@@ -57,9 +57,9 @@ namespace Game.Workflow.Dedicated
             }
         }
 
-        private void OnMapLoaded(string map, GameManager.NetworkingMode mode)
+        private void OnMapLoaded(string map, NetworkingMode mode)
         {
-            Assert.AreEqual(mode, GameManager.NetworkingMode.Server);
+            Assert.AreEqual(mode, NetworkingMode.Server);
 
             worldManager = new WorldServerManager(false);
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, worldManager);

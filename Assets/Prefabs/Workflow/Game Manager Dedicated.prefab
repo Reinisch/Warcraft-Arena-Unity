@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 3683129487690140242}
   - component: {fileID: 3683129487690140240}
   - component: {fileID: 5997458589810986024}
-  - component: {fileID: 3683129487690140241}
+  - component: {fileID: 463288380928748000}
   m_Layer: 0
   m_Name: Multiplayer Container
   m_TagString: Multiplayer Container
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d751f0eae166c024da8cac4b6f449c0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3683129487690140241
+--- !u!114 &463288380928748000
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3683129487690140239}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a093e5719f51f5448fd84387f82fd52, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f368755d3754e22a9f78ba865fd9431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boltSharedListener: {fileID: 3683129487690140240}

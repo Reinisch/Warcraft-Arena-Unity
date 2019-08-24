@@ -17,7 +17,7 @@ namespace Game.Workflow.Standard
 
         protected override void OnRegistered()
         {
-            EventHandler.RegisterEvent<string, GameManager.NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.RegisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
             EventHandler.RegisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
@@ -26,15 +26,15 @@ namespace Game.Workflow.Standard
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<string, GameManager.NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.UnregisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.UnregisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
             EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
         }
 
-        private void OnGameMapLoaded(string map, GameManager.NetworkingMode mode)
+        private void OnGameMapLoaded(string map, NetworkingMode mode)
         {
-            bool hasServerLogic = mode == GameManager.NetworkingMode.Server || mode == GameManager.NetworkingMode.Both;
-            bool hasClientLogic = mode == GameManager.NetworkingMode.Client || mode == GameManager.NetworkingMode.Both;
+            bool hasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
+            bool hasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;
 
             worldManager = hasServerLogic ? (WorldManager)new WorldServerManager(hasClientLogic) : new WorldClientManager(false);
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, worldManager);

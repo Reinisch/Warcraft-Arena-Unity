@@ -16,14 +16,6 @@ namespace Game
             FixedTimeDelta
         }
 
-        public enum NetworkingMode
-        {
-            None,
-            Both,
-            Server,
-            Client,
-        }
-
         [SerializeField, UsedImplicitly] private UpdatePolicy updatePolicy;
         [SerializeField, UsedImplicitly] private long updateTimeMilliseconds = 20;
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableCoreContainer;

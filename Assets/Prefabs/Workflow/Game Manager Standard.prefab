@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 1610299903768831859}
   - component: {fileID: 1610299903768831863}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: Game Manager Standard
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -601,7 +601,7 @@ GameObject:
   - component: {fileID: 1610299905399672730}
   - component: {fileID: 1610299905399672731}
   - component: {fileID: 1610299905399672728}
-  - component: {fileID: 1610299905399672729}
+  - component: {fileID: 4778862332019066103}
   m_Layer: 0
   m_Name: Multiplayer Container
   m_TagString: Multiplayer Container
@@ -660,7 +660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 501209b94e3ba2a40bc0b3e01335731f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1610299905399672729
+--- !u!114 &4778862332019066103
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -669,7 +669,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1610299905399672711}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a093e5719f51f5448fd84387f82fd52, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f368755d3754e22a9f78ba865fd9431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boltSharedListener: {fileID: 1610299905399672728}

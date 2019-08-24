@@ -1,9 +1,8 @@
 {
-    "name": "Arena.Game",
+    "name": "Arena.Workflow",
     "references": [
         "Arena.Core",
-        "Arena.Common",
-        "Arena.Server"
+        "Arena.Common"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

@@ -1,6 +1,4 @@
-﻿using Core;
-
-namespace Game
+﻿namespace Core
 {
     public class ConnectionAttemptInfo
     {

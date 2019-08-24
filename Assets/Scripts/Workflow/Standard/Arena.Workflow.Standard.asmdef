@@ -1,5 +1,5 @@
 {
-    "name": "Arena.Game.Workflow.Standard",
+    "name": "Arena.Workflow.Standard",
     "references": [
         "GUID:3492a2e8a1108844690758e6bdeb6066",
         "GUID:a284d292de88366448b0c312a762d5b3",
