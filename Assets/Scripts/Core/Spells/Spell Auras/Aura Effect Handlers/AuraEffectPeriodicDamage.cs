@@ -12,7 +12,7 @@
 
         protected override void HandlePeriodic(Unit target, Unit caster)
         {
-            if (target.IsDead)
+            if (target.IsDead || caster == null)
                 return;
 
             if (target.HasState(UnitControlState.Isolated) || target.IsImmunedToDamage(Aura.AuraInfo))

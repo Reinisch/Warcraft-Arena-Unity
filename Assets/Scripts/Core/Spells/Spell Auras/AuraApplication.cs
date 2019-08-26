@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common;
+using JetBrains.Annotations;
 
 namespace Core
 {
@@ -7,18 +8,18 @@ namespace Core
     {
         private static int ApplicationAliveCount;
 
-        public Unit Target { get; }
-        public Unit Caster { get; }
+        [NotNull]
         public Aura Aura { get; }
+        [NotNull]
+        public Unit Target { get; }
 
         public int EffectsToApply { get; }
         public int AppliedEffectMask { get; private set; }
         public AuraRemoveMode RemoveMode { get; internal set; }
 
-        public AuraApplication(Unit target, Unit caster, Aura aura, int auraEffectMask)
+        public AuraApplication(Unit target, Aura aura, int auraEffectMask)
         {
             Target = target;
-            Caster = caster;
             Aura = aura;
 
             EffectsToApply = auraEffectMask;

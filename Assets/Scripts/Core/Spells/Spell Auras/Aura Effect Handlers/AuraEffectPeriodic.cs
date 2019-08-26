@@ -1,4 +1,6 @@
-﻿namespace Core.AuraEffects
+﻿using JetBrains.Annotations;
+
+namespace Core.AuraEffects
 {
     public abstract class AuraEffectPeriodic : AuraEffect
     {
@@ -40,7 +42,7 @@
             }
         }
 
-        protected abstract void HandlePeriodic(Unit target, Unit caster);
+        protected abstract void HandlePeriodic(Unit target, [CanBeNull] Unit caster);
 
         private void HandleTickOnApplications()
         {

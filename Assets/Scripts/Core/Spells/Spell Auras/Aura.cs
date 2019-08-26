@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using JetBrains.Annotations;
 
 namespace Core
 {
@@ -17,6 +18,7 @@ namespace Core
         private readonly Dictionary<ulong, AuraApplication> applicationsByTargetId = new Dictionary<ulong, AuraApplication>();
 
         private int updateInvervalLeft;
+        private readonly IReadOnlyReference<Unit> casterReference;
 
         internal bool Updated { get; private set; }
 
@@ -25,12 +27,16 @@ namespace Core
         public IReadOnlyList<AuraEffectInfo> EffectsInfos => effectInfos;
         public IReadOnlyList<AuraEffect> Effects => effects;
 
+        [CanBeNull]
+        public Unit Caster => casterReference.Value;
+        [NotNull]
         public Unit Owner { get; }
-        public Unit Caster { get; }
+        [NotNull]
         public AuraInfo AuraInfo { get; }
+        [NotNull]
         public SpellInfo SpellInfo { get; }
-        public ulong CasterId { get; }
 
+        public ulong CasterId { get; }
         public int Duration { get; private set; }
         public int MaxDuration { get; private set; }
 
@@ -39,13 +45,13 @@ namespace Core
         public bool IsRemoved { get; private set; }
         public bool IsExpired => Duration == 0;
 
-        internal Aura(AuraInfo auraInfo, SpellInfo spellInfo, Unit owner, Unit caster)
+        internal Aura(AuraInfo auraInfo, SpellInfo spellInfo, [NotNull] Unit owner, [NotNull] Unit caster)
         {
             AuraInfo = auraInfo;
             SpellInfo = spellInfo;
-            Caster = caster;
+            casterReference = caster.SelfReference;
             Owner = owner;
-            CasterId = caster?.Id ?? 0;
+            CasterId = caster.Id;
 
             UpdateDuration(auraInfo.Duration, auraInfo.MaxDuration);
 
@@ -188,7 +194,7 @@ namespace Core
                     if (!CanStackWith(unit.AuraApplications[i].Aura))
                         return;
 
-            unit.Auras.ApplyAuraApplication(new AuraApplication(unit, Caster, this, auraEffectMask));
+            unit.Auras.ApplyAuraApplication(new AuraApplication(unit, this, auraEffectMask));
         }
     }
 }

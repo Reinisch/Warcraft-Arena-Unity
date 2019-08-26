@@ -65,6 +65,7 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private List<UnitBehaviour> unitBehaviours;
 
+        private SingleReference<Unit> selfReference;
         private CreateToken createToken;
         private UnitControlState controlState;
         private IUnitState entityState;
@@ -89,6 +90,7 @@ namespace Core
         internal IReadOnlyDictionary<UnitMoveType, float> SpeedRates => Attributes.SpeedRates;
         internal IReadOnlyList<AuraApplication> AuraApplications => Auras.AuraApplications;
 
+        public IReadOnlyReference<Unit> SelfReference => selfReference;
         public Unit Target => Attributes.Target;
         public SpellCast SpellCast => Spells.Cast;
         public SpellHistory SpellHistory => Spells.SpellHistory;
@@ -127,6 +129,8 @@ namespace Core
 
         public sealed override void Attached()
         {
+            selfReference = new SingleReference<Unit>(this);
+
             base.Attached();
 
             HandleAttach();
@@ -145,6 +149,9 @@ namespace Core
                 HandleDetach();
 
                 base.Detached();
+
+                selfReference.Invalidate();
+                selfReference = null;
             }
         }
 

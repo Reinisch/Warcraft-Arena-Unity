@@ -12,14 +12,14 @@ namespace Core
         {
             base.AuraApplicationRemoved(application);
 
-            if (application.Caster == null)
+            if (application.Aura.Caster == null)
                 return;
 
             if (application.RemoveMode == AuraRemoveMode.Death || application.RemoveMode == AuraRemoveMode.Expired)
             {
                 var explicitTargets = new SpellExplicitTargets {Target = application.Aura.Owner};
                 var castingOptions = new SpellCastingOptions(explicitTargets, SpellCastFlags.TriggeredByAura);
-                application.Caster.Spells.CastSpell(livingBombExplosion, castingOptions);
+                application.Aura.Caster.Spells.CastSpell(livingBombExplosion, castingOptions);
             }
         }
     }

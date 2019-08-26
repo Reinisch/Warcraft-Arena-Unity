@@ -1,10 +1,8 @@
-﻿using Common;
-
-namespace Core
+﻿namespace Core
 {
     public abstract partial class Unit
     {
-        internal class ThreatController : ReferenceManager<Unit, ThreatController>, IUnitBehaviour
+        internal class ThreatController : IUnitBehaviour
         {
             public bool HasClientLogic => false;
             public bool HasServerLogic => true;
