@@ -22,6 +22,7 @@ namespace Core
         Flying = 1 << 11,
 
         MaskMoving = Forward | Backward | StrafeLeft | StrafeRight | Falling | Ascending | Descending,
+        MaskAir = Falling | Ascending | Descending | Flying,
         MaskTurning = TurnLeft | TurnRight,
     }
 }

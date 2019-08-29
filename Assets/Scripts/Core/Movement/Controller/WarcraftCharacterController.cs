@@ -13,12 +13,17 @@ namespace Core
         [SerializeField, UsedImplicitly] private Rigidbody unitRigidbody;
         [SerializeField, UsedImplicitly] private GroundChecker groundChecker;
 
+        private const float IdleGroundDistance = 0.05f;
+
         private float groundCheckDistance = 0.2f;
         private Vector3 groundNormal = Vector3.up;
         private Vector3 inputVelocity = Vector3.zero;
+        private RaycastHit lastGroundHitInfo;
+
         private IControllerInputProvider currentInputProvider;
         private IControllerInputProvider defaultInputProvider;
         private bool wasFlying;
+        private bool hasGroundHit;
         private Unit unit;
 
         private bool OnEdge => unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && TouchingGround;
@@ -163,6 +168,7 @@ namespace Core
         private void ProcessMovement()
         {
             unit.UnitCollider.radius = 0.2f;
+            hasGroundHit = IsTouchingGround(out lastGroundHitInfo);
 
             if (unit.MovementInfo.HasMovementFlag(MovementFlags.Ascending) && unitRigidbody.velocity.y <= 0)
             {
@@ -194,16 +200,16 @@ namespace Core
             {
                 wasFlying = unit.MovementInfo.HasMovementFlag(MovementFlags.Flying);
 
-                if (!unit.MovementInfo.HasMovementFlag(MovementFlags.Ascending) && IsTouchingGround(out RaycastHit hitInfo))
+                if (!unit.MovementInfo.HasMovementFlag(MovementFlags.Ascending) && hasGroundHit)
                 {
-                    var distanceToGround = hitInfo.distance;
+                    var distanceToGround = lastGroundHitInfo.distance;
 
                     if (distanceToGround > unit.UnitCollider.bounds.extents.y + groundCheckDistance)
                     {
                         if (!unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && inputVelocity.y <= 0)
                         {
                             unitRigidbody.AddForce(Vector3.down * unitRigidbody.velocity.magnitude, ForceMode.VelocityChange);
-                            groundNormal = hitInfo.normal;
+                            groundNormal = lastGroundHitInfo.normal;
                         }
                         else
                         {
@@ -217,7 +223,7 @@ namespace Core
                     }
                     else
                     {
-                        groundNormal = hitInfo.normal;
+                        groundNormal = lastGroundHitInfo.normal;
                         if (unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
                         {
                             unit.MovementInfo.RemoveMovementFlag(MovementFlags.Flying);
@@ -233,9 +239,18 @@ namespace Core
                 }
 
                 if (TooSteep || OnEdge)
+                {
                     unit.UnitCollider.material = physics.SlidingMaterial;
+                    unitRigidbody.useGravity = true;
+                }
                 else
+                {
                     unit.UnitCollider.material = physics.GroundedMaterial;
+
+                    bool farFromGround = !hasGroundHit || Mathf.Abs(unit.UnitCollider.bounds.center.y - lastGroundHitInfo.point.y - unit.UnitCollider.bounds.extents.y) > IdleGroundDistance;
+                    bool inGroundedState = TouchingGround || unit.MovementInfo.HasMovementFlag(MovementFlags.MaskAir);
+                    unitRigidbody.useGravity = farFromGround || !inGroundedState;
+                }
             }
         }
 
