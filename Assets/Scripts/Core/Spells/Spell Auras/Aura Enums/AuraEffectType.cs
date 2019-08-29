@@ -7,7 +7,7 @@
         ModPossess = 2,
         PeriodicDamage = 3,
         Dummy = 4,
-        ModConfuse = 5,
+        ConfusionState = 5,
         ModCharm = 6,
         ModFear = 7,
         PeriodicHealing = 8,

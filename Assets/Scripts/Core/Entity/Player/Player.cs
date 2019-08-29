@@ -1,4 +1,5 @@
-﻿using UdpKit;
+﻿using Bolt;
+using UdpKit;
 
 namespace Core
 {
@@ -30,10 +31,31 @@ namespace Core
             }
         }
 
+        public class ControlGainToken : IProtocolToken
+        {
+            public bool HasMovementControl { get; set; }
+
+            public void Read(UdpPacket packet)
+            {
+                HasMovementControl = packet.ReadBool();
+            }
+
+            public void Write(UdpPacket packet)
+            {
+                packet.WriteBool(HasMovementControl);
+            }
+
+            public void ControlGained(Player player)
+            {
+                player.CharacterController.UpdateMovementControl(HasMovementControl);
+            }
+        }
+
         private CreateToken createToken;
         private IPlayerState playerState;
         private string playerName;
 
+        internal new PlayerMovementInfo MovementInfo { get; private set; }
         internal override bool AutoScoped => true;
 
         public override string Name
@@ -59,6 +81,7 @@ namespace Core
 
             playerState = entity.GetState<IPlayerState>();
 
+            MovementInfo = (PlayerMovementInfo)base.MovementInfo;
             createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
 
@@ -73,9 +96,37 @@ namespace Core
 
             createToken = null;
             playerState = null;
+            MovementInfo = null;
 
             base.HandleDetach();
         }
+
+        protected override void HandleControlGained()
+        {
+            base.HandleControlGained();
+
+            if (!IsOwner && IsController)
+            {
+                BoltEntity localClientMoveState = BoltNetwork.Instantiate(BoltPrefabs.Movement);
+                localClientMoveState.SetScopeAll(false);
+                localClientMoveState.SetScope(BoltNetwork.Server, true);
+                localClientMoveState.AssignControl(BoltNetwork.Server);
+
+                MovementInfo.AttachMoveState(localClientMoveState);
+            }
+
+            if (BoltEntity.ControlGainedToken is ControlGainToken controlGainToken)
+                controlGainToken.ControlGained(this);
+        }
+
+        protected override void HandleControlLost()
+        {
+            MovementInfo.DetachMoveState(true);
+
+            base.HandleControlLost();
+        }
+
+        protected override MovementInfo CreateMovementInfo(IUnitState unitState) => new PlayerMovementInfo(this, unitState);
 
         public virtual void Accept(IUnitVisitor visitor) => visitor.Visit(this);
 
@@ -99,6 +150,23 @@ namespace Core
             }
             else
                 RemoveState(UnitControlState.Root);
+        }
+
+        public void Handle(PlayerMovementControlChanged movementControlChangeEvent)
+        {
+            CharacterController.UpdateMovementControl(movementControlChangeEvent.PlayerHasControl);
+        }
+
+        internal void AssignControl(BoltConnection boltConnection = null)
+        {
+            var controlToken = new ControlGainToken { HasMovementControl = MovementInfo.HasMovementControl };
+            if (boltConnection == null)
+                BoltEntity.TakeControl(controlToken);
+            else
+            {
+                UpdateSyncTransform(false);
+                BoltEntity.AssignControl(boltConnection, controlToken);
+            }
         }
 
         private void OnPlayerNameChanged()

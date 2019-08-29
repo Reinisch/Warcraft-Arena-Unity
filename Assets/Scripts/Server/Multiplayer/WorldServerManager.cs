@@ -75,7 +75,7 @@ namespace Server
                 if (player == null)
                     Object.Destroy(entity.gameObject);
                 else
-                    player.CharacterController.AttachClientSideMoveState(entity);
+                    player.MovementInfo.AttachMoveState(entity);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Server
                 if (player == null)
                     Object.Destroy(entity.gameObject);
                 else
-                    player.CharacterController.DetachClientSideMoveState(false);
+                    player.MovementInfo.DetachMoveState(false);
             }
 
             if (playerInfosByPlayerId.ContainsKey(entity.NetworkId.PackedValue))
@@ -152,11 +152,7 @@ namespace Server
             };
 
             Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.Player, playerCreateToken);
-            
-            if (boltConnection == null)
-                newPlayer.BoltEntity.TakeControl();
-            else
-                newPlayer.BoltEntity.AssignControl(boltConnection);
+            newPlayer.AssignControl(boltConnection);
 
             var newPlayerInfo = new PlayerServerInfo(boltConnection, newPlayer, unityId);
             playerInfos.Add(newPlayerInfo);

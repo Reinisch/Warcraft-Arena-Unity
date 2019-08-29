@@ -97,6 +97,8 @@ namespace Core
         public CapsuleCollider UnitCollider => unitCollider;
         public PlayerControllerDefinition ControllerDefinition => characterController.ControllerDefinition;
 
+        public MovementInfo MovementInfo { get; private set; }
+
         public int Level => Attributes.Level.Value;
         public int Model => Attributes.ModelId;
         public int Health => Attributes.Health.Value;
@@ -129,8 +131,6 @@ namespace Core
 
         public sealed override void Attached()
         {
-            selfReference = new SingleReference<Unit>(this);
-
             base.Attached();
 
             HandleAttach();
@@ -149,19 +149,31 @@ namespace Core
                 HandleDetach();
 
                 base.Detached();
-
-                selfReference.Invalidate();
-                selfReference = null;
             }
+        }
+
+        public sealed override void ControlGained()
+        {
+            base.ControlGained();
+
+            HandleControlGained();
+        }
+
+        public sealed override void ControlLost()
+        {
+            base.ControlLost();
+
+            HandleControlLost();
         }
 
         protected virtual void HandleAttach()
         {
+            selfReference = new SingleReference<Unit>(this);
             createToken = (CreateToken)entity.AttachToken;
             entityState = entity.GetState<IUnitState>();
 
+            MovementInfo = CreateMovementInfo(entityState);
             behaviourController.HandleUnitAttach(this);
-            MovementInfo.Attached(this, entityState);
 
             SetMap(World.FindMap(1));
         }
@@ -170,13 +182,30 @@ namespace Core
         {
             ResetMap();
 
+            behaviourController.HandleUnitDetach();
+            MovementInfo.Dispose();
+
+            selfReference.Invalidate();
+            selfReference = null;
+
             TransformSpellInfo = null;
             controlState = 0;
             unitFlags = 0;
-
-            MovementInfo.Detached();
-            behaviourController.HandleUnitDetach();
         }
+
+        protected virtual void HandleControlGained()
+        {
+            UpdateSyncTransform(IsOwner);
+            CharacterController.UpdateOwnership();
+        }
+
+        protected virtual void HandleControlLost()
+        {
+            UpdateSyncTransform(true);
+            CharacterController.UpdateOwnership();
+        }
+
+        protected virtual MovementInfo CreateMovementInfo(IUnitState unitState) => new MovementInfo(this, unitState);
 
         internal override void DoUpdate(int deltaTime)
         {
@@ -257,8 +286,6 @@ namespace Core
 
             if (applied)
             {
-                AddState(state);
-
                 switch (state)
                 {
                     case UnitControlState.Stunned:
@@ -268,7 +295,16 @@ namespace Core
                         if(!HasState(UnitControlState.Stunned))
                             UpdateRootState(true);
                         break;
+                    case UnitControlState.Confused:
+                        if (!HasState(UnitControlState.Stunned))
+                        {
+                            SpellCast.Cancel();
+                            UpdateConfusionState(true);
+                        }
+                        break;
                 }
+
+                AddState(state);
             }
             else
             {
@@ -288,10 +324,31 @@ namespace Core
                             RemoveState(state);
                         }
                         break;
+                    case UnitControlState.Confused:
+                        if (!HasAuraType(AuraEffectType.ConfusionState))
+                        {
+                            UpdateConfusionState(false);
+                            RemoveState(state);
+                        }
+                        break;
                     default:
                         RemoveState(state);
                         break;
                 }
+            }
+
+            if (HasAuraType(AuraEffectType.StunState))
+            {
+                if (!HasState(UnitControlState.Stunned))
+                    UpdateStunState(true);
+            }
+            else
+            {
+                if (!HasState(UnitControlState.Root) && HasAuraType(AuraEffectType.RootState))
+                    UpdateRootState(true);
+
+                if (!HasState(UnitControlState.Confused) && HasAuraType(AuraEffectType.ConfusionState))
+                    UpdateConfusionState(true);
             }
         }
 
@@ -401,6 +458,11 @@ namespace Core
 
             if (IsOwner && this is Player rootedPlayer)
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, rootedPlayer, applied);
+        }
+
+        private void UpdateConfusionState(bool applied)
+        {
+            CharacterController.UpdateMovementControl(!applied);
         }
     }
 }

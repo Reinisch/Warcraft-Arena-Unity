@@ -34,7 +34,7 @@ namespace Core
         private State state;
 
         public Map<Guid, UdpSession> Sessions => BoltNetwork.SessionList;
-        public string Version => "1.0.21";
+        public string Version => "1.0.22";
 
         internal void Register()
         {
@@ -106,6 +106,7 @@ namespace Core
             BoltNetwork.RegisterTokenClass<SpellProcessingToken>();
             BoltNetwork.RegisterTokenClass<Creature.CreateToken>();
             BoltNetwork.RegisterTokenClass<Player.CreateToken>();
+            BoltNetwork.RegisterTokenClass<Player.ControlGainToken>();
         }
 
         public override void BoltStartDone()

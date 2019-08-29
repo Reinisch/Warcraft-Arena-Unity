@@ -27,7 +27,6 @@ namespace Core
 
         private IWorldEntityState worldEntityState;
 
-        public MovementInfo MovementInfo { get; } = new MovementInfo();
         public Vector3 Position { get => transform.position; set => transform.position = value; }
         public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
 
@@ -53,9 +52,15 @@ namespace Core
 
         public override void Detached()
         {
+            worldEntityState.SetTransforms(worldEntityState.Transform, null);
             worldEntityState = null;
 
             base.Detached();
+        }
+
+        internal void UpdateSyncTransform(bool shouldSync)
+        {
+            worldEntityState.SetTransforms(worldEntityState.Transform, shouldSync ? transform : null);
         }
 
         internal void SetMap(Map map)

@@ -7,5 +7,6 @@
         RootStateChange = 2,
         BasicModifier = 3,
         PeriodicDamage = 4,
+        Confuse = 5,
     }
 }

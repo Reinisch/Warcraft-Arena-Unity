@@ -15,5 +15,12 @@
 
             LocalPlayer?.Handle(rootChangeEvent);
         }
+
+        public override void OnEvent(PlayerMovementControlChanged movementControlChangeEvent)
+        {
+            base.OnEvent(movementControlChangeEvent);
+
+            LocalPlayer?.Handle(movementControlChangeEvent);
+        }
     }
 }

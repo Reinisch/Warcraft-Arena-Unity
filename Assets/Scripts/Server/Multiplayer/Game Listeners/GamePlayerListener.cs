@@ -10,12 +10,14 @@ namespace Server
         {
             EventHandler.RegisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
             EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);
+            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerMovementControlChanged, OnPlayerMovementControlChanged);
         }
 
         internal override void Dispose()
         {
             EventHandler.UnregisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
             EventHandler.UnregisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);
+            EventHandler.UnregisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerMovementControlChanged, OnPlayerMovementControlChanged);
         }
 
         private void OnPlayerSpeedChanged(Player player, UnitMoveType moveType, float rate)
@@ -36,6 +38,16 @@ namespace Server
                 PlayerRootChangedEvent rootChangedEvent = PlayerRootChangedEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
                 rootChangedEvent.Applied = applied;
                 rootChangedEvent.Send();
+            }
+        }
+
+        private void OnPlayerMovementControlChanged(Player player, bool hasControl)
+        {
+            if (player.BoltEntity.Controller != null)
+            {
+                PlayerMovementControlChanged movementControlEvent = PlayerMovementControlChanged.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
+                movementControlEvent.PlayerHasControl = hasControl;
+                movementControlEvent.Send();
             }
         }
     }

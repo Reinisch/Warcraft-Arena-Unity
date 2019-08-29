@@ -26,6 +26,7 @@ namespace Core
             TEntity entity = BoltNetwork.Instantiate(prefabId, createToken).GetComponent<TEntity>();
             entity.ModifyDeathState(DeathState.Alive);
             entity.Attributes.SetHealth(entity.MaxHealth);
+            entity.MovementInfo.HasMovementControl = true;
             return entity;
         }
 
@@ -34,7 +35,7 @@ namespace Core
             base.SetScope(connection, inScope);
 
             foreach (Player player in players)
-                player.CharacterController.ClientMoveState?.SetScope(connection, false);
+                player.MovementInfo.MoveEntity?.SetScope(connection, false);
         }
 
         protected override void EntityAttached(Unit entity)

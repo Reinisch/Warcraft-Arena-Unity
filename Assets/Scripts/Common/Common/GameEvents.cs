@@ -22,6 +22,7 @@
 
         ServerPlayerSpeedChanged,
         ServerPlayerRootChanged,
+        ServerPlayerMovementControlChanged,
         ServerSpellLaunch,
         ServerSpellHit,
         ServerSpellCooldown,

@@ -62,7 +62,7 @@ namespace Core
             else
                 targetPosition = targetPosition - Vector3.up * topCheck * 2f;
 
-            if (target is Player player && !player.IsController)
+            if (target is Player player && !player.IsController && player.MovementInfo.HasMovementControl)
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, player, targetPosition);
             else
             {
