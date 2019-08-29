@@ -15,15 +15,16 @@ namespace Game.Workflow.Dedicated
     internal class WorkflowDedicated : ScriptableReference
     {
         [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
+        [SerializeField, UsedImplicitly] private DedicatedServerSettings settings;
         [SerializeField, UsedImplicitly] private int maxRestartAttempts = 3;
-        
+
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
         private WorldManager worldManager;
         private int restartCount;
 
         protected override void OnRegistered()
         {
-            Application.targetFrameRate = 60;
+            settings.Apply();
 
             EventHandler.RegisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnMapLoaded);
             EventHandler.RegisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);

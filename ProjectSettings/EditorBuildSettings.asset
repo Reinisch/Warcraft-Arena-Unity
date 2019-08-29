@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Launcher.unity
     guid: d63a7b5d8eca3b94ea854cf034eee0ac
+  - enabled: 0
+    path: Assets/Scenes/Launcher Dedicated.unity
+    guid: afb5ed561d6c6474aa545d351397083d
   - enabled: 1
     path: Assets/Scenes/Lordaeron.unity
     guid: 2cf2bf6529546cb4197d067294adc7f0
