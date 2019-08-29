@@ -269,6 +269,15 @@ namespace Core
             if (spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
                 return SpellCastResult.Success;
 
+            if (Caster.HasState(UnitControlState.Stunned) && !SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileStunned))
+                return SpellCastResult.Stunned;
+
+            if (Caster.HasState(UnitControlState.Confused) && !SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileConfused))
+                return SpellCastResult.Confused;
+
+            if (Caster.HasState(UnitControlState.Fleeing) && !SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileFeared))
+                return SpellCastResult.Fleeing;
+
             if (SpellInfo.PreventionType != 0)
             {
                 if (SpellInfo.PreventionType.HasTargetFlag(SpellPreventionType.Pacify) && Caster.HasFlag(UnitFlags.Pacified))
