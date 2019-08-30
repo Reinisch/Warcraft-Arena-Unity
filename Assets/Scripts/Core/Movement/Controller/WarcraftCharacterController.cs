@@ -248,8 +248,8 @@ namespace Core
                     unit.UnitCollider.material = physics.GroundedMaterial;
 
                     bool farFromGround = !hasGroundHit || Mathf.Abs(unit.UnitCollider.bounds.center.y - lastGroundHitInfo.point.y - unit.UnitCollider.bounds.extents.y) > IdleGroundDistance;
-                    bool inGroundedState = TouchingGround || unit.MovementInfo.HasMovementFlag(MovementFlags.MaskAir);
-                    unitRigidbody.useGravity = farFromGround || !inGroundedState;
+                    bool inNonGroundedState = !TouchingGround || unit.MovementInfo.HasMovementFlag(MovementFlags.MaskAir);
+                    unitRigidbody.useGravity = farFromGround || inNonGroundedState;
                 }
             }
         }

@@ -163,10 +163,7 @@ namespace Core
             if (boltConnection == null)
                 BoltEntity.TakeControl(controlToken);
             else
-            {
-                UpdateSyncTransform(false);
                 BoltEntity.AssignControl(boltConnection, controlToken);
-            }
         }
 
         private void OnPlayerNameChanged()
