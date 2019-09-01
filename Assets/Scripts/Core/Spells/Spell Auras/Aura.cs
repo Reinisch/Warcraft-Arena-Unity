@@ -72,7 +72,7 @@ namespace Core
             Logging.LogAura($"Finalized aura, current count: {--AuraAliveCount}");
         }
 
-        internal void DoUpdate(int deltaTime)
+        internal void DoUpdate(int deltaTime, Dictionary<AuraApplication, AuraRemoveMode> applicationsToRemove)
         {
             if (Duration > 0 && (Duration -= deltaTime) < 0)
                 Duration = 0;
@@ -83,7 +83,10 @@ namespace Core
                 updateInvervalLeft -= deltaTime;
 
             foreach (AuraEffect effect in effects)
-                effect.Update(deltaTime);
+                effect.DoUpdate(deltaTime);
+
+            foreach (AuraApplication application in applications)
+                application.DoUpdate(deltaTime, applicationsToRemove);
 
             Updated = true;
         }

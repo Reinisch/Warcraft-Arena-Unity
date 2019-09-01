@@ -21,6 +21,7 @@ namespace Core
             private readonly List<Aura> ownedAuras = new List<Aura>();
 
             private readonly HashSet<AuraEffectHandleGroup> tempAuraHandleGroups = new HashSet<AuraEffectHandleGroup>();
+            private readonly Dictionary<AuraApplication, AuraRemoveMode> tempApplicationsToRemove = new Dictionary<AuraApplication, AuraRemoveMode>();
             private readonly List<AuraApplication> tempAuraApplications = new List<AuraApplication>(10);
             private readonly List<int> tempAuraEffectsToHandle = new List<int>();
 
@@ -29,15 +30,11 @@ namespace Core
             public bool HasClientLogic => false;
             public bool HasServerLogic => true;
 
-            internal bool HasAuraType(AuraEffectType auraEffectType)
-            {
-                return auraEffectsByAuraType.ContainsKey(auraEffectType);
-            }
+            internal bool HasAuraType(AuraEffectType auraEffectType) => auraEffectsByAuraType.ContainsKey(auraEffectType);
 
-            internal bool HasAuraState(AuraStateType auraStateType)
-            {
-                return auraApplicationsByAuraState.ContainsKey(auraStateType);
-            }
+            internal bool HasAuraState(AuraStateType auraStateType) => auraApplicationsByAuraState.ContainsKey(auraStateType);
+
+            internal bool HasAuraAnyInterrupt(AuraInterruptFlags flag) => auraInterruptFlags.HasAnyFlag(flag);
 
             internal IReadOnlyList<AuraEffect> GetAuraEffects(AuraEffectType auraEffectType)
             {
@@ -208,9 +205,31 @@ namespace Core
 
             internal void RemoveAurasWithInterrupt(AuraInterruptFlags flags)
             {
+                if (!HasAuraAnyInterrupt(flags))
+                    return;
+
                 for (int i = 0; i < interruptableAuraApplications.Count; i++)
                     if (interruptableAuraApplications[i].Aura.AuraInfo.InterruptFlags.HasAnyFlag(flags))
                         tempAuraApplications.Add(interruptableAuraApplications[i]);
+
+                foreach (AuraApplication auraApplicationToRemove in tempAuraApplications)
+                    RemoveAuraWithApplication(auraApplicationToRemove, AuraRemoveMode.Interrupt);
+
+                tempAuraApplications.Clear();
+            }
+
+            internal void RemoveAurasWithCombinedDamageInterrupt(int damageTaken)
+            {
+                if (!HasAuraAnyInterrupt(AuraInterruptFlags.CombinedDamageTaken))
+                    return;
+
+                for (int i = 0; i < interruptableAuraApplications.Count; i++)
+                    if (interruptableAuraApplications[i].Aura.AuraInfo.InterruptFlags.HasTargetFlag(AuraInterruptFlags.CombinedDamageTaken))
+                    {
+                        interruptableAuraApplications[i].HandleDamageInterrupt(damageTaken, out bool removeInstantly);
+                        if (removeInstantly)
+                            tempAuraApplications.Add(interruptableAuraApplications[i]);
+                    }
 
                 foreach (AuraApplication auraApplicationToRemove in tempAuraApplications)
                     RemoveAuraWithApplication(auraApplicationToRemove, AuraRemoveMode.Interrupt);
@@ -323,7 +342,7 @@ namespace Core
                     if (auraToUpdate.Updated)
                         continue;
 
-                    auraToUpdate.DoUpdate(deltaTime);
+                    auraToUpdate.DoUpdate(deltaTime, tempApplicationsToRemove);
 
                     if (auraToUpdate.IsExpired)
                         auraToUpdate.Remove(AuraRemoveMode.Expired);
@@ -334,6 +353,12 @@ namespace Core
 
                 for (int i = 0; i < ownedAuras.Count; i++)
                     ownedAuras[i].LateUpdate();
+
+                foreach(var applicationEntry in tempApplicationsToRemove)
+                    if (applicationEntry.Key.RemoveMode == AuraRemoveMode.None)
+                        applicationEntry.Key.Target.Auras.RemoveAuraWithApplication(applicationEntry.Key, applicationEntry.Value);
+
+                tempApplicationsToRemove.Clear();
             }
 
             void IUnitBehaviour.HandleUnitAttach(Unit unit)

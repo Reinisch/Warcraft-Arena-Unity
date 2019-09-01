@@ -397,6 +397,8 @@ namespace Core
 
                 if (spellDamageType == SpellDamageType.Direct)
                     target.Auras.RemoveAurasWithInterrupt(AuraInterruptFlags.DirectDamageTaken);
+
+                target.Auras.RemoveAurasWithCombinedDamageInterrupt(damageAmount);
             }
 
             int healthValue = target.Health;

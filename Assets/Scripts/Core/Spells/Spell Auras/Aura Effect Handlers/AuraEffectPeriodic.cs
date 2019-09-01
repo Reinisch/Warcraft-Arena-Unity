@@ -24,9 +24,9 @@ namespace Core.AuraEffects
                 PreparePeriodic(Aura.Caster, mode == AuraEffectHandleMode.Refresh);
         }
 
-        public override void Update(int deltaTime)
+        public override void DoUpdate(int deltaTime)
         {
-            base.Update(deltaTime);
+            base.DoUpdate(deltaTime);
 
             if (Aura.Duration >= 0)
             {

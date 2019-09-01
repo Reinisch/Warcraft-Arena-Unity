@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using Common;
@@ -22,6 +23,11 @@ namespace Core
         [SerializeField, UsedImplicitly] private List<AuraEffectInfo> auraEffects;
         [SerializeField, UsedImplicitly] private List<AuraScriptable> auraScriptables;
 
+        [Header("Damage Interrupt Info")]
+        [SerializeField, UsedImplicitly] private int damageInterruptValue;
+        [SerializeField, UsedImplicitly] private int damageInterruptDelay;
+        [SerializeField, UsedImplicitly] private AuraInterruptValueCalculationType interruptValueType;
+
         public new int Id => base.Id;
         public int Duration => duration;
         public int MaxDuration => maxDuration;
@@ -36,6 +42,50 @@ namespace Core
         public bool HasAttribute(AuraAttributes attribute)
         {
             return (attributes & attribute) != 0;
+        }
+
+        public void CalculateDamageInterruptValue(Unit caster, Unit target, out int delay, out int interruptValue)
+        {
+            if (!interruptFlags.HasTargetFlag(AuraInterruptFlags.CombinedDamageTaken))
+            {
+                delay = 0;
+                interruptValue = 0;
+                return;
+            }
+
+            switch (interruptValueType)
+            {
+                case AuraInterruptValueCalculationType.Direct:
+                    delay = damageInterruptDelay;
+                    interruptValue = damageInterruptValue;
+                    break;
+                case AuraInterruptValueCalculationType.MaxHealthCasterPercent:
+                    if (caster != null)
+                    {
+                        delay = damageInterruptDelay;
+                        interruptValue = caster.MaxHealth.CalculatePercentage(damageInterruptValue);
+                    }
+                    else
+                    {
+                        delay = 0;
+                        interruptValue = 0;
+                    }
+                    break;
+                case AuraInterruptValueCalculationType.MaxHealthTargetPercent:
+                    if (target != null)
+                    {
+                        delay = damageInterruptDelay;
+                        interruptValue = target.MaxHealth.CalculatePercentage(damageInterruptValue);
+                    }
+                    else
+                    {
+                        delay = 0;
+                        interruptValue = 0;
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public bool IsStackableOnOneSlotWithDifferentCasters()

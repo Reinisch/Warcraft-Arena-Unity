@@ -21,7 +21,7 @@ namespace Core
             Value = BaseValue = baseValue;
         }
 
-        public virtual void Update(int deltaTime)
+        public virtual void DoUpdate(int deltaTime)
         {
         }
 
