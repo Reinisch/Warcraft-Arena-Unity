@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
-  m_Name: Frost Bolt Spell
+  m_Name: Scorch Spell
   m_EditorClassIdentifier: 
-  id: 5
-  spellName: Frost Bolt
+  id: 18
+  spellName: Scorch
   explicitTargetType: 1
   damageClass: 1
   spellDispel: 0
@@ -21,27 +21,25 @@ MonoBehaviour:
   explicitCastTargets: 4
   schoolMask: 4
   preventionType: -1
-  attributes: 0
+  attributes: 4
   attributesExtra: 0
-  attributesCustom: 1024
-  targetEntityTypeMask: 8
+  attributesCustom: 0
+  targetEntityTypeMask: 0
   rangedFlags: 1
   interruptFlags: 0
   cooldownTime: 0
   categoryCooldownTime: 0
   globalCooldownTime: 500
-  castTime: 1700
+  castTime: 1000
   minCastTime: 500
   minRangeHostile: 0
   minRangeFriend: 0
-  maxRangeHostile: 30
+  maxRangeHostile: 40
   maxRangeFriend: 0
-  speed: 25
+  speed: 200
   stackAmount: 0
-  maxAffectedTargets: 0
+  maxAffectedTargets: 1
   spellEffectInfos:
-  - {fileID: 11400000, guid: cf1c8ccbbd68e4345870816437ba40d4, type: 2}
-  - {fileID: 11400000, guid: aaef7465e0c122a43b30be7c3b3ef861, type: 2}
+  - {fileID: 11400000, guid: d0f63d9b18feb0c47ba5b6610e8085bb, type: 2}
   spellPowerEntries: []
-  targetingConditions:
-  - {fileID: 11400000, guid: fc7180b78c6c64a4880c57ced4d9508a, type: 2}
+  targetingConditions: []
