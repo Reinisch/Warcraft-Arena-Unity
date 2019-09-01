@@ -26,6 +26,9 @@ namespace Core
             if (mode != SpellEffectHandleMode.HitFinal || target == null || OriginalCaster == null)
                 return;
 
+            if (target.IsDead && !effect.AuraInfo.HasAttribute(AuraAttributes.DeathPersistent))
+                return;
+
             target.Auras.RefreshOrCreateAura(effect.AuraInfo, SpellInfo, OriginalCaster);
         }
     }
