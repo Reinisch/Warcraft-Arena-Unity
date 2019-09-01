@@ -68,7 +68,7 @@ namespace Core
 
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, damageInfo);
 
-                unit.DealDamage(damageInfo.Target, (int)damageInfo.Damage);
+                unit.DealDamage(damageInfo.Target, (int)damageInfo.Damage, damageInfo.SpellDamageType);
             }
 
             internal void HealBySpell(SpellHealInfo healInfo)

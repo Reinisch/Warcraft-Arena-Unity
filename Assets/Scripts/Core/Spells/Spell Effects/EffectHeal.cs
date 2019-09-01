@@ -56,7 +56,7 @@ namespace Core
     {
         internal void EffectHeal(EffectHeal effect, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
-            if (mode != SpellEffectHandleMode.HitTarget || !target.IsAlive)
+            if (mode != SpellEffectHandleMode.HitStart || !target.IsAlive)
                 return;
 
             float spellHealAmount = effect.CalculateSpellHeal(SpellInfo, effectIndex, Caster, target);

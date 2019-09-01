@@ -27,7 +27,7 @@ namespace Core
     {
         internal void EffectTeleportDirect(EffectTeleportDirect effect, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
-            if (mode != SpellEffectHandleMode.HitTarget)
+            if (mode != SpellEffectHandleMode.HitFinal)
                 return;
 
             if (target == null || !target.IsAlive)

@@ -386,10 +386,18 @@ namespace Core
             return Attributes.SetHealth(Health + delta);
         }
 
-        internal int DealDamage(Unit target, int damageAmount)
+        internal int DealDamage(Unit target, int damageAmount, SpellDamageType spellDamageType)
         {
             if (damageAmount < 1)
                 return 0;
+
+            if (spellDamageType != SpellDamageType.Processed)
+            {
+                target.Auras.RemoveAurasWithInterrupt(AuraInterruptFlags.AnyDamageTaken);
+
+                if (spellDamageType == SpellDamageType.Direct)
+                    target.Auras.RemoveAurasWithInterrupt(AuraInterruptFlags.DirectDamageTaken);
+            }
 
             int healthValue = target.Health;
             if (healthValue <= damageAmount)

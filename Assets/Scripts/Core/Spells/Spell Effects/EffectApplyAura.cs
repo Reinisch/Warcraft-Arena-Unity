@@ -23,7 +23,7 @@ namespace Core
     {
         internal void EffectApplyAura(EffectApplyAura effect, Unit target, SpellEffectHandleMode mode)
         {
-            if (mode != SpellEffectHandleMode.HitTarget || target == null || OriginalCaster == null)
+            if (mode != SpellEffectHandleMode.HitFinal || target == null || OriginalCaster == null)
                 return;
 
             target.Auras.RefreshOrCreateAura(effect.AuraInfo, SpellInfo, OriginalCaster);

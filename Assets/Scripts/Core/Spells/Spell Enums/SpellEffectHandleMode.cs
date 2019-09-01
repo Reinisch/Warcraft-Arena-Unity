@@ -4,7 +4,7 @@
     {
         Launch,
         LaunchTarget,
-        Hit,
-        HitTarget,
+        HitStart,
+        HitFinal,
     }
 }

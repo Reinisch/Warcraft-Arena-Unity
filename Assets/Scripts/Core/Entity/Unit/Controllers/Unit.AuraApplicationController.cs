@@ -21,6 +21,7 @@ namespace Core
             private readonly List<Aura> ownedAuras = new List<Aura>();
 
             private readonly HashSet<AuraEffectHandleGroup> tempAuraHandleGroups = new HashSet<AuraEffectHandleGroup>();
+            private readonly List<AuraApplication> tempAuraApplications = new List<AuraApplication>(10);
             private readonly List<int> tempAuraEffectsToHandle = new List<int>();
 
             internal IReadOnlyList<AuraApplication> AuraApplications => auraApplications;
@@ -203,6 +204,18 @@ namespace Core
                 for (int i = ownedAuras.Count - 1; i >= 0; i--)
                     if (!ownedAuras[i].AuraInfo.HasAttribute(AuraAttributes.DeathPersistent))
                         ownedAuras[0].Remove(AuraRemoveMode.Death);
+            }
+
+            internal void RemoveAurasWithInterrupt(AuraInterruptFlags flags)
+            {
+                for (int i = 0; i < interruptableAuraApplications.Count; i++)
+                    if (interruptableAuraApplications[i].Aura.AuraInfo.InterruptFlags.HasAnyFlag(flags))
+                        tempAuraApplications.Add(interruptableAuraApplications[i]);
+
+                foreach (AuraApplication auraApplicationToRemove in tempAuraApplications)
+                    RemoveAuraWithApplication(auraApplicationToRemove, AuraRemoveMode.Interrupt);
+
+                tempAuraApplications.Clear();
             }
 
             private void HandleInterruptableAura(AuraApplication auraApplication, bool added)

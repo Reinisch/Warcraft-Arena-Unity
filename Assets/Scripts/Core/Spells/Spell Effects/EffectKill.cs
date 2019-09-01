@@ -19,7 +19,7 @@ namespace Core
     {
         internal void EffectKill(EffectKill effect, Unit target, SpellEffectHandleMode mode)
         {
-            if (mode != SpellEffectHandleMode.HitTarget || target == null || !target.IsAlive)
+            if (mode != SpellEffectHandleMode.HitFinal || target == null || !target.IsAlive)
                 return;
 
             Caster.Kill(target);

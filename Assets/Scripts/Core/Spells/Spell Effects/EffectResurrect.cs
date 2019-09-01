@@ -23,7 +23,7 @@ namespace Core
     {
         internal void EffectResurrect(EffectResurrect effect, Unit target, SpellEffectHandleMode mode)
         {
-            if (mode != SpellEffectHandleMode.HitTarget || target == null || target.IsAlive)
+            if (mode != SpellEffectHandleMode.HitFinal || target == null || target.IsAlive)
                 return;
 
             Caster.DealHeal(target, target.MaxHealth.CalculatePercentage(effect.HealthPercent));

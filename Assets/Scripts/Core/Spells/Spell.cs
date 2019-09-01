@@ -202,6 +202,10 @@ namespace Core
             {
                 caster.Spells.DamageBySpell(new SpellDamageInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectDamage, targetEntry.Crit, SpellDamageType.Direct));
             }
+
+            if (missType == SpellMissType.None)
+                for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
+                    SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitFinal);
         }
 
         private SpellMissType ProcessSpellHit(Unit target)
@@ -210,7 +214,7 @@ namespace Core
                 return SpellMissType.Immune;
 
             for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
-                SpellInfo.Effects[effectIndex].Handle(this, effectIndex, target, SpellEffectHandleMode.HitTarget);
+                SpellInfo.Effects[effectIndex].Handle(this, effectIndex, target, SpellEffectHandleMode.HitStart);
 
             return SpellMissType.None;
         }

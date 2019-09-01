@@ -29,6 +29,11 @@
             return (baseFlags & flag) == flag;
         }
 
+        public static bool HasAnyFlag(this AuraInterruptFlags baseFlags, AuraInterruptFlags flag)
+        {
+            return (baseFlags & flag) != 0;
+        }
+
         public static bool HasTargetFlag(this SpellSchoolMask baseFlags, SpellSchoolMask flag)
         {
             return (baseFlags & flag) == flag;

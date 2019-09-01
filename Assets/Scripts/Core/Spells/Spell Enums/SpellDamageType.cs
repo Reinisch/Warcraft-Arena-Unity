@@ -6,6 +6,7 @@
         Dot = 2,
         Heal = 3,
         Pure = 4,
-        Self = 5
+        Self = 5,
+        Processed = 6
     }
 }

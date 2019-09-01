@@ -56,7 +56,7 @@ namespace Core
     {
         internal void EffectSchoolDamage(EffectSchoolDamage effect, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
-            if (mode != SpellEffectHandleMode.HitTarget || target == null || !target.IsAlive)
+            if (mode != SpellEffectHandleMode.HitStart || target == null || !target.IsAlive)
                 return;
 
             float spellDamage = effect.CalculateSpellDamage(SpellInfo, effectIndex, Caster, target);

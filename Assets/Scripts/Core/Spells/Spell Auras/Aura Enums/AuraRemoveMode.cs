@@ -9,6 +9,7 @@
         Expired,
         Death,
         Detach,
-        Spell
+        Spell,
+        Interrupt
     }
 }
