@@ -194,6 +194,9 @@ namespace Core
             else if (groundCheckDistance < controllerDefinition.BaseGroundCheckDistance)
                 groundCheckDistance = unitRigidbody.velocity.y < 0 ? controllerDefinition.BaseGroundCheckDistance : groundCheckDistance + 0.01f;
 
+            if (unitRigidbody.velocity.y > controllerDefinition.JumpSpeed)
+                unitRigidbody.velocity = new Vector3(unitRigidbody.velocity.x, controllerDefinition.JumpSpeed, unitRigidbody.velocity.z);
+
             ProcessGroundState();
 
             void ProcessGroundState()
