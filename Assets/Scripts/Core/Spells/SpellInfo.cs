@@ -88,16 +88,6 @@ namespace Core
             return Effects.Exists(effect => effect.EffectType == effectType);
         }
 
-        public bool HasAura(AuraEffectType auraEffect)
-        {
-            return Effects.Exists(effect => effect.IsAura(auraEffect));
-        }
-
-        public bool HasAreaAuraEffect()
-        {
-            return Effects.Exists(effect => effect.IsAreaAuraEffect());
-        }
-
         public bool HasAttribute(SpellAttributes attribute)
         {
             return (Attributes & attribute) != 0;

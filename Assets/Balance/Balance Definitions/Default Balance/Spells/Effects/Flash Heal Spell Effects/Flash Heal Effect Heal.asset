@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc668c4cd5a5302499af4a347890d74f, type: 3}
   m_Name: Flash Heal Effect Heal
   m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
   mainTargeting:
-    targetEntities: 0
     referenceType: 2
     selectionCategory: 0
     selectionCheckType: 0
     directionType: 0
   secondaryTargeting:
-    targetEntities: 0
     referenceType: 0
     selectionCategory: 0
     selectionCheckType: 0

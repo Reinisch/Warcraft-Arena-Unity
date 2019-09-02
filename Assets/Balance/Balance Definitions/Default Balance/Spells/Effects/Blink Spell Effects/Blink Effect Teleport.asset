@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea804553f634975b3f7b754722ec882, type: 3}
   m_Name: Blink Effect Teleport
   m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
   mainTargeting:
-    targetEntities: 0
     referenceType: 1
     selectionCategory: 0
     selectionCheckType: 0
     directionType: 0
   secondaryTargeting:
-    targetEntities: 0
     referenceType: 0
     selectionCategory: 0
     selectionCheckType: 0

@@ -2,10 +2,7 @@
 {
     public enum SpellTargetChecks
     {
-        Default,
-        Entry,
-        Enemy,
-        Ally,
-        Party,
+        Enemy = 2,
+        Ally = 3,
     }
 }

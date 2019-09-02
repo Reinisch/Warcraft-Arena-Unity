@@ -2,23 +2,6 @@
 {
     public static class SpellUtils
     {
-        public static SpellCastTargetFlags TargetFlags(this SpellTargetEntities targetEntities)
-        {
-            switch (targetEntities)
-            {
-                case SpellTargetEntities.Dest:
-                    return SpellCastTargetFlags.DestLocation;
-                case SpellTargetEntities.UnitAndDest:
-                    return SpellCastTargetFlags.DestLocation | SpellCastTargetFlags.UnitMask;
-                case SpellTargetEntities.Unit:
-                    return SpellCastTargetFlags.UnitMask;
-                case SpellTargetEntities.Source:
-                    return SpellCastTargetFlags.SourceLocation;
-                default:
-                    return 0;
-            }
-        }
-
         public static bool HasTargetFlag(this SpellInterruptFlags baseFlags, SpellInterruptFlags flag)
         {
             return (baseFlags & flag) == flag;

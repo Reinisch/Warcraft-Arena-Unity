@@ -12,26 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845edc7e29e678d4daa8e2da02063cb9, type: 3}
   m_Name: Resurrect Self Effect
   m_EditorClassIdentifier: 
-  auraType: 0
-  explicitTargetType: 2
-  mechanic: 0
+  targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
   mainTargeting:
-    targetEntities: 2
     referenceType: 1
     selectionCategory: 0
     selectionCheckType: 0
     directionType: 0
   secondaryTargeting:
-    targetEntities: 0
     referenceType: 0
     selectionCategory: 0
     selectionCheckType: 0
     directionType: 0
-  basePoints: 0
-  randomPoints: 0
-  applyAuraPeriod: 0
+  explicitTargetType: 2
   minRadius: 0
   maxRadius: 0
-  amplitude: 0
-  chainAmplitude: 0
   healthPercent: 50

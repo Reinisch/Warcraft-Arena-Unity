@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Common;
+﻿using Common;
 using UnityEngine;
 
 using EventHandler = Common.EventHandler;
@@ -15,8 +13,6 @@ namespace Core
         private readonly SpellCastFlags spellCastFlags;
         private readonly MovementFlags casterMovementFlags;
 
-        private SpellExplicitTargets ExplicitTargets { get; }
-        private SpellImplicitTargets ImplicitTargets { get; }
         private int CastTimeLeft { get; set; }
         private int EffectDamage { get; set; }
         private int EffectHealing { get; set; }
@@ -26,6 +22,8 @@ namespace Core
         internal int CastTime { get; private set; }
         internal Unit Caster { get; private set; }
         internal Unit OriginalCaster { get; private set; }
+        internal SpellExplicitTargets ExplicitTargets { get; }
+        internal SpellImplicitTargets ImplicitTargets { get; }
         internal SpellInfo SpellInfo { get; private set; }
         internal SpellState SpellState { get; set; }
         internal SpellExecutionState ExecutionState { get; private set; }
@@ -400,22 +398,7 @@ namespace Core
             // also select targets based on spell effects
             int processedAreaEffectsMask = 0;
             for (var effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
-            {
-                var effect = SpellInfo.Effects[effectIndex];
-                SelectImplicitTargetsForEffect(effect, effectIndex, effect.MainTargeting, ref processedAreaEffectsMask);
-                SelectImplicitTargetsForEffect(effect, effectIndex, effect.SecondaryTargeting, ref processedAreaEffectsMask);
-
-                // select implicit target from explicit effect target type
-                switch (effect.ExplicitTargetType)
-                {
-                    case SpellExplicitTargetType.Target when ExplicitTargets.Target != null:
-                        ImplicitTargets.AddTargetIfNotExists(ExplicitTargets.Target);
-                        break;
-                    case SpellExplicitTargetType.Caster when Caster != null:
-                        ImplicitTargets.AddTargetIfNotExists(Caster);
-                        break;
-                }
-            }
+                SelectImplicitTargetsForEffect(SpellInfo.Effects[effectIndex], effectIndex, ref processedAreaEffectsMask);
 
             void SelectRedirectedTargets()
             {
@@ -445,104 +428,19 @@ namespace Core
             }
         }
 
-        private void SelectImplicitTargetsForEffect(SpellEffectInfo effect, int effectIndex, TargetingType targetingType, ref int processedEffectMask)
+        private void SelectImplicitTargetsForEffect(SpellEffectInfo effect, int effectIndex, ref int processedEffectMask)
         {
-            int effectMask = 1 << effectIndex;
-            if (targetingType.IsAreaLookup)
-            {
-                if ((effectMask & processedEffectMask) > 0)
-                    return;
-
-                // avoid recalculating similar effects
-                for (int otherEffectIndex = 0; otherEffectIndex < SpellInfo.Effects.Count; otherEffectIndex++)
-                {
-                    var otherEffect = SpellInfo.Effects[otherEffectIndex];
-                    if (effect.MainTargeting == otherEffect.MainTargeting && effect.SecondaryTargeting == otherEffect.SecondaryTargeting)
-                        if (Mathf.Approximately(effect.CalcRadius(Caster, this), otherEffect.CalcRadius(Caster, this)))
-                            effectMask |= 1 << otherEffectIndex;
-                }
-
-                processedEffectMask |= effectMask;
-            }
-
-            switch (targetingType.SelectionCategory)
-            {
-                case SpellTargetSelection.Nearby:
-                    SelectImplicitTargetsNearby(effect, effectIndex, targetingType, effectMask);
-                    break;
-                case SpellTargetSelection.Cone:
-                    SelectImplicitTargetsInCone(effect, effectIndex, targetingType, effectMask);
-                    break;
-                case SpellTargetSelection.Area:
-                    SelectImplicitTargetsInArea(effect, effectIndex, targetingType, effectMask);
-                    break;
-                case SpellTargetSelection.Default:
-                    break;
-            }
-        }
-
-        private void SelectImplicitTargetsNearby(SpellEffectInfo effect, int effectIndex, TargetingType targetingType, int effMask)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void SelectImplicitTargetsInCone(SpellEffectInfo effect, int effectIndex, TargetingType targetingType, int effMask)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void SelectImplicitTargetsInArea(SpellEffectInfo effect, int effectIndex, TargetingType targetingType, int effMask)
-        {
-            Unit targetReference = null;
-            switch (targetingType.ReferenceType)
-            {
-                case SpellTargetReferences.Source:
-                case SpellTargetReferences.Dest:
-                case SpellTargetReferences.Caster:
-                    targetReference = Caster;
-                    break;
-                case SpellTargetReferences.Target:
-                    targetReference = ExplicitTargets.Target;
-                    break;
-                case SpellTargetReferences.Last:
-                    {
-                        for (int i = ImplicitTargets.Entries.Count - 1; i >= 0; i--)
-                        {
-                            if (ImplicitTargets.Entries[i].EffectMask.HasBit(effectIndex))
-                            {
-                                targetReference = ImplicitTargets.Entries[i].Target;
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                default:
-                    return;
-            }
-
-            if (targetReference == null)
+            if (processedEffectMask.HasBit(effectIndex))
                 return;
 
-            Vector3 center;
-            switch (targetingType.ReferenceType)
-            {
-                case SpellTargetReferences.Source:
-                case SpellTargetReferences.Dest:
-                case SpellTargetReferences.Caster:
-                case SpellTargetReferences.Target:
-                case SpellTargetReferences.Last:
-                    center = targetReference.Position;
-                    break;
-                default:
-                    throw new NotImplementedException($"Not implemented AreaTargets with {targetingType.ReferenceType} for {targetingType.TargetEntities}");
-            }
+            // avoid recalculating similar effects
+            int effectMask = 1 << effectIndex;
+            for (int otherEffectIndex = 0; otherEffectIndex < SpellInfo.Effects.Count; otherEffectIndex++)
+                if (effect.Targeting == SpellInfo.Effects[otherEffectIndex].Targeting)
+                    effectMask |= 1 << otherEffectIndex;
 
-            List<Unit> targets = new List<Unit>();
-            float radius = effect.CalcRadius(Caster, this);
-            Caster.Map.SearchAreaTargets(targets, radius, center, Caster, targetingType.SelectionCheckType);
-
-            foreach (var unit in targets)
-                ImplicitTargets.AddTargetIfNotExists(unit);
+            processedEffectMask |= effectMask;
+            effect.Targeting.SelectTargets(this);
         }
     }
 }

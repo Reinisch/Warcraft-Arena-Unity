@@ -2,11 +2,9 @@
 {
     public enum SpellTargetReferences
     {
-        None,
-        Caster,
+        Caster = 1,
         Target,
-        Last,
-        Source,
+        Source = 4,
         Dest
     }
 }

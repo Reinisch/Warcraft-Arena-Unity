@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
   m_Name: Living Bomb Explosion Effect Damage
   m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: da17621d1a7511a429d66c6327625d03, type: 2}
   mainTargeting:
-    targetEntities: 0
     referenceType: 2
     selectionCategory: 4
     selectionCheckType: 2
     directionType: 0
   secondaryTargeting:
-    targetEntities: 0
     referenceType: 0
     selectionCategory: 0
     selectionCheckType: 0
