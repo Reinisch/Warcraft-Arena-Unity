@@ -18,12 +18,12 @@ MonoBehaviour:
   damageClass: 0
   spellDispel: 1
   mechanic: 0
-  explicitCastTargets: 8
-  schoolMask: 0
-  preventionType: 1
-  attributes: 0
-  attributesExtra: 49164
-  attributesCustom: 0
+  explicitCastTargets: 4
+  schoolMask: -1
+  preventionType: 0
+  attributes: 64
+  attributesExtra: 8
+  attributesCustom: 32
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0

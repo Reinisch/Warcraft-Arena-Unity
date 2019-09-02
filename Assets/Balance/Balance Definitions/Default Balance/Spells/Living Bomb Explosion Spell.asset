@@ -21,9 +21,9 @@ MonoBehaviour:
   explicitCastTargets: 4
   schoolMask: 4
   preventionType: 0
-  attributes: 66
-  attributesExtra: 49152
-  attributesCustom: 34816
+  attributes: 64
+  attributesExtra: 8
+  attributesCustom: 32800
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0
