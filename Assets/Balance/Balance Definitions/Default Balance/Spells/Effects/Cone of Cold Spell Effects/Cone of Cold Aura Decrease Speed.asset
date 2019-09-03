@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94fd25d21c0388c43a7dbd6b0da8baf3, type: 3}
-  m_Name: Single Caster Target - Spell Targeting
+  m_Script: {fileID: 11500000, guid: 59b09348badfe3745a62b94099ca0063, type: 3}
+  m_Name: Cone of Cold Aura Decrease Speed
   m_EditorClassIdentifier: 
-  singleTargetType: 1
+  maxEffectiveCharges: 1
+  decreasePercent: 70

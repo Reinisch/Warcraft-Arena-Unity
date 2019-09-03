@@ -202,6 +202,9 @@ namespace Core
 
         public SpellCastResult CheckExplicitTarget(Unit caster, Unit target)
         {
+            if (ExplicitTargetType == SpellExplicitTargetType.None)
+                return SpellCastResult.Success;
+
             if (ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
             {
                 if(target == null)
