@@ -18,7 +18,7 @@ MonoBehaviour:
   damageClass: 1
   spellDispel: 0
   mechanic: 0
-  explicitCastTargets: 4
+  explicitCastTargets: 8
   schoolMask: -1
   preventionType: 0
   attributes: 64

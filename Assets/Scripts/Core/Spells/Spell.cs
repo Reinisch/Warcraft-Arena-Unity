@@ -158,114 +158,6 @@ namespace Core
             return Cast();
         }
 
-        private void ProcessTarget(SpellTargetEntry targetEntry)
-        {
-            if (targetEntry.Processed)
-                return;
-
-            targetEntry.Processed = true;
-            if (targetEntry.Target.IsAlive != targetEntry.Alive)
-                return;
-
-            Unit caster = OriginalCaster ?? Caster;
-            if (caster == null)
-                return;
-
-            SpellMissType missType = targetEntry.MissCondition;
-
-            EffectDamage = targetEntry.Damage;
-            EffectHealing = -targetEntry.Damage;
-
-            Unit hitTarget = null;
-            if (missType == SpellMissType.None)
-                hitTarget = targetEntry.Target;
-            else if (missType == SpellMissType.Reflect && targetEntry.ReflectResult == SpellMissType.None)
-                hitTarget = Caster;
-
-            if (hitTarget != null)
-            {
-                missType = ProcessSpellHit(hitTarget);
-
-                if (missType != SpellMissType.None)
-                    EffectDamage = 0;
-
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missType);
-            }
-
-            if (EffectHealing > 0)
-            {
-                caster.Spells.HealBySpell(new SpellHealInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectHealing, targetEntry.Crit));
-            }
-            else if (EffectDamage > 0)
-            {
-                caster.Spells.DamageBySpell(new SpellDamageInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectDamage, targetEntry.Crit, SpellDamageType.Direct));
-            }
-
-            if (missType == SpellMissType.None)
-                for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
-                    SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitFinal);
-        }
-
-        private SpellMissType ProcessSpellHit(Unit target)
-        {
-            if (SpellInfo.Speed > 0 && target.IsImmuneToSpell(SpellInfo, Caster))
-                return SpellMissType.Immune;
-
-            for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
-                SpellInfo.Effects[effectIndex].Handle(this, effectIndex, target, SpellEffectHandleMode.HitStart);
-
-            return SpellMissType.None;
-        }
-
-        private SpellCastResult Cast()
-        {
-            ExecutionState = SpellExecutionState.Casting;
-
-            CastTime = Caster.Spells.ModifySpellCastTime(SpellInfo, SpellInfo.CastTime);
-            CastTimeLeft = CastTime;
-
-            // cast if needed, if already casting launch instead, should only be possible with CanCastWhileCasting
-            bool instantCast = CastTime <= 0.0f || Caster.SpellCast.IsCasting || spellCastFlags.HasTargetFlag(SpellCastFlags.CastDirectly);
-            if (casterMovementFlags.IsMoving() && !instantCast && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving))
-                return SpellCastResult.Moving;
-
-            Caster.SpellHistory.StartGlobalCooldown(SpellInfo);
-
-            if (instantCast)
-                Launch();
-
-            return SpellCastResult.Success;
-        }
-
-        private void Launch()
-        {
-            ExecutionState = SpellExecutionState.Processing;
-            Caster.SpellHistory.StartCooldown(SpellInfo);
-            SelectImplicitTargets();
-
-            for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
-                SpellInfo.Effects[effectIndex].Handle(this, effectIndex, Caster, SpellEffectHandleMode.Launch);
-
-            ImplicitTargets.HandleLaunch(out bool isDelayed, out SpellProcessingToken processingToken);
-
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, ExplicitTargets.Source, SpellInfo, processingToken);
-
-            if (!isDelayed)
-            {
-                foreach (var targetInfo in ImplicitTargets.Entries)
-                    ProcessTarget(targetInfo);
-
-                Finish();
-            }
-        }
-
-        private void Finish()
-        {
-            ExecutionState = SpellExecutionState.Completed;
-
-            spellManager.Remove(this);
-        }
-
         private SpellCastResult ValidateCast()
         {
             if (spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
@@ -361,6 +253,114 @@ namespace Core
                 return SpellCastResult.OutOfRange;
 
             return SpellCastResult.Success;
+        }
+
+        private SpellCastResult Cast()
+        {
+            ExecutionState = SpellExecutionState.Casting;
+
+            CastTime = Caster.Spells.ModifySpellCastTime(SpellInfo, SpellInfo.CastTime);
+            CastTimeLeft = CastTime;
+
+            // cast if needed, if already casting launch instead, should only be possible with CanCastWhileCasting
+            bool instantCast = CastTime <= 0.0f || Caster.SpellCast.IsCasting || spellCastFlags.HasTargetFlag(SpellCastFlags.CastDirectly);
+            if (casterMovementFlags.IsMoving() && !instantCast && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving))
+                return SpellCastResult.Moving;
+
+            Caster.SpellHistory.StartGlobalCooldown(SpellInfo);
+
+            if (instantCast)
+                Launch();
+
+            return SpellCastResult.Success;
+        }
+        
+        private SpellMissType ProcessSpellHit(Unit target)
+        {
+            if (SpellInfo.Speed > 0 && target.IsImmuneToSpell(SpellInfo, Caster))
+                return SpellMissType.Immune;
+
+            for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
+                SpellInfo.Effects[effectIndex].Handle(this, effectIndex, target, SpellEffectHandleMode.HitStart);
+
+            return SpellMissType.None;
+        }
+
+        private void ProcessTarget(SpellTargetEntry targetEntry)
+        {
+            if (targetEntry.Processed)
+                return;
+
+            targetEntry.Processed = true;
+            if (targetEntry.Target.IsAlive != targetEntry.Alive)
+                return;
+
+            Unit caster = OriginalCaster ?? Caster;
+            if (caster == null)
+                return;
+
+            SpellMissType missType = targetEntry.MissCondition;
+
+            EffectDamage = targetEntry.Damage;
+            EffectHealing = -targetEntry.Damage;
+
+            Unit hitTarget = null;
+            if (missType == SpellMissType.None)
+                hitTarget = targetEntry.Target;
+            else if (missType == SpellMissType.Reflect && targetEntry.ReflectResult == SpellMissType.None)
+                hitTarget = Caster;
+
+            if (hitTarget != null)
+            {
+                missType = ProcessSpellHit(hitTarget);
+
+                if (missType != SpellMissType.None)
+                    EffectDamage = 0;
+
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missType);
+            }
+
+            if (EffectHealing > 0)
+            {
+                caster.Spells.HealBySpell(new SpellHealInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectHealing, targetEntry.Crit));
+            }
+            else if (EffectDamage > 0)
+            {
+                caster.Spells.DamageBySpell(new SpellDamageInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectDamage, targetEntry.Crit, SpellDamageType.Direct));
+            }
+
+            if (missType == SpellMissType.None)
+                for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
+                    SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitFinal);
+        }
+
+        private void Launch()
+        {
+            ExecutionState = SpellExecutionState.Processing;
+            Caster.SpellHistory.StartCooldown(SpellInfo);
+            SelectImplicitTargets();
+
+            for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
+                SpellInfo.Effects[effectIndex].Handle(this, effectIndex, Caster, SpellEffectHandleMode.Launch);
+
+            ImplicitTargets.HandleLaunch(out bool isDelayed, out SpellProcessingToken processingToken);
+
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, ExplicitTargets.Source, SpellInfo, processingToken);
+
+            if (!isDelayed)
+            {
+                foreach (var targetInfo in ImplicitTargets.Entries)
+                    ProcessTarget(targetInfo);
+
+                Finish();
+            }
+        }
+
+        private void Finish()
+        {
+            ExecutionState = SpellExecutionState.Completed;
+
+            spellManager.Remove(this);
         }
         
         private void PrepareExplicitTarget()
