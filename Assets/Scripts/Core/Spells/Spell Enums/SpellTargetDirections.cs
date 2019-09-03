@@ -2,7 +2,6 @@
 {
     public enum SpellTargetDirections
     {
-        None,
         Front,
         Back,
         Right,
@@ -10,8 +9,6 @@
         FrontRight,
         BackRight,
         BackLeft,
-        FrontLeft,
-        Random,
-        Entry
+        FrontLeft
     }
 }

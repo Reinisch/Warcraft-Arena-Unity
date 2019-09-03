@@ -1,4 +1,5 @@
-﻿using Bolt.Utils;
+﻿using System;
+using Bolt.Utils;
 using UdpKit;
 using UnityEngine;
 using Common;
@@ -85,6 +86,45 @@ namespace Core
         public bool CanSeeOrDetect(WorldEntity target, bool ignoreStealth = false, bool distanceCheck = false, bool checkAlert = false)
         {
             return true;
+        }
+
+        public bool IsFacing(WorldEntity target, SpellTargetDirections direction, float angle, float backBuffer = StatUtils.DefaultCombatReach)
+        {
+            Vector3 facingDirection;
+            switch (direction)
+            {
+                case SpellTargetDirections.Front:
+                    facingDirection = transform.forward;
+                    break;
+                case SpellTargetDirections.Back:
+                    facingDirection = -transform.forward;
+                    break;
+                case SpellTargetDirections.Right:
+                    facingDirection = transform.right;
+                    break;
+                case SpellTargetDirections.Left:
+                    facingDirection = -transform.right;
+                    break;
+                case SpellTargetDirections.FrontRight:
+                    facingDirection = transform.forward + transform.right;
+                    break;
+                case SpellTargetDirections.BackRight:
+                    facingDirection = -transform.forward + transform.right;
+                    break;
+                case SpellTargetDirections.BackLeft:
+                    facingDirection = -transform.forward - transform.right;
+                    break;
+                case SpellTargetDirections.FrontLeft:
+                    facingDirection = transform.forward - transform.right;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, "Unknown direction type!");
+            }
+
+            Vector3 projectedFacingDirection = Vector3.ProjectOnPlane(facingDirection, Vector3.up);
+            Vector3 pointOfView = Position - projectedFacingDirection.normalized * backBuffer;
+            Vector3 targetDirection = Vector3.ProjectOnPlane(target.Position - pointOfView, Vector3.up);
+            return Vector3.Angle(targetDirection, projectedFacingDirection) < angle;
         }
 
         public float DistanceTo(Vector3 position)

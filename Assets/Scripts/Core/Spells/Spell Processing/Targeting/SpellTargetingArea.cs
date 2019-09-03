@@ -40,7 +40,7 @@ namespace Core
             return radius;
         }
 
-        protected bool IsValidTargetForSpell(Unit target, Spell spell)
+        protected virtual bool IsValidTargetForSpell(Unit target, Spell spell)
         {
             if (target.IsDead && !spell.SpellInfo.HasAttribute(SpellAttributes.CanTargetDead))
                 return false;

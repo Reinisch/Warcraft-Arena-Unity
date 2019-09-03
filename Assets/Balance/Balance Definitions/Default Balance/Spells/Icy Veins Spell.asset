@@ -22,7 +22,7 @@ MonoBehaviour:
   schoolMask: -1
   preventionType: 0
   attributes: 64
-  attributesExtra: 8
+  attributesExtra: 49160
   attributesCustom: 32
   targetEntityTypeMask: 8
   rangedFlags: 1
