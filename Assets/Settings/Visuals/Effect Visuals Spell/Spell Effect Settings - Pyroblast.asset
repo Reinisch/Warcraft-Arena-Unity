@@ -22,4 +22,4 @@ MonoBehaviour:
   - attachToTag: 0
     visualUsageType: 1
     tagType: 5
-    effectSettings: {fileID: 11400000, guid: 92df711169a7dda48bad346faedbe155, type: 2}
+    effectSettings: {fileID: 11400000, guid: 7c47fe4254ad0184396283278789617b, type: 2}
