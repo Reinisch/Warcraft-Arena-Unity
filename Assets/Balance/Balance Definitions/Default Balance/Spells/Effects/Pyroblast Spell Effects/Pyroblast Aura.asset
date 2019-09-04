@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Pyroblast Aura
+  m_EditorClassIdentifier: 
+  id: 12
+  duration: 12000
+  maxDuration: 12000
+  maxStack: 1
+  maxCharges: 1
+  baseCharges: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 0
+  attributes: 16
+  auraEffects:
+  - {fileID: 11400000, guid: 4e007e3f1068d954a94533bb34183ce6, type: 2}
+  auraScriptables: []
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0
