@@ -1,20 +1,23 @@
-﻿namespace Core
+﻿using Core.AuraEffects;
+
+namespace Core
 {
-    public class SpellModifier
+    internal class SpellModifier
     {
-        private Aura OwnerAura { get; set; }
-        private SpellModifierType Mod { get; set; }
-        private SpellModifierApplicationType Type { get; set; }
+        public Aura Aura { get; }
+        public SpellModifierType ModifierType { get; }
+        public SpellModifierApplicationType ApplicationType { get; }
+        public (SpellModifierType, SpellModifierApplicationType) Kind { get; }
 
-        public short Charges { get; set; }
-        public int Value { get; set; }
-        public uint SpellId { get; set; }
+        public float Value { get; set; }
 
-        public SpellModifier(Aura ownerAura)
+        public SpellModifier(Aura ownerAura, AuraEffectInfoSpellModifier auraEffectInfo)
         {
-            OwnerAura = ownerAura;
-            Mod = SpellModifierType.Damage;
-            Type = SpellModifierApplicationType.Flat;
+            Aura = ownerAura;
+            ModifierType = auraEffectInfo.ModifierType;
+            ApplicationType = auraEffectInfo.ApplicationType;
+
+            Kind = (ModifierType, ApplicationType);
         }
     }
 }

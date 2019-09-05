@@ -10,6 +10,14 @@ namespace Common
             return val;
         }
 
+        public static void HandleEntry<TKey, TValue>(this IDictionary<TKey, List<TValue>> dictionary, TKey key, TValue value, bool insert)
+        {
+            if (insert)
+                dictionary.Insert(key, value);
+            else
+                dictionary.Delete(key, value);
+        }
+
         public static void Insert<TKey, TValue>(this IDictionary<TKey, List<TValue>> dictionary, TKey key, TValue value)
         {
             if (dictionary.TryGetValue(key, out List<TValue> list))

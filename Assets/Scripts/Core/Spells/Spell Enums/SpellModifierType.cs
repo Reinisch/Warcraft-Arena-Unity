@@ -9,7 +9,7 @@
         Range = 5,
         Radius = 6,
         CriticalChance = 7,
-        AllEffects = 8,
+        InstantCast = 8,
         NotLoseCastingTime = 9,
         CastingTime = 10,
         Cooldown = 11,

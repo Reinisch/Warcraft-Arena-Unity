@@ -2,12 +2,15 @@
 using Common;
 using UnityEngine;
 
+using SpellModifierContainer = System.Collections.Generic.Dictionary<(Core.SpellModifierType, Core.SpellModifierApplicationType), System.Collections.Generic.List<Core.SpellModifier>>;
+
 namespace Core
 {
     public abstract partial class Unit
     {
         internal class SpellController : IUnitBehaviour
         {
+            private readonly SpellModifierContainer spellModifiers = new SpellModifierContainer();
             private Unit unit;
 
             public SpellCast Cast { get; private set; }
@@ -31,6 +34,7 @@ namespace Core
 
             void IUnitBehaviour.HandleUnitDetach()
             {
+                spellModifiers.Clear();
                 SpellHistory.Detached();
                 Cast.Detached();
 
@@ -311,6 +315,11 @@ namespace Core
                     if (absorbEffect.Value <= 0.0f)
                         absorbEffect.Aura.Remove(AuraRemoveMode.Spell);
                 }
+            }
+
+            internal void HandleSpellModifier(SpellModifier modifier, bool apply)
+            {
+                spellModifiers.HandleEntry(modifier.Kind, modifier, apply);
             }
 
             internal bool IsImmunedToDamage(SpellInfo spellInfo) { return false; }
