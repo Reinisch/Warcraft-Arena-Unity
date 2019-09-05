@@ -163,10 +163,6 @@ namespace Core
 
             internal Unit GetMeleeHitRedirectTarget(Unit victim, SpellInfo spellInfo = null) { return null; }
             
-            internal void ApplySpellModifier(SpellInfo spellInfo, SpellModifierType modifierType, ref int value) { }
-
-            internal void ApplySpellModifier(SpellInfo spellInfo, SpellModifierType modifierType, ref float value) { }
-
             internal uint SpellDamageBonusDone(Unit victim, SpellInfo spellInfo, uint damage, SpellDamageType damageType, uint stack = 1)
             {
                 return damage;
@@ -332,11 +328,58 @@ namespace Core
 
             internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffectInfo, Unit caster) { return false; }
 
+            internal bool IsAffectedBySpellModifier(Spell spell, SpellModifier modifier)
+            {
+                if (modifier.Aura.AuraInfo.UsesCharges && modifier.Aura.Charges == 0 && !spell.HasAppliedModifier(modifier.Aura))
+                    return false;
+
+                return !spell.SpellInfo.HasAttribute(SpellAttributes.IgnoreSpellModifiers);
+            }
+
             internal float ApplyEffectModifiers(SpellInfo spellInfo, float value) { return value; }
+
+            internal float ApplySpellModifier(Spell spell, SpellModifierType modifierType, float baseValue)
+            {
+                float valueMultiplier = 1.0f;
+                float valueModifier = 0.0f;
+
+                if (spellModifiers.TryGetValue((modifierType, SpellModifierApplicationType.Flat), out List<SpellModifier> flatModifiers))
+                {
+                    foreach (SpellModifier modifier in flatModifiers)
+                    {
+                        if (!IsAffectedBySpellModifier(spell, modifier))
+                            continue;
+
+                        valueModifier += modifier.Value;
+                        spell.AddAppliedModifierAura(modifier.Aura);
+                    }
+                }
+
+                float flatValue = baseValue + valueModifier;
+                if (Mathf.Approximately(flatValue, 0.0f))
+                    return 0.0f;
+
+                if (spellModifiers.TryGetValue((modifierType, SpellModifierApplicationType.Percent), out List<SpellModifier> percentModifiers))
+                {
+                    foreach (SpellModifier modifier in percentModifiers)
+                    {
+                        if (!IsAffectedBySpellModifier(spell, modifier))
+                            continue;
+
+                        valueMultiplier *= 1.0f + 1.0f.ApplyPercentage(modifier.Value);
+                        spell.AddAppliedModifierAura(modifier.Aura);
+
+                        if (Mathf.Approximately(valueMultiplier, 0.0f))
+                            return 0.0f;
+                    }
+                }
+
+                return flatValue * valueMultiplier;
+            }
 
             internal int ModifyAuraDuration(AuraInfo auraInfo, Unit target, int duration) { return duration; }
 
-            internal int ModifySpellCastTime(SpellInfo spellInfo, int castTime)
+            internal int ModifySpellCastTime(Spell spell, int castTime)
             {
                 int resultCastTime = castTime;
                 if (resultCastTime <= 0)
@@ -344,11 +387,13 @@ namespace Core
 
                 resultCastTime = Mathf.RoundToInt(castTime * unit.Attributes.ModHaste.Value);
 
-                if (resultCastTime < spellInfo.MinCastTime)
-                    resultCastTime = spellInfo.MinCastTime;
+                if (resultCastTime < spell.SpellInfo.MinCastTime)
+                    resultCastTime = spell.SpellInfo.MinCastTime;
 
                 if (resultCastTime < 0)
                     resultCastTime = 0;
+
+                resultCastTime = (int)spell.Caster.Spells.ApplySpellModifier(spell, SpellModifierType.InstantCast, resultCastTime);
 
                 return resultCastTime;
             }

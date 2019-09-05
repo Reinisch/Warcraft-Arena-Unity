@@ -231,7 +231,7 @@ namespace Core
         {
             float range = positive ? MaxRangeFriend : MaxRangeHostile;
             if (caster != null && spell != null)
-                caster.Spells.ApplySpellModifier(spell.SpellInfo, SpellModifierType.Range, ref range);
+                range = caster.Spells.ApplySpellModifier(spell, SpellModifierType.Range, range);
             return range;
         }
 
@@ -271,8 +271,6 @@ namespace Core
                             continue;
                     }
                 }
-
-                caster.Spells.ApplySpellModifier(this, SpellModifierType.Cost, ref powerCost);
 
                 if (power.SpellResourceType == SpellResourceType.Health)
                 {

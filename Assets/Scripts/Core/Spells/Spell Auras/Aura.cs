@@ -37,6 +37,7 @@ namespace Core
         public SpellInfo SpellInfo { get; }
 
         public ulong CasterId { get; }
+        public int Charges { get; private set; }
         public int Duration { get; private set; }
         public int MaxDuration { get; private set; }
 
@@ -54,6 +55,7 @@ namespace Core
             CasterId = caster.Id;
 
             UpdateDuration(auraInfo.Duration, auraInfo.MaxDuration);
+            UpdateCharges(AuraInfo.Charges);
 
             effectInfos.AddRange(auraInfo.AuraEffects);
 
@@ -111,6 +113,7 @@ namespace Core
         internal void Remove(AuraRemoveMode removeMode = AuraRemoveMode.Default)
         {
             IsRemoved = true;
+            Charges = 0;
 
             while (applications.Count > 0)
             {
@@ -161,6 +164,17 @@ namespace Core
             RefreshDuration = Duration;
 
             Owner.VisibleAuras.NeedUpdate = true;
+        }
+
+        internal void UpdateCharges(int charges)
+        {
+            Charges = Math.Min(AuraInfo.MaxCharges, charges);
+        }
+
+        internal void DropCharge()
+        {
+            if (AuraInfo.UsesCharges && Charges > 0 && --Charges == 0)
+                Remove(AuraRemoveMode.Expired);
         }
 
         internal bool CanStackWith(Aura existingAura)

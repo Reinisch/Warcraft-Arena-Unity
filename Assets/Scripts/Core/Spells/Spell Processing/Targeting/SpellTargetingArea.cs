@@ -33,7 +33,7 @@ namespace Core
             float radius = Mathf.Max(maxRadius, minRadius);
             if (spell.Caster != null)
             {
-                spell.Caster.Spells.ApplySpellModifier(spell.SpellInfo, SpellModifierType.Radius, ref radius);
+                radius = spell.Caster.Spells.ApplySpellModifier(spell, SpellModifierType.Radius, radius);
                 radius = Mathf.Clamp(radius, minRadius, maxRadius);
             }
 

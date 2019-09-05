@@ -13,9 +13,6 @@ namespace Core
         [SerializeField, UsedImplicitly] private int duration;
         [SerializeField, UsedImplicitly] private int maxDuration;
         [SerializeField, UsedImplicitly] private int maxStack;
-        [SerializeField, UsedImplicitly] private int maxCharges;
-        [SerializeField, UsedImplicitly] private int baseCharges;
-
         [SerializeField, UsedImplicitly] private AuraStateType stateType;
         [SerializeField, UsedImplicitly, EnumFlag] private AuraTargetingMode targetingMode;
         [SerializeField, UsedImplicitly, EnumFlag] private AuraInterruptFlags interruptFlags;
@@ -23,14 +20,22 @@ namespace Core
         [SerializeField, UsedImplicitly] private List<AuraEffectInfo> auraEffects;
         [SerializeField, UsedImplicitly] private List<AuraScriptable> auraScriptables;
 
+        [Header("Charges")]
+        [SerializeField, UsedImplicitly] private bool usesCharges;
+        [SerializeField, UsedImplicitly] private int maxCharges;
+        [SerializeField, UsedImplicitly] private int baseCharges;
+
         [Header("Damage Interrupt Info")]
         [SerializeField, UsedImplicitly] private int damageInterruptValue;
         [SerializeField, UsedImplicitly] private int damageInterruptDelay;
         [SerializeField, UsedImplicitly] private AuraInterruptValueCalculationType interruptValueType;
 
         public new int Id => base.Id;
+        public int Charges => baseCharges;
+        public int MaxCharges => maxCharges;
         public int Duration => duration;
         public int MaxDuration => maxDuration;
+        public bool UsesCharges => usesCharges;
         public bool HasInterruptFlags => interruptFlags != 0;
         public AuraStateType StateType => stateType;
         public AuraTargetingMode TargetingMode => targetingMode;

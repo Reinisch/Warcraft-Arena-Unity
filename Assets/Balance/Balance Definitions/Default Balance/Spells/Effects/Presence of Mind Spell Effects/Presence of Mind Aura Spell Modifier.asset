@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Presence of Mind Aura Spell Modifier
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
-  modifierValue: 1
+  modifierValue: -100
   modifierType: 8
-  applicationType: 1
+  applicationType: 2

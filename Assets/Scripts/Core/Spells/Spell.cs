@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.Collections.Generic;
+using Common;
 using UnityEngine;
 
 using EventHandler = Common.EventHandler;
@@ -12,6 +13,8 @@ namespace Core
         private readonly SpellManager spellManager;
         private readonly SpellCastFlags spellCastFlags;
         private readonly MovementFlags casterMovementFlags;
+        private readonly HashSet<Aura> appliedModifierAuras = new HashSet<Aura>();
+        private readonly HashSet<Aura> chargeDroppedModifierAuras = new HashSet<Aura>();
 
         private int CastTimeLeft { get; set; }
         private int EffectDamage { get; set; }
@@ -70,6 +73,8 @@ namespace Core
 
             SpellInfo = null;
             Caster = OriginalCaster = null;
+            appliedModifierAuras.Clear();
+            chargeDroppedModifierAuras.Clear();
 
             ImplicitTargets.Dispose();
             ExplicitTargets.Dispose();
@@ -145,6 +150,10 @@ namespace Core
                     break;
             }
         }
+
+        internal bool HasAppliedModifier(Aura aura) => appliedModifierAuras.Contains(aura);
+
+        internal void AddAppliedModifierAura(Aura aura) => appliedModifierAuras.Add(aura);
 
         internal SpellCastResult Prepare()
         {
@@ -259,7 +268,7 @@ namespace Core
         {
             ExecutionState = SpellExecutionState.Casting;
 
-            CastTime = Caster.Spells.ModifySpellCastTime(SpellInfo, SpellInfo.CastTime);
+            CastTime = Caster.Spells.ModifySpellCastTime(this, SpellInfo.CastTime);
             CastTimeLeft = CastTime;
 
             // cast if needed, if already casting launch instead, should only be possible with CanCastWhileCasting
@@ -347,6 +356,8 @@ namespace Core
 
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, ExplicitTargets.Source, SpellInfo, processingToken);
 
+            DropModifierCharges();
+
             if (!isDelayed)
             {
                 foreach (var targetInfo in ImplicitTargets.Entries)
@@ -360,9 +371,23 @@ namespace Core
         {
             ExecutionState = SpellExecutionState.Completed;
 
+            DropModifierCharges();
+
             spellManager.Remove(this);
         }
-        
+
+        private void DropModifierCharges()
+        {
+            foreach (Aura aura in appliedModifierAuras)
+            {
+                if (!chargeDroppedModifierAuras.Contains(aura))
+                {
+                    chargeDroppedModifierAuras.Add(aura);
+                    aura.DropCharge();
+                }
+            }
+        }
+
         private void PrepareExplicitTarget()
         {
             ExplicitTargets.Source = Caster.Position;
@@ -398,7 +423,20 @@ namespace Core
             // also select targets based on spell effects
             int processedAreaEffectsMask = 0;
             for (var effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
-                SelectImplicitTargetsForEffect(SpellInfo.Effects[effectIndex], effectIndex, ref processedAreaEffectsMask);
+            {
+                if (processedAreaEffectsMask.HasBit(effectIndex))
+                    continue;
+
+                SpellEffectInfo effect = SpellInfo.Effects[effectIndex];
+                // avoid recalculating similar effects
+                int effectMask = 1 << effectIndex;
+                for (int otherEffectIndex = 0; otherEffectIndex < SpellInfo.Effects.Count; otherEffectIndex++)
+                    if (effect.Targeting == SpellInfo.Effects[otherEffectIndex].Targeting)
+                        effectMask |= 1 << otherEffectIndex;
+
+                processedAreaEffectsMask |= effectMask;
+                effect.Targeting.SelectTargets(this);
+            }
 
             void SelectRedirectedTargets()
             {
@@ -426,21 +464,6 @@ namespace Core
                         ExplicitTargets.Target = redirectTarget;
                 }
             }
-        }
-
-        private void SelectImplicitTargetsForEffect(SpellEffectInfo effect, int effectIndex, ref int processedEffectMask)
-        {
-            if (processedEffectMask.HasBit(effectIndex))
-                return;
-
-            // avoid recalculating similar effects
-            int effectMask = 1 << effectIndex;
-            for (int otherEffectIndex = 0; otherEffectIndex < SpellInfo.Effects.Count; otherEffectIndex++)
-                if (effect.Targeting == SpellInfo.Effects[otherEffectIndex].Targeting)
-                    effectMask |= 1 << otherEffectIndex;
-
-            processedEffectMask |= effectMask;
-            effect.Targeting.SelectTargets(this);
         }
     }
 }

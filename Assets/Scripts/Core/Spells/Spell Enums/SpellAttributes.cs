@@ -18,7 +18,7 @@ namespace Core
         CanTargetDead = 1 << 10,
         CantCrit = 1 << 11,
         AlwaysCrit = 1 << 12,
-        CanProcWithTriggered = 1 << 13,
+        IgnoreSpellModifiers = 1 << 13,
         CantTriggerProc = 1 << 14,
         DisableProc = 1 << 15,
         BlockableSpell = 1 << 16,
