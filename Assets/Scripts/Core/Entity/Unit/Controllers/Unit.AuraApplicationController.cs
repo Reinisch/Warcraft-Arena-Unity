@@ -26,6 +26,7 @@ namespace Core
             private readonly List<int> tempAuraEffectsToHandle = new List<int>();
 
             internal IReadOnlyList<AuraApplication> AuraApplications => auraApplications;
+            internal IReadOnlyList<Aura> OwnedAuras => ownedAuras;
 
             public bool HasClientLogic => false;
             public bool HasServerLogic => true;
@@ -198,9 +199,10 @@ namespace Core
 
             internal void RemoveNonDeathPersistentAuras()
             {
-                for (int i = ownedAuras.Count - 1; i >= 0; i--)
-                    if (!ownedAuras[i].AuraInfo.HasAttribute(AuraAttributes.DeathPersistent))
-                        ownedAuras[0].Remove(AuraRemoveMode.Death);
+                List<Aura> aurasToRemove = ownedAuras.FindAll(aura => !aura.AuraInfo.HasAttribute(AuraAttributes.DeathPersistent));
+                foreach(Aura aura in aurasToRemove)
+                    if (!aura.IsRemoved)
+                        aura.Remove(AuraRemoveMode.Death);
             }
 
             internal void RemoveAurasWithInterrupt(AuraInterruptFlags flags)

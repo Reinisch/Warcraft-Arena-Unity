@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Frost Bolt Aura Decrease Speed
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
+  mechanics: 11
   decreasePercent: 50

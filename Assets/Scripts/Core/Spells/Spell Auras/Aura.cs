@@ -112,6 +112,8 @@ namespace Core
 
         internal void Remove(AuraRemoveMode removeMode = AuraRemoveMode.Default)
         {
+            Assert.IsFalse(IsRemoved, $"Aura {AuraInfo.Id} is removed twice!");
+
             IsRemoved = true;
             Charges = 0;
 

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Cone of Cold Aura Decrease Speed
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
+  mechanics: 11
   decreasePercent: 70

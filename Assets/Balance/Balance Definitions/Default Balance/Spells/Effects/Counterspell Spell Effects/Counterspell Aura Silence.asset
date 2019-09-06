@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Counterspell Aura Silence
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
+  mechanics: 9

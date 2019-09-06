@@ -49,6 +49,15 @@ namespace Core
             return (attributes & attribute) != 0;
         }
 
+        public bool HasMechanics(SpellMechanics mechanics)
+        {
+            foreach (AuraEffectInfo auraEffectInfo in auraEffects)
+                if (auraEffectInfo.Mechanics == mechanics)
+                    return true;
+
+            return false;
+        }
+
         public void CalculateDamageInterruptValue(Unit caster, Unit target, out int delay, out int interruptValue)
         {
             if (!interruptFlags.HasTargetFlag(AuraInterruptFlags.CombinedDamageTaken))

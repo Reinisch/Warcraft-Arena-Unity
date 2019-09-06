@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Frost Nova Aura Root
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
+  mechanics: 7
