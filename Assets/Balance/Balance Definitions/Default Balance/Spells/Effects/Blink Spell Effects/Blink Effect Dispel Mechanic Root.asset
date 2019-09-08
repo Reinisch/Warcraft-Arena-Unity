@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d0dfedd0f2d3c149bbe83e9dac3b2fa, type: 3}
-  m_Name: Blink Effect Dispel Mechanic
+  m_Name: Blink Effect Dispel Mechanic Root
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
-  mechanicToDispel: 7
+  mechanicToDispel: 64

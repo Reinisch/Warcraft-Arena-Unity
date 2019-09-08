@@ -25,15 +25,13 @@
         Shackle,
         Mount,
         Infected,
-        Turn,
+        Wounded,
         Horror,
         Invulnerability,
         Interrupt,
         Daze,
-        Discovery,
-        ImmuneShield,
-        Sapped,
         Enraged,
-        Wounded,
+        ImmuneShield,
+        Sapped
     }
 }
