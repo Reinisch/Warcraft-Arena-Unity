@@ -61,7 +61,7 @@ namespace Core
         public bool HasAnyMechanics(SpellMechanicsFlags mechanicsFlags)
         {
             foreach (AuraEffectInfo auraEffectInfo in auraEffects)
-                if (mechanicsFlags.HasTargetFlag(auraEffectInfo.Mechanics.AsFlag()))
+                if (auraEffectInfo.Mechanics != SpellMechanics.None && mechanicsFlags.HasTargetFlag(auraEffectInfo.Mechanics.AsFlag()))
                     return true;
 
             return false;
