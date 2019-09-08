@@ -15,5 +15,6 @@ MonoBehaviour:
   auraInfo: {fileID: 11400000, guid: 3238b80e0b97c9449aa9e152ec6fc02f, type: 2}
   auraIcon: {fileID: 21300000, guid: 205b09a9c784d2342a2ee84361dbafc7, type: 3}
   tagType: 1
-  effectSettings: {fileID: 11400000, guid: 0139fd421a8c28f46bcf61d589dc6657, type: 2}
+  effectSettings: {fileID: 11400000, guid: d7fa1749f7913334c8abf7bbfe52e934, type: 2}
   keepOriginalRotation: 1
+  preventAnimation: 1

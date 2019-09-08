@@ -40,6 +40,7 @@ namespace Client
             private UnitRenderer unitRenderer;
             private readonly Dictionary<int, List<IVisibleAura>> aurasByAuraId = new Dictionary<int, List<IVisibleAura>>();
             private readonly Dictionary<int, SpellVisualAuraState> effectByAuraId = new Dictionary<int, SpellVisualAuraState>();
+            private readonly HashSet<IVisibleAura> aurasPreventingAnimation = new HashSet<IVisibleAura>();
 
             public void HandleAttach(UnitRenderer unitRenderer)
             {
@@ -55,6 +56,7 @@ namespace Client
 
                 Assert.IsTrue(aurasByAuraId.Count == 0);
                 Assert.IsTrue(effectByAuraId.Count == 0);
+                Assert.IsTrue(aurasPreventingAnimation.Count == 0);
                 isDetaching = false;
             }
 
@@ -67,6 +69,9 @@ namespace Client
 
                 if (!unitRenderer.rendering.AuraVisualSettingsById.TryGetValue(visibleAura.AuraId, out AuraEffectSettings settings))
                     return;
+
+                if (settings.PreventAnimation)
+                    HandleAnimationPreventingAuras(visibleAura, true);
 
                 if (settings.EffectSettings == null)
                     return;
@@ -84,6 +89,7 @@ namespace Client
             public void AuraUnapplied(IVisibleAura visibleAura)
             {
                 aurasByAuraId.Delete(visibleAura.AuraId, visibleAura);
+                HandleAnimationPreventingAuras(visibleAura, false);
 
                 if (aurasByAuraId.ContainsKey(visibleAura.AuraId) || !effectByAuraId.TryGetValue(visibleAura.AuraId, out SpellVisualAuraState visualToRemove))
                     return;
@@ -100,6 +106,20 @@ namespace Client
             {
                 if (effectByAuraId.TryGetValue(visibleAura.AuraId, out SpellVisualAuraState activeState))
                     activeState.Replay();
+            }
+
+            private void HandleAnimationPreventingAuras(IVisibleAura aura, bool applied)
+            {
+                bool wasAnimated = aurasPreventingAnimation.Count == 0;
+
+                if (applied)
+                    aurasPreventingAnimation.Add(aura);
+                else
+                    aurasPreventingAnimation.Remove(aura);
+
+                bool canAnimate = aurasPreventingAnimation.Count == 0;
+                if (wasAnimated != canAnimate)
+                    unitRenderer.UpdateAnimationState(canAnimate);
             }
         }
     }

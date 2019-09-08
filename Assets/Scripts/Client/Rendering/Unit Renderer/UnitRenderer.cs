@@ -13,6 +13,7 @@ namespace Client
 
         private readonly AuraEffectController auraEffectController = new AuraEffectController();
         private UnitModel model;
+        private bool canAnimate = true;
 
         public TagContainer TagContainer => model == null ? dummyTagContainer : model.TagContainer;
         public Unit Unit { get; private set; }
@@ -83,6 +84,13 @@ namespace Client
 
         public void TriggerInstantCast() => model?.TriggerInstantCast();
 
+        private void UpdateAnimationState(bool enabled)
+        {
+            canAnimate = enabled;
+            if (model != null)
+                model.Animator.speed = canAnimate ? 1.0f : 0.0f;
+        }
+
         private void OnModelChanged() => ReplaceModel(Unit.Model);
       
         private void ReplaceModel(int modelId)
@@ -113,6 +121,7 @@ namespace Client
             }
 
             model = newModel;
+            UpdateAnimationState(canAnimate);
         }
 
         private void OnDeathStateChanged()
