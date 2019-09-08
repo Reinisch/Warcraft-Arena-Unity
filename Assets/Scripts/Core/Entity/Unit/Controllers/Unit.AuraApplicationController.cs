@@ -346,7 +346,8 @@ namespace Core
 
                     auraToUpdate.DoUpdate(deltaTime, tempApplicationsToRemove);
 
-                    if (auraToUpdate.IsExpired)
+                    // can be already removed when killing target in periodic tick or scriptable auras
+                    if (auraToUpdate.IsExpired && !auraToUpdate.IsRemoved)
                         auraToUpdate.Remove(AuraRemoveMode.Expired);
 
                     if (i >= ownedAuras.Count || auraToUpdate != ownedAuras[i])

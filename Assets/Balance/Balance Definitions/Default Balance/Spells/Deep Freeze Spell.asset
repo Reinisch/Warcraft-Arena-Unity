@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Deep Freeze Spell
+  m_EditorClassIdentifier: 
+  id: 23
+  spellName: Deep Freeze
+  explicitTargetType: 1
+  damageClass: 0
+  spellDispel: 1
+  mechanic: 13
+  explicitCastTargets: 4
+  schoolMask: 16
+  preventionType: -1
+  attributes: 0
+  attributesExtra: 49160
+  attributesCustom: 1024
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  cooldownTime: 10000
+  categoryCooldownTime: 0
+  globalCooldownTime: 0
+  castTime: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 40
+  maxRangeFriend: 0
+  speed: 0
+  stackAmount: 0
+  maxAffectedTargets: 0
+  spellEffectInfos:
+  - {fileID: 11400000, guid: a2ff4480d64919d4abafdaf2265db321, type: 2}
+  spellPowerEntries: []
+  targetingConditions:
+  - {fileID: 11400000, guid: ef4a60afd48ae1549818471f3ab66ab2, type: 2}

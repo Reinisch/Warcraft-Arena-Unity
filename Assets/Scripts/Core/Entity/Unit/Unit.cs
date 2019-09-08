@@ -312,24 +312,17 @@ namespace Core
                 {
                     case UnitControlState.Stunned:
                         if (!HasAuraType(AuraEffectType.StunState))
-                        {
                             UpdateStunState(false);
-                            RemoveState(state);
-                        }
+                        if (!HasAuraType(AuraEffectType.RootState))
+                            UpdateRootState(false);
                         break;
                     case UnitControlState.Root:
                         if (!HasAuraType(AuraEffectType.RootState) && !HasState(UnitControlState.Stunned))
-                        {
                             UpdateRootState(false);
-                            RemoveState(state);
-                        }
                         break;
                     case UnitControlState.Confused:
                         if (!HasAuraType(AuraEffectType.ConfusionState))
-                        {
                             UpdateConfusionState(false);
-                            RemoveState(state);
-                        }
                         break;
                     default:
                         RemoveState(state);
@@ -437,17 +430,21 @@ namespace Core
 
         private void UpdateStunState(bool applied)
         {
+            CharacterController.UpdateMovementControl(!applied);
+
             if (applied)
             {
                 SpellCast.Cancel();
                 StopMoving();
 
                 SetFlag(UnitFlags.Stunned);
+                AddState(UnitControlState.Stunned);
 
                 UpdateRootState(true);
             }
             else
             {
+                RemoveState(UnitControlState.Stunned);
                 RemoveFlag(UnitFlags.Stunned);
 
                 if (!HasState(UnitControlState.Root))
@@ -461,10 +458,14 @@ namespace Core
             {
                 StopMoving();
 
+                AddState(UnitControlState.Root);
                 MovementInfo.AddMovementFlag(MovementFlags.Root);
             }
             else
+            {
+                RemoveState(UnitControlState.Root);
                 MovementInfo.RemoveMovementFlag(MovementFlags.Root);
+            }
 
             if (IsOwner && this is Player rootedPlayer)
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, rootedPlayer, applied);
@@ -473,6 +474,11 @@ namespace Core
         private void UpdateConfusionState(bool applied)
         {
             CharacterController.UpdateMovementControl(!applied);
+
+            if (applied)
+                AddState(UnitControlState.Confused);
+            else
+                RemoveState(UnitControlState.Confused);
         }
     }
 }

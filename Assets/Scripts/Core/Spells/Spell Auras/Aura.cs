@@ -76,6 +76,8 @@ namespace Core
 
         internal void DoUpdate(int deltaTime, Dictionary<AuraApplication, AuraRemoveMode> applicationsToRemove)
         {
+            Updated = true;
+
             if (Duration > 0 && (Duration -= deltaTime) < 0)
                 Duration = 0;
 
@@ -87,10 +89,10 @@ namespace Core
             foreach (AuraEffect effect in effects)
                 effect.DoUpdate(deltaTime);
 
-            foreach (AuraApplication application in applications)
-                application.DoUpdate(deltaTime, applicationsToRemove);
-
-            Updated = true;
+            // can be already removed when killing target in periodic tick or scriptable auras
+            if(!IsRemoved)
+                foreach (AuraApplication application in applications)
+                    application.DoUpdate(deltaTime, applicationsToRemove);
         }
 
         internal void LateUpdate()
