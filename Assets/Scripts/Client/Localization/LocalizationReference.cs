@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System;
+using Common;
 using System.Collections.Generic;
 using Client.Localization;
 using Core;
@@ -11,9 +12,13 @@ namespace Client
     public partial class LocalizationReference : Localization.LocalizationReference
     {
         [SerializeField, UsedImplicitly] private LocalizedString missingStringPlaceholder;
+        [SerializeField, UsedImplicitly] private List<HotKeyModifierLink> hotkeyModifiers;
+        [SerializeField, UsedImplicitly] private List<KeyCodeLink> keyCodes;
         [SerializeField, UsedImplicitly] private List<SpellCastResultLink> spellCastResults;
         [SerializeField, UsedImplicitly] private List<ClientConnectFailReasonLink> clientConnectFailReasons;
 
+        private static readonly Dictionary<KeyCode, string> StringsByKeyCode = new Dictionary<KeyCode, string>();
+        private static readonly Dictionary<HotkeyModifier, string> StringsByHotkeyModifier = new Dictionary<HotkeyModifier, string>();
         private static readonly Dictionary<SpellCastResult, LocalizedString> StringsBySpellCastResult = new Dictionary<SpellCastResult, LocalizedString>();
         private static readonly Dictionary<ClientConnectFailReason, LocalizedString> StringsByClientConnectFailReason = new Dictionary<ClientConnectFailReason, LocalizedString>();
         private static LocalizedString MissingString;
@@ -23,12 +28,25 @@ namespace Client
             base.OnRegistered();
 
             MissingString = missingStringPlaceholder;
+
+            keyCodes.ForEach(item => StringsByKeyCode.Add(item.KeyCode, item.String));
+            hotkeyModifiers.ForEach(item => StringsByHotkeyModifier.Add(item.Modifier, item.String));
             spellCastResults.ForEach(item => StringsBySpellCastResult.Add(item.SpellCastResult, item.LocalizedString));
             clientConnectFailReasons.ForEach(item => StringsByClientConnectFailReason.Add(item.FailReason, item.LocalizedString));
+
+            foreach(KeyCode item in Enum.GetValues(typeof(KeyCode)))
+                if (!StringsByKeyCode.ContainsKey(item))
+                    StringsByKeyCode[item] = item.ToString();
+
+            foreach (HotkeyModifier item in Enum.GetValues(typeof(HotkeyModifier)))
+                if (!StringsByHotkeyModifier.ContainsKey(item))
+                    StringsByHotkeyModifier[item] = item.ToString();
         }
 
         protected override void OnUnregister()
         {
+            StringsByKeyCode.Clear();
+            StringsByHotkeyModifier.Clear();
             StringsBySpellCastResult.Clear();
             StringsByClientConnectFailReason.Clear();
             MissingString = null;
@@ -54,6 +72,18 @@ namespace Client
                 return localizedString;
 
             return MissingString;
+        }
+
+        public static string Localize(HotkeyInputItem hotkeyInput)
+        {
+            if (hotkeyInput.KeyCode == KeyCode.None)
+                return string.Empty;
+
+            string result = string.Empty;
+            if (hotkeyInput.Modifier != HotkeyModifier.None)
+                result = $"{StringsByHotkeyModifier[hotkeyInput.Modifier]}-";
+
+            return $"{result}{StringsByKeyCode[hotkeyInput.KeyCode]}";
         }
     }
 }

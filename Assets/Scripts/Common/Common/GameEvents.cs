@@ -37,6 +37,7 @@
         UnitModelChanged,
 
         HotkeyStateChanged,
+        HotkeyBindingChanged,
         GameOptionChanged
     }
 }

@@ -15,6 +15,34 @@ MonoBehaviour:
   defaultLanguage: 0
   missingStringPlaceholder: {fileID: 11400000, guid: 986e308e59e320b449a92da15d69f686,
     type: 2}
+  hotkeyModifiers:
+  - Modifier: 1
+    String: c
+  - Modifier: 2
+    String: a
+  - Modifier: 3
+    String: s
+  keyCodes:
+  - KeyCode: 48
+    String: 0
+  - KeyCode: 49
+    String: 1
+  - KeyCode: 50
+    String: 2
+  - KeyCode: 51
+    String: 3
+  - KeyCode: 52
+    String: 4
+  - KeyCode: 53
+    String: 5
+  - KeyCode: 54
+    String: 6
+  - KeyCode: 55
+    String: 7
+  - KeyCode: 56
+    String: 8
+  - KeyCode: 57
+    String: 9
   spellCastResults:
   - SpellCastResult: 10
     LocalizedString: {fileID: 11400000, guid: fa5e7ba80087b50448d277f0fa248701, type: 2}

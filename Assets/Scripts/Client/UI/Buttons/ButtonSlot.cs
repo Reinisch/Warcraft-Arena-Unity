@@ -13,7 +13,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private RectTransform rectTransform;
         [SerializeField, UsedImplicitly] private ButtonContent buttonContent;
         [SerializeField, UsedImplicitly] private SoundEntry pressSound;
-        [SerializeField, UsedImplicitly] private TextMeshProUGUI timerText;
+        [SerializeField, UsedImplicitly] private TextMeshProUGUI hotkeyText;
 
         public RectTransform RectTransform => rectTransform;
 
@@ -22,11 +22,15 @@ namespace Client
             buttonContent.Initialize(this);
 
             EventHandler.RegisterEvent<HotkeyState>(hotkeyInput, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
+            EventHandler.RegisterEvent(hotkeyInput, GameEvents.HotkeyBindingChanged, OnHotkeyBindingChanged);
+
+            OnHotkeyBindingChanged();
         }
 
         public void Denitialize()
         {
             EventHandler.UnregisterEvent<HotkeyState>(hotkeyInput, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
+            EventHandler.UnregisterEvent(hotkeyInput, GameEvents.HotkeyBindingChanged, OnHotkeyBindingChanged);
 
             buttonContent.Deinitialize();
         }
@@ -60,6 +64,11 @@ namespace Client
                 Click();
 
             buttonContent.HandleHotkeyState(state);
+        }
+
+        private void OnHotkeyBindingChanged()
+        {
+            hotkeyText.text = LocalizationReference.Localize(hotkeyInput);
         }
     }
 }

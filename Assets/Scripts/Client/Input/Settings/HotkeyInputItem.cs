@@ -16,6 +16,9 @@ namespace Client
         private KeyCode modifierKeyCode;
         private HotkeyState hotkeyState;
 
+        private KeyCode appliedKey;
+        private HotkeyModifier appliedModifier;
+
         private bool IsPressed
         {
             get
@@ -29,16 +32,23 @@ namespace Client
 
         private bool IsHotkeyDown => Input.GetKey(key);
 
+        public KeyCode KeyCode => key;
+        public HotkeyModifier Modifier => modifier;
+
         [UsedImplicitly]
         private void Awake()
         {
             modifierKeyCode = modifier.ToKeyCode();
+            appliedKey = key;
+            appliedModifier = modifier;
         }
 
         [UsedImplicitly]
         private void OnValidate()
         {
             modifierKeyCode = modifier.ToKeyCode();
+            if (appliedKey != key || appliedModifier != modifier)
+                Modify(key, modifier);
         }
 
         public void Register()
@@ -68,6 +78,14 @@ namespace Client
         public bool HasSameInput(HotkeyInputItem hotkeyItem)
         {
             return hotkeyItem.key == key && hotkeyItem.modifier == modifier;
+        }
+
+        public void Modify(KeyCode keyCode, HotkeyModifier modifier)
+        {
+            appliedKey = keyCode;
+            appliedModifier = modifier;
+
+            EventHandler.ExecuteEvent(this, GameEvents.HotkeyBindingChanged);
         }
     }
 }
