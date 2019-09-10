@@ -71,7 +71,8 @@ namespace Client
         {
             base.OnEvent(spellDamageEvent);
 
-            model?.Animator.SetBool("WoundedCrit", spellDamageEvent.IsCrit);
+            var hitType = (HitType)spellDamageEvent.HitType;
+            model?.Animator.SetBool("WoundedCrit", hitType.HasTargetFlag(HitType.CriticalHit));
             model?.Animator.SetTrigger("Wound");
         }
 

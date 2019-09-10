@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -32,11 +33,11 @@ namespace Client
             activeTexts.Clear();
         }
 
-        public void SpawnDamageText(UnitRenderer targetRenderer, int damageAmount, bool isCrit)
+        public void SpawnDamageText(UnitRenderer targetRenderer, int damageAmount, HitType hitType)
         {
             FloatingText damageText = GameObjectPool.Take(floatingTextPrototype, targetRenderer.transform.position, targetRenderer.transform.rotation);
             targetRenderer.TagContainer.ApplyPositioning(damageText);
-            damageText.SetDamage(damageAmount, isCrit);
+            damageText.SetDamage(damageAmount, hitType);
             activeTexts.Add(damageText);
         }
 

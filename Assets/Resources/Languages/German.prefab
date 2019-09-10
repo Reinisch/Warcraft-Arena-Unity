@@ -111,3 +111,5 @@ MonoBehaviour:
     Value: Can't do that while fleeing
   - StringReference: {fileID: 11400000, guid: a454fe567ad566446b9ac37ff9ce999e, type: 2}
     Value: Can't do that while stunned
+  - StringReference: {fileID: 11400000, guid: 4c8c525076ff1e548a41c0c0126d578a, type: 2}
+    Value: Absorb

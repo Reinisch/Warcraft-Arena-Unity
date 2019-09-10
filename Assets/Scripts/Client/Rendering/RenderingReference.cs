@@ -74,7 +74,7 @@ namespace Client
                 world.UnitManager.EventEntityAttached += OnEventEntityAttached;
                 world.UnitManager.EventEntityDetach += OnEventEntityDetach;
 
-                EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
+                EventHandler.RegisterEvent<Unit, Unit, int, HitType>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
                 EventHandler.RegisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
@@ -95,7 +95,7 @@ namespace Client
                 floatingTextController.Deinitialize();
                 spellVisualController.Deinitialize();
 
-                EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
+                EventHandler.UnregisterEvent<Unit, Unit, int, HitType>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
                 EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
@@ -134,7 +134,7 @@ namespace Client
             return unitRenderersById.TryGetValue(unit.Id, out unitRenderer);
         }
 
-        private void OnSpellDamageDone(Unit caster, Unit target, int damageAmount, bool isCrit)
+        private void OnSpellDamageDone(Unit caster, Unit target, int damageAmount, HitType hitType)
         {
             if (!caster.IsController)
                 return;
@@ -142,7 +142,7 @@ namespace Client
             if (!unitRenderersById.TryGetValue(target.Id, out UnitRenderer targetRenderer))
                 return;
 
-            floatingTextController.SpawnDamageText(targetRenderer, damageAmount, isCrit);
+            floatingTextController.SpawnDamageText(targetRenderer, damageAmount, hitType);
         }
 
         private void OnSpellHealingDone(Unit caster, Unit target, int healingAmount, bool isCrit)

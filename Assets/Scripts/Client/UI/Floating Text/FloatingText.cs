@@ -1,4 +1,6 @@
-﻿using Common;
+﻿using Client.Localization;
+using Common;
+using Core;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
@@ -11,8 +13,10 @@ namespace Client
         [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private FloatingTextSettings damageSettings;
         [SerializeField, UsedImplicitly] private FloatingTextSettings damageCritSettings;
+        [SerializeField, UsedImplicitly] private FloatingTextSettings fullAbsorbSettings;
         [SerializeField, UsedImplicitly] private FloatingTextSettings healingSettings;
         [SerializeField, UsedImplicitly] private FloatingTextSettings healingCritSettings;
+        [SerializeField, UsedImplicitly] private LocalizedString fullAbsrobString;
 
         private float currentLifeTime;
         private float targetLifeTime;
@@ -24,9 +28,18 @@ namespace Client
             GameObjectPool.Return(this, true);
         }
 
-        public void SetDamage(int damageAmount, bool isCrit) => SetText(isCrit ? damageCritSettings : damageSettings, damageAmount);
+        public void SetDamage(int damageAmount, HitType hitType)
+        {
+            if (hitType.HasTargetFlag(HitType.FullAbsorb))
+                SetText(fullAbsorbSettings, fullAbsrobString.Value);
+            else
+                SetText(hitType.HasTargetFlag(HitType.CriticalHit) ? damageCritSettings : damageSettings, damageAmount.ToString());
+        }
 
-        public void SetHealing(int healingAmount, bool isCrit) => SetText(isCrit ? healingCritSettings : healingSettings, healingAmount);
+        public void SetHealing(int healingAmount, bool isCrit)
+        {
+            SetText(isCrit ? healingCritSettings : healingSettings, healingAmount.ToString());
+        } 
 
         public bool DoUpdate(float deltaTime)
         {
@@ -49,10 +62,10 @@ namespace Client
             return currentLifeTime >= targetLifeTime;
         }
 
-        private void SetText(FloatingTextSettings newSettings, int value)
+        private void SetText(FloatingTextSettings newSettings, string value)
         {
             currentSettings = newSettings;
-            textMesh.text = value.ToString();
+            textMesh.text = value;
             textMesh.font = newSettings.FontAsset;
             textMesh.fontSize = currentSettings.FontSize;
             textMesh.color = currentSettings.FontColor;

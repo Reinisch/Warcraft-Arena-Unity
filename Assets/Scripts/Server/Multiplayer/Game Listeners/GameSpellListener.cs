@@ -37,14 +37,14 @@ namespace Server
 
                 spellDamageEvent.Target = damageInfo.Target.BoltEntity.NetworkId;
                 spellDamageEvent.DamageAmount = (int)damageInfo.Damage;
-                spellDamageEvent.IsCrit = damageInfo.HasCrit;
+                spellDamageEvent.HitType = (int)damageInfo.HitType;
                 spellDamageEvent.Send();
             }
 
             UnitSpellDamageEvent unitSpellDemageEvent = UnitSpellDamageEvent.Create(damageInfo.Target.BoltEntity, EntityTargets.Everyone);
             unitSpellDemageEvent.CasterId = damageInfo.Caster.BoltEntity.NetworkId;
             unitSpellDemageEvent.Damage = (int)damageInfo.Damage;
-            unitSpellDemageEvent.IsCrit = damageInfo.HasCrit;
+            unitSpellDemageEvent.HitType = (int)damageInfo.HitType;
             unitSpellDemageEvent.Send();
         }
 

@@ -1,7 +1,7 @@
 ﻿namespace Core
 {
     /// <summary>
-    /// Compressed in PlayerSpeedChangedEvent to 2 bits.
+    /// Compressed in <seealso cref="PlayerSpeedRateChangedEvent"/> to 2 bits.
     /// </summary>
     public enum UnitMoveType
     {

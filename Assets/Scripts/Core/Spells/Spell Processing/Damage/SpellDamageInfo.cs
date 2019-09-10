@@ -4,7 +4,7 @@ namespace Core
 {
     public struct SpellDamageInfo
     {
-        public HitType HitInfo { get; private set; }
+        public HitType HitType { get; private set; }
         public SpellDamageType SpellDamageType { get; }
         public SpellInfo SpellInfo { get; }
         public Unit Target { get; }
@@ -28,12 +28,12 @@ namespace Core
             UnmitigatedDamage = originalDamage;
             HasCrit = hasCrit;
 
-            HitInfo = 0;
+            HitType = 0;
             Absorb = 0;
             Resist = 0;
 
             if (HasCrit)
-                HitInfo |= HitType.CriticalHit;
+                HitType |= HitType.CriticalHit;
         }
 
         public void UpdateOriginalDamage(uint amount)
@@ -53,7 +53,7 @@ namespace Core
             Damage -= amount;
 
             if (UnmitigatedDamage == Absorb)
-                HitInfo |= HitType.FullAbsorb;
+                HitType |= HitType.FullAbsorb;
         }
 
         public void ResistDamage(uint amount)

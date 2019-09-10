@@ -2,6 +2,9 @@
 
 namespace Core
 {
+    /// <summary>
+    /// Compressed to 6 bits in <seealso cref="SpellDamageDoneEvent"/> and <seealso cref="UnitSpellDamageEvent"/>
+    /// </summary>
     [Flags]
     public enum HitType
     {

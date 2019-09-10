@@ -1,7 +1,7 @@
 ﻿namespace Core
 {
     /// <summary>
-    /// Compressed to 3 bits in UnitState.
+    /// Compressed to 3 bits in <seealso cref="UnitState"/>.
     /// </summary>
     public enum DeathState
     {

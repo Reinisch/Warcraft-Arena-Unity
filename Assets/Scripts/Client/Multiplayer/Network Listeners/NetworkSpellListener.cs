@@ -27,7 +27,7 @@ namespace Client
             if (LocalPlayer == null || !World.UnitManager.TryFind(spellDamageEvent.Target.PackedValue, out Unit target))
                 return;
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, (Unit)LocalPlayer, target, spellDamageEvent.DamageAmount, spellDamageEvent.IsCrit);
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, (Unit)LocalPlayer, target, spellDamageEvent.DamageAmount, (HitType)spellDamageEvent.HitType);
         }
 
         public override void OnEvent(SpellHealingDoneEvent spellHealingEvent)

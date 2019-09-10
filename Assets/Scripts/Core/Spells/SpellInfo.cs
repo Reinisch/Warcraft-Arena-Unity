@@ -45,7 +45,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private List<SpellCastCondition> targetingConditions;
 
         /// <summary>
-        /// Compressed to 8 bits in Spell Events.
+        /// Compressed to 8 bits in <seealso cref="SpellCastRequestEvent"/> and other spell events.
         /// </summary>
         public new int Id => base.Id;
         public string SpellName => spellName;
