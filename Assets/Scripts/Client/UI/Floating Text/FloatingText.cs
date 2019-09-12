@@ -14,6 +14,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private FloatingTextSettings damageSettings;
         [SerializeField, UsedImplicitly] private FloatingTextSettings damageCritSettings;
         [SerializeField, UsedImplicitly] private FloatingTextSettings fullAbsorbSettings;
+        [SerializeField, UsedImplicitly] private FloatingTextSettings missSettings;
         [SerializeField, UsedImplicitly] private FloatingTextSettings healingSettings;
         [SerializeField, UsedImplicitly] private FloatingTextSettings healingCritSettings;
         [SerializeField, UsedImplicitly] private LocalizedString fullAbsrobString;
@@ -26,6 +27,11 @@ namespace Client
         private void OnDestroy()
         {
             GameObjectPool.Return(this, true);
+        }
+
+        public void SetMissText(SpellMissType missType)
+        {
+            SetText(missSettings, LocalizationReference.Localize(missType).Value);
         }
 
         public void SetDamage(int damageAmount, HitType hitType)

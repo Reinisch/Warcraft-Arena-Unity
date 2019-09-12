@@ -113,3 +113,13 @@ MonoBehaviour:
     Value: Can't do that while stunned
   - StringReference: {fileID: 11400000, guid: 4c8c525076ff1e548a41c0c0126d578a, type: 2}
     Value: Absorb
+  - StringReference: {fileID: 11400000, guid: 8ec300e1d87b2924ea3efba38e1a41f4, type: 2}
+    Value: Immune
+  - StringReference: {fileID: 11400000, guid: 865ad83cf4813694a83451c1e4e19520, type: 2}
+    Value: Dodge
+  - StringReference: {fileID: 11400000, guid: 284495d5b1b82844a8742133a5eca096, type: 2}
+    Value: Evade
+  - StringReference: {fileID: 11400000, guid: eb84962fa3103d84ca17b4d5051d5fb2, type: 2}
+    Value: Miss
+  - StringReference: {fileID: 11400000, guid: 9296745a40fc5e843a0e4fb31c8e4dfd, type: 2}
+    Value: 

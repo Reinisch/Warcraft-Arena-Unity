@@ -76,6 +76,7 @@ namespace Client
 
                 EventHandler.RegisterEvent<Unit, Unit, int, HitType>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
+                EventHandler.RegisterEvent<Unit, Unit, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.SpellMissDone, OnSpellMiss);
                 EventHandler.RegisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
 
@@ -97,6 +98,7 @@ namespace Client
 
                 EventHandler.UnregisterEvent<Unit, Unit, int, HitType>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
+                EventHandler.UnregisterEvent<Unit, Unit, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.SpellMissDone, OnSpellMiss);
                 EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
 
@@ -143,6 +145,17 @@ namespace Client
                 return;
 
             floatingTextController.SpawnDamageText(targetRenderer, damageAmount, hitType);
+        }
+
+        private void OnSpellMiss(Unit caster, Unit target, SpellMissType missType)
+        {
+            if (!caster.IsController)
+                return;
+
+            if (!unitRenderersById.TryGetValue(target.Id, out UnitRenderer targetRenderer))
+                return;
+
+            floatingTextController.SpawnMissText(targetRenderer, missType);
         }
 
         private void OnSpellHealingDone(Unit caster, Unit target, int healingAmount, bool isCrit)

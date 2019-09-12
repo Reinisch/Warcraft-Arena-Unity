@@ -17,6 +17,7 @@
         SpellHit,
         SpellDamageDone,
         SpellHealingDone,
+        SpellMissDone,
 
         ClientSpellFailed,
 

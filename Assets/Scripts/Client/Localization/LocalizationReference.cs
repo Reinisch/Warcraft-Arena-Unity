@@ -12,26 +12,32 @@ namespace Client
     public partial class LocalizationReference : Localization.LocalizationReference
     {
         [SerializeField, UsedImplicitly] private LocalizedString missingStringPlaceholder;
+        [SerializeField, UsedImplicitly] private LocalizedString emptyStringPlaceholder;
         [SerializeField, UsedImplicitly] private List<HotKeyModifierLink> hotkeyModifiers;
         [SerializeField, UsedImplicitly] private List<KeyCodeLink> keyCodes;
         [SerializeField, UsedImplicitly] private List<SpellCastResultLink> spellCastResults;
+        [SerializeField, UsedImplicitly] private List<SpellMissTypeLink> spellMissTypes;
         [SerializeField, UsedImplicitly] private List<ClientConnectFailReasonLink> clientConnectFailReasons;
 
         private static readonly Dictionary<KeyCode, string> StringsByKeyCode = new Dictionary<KeyCode, string>();
         private static readonly Dictionary<HotkeyModifier, string> StringsByHotkeyModifier = new Dictionary<HotkeyModifier, string>();
         private static readonly Dictionary<SpellCastResult, LocalizedString> StringsBySpellCastResult = new Dictionary<SpellCastResult, LocalizedString>();
+        private static readonly Dictionary<SpellMissType, LocalizedString> StringsBySpellMissType = new Dictionary<SpellMissType, LocalizedString>();
         private static readonly Dictionary<ClientConnectFailReason, LocalizedString> StringsByClientConnectFailReason = new Dictionary<ClientConnectFailReason, LocalizedString>();
         private static LocalizedString MissingString;
+        private static LocalizedString EmptyString;
 
         protected override void OnRegistered()
         {
             base.OnRegistered();
 
             MissingString = missingStringPlaceholder;
+            EmptyString = emptyStringPlaceholder;
 
             keyCodes.ForEach(item => StringsByKeyCode.Add(item.KeyCode, item.String));
             hotkeyModifiers.ForEach(item => StringsByHotkeyModifier.Add(item.Modifier, item.String));
             spellCastResults.ForEach(item => StringsBySpellCastResult.Add(item.SpellCastResult, item.LocalizedString));
+            spellMissTypes.ForEach(item => StringsBySpellMissType.Add(item.SpellMissType, item.LocalizedString));
             clientConnectFailReasons.ForEach(item => StringsByClientConnectFailReason.Add(item.FailReason, item.LocalizedString));
 
             foreach(KeyCode item in Enum.GetValues(typeof(KeyCode)))
@@ -62,6 +68,14 @@ namespace Client
                 return localizedString;
 
             return MissingString;
+        }
+
+        public static LocalizedString Localize(SpellMissType spellMissType)
+        {
+            if (StringsBySpellMissType.TryGetValue(spellMissType, out LocalizedString localizedString))
+                return localizedString;
+
+            return EmptyString;
         }
 
         public static LocalizedString Localize(ClientConnectFailReason failReason)

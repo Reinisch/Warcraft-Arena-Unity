@@ -86,6 +86,17 @@ namespace Server
 
         private void OnServerSpellHit(Unit caster, Unit target, SpellInfo spellInfo, SpellMissType missType)
         {
+            if (missType != SpellMissType.None && caster is Player player && World.IsControlledByHuman(player))
+            {
+                SpellMissDoneEvent spellMissEvent = player.IsController
+                    ? SpellMissDoneEvent.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered)
+                    : SpellMissDoneEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
+
+                spellMissEvent.TargetId = target.BoltEntity.NetworkId;
+                spellMissEvent.MissType = (int)missType;
+                spellMissEvent.Send();
+            }
+
             UnitSpellHitEvent unitSpellHitEvent = UnitSpellHitEvent.Create(target.BoltEntity, EntityTargets.Everyone);
             unitSpellHitEvent.CasterId = caster.BoltEntity.NetworkId;
             unitSpellHitEvent.SpellId = spellInfo.Id;

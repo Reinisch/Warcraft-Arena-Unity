@@ -15,6 +15,8 @@ MonoBehaviour:
   defaultLanguage: 0
   missingStringPlaceholder: {fileID: 11400000, guid: 986e308e59e320b449a92da15d69f686,
     type: 2}
+  emptyStringPlaceholder: {fileID: 11400000, guid: 9296745a40fc5e843a0e4fb31c8e4dfd,
+    type: 2}
   hotkeyModifiers:
   - Modifier: 1
     String: c
@@ -74,6 +76,15 @@ MonoBehaviour:
     LocalizedString: {fileID: 11400000, guid: d94880cd04263e44bb246f84cbdc238f, type: 2}
   - SpellCastResult: 47
     LocalizedString: {fileID: 11400000, guid: a454fe567ad566446b9ac37ff9ce999e, type: 2}
+  spellMissTypes:
+  - SpellMissType: 7
+    LocalizedString: {fileID: 11400000, guid: 8ec300e1d87b2924ea3efba38e1a41f4, type: 2}
+  - SpellMissType: 3
+    LocalizedString: {fileID: 11400000, guid: 865ad83cf4813694a83451c1e4e19520, type: 2}
+  - SpellMissType: 6
+    LocalizedString: {fileID: 11400000, guid: 284495d5b1b82844a8742133a5eca096, type: 2}
+  - SpellMissType: 1
+    LocalizedString: {fileID: 11400000, guid: eb84962fa3103d84ca17b4d5051d5fb2, type: 2}
   clientConnectFailReasons:
   - FailReason: 0
     LocalizedString: {fileID: 11400000, guid: 35bdb3f22e4c2ab4590a4828e7e25267, type: 2}

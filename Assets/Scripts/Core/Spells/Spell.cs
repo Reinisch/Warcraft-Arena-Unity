@@ -415,21 +415,16 @@ namespace Core
             EffectDamage = targetEntry.Damage;
             EffectHealing = -targetEntry.Damage;
 
-            Unit hitTarget = null;
-            if (missType == SpellMissType.None)
-                hitTarget = targetEntry.Target;
-            else if (missType == SpellMissType.Reflect && targetEntry.ReflectResult == SpellMissType.None)
+            Unit hitTarget = targetEntry.Target;
+            if (missType == SpellMissType.Reflect && targetEntry.ReflectResult == SpellMissType.None)
                 hitTarget = Caster;
 
-            if (hitTarget != null)
-            {
-                missType = ProcessSpellHit(hitTarget);
+            missType = ProcessSpellHit(hitTarget);
 
-                if (missType != SpellMissType.None)
-                    EffectDamage = 0;
+            if (missType != SpellMissType.None)
+                EffectDamage = 0;
 
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missType);
-            }
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missType);
 
             if (EffectHealing > 0)
             {

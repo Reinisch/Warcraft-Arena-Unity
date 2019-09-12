@@ -33,6 +33,14 @@ namespace Client
             activeTexts.Clear();
         }
 
+        public void SpawnMissText(UnitRenderer targetRenderer, SpellMissType missType)
+        {
+            FloatingText damageText = GameObjectPool.Take(floatingTextPrototype, targetRenderer.transform.position, targetRenderer.transform.rotation);
+            targetRenderer.TagContainer.ApplyPositioning(damageText);
+            damageText.SetMissText(missType);
+            activeTexts.Add(damageText);
+        }
+
         public void SpawnDamageText(UnitRenderer targetRenderer, int damageAmount, HitType hitType)
         {
             FloatingText damageText = GameObjectPool.Take(floatingTextPrototype, targetRenderer.transform.position, targetRenderer.transform.rotation);

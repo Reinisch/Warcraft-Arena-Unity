@@ -30,6 +30,16 @@ namespace Client
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, (Unit)LocalPlayer, target, spellDamageEvent.DamageAmount, (HitType)spellDamageEvent.HitType);
         }
 
+        public override void OnEvent(SpellMissDoneEvent spellMissEvent)
+        {
+            base.OnEvent(spellMissEvent);
+
+            if (LocalPlayer == null || !World.UnitManager.TryFind(spellMissEvent.TargetId.PackedValue, out Unit target))
+                return;
+
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellMissDone, (Unit)LocalPlayer, target, (SpellMissType)spellMissEvent.MissType);
+        }
+
         public override void OnEvent(SpellHealingDoneEvent spellHealingEvent)
         {
             base.OnEvent(spellHealingEvent);
