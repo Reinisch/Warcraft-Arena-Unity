@@ -28,7 +28,7 @@ MonoBehaviour:
   rangedFlags: 1
   interruptFlags: 0
   castIgnoringMechanics: 998244351
-  cooldownTime: 3000
+  cooldownTime: 40000
   categoryCooldownTime: 0
   globalCooldownTime: 1000
   castTime: 0

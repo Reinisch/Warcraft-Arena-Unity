@@ -24,4 +24,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fc45ddf4f3e3f794ca78761579921ea1, type: 2}
   - {fileID: 11400000, guid: 7c47fe4254ad0184396283278789617b, type: 2}
   - {fileID: 11400000, guid: d7fa1749f7913334c8abf7bbfe52e934, type: 2}
+  - {fileID: 11400000, guid: 9edb113349044684e9ea90681d29a5ee, type: 2}
   containerTag: Effect Container

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Ice Block Aura
   m_EditorClassIdentifier: 
   id: 15
-  duration: 8000
-  maxDuration: 8000
+  duration: 2000
+  maxDuration: 2000
   maxStack: 1
   stateType: 1
   targetingMode: 1
