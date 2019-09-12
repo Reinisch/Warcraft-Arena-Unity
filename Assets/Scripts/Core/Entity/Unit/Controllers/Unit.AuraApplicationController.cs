@@ -20,10 +20,8 @@ namespace Core
             private readonly HashSet<AuraApplication> auraApplicationSet = new HashSet<AuraApplication>();
             private readonly List<Aura> ownedAuras = new List<Aura>();
 
-            private readonly HashSet<AuraEffectHandleGroup> tempAuraHandleGroups = new HashSet<AuraEffectHandleGroup>();
             private readonly Dictionary<AuraApplication, AuraRemoveMode> tempApplicationsToRemove = new Dictionary<AuraApplication, AuraRemoveMode>();
             private readonly List<AuraApplication> tempAuraApplications = new List<AuraApplication>(10);
-            private readonly List<int> tempAuraEffectsToHandle = new List<int>();
 
             internal IReadOnlyList<AuraApplication> AuraApplications => auraApplications;
             internal IReadOnlyList<Aura> OwnedAuras => ownedAuras;
@@ -239,6 +237,17 @@ namespace Core
                 tempAuraApplications.Clear();
             }
 
+            internal void RemoveAuraWithApplication(AuraApplication application, AuraRemoveMode mode)
+            {
+                if (auraApplicationSet.Contains(application))
+                {
+                    UnapplyAuraApplication(application, mode);
+
+                    if (application.Aura.Owner == unit)
+                        application.Aura.Remove(mode);
+                }
+            }
+
             private void HandleInterruptableAura(AuraApplication auraApplication, bool added)
             {
                 if (!auraApplication.Aura.AuraInfo.HasInterruptFlags)
@@ -279,6 +288,9 @@ namespace Core
 
             private void HandleAuraEffects(AuraApplication auraApplication, bool added)
             {
+                var auraEffectsToHandle = new List<int>();
+                var auraHandleGroups = new HashSet<AuraEffectHandleGroup>();
+
                 if (added)
                 {
                     for (int i = 0; i < auraApplication.Aura.Effects.Count; i++)
@@ -286,7 +298,7 @@ namespace Core
                         if (auraApplication.EffectsToApply.HasBit(i) && !auraApplication.AppliedEffectMask.HasBit(i))
                         {
                             auraEffectsByAuraType.Insert(auraApplication.Aura.Effects[i].EffectInfo.AuraEffectType, auraApplication.Aura.Effects[i]);
-                            tempAuraEffectsToHandle.Add(i);
+                            auraEffectsToHandle.Add(i);
                         }
                     }
                 }
@@ -297,16 +309,13 @@ namespace Core
                         if (auraApplication.AppliedEffectMask.HasBit(i))
                         {
                             auraEffectsByAuraType.Delete(auraApplication.Aura.Effects[i].EffectInfo.AuraEffectType, auraApplication.Aura.Effects[i]);
-                            tempAuraEffectsToHandle.Add(i);
+                            auraEffectsToHandle.Add(i);
                         }
                     }
                 }
 
-                for (int i = 0; i < tempAuraEffectsToHandle.Count; i++)
-                    auraApplication.HandleEffect(tempAuraEffectsToHandle[i], added, tempAuraHandleGroups);
-
-                tempAuraEffectsToHandle.Clear();
-                tempAuraHandleGroups.Clear();
+                for (int i = 0; i < auraEffectsToHandle.Count; i++)
+                    auraApplication.HandleEffect(auraEffectsToHandle[i], added, auraHandleGroups);
             }
 
             private void RemoveNonStackableAuras(Aura aura)
@@ -318,17 +327,6 @@ namespace Core
                         RemoveAuraWithApplication(auraApplications[i], AuraRemoveMode.Default);
                         i = 0;
                     }
-                }
-            }
-
-            private void RemoveAuraWithApplication(AuraApplication application, AuraRemoveMode mode)
-            {
-                if (auraApplicationSet.Contains(application))
-                {
-                    UnapplyAuraApplication(application, mode);
-
-                    if (application.Aura.Owner == unit)
-                        application.Aura.Remove(mode);
                 }
             }
 

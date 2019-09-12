@@ -23,7 +23,7 @@ MonoBehaviour:
   preventionType: 0
   attributes: 64
   attributesExtra: 8
-  attributesCustom: 32
+  attributesCustom: 1056
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0

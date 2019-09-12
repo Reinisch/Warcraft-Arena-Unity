@@ -19,7 +19,7 @@ MonoBehaviour:
   stateType: 1
   targetingMode: 1
   interruptFlags: 0
-  attributes: 0
+  attributes: 2
   auraEffects:
   - {fileID: 11400000, guid: 5c1edebc883fcad47a2f626b88897199, type: 2}
   auraScriptables: []

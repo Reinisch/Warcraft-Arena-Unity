@@ -10,6 +10,7 @@
         Death,
         Detach,
         Spell,
-        Interrupt
+        Interrupt,
+        Immunity
     }
 }

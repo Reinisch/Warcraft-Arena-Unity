@@ -16,12 +16,16 @@ MonoBehaviour:
   duration: 5000
   maxDuration: 5000
   maxStack: 1
-  maxCharges: 1
-  baseCharges: 1
   stateType: 0
   targetingMode: 1
   interruptFlags: 0
-  attributes: 0
+  attributes: 2
   auraEffects:
   - {fileID: 11400000, guid: 807033eb49a7ccf47b2f82516411ef52, type: 2}
   auraScriptables: []
+  usesCharges: 0
+  maxCharges: 1
+  baseCharges: 1
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0

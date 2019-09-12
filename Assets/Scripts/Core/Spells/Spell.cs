@@ -53,8 +53,11 @@ namespace Core
             if (info.HasAttribute(SpellExtraAttributes.IgnoreGcd))
                 spellCastFlags |= SpellCastFlags.IgnoreGcd;
 
+            if (info.HasAttribute(SpellExtraAttributes.IgnoreCasterAuras))
+                spellCastFlags |= SpellCastFlags.IgnoreCasterAuras;
+
             CanReflect = SpellInfo.DamageClass == SpellDamageClass.Magic && !SpellInfo.HasAttribute(SpellAttributes.CantBeReflected) &&
-                !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive() && !SpellInfo.IsPositive;
+                !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive && !SpellInfo.IsPositive;
 
             ExplicitTargets = options.Targets ?? new SpellExplicitTargets();
             ImplicitTargets = new SpellImplicitTargets(this);
@@ -172,30 +175,12 @@ namespace Core
             if (spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
                 return SpellCastResult.Success;
 
-            if (Caster.HasState(UnitControlState.Stunned) && !SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileStunned))
-                return SpellCastResult.Stunned;
-
-            if (Caster.HasState(UnitControlState.Confused) && !SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileConfused))
-                return SpellCastResult.Confused;
-
-            if (Caster.HasState(UnitControlState.Fleeing) && !SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileFeared))
-                return SpellCastResult.Fleeing;
-
-            if (SpellInfo.PreventionType != 0)
-            {
-                if (SpellInfo.PreventionType.HasTargetFlag(SpellPreventionType.Pacify) && Caster.HasFlag(UnitFlags.Pacified))
-                    return SpellCastResult.Silenced;
-
-                if (SpellInfo.PreventionType.HasTargetFlag(SpellPreventionType.Silence) && Caster.HasFlag(UnitFlags.Silenced))
-                    return SpellCastResult.Pacified;
-            }
-
             // check death state
-            if (!Caster.IsAlive && !SpellInfo.IsPassive() && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileDead))
+            if (!Caster.IsAlive && !SpellInfo.IsPassive && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileDead))
                 return SpellCastResult.CasterDead;
 
             // check cooldowns to prevent cheating
-            if (!SpellInfo.IsPassive() && !Caster.SpellHistory.IsReady(SpellInfo))
+            if (!SpellInfo.IsPassive && !Caster.SpellHistory.IsReady(SpellInfo))
                 return SpellCastResult.NotReady;
 
             // check global cooldown
@@ -207,6 +192,10 @@ namespace Core
                 return SpellCastResult.NotReady;
 
             SpellCastResult castResult = ValidateRange();
+            if (castResult != SpellCastResult.Success)
+                return castResult;
+
+            castResult = ValidateAuras();
             if (castResult != SpellCastResult.Success)
                 return castResult;
 
@@ -225,6 +214,88 @@ namespace Core
             }
 
             return SpellCastResult.Success;
+        }
+
+        private SpellCastResult ValidateAuras()
+        {
+            if (spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreCasterAuras))
+                return SpellCastResult.Success;
+
+            bool usableWhileStunned = SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileStunned);
+            bool usableWhileConfused = SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileConfused);
+            bool usableWhileFeared = SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileFeared);
+
+            if (Caster.HasFlag(UnitFlags.Stunned))
+            {
+                if (usableWhileStunned)
+                {
+                    SpellCastResult result = ValidateMechanics(AuraEffectType.StunState);
+                    if (result != SpellCastResult.Success)
+                        return result;
+                }
+                else if (!WillCancelStun())
+                    return SpellCastResult.Stunned;
+            }
+
+            if (SpellInfo.PreventionType != 0)
+            {
+                if (SpellInfo.PreventionType.HasTargetFlag(SpellPreventionType.Pacify) && Caster.HasFlag(UnitFlags.Pacified) && !WillCancelPacify())
+                    return SpellCastResult.Pacified;
+
+                if (SpellInfo.PreventionType.HasTargetFlag(SpellPreventionType.Silence) && Caster.HasFlag(UnitFlags.Silenced) && !WillCancelSilence())
+                    return SpellCastResult.Silenced;
+            }
+
+            if (Caster.HasFlag(UnitFlags.Fleeing))
+            {
+                if (usableWhileFeared)
+                {
+                    SpellCastResult result = ValidateMechanics(AuraEffectType.ModFear);
+                    if (result != SpellCastResult.Success)
+                        return result;
+                }
+                else if (!WillCancelFear())
+                    return SpellCastResult.Fleeing;
+            }
+
+            if (Caster.HasFlag(UnitFlags.Confused))
+            {
+                if (usableWhileConfused)
+                {
+                    SpellCastResult result = ValidateMechanics(AuraEffectType.ConfusionState);
+                    if (result != SpellCastResult.Success)
+                        return result;
+                }
+                else if (!WillCancelConfuse())
+                    return SpellCastResult.Confused;
+            }
+
+            return SpellCastResult.Success;
+
+            bool WillCancelStun()
+            {
+                return SpellInfo.CanCancelAuraType(AuraEffectType.StunState, Caster) && SpellInfo.CanCancelAuraType(AuraEffectType.Strangulate, Caster);
+            }
+
+            bool WillCancelSilence()
+            {
+                return SpellInfo.CanCancelAuraType(AuraEffectType.Silence, Caster) || SpellInfo.CanCancelAuraType(AuraEffectType.SilencePacify, Caster);
+            }
+
+            bool WillCancelPacify()
+            {
+                return SpellInfo.CanCancelAuraType(AuraEffectType.Pacify, Caster) || SpellInfo.CanCancelAuraType(AuraEffectType.SilencePacify, Caster);
+            }
+
+            bool WillCancelFear()
+            {
+                return SpellInfo.CanCancelAuraType(AuraEffectType.ModFear, Caster);
+            }
+
+            bool WillCancelConfuse()
+            {
+                return SpellInfo.CanCancelAuraType(AuraEffectType.ConfusionState, Caster);
+            }
         }
 
         private SpellCastResult ValidateRange()
@@ -264,6 +335,37 @@ namespace Core
             return SpellCastResult.Success;
         }
 
+        private SpellCastResult ValidateMechanics(AuraEffectType auraEffectType)
+        {
+            IReadOnlyList<AuraEffect> activeEffects = Caster.Auras.GetAuraEffects(auraEffectType);
+            if (activeEffects == null)
+                return SpellCastResult.Success;
+
+            for (int i = 0; i < activeEffects.Count; i++)
+            {
+                SpellMechanicsFlags combinedEffectMechanics = activeEffects[i].Aura.SpellInfo.CombinedEffectMechanics;
+                if (combinedEffectMechanics == 0)
+                    continue;
+
+                if (!SpellInfo.CastIgnoringMechanics.HasTargetFlag(combinedEffectMechanics))
+                {
+                    switch (auraEffectType)
+                    {
+                        case AuraEffectType.StunState:
+                            return SpellCastResult.Stunned;
+                        case AuraEffectType.ModFear:
+                            return SpellCastResult.Fleeing;
+                        case AuraEffectType.ConfusionState:
+                            return SpellCastResult.Confused;
+                        default:
+                            return SpellCastResult.NotKnown;
+                    }
+                }
+            }
+
+            return SpellCastResult.Success;
+        }
+
         private SpellCastResult Cast()
         {
             ExecutionState = SpellExecutionState.Casting;
@@ -286,7 +388,7 @@ namespace Core
         
         private SpellMissType ProcessSpellHit(Unit target)
         {
-            if (SpellInfo.Speed > 0 && target.IsImmuneToSpell(SpellInfo, Caster))
+            if (target.IsImmuneToSpell(SpellInfo, Caster))
                 return SpellMissType.Immune;
 
             for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)

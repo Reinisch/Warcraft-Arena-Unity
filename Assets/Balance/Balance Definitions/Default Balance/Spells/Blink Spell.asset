@@ -27,6 +27,7 @@ MonoBehaviour:
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0
+  castIgnoringMechanics: 6144
   cooldownTime: 2000
   categoryCooldownTime: 0
   globalCooldownTime: 0

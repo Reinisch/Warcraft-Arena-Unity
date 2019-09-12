@@ -44,6 +44,8 @@ namespace Core
 
         internal IReadOnlyList<AuraScriptable> AuraScriptables => auraScriptables;
 
+        public bool IsPositive => !HasAttribute(AuraAttributes.Negative);
+
         public bool HasAttribute(AuraAttributes attribute)
         {
             return (attributes & attribute) != 0;

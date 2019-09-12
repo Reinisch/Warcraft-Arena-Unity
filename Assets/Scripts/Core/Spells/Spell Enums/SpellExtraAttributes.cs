@@ -5,7 +5,7 @@ namespace Core
     [Flags]
     public enum SpellExtraAttributes
     {
-        IgnoreResistances = 1 << 0,
+        IgnoreCasterAuras = 1 << 0,
         ProcOnlyOnCaster = 1 << 1,
         NotStealable = 1 << 2,
         CanCastWhileCasting = 1 << 3,

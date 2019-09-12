@@ -80,7 +80,7 @@ namespace Core
 
         internal void StartCooldown(SpellInfo spellInfo)
         {
-            if (spellInfo.IsPassive())
+            if (spellInfo.IsPassive)
                 return;
 
             int cooldownLeft = spellInfo.CooldownTime;

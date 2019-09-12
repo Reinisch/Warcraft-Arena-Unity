@@ -28,6 +28,8 @@ namespace Core
             definition.SpellInfos.ForEach(spellInfo => spellInfosById.Add(spellInfo.Id, spellInfo));
             definition.AuraInfos.ForEach(auraInfo => auraInfosById.Add(auraInfo.Id, auraInfo));
             definition.FactionEntries.ForEach(factionEntry => factionsById.Add(factionEntry.FactionId, factionEntry));
+
+            definition.SpellInfos.ForEach(spellInfo => spellInfo.PopulateEffectInfo());
         }
 
         protected override void OnUnregister()

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common;
+using Core.AuraEffects;
 using Core.Conditions;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -25,6 +26,7 @@ namespace Core
         [SerializeField, EnumFlag, UsedImplicitly] private EnityTypeMask targetEntityTypeMask;
         [SerializeField, EnumFlag, UsedImplicitly] private SpellRangeFlags rangedFlags;
         [SerializeField, EnumFlag, UsedImplicitly] private SpellInterruptFlags interruptFlags;
+        [SerializeField, UsedImplicitly, EnumFlag] private SpellMechanicsFlags castIgnoringMechanics;
 
         [SerializeField, UsedImplicitly] private int cooldownTime;
         [SerializeField, UsedImplicitly] private int categoryCooldownTime;
@@ -44,6 +46,8 @@ namespace Core
         [SerializeField, UsedImplicitly] private List<SpellPowerEntry> spellPowerEntries = new List<SpellPowerEntry>();
         [SerializeField, UsedImplicitly] private List<SpellCastCondition> targetingConditions;
 
+        [UsedImplicitly] private SpellMechanicsFlags combinedEffectMechanics;
+
         /// <summary>
         /// Compressed to 8 bits in <seealso cref="SpellCastRequestEvent"/> and other spell events.
         /// </summary>
@@ -54,6 +58,8 @@ namespace Core
         public SpellCastTargetFlags ExplicitCastTargets => explicitCastTargets;
         public SpellDispelType SpellDispel => spellDispel;
         public SpellMechanics Mechanic => mechanic;
+        public SpellMechanicsFlags CastIgnoringMechanics => castIgnoringMechanics;
+        public SpellMechanicsFlags CombinedEffectMechanics => combinedEffectMechanics;
         public SpellDamageClass DamageClass => damageClass;
 
         public SpellSchoolMask SchoolMask => schoolMask;
@@ -81,8 +87,12 @@ namespace Core
         public float MaxRangeFriend => maxRangeFriend;
         public float Speed => speed;
 
-        public bool IsPositive => !HasAttribute(SpellCustomAttributes.Negative);
+        public bool IsPassive => HasAttribute(SpellAttributes.Passive);
 
+        public bool IsDeathPersistent => HasAttribute(SpellAttributes.DeathPersistent);
+
+        public bool IsPositive => !HasAttribute(SpellCustomAttributes.Negative);
+        
         public bool HasEffect(SpellEffectType effectType)
         {
             return Effects.Exists(effect => effect.EffectType == effectType);
@@ -113,16 +123,6 @@ namespace Core
             return Effects.Exists(effect => effect.IsTargetingArea());
         }
 
-        public bool IsPassive()
-        {
-            return HasAttribute(SpellAttributes.Passive);
-        }
-
-        public bool IsDeathPersistent()
-        {
-            return HasAttribute(SpellAttributes.DeathPersistent);
-        }
-
         public bool IsPositiveEffect(int effIndex)
         {
             return !HasAttribute(SpellCustomAttributes.Negative);
@@ -133,35 +133,84 @@ namespace Core
             return HasAttribute(SpellAttributes.Channeled);
         }
 
-        public bool CanPierceImmuneAura(SpellInfo aura)
+        public bool CanPierceImmuneAura(SpellInfo spellInfo)
         {
-            // these spells pierce all avalible spells (Resurrection Sickness for example)
+            // these spells pierce all avalible spells
             if (HasAttribute(SpellAttributes.UnaffectedByInvulnerability))
                 return true;
 
-            // these spells (Cyclone for example) can pierce all...         
-            if (!HasAttribute(SpellAttributes.UnaffectedBySchoolImmune) || aura == null)
+            // these spells can pierce all        
+            if (!HasAttribute(SpellAttributes.UnaffectedBySchoolImmune))
                 return false;
 
-            // ...but not these (Divine shield, Ice block, Cyclone and Banish for example)
-            return !(aura.Mechanic == SpellMechanics.ImmuneShield || aura.Mechanic == SpellMechanics.Invulnerability || aura.Mechanic == SpellMechanics.Banish);
+            // but not these (Divine shield, Ice block, Cyclone and Banish for example)
+            return !(spellInfo.Mechanic == SpellMechanics.ImmuneShield || spellInfo.Mechanic == SpellMechanics.Invulnerability || spellInfo.Mechanic == SpellMechanics.Banish);
         }
 
-        public bool CanDispelAura(SpellInfo aura)
+        public bool CanDispelAura(SpellInfo auraSpellInfo)
         {
-            // These spells (like Mass SpellDispel) can dispell all auras, except death persistent ones (like Dungeon and Battleground Deserter)
-            if (HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !aura.IsDeathPersistent())
+            // unaffected by invulnerability spells can dispel any non death persistent aura
+            if (HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !auraSpellInfo.IsDeathPersistent)
                 return true;
 
-            // These auras (like Divine Shield) can't be dispelled
-            if (aura.HasAttribute(SpellAttributes.UnaffectedByInvulnerability))
+            // unaffected by invulnerability auras can not be dispelled
+            if (auraSpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability))
                 return false;
 
-            // These auras (Cyclone for example) are not dispelable
-            if (aura.HasAttribute(SpellAttributes.UnaffectedBySchoolImmune))
+            // auras ignoring school immunity can not be dispelled
+            if (auraSpellInfo.HasAttribute(SpellAttributes.UnaffectedBySchoolImmune))
                 return false;
 
             return true;
+        }
+
+        public bool CanCancelAuraType(AuraEffectType auraEffectType, Unit caster)
+        {
+            IReadOnlyList<AuraEffect> activeEffects = caster.Auras.GetAuraEffects(auraEffectType);
+            if (activeEffects == null)
+                return true;
+
+            for (int i = 0; i < activeEffects.Count; i++)
+            {
+                if (CanCancelAura(activeEffects[i]))
+                    continue;
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool CanCancelAura(AuraEffect auraEffect)
+        {
+            if (!HasAttribute(SpellAttributes.DispelAurasOnImmunity))
+                return false;
+
+            if (auraEffect.Aura.SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability))
+                return false;
+
+            foreach (SpellEffectInfo effectInfo in spellEffectInfos)
+            {
+                if (!(effectInfo is EffectApplyAura applyAuraEffect))
+                    continue;
+
+                for (int index = 0; index < applyAuraEffect.AuraInfo.AuraEffects.Count; index++)
+                {
+                    AuraEffectInfo auraEffectInfo = applyAuraEffect.AuraInfo.AuraEffects[index];
+                    switch (auraEffectInfo)
+                    {
+                        case AuraEffectInfoSchoolImmunity schoolImmunity:
+                            if (auraEffect.Aura.SpellInfo.HasAttribute(SpellAttributes.UnaffectedBySchoolImmune))
+                                continue;
+
+                            if (schoolImmunity.SchoolMask.HasAnyFlag(SchoolMask))
+                                return true;
+                            break;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public bool IsSingleTarget()
@@ -298,6 +347,15 @@ namespace Core
             costs.RemoveAll(cost => cost.SpellResource != SpellResourceType.Runes && cost.Amount <= 0);
 
             return costs;
+        }
+
+        internal void PopulateEffectInfo()
+        {
+            combinedEffectMechanics = Mechanic.AsFlag();
+            foreach (SpellEffectInfo spellEffectInfo in spellEffectInfos)
+                if (spellEffectInfo is EffectApplyAura auraApplyEffect)
+                    for (int index = 0; index < auraApplyEffect.AuraInfo.AuraEffects.Count; index++)
+                        combinedEffectMechanics |= auraApplyEffect.AuraInfo.AuraEffects[index].Mechanics.AsFlag();
         }
     }
 }

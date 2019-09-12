@@ -3,6 +3,7 @@ using Common;
 using UnityEngine;
 
 using SpellModifierContainer = System.Collections.Generic.Dictionary<(Core.SpellModifierType, Core.SpellModifierApplicationType), System.Collections.Generic.List<Core.SpellModifier>>;
+using SchoolImmunityContainer = System.Collections.Generic.Dictionary<Core.SpellSchoolMask, System.Collections.Generic.List<Core.SpellInfo>>;
 
 namespace Core
 {
@@ -11,6 +12,8 @@ namespace Core
         internal class SpellController : IUnitBehaviour
         {
             private readonly SpellModifierContainer spellModifiers = new SpellModifierContainer();
+            private readonly SchoolImmunityContainer schoolImmunities = new SchoolImmunityContainer();
+
             private Unit unit;
 
             public SpellCast Cast { get; private set; }
@@ -34,6 +37,7 @@ namespace Core
 
             void IUnitBehaviour.HandleUnitDetach()
             {
+                schoolImmunities.Clear();
                 spellModifiers.Clear();
                 SpellHistory.Detached();
                 Cast.Detached();
@@ -128,9 +132,6 @@ namespace Core
 
             internal SpellMissType SpellHitResult(Unit victim, SpellInfo spellInfo, bool canReflect = false)
             {
-                if (victim.IsImmuneToSpell(spellInfo, unit))
-                    return SpellMissType.Immune;
-
                 if (unit == victim)
                     return SpellMissType.None;
 
@@ -322,7 +323,31 @@ namespace Core
 
             internal bool IsImmunedToDamage(AuraInfo auraInfo) { return false; }
 
-            internal bool IsImmuneToSpell(SpellInfo spellInfo, Unit caster) { return false; }
+            internal bool IsImmuneToSpell(SpellInfo spellInfo, Unit caster)
+            {
+                if (spellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability))
+                    return false;
+
+                if (spellInfo.SchoolMask != 0)
+                {
+                    SpellSchoolMask immunedSchools = 0;
+                    foreach (var schoolImmunityEntry in schoolImmunities)
+                    {
+                        if (!schoolImmunityEntry.Key.HasAnyFlag(spellInfo.SchoolMask))
+                            continue;
+
+                        foreach (SpellInfo immunitySpells in schoolImmunityEntry.Value)
+                            if (!immunitySpells.IsPositive || !spellInfo.IsPositive || !unit.IsFriendlyTo(caster))
+                                if (!spellInfo.CanPierceImmuneAura(immunitySpells))
+                                    immunedSchools |= schoolImmunityEntry.Key;
+                    }
+
+                    if (immunedSchools.HasTargetFlag(spellInfo.SchoolMask))
+                        return true;
+                }
+
+                return false;
+            }
 
             internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster) { return false; }
 
@@ -396,6 +421,11 @@ namespace Core
                 resultCastTime = (int)spell.Caster.Spells.ApplySpellModifier(spell, SpellModifierType.InstantCast, resultCastTime);
 
                 return resultCastTime;
+            }
+
+            internal void ModifySchoolImmunity(SpellInfo spellInfo, SpellSchoolMask schoolMask, bool apply)
+            {
+                schoolImmunities.HandleEntry(schoolMask, spellInfo, apply);
             }
         }
     }

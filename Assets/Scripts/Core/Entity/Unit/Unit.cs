@@ -476,9 +476,15 @@ namespace Core
             CharacterController.UpdateMovementControl(!applied);
 
             if (applied)
+            {
+                SetFlag(UnitFlags.Confused);
                 AddState(UnitControlState.Confused);
+            }
             else
+            {
+                RemoveFlag(UnitFlags.Confused);
                 RemoveState(UnitControlState.Confused);
+            }
         }
     }
 }

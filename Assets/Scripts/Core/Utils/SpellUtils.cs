@@ -24,6 +24,11 @@ namespace Core
             return (baseFlags & flag) == flag;
         }
 
+        public static bool HasAnyFlag(this SpellSchoolMask baseFlags, SpellSchoolMask flag)
+        {
+            return (baseFlags & flag) != 0;
+        }
+
         public static bool HasTargetFlag(this HitType baseFlags, HitType flag)
         {
             return (baseFlags & flag) == flag;

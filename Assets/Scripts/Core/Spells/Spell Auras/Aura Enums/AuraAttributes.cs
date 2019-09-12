@@ -6,7 +6,7 @@ namespace Core
     public enum AuraAttributes
     {
         Passive = 1 << 0,
-        TriggeredCanTriggerProc = 1 << 1,
+        Negative = 1 << 1,
         CanProcWithTriggered = 1 << 2,
         CantTriggerProc = 1 << 3,
         StackSameAuraInMultipleSlots = 1 << 4,

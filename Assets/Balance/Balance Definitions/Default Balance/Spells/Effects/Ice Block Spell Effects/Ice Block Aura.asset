@@ -22,7 +22,7 @@ MonoBehaviour:
   attributes: 0
   auraEffects:
   - {fileID: 11400000, guid: d6cdfa791f9f2774bad53654ac60f967, type: 2}
-  - {fileID: 11400000, guid: 60fbfea5dbde5874e97ff3ee6a918369, type: 2}
+  - {fileID: 11400000, guid: f82cf7521d42512459fc9f71b0df09b6, type: 2}
   auraScriptables: []
   usesCharges: 0
   maxCharges: 0
