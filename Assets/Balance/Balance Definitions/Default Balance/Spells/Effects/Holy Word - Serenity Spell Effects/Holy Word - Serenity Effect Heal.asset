@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc668c4cd5a5302499af4a347890d74f, type: 3}
-  m_Name: Flash Heal Effect Heal
+  m_Name: Holy Word - Serenity Effect Heal
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 1000
-  baseVariance: 200
+  baseValue: 1600
+  baseVariance: 400
   additionalValue: 200
   calculationType: 1
   conditionalModifiers: []
