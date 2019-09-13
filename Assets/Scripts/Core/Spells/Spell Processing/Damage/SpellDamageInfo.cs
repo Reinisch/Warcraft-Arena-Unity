@@ -11,7 +11,6 @@ namespace Core
         public Unit Caster { get; }
         public bool HasCrit { get; }
 
-        public uint UnmitigatedDamage { get; private set; }
         public uint Damage { get; private set; }
         public uint Absorb { get; private set; }
         public uint Resist { get; private set; }
@@ -25,7 +24,6 @@ namespace Core
             SpellDamageType = spellDamageType;
 
             Damage = originalDamage;
-            UnmitigatedDamage = originalDamage;
             HasCrit = hasCrit;
 
             HitType = 0;
@@ -36,11 +34,6 @@ namespace Core
                 HitType |= HitType.CriticalHit;
         }
 
-        public void UpdateOriginalDamage(uint amount)
-        {
-            UnmitigatedDamage = Damage = amount;
-        }
-
         public void UpdateDamage(uint amount)
         {
             Damage = amount;
@@ -48,12 +41,15 @@ namespace Core
 
         public void AbsorbDamage(uint amount)
         {
-            amount = Math.Min(amount, Damage);
-            Absorb += amount;
-            Damage -= amount;
+            if (Damage > 0)
+            {
+                amount = Math.Min(amount, Damage);
+                Absorb += amount;
+                Damage -= amount;
 
-            if (UnmitigatedDamage == Absorb)
-                HitType |= HitType.FullAbsorb;
+                if (Damage == 0)
+                    HitType |= HitType.FullAbsorb;
+            }
         }
 
         public void ResistDamage(uint amount)

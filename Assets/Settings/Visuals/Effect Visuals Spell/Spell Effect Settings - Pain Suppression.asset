@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ec92025aeeeb7546979c3a55df94061, type: 3}
-  m_Name: Spell Effect Settings - Presence Of Mind
+  m_Name: Spell Effect Settings - Pain Suppression
   m_EditorClassIdentifier: 
-  spellInfo: {fileID: 11400000, guid: 6056e5bdfd7e5e34d8b425a4000d9121, type: 2}
-  spellIcon: {fileID: 21300000, guid: 6bf30933cdff7d540a38a33cf4b0870f, type: 3}
+  spellInfo: {fileID: 11400000, guid: 42c82965d1b8bf444be391adab420016, type: 2}
+  spellIcon: {fileID: 21300000, guid: 6a0ae85df8fc7d545891e747e57984fe, type: 3}
   visualEffects: []

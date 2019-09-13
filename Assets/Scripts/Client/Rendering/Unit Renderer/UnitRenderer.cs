@@ -71,9 +71,12 @@ namespace Client
         {
             base.OnEvent(spellDamageEvent);
 
-            var hitType = (HitType)spellDamageEvent.HitType;
-            model?.Animator.SetBool("WoundedCrit", hitType.HasTargetFlag(HitType.CriticalHit));
-            model?.Animator.SetTrigger("Wound");
+            if (canAnimate)
+            {
+                var hitType = (HitType)spellDamageEvent.HitType;
+                model?.Animator.SetBool("WoundedCrit", hitType.HasTargetFlag(HitType.CriticalHit));
+                model?.Animator.SetTrigger("Wound");
+            }
         }
 
         public override void OnEvent(UnitSpellHitEvent spellHitEvent)
@@ -83,7 +86,11 @@ namespace Client
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHit, Unit, spellHitEvent.SpellId);
         }
 
-        public void TriggerInstantCast() => model?.TriggerInstantCast();
+        public void TriggerInstantCast()
+        {
+            if (canAnimate)
+                model?.TriggerInstantCast();
+        } 
 
         private void UpdateAnimationState(bool enabled)
         {

@@ -100,11 +100,9 @@ namespace Core
                 damageInfo.UpdateDamage(caster.Spells.SpellDamageBonusDone(target, spellInfo, damageInfo.Damage, damageInfo.SpellDamageType));
                 damageInfo.UpdateDamage(target.Spells.SpellDamageBonusTaken(caster, spellInfo, damageInfo.Damage, damageInfo.SpellDamageType));
 
-                if (!spellInfo.HasAttribute(SpellExtraAttributes.FixedDamage) && damageInfo.HasCrit)
-                {
-                    uint criticalDamage = CalculateSpellCriticalDamage(spellInfo, damageInfo.Damage);
-                    damageInfo.UpdateOriginalDamage(criticalDamage);
-                }
+                if (!spellInfo.HasAttribute(SpellExtraAttributes.FixedDamage))
+                    if (damageInfo.HasCrit)
+                        damageInfo.UpdateDamage(CalculateSpellCriticalDamage(spellInfo, damageInfo.Damage));
 
                 HandleAbsorb(ref damageInfo);
             }
@@ -169,9 +167,15 @@ namespace Core
                 return damage;
             }
 
-            internal uint SpellDamageBonusTaken(Unit caster, SpellInfo spellInfo, uint damage, SpellDamageType damageType, uint stack = 1)
+            internal uint SpellDamageBonusTaken(Unit caster, SpellInfo spellInfo, uint damage, SpellDamageType damageType)
             {
-                return damage;
+                if (damageType == SpellDamageType.Processed)
+                    return damage;
+
+                float damageMultiplier = unit.Auras.TotalAuraMultiplier(AuraEffectType.ModifyDamagePercentTaken);
+                float resultingDamage = damage * damageMultiplier;
+
+                return (uint)Mathf.Max(0.0f, resultingDamage);
             }
 
             internal uint SpellHealingBonusDone(Unit target, SpellInfo spellInfo, uint healAmount)
