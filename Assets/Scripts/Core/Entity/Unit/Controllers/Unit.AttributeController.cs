@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common;
 using UnityEngine;
+
+using EventHandler = Common.EventHandler;
 
 namespace Core
 {
@@ -19,6 +22,7 @@ namespace Core
             private int modelId;
 
             private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
+            private readonly Dictionary<(StatType, StatModifierType), float> statModifiers = new Dictionary<(StatType, StatModifierType), float>();
 
             internal EntityAttributeInt Health { get; private set; }
             internal EntityAttributeInt MaxHealth { get; private set; }
@@ -26,6 +30,7 @@ namespace Core
             internal EntityAttributeInt MaxMana { get; private set; }
             internal EntityAttributeInt Level { get; private set; }
             internal EntityAttributeInt SpellPower { get; private set; }
+            internal EntityAttributeInt Intellect { get; private set; }
             internal EntityAttributeFloat ModHaste { get; private set; }
             internal EntityAttributeFloat ModRegenHaste { get; private set; }
             internal EntityAttributeFloat CritPercentage { get; private set; }
@@ -128,10 +133,18 @@ namespace Core
                 this.unit = unit;
                 unitState = unit.entityState;
 
-                InitializeAttributes();
-
                 foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
                     speedRates[moveType] = 1.0f;
+
+                foreach (StatType statType in StatUtils.UnitStatTypes)
+                {
+                    statModifiers[(statType, StatModifierType.BaseValue)] = 0.0f;
+                    statModifiers[(statType, StatModifierType.BasePercent)] = 1.0f;
+                    statModifiers[(statType, StatModifierType.TotalValue)] = 0.0f;
+                    statModifiers[(statType, StatModifierType.TotalPercent)] = 1.0f;
+                }
+
+                InitializeAttributes();
 
                 if (!unit.IsOwner)
                 {
@@ -157,6 +170,7 @@ namespace Core
                         MaxMana.Reset();
                         Level.Reset();
                         SpellPower.Reset();
+                        Intellect.Reset();
                         ModHaste.Reset();
                         ModRegenHaste.Reset();
                         CritPercentage.Reset();
@@ -171,11 +185,16 @@ namespace Core
                         MaxMana = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMaxMana, int.MaxValue, EntityAttributes.MaxPower);
                         Level = new EntityAttributeInt(unit, 1, int.MaxValue, EntityAttributes.Level);
                         SpellPower = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
+                        Intellect = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseIntellect, int.MaxValue, EntityAttributes.Intellect);
                         ModHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModHaste);
                         ModRegenHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModRegenHaste);
                         CritPercentage = new EntityAttributeFloat(unit, unit.unitAttributeDefinition.CritPercentage, float.MaxValue, EntityAttributes.CritPercentage);
                     }
+
+                    statModifiers[(StatType.Intellect, StatModifierType.BaseValue)] = Intellect.Base;
                 }
+
+                UpdateIntellect();
             }
 
             void IUnitBehaviour.HandleUnitDetach()
@@ -262,6 +281,52 @@ namespace Core
                     if (unit.IsOwner && unit is Player player)
                         EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, player, type, rate);
                 }
+            }
+
+            internal void HandleStatPercentModifier(StatType statType, StatModifierType modifierType, float value, bool apply)
+            {
+                switch (modifierType)
+                {
+                    case StatModifierType.BaseValue:
+                    case StatModifierType.TotalValue:
+                        statModifiers[(statType, modifierType)] += apply ? value : -value;
+                        break;
+                    case StatModifierType.BasePercent:
+                    case StatModifierType.TotalPercent:
+                        statModifiers[(statType, modifierType)] = StatUtils.ModifyMultiplierPercent(statModifiers[(statType, modifierType)], value, apply);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(modifierType), modifierType, nameof(StatModifierType));
+                }
+
+                switch (statType)
+                {
+                    case StatType.Strength:
+                        break;
+                    case StatType.Agility:
+                        break;
+                    case StatType.Stamina:
+                        break;
+                    case StatType.Intellect:
+                        UpdateIntellect();
+                        break;
+                }
+            }
+
+            internal void UpdateIntellect()
+            {
+                int totalIntellect = CalculateTotalStatValue(StatType.Intellect);
+
+                SpellPower.Set(SpellPower.Base + totalIntellect);
+            }
+
+            internal int CalculateTotalStatValue(StatType statType)
+            {
+                float value = statModifiers[(statType, StatModifierType.BaseValue)];
+                value *= statModifiers[(statType, StatModifierType.BasePercent)];
+                value += statModifiers[(statType, StatModifierType.TotalValue)];
+                value *= statModifiers[(statType, StatModifierType.TotalPercent)];
+                return Mathf.Max(0, (int)value);
             }
 
             internal int SetHealth(int value)

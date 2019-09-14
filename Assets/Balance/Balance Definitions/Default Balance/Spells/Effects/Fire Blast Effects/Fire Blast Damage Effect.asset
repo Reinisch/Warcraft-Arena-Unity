@@ -13,21 +13,8 @@ MonoBehaviour:
   m_Name: Fire Blast Damage Effect
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  mainTargeting:
-    referenceType: 2
-    selectionCategory: 0
-    selectionCheckType: 2
-    directionType: 0
-  secondaryTargeting:
-    referenceType: 0
-    selectionCategory: 0
-    selectionCheckType: 0
-    directionType: 0
-  explicitTargetType: 1
-  minRadius: 0
-  maxRadius: 0
-  baseValue: 120
-  baseVariance: 50
-  additionalValue: 30
-  calculationType: 0
+  baseValue: 50
+  baseVariance: 10
+  additionalValue: 0
+  calculationType: 1
   conditionalModifiers: []

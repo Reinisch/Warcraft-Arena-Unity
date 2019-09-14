@@ -39,13 +39,7 @@ namespace Core
 
         internal void ModifyPercentage(float value, bool apply)
         {
-            if (value <= 0)
-            {
-                value = -value;
-                apply = !apply;
-            }
-
-            CurrentValue *= (apply ? (100.0f + value) / 100.0f : 100.0f / (100.0f + value));
+            CurrentValue = StatUtils.ModifyMultiplierPercent(CurrentValue, value, apply);
         }
     }
 }

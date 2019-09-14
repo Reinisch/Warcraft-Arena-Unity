@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Core
 {
@@ -9,6 +10,7 @@ namespace Core
         public const float NominalMeleeRange = 5.0f;
 
         public static readonly UnitMoveType[] UnitMoveTypes = (UnitMoveType[]) Enum.GetValues(typeof(UnitMoveType));
+        public static readonly StatType[] UnitStatTypes = (StatType[])Enum.GetValues(typeof(StatType));
 
         public static bool HasTargetFlag(this UnitFlags baseFlags, UnitFlags flag)
         {
@@ -78,6 +80,14 @@ namespace Core
         }
 
         #endregion
+
+        public static float ModifyMultiplierPercent(float currentValue, float percent, bool apply)
+        {
+            if (Mathf.Approximately(percent, -100.0f))
+                percent = -99.99f;
+
+            return currentValue * (apply ? (100.0f + percent) / 100.0f : 100.0f / (100.0f + percent));
+        }
 
         #region Binary helpers
 

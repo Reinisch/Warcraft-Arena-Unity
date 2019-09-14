@@ -12,6 +12,7 @@ namespace Core
         [UsedImplicitly, SerializeField] private int baseMana;
         [UsedImplicitly, SerializeField] private int baseMaxMana;
         [UsedImplicitly, SerializeField] private int baseSpellPower;
+        [UsedImplicitly, SerializeField] private int baseIntellect;
         [UsedImplicitly, SerializeField] private float critPercentage;
 
         internal int BaseHealth => baseHealth;
@@ -19,6 +20,7 @@ namespace Core
         internal int BaseMana => baseMana;
         internal int BaseMaxMana => baseMaxMana;
         internal int BaseSpellPower => baseSpellPower;
+        internal int BaseIntellect => baseIntellect;
         internal float CritPercentage => critPercentage;
 
         public int BaseModelId => baseModelId;

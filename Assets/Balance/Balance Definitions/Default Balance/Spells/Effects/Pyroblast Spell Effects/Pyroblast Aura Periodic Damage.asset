@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Pyroblast Aura Periodic Damage
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
+  mechanics: 0
   period: 3000
   startPeriodicOnApply: 0
-  baseValue: 100
-  additionalValue: 100
+  baseValue: 50
+  additionalValue: 0
   schoolMask: 4
   calculationType: 1
   conditionalModifiers: []

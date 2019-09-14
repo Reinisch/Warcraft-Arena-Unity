@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Attribute Definition - Default Player
   m_EditorClassIdentifier: 
   baseModelId: 0
-  baseHealth: 10000
-  baseMaxHealth: 10000
+  baseHealth: 15000
+  baseMaxHealth: 15000
   baseMana: 100
   baseMaxMana: 100
   baseSpellPower: 100
+  baseIntellect: 500
   critPercentage: 25

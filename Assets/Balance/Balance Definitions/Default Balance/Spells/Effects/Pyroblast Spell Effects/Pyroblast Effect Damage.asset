@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Pyroblast Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 700
-  baseVariance: 100
-  additionalValue: 300
+  baseValue: 300
+  baseVariance: 20
+  additionalValue: 0
   calculationType: 1
   conditionalModifiers: []

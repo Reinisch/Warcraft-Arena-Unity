@@ -39,6 +39,7 @@ MonoBehaviour:
     targetCircleSettings: {fileID: 11400000, guid: 69d99f2d9141714428272b398771ae99,
       type: 2}
   spellEffectSettings:
+  - {fileID: 11400000, guid: ed368651e4a469a46b66ab2995556266, type: 2}
   - {fileID: 11400000, guid: 343ed82112bcfa5449de8c04e491f167, type: 2}
   - {fileID: 11400000, guid: 248314ec8db1fc443ab04d2791ed71b0, type: 2}
   - {fileID: 11400000, guid: 3be41a41312d0ff4d85e682954af6d0d, type: 2}
@@ -66,6 +67,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f99c8619d3d2dc546bf19ed57913253b, type: 2}
   - {fileID: 11400000, guid: 182873baae973d040ad7f7b96e4d2df0, type: 2}
   auraEffectSettings:
+  - {fileID: 11400000, guid: ead2673873050dc408333463f7777aea, type: 2}
   - {fileID: 11400000, guid: 81c714e7642f53944ad5911a9e63b01c, type: 2}
   - {fileID: 11400000, guid: ddc68973ea3c4644cb68098caa4a237b, type: 2}
   - {fileID: 11400000, guid: 84bec5e5010050f4e82c16c477fa882f, type: 2}

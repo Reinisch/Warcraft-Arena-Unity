@@ -13,21 +13,8 @@ MonoBehaviour:
   m_Name: Living Bomb Explosion Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: da17621d1a7511a429d66c6327625d03, type: 2}
-  mainTargeting:
-    referenceType: 2
-    selectionCategory: 4
-    selectionCheckType: 2
-    directionType: 0
-  secondaryTargeting:
-    referenceType: 0
-    selectionCategory: 0
-    selectionCheckType: 0
-    directionType: 0
-  explicitTargetType: 0
-  minRadius: 0
-  maxRadius: 8
-  baseValue: 400
-  baseVariance: 100
+  baseValue: 120
+  baseVariance: 30
   additionalValue: 0
   calculationType: 1
   conditionalModifiers: []

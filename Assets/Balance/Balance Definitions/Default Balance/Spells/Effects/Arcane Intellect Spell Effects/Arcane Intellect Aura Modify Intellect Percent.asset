@@ -9,12 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc668c4cd5a5302499af4a347890d74f, type: 3}
-  m_Name: Renew Effect Heal
+  m_Script: {fileID: 11500000, guid: f611fa78060b9d34d9f0e0fb44ae16ee, type: 3}
+  m_Name: Arcane Intellect Aura Modify Intellect Percent
   m_EditorClassIdentifier: 
-  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 25
-  baseVariance: 5
-  additionalValue: 0
-  calculationType: 1
-  conditionalModifiers: []
+  maxEffectiveCharges: 1
+  mechanics: 0
+  statPercent: 10
+  statType: 3

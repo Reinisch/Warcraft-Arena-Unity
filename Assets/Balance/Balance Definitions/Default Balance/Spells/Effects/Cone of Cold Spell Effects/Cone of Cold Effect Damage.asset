@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Cone of Cold Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 6c89ecc85825a554d8405eecf4b9acb8, type: 2}
-  baseValue: 200
-  baseVariance: 50
-  additionalValue: 100
+  baseValue: 100
+  baseVariance: 20
+  additionalValue: 0
   calculationType: 1
   conditionalModifiers: []

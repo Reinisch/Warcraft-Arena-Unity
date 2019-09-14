@@ -312,7 +312,7 @@
         ChargeRecoveryAffectedByHaste = 456,
         ChargeRecoveryAffectedByHasteRegen = 457,
         ModBonusArmorPct = 466,
-        ModStatBonusPct = 467,
+        ModifyStatPercent = 467,
         TriggerSpellOnHealthBelowPct = 468,
     }
 }

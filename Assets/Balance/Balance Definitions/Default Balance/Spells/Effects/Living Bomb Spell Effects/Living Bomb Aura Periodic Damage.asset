@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Living Bomb Aura Periodic Damage
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
+  mechanics: 0
   period: 1000
   startPeriodicOnApply: 1
-  baseValue: 30
+  baseValue: 10
   additionalValue: 0
   schoolMask: 4
   calculationType: 1

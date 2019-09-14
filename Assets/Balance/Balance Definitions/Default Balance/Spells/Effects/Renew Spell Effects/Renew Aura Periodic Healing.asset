@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Renew Aura Periodic Healing
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
+  mechanics: 0
   period: 2000
   startPeriodicOnApply: 0
-  baseValue: 50
-  additionalValue: 25
+  baseValue: 30
+  additionalValue: 10
   calculationType: 1
   conditionalModifiers: []

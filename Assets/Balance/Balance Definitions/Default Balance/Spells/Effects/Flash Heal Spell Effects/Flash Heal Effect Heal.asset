@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Flash Heal Effect Heal
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 1000
-  baseVariance: 200
-  additionalValue: 200
+  baseValue: 80
+  baseVariance: 20
+  additionalValue: 0
   calculationType: 1
   conditionalModifiers: []

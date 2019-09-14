@@ -13,21 +13,8 @@ MonoBehaviour:
   m_Name: Frost Nova Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 3c013012a100e854d8c3bb869534e6cc, type: 2}
-  mainTargeting:
-    referenceType: 1
-    selectionCategory: 4
-    selectionCheckType: 2
-    directionType: 0
-  secondaryTargeting:
-    referenceType: 0
-    selectionCategory: 0
-    selectionCheckType: 0
-    directionType: 0
-  explicitTargetType: 1
-  minRadius: 0
-  maxRadius: 10
-  baseValue: 150
-  baseVariance: 150
-  additionalValue: 50
-  calculationType: 0
+  baseValue: 50
+  baseVariance: 10
+  additionalValue: 0
+  calculationType: 1
   conditionalModifiers: []

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Holy Word - Serenity Effect Heal
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 1600
-  baseVariance: 400
-  additionalValue: 200
+  baseValue: 500
+  baseVariance: 100
+  additionalValue: 0
   calculationType: 1
   conditionalModifiers: []

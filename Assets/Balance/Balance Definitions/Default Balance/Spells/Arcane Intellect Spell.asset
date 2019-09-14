@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
-  m_Name: Resurrect Self Spell
+  m_Name: Arcane Intellect Spell
   m_EditorClassIdentifier: 
-  id: 2
-  spellName: Resurrect Self
-  explicitTargetType: 2
-  damageClass: 1
-  spellDispel: 0
+  id: 27
+  spellName: Arcane Intellect
+  explicitTargetType: 1
+  damageClass: 0
+  spellDispel: 1
   mechanic: 0
   explicitCastTargets: 8
-  schoolMask: 0
-  preventionType: 0
-  attributes: 2
+  schoolMask: 64
+  preventionType: 1
+  attributes: 0
   attributesExtra: 0
   attributesCustom: 0
-  targetEntityTypeMask: 16
+  targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0
   castIgnoringMechanics: 0
-  cooldownTime: 8000
+  cooldownTime: 0
   categoryCooldownTime: 0
   globalCooldownTime: 1000
   castTime: 0
@@ -36,12 +36,11 @@ MonoBehaviour:
   minRangeHostile: 0
   minRangeFriend: 0
   maxRangeHostile: 0
-  maxRangeFriend: 0
+  maxRangeFriend: 40
   speed: 0
   stackAmount: 0
   maxAffectedTargets: 0
   spellEffectInfos:
-  - {fileID: 11400000, guid: fbade2fec7415644aa5baa910ab6d181, type: 2}
+  - {fileID: 11400000, guid: 7486d062f304df942aa2457c6c04cfa2, type: 2}
   spellPowerEntries: []
-  targetingConditions:
-  - {fileID: 11400000, guid: 758926f2ccbcbc94ea545f9c58fb5cbd, type: 2}
+  targetingConditions: []

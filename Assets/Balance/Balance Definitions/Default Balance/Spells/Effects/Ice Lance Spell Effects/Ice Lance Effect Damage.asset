@@ -13,22 +13,9 @@ MonoBehaviour:
   m_Name: Ice Lance Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  mainTargeting:
-    referenceType: 2
-    selectionCategory: 0
-    selectionCheckType: 2
-    directionType: 0
-  secondaryTargeting:
-    referenceType: 0
-    selectionCategory: 0
-    selectionCheckType: 0
-    directionType: 0
-  explicitTargetType: 1
-  minRadius: 0
-  maxRadius: 0
-  baseValue: 50
-  baseVariance: 25
-  additionalValue: 100
+  baseValue: 35
+  baseVariance: 5
+  additionalValue: 0
   calculationType: 1
   conditionalModifiers:
   - value: 400
