@@ -58,7 +58,7 @@ namespace Client
                         cooldownText.SetCharArray(emptyTimerText, 0, 0);
                 }
 
-                cooldownImage.fillAmount = (float)currentAura.DurationLeft / currentAura.MaxDuration;
+                cooldownImage.fillAmount = 1.0f - (float)currentAura.DurationLeft / currentAura.MaxDuration;
             }
         }
     }
