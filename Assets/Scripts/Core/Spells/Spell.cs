@@ -279,12 +279,12 @@ namespace Core
 
             bool WillCancelSilence()
             {
-                return SpellInfo.CanCancelAuraType(AuraEffectType.Silence, Caster) || SpellInfo.CanCancelAuraType(AuraEffectType.SilencePacify, Caster);
+                return SpellInfo.CanCancelAuraType(AuraEffectType.Silence, Caster) && SpellInfo.CanCancelAuraType(AuraEffectType.SilencePacify, Caster);
             }
 
             bool WillCancelPacify()
             {
-                return SpellInfo.CanCancelAuraType(AuraEffectType.Pacify, Caster) || SpellInfo.CanCancelAuraType(AuraEffectType.SilencePacify, Caster);
+                return SpellInfo.CanCancelAuraType(AuraEffectType.Pacify, Caster) && SpellInfo.CanCancelAuraType(AuraEffectType.SilencePacify, Caster);
             }
 
             bool WillCancelFear()
