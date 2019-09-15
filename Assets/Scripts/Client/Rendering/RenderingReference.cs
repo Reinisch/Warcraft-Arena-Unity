@@ -194,6 +194,10 @@ namespace Client
                 if (effectEntity != null && !spellInfo.HasAttribute(SpellCustomAttributes.LaunchSourceIsExplicit))
                     effectEntity.ApplyPositioning(casterRenderer.TagContainer, spellVisualEffect);
             }
+
+            if (spellInfo.ExplicitTargetType == SpellExplicitTargetType.Destination)
+                if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Destination, out EffectSpellSettings destinationEffect))
+                    destinationEffect.EffectSettings.PlayEffect(processingToken.Destination + Vector3.up, caster.Rotation);
         }
 
         private void OnSpellHit(Unit target, int spellId)

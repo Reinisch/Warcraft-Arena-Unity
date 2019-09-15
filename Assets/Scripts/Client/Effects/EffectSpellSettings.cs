@@ -11,7 +11,8 @@ namespace Client.Spells
         {
             Cast,
             Projectile,
-            Impact
+            Impact,
+            Destination
         }
 
         [SerializeField, UsedImplicitly] private bool attachToTag;
