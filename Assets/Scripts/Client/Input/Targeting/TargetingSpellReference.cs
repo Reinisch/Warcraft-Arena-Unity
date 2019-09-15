@@ -40,6 +40,7 @@ namespace Client
             base.OnPlayerControlGained(player);
 
             selectionCircle = GameObjectPool.Take(selectionCirclePrototype);
+            CancelTracking();
         }
 
         protected override void OnPlayerControlLost(Player player)
@@ -47,9 +48,7 @@ namespace Client
             base.OnPlayerControlLost(player);
 
             CancelTracking();
-
             GameObjectPool.Return(selectionCircle, false);
-
             selectionCircle = null;
         }
 

@@ -42,6 +42,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2ab80483126d0fb4a974829160e40681, type: 2}
   - {fileID: 11400000, guid: 8fec760533362b948850a9ada061c424, type: 2}
   - {fileID: 11400000, guid: 1d13f76d2c9c77040bd64e6d8b6d9f59, type: 2}
+  - {fileID: 11400000, guid: 61566e44bee1f474b8e050748ba1ab35, type: 2}
   auraInfo:
   - {fileID: 11400000, guid: 7203cc91ffe08ff4599fbba97afacfd2, type: 2}
   - {fileID: 11400000, guid: 2541b84f9246da547b1ffe4cd291045c, type: 2}
