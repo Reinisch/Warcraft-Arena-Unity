@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8561c76506537e144af228b520bfa5c9, type: 3}
-  m_Name: Cone Front 90 deg Max 10m From Caster vs Enemy - Spell Targeting 1
+  m_Name: Cone Front 90 deg Max 10m From Caster vs Enemy - Spell Targeting
   m_EditorClassIdentifier: 
   referenceType: 1
   targetChecks: 2

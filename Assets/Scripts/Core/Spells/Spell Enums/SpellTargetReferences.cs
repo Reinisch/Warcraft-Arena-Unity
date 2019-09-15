@@ -5,6 +5,6 @@
         Caster = 1,
         Target,
         Source = 4,
-        Dest
+        Destination
     }
 }

@@ -4,6 +4,7 @@
     {
         None = 0,
         Target = 1,
-        Caster = 2
+        Caster = 2,
+        Destination = 3
     }
 }

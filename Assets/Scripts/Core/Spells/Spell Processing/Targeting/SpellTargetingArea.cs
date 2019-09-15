@@ -13,16 +13,19 @@ namespace Core
         [SerializeField, UsedImplicitly] private float minRadius;
         [SerializeField, UsedImplicitly] private float maxRadius = 10.0f;
 
-        private Unit SelectReferer(SpellExplicitTargets explicitTargets, Unit caster)
+        public float MaxRadius => maxRadius;
+
+        private Vector3 SelectSource(SpellExplicitTargets explicitTargets, Unit caster)
         {
             switch (referenceType)
             {
+                case SpellTargetReferences.Destination:
+                    return explicitTargets.Destination ?? caster.Position;
                 case SpellTargetReferences.Source:
-                case SpellTargetReferences.Dest:
                 case SpellTargetReferences.Caster:
-                    return caster;
+                    return caster.Position;
                 case SpellTargetReferences.Target:
-                    return explicitTargets.Target;
+                    return explicitTargets.Target.Position;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -50,11 +53,11 @@ namespace Core
 
         internal sealed override void SelectTargets(Spell spell)
         {
-            Unit referer = SelectReferer(spell.ExplicitTargets, spell.Caster);
+            Vector3 center = SelectSource(spell.ExplicitTargets, spell.Caster);
             float radius = CalculateRadius(spell);
             List<Unit> targets = new List<Unit>();
 
-            spell.Caster.Map.SearchAreaTargets(targets, radius, referer.Position, spell.Caster, targetChecks);
+            spell.Caster.Map.SearchAreaTargets(targets, radius, center, spell.Caster, targetChecks);
 
             foreach (var target in targets)
                 if(IsValidTargetForSpell(target, spell))

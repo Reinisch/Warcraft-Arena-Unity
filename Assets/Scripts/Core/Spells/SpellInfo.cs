@@ -47,6 +47,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private List<SpellCastCondition> targetingConditions;
 
         [UsedImplicitly] private SpellMechanicsFlags combinedEffectMechanics;
+        [UsedImplicitly] private float maxTargetingRadius;
 
         /// <summary>
         /// Compressed to 8 bits in <seealso cref="SpellCastRequestEvent"/> and other spell events.
@@ -85,6 +86,7 @@ namespace Core
         public float MinRangeFriend => minRangeFriend;
         public float MaxRangeHostile => maxRangeHostile;
         public float MaxRangeFriend => maxRangeFriend;
+        public float MaxTargetingRadius => maxTargetingRadius;
         public float Speed => speed;
 
         public bool IsPassive => HasAttribute(SpellAttributes.Passive);
@@ -92,7 +94,13 @@ namespace Core
         public bool IsDeathPersistent => HasAttribute(SpellAttributes.DeathPersistent);
 
         public bool IsPositive => !HasAttribute(SpellCustomAttributes.Negative);
-        
+
+        public bool IsSingleTarget => HasAttribute(SpellExtraAttributes.SingleTargetSpell);
+
+        public bool IsAffectingArea => Effects.Exists(effect => effect.IsTargetingArea() && effect.IsEffect(SpellEffectType.PersistentAreaAura) || effect.IsAreaAuraEffect());
+
+        public bool IsTargetingArea => Effects.Exists(effect => effect.IsTargetingArea());
+
         public bool HasEffect(SpellEffectType effectType)
         {
             return Effects.Exists(effect => effect.EffectType == effectType);
@@ -111,26 +119,6 @@ namespace Core
         public bool HasAttribute(SpellCustomAttributes attribute)
         {
             return (AttributesCustom & attribute) != 0;
-        }
-
-        public bool IsAffectingArea()
-        {
-            return Effects.Exists(effect => effect.IsTargetingArea() && effect.IsEffect(SpellEffectType.PersistentAreaAura) || effect.IsAreaAuraEffect());
-        }
-
-        public bool IsTargetingArea()
-        {
-            return Effects.Exists(effect => effect.IsTargetingArea());
-        }
-
-        public bool IsPositiveEffect(int effIndex)
-        {
-            return !HasAttribute(SpellCustomAttributes.Negative);
-        }
-
-        public bool IsChanneled()
-        {
-            return HasAttribute(SpellAttributes.Channeled);
         }
 
         public bool CanPierceImmuneAura(SpellInfo spellInfo)
@@ -213,11 +201,6 @@ namespace Core
             return false;
         }
 
-        public bool IsSingleTarget()
-        {
-            return HasAttribute(SpellExtraAttributes.SingleTargetSpell);
-        }
-
         public SpellCastResult CheckTarget(Unit caster, Unit target, Spell spell, bool isImplicit = true)
         {
             if (HasAttribute(SpellAttributes.CantTargetSelf) && caster == target)
@@ -251,7 +234,7 @@ namespace Core
 
         public SpellCastResult CheckExplicitTarget(Unit caster, Unit target)
         {
-            if (ExplicitTargetType == SpellExplicitTargetType.None)
+            if (ExplicitTargetType != SpellExplicitTargetType.Target)
                 return SpellCastResult.Success;
 
             if (ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
@@ -352,10 +335,17 @@ namespace Core
         internal void PopulateEffectInfo()
         {
             combinedEffectMechanics = Mechanic.AsFlag();
+            maxTargetingRadius = 0.0f;
+
             foreach (SpellEffectInfo spellEffectInfo in spellEffectInfos)
+            {
                 if (spellEffectInfo is EffectApplyAura auraApplyEffect)
                     for (int index = 0; index < auraApplyEffect.AuraInfo.AuraEffects.Count; index++)
                         combinedEffectMechanics |= auraApplyEffect.AuraInfo.AuraEffects[index].Mechanics.AsFlag();
+
+                if (spellEffectInfo.Targeting is SpellTargetingArea areaTargeting)
+                    maxTargetingRadius = Mathf.Max(areaTargeting.MaxRadius, maxTargetingRadius);
+            }
         }
     }
 }

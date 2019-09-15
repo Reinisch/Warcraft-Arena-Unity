@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common;
 using UnityEngine;
 
@@ -191,14 +192,7 @@ namespace Core
             if (Caster.SpellCast.IsCasting && !SpellInfo.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
                 return SpellCastResult.NotReady;
 
-            SpellCastResult castResult = ValidateRange();
-            if (castResult != SpellCastResult.Success)
-                return castResult;
-
-            castResult = ValidateAuras();
-            if (castResult != SpellCastResult.Success)
-                return castResult;
-
+            SpellCastResult castResult;
             if (!spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreTargetCheck))
             {
                 castResult = SpellInfo.CheckExplicitTarget(Caster, ExplicitTargets.Target);
@@ -212,6 +206,14 @@ namespace Core
                         return castResult;
                 }
             }
+
+            castResult = ValidateRange();
+            if (castResult != SpellCastResult.Success)
+                return castResult;
+
+            castResult = ValidateAuras();
+            if (castResult != SpellCastResult.Success)
+                return castResult;
 
             return SpellCastResult.Success;
         }
@@ -303,36 +305,72 @@ namespace Core
             if (spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreRangeCheck))
                 return SpellCastResult.Success;
 
-            if (SpellInfo.ExplicitTargetType != SpellExplicitTargetType.Target || ExplicitTargets.Target == null || ExplicitTargets.Target == Caster)
-                return SpellCastResult.Success;
-
-            Unit target = ExplicitTargets.Target;
-
-            float minRange = 0.0f;
-            float maxRange = 0.0f;
-            float rangeMod = 0.0f;
-
-            if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Melee))
-                rangeMod = StatUtils.NominalMeleeRange;
-            else
+            switch (SpellInfo.ExplicitTargetType)
             {
-                float meleeRange = 0.0f;
-                if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Ranged))
-                    meleeRange = StatUtils.MinMeleeReach;
-
-                minRange = Caster.Spells.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
-                maxRange = Caster.Spells.GetSpellMaxRangeForTarget(target, SpellInfo);
+                case SpellExplicitTargetType.None:
+                    return SpellCastResult.Success;
+                case SpellExplicitTargetType.Caster:
+                    return SpellCastResult.Success;
+                case SpellExplicitTargetType.Target:
+                    return ValidateTargetRange();
+                case SpellExplicitTargetType.Destination:
+                    return ValidateDestinationRange();
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
-            maxRange += rangeMod;
+            SpellCastResult ValidateTargetRange()
+            {
+                if (ExplicitTargets.Target == null || ExplicitTargets.Target == Caster)
+                    return SpellCastResult.Success;
 
-            if (Vector3.Distance(Caster.Position, target.Position) > maxRange)
-                return SpellCastResult.OutOfRange;
+                Unit target = ExplicitTargets.Target;
 
-            if (minRange > 0.0f && Vector3.Distance(Caster.Position, target.Position) < minRange)
-                return SpellCastResult.OutOfRange;
+                float minRange = 0.0f;
+                float maxRange = 0.0f;
+                float rangeMod = 0.0f;
 
-            return SpellCastResult.Success;
+                if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Melee))
+                    rangeMod = StatUtils.NominalMeleeRange;
+                else
+                {
+                    float meleeRange = 0.0f;
+                    if (SpellInfo.RangedFlags.HasTargetFlag(SpellRangeFlags.Ranged))
+                        meleeRange = StatUtils.MinMeleeReach;
+
+                    minRange = Caster.Spells.GetSpellMinRangeForTarget(target, SpellInfo) + meleeRange;
+                    maxRange = Caster.Spells.GetSpellMaxRangeForTarget(target, SpellInfo);
+                }
+
+                maxRange += rangeMod;
+
+                if (Vector3.Distance(Caster.Position, target.Position) > maxRange)
+                    return SpellCastResult.OutOfRange;
+
+                if (minRange > 0.0f && Vector3.Distance(Caster.Position, target.Position) < minRange)
+                    return SpellCastResult.OutOfRange;
+
+                return SpellCastResult.Success;
+            }
+
+            SpellCastResult ValidateDestinationRange()
+            {
+                if (!ExplicitTargets.Destination.HasValue)
+                    return SpellCastResult.BadTargets;
+
+                Vector3 targetPosition = ExplicitTargets.Destination.Value;
+
+                float minRange = SpellInfo.GetMinRange(false);
+                float maxRange = SpellInfo.GetMaxRange(false);
+
+                if (Vector3.Distance(Caster.Position, targetPosition) > maxRange)
+                    return SpellCastResult.OutOfRange;
+
+                if (minRange > 0.0f && Vector3.Distance(Caster.Position, targetPosition) < minRange)
+                    return SpellCastResult.OutOfRange;
+
+                return SpellCastResult.Success;
+            }
         }
 
         private SpellCastResult ValidateMechanics(AuraEffectType auraEffectType)
@@ -494,6 +532,9 @@ namespace Core
 
             if (ExplicitTargets.Target != null && !targetsUnits)
                 ExplicitTargets.Target = null;
+
+            if (SpellInfo.ExplicitTargetType == SpellExplicitTargetType.Caster)
+                ExplicitTargets.Target = Caster;
 
             // try to select correct unit target if not provided by client
             if (ExplicitTargets.Target == null && targetsUnits)

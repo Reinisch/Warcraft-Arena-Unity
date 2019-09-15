@@ -9,6 +9,8 @@ namespace Client
     public class InputReference : ScriptableReferenceClient
     {
         [SerializeField, UsedImplicitly] private CameraReference cameraReference;
+        [SerializeField, UsedImplicitly] private BalanceReference balance;
+        [SerializeField, UsedImplicitly] private TargetingSpellReference spellTargeting;
         [SerializeField, UsedImplicitly] private List<HotkeyInputItem> hotkeys;
         [SerializeField, UsedImplicitly] private List<InputActionGlobal> globalActions;
 
@@ -64,9 +66,26 @@ namespace Client
             if (!Player.ExistsIn(World))
                 return;
 
-            SpellCastRequestEvent spellCastRequest = SpellCastRequestEvent.Create(Bolt.GlobalTargets.OnlyServer);
+            if (balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo) && spellInfo.ExplicitTargetType == SpellExplicitTargetType.Destination)
+                spellTargeting.SelectSpellDestination(spellInfo);
+            else
+            {
+                SpellCastRequestEvent spellCastRequest = SpellCastRequestEvent.Create(Bolt.GlobalTargets.OnlyServer);
+                spellCastRequest.SpellId = spellId;
+                spellCastRequest.MovementFlags = (int)Player.MovementInfo.Flags;
+                spellCastRequest.Send();
+            }
+        }
+
+        public void CastSpellWithDestination(int spellId, Vector3 destination)
+        {
+            if (!Player.ExistsIn(World))
+                return;
+
+            SpellCastRequestDestinationEvent spellCastRequest = SpellCastRequestDestinationEvent.Create(Bolt.GlobalTargets.OnlyServer);
             spellCastRequest.SpellId = spellId;
-            spellCastRequest.MovementFlags = (int) Player.MovementInfo.Flags;
+            spellCastRequest.Destination = destination;
+            spellCastRequest.MovementFlags = (int)Player.MovementInfo.Flags;
             spellCastRequest.Send();
         }
 
