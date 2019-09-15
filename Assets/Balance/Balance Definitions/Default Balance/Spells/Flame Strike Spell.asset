@@ -42,5 +42,6 @@ MonoBehaviour:
   maxAffectedTargets: 0
   spellEffectInfos:
   - {fileID: 11400000, guid: 0235f3a057d9b7647b9fb43d84cc8ee9, type: 2}
+  - {fileID: 11400000, guid: a94f8ce9d235c6446bf6254f029b3fb1, type: 2}
   spellPowerEntries: []
   targetingConditions: []

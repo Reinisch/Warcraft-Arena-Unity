@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Flame Strike Aura
+  m_EditorClassIdentifier: 
+  id: 18
+  duration: 8000
+  maxDuration: 8000
+  maxStack: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 0
+  attributes: 0
+  auraEffects:
+  - {fileID: 11400000, guid: 59d2b7f9db133ff42ba731dce68b771b, type: 2}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 0
+  baseCharges: 0
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0
