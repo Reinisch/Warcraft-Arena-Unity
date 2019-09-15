@@ -414,7 +414,7 @@ namespace Core
                 if (resultCastTime <= 0)
                     return 0;
 
-                resultCastTime = Mathf.RoundToInt(castTime * unit.Attributes.ModHaste.Value);
+                resultCastTime = Mathf.RoundToInt(castTime / unit.Attributes.ModHaste.Value);
 
                 if (resultCastTime < spell.SpellInfo.MinCastTime)
                     resultCastTime = spell.SpellInfo.MinCastTime;

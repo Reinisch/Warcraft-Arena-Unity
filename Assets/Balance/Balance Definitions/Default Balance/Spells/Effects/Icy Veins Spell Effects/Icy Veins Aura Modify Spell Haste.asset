@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Icy Veins Aura Modify Spell Haste
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
-  castTimePercentageModifier: -50
+  mechanics: 0
+  castTimePercentageModifier: 30
