@@ -63,7 +63,7 @@ namespace Client
             if (!Unit.IsController)
             {
                 var token = launchEvent.ProcessingEntries as SpellProcessingToken;
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, Unit, launchEvent.SpellId, token, launchEvent.Source);
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, Unit, launchEvent.SpellId, token);
             }
         }
 

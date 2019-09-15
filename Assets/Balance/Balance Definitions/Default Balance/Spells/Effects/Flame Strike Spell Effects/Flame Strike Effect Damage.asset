@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Flame Strike Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 354a84a28331de64292e8ce8c95fd396, type: 2}
-  baseValue: 200
-  baseVariance: 50
+  baseValue: 80
+  baseVariance: 20
   additionalValue: 0
   calculationType: 1
   conditionalModifiers: []

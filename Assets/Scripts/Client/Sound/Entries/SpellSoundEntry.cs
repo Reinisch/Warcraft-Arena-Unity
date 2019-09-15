@@ -13,6 +13,7 @@ namespace Client
             Projectile,
             Impact,
             Aura,
+            Destination
         }
 
         [SerializeField, UsedImplicitly] private UsageType soundUsageType;

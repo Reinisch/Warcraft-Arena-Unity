@@ -489,7 +489,7 @@ namespace Core
 
             ImplicitTargets.HandleLaunch(out bool isDelayed, out SpellProcessingToken processingToken);
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, ExplicitTargets.Source, SpellInfo, processingToken);
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, SpellInfo, processingToken);
 
             DropModifierCharges();
 

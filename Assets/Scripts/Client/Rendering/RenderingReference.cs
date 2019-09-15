@@ -77,7 +77,7 @@ namespace Client
                 EventHandler.RegisterEvent<Unit, Unit, int, HitType>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
                 EventHandler.RegisterEvent<Unit, Unit, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.SpellMissDone, OnSpellMiss);
-                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
 
                 nameplateController.Initialize();
@@ -99,7 +99,7 @@ namespace Client
                 EventHandler.UnregisterEvent<Unit, Unit, int, HitType>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
                 EventHandler.UnregisterEvent<Unit, Unit, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.SpellMissDone, OnSpellMiss);
-                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
 
                 world.UnitManager.EventEntityAttached -= OnEventEntityAttached;
@@ -169,7 +169,7 @@ namespace Client
             floatingTextController.SpawnHealingText(targetRenderer, healingAmount, isCrit);
         }
 
-        private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken, Vector3 source)
+        private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken)
         {
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
@@ -183,14 +183,14 @@ namespace Client
             if (!SpellVisualSettingsById.TryGetValue(spellId, out SpellEffectSettings spellVisuals))
                 return;
 
-            if (processingToken != null && spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Projectile, out EffectSpellSettings settings))
+            if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Projectile, out EffectSpellSettings settings))
                 foreach (var entry in processingToken.ProcessingEntries)
                     if (unitRenderersById.TryGetValue(entry.Item1, out UnitRenderer targetRenderer))
                         spellVisualController.SpawnVisual(casterRenderer, targetRenderer, settings, processingToken.ServerFrame, entry.Item2);
 
             if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Cast, out EffectSpellSettings spellVisualEffect))
             {
-                IEffectEntity effectEntity = spellVisualEffect.EffectSettings.PlayEffect(source + Vector3.up, caster.Rotation);
+                IEffectEntity effectEntity = spellVisualEffect.EffectSettings.PlayEffect(processingToken.Source + Vector3.up, caster.Rotation);
                 if (effectEntity != null && !spellInfo.HasAttribute(SpellCustomAttributes.LaunchSourceIsExplicit))
                     effectEntity.ApplyPositioning(casterRenderer.TagContainer, spellVisualEffect);
             }

@@ -14,7 +14,7 @@ namespace Client
             if (answer.Result == (int) SpellCastResult.Success)
             {
                 var token = answer.ProcessingEntries as SpellProcessingToken;
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, (Unit)LocalPlayer, answer.SpellId, token, answer.Source);
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, (Unit)LocalPlayer, answer.SpellId, token);
             }
             else
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ClientSpellFailed, (SpellCastResult) answer.Result);

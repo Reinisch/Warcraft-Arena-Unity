@@ -49,7 +49,7 @@ namespace Client
 
             if (world.HasClientLogic)
             {
-                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
             }
         }
@@ -58,21 +58,27 @@ namespace Client
         {
             if (world.HasClientLogic)
             {
-                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken, Vector3>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
             }
 
             base.OnWorldDeinitializing(world);
         }
 
-        private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken, Vector3 source)
+        private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken)
         {
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
             if (spellSettingsByInfo.TryGetValue(spellInfo, out SpellSoundSettings spellSoundSettings))
-                spellSoundSettings.PlayAtPoint(spellInfo.HasAttribute(SpellCustomAttributes.LaunchSourceIsExplicit) ?
-                    source : caster.Position, SpellSoundEntry.UsageType.Cast);
+            {
+                if (spellInfo.ExplicitTargetType == SpellExplicitTargetType.Destination)
+                    spellSoundSettings.PlayAtPoint(processingToken.Destination, SpellSoundEntry.UsageType.Destination);
+                else
+                    spellSoundSettings.PlayAtPoint(spellInfo.HasAttribute(SpellCustomAttributes.LaunchSourceIsExplicit) 
+                        ? processingToken.Source
+                        : caster.Position, SpellSoundEntry.UsageType.Cast);
+            }
         }
 
         private void OnSpellHit(Unit target, int spellId)

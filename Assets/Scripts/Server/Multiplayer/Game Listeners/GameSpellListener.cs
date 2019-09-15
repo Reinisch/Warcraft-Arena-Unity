@@ -11,7 +11,7 @@ namespace Server
         {
             EventHandler.RegisterEvent<SpellDamageInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, OnSpellDamageDone);
             EventHandler.RegisterEvent<SpellHealInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerHealingDone, OnSpellHealingDone);
-            EventHandler.RegisterEvent<Unit, Vector3, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
+            EventHandler.RegisterEvent<Unit, SpellInfo, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.RegisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
             EventHandler.RegisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
@@ -21,7 +21,7 @@ namespace Server
         {
             EventHandler.UnregisterEvent<SpellDamageInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, OnSpellDamageDone);
             EventHandler.UnregisterEvent<SpellHealInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerHealingDone, OnSpellHealingDone);
-            EventHandler.UnregisterEvent<Unit, Vector3, SpellInfo, IProtocolToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
+            EventHandler.UnregisterEvent<Unit, SpellInfo, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
             EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.UnregisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
             EventHandler.UnregisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
@@ -65,12 +65,11 @@ namespace Server
             // ignore unit healing event, since it currently affects nothing
         }
 
-        private void OnServerSpellLaunch(Unit caster, Vector3 source, SpellInfo spellInfo, IProtocolToken processingToken)
+        private void OnServerSpellLaunch(Unit caster, SpellInfo spellInfo, SpellProcessingToken processingToken)
         {
             UnitSpellLaunchEvent unitCastEvent = UnitSpellLaunchEvent.Create(caster.BoltEntity, EntityTargets.Everyone);
             unitCastEvent.SpellId = spellInfo.Id;
             unitCastEvent.ProcessingEntries = processingToken;
-            unitCastEvent.Source = source;
             unitCastEvent.Send();
 
             SpellCastRequestAnswerEvent spellCastAnswer = caster.IsController
@@ -80,7 +79,6 @@ namespace Server
             spellCastAnswer.SpellId = spellInfo.Id;
             spellCastAnswer.Result = (int) SpellCastResult.Success;
             spellCastAnswer.ProcessingEntries = processingToken;
-            spellCastAnswer.Source = source;
             spellCastAnswer.Send();
         }
 

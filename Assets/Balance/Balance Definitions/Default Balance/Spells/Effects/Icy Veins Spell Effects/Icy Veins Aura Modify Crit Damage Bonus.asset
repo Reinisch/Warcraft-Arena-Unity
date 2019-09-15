@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Icy Veins Aura Modify Crit Damage Bonus
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
-  critDamagePercentageMultiplier: 50
+  mechanics: 0
+  critDamagePercentageMultiplier: 20
