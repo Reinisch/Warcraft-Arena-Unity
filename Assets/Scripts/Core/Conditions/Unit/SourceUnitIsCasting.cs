@@ -6,15 +6,8 @@ namespace Core.Conditions
     [UsedImplicitly, CreateAssetMenu(fileName = "Source Unit Is Casting", menuName = "Game Data/Conditions/Unit/Source Unit Is Casting", order = 1)]
     public sealed class SourceUnitIsCasting : Condition
     {
-        public override bool IsApplicable => SourceUnit != null && base.IsApplicable;
+        protected override bool IsApplicable => base.IsApplicable && SourceUnit != null;
 
-        public override bool IsValid
-        {
-            get
-            {
-                bool isValid = IsApplicable && SourceUnit.SpellCast.IsCasting;
-                return base.IsValid && isValid;
-            }
-        }
+        protected override bool IsValid => base.IsValid && SourceUnit.SpellCast.IsCasting;
     }
 }

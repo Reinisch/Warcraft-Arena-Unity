@@ -8,15 +8,8 @@ namespace Core.Conditions
     {
         [SerializeField, UsedImplicitly] private Condition condition;
 
-        public override bool IsValid
-        {
-            get
-            {
-                Condition targetCondition = condition.From(this);
-                bool isApplicable = targetCondition.IsApplicable;
-                bool isValid = !targetCondition.IsValid && isApplicable;
-                return base.IsValid && isValid;
-            }
-        }
+        protected override bool IsApplicable => base.IsApplicable && IsOtherApplicable(condition);
+
+        protected override bool IsValid => base.IsValid && !IsOtherValid(condition);
     }
 }

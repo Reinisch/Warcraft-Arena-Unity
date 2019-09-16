@@ -8,15 +8,8 @@ namespace Core.Conditions
     {
         [SerializeField, UsedImplicitly] private AuraStateType auraStateType;
 
-        public override bool IsApplicable => TargetUnit != null && base.IsApplicable;
+        protected override bool IsApplicable => base.IsApplicable && TargetUnit != null;
 
-        public override bool IsValid
-        {
-            get
-            {
-                bool isValid = TargetUnit.HasAuraState(auraStateType);
-                return base.IsValid && isValid;
-            }
-        }
+        protected override bool IsValid => base.IsValid && TargetUnit.HasAuraState(auraStateType);
     }
 }

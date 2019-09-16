@@ -9,13 +9,6 @@ namespace Core.Conditions
     {
         [SerializeField, UsedImplicitly] private TargetingSpellReference spellTargeting;
 
-        public override bool IsValid
-        {
-            get
-            {
-                bool isValid = IsApplicable && spellTargeting.IsTargeting;
-                return base.IsValid && isValid;
-            }
-        }
+        protected override bool IsValid => base.IsValid && spellTargeting.IsTargeting;
     }
 }

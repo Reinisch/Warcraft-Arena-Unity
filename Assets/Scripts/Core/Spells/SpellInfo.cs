@@ -226,7 +226,7 @@ namespace Core
                     return SpellCastResult.TargetCannotBeResurrected;
 
             foreach (SpellCastCondition castCondition in targetingConditions)
-                if (castCondition.With(caster, target, spell).IsApplicableAndInvalid)
+                if (castCondition.IsApplicableAndInvalid(caster, target, spell))
                     return castCondition.FailedResult;
 
             return SpellCastResult.Success;

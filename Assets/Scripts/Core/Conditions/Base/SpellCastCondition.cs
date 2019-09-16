@@ -11,33 +11,8 @@ namespace Core.Conditions
 
         public SpellCastResult FailedResult => failedResult;
 
-        public override bool IsValid
-        {
-            get
-            {
-                Condition targetCondition = condition.From(this);
-                bool isApplicable = targetCondition.IsApplicable;
-                bool isValid = targetCondition.IsValid && isApplicable;
-                return base.IsValid && isValid;
-            }
-        }
+        protected override bool IsApplicable => base.IsApplicable && IsOtherApplicable(condition);
 
-        protected override Condition SetResources(Unit source = null, Unit target = null, Spell spell = null)
-        {
-            base.SetResources(source, target, spell);
-
-            condition.From(this);
-
-            return this;
-        }
-
-        protected override bool FreeResources(Condition baseCondition)
-        {
-            base.FreeResources(baseCondition);
-
-            base.FreeResources(condition);
-
-            return true;
-        }
+        protected override bool IsValid => base.IsValid && IsOtherValid(condition);
     }
 }

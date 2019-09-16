@@ -63,7 +63,7 @@ namespace Core
             for (var i = 0; i < effect.ConditionalModifiers.Count; i++)
             {
                 ConditionalModifier modifier = effect.ConditionalModifiers[i];
-                if (modifier.Condition.With(Caster, target, this).IsApplicableAndValid)
+                if (modifier.Condition.IsApplicableAndValid(Caster, target, this))
                     modifier.Modify(ref spellHealAmount);
             }
 

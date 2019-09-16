@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Core.Conditions
 {
     /// <summary>
-    /// Base for any game condition, implement <seealso cref="IsValid"/> with caution.
+    /// Base for any game condition.
     /// </summary>
     public abstract class Condition : ScriptableObject
     {
@@ -11,63 +12,80 @@ namespace Core.Conditions
         protected Unit TargetUnit { get; private set; }
         protected Spell Spell { get; private set; }
 
+        private readonly HashSet<Condition> usedConditions = new HashSet<Condition>();
+
         /// <summary>
         /// Returns true if condition has needed data to be even considered valid or not.
         /// </summary>
-        public virtual bool IsApplicable => true;
+        protected virtual bool IsApplicable => true;
 
         /// <summary>
-        /// Returns true if condition is satisfied, all implementations required to call base in the end to free resources.
+        /// Returns true if condition is satisfied.
         /// </summary>
-        public virtual bool IsValid => FreeResources(this);
+        protected virtual bool IsValid => true;
 
-        public bool IsApplicableAndInvalid
+        public bool IsApplicableAndInvalid(Unit source = null, Unit target = null, Spell spell = null)
         {
-            get
-            {
-                bool isApplicable = IsApplicable;
-                bool isValid = IsValid;
+            SetInternalResources(this, source, target, spell);
 
-                return !isValid && isApplicable;
-            }
+            bool result = IsApplicable && !IsValid;
+
+            foreach (Condition condition in usedConditions)
+                FreeInternalResources(condition);
+
+            usedConditions.Clear();
+
+            return result;
         }
 
-        public bool IsApplicableAndValid
+        public bool IsApplicableAndValid(Unit source = null, Unit target = null, Spell spell = null)
         {
-            get
-            {
-                bool isApplicable = IsApplicable;
-                bool isValid = IsValid;
+            SetInternalResources(this, source, target, spell);
 
-                return isValid && isApplicable;
-            }
+            bool result = IsApplicable && IsValid;
+
+            foreach (Condition condition in usedConditions)
+                FreeInternalResources(condition);
+
+            usedConditions.Clear();
+
+            return result;
         }
 
-        public Condition With(Unit source = null, Unit target = null, Spell spell = null)
+        protected bool IsOtherApplicable(Condition condition)
         {
-            return SetResources(source, target, spell);
+            SetResources(condition);
+
+            return condition.IsApplicable;
         }
 
-        public Condition From(Condition condition)
+        protected bool IsOtherValid(Condition condition)
         {
-            return With(condition.SourceUnit, condition.TargetUnit, condition.Spell);
+            SetResources(condition);
+
+            return condition.IsValid;
         }
 
-        protected virtual Condition SetResources(Unit source = null, Unit target = null, Spell spell = null)
+        protected void SetResources(Condition condition)
         {
-            SourceUnit = source;
-            TargetUnit = target;
-            Spell = spell;
-
-            return this;
+            if(!usedConditions.Contains(condition))
+                SetInternalResources(condition, SourceUnit, TargetUnit, Spell);
         }
 
-        protected virtual bool FreeResources(Condition condition)
+        private void SetInternalResources(Condition condition, Unit source = null, Unit target = null, Spell spell = null)
         {
-            condition.SourceUnit = condition.TargetUnit = null;
+            condition.SourceUnit = source;
+            condition.TargetUnit = target;
+            condition.Spell = spell;
+
+            usedConditions.Add(condition);
+        }
+
+        private void FreeInternalResources(Condition condition)
+        {
+            condition.SourceUnit = null;
+            condition.TargetUnit = null;
             condition.Spell = null;
-
-            return true;
         }
     }
 }
