@@ -11,7 +11,7 @@ namespace Core.Conditions
 
         public SpellCastResult FailedResult => failedResult;
 
-        protected internal override bool IsValid
+        public override bool IsValid
         {
             get
             {

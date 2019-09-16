@@ -14,12 +14,12 @@ namespace Core.Conditions
         /// <summary>
         /// Returns true if condition has needed data to be even considered valid or not.
         /// </summary>
-        protected internal virtual bool IsApplicable => true;
+        public virtual bool IsApplicable => true;
 
         /// <summary>
         /// Returns true if condition is satisfied, all implementations required to call base in the end to free resources.
         /// </summary>
-        protected internal virtual bool IsValid => FreeResources(this);
+        public virtual bool IsValid => FreeResources(this);
 
         public bool IsApplicableAndInvalid
         {

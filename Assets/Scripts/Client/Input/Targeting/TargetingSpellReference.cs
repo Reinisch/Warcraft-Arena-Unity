@@ -18,7 +18,9 @@ namespace Client
         [SerializeField, UsedImplicitly] private Color invalidColor;
 
         private Projector selectionCircle;
-        private SpellInfo trackingSpellInfo;
+        private SpellInfo targetingSpellInfo;
+
+        public bool IsTargeting => targetingSpellInfo != null;
 
         protected override void OnRegistered()
         {
@@ -30,7 +32,7 @@ namespace Client
         protected override void OnUnregister()
         {
             selectionCircle = null;
-            trackingSpellInfo = null;
+            targetingSpellInfo = null;
 
             base.OnUnregister();
         }
@@ -40,14 +42,14 @@ namespace Client
             base.OnPlayerControlGained(player);
 
             selectionCircle = GameObjectPool.Take(selectionCirclePrototype);
-            CancelTracking();
+            StopTargeting();
         }
 
         protected override void OnPlayerControlLost(Player player)
         {
             base.OnPlayerControlLost(player);
 
-            CancelTracking();
+            StopTargeting();
             GameObjectPool.Return(selectionCircle, false);
             selectionCircle = null;
         }
@@ -56,16 +58,16 @@ namespace Client
         {
             base.OnUpdate(deltaTime);
 
-            if (trackingSpellInfo == null)
+            if (targetingSpellInfo == null)
                 return;
 
             if (Input.GetMouseButton(1))
-                CancelTracking();
+                StopTargeting();
             else if (Input.GetMouseButton(0))
             {
-                input.CastSpellWithDestination(trackingSpellInfo.Id, selectionCircle.transform.position);
+                input.CastSpellWithDestination(targetingSpellInfo.Id, selectionCircle.transform.position);
 
-                CancelTracking();
+                StopTargeting();
             }
             else
                 UpdateCircle();
@@ -78,24 +80,24 @@ namespace Client
             {
                 selectionCircle.enabled = true;
                 selectionCircle.transform.position = hit.point;
-                selectionCircle.material.color = Vector3.Distance(Player.Position, hit.point) < trackingSpellInfo.GetMaxRange(false) ? validColor : invalidColor;
+                selectionCircle.material.color = Vector3.Distance(Player.Position, hit.point) < targetingSpellInfo.GetMaxRange(false) ? validColor : invalidColor;
             }
             else
                 selectionCircle.enabled = false;
         }
 
-        private void CancelTracking()
+        public void StopTargeting()
         {
-            trackingSpellInfo = null;
+            targetingSpellInfo = null;
             selectionCircle.enabled = false;
         }
 
-        public void SelectSpellDestination(SpellInfo spellInfo)
+        public void SelectSpellTargetDestination(SpellInfo spellInfo)
         {
             Assert.AreEqual(spellInfo.ExplicitTargetType, SpellExplicitTargetType.Destination);
 
             selectionCircle.orthographicSize = spellInfo.MaxTargetingRadius;
-            trackingSpellInfo = spellInfo;
+            targetingSpellInfo = spellInfo;
             UpdateCircle();
         }
     }

@@ -8,7 +8,7 @@ namespace Core.Conditions
     {
         [SerializeField, UsedImplicitly] private Condition condition;
 
-        protected internal override bool IsValid
+        public override bool IsValid
         {
             get
             {

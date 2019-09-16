@@ -67,7 +67,7 @@ namespace Client
                 return;
 
             if (balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo) && spellInfo.ExplicitTargetType == SpellExplicitTargetType.Destination)
-                spellTargeting.SelectSpellDestination(spellInfo);
+                spellTargeting.SelectSpellTargetDestination(spellInfo);
             else
             {
                 SpellCastRequestEvent spellCastRequest = SpellCastRequestEvent.Create(Bolt.GlobalTargets.OnlyServer);
