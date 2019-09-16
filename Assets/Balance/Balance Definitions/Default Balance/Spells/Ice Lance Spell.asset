@@ -43,5 +43,4 @@ MonoBehaviour:
   spellEffectInfos:
   - {fileID: 11400000, guid: 38b4bd72eb43f0b49826d3fb9bd01070, type: 2}
   spellPowerEntries: []
-  targetingConditions:
-  - {fileID: 11400000, guid: fc7180b78c6c64a4880c57ced4d9508a, type: 2}
+  targetingConditions: []

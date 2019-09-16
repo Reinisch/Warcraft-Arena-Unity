@@ -66,7 +66,7 @@ namespace Core.Conditions
             return condition.IsValid;
         }
 
-        protected void SetResources(Condition condition)
+        private void SetResources(Condition condition)
         {
             if(!usedConditions.Contains(condition))
                 SetInternalResources(condition, SourceUnit, TargetUnit, Spell);

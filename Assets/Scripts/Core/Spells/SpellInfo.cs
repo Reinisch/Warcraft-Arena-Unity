@@ -242,6 +242,9 @@ namespace Core
                 if(target == null)
                     return SpellCastResult.BadTargets;
 
+                if (target.IsDead && !HasAttribute(SpellAttributes.CanTargetDead))
+                    return SpellCastResult.TargetDead;
+
                 if (ExplicitCastTargets.HasTargetFlag(SpellCastTargetFlags.UnitEnemy) && caster.IsHostileTo(target))
                     return SpellCastResult.Success;
 
