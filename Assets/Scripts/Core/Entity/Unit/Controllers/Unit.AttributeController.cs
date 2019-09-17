@@ -336,6 +336,8 @@ namespace Core
                 return delta;
             }
 
+            internal float Speed(UnitMoveType type) => SpeedRates[type] * unit.Balance.UnitMovementDefinition.BaseSpeedByType(type);
+
             private void OnDeathStateChanged()
             {
                 DeathState = (DeathState)unitState.DeathState;

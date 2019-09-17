@@ -72,7 +72,7 @@ namespace Client
             {
                 SpellCastRequestEvent spellCastRequest = SpellCastRequestEvent.Create(Bolt.GlobalTargets.OnlyServer);
                 spellCastRequest.SpellId = spellId;
-                spellCastRequest.MovementFlags = (int)Player.MovementInfo.Flags;
+                spellCastRequest.MovementFlags = (int)Player.MovementFlags;
                 spellCastRequest.Send();
             }
         }
@@ -85,7 +85,7 @@ namespace Client
             SpellCastRequestDestinationEvent spellCastRequest = SpellCastRequestDestinationEvent.Create(Bolt.GlobalTargets.OnlyServer);
             spellCastRequest.SpellId = spellId;
             spellCastRequest.Destination = destination;
-            spellCastRequest.MovementFlags = (int)Player.MovementInfo.Flags;
+            spellCastRequest.MovementFlags = (int)Player.MovementFlags;
             spellCastRequest.Send();
         }
 

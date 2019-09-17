@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Default Balance
   m_EditorClassIdentifier: 
   defaultFaction: {fileID: 11400000, guid: 77ea5f96cb7523d4a904fefc14363a6f, type: 2}
+  unitMovementDefinition: {fileID: 11400000, guid: 4dfbd44b5dd771148a0bba3405cc2f25,
+    type: 2}
   spellInfos:
   - {fileID: 11400000, guid: 61bea5aabb7db454cb7e24918a3e903d, type: 2}
   - {fileID: 11400000, guid: d0450f64f06f7b24aa8b9238f776c2a5, type: 2}

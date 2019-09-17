@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Creature Definition - Wooden Dummy
   m_EditorClassIdentifier: 
   creatureNameId: Wooden Dummy
+  modelId: 2

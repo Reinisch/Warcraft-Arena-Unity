@@ -59,9 +59,7 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private WarcraftCharacterController characterController;
         [SerializeField, UsedImplicitly]
-        private UnitAttributeDefinition unitAttributeDefinition;
-        [SerializeField, UsedImplicitly]
-        private UnitMovementDefinition unitMovementDefinition;
+        private UnitAttributeDefinition unitAttributeDefinition;  
         [SerializeField, UsedImplicitly]
         private List<UnitBehaviour> unitBehaviours;
 
@@ -80,36 +78,33 @@ namespace Core
         internal SpellController Spells { get; } = new SpellController();
         internal WarcraftCharacterController CharacterController => characterController;
 
-        internal UnitAttributeDefinition AttributeDefinition => unitAttributeDefinition;
         internal SpellInfo TransformSpellInfo { get; private set; }
+        internal MovementInfo MovementInfo { get; private set; }
+
         internal bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
         internal int ModelId { get => Attributes.ModelId; set => Attributes.ModelId = value; }
         internal int OriginalModelId { get => Attributes.OriginalModelId; set => Attributes.OriginalModelId = value; }
         internal FactionDefinition Faction { get => Attributes.Faction; set => Attributes.Faction = value; }
         internal DeathState DeathState { get => Attributes.DeathState; set => Attributes.DeathState = value; }
-        internal IReadOnlyDictionary<UnitMoveType, float> SpeedRates => Attributes.SpeedRates;
         internal IReadOnlyList<AuraApplication> AuraApplications => Auras.AuraApplications;
 
+        public MovementFlags MovementFlags => MovementInfo.Flags;
         public IReadOnlyReference<Unit> SelfReference => selfReference;
         public Unit Target => Attributes.Target;
         public SpellCast SpellCast => Spells.Cast;
         public SpellHistory SpellHistory => Spells.SpellHistory;
         public CapsuleCollider UnitCollider => unitCollider;
-        public PlayerControllerDefinition ControllerDefinition => characterController.ControllerDefinition;
 
-        public MovementInfo MovementInfo { get; private set; }
-
-        public int Level => Attributes.Level.Value;
         public int Model => Attributes.ModelId;
         public int Health => Attributes.Health.Value;
         public int MaxHealth => Attributes.MaxHealth.Value;
-        public int BaseMana => Attributes.Mana.Base;
         public int Mana => Attributes.Mana.Value;
         public int MaxMana => Attributes.MaxMana.Value;
         public int SpellPower => Attributes.SpellPower.Value;
         public int VisibleAuraMaxCount => entityState.VisibleAuras.Length;
+        public float RotationSpeed => CharacterController.Definition.RotateSpeed;
+        public float RunSpeed => Attributes.Speed(UnitMoveType.Run);
         public float ModHaste => Attributes.ModHaste.Value;
-        public float ModRegenHaste => Attributes.ModRegenHaste.Value;
         public float CritPercentage => Attributes.CritPercentage.Value;
         public float HealthRatio => MaxHealth > 0 ? (float)Health / MaxHealth : 0.0f;
         public bool IsMovementBlocked => HasState(UnitControlState.Root) || HasState(UnitControlState.Stunned);
@@ -118,16 +113,6 @@ namespace Core
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitControlState.Moving);
         public float Scale { get => Attributes.Scale; internal set => Attributes.Scale = value; }
-
-        public bool HealthBelowPercent(int percent) => Health < MaxHealth.CalculatePercentage(percent);
-        public bool HealthAbovePercent(int percent) => Health > MaxHealth.CalculatePercentage(percent);
-        public bool HealthAbovePercentHealed(int percent, int healAmount) => Health + healAmount > MaxHealth.CalculatePercentage(percent);
-        public bool HealthBelowPercentDamaged(int percent, int damageAmount) => Health - damageAmount < MaxHealth.CalculatePercentage(percent);
-        public float GetSpeed(UnitMoveType type) => SpeedRates[type] * unitMovementDefinition.BaseSpeedByType(type);
-        public float GetPowerPercent(SpellResourceType type) => GetMaxPower(type) > 0 ? 100.0f * GetPower(type) / GetMaxPower(type) : 0.0f;
-        public int GetPower(SpellResourceType type) => Mana;
-        public int GetMaxPower(SpellResourceType type) => MaxMana;
-        public VisibleAuraState GetVisibleAura(int index) => entityState.VisibleAuras[index];
 
         public sealed override void Attached()
         {
@@ -244,7 +229,11 @@ namespace Core
 
         public void RemoveCallback(string path, PropertyCallbackSimple propertyCallback) => entityState.RemoveCallback(path, propertyCallback);
 
+        public bool HasMovementFlag(MovementFlags flag) => MovementInfo.HasMovementFlag(flag);
+
         public T FindBehaviour<T>() where T : UnitBehaviour => behaviourController.FindBehaviour<T>();
+
+        public VisibleAuraState VisibleAura(int index) => entityState.VisibleAuras[index];
 
         internal bool HasAuraType(AuraEffectType auraEffectType) => Auras.HasAuraType(auraEffectType);
 
@@ -270,11 +259,17 @@ namespace Core
 
         internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffectInfo, Unit caster) => Spells.IsImmuneToAuraEffect(auraEffectInfo, caster);
 
-        internal void AddState(UnitControlState state) { controlState |= state; }
+        internal void AddState(UnitControlState state) => controlState |= state;
 
-        internal bool HasState(UnitControlState state) { return (controlState & state) != 0; }
+        internal bool HasState(UnitControlState state) => (controlState & state) != 0;
 
-        internal void RemoveState(UnitControlState state) { controlState &= ~state; }
+        internal void RemoveState(UnitControlState state) => controlState &= ~state;
+
+        internal void SetFlag(UnitFlags flag) => unitFlags |= flag;
+
+        internal void RemoveFlag(UnitFlags flag) => unitFlags &= ~flag;
+
+        internal bool HasFlag(UnitFlags flag) => (unitFlags & flag) == flag;
 
         internal void UpdateControlState(UnitControlState state, bool applied)
         {
@@ -357,12 +352,6 @@ namespace Core
             ModelId = OriginalModelId;
         }
 
-        internal void SetFlag(UnitFlags flag) => unitFlags |= flag;
-
-        internal void RemoveFlag(UnitFlags flag) => unitFlags &= ~flag;
-
-        internal bool HasFlag(UnitFlags flag) => (unitFlags & flag) == flag;
-
         internal void ModifyDeathState(DeathState newState)
         {
             DeathState = newState;
@@ -374,15 +363,15 @@ namespace Core
                 Auras.RemoveNonDeathPersistentAuras();
         }
 
-        internal int ModifyHealth(int delta)
+        internal void ModifyHealth(int delta)
         {
-            return Attributes.SetHealth(Health + delta);
+            Attributes.SetHealth(Health + delta);
         }
 
-        internal int DealDamage(Unit target, int damageAmount, SpellDamageType spellDamageType)
+        internal void DealDamage(Unit target, int damageAmount, SpellDamageType spellDamageType)
         {
             if (damageAmount < 1)
-                return 0;
+                return;
 
             if (spellDamageType != SpellDamageType.Processed)
             {
@@ -398,18 +387,18 @@ namespace Core
             if (healthValue <= damageAmount)
             {
                 Kill(target);
-                return healthValue;
+                return;
             }
 
-            return target.ModifyHealth(-damageAmount);
+            target.ModifyHealth(-damageAmount);
         }
 
-        internal int DealHeal(Unit target, int healAmount)
+        internal void DealHeal(Unit target, int healAmount)
         {
             if (healAmount < 1)
-                return 0;
+                return;
 
-            return target.ModifyHealth(healAmount);
+            target.ModifyHealth(healAmount);
         }
 
         internal void Kill(Unit victim)

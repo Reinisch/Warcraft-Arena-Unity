@@ -10,6 +10,8 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private FactionDefinition defaultFaction;
         [SerializeField, UsedImplicitly]
+        private UnitMovementDefinition unitMovementDefinition;
+        [SerializeField, UsedImplicitly]
         private List<SpellInfo> spellInfos = new List<SpellInfo>();
         [SerializeField, UsedImplicitly]
         private List<AuraInfo> auraInfo = new List<AuraInfo>();
@@ -23,5 +25,6 @@ namespace Core
         public List<MapDefinition> MapEntries => mapEntries;
         public List<FactionDefinition> FactionEntries => factionEntries;
         public FactionDefinition DefaultFaction => defaultFaction;
+        public UnitMovementDefinition UnitMovementDefinition => unitMovementDefinition;
     }
 }

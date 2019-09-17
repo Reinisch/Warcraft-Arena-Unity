@@ -7,7 +7,9 @@ namespace Core
     internal class CreatureDefinition : ScriptableObject
     {
         [UsedImplicitly, SerializeField] private string creatureNameId;
+        [UsedImplicitly, SerializeField] private int modelId;
 
         public string CreatureNameId => creatureNameId;
+        public int ModelId => modelId;
     }
 }

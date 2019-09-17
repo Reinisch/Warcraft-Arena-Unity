@@ -3,7 +3,7 @@ using UdpKit;
 
 namespace Core
 {
-    public class Player : Unit
+    public sealed class Player : Unit
     {
         public new class CreateToken : Unit.CreateToken
         {
@@ -128,11 +128,17 @@ namespace Core
 
         protected override MovementInfo CreateMovementInfo(IUnitState unitState) => new PlayerMovementInfo(this, unitState);
 
-        public virtual void Accept(IUnitVisitor visitor) => visitor.Visit(this);
+        public void Accept(IUnitVisitor visitor) => visitor.Visit(this);
 
         public void SetTarget(Unit target)
         {
             Attributes.UpdateTarget(newTarget: target, updateState: World.HasServerLogic);
+        }
+
+        public void Handle(SpellPlayerTeleportEvent teleportEvent)
+        {
+            Position = teleportEvent.TargetPosition;
+            MovementInfo.RemoveMovementFlag(MovementFlags.Ascending);
         }
 
         public void Handle(PlayerSpeedRateChangedEvent speedChangeEvent)

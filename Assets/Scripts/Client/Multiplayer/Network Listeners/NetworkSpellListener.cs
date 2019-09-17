@@ -54,11 +54,7 @@ namespace Client
         {
             base.OnEvent(teleportEvent);
 
-            if (LocalPlayer != null)
-            {
-                LocalPlayer.Position = teleportEvent.TargetPosition;
-                LocalPlayer.MovementInfo.RemoveMovementFlag(MovementFlags.Ascending);
-            }
+            LocalPlayer?.Handle(teleportEvent);
         }
 
         public override void OnEvent(SpellCooldownEvent cooldownEvent)

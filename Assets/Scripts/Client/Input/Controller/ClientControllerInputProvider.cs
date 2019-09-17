@@ -31,7 +31,7 @@ namespace Client
                     expectedRotation = Quaternion.Euler(0, cameraReference.WarcraftCamera.transform.eulerAngles.y, 0);
                 else
                 {
-                    Quaternion turnRotation = Quaternion.Euler(0, Input.GetAxis("Horizontal") * unit.ControllerDefinition.RotateSpeed * Time.unscaledDeltaTime, 0);
+                    Quaternion turnRotation = Quaternion.Euler(0, Input.GetAxis("Horizontal") * unit.RotationSpeed * Time.unscaledDeltaTime, 0);
                     expectedRotation = unit.transform.localRotation * turnRotation;
                 }
 
@@ -44,7 +44,7 @@ namespace Client
 
                 if (!unit.IsAlive)
                     expectedVelocity = Vector3.zero;
-                else if (!unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
+                else if (!unit.HasMovementFlag(MovementFlags.Flying))
                 {
                     expectedVelocity = new Vector3(Input.GetMouseButton(1) ? Input.GetAxis("Horizontal") : 0, 0, Input.GetAxis("Vertical"));
 

@@ -69,13 +69,13 @@ namespace Client
                 return;
             }
 
-            if (!Renderer.Unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
+            if (!Renderer.Unit.HasMovementFlag(MovementFlags.Flying))
             {
                 Animator.SetBool("Grounded", true);
 
                 float currentStrafe = Animator.GetFloat("Strafe");
-                float strafeTarget = Renderer.Unit.MovementInfo.HasMovementFlag(MovementFlags.StrafeLeft) ? 0 :
-                    Renderer.Unit.MovementInfo.HasMovementFlag(MovementFlags.StrafeRight) ? 1 : 0.5f;
+                float strafeTarget = Renderer.Unit.HasMovementFlag(MovementFlags.StrafeLeft) ? 0 :
+                    Renderer.Unit.HasMovementFlag(MovementFlags.StrafeRight) ? 1 : 0.5f;
 
                 float strafeDelta = 2 * Mathf.Sign(strafeTarget - currentStrafe) * deltaTime;
                 float resultStrafe = Mathf.Clamp(currentStrafe + strafeDelta, 0.0f, 1.0f);
@@ -83,7 +83,7 @@ namespace Client
                 if (Mathf.Abs(strafeTarget - currentStrafe) > Mathf.Abs(strafeDelta))
                     Animator.SetFloat("Strafe", resultStrafe);
 
-                if (Renderer.Unit.MovementInfo.HasMovementFlag(MovementFlags.Forward | MovementFlags.StrafeRight | MovementFlags.StrafeLeft))
+                if (Renderer.Unit.HasMovementFlag(MovementFlags.Forward | MovementFlags.StrafeRight | MovementFlags.StrafeLeft))
                     Animator.SetFloat("Speed", 1);
                 else
                     Animator.SetFloat("Speed", Mathf.Clamp(Animator.GetFloat("Speed") - 10 * deltaTime, 0.0f, 1.0f));

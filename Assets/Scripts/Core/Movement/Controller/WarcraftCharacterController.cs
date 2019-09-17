@@ -33,7 +33,7 @@ namespace Core
 
         internal IControllerInputProvider InputProvider { set => currentInputProvider = value; }
 
-        internal PlayerControllerDefinition ControllerDefinition => controllerDefinition;
+        internal PlayerControllerDefinition Definition => controllerDefinition;
 
         public bool HasClientLogic => true;
 
@@ -59,7 +59,7 @@ namespace Core
                 else if (!unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
                 {
                     // check roots and apply final move speed
-                    inputVelocity *= unit.IsMovementBlocked ? 0 : unit.GetSpeed(UnitMoveType.Run);
+                    inputVelocity *= unit.IsMovementBlocked ? 0 : unit.RunSpeed;
 
                     if (shouldJump)
                     {

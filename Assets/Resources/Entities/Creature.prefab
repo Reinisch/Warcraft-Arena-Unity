@@ -129,8 +129,6 @@ MonoBehaviour:
   characterController: {fileID: 845485024815860170}
   unitAttributeDefinition: {fileID: 11400000, guid: 5c5fe56853d9edf4685a254e64abe120,
     type: 2}
-  unitMovementDefinition: {fileID: 11400000, guid: 4dfbd44b5dd771148a0bba3405cc2f25,
-    type: 2}
   unitBehaviours:
   - {fileID: -8026284028472188865}
   creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}

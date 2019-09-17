@@ -43,7 +43,7 @@ namespace Client
 
                 if (changedSlots[i])
                 {
-                    auraSlots[i].SetState(Unit.GetVisibleAura(i));
+                    auraSlots[i].SetState(Unit.VisibleAura(i));
                     changedSlots[i] = false;
                 }
             }

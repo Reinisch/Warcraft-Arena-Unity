@@ -54,8 +54,6 @@ MonoBehaviour:
   characterController: {fileID: 1546}
   unitAttributeDefinition: {fileID: 11400000, guid: c4a3cdd51711fac4e94fa02540884084,
     type: 2}
-  unitMovementDefinition: {fileID: 11400000, guid: 4dfbd44b5dd771148a0bba3405cc2f25,
-    type: 2}
   unitBehaviours:
   - {fileID: 505164749765730728}
 --- !u!114 &505164749765730728

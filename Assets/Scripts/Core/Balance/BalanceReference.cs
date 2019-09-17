@@ -17,6 +17,7 @@ namespace Core
         private readonly Dictionary<int, FactionDefinition> factionsById = new Dictionary<int, FactionDefinition>();
 
         public FactionDefinition DefaultFaction => definition.DefaultFaction;
+        public UnitMovementDefinition UnitMovementDefinition => definition.UnitMovementDefinition;
         public IReadOnlyList<MapDefinition> Maps => maps;
         public IReadOnlyDictionary<int, SpellInfo> SpellInfosById => spellInfosById;
         public IReadOnlyDictionary<int, AuraInfo> AuraInfosById => auraInfosById;
