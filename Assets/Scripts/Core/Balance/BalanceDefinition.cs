@@ -12,18 +12,18 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private UnitMovementDefinition unitMovementDefinition;
         [SerializeField, UsedImplicitly]
-        private List<SpellInfo> spellInfos = new List<SpellInfo>();
+        private SpellInfoContainer spellContainer;
         [SerializeField, UsedImplicitly]
-        private List<AuraInfo> auraInfo = new List<AuraInfo>();
+        private AuraInfoContainer auraContainer;
         [SerializeField, UsedImplicitly]
         private List<MapDefinition> mapEntries;
         [SerializeField, UsedImplicitly]
         private List<FactionDefinition> factionEntries;
 
-        public List<SpellInfo> SpellInfos => spellInfos;
-        public List<AuraInfo> AuraInfos => auraInfo;
-        public List<MapDefinition> MapEntries => mapEntries;
-        public List<FactionDefinition> FactionEntries => factionEntries;
+        public IReadOnlyList<SpellInfo> SpellInfos => spellContainer.ItemList;
+        public IReadOnlyList<AuraInfo> AuraInfos => auraContainer.ItemList;
+        public IReadOnlyList<MapDefinition> MapEntries => mapEntries;
+        public IReadOnlyList<FactionDefinition> FactionEntries => factionEntries;
         public FactionDefinition DefaultFaction => defaultFaction;
         public UnitMovementDefinition UnitMovementDefinition => unitMovementDefinition;
     }

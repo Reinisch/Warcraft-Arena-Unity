@@ -28,17 +28,17 @@ namespace Common
             {
                 Container.OnValidate();
 
-                if (Container.ScriptableInfos.Contains(Data))
+                if (Container.EditorList.Contains(Data))
                     return;
 
-                foreach (var item in Container.ScriptableInfos)
+                foreach (var item in Container.ItemList)
                     takenIds.Add(item.Id);
 
                 if (id != 0)
                 {
                     if (!takenIds.Contains(Id))
                     {
-                        Container.ScriptableInfos.Add(Data);
+                        Container.EditorList.Add(Data);
                         UnityEditor.EditorUtility.SetDirty(Container);
                         UnityEditor.AssetDatabase.SaveAssets();
 
@@ -70,10 +70,10 @@ namespace Common
                         id = i;
                         Debug.Log($"Assigned id:{i} to {GetType().Name}: {name}");
 
-                        if (Container != null && !Container.ScriptableInfos.Contains(Data))
+                        if (Container != null && !Container.EditorList.Contains(Data))
                         {
                             Debug.Log($"Added new item: {GetType().Name}: {name} id:{id} to container {Container.GetType()}");
-                            Container.ScriptableInfos.Add(Data);
+                            Container.EditorList.Add(Data);
                             UnityEditor.EditorUtility.SetDirty(Container);
                         }
 

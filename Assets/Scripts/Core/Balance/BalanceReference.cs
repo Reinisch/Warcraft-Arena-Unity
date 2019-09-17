@@ -26,11 +26,18 @@ namespace Core
         protected override void OnRegistered()
         {
             maps.AddRange(definition.MapEntries);
-            definition.SpellInfos.ForEach(spellInfo => spellInfosById.Add(spellInfo.Id, spellInfo));
-            definition.AuraInfos.ForEach(auraInfo => auraInfosById.Add(auraInfo.Id, auraInfo));
-            definition.FactionEntries.ForEach(factionEntry => factionsById.Add(factionEntry.FactionId, factionEntry));
 
-            definition.SpellInfos.ForEach(spellInfo => spellInfo.PopulateEffectInfo());
+            for(int i = 0; i < definition.SpellInfos.Count; i++)
+                spellInfosById.Add(definition.SpellInfos[i].Id, definition.SpellInfos[i]);
+
+            for (int i = 0; i < definition.AuraInfos.Count; i++)
+                auraInfosById.Add(definition.AuraInfos[i].Id, definition.AuraInfos[i]);
+
+            for (int i = 0; i < definition.FactionEntries.Count; i++)
+                factionsById.Add(definition.FactionEntries[i].FactionId, definition.FactionEntries[i]);
+
+            for (int i = 0; i < definition.SpellInfos.Count; i++)
+                definition.SpellInfos[i].PopulateEffectInfo();
         }
 
         protected override void OnUnregister()

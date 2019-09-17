@@ -8,8 +8,10 @@ namespace Common
     {
         protected abstract List<TUnique> Items { get; }
 
+        public IReadOnlyList<TUnique> ItemList => Items;
+
 #if UNITY_EDITOR
-        public List<TUnique> ScriptableInfos => Items;
+        public List<TUnique> EditorList => Items;
 
         [UsedImplicitly]
         private void Awake()
