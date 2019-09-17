@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Resurrect Self Spell
   m_EditorClassIdentifier: 
   id: 2
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
   spellName: Resurrect Self
   explicitTargetType: 2
   damageClass: 1

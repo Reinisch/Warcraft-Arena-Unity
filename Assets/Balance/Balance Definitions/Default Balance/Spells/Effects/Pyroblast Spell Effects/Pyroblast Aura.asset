@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Pyroblast Aura
   m_EditorClassIdentifier: 
   id: 12
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
   duration: 12000
   maxDuration: 12000
   maxStack: 1

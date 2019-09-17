@@ -9,6 +9,8 @@ namespace Core
     [UsedImplicitly, CreateAssetMenu(fileName = "Aura Info", menuName = "Game Data/Spells/Auras/Aura Info", order = 1)]
     public sealed class AuraInfo : ScriptableUniqueInfo<AuraInfo>
     {
+        [SerializeField, UsedImplicitly] private AuraInfoContainer container;
+
         [Header("Aura Info")]
         [SerializeField, UsedImplicitly] private int duration;
         [SerializeField, UsedImplicitly] private int maxDuration;
@@ -29,6 +31,9 @@ namespace Core
         [SerializeField, UsedImplicitly] private int damageInterruptValue;
         [SerializeField, UsedImplicitly] private int damageInterruptDelay;
         [SerializeField, UsedImplicitly] private AuraInterruptValueCalculationType interruptValueType;
+
+        protected override ScriptableUniqueInfoContainer<AuraInfo> Container => container;
+        protected override AuraInfo Data => this;
 
         public new int Id => base.Id;
         public int Charges => baseCharges;

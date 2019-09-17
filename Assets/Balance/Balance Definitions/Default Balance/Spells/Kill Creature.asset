@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Kill Creature
   m_EditorClassIdentifier: 
   id: 6
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
   spellName: Kill Creature
   explicitTargetType: 1
   damageClass: 1

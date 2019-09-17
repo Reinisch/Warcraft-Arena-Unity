@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Arcane Intellect Aura
   m_EditorClassIdentifier: 
   id: 17
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
   duration: 600000
   maxDuration: 600000
   maxStack: 1

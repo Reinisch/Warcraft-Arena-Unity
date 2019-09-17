@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Renew Spell
   m_EditorClassIdentifier: 
   id: 15
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
   spellName: Renew
   explicitTargetType: 1
   damageClass: 1

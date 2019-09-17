@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Pain Suppression Aura
   m_EditorClassIdentifier: 
   id: 16
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
   duration: 8000
   maxDuration: 8000
   maxStack: 1

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Polymorph Aura
   m_EditorClassIdentifier: 
   id: 10
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
   duration: 10000
   maxDuration: 10000
   maxStack: 1

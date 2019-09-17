@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Unit Model - Mage
   m_EditorClassIdentifier: 
   id: 1
+  container: {fileID: 11400000, guid: dfd880d432e89ef4194ba2772d0fd38a, type: 2}
   prototype: {fileID: 5041366270056931295, guid: 0326704f848dfa94480e00f3a6ea3a02,
     type: 3}

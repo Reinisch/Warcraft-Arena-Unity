@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Unit Model - Sheep
   m_EditorClassIdentifier: 
   id: 3
+  container: {fileID: 11400000, guid: dfd880d432e89ef4194ba2772d0fd38a, type: 2}
   prototype: {fileID: 5041366270056931295, guid: 027ae55aec5944648af80c30d4921306,
     type: 3}

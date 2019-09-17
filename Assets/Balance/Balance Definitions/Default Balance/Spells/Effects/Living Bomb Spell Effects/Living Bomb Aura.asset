@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Living Bomb Aura
   m_EditorClassIdentifier: 
   id: 6
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
   duration: 5000
   maxDuration: 5000
   maxStack: 1

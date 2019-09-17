@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Flame Strike Spell
   m_EditorClassIdentifier: 
   id: 28
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
   spellName: Flame Strike
   explicitTargetType: 3
   damageClass: 1

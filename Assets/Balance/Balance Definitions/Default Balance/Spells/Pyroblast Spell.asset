@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Pyroblast Spell
   m_EditorClassIdentifier: 
   id: 20
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
   spellName: Pyroblast
   explicitTargetType: 1
   damageClass: 1

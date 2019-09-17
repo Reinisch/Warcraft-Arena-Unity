@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Cone of Cold Aura
   m_EditorClassIdentifier: 
   id: 11
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
   duration: 3000
   maxDuration: 3000
   maxStack: 1

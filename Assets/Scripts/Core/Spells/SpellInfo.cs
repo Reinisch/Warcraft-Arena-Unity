@@ -10,6 +10,8 @@ namespace Core
     [UsedImplicitly, CreateAssetMenu(fileName = "Spell Info", menuName = "Game Data/Spells/Spell Info", order = 1)]
     public sealed class SpellInfo : ScriptableUniqueInfo<SpellInfo>
     {
+        [SerializeField, UsedImplicitly] private SpellInfoContainer container;
+
         [SerializeField, UsedImplicitly] private string spellName;
         [SerializeField, UsedImplicitly] private SpellExplicitTargetType explicitTargetType;
         [SerializeField, UsedImplicitly] private SpellDamageClass damageClass;
@@ -49,10 +51,14 @@ namespace Core
         [UsedImplicitly] private SpellMechanicsFlags combinedEffectMechanics;
         [UsedImplicitly] private float maxTargetingRadius;
 
+        protected override ScriptableUniqueInfoContainer<SpellInfo> Container => container;
+        protected override SpellInfo Data => this;
+
         /// <summary>
         /// Compressed to 8 bits in <seealso cref="SpellCastRequestEvent"/> and other spell events.
         /// </summary>
         public new int Id => base.Id;
+
         public string SpellName => spellName;
 
         public SpellExplicitTargetType ExplicitTargetType => explicitTargetType;

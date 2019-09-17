@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Icy Veins Spell
   m_EditorClassIdentifier: 
   id: 10
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
   spellName: Icy Veins
   explicitTargetType: 2
   damageClass: 0

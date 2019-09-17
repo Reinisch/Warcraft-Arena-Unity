@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Frost Nova Spell
   m_EditorClassIdentifier: 
   id: 1
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
   spellName: Frost Nova
   explicitTargetType: 0
   damageClass: 1

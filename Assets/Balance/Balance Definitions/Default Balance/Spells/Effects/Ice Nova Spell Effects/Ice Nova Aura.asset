@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Ice Nova Aura
   m_EditorClassIdentifier: 
   id: 19
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
   duration: 2000
   maxDuration: 2000
   maxStack: 1
