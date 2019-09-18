@@ -1,5 +1,34 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3864844966113854267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Pain Suppression Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  auraInfo: {fileID: 3934186437152147033}
+--- !u!114 &-647000298867268985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2a67d5fd8ba50d47be7201964e2491c, type: 3}
+  m_Name: Pain Suppression Aura Modify Damage Percent Taken
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  damagePercentTaken: -60
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,6 +71,36 @@ MonoBehaviour:
   stackAmount: 0
   maxAffectedTargets: 0
   spellEffectInfos:
-  - {fileID: 11400000, guid: 1e848af07074994499d36207c8532637, type: 2}
+  - {fileID: -3864844966113854267}
   spellPowerEntries: []
   targetingConditions: []
+--- !u!114 &3934186437152147033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Pain Suppression Aura
+  m_EditorClassIdentifier: 
+  id: 16
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 8000
+  maxDuration: 8000
+  maxStack: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 0
+  attributes: 0
+  auraEffects:
+  - {fileID: -647000298867268985}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 0
+  baseCharges: 0
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0

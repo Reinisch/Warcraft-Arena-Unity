@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7895336342656984963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80fffac95d0d644bb79c6f4c98aeab8, type: 3}
+  m_Name: Frost Nova Aura Root
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 7
+--- !u!114 &-6314506380539277328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Frost Nova Aura
+  m_EditorClassIdentifier: 
+  id: 4
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 6000
+  maxDuration: 6000
+  maxStack: 1
+  stateType: 1
+  targetingMode: 1
+  interruptFlags: 8
+  attributes: 2
+  auraEffects:
+  - {fileID: -7895336342656984963}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 1
+  baseCharges: 1
+  damageInterruptValue: 10
+  damageInterruptDelay: 500
+  interruptValueType: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,7 +86,39 @@ MonoBehaviour:
   stackAmount: 0
   maxAffectedTargets: 0
   spellEffectInfos:
-  - {fileID: 11400000, guid: 0741221425db9da459f91b8abb9f4964, type: 2}
-  - {fileID: 11400000, guid: 6f2638f57d946504cbf06b8e1b58cf63, type: 2}
+  - {fileID: 745908430916510532}
+  - {fileID: 7685882171163820430}
   spellPowerEntries: []
   targetingConditions: []
+--- !u!114 &745908430916510532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Frost Nova Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 3c013012a100e854d8c3bb869534e6cc, type: 2}
+  auraInfo: {fileID: -6314506380539277328}
+--- !u!114 &7685882171163820430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Frost Nova Effect Damage
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 3c013012a100e854d8c3bb869534e6cc, type: 2}
+  baseValue: 50
+  baseVariance: 10
+  additionalValue: 0
+  calculationType: 1
+  conditionalModifiers: []

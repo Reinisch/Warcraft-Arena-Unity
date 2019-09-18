@@ -42,7 +42,83 @@ MonoBehaviour:
   stackAmount: 0
   maxAffectedTargets: 0
   spellEffectInfos:
-  - {fileID: 11400000, guid: 92ddfcb1316fecc4c9224308501e251b, type: 2}
-  - {fileID: 11400000, guid: d72e2f3c27566094aab5f6fb4f7fd57f, type: 2}
+  - {fileID: 3083587995388187496}
+  - {fileID: 3204835353159916223}
   spellPowerEntries: []
   targetingConditions: []
+--- !u!114 &2592827679855078710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80fffac95d0d644bb79c6f4c98aeab8, type: 3}
+  m_Name: Ice Nova Aura Root
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 7
+--- !u!114 &3083587995388187496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Ice Nova Effect School Damage
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: da17621d1a7511a429d66c6327625d03, type: 2}
+  baseValue: 120
+  baseVariance: 30
+  additionalValue: 0
+  calculationType: 1
+  conditionalModifiers: []
+--- !u!114 &3204835353159916223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Ice Nova Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: da17621d1a7511a429d66c6327625d03, type: 2}
+  auraInfo: {fileID: 5429265098351989325}
+--- !u!114 &5429265098351989325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Ice Nova Aura
+  m_EditorClassIdentifier: 
+  id: 19
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 2000
+  maxDuration: 2000
+  maxStack: 1
+  stateType: 1
+  targetingMode: 1
+  interruptFlags: 8
+  attributes: 2
+  auraEffects:
+  - {fileID: 2592827679855078710}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 0
+  baseCharges: 0
+  damageInterruptValue: 10
+  damageInterruptDelay: 500
+  interruptValueType: 1

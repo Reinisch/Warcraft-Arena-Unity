@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 222690c9ad457d6438993820c9403bb6, type: 3}
   m_Name: Aura Effect Settings - Frost Bolt
   m_EditorClassIdentifier: 
-  auraInfo: {fileID: 11400000, guid: ca3d587e8a759e3479ed468d096452cb, type: 2}
+  auraInfo: {fileID: 7241448207376936393, guid: d48ac7529195b144fb2ecfd0f17a74fc,
+    type: 2}
   auraIcon: {fileID: 21300000, guid: bc56b0330219a274fb0356fb6a2abdcd, type: 3}
   tagType: 0
   effectSettings: {fileID: 0}
+  keepOriginalRotation: 1
+  preventAnimation: 0

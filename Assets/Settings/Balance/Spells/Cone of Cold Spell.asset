@@ -1,5 +1,64 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4165157764952553729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59b09348badfe3745a62b94099ca0063, type: 3}
+  m_Name: Cone of Cold Aura Decrease Speed
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 11
+  decreasePercent: 70
+--- !u!114 &-1518351335698316016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Cone of Cold Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 6c89ecc85825a554d8405eecf4b9acb8, type: 2}
+  auraInfo: {fileID: -665906026134059434}
+--- !u!114 &-665906026134059434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Cone of Cold Aura
+  m_EditorClassIdentifier: 
+  id: 11
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 3000
+  maxDuration: 3000
+  maxStack: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 0
+  attributes: 2
+  auraEffects:
+  - {fileID: -4165157764952553729}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 1
+  baseCharges: 1
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28,6 +87,7 @@ MonoBehaviour:
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0
+  castIgnoringMechanics: 0
   cooldownTime: 5000
   categoryCooldownTime: 0
   globalCooldownTime: 1000
@@ -41,7 +101,25 @@ MonoBehaviour:
   stackAmount: 0
   maxAffectedTargets: 0
   spellEffectInfos:
-  - {fileID: 11400000, guid: c598a1b226657e9428fb0a61a26e7a1c, type: 2}
-  - {fileID: 11400000, guid: 42b4a32e420069c4798ce9b76d1aaff0, type: 2}
+  - {fileID: 3580352688996199043}
+  - {fileID: -1518351335698316016}
   spellPowerEntries: []
   targetingConditions: []
+--- !u!114 &3580352688996199043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Cone of Cold Effect Damage
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 6c89ecc85825a554d8405eecf4b9acb8, type: 2}
+  baseValue: 100
+  baseVariance: 20
+  additionalValue: 0
+  calculationType: 1
+  conditionalModifiers: []

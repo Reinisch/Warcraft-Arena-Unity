@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 222690c9ad457d6438993820c9403bb6, type: 3}
   m_Name: Aura Effect Settings - Ice Nova
   m_EditorClassIdentifier: 
-  auraInfo: {fileID: 11400000, guid: a3f636c3205e59641b36dbd8be2e3db1, type: 2}
+  auraInfo: {fileID: 5429265098351989325, guid: 61566e44bee1f474b8e050748ba1ab35,
+    type: 2}
   auraIcon: {fileID: 21300000, guid: 4c088d44342327f4588bbba60a208b34, type: 3}
   tagType: 1
   effectSettings: {fileID: 11400000, guid: 0139fd421a8c28f46bcf61d589dc6657, type: 2}

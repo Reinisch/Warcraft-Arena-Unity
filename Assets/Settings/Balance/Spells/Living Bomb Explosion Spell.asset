@@ -28,6 +28,7 @@ MonoBehaviour:
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0
+  castIgnoringMechanics: 0
   cooldownTime: 0
   categoryCooldownTime: 0
   globalCooldownTime: 0
@@ -41,6 +42,24 @@ MonoBehaviour:
   stackAmount: 0
   maxAffectedTargets: 0
   spellEffectInfos:
-  - {fileID: 11400000, guid: e5416b39f339f254cbd7673a663eb244, type: 2}
+  - {fileID: 3847627232554351958}
   spellPowerEntries: []
   targetingConditions: []
+--- !u!114 &3847627232554351958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Living Bomb Explosion Effect Damage
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: da17621d1a7511a429d66c6327625d03, type: 2}
+  baseValue: 120
+  baseVariance: 30
+  additionalValue: 0
+  calculationType: 1
+  conditionalModifiers: []

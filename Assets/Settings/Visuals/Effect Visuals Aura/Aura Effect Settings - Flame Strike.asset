@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 222690c9ad457d6438993820c9403bb6, type: 3}
   m_Name: Aura Effect Settings - Flame Strike
   m_EditorClassIdentifier: 
-  auraInfo: {fileID: 11400000, guid: 409dc860dbff6de4186c90184480393d, type: 2}
+  auraInfo: {fileID: -2213274802249647037, guid: 1d13f76d2c9c77040bd64e6d8b6d9f59,
+    type: 2}
   auraIcon: {fileID: 21300000, guid: f77d581e0c0692b47ae5be1a20c55deb, type: 3}
   tagType: 0
   effectSettings: {fileID: 0}

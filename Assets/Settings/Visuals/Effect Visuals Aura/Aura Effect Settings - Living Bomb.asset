@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 222690c9ad457d6438993820c9403bb6, type: 3}
   m_Name: Aura Effect Settings - Living Bomb
   m_EditorClassIdentifier: 
-  auraInfo: {fileID: 11400000, guid: 0108c300b529c6e45b67688d08f0cee3, type: 2}
+  auraInfo: {fileID: -777456122772641352, guid: b1e257063d9cca242850b0dfa3ffe7b7,
+    type: 2}
   auraIcon: {fileID: 21300000, guid: ab63ff2eaa8f07d4b9841a56aabac7f1, type: 3}
   tagType: 0
   effectSettings: {fileID: 0}
+  keepOriginalRotation: 1
+  preventAnimation: 0

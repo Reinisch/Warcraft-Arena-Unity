@@ -28,6 +28,7 @@ MonoBehaviour:
   targetEntityTypeMask: 0
   rangedFlags: 1
   interruptFlags: 0
+  castIgnoringMechanics: 0
   cooldownTime: 0
   categoryCooldownTime: 0
   globalCooldownTime: 500
@@ -41,6 +42,24 @@ MonoBehaviour:
   stackAmount: 0
   maxAffectedTargets: 1
   spellEffectInfos:
-  - {fileID: 11400000, guid: d0f63d9b18feb0c47ba5b6610e8085bb, type: 2}
+  - {fileID: 863744723482566261}
   spellPowerEntries: []
   targetingConditions: []
+--- !u!114 &863744723482566261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Scorch Effect Damage
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  baseValue: 80
+  baseVariance: 20
+  additionalValue: 0
+  calculationType: 1
+  conditionalModifiers: []
