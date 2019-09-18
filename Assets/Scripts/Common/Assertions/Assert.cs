@@ -14,8 +14,6 @@ namespace Common
     {
         private const string AssertionDefine = "USE_UNITY_ASSERTIONS";
 
-        public static bool RaiseExceptions { set => UnityAssert.raiseExceptions = value; }
-
         [EditorBrowsable(EditorBrowsableState.Never), UsedImplicitly, Obsolete("Assert.Equals should not be used for Assertions", true)]
         public new static bool Equals(object obj1, object obj2)
         {

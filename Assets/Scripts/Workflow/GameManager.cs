@@ -30,7 +30,6 @@ namespace Game
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            Assert.RaiseExceptions = Application.isEditor || UnityEngine.Debug.isDebugBuild;
 
             scriptableCoreContainer.Register();
             scriptableClientContainer.Register();
