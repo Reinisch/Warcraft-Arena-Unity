@@ -3,7 +3,7 @@ using UdpKit;
 
 namespace Core
 {
-    public sealed class Player : Unit
+    public sealed partial class Player : Unit
     {
         public new class CreateToken : Unit.CreateToken
         {
@@ -55,7 +55,10 @@ namespace Core
         private IPlayerState playerState;
         private string playerName;
 
+        internal SpellController PlayerSpells { get; } = new SpellController();
+        internal ClassInfo CurrentClass { get; private set; }
         internal new PlayerMovementInfo MovementInfo { get; private set; }
+
         internal override bool AutoScoped => true;
 
         public override string Name
@@ -80,19 +83,21 @@ namespace Core
             base.HandleAttach();
 
             playerState = entity.GetState<IPlayerState>();
-
-            MovementInfo = (PlayerMovementInfo)base.MovementInfo;
             createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
 
-            if (!IsOwner)
-                playerState.AddCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
+            MovementInfo = (PlayerMovementInfo)base.MovementInfo;
+            CurrentClass = Balance.ClassesByType[ClassType];
+
+            if(IsOwner)
+                PlayerSpells.AddClassSpells(CurrentClass);
+
+            HandleStateCallbacks(true);
         }
 
         protected override void HandleDetach()
         {
-            if (!IsOwner)
-                playerState.RemoveCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
+            HandleStateCallbacks(false);
 
             createToken = null;
             playerState = null;
@@ -127,6 +132,13 @@ namespace Core
         }
 
         protected override MovementInfo CreateMovementInfo(IUnitState unitState) => new PlayerMovementInfo(this, unitState);
+
+        protected override void AddBehaviours(BehaviourController unitBehaviourController)
+        {
+            base.AddBehaviours(unitBehaviourController);
+
+            unitBehaviourController.TryAddBehaviour(PlayerSpells);
+        }
 
         public void Accept(IUnitVisitor visitor) => visitor.Visit(this);
 
@@ -170,6 +182,20 @@ namespace Core
                 BoltEntity.TakeControl(controlToken);
             else
                 BoltEntity.AssignControl(boltConnection, controlToken);
+        }
+
+        private void HandleStateCallbacks(bool add)
+        {
+            if (add)
+            {
+                if (!IsOwner)
+                    playerState.AddCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
+            }
+            else
+            {
+                if (!IsOwner)
+                    playerState.RemoveCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
+            }
         }
 
         private void OnPlayerNameChanged()

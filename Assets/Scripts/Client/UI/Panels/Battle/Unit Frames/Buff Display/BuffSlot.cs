@@ -43,7 +43,7 @@ namespace Client
             if(currentAura == null)
                 return;
 
-            if (currentAura.MaxDuration == 0)
+            if (currentAura.MaxDuration == -1)
             {
                 cooldownText.SetCharArray(timerText, 0, 0);
                 cooldownImage.fillAmount = 0.0f;

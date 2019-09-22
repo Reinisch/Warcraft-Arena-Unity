@@ -90,7 +90,6 @@ namespace Core
                 }
             }
 
-
             internal float Scale
             {
                 get => scale;

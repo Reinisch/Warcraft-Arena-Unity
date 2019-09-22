@@ -176,6 +176,9 @@ namespace Core
             if (spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
                 return SpellCastResult.Success;
 
+            if (Caster is Player player && !player.PlayerSpells.HasKnownSpell(SpellInfo))
+                return SpellCastResult.NotKnown;
+
             // check death state
             if (!Caster.IsAlive && !SpellInfo.IsPassive && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileDead))
                 return SpellCastResult.CasterDead;

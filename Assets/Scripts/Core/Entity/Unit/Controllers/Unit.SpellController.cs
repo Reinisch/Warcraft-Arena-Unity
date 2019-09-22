@@ -45,6 +45,11 @@ namespace Core
                 unit = null;
             }
 
+            internal SpellCastResult TriggerSpell(SpellInfo spellInfo, Unit target)
+            {
+                return CastSpell(spellInfo, new SpellCastingOptions(new SpellExplicitTargets {Target = target}, SpellCastFlags.TriggeredByAura));
+            }
+
             internal SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastingOptions castOptions)
             {
                 Spell spell = new Spell(unit, spellInfo, castOptions);
@@ -75,6 +80,18 @@ namespace Core
                 unit.Spells.CalculateSpellDamageTaken(ref damageInfo);
 
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, damageInfo);
+
+                for (int i = unit.Auras.AuraApplications.Count - 1; i >= 0; i--)
+                {
+                    AuraApplication application = unit.Auras.AuraApplications[i];
+
+                    for (int j = 0; j < application.Aura.AuraInfo.AuraScriptables.Count; j++)
+                    {
+                        AuraScriptable auraScriptable = application.Aura.AuraInfo.AuraScriptables[j];
+                        if (auraScriptable is IAuraScriptSpellDamageHandler spellDamageHandler)
+                            spellDamageHandler.OnSpellDamageDone(damageInfo);
+                    }
+                }
 
                 unit.DealDamage(damageInfo.Target, (int)damageInfo.Damage, damageInfo.SpellDamageType);
             }

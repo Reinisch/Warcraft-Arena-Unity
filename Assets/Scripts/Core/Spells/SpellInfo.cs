@@ -41,8 +41,6 @@ namespace Core
         [SerializeField, UsedImplicitly] private float maxRangeHostile;
         [SerializeField, UsedImplicitly] private float maxRangeFriend;
         [SerializeField, UsedImplicitly] private float speed;
-        [SerializeField, UsedImplicitly] private int stackAmount;
-        [SerializeField, UsedImplicitly] private int maxAffectedTargets;
 
         [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos = new List<SpellEffectInfo>();
         [SerializeField, UsedImplicitly] private List<SpellPowerEntry> spellPowerEntries = new List<SpellPowerEntry>();
@@ -291,5 +289,40 @@ namespace Core
                     maxTargetingRadius = Mathf.Max(areaTargeting.MaxRadius, maxTargetingRadius);
             }
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Populate Passive"), UsedImplicitly]
+        private void PopulatePassive()
+        {
+            explicitTargetType = SpellExplicitTargetType.Caster;
+            damageClass = SpellDamageClass.None;
+            spellDispel = SpellDispelType.None;
+            mechanic = SpellMechanics.None;
+
+            explicitCastTargets = SpellCastTargetFlags.UnitAlly;
+            schoolMask = 0;
+            preventionType = 0;
+            attributes = SpellAttributes.Passive;
+            attributesExtra = SpellExtraAttributes.DoesNotTriggerGcd | SpellExtraAttributes.IgnoreGcd | SpellExtraAttributes.NotStealable;
+            attributesCustom = SpellCustomAttributes.CastWithoutAnimation;
+
+            targetEntityTypeMask = EnityTypeMask.Unit;
+            rangedFlags = SpellRangeFlags.Default;
+            interruptFlags = 0;
+            castIgnoringMechanics = 0;
+
+            cooldownTime = 0;
+            categoryCooldownTime = 0;
+            globalCooldownTime = 0;
+            castTime = 0;
+            minCastTime = 0;
+
+            minRangeHostile = 0;
+            minRangeFriend = 0;
+            maxRangeHostile = 0;
+            maxRangeFriend = 0;
+            speed = 0;
+        }
+#endif
     }
 }

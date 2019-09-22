@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
-  m_Name: Living Bomb Explosion Spell
+  m_Name: Trigger Spell - Living Bomb Explosion
   m_EditorClassIdentifier: 
   id: 12
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
@@ -39,8 +39,6 @@ MonoBehaviour:
   maxRangeHostile: 0
   maxRangeFriend: 0
   speed: 0
-  stackAmount: 0
-  maxAffectedTargets: 0
   spellEffectInfos:
   - {fileID: 3847627232554351958}
   spellPowerEntries: []

@@ -15,6 +15,7 @@ namespace Core
             private readonly Dictionary<AuraEffectType, List<AuraEffect>> auraEffectsByAuraType = new Dictionary<AuraEffectType, List<AuraEffect>>();
             private readonly Dictionary<int, List<Aura>> ownedAurasById = new Dictionary<int, List<Aura>>();
             private readonly Dictionary<int, List<AuraApplication>> auraApplicationsByAuraId = new Dictionary<int, List<AuraApplication>>();
+            private readonly Dictionary<int, List<AuraApplication>> auraApplicationsBySpellInfoId = new Dictionary<int, List<AuraApplication>>();
             private readonly List<AuraApplication> interruptableAuraApplications = new List<AuraApplication>();
             private readonly List<AuraApplication> auraApplications = new List<AuraApplication>();
             private readonly HashSet<AuraApplication> auraApplicationSet = new HashSet<AuraApplication>();
@@ -32,6 +33,8 @@ namespace Core
             internal bool HasAuraType(AuraEffectType auraEffectType) => auraEffectsByAuraType.ContainsKey(auraEffectType);
 
             internal bool HasAuraState(AuraStateType auraStateType) => auraApplicationsByAuraState.ContainsKey(auraStateType);
+
+            internal bool HasAuraWithSpell(int spellId) => auraApplicationsBySpellInfoId.ContainsKey(spellId);
 
             internal bool HasAuraAnyInterrupt(AuraInterruptFlags flag) => auraInterruptFlags.HasAnyFlag(flag);
 
@@ -163,6 +166,7 @@ namespace Core
                 auraApplications.Add(auraApplication);
                 auraApplicationSet.Add(auraApplication);
                 auraApplicationsByAuraId.Insert(auraApplication.Aura.AuraInfo.Id, auraApplication);
+                auraApplicationsBySpellInfoId.Insert(auraApplication.Aura.SpellInfo.Id, auraApplication);
 
                 HandleStateContainingAura(auraApplication, true);
                 HandleInterruptableAura(auraApplication, true);
@@ -178,6 +182,8 @@ namespace Core
             internal void UnapplyAuraApplication(AuraApplication auraApplication, AuraRemoveMode removeMode)
             {
                 auraApplicationsByAuraId.Delete(auraApplication.Aura.AuraInfo.Id, auraApplication);
+                auraApplicationsBySpellInfoId.Delete(auraApplication.Aura.SpellInfo.Id, auraApplication);
+
                 auraApplications.Remove(auraApplication);
                 auraApplicationSet.Remove(auraApplication);
 
@@ -197,7 +203,7 @@ namespace Core
 
             internal void RemoveNonDeathPersistentAuras()
             {
-                List<Aura> aurasToRemove = ownedAuras.FindAll(aura => !aura.AuraInfo.HasAttribute(AuraAttributes.DeathPersistent));
+                List<Aura> aurasToRemove = ownedAuras.FindAll(aura => !aura.SpellInfo.IsPassive && !aura.AuraInfo.HasAttribute(AuraAttributes.DeathPersistent));
                 foreach(Aura aura in aurasToRemove)
                     if (!aura.IsRemoved)
                         aura.Remove(AuraRemoveMode.Death);
@@ -245,6 +251,19 @@ namespace Core
 
                     if (application.Aura.Owner == unit)
                         application.Aura.Remove(mode);
+                }
+            }
+
+            internal void RemoveAuraWithSpellInfo(SpellInfo spellInfo, AuraRemoveMode mode)
+            {
+                if (auraApplicationsBySpellInfoId.TryGetValue(spellInfo.Id, out List<AuraApplication> spellApplications))
+                {
+                    tempAuraApplications.AddRange(spellApplications);
+
+                    foreach (AuraApplication auraApplicationToRemove in tempAuraApplications)
+                        RemoveAuraWithApplication(auraApplicationToRemove, mode);
+
+                    tempAuraApplications.Clear();
                 }
             }
 
@@ -379,6 +398,7 @@ namespace Core
                 Assert.IsTrue(auraEffectsByAuraType.Count == 0);
                 Assert.IsTrue(ownedAurasById.Count == 0);
                 Assert.IsTrue(auraApplicationsByAuraId.Count == 0);
+                Assert.IsTrue(auraApplicationsBySpellInfoId.Count == 0);
                 Assert.IsTrue(interruptableAuraApplications.Count == 0);
                 Assert.IsTrue(auraApplications.Count == 0);
                 Assert.IsTrue(auraApplicationSet.Count == 0);

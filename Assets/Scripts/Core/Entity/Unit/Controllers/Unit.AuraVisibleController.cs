@@ -20,6 +20,9 @@ namespace Core
 
             internal void HandleAuraApplication(AuraApplication auraApplication, bool applied)
             {
+                if (auraApplication.Aura.SpellInfo.IsPassive)
+                    return;
+
                 if (applied)
                 {
                     if (availableSlots.Count == 0)

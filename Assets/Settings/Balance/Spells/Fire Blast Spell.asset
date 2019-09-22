@@ -56,9 +56,7 @@ MonoBehaviour:
   minRangeFriend: 0
   maxRangeHostile: 30
   maxRangeFriend: 30
-  speed: 75
-  stackAmount: 0
-  maxAffectedTargets: 1
+  speed: 0
   spellEffectInfos:
   - {fileID: -1505140065309381256}
   spellPowerEntries: []

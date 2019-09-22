@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.Collections.Generic;
+using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -9,10 +10,12 @@ namespace Core
     {
         [SerializeField, UsedImplicitly] private ClassInfoContainer container;
         [SerializeField, UsedImplicitly] private ClassType classType;
+        [SerializeField, UsedImplicitly] private List<SpellInfo> classSpells;
 
         protected override ScriptableUniqueInfoContainer<ClassInfo> Container => container;
         protected override ClassInfo Data => this;
 
         public ClassType ClassType => classType;
+        public IReadOnlyList<SpellInfo> ClassSpells => classSpells;
     }
 }

@@ -5,10 +5,11 @@ namespace Core
 {
     public abstract partial class Unit
     {
-        private class BehaviourController
+        protected class BehaviourController
         {
             private readonly List<IUnitBehaviour> activeBehaviours = new List<IUnitBehaviour>();
             private readonly Dictionary<Type, IUnitBehaviour> activeBehavioursByType = new Dictionary<Type, IUnitBehaviour>();
+            private Unit unit;
 
             internal void DoUpdate(int deltaTime)
             {
@@ -18,15 +19,12 @@ namespace Core
 
             internal void HandleUnitAttach(Unit unit)
             {
-                TryAddBehaviour(unit.Attributes, unit);
-                TryAddBehaviour(unit.CharacterController, unit);
-                TryAddBehaviour(unit.Threat, unit);
-                TryAddBehaviour(unit.Spells, unit);
-                TryAddBehaviour(unit.Auras, unit);
-                TryAddBehaviour(unit.VisibleAuras, unit);
+                this.unit = unit;
+
+                unit.AddBehaviours(this);
 
                 foreach (UnitBehaviour unitBehaviour in unit.unitBehaviours)
-                    TryAddBehaviour(unitBehaviour, unit);
+                    TryAddBehaviour(unitBehaviour);
 
                 for (int i = 0; i < activeBehaviours.Count; i++)
                     activeBehaviours[i].HandleUnitAttach(unit);
@@ -39,6 +37,8 @@ namespace Core
 
                 activeBehaviours.Clear();
                 activeBehavioursByType.Clear();
+
+                unit = null;
             }
 
             internal TUnitBehaviour FindBehaviour<TUnitBehaviour>()
@@ -46,7 +46,7 @@ namespace Core
                 return activeBehavioursByType.TryGetValue(typeof(TUnitBehaviour), out IUnitBehaviour behaviour) ? (TUnitBehaviour)behaviour : default;
             }
 
-            private void TryAddBehaviour(IUnitBehaviour unitBehaviour, Unit unit)
+            internal void TryAddBehaviour(IUnitBehaviour unitBehaviour)
             {
                 if (unitBehaviour.HasServerLogic && unit.World.HasServerLogic || unitBehaviour.HasClientLogic && unit.World.HasClientLogic)
                 {

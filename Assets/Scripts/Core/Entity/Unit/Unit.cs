@@ -197,6 +197,16 @@ namespace Core
 
         protected virtual MovementInfo CreateMovementInfo(IUnitState unitState) => new MovementInfo(this, unitState);
 
+        protected virtual void AddBehaviours(BehaviourController unitBehaviourController)
+        {
+            unitBehaviourController.TryAddBehaviour(Attributes);
+            unitBehaviourController.TryAddBehaviour(CharacterController);
+            unitBehaviourController.TryAddBehaviour(Threat);
+            unitBehaviourController.TryAddBehaviour(Spells);
+            unitBehaviourController.TryAddBehaviour(Auras);
+            unitBehaviourController.TryAddBehaviour(VisibleAuras);
+        }
+
         internal override void DoUpdate(int deltaTime)
         {
             base.DoUpdate(deltaTime);
