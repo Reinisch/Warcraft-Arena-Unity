@@ -13,6 +13,7 @@ namespace Core
         public new class CreateToken : WorldEntity.CreateToken
         {
             public DeathState DeathState { private get; set; }
+            public ClassType ClassType { private get; set; }
             public bool FreeForAll { private get; set; }
             public int FactionId { private get; set; }
             public int ModelId { private get; set; }
@@ -24,6 +25,7 @@ namespace Core
                 base.Read(packet);
 
                 DeathState = (DeathState)packet.ReadInt();
+                ClassType = (ClassType)packet.ReadInt();
                 FactionId = packet.ReadInt();
                 ModelId = packet.ReadInt();
                 OriginalModelId = packet.ReadInt();
@@ -36,6 +38,7 @@ namespace Core
                 base.Write(packet);
 
                 packet.WriteInt((int)DeathState);
+                packet.WriteInt((int)ClassType);
                 packet.WriteInt(FactionId);
                 packet.WriteInt(ModelId);
                 packet.WriteInt(OriginalModelId);
@@ -46,6 +49,7 @@ namespace Core
             protected void Attached(Unit unit)
             {
                 unit.DeathState = DeathState;
+                unit.ClassType = ClassType;
                 unit.Faction = unit.Balance.FactionsById[FactionId];
                 unit.FreeForAll = FreeForAll;
                 unit.ModelId = ModelId;
@@ -113,6 +117,7 @@ namespace Core
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitControlState.Moving);
         public float Scale { get => Attributes.Scale; internal set => Attributes.Scale = value; }
+        public ClassType ClassType { get => Attributes.ClassType; internal set => Attributes.ClassType = value; }
 
         public sealed override void Attached()
         {

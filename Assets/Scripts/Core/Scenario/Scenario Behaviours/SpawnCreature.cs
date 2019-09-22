@@ -31,6 +31,7 @@ namespace Core.Scenario
                 Rotation = customSpawnSettings.SpawnPoint.rotation,
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
+                ClassType = ClassType.Warrior,
                 ModelId = creatureDefinition.ModelId,
                 OriginalModelId = creatureDefinition.ModelId,
                 FactionId = Balance.DefaultFaction.FactionId,

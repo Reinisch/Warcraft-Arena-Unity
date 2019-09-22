@@ -56,6 +56,7 @@ namespace Client
             StringsBySpellCastResult.Clear();
             StringsByClientConnectFailReason.Clear();
             MissingString = null;
+            EmptyString = null;
 
             base.OnUnregister();
         }

@@ -146,6 +146,7 @@ namespace Server
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
                 ModelId = 1,
+                ClassType = ClassType.Mage,
                 OriginalModelId = 1,
                 FactionId = mainMap.Settings.Balance.DefaultFaction.FactionId,
                 PlayerName = playerName

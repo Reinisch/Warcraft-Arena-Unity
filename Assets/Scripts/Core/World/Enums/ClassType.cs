@@ -1,6 +1,9 @@
 ﻿namespace Core
 {
-    public enum Classes
+    /// <summary>
+    /// Compressed to 4 bits in <seealso cref="IUnitState"/>
+    /// </summary>
+    public enum ClassType
     {
         None = 0,
         Warrior = 1,

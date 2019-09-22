@@ -13,6 +13,7 @@ namespace Core
         {
             private Unit unit;
             private FactionDefinition faction;
+            private ClassType classType;
             private DeathState deathState;
             private IUnitState unitState;
             private bool initialized;
@@ -73,6 +74,22 @@ namespace Core
                     }
                 }
             }
+
+            internal ClassType ClassType
+            {
+                get => classType;
+                set
+                {
+                    classType = value;
+
+                    if (unit.IsOwner)
+                    {
+                        unitState.ClassType = (int)value;
+                        unit.createToken.ClassType = value;
+                    }
+                }
+            }
+
 
             internal float Scale
             {

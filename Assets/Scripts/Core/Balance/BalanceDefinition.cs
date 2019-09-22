@@ -16,12 +16,15 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private AuraInfoContainer auraContainer;
         [SerializeField, UsedImplicitly]
+        private ClassInfoContainer classContainer;
+        [SerializeField, UsedImplicitly]
         private List<MapDefinition> mapEntries;
         [SerializeField, UsedImplicitly]
         private List<FactionDefinition> factionEntries;
 
         public IReadOnlyList<SpellInfo> SpellInfos => spellContainer.ItemList;
         public IReadOnlyList<AuraInfo> AuraInfos => auraContainer.ItemList;
+        public IReadOnlyList<ClassInfo> ClassInfos => classContainer.ItemList;
         public IReadOnlyList<MapDefinition> MapEntries => mapEntries;
         public IReadOnlyList<FactionDefinition> FactionEntries => factionEntries;
         public FactionDefinition DefaultFaction => defaultFaction;
