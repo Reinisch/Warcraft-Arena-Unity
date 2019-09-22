@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using TMPro;
 using Common;
+using UnityEngine.UI;
 
 using EventHandler = Common.EventHandler;
 
@@ -11,7 +12,9 @@ namespace Client
 {
     public class UnitFrame : MonoBehaviour
     {
+        [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
+        [SerializeField, UsedImplicitly] private Image classIcon;
         [SerializeField, UsedImplicitly] private AttributeBar health;
         [SerializeField, UsedImplicitly] private AttributeBar mainResource;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI unitName;
@@ -68,6 +71,8 @@ namespace Client
         {
             this.unit = unit;
             unitName.text = unit.Name;
+            classIcon.sprite = rendering.ClassIconsByClassType.Value(unit.ClassType);
+
             targetUnitFrame?.UpdateUnit(unit.Target);
             unitBuffDisplayFrame?.UpdateUnit(unit);
 

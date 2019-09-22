@@ -22,6 +22,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private List<SpellEffectSettings> spellEffectSettings;
         [SerializeField, UsedImplicitly] private List<AuraEffectSettings> auraEffectSettings;
         [SerializeField, UsedImplicitly] private List<UnitModelSettings> modelSettings;
+        [SerializeField, UsedImplicitly] private ClassTypeSpriteDictionary classIconsByClassType;
 
         private readonly Dictionary<int, SpellEffectSettings> spellVisualSettingsById = new Dictionary<int, SpellEffectSettings>();
         private readonly Dictionary<int, AuraEffectSettings> auraVisualSettingsById = new Dictionary<int, AuraEffectSettings>();
@@ -34,11 +35,13 @@ namespace Client
         public IReadOnlyDictionary<int, SpellEffectSettings> SpellVisualSettingsById => spellVisualSettingsById;
         public IReadOnlyDictionary<int, AuraEffectSettings> AuraVisualSettingsById => auraVisualSettingsById;
         public IReadOnlyDictionary<int, UnitModelSettings> ModelSettingsById => modelSettingsById;
+        public IReadOnlySerializedDictionary<ClassType, Sprite> ClassIconsByClassType => classIconsByClassType;
 
         protected override void OnRegistered()
         {
             base.OnRegistered();
 
+            classIconsByClassType.Populate();
             modelSettings.ForEach(model => modelSettingsById.Add(model.Id, model));
             auraEffectSettings.ForEach(visual => auraVisualSettingsById.Add(visual.AuraInfo.Id, visual));
             spellEffectSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
@@ -51,6 +54,7 @@ namespace Client
             spellVisualSettingsById.Clear();
             auraVisualSettingsById.Clear();
             modelSettingsById.Clear();
+            classIconsByClassType.Clear();
 
             base.OnUnregister();
         }
