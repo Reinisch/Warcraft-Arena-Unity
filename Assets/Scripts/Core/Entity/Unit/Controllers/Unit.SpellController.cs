@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common;
+using Core.Conditions;
 using UnityEngine;
 
 using SpellModifierContainer = System.Collections.Generic.Dictionary<(Core.SpellModifierType, Core.SpellModifierApplicationType), System.Collections.Generic.List<Core.SpellModifier>>;
@@ -379,7 +380,17 @@ namespace Core
                 if (modifier.Aura.AuraInfo.UsesCharges && modifier.Aura.Charges == 0 && !spell.HasAppliedModifier(modifier.Aura))
                     return false;
 
-                return !spell.SpellInfo.HasAttribute(SpellAttributes.IgnoreSpellModifiers);
+                if (spell.SpellInfo.HasAttribute(SpellAttributes.IgnoreSpellModifiers))
+                    return false;
+
+                for (int i = 0; i < modifier.AuraModifier.ApplicationConditions.Count; i++)
+                {
+                    Condition applicationCondition = modifier.AuraModifier.ApplicationConditions[i];
+                    if (applicationCondition.IsApplicableAndInvalid(spell.Caster, spell.ExplicitTargets.Target, spell))
+                        return false;
+                }
+
+                return true;
             }
 
             internal float ApplyEffectModifiers(SpellInfo spellInfo, float value) { return value; }

@@ -17,6 +17,8 @@ MonoBehaviour:
   modifierValue: -100
   modifierType: 8
   applicationType: 2
+  applicationConditions:
+  - {fileID: 11400000, guid: 85943d060f3186847b1f7e2fa8c4c454, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

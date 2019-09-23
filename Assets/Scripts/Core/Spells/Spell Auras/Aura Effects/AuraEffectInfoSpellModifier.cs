@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using Core.Conditions;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core.AuraEffects
@@ -9,9 +11,12 @@ namespace Core.AuraEffects
         [SerializeField, UsedImplicitly] private float modifierValue;
         [SerializeField, UsedImplicitly] private SpellModifierType modifierType;
         [SerializeField, UsedImplicitly] private SpellModifierApplicationType applicationType;
+        [SerializeField, UsedImplicitly] private List<Condition> applicationConditions;
 
         public SpellModifierType ModifierType => modifierType;
         public SpellModifierApplicationType ApplicationType => applicationType;
+        public IReadOnlyList<Condition> ApplicationConditions => applicationConditions;
+
         public override float Value => modifierValue;
         public override AuraEffectType AuraEffectType => AuraEffectType.SpeedIncreaseModifier;
 

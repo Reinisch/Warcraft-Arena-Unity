@@ -39,7 +39,7 @@ namespace Core
                     SpellInfo classSpell = classInfo.ClassSpells[i];
 
                     if (classSpell.IsPassive)
-                        player.Spells.CastSpell(classSpell, new SpellCastingOptions(new SpellExplicitTargets {Target = player}, SpellCastFlags.TriggeredByAura));
+                        player.Spells.TriggerSpell(classSpell, player);
                     else
                         knownSpells.Add(classSpell);
                 }

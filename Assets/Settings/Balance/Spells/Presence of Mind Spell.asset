@@ -47,6 +47,8 @@ MonoBehaviour:
   modifierValue: -100
   modifierType: 8
   applicationType: 2
+  applicationConditions:
+  - {fileID: 11400000, guid: 3edf4f0e31b66d144a031c7bed6a82ba, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,8 +88,6 @@ MonoBehaviour:
   maxRangeHostile: 0
   maxRangeFriend: 0
   speed: 0
-  stackAmount: 0
-  maxAffectedTargets: 0
   spellEffectInfos:
   - {fileID: 6690971580385543390}
   spellPowerEntries: []
