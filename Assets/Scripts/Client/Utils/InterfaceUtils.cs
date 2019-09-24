@@ -1,5 +1,6 @@
 ﻿using System;
 using Common;
+using UnityEngine;
 
 namespace Client
 {
@@ -85,6 +86,15 @@ namespace Client
             charArray[1] = '.';
             charArray[2] = (char)('0' + milliseconds / 100);
             return charArray;
+        }
+
+        public static void SetParentAndReset(this RectTransform thisTransform, RectTransform parentTransform)
+        {
+            thisTransform.SetParent(parentTransform, false);
+
+            thisTransform.localPosition = Vector3.zero;
+            thisTransform.anchoredPosition = Vector3.zero;
+            thisTransform.localScale = Vector3.one;
         }
     }
 }

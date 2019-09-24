@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: dd018f7fff8dcd34f8f48cb4fb7cb673
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - container: {fileID: 11400000, guid: 497f80b41e383724084965aa56771369, type: 2}
+  - prototype: {instanceID: 0}
+  - triggerAura: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

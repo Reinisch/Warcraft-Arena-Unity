@@ -6,6 +6,7 @@ namespace Client
 {
     public class BattleScreen : UIWindowController<BattleScreen>
     {
+        [SerializeField, UsedImplicitly] private TransformBattleTagDictionary tagsByKeys;
         [SerializeField, UsedImplicitly] private BattleHudPanel battleHudPanel;
 
         public new void Initialize(ScreenController controller)
@@ -25,5 +26,7 @@ namespace Client
 
             base.Deinitialize(controller);
         }
+
+        public RectTransform FindTag(BattleHudTagType tagType) => tagsByKeys.Value(tagType);
     }
 }

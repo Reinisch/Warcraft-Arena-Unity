@@ -47,6 +47,16 @@ namespace Client
             screenController.DoUpdate(deltaTime);
         }
 
+        internal void AddHandler<TScreen>(IScreenHandler<TScreen> handler) where TScreen : UIPanelController
+        {
+            screenController.AddHandler(handler);
+        }
+
+        internal void RemoveHandler<TScreen>(IScreenHandler<TScreen> handler) where TScreen : UIPanelController
+        {
+            screenController.RemoveHandler(handler);
+        }
+
         public void ShowScreen<TScreen, TShowPanel>() where TScreen : UIPanelController where TShowPanel : UIPanel, IPanel<TScreen>
         {
             screenController.ShowScreen<TScreen, TShowPanel>();
