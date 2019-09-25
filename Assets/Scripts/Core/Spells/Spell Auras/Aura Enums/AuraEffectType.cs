@@ -287,7 +287,7 @@
         InterfereTargetting = 322,
         ProcOnPowerAmount = 328,
         CastWhileWalking = 330,
-        ForceWeather = 331,
+        OverrideSpellCritCalculation = 331,
         OverrideActionbarSpells = 332,
         OverrideActionbarSpellsTriggered = 333,
         ModVendorItemsPrices = 337,

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common;
+using Core.AuraEffects;
 using Core.Conditions;
 using UnityEngine;
 
@@ -229,6 +230,12 @@ namespace Core
                     case SpellDamageClass.Magic:
                         if (!spellInfo.IsPositive)
                             critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerSpellCritChance);
+
+                        IReadOnlyList<AuraEffect> spellCritAuras = unit.GetAuraEffects(AuraEffectType.OverrideSpellCritCalculation);
+                        if (spellCritAuras != null) for (int i = 0; i < spellCritAuras.Count; i++)
+                            if (spellCritAuras[i].EffectInfo is AuraEffectInfoOverrideSpellCritCalculation effectInfo)
+                                effectInfo.ModifySpellCrit(unit, victim, ref critChance);
+
                         goto default;
                     case SpellDamageClass.Melee:
                         if (!spellInfo.IsPositive)
