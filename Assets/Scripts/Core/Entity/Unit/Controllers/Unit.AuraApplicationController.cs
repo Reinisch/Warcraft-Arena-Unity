@@ -126,6 +126,8 @@ namespace Core
 
                     RemoveNonStackableAuras(ownedAura);
                 }
+                else
+                    ownedAura.Refresh();
 
                 if (ownedAura.IsRemoved)
                     return;

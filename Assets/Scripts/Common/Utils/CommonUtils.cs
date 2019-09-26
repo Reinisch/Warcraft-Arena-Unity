@@ -41,5 +41,11 @@ namespace Common
             for (int i = 0; i < array.Length; i++)
                 array[i] = value;
         }
+
+        public static void CopyToReverse<T>(this T[] array, T[] targetArray, int lastIndex)
+        {
+            for (int i = 0; i <= lastIndex; i++)
+                targetArray[i] = array[lastIndex - i];
+        }
     }
 }

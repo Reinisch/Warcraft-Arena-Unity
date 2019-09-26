@@ -70,6 +70,7 @@ namespace Client
 
         public void AuraRefreshed(IVisibleAura visibleAura)
         {
+            needsUpdate = true;
         }
 
         public void UpdateUnit(Unit newUnit)

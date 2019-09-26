@@ -172,13 +172,22 @@ namespace Core
 
         internal void UpdateCharges(int charges)
         {
+            int oldCharges = Charges;
             Charges = Math.Min(AuraInfo.MaxCharges, charges);
+
+            if (oldCharges != Charges)
+                Owner.VisibleAuras.NeedUpdate = true;
         }
 
         internal void DropCharge()
         {
             if (AuraInfo.UsesCharges && Charges > 0 && --Charges == 0)
                 Remove(AuraRemoveMode.Expired);
+        }
+
+        internal void Refresh()
+        {
+            UpdateCharges(Charges + AuraInfo.Charges);
         }
 
         internal bool CanStackWith(Aura existingAura)

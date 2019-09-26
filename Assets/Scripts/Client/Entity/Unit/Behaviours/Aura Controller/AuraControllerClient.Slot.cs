@@ -14,6 +14,7 @@ namespace Client
             public int RefreshDuration { get; private set; }
             public int MaxDuration { get; private set; }
             public int DurationLeft { get; private set; }
+            public int Charges { get; private set; }
 
             public bool HasActiveAura => AuraId > 0;
 
@@ -56,6 +57,7 @@ namespace Client
                 ServerRefreshFrame = state.RefreshFrame;
                 RefreshDuration = state.Duration;
                 MaxDuration = state.MaxDuration;
+                Charges = state.Charges;
 
                 int expectedCooldownFrames = (int) (RefreshDuration / BoltNetwork.FrameDeltaTime / TimeUtils.InMilliseconds);
                 int framesPassed = BoltNetwork.ServerFrame - ServerRefreshFrame;

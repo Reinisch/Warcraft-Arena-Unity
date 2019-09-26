@@ -77,6 +77,7 @@ namespace Core
                         unitState.VisibleAuras[i].RefreshFrame = applicationInSlot.Aura.RefreshServerFrame;
                         unitState.VisibleAuras[i].Duration = applicationInSlot.Aura.RefreshDuration;
                         unitState.VisibleAuras[i].MaxDuration = applicationInSlot.Aura.MaxDuration;
+                        unitState.VisibleAuras[i].Charges = applicationInSlot.Aura.Charges;
                     }
                 }
             }

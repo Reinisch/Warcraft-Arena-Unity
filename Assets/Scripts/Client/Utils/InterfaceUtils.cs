@@ -6,6 +6,10 @@ namespace Client
 {
     public static class InterfaceUtils
     {
+        private static char[] TempCharArray = new char[32];
+        private static char[] IntChars = new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        private static char[] MinValue = new[] { '-', '2', '1', '4', '7', '4', '8', '3', '6', '4', '8' };
+
         public static char[] SetSpellTimerNonAlloc(this char[] charArray, int milliseconds, out int length)
         {
             if (charArray.Length < 3)
@@ -87,6 +91,47 @@ namespace Client
             charArray[2] = (char)('0' + milliseconds / 100);
             return charArray;
         }
+
+        public static char[] SetIntNonAlloc(this char[] charArray, int value, out int length)
+        {
+            if (charArray.Length < 11)
+                Array.Resize(ref charArray, 11);
+
+            if (value == 0)
+            {
+                charArray[0] = IntChars[0];
+                length = 1;
+                return charArray;
+            }
+
+            if (value == int.MinValue)
+            {
+                MinValue.CopyTo(charArray, 0);
+                length = MinValue.Length;
+                return charArray;
+            }
+
+            length = 0;
+            bool isNegative = value < 0;
+            int index = isNegative ? 1 : 0;
+
+            if (isNegative)
+            {
+                value = -value;
+                TempCharArray[0] = '-';
+            }
+
+            while (value > 0)
+            {
+                TempCharArray[index++] = IntChars[value % 10];
+                value /= 10;
+            }
+
+            TempCharArray.CopyToReverse(charArray, index - 1);
+            length = index;
+            return charArray;
+        }
+
 
         public static void SetParentAndReset(this RectTransform thisTransform, RectTransform parentTransform)
         {
