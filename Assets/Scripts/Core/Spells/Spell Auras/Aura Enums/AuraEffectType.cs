@@ -44,7 +44,7 @@
         SchoolImmunity = 39,
         DamageImmunity = 40,
         DispelImmunity = 41,
-        ProcTriggerSpell = 42,
+        TriggerSpellChance = 42,
         ProcTriggerDamage = 43,
         TrackCreatures = 44,
         TrackResources = 45,

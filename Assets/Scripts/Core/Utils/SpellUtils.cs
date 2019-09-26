@@ -29,6 +29,11 @@ namespace Core
             return (baseFlags & flag) != 0;
         }
 
+        public static bool HasAnyFlag(this SpellTriggerFlags baseFlags, SpellTriggerFlags flag)
+        {
+            return (baseFlags & flag) != 0;
+        }
+
         public static bool HasTargetFlag(this HitType baseFlags, HitType flag)
         {
             return (baseFlags & flag) == flag;

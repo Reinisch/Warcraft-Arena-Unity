@@ -15,6 +15,7 @@ namespace Core
         {
             private readonly SpellModifierContainer spellModifiers = new SpellModifierContainer();
             private readonly SchoolImmunityContainer schoolImmunities = new SchoolImmunityContainer();
+            private readonly List<AuraEffectSpellTrigger> spellTriggers = new List<AuraEffectSpellTrigger>();
 
             private Unit unit;
 
@@ -39,6 +40,7 @@ namespace Core
 
             void IUnitBehaviour.HandleUnitDetach()
             {
+                spellTriggers.Clear();
                 schoolImmunities.Clear();
                 spellModifiers.Clear();
                 SpellHistory.Detached();
@@ -77,9 +79,9 @@ namespace Core
                 return SpellCastResult.Success;
             }
 
-            internal void DamageBySpell(SpellDamageInfo damageInfo)
+            internal void DamageBySpell(SpellDamageInfo damageInfo, Spell spell = null)
             {
-                unit.Spells.CalculateSpellDamageTaken(ref damageInfo);
+                unit.Spells.CalculateSpellDamageTaken(ref damageInfo, spell);
 
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, damageInfo);
 
@@ -107,7 +109,7 @@ namespace Core
                 unit.DealHeal(healInfo.Target, (int)healInfo.Heal);
             }
 
-            internal void CalculateSpellDamageTaken(ref SpellDamageInfo damageInfo)
+            internal void CalculateSpellDamageTaken(ref SpellDamageInfo damageInfo, Spell spell)
             {
                 if (damageInfo.Damage == 0 || !damageInfo.Target.IsAlive)
                     return;
@@ -116,7 +118,7 @@ namespace Core
                 Unit target = damageInfo.Target;
                 SpellInfo spellInfo = damageInfo.SpellInfo;
 
-                damageInfo.UpdateDamage(caster.Spells.SpellDamageBonusDone(target, spellInfo, damageInfo.Damage, damageInfo.SpellDamageType));
+                damageInfo.UpdateDamage(caster.Spells.SpellDamageBonusDone(target, damageInfo.Damage, damageInfo.SpellDamageType, spellInfo, spell));
                 damageInfo.UpdateDamage(target.Spells.SpellDamageBonusTaken(caster, spellInfo, damageInfo.Damage, damageInfo.SpellDamageType));
 
                 if (!spellInfo.HasAttribute(SpellExtraAttributes.FixedDamage))
@@ -181,8 +183,10 @@ namespace Core
 
             internal Unit GetMeleeHitRedirectTarget(Unit victim, SpellInfo spellInfo = null) { return null; }
             
-            internal uint SpellDamageBonusDone(Unit victim, SpellInfo spellInfo, uint damage, SpellDamageType damageType, uint stack = 1)
+            internal uint SpellDamageBonusDone(Unit target, uint damage, SpellDamageType damageType, SpellInfo spellInfo, Spell spell = null, uint stack = 1)
             {
+                damage = (uint)unit.Spells.ApplySpellModifier(spell, SpellModifierType.DamageMultiplier, damage);
+
                 return damage;
             }
 
@@ -348,6 +352,14 @@ namespace Core
                 spellModifiers.HandleEntry(modifier.Kind, modifier, apply);
             }
 
+            internal void HandleSpellTrigger(AuraEffectSpellTrigger spellTriggerAura, bool apply)
+            {
+                if (apply)
+                    spellTriggers.Add(spellTriggerAura);
+                else
+                    spellTriggers.Remove(spellTriggerAura);
+            }
+
             internal bool IsImmunedToDamage(SpellInfo spellInfo) { return false; }
 
             internal bool IsImmunedToDamage(AuraInfo auraInfo) { return false; }
@@ -439,6 +451,29 @@ namespace Core
                 }
 
                 return flatValue * valueMultiplier;
+            }
+
+            internal void ApplySpellTriggers(SpellTriggerFlags spellTriggerFlags, Unit target = null, Spell spell = null)
+            {
+                if (spellTriggers.Count == 0)
+                    return;
+                if (spell != null && spell.IsTriggered)
+                    return;
+
+                var activatedSpellTriggers = new List<AuraEffectSpellTrigger>();
+                var activationInfo = new SpellTriggerActivationInfo(unit, target, null, spell, spellTriggerFlags, default, default);
+
+                foreach (AuraEffectSpellTrigger spellTrigger in spellTriggers)
+                    if (spellTrigger.WillTrigger(activationInfo))
+                        activatedSpellTriggers.Add(spellTrigger);
+
+                foreach (AuraEffectSpellTrigger activatedTrigger in activatedSpellTriggers)
+                {
+                    if (activatedTrigger.Aura.AuraInfo.UsesCharges)
+                        activatedTrigger.Aura.DropCharge();
+
+                    unit.Spells.TriggerSpell(activatedTrigger.EffectInfo.TriggeredSpell, target);
+                }
             }
 
             internal int ModifyAuraDuration(AuraInfo auraInfo, Unit target, int duration) { return duration; }

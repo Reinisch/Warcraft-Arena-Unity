@@ -21,6 +21,7 @@ namespace Core
         private int EffectDamage { get; set; }
         private int EffectHealing { get; set; }
 
+        internal bool IsTriggered { get; }
         internal bool CanReflect { get; }
         internal SpellSchoolMask SchoolMask { get; }
         internal int CastTime { get; private set; }
@@ -45,7 +46,9 @@ namespace Core
             Caster = OriginalCaster = caster;
             SpellInfo = info;
 
-            if (spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
+            IsTriggered = spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura);
+
+            if (IsTriggered)
                 spellCastFlags |= SpellCastFlags.IgnoreTargetCheck | SpellCastFlags.IgnoreRangeCheck;
 
             if (info.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
@@ -473,7 +476,7 @@ namespace Core
             }
             else if (EffectDamage > 0)
             {
-                caster.Spells.DamageBySpell(new SpellDamageInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectDamage, targetEntry.Crit, SpellDamageType.Direct));
+                caster.Spells.DamageBySpell(new SpellDamageInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectDamage, targetEntry.Crit, SpellDamageType.Direct), this);
             }
 
             if (missType == SpellMissType.None)
@@ -493,6 +496,8 @@ namespace Core
             ImplicitTargets.HandleLaunch(out bool isDelayed, out SpellProcessingToken processingToken);
 
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, SpellInfo, processingToken);
+
+            Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellCast, Caster, this);
 
             DropModifierCharges();
 
