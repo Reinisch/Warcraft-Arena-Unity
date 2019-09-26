@@ -22,7 +22,7 @@ MonoBehaviour:
   interruptFlags: 0
   attributes: 0
   auraEffects:
-  - {fileID: -563952108365221353}
+  - {fileID: 7028123549821623770}
   auraScriptables: []
   usesCharges: 1
   maxCharges: 2
@@ -30,20 +30,6 @@ MonoBehaviour:
   damageInterruptValue: 0
   damageInterruptDelay: 0
   interruptValueType: 0
---- !u!114 &-563952108365221353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4094da64b1a2fbb4b977858521ad61ea, type: 3}
-  m_Name: Fingers of Frost Charge Aura Dummy
-  m_EditorClassIdentifier: 
-  maxEffectiveCharges: 1
-  mechanics: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,6 +73,25 @@ MonoBehaviour:
   - {fileID: 7267926036672467234}
   spellPowerEntries: []
   targetingConditions: []
+--- !u!114 &7028123549821623770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 523423395275b1646a23b0a31b7a4c68, type: 3}
+  m_Name: Fingers of Frost Aura Spell Modifier
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  modifierValue: 50
+  modifierType: 20
+  applicationType: 2
+  applicationConditions:
+  - {fileID: 11400000, guid: e88dd03c8dda4f44480e8dec59c66fa3, type: 2}
 --- !u!114 &7267926036672467234
 MonoBehaviour:
   m_ObjectHideFlags: 0

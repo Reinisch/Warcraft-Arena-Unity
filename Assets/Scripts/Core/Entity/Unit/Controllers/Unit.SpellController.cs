@@ -185,7 +185,8 @@ namespace Core
             
             internal uint SpellDamageBonusDone(Unit target, uint damage, SpellDamageType damageType, SpellInfo spellInfo, Spell spell = null, uint stack = 1)
             {
-                damage = (uint)unit.Spells.ApplySpellModifier(spell, SpellModifierType.DamageMultiplier, damage);
+                if (spell != null)
+                    damage = (uint)unit.Spells.ApplySpellModifier(spell, SpellModifierType.DamageMultiplier, damage);
 
                 return damage;
             }
