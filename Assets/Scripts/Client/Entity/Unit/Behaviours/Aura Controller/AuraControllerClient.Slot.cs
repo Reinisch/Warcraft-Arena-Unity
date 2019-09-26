@@ -50,7 +50,7 @@ namespace Client
                 int oldAuraId = AuraId;
                 if (oldAuraId != state.AuraId)
                     HandleUnapplication();
-                else if (ServerRefreshFrame != state.RefreshFrame)
+                else if (ServerRefreshFrame != state.RefreshFrame || Charges != state.Charges)
                     HandleRefresh();
 
                 AuraId = state.AuraId;

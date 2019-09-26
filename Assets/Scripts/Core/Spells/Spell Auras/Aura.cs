@@ -181,8 +181,13 @@ namespace Core
 
         internal void DropCharge()
         {
-            if (AuraInfo.UsesCharges && Charges > 0 && --Charges == 0)
-                Remove(AuraRemoveMode.Expired);
+            if (AuraInfo.UsesCharges && Charges > 0)
+            {
+                if (--Charges == 0)
+                    Remove(AuraRemoveMode.Expired);
+
+                Owner.VisibleAuras.NeedUpdate = true;
+            }
         }
 
         internal void Refresh()
