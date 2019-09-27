@@ -10,6 +10,6 @@ namespace Core.Conditions
 
         protected override bool IsApplicable => base.IsApplicable && TargetUnit != null;
 
-        protected override bool IsValid => base.IsValid && TargetUnit.HasAuraState(auraStateType);
+        protected override bool IsValid => base.IsValid && TargetUnit.HasAuraState(auraStateType, SourceUnit, Spell);
     }
 }

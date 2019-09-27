@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
   mechanics: 0
-  chance: 1
+  chance: 0.5
   triggeredSpell: {fileID: 11400000, guid: 3eeb641152dd92e4db82461677a1fff0, type: 2}
   triggerFlags: 32
   triggerConditions:

@@ -10,7 +10,7 @@
         Radius = 6,
         CriticalChance = 7,
         InstantCast = 8,
-        NotLoseCastingTime = 9,
+        SpellValue = 9,
         CastingTime = 10,
         Cooldown = 11,
         IgnoreArmor = 13,

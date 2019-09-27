@@ -58,6 +58,8 @@ namespace Core
             {
                 Spell spell = new Spell(unit, spellInfo, castOptions);
 
+                ApplySpellModifier(spell, SpellModifierType.SpellValue, 1.0f);
+
                 SpellCastResult castResult = spell.Prepare();
                 if (castResult != SpellCastResult.Success)
                 {
@@ -212,13 +214,13 @@ namespace Core
                 return healAmount;
             }
 
-            internal bool IsSpellCrit(Unit victim, SpellInfo spellInfo, SpellSchoolMask schoolMask)
+            internal bool IsSpellCrit(Unit victim, SpellInfo spellInfo, SpellSchoolMask schoolMask, Spell spell = null)
             {
-                float critChance = CalculateSpellCriticalChance(victim, spellInfo, schoolMask);
+                float critChance = CalculateSpellCriticalChance(victim, spellInfo, schoolMask, spell);
                 return RandomUtils.CheckSuccessPercent(critChance);
             }
 
-            private float CalculateSpellCriticalChance(Unit victim, SpellInfo spellInfo, SpellSchoolMask schoolMask)
+            private float CalculateSpellCriticalChance(Unit victim, SpellInfo spellInfo, SpellSchoolMask schoolMask, Spell spell = null)
             {
                 if (spellInfo.HasAttribute(SpellAttributes.CantCrit) || spellInfo.DamageClass == SpellDamageClass.None)
                     return 0.0f;
@@ -239,7 +241,7 @@ namespace Core
                         IReadOnlyList<AuraEffect> spellCritAuras = unit.GetAuraEffects(AuraEffectType.OverrideSpellCritCalculation);
                         if (spellCritAuras != null) for (int i = 0; i < spellCritAuras.Count; i++)
                             if (spellCritAuras[i].EffectInfo is AuraEffectInfoOverrideSpellCritCalculation effectInfo)
-                                effectInfo.ModifySpellCrit(unit, victim, ref critChance);
+                                effectInfo.ModifySpellCrit(unit, victim, spell, ref critChance);
 
                         goto default;
                     case SpellDamageClass.Melee:
@@ -428,9 +430,11 @@ namespace Core
                             continue;
 
                         valueModifier += modifier.Value;
-                        spell.AddAppliedModifierAura(modifier.Aura);
+                        spell.AddAppliedModifier(modifier);
                     }
                 }
+
+                spell.HandleUnappliedModifers(unit, modifierType, SpellModifierApplicationType.Flat, ref valueModifier);
 
                 float flatValue = baseValue + valueModifier;
                 if (Mathf.Approximately(flatValue, 0.0f))
@@ -444,12 +448,30 @@ namespace Core
                             continue;
 
                         valueMultiplier *= 1.0f + 1.0f.ApplyPercentage(modifier.Value);
-                        spell.AddAppliedModifierAura(modifier.Aura);
+                        spell.AddAppliedModifier(modifier);
 
                         if (Mathf.Approximately(valueMultiplier, 0.0f))
                             return 0.0f;
                     }
                 }
+
+                spell.HandleUnappliedModifers(unit, modifierType, SpellModifierApplicationType.Percent, ref valueMultiplier);
+
+                if (spellModifiers.TryGetValue((modifierType, SpellModifierApplicationType.SpellValue), out List<SpellModifier> valueModifiers))
+                {
+                    foreach (SpellModifier modifier in valueModifiers)
+                    {
+                        if (!IsAffectedBySpellModifier(spell, modifier))
+                            continue;
+
+                        if (modifier.AuraModifier.SpellValueModifier != null)
+                            spell.ApplySpellValueModifier(modifier.AuraModifier.SpellValueModifier);
+
+                        spell.AddAppliedModifier(modifier);
+                    }
+                }
+
+                spell.HandleUnappliedModifers(unit, modifierType, SpellModifierApplicationType.SpellValue, ref valueMultiplier);
 
                 return flatValue * valueMultiplier;
             }

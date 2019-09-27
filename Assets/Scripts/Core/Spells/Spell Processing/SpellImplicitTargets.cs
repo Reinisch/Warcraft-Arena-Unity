@@ -33,7 +33,6 @@ namespace Core
                     Target = target,
                     Processed = false,
                     Alive = target.IsAlive,
-                    Damage = 0,
                     Crit = false,
                 });
             }
@@ -82,7 +81,7 @@ namespace Core
                 else
                     targetEntry.Delay = 0;
 
-                targetEntry.Crit = spell.Caster.Spells.IsSpellCrit(targetEntry.Target, spell.SpellInfo, spell.SchoolMask);
+                targetEntry.Crit = spell.Caster.Spells.IsSpellCrit(targetEntry.Target, spell.SpellInfo, spell.SchoolMask, spell);
 
                 isDelayed |= targetEntry.Delay > 0;
             }

@@ -10,6 +10,5 @@
         public bool Processed { get; set; }
         public bool Alive { get; set; }
         public bool Crit { get; set; }
-        public int Damage { get; set; }
     }
 }

@@ -79,6 +79,35 @@ namespace Core
             return (baseFlags & flag) != 0;
         }
 
+        public static AuraStateFlags AsFlag(this AuraStateType auraStateType)
+        {
+            switch (auraStateType)
+            {
+                case AuraStateType.None:
+                    return 0;
+                case AuraStateType.Frozen:
+                    return AuraStateFlags.Frozen;
+                case AuraStateType.Defense:
+                    return AuraStateFlags.Defense;
+                case AuraStateType.Berserking:
+                    return AuraStateFlags.Berserking;
+                case AuraStateType.Judgement:
+                    return AuraStateFlags.Judgement;
+                case AuraStateType.Conflagrate:
+                    return AuraStateFlags.Conflagrate;
+                case AuraStateType.Swiftmend:
+                    return AuraStateFlags.Swiftmend;
+                case AuraStateType.DeadlyPoison:
+                    return AuraStateFlags.DeadlyPoison;
+                case AuraStateType.Enrage:
+                    return AuraStateFlags.Enrage;
+                case AuraStateType.Bleeding:
+                    return AuraStateFlags.Bleeding;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(auraStateType), auraStateType, null);
+            }
+        }
+
         public static SpellMechanicsFlags AsFlag(this SpellMechanics mechanics)
         {
             switch (mechanics)

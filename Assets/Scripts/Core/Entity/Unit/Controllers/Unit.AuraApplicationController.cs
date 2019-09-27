@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common;
+using Core.AuraEffects;
 using UnityEngine;
 
 namespace Core
@@ -32,7 +33,25 @@ namespace Core
 
             internal bool HasAuraType(AuraEffectType auraEffectType) => auraEffectsByAuraType.ContainsKey(auraEffectType);
 
-            internal bool HasAuraState(AuraStateType auraStateType) => auraApplicationsByAuraState.ContainsKey(auraStateType);
+            internal bool HasAuraState(AuraStateType auraStateType, Unit caster = null, Spell spell = null)
+            {
+                if (auraApplicationsByAuraState.ContainsKey(auraStateType))
+                    return true;
+
+                if (caster != null)
+                {
+                    IReadOnlyList<AuraEffect> ignoreAuraEffects = caster.Auras.GetAuraEffects(AuraEffectType.IgnoreTargetAuraState);
+                    if (ignoreAuraEffects != null) for (int i = 0; i < ignoreAuraEffects.Count; i++)
+                        if (ignoreAuraEffects[i].EffectInfo is AuraEffectInfoIgnoreTargetAuraState ignoreInfo)
+                            if (ignoreInfo.IgnoredState == auraStateType)
+                                return true;
+                }
+
+                if (spell != null && spell.IsIgnoringAuraState(auraStateType))
+                    return true;
+
+                return false;
+            } 
 
             internal bool HasAuraWithSpell(int spellId) => auraApplicationsBySpellInfoId.ContainsKey(spellId);
 

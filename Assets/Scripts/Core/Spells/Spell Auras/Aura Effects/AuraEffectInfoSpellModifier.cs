@@ -11,10 +11,12 @@ namespace Core.AuraEffects
         [SerializeField, UsedImplicitly] private float modifierValue;
         [SerializeField, UsedImplicitly] private SpellModifierType modifierType;
         [SerializeField, UsedImplicitly] private SpellModifierApplicationType applicationType;
+        [SerializeField, UsedImplicitly] private SpellValueModifier spellValueModifier;
         [SerializeField, UsedImplicitly] private List<Condition> applicationConditions;
 
         public SpellModifierType ModifierType => modifierType;
         public SpellModifierApplicationType ApplicationType => applicationType;
+        public SpellValueModifier SpellValueModifier => spellValueModifier;
         public IReadOnlyList<Condition> ApplicationConditions => applicationConditions;
 
         public override float Value => modifierValue;

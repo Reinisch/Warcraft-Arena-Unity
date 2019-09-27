@@ -252,7 +252,7 @@ namespace Core
 
         internal bool HasAuraType(AuraEffectType auraEffectType) => Auras.HasAuraType(auraEffectType);
 
-        internal bool HasAuraState(AuraStateType auraStateType) => Auras.HasAuraState(auraStateType);
+        internal bool HasAuraState(AuraStateType auraStateType, Unit caster = null, Spell spell = null) => Auras.HasAuraState(auraStateType, caster, spell);
 
         internal IReadOnlyList<AuraEffect> GetAuraEffects(AuraEffectType auraEffectType) => Auras.GetAuraEffects(auraEffectType);
 

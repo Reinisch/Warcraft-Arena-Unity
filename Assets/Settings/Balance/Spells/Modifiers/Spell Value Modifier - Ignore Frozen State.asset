@@ -9,14 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa0898825cc923d45a1fb4083a85e1cd, type: 3}
-  m_Name: Attribute Definition - Default Player
+  m_Script: {fileID: 11500000, guid: af70858592870bf4da5dd96149abe3f2, type: 3}
+  m_Name: Spell Value Modifier - Ignore Frozen State
   m_EditorClassIdentifier: 
-  baseModelId: 0
-  baseHealth: 20000
-  baseMaxHealth: 20000
-  baseMana: 100
-  baseMaxMana: 100
-  baseSpellPower: 100
-  baseIntellect: 500
-  critPercentage: 25
+  ignoredAuraState: 1

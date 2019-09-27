@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using Core.AuraEffects;
 using UnityEngine;
 
 using EventHandler = Common.EventHandler;
@@ -11,11 +12,14 @@ namespace Core
     {
         private static int SpellAliveCount;
 
+        private SpellValue spellValue;
         private readonly SpellManager spellManager;
         private readonly SpellCastFlags spellCastFlags;
         private readonly MovementFlags casterMovementFlags;
         private readonly HashSet<Aura> appliedModifierAuras = new HashSet<Aura>();
         private readonly HashSet<Aura> chargeDroppedModifierAuras = new HashSet<Aura>();
+        private readonly HashSet<SpellModifier> appliedModifiers = new HashSet<SpellModifier>();
+        private readonly List<SpellModifier> unappliedModifiers = new List<SpellModifier>();
 
         private int CastTimeLeft { get; set; }
         private int EffectDamage { get; set; }
@@ -82,6 +86,8 @@ namespace Core
             Caster = OriginalCaster = null;
             appliedModifierAuras.Clear();
             chargeDroppedModifierAuras.Clear();
+            appliedModifiers.Clear();
+            unappliedModifiers.Clear();
 
             ImplicitTargets.Dispose();
             ExplicitTargets.Dispose();
@@ -158,9 +164,77 @@ namespace Core
             }
         }
 
+        internal bool IsIgnoringAuraState(AuraStateType auraStateType) => (spellValue.IgnoredAuraStates & auraStateType.AsFlag()) != 0;
+
         internal bool HasAppliedModifier(Aura aura) => appliedModifierAuras.Contains(aura);
 
-        internal void AddAppliedModifierAura(Aura aura) => appliedModifierAuras.Add(aura);
+        internal void ApplySpellValueModifier(SpellValueModifier valueModifier) => valueModifier.Modify(ref spellValue);
+
+        internal void AddAppliedModifier(SpellModifier spellModifier)
+        {
+            appliedModifierAuras.Add(spellModifier.Aura);
+            appliedModifiers.Add(spellModifier);
+            unappliedModifiers.Remove(spellModifier);
+
+            for (int i = 0; i < spellModifier.Aura.Effects.Count; i++)
+                if (spellModifier.Aura.Effects[i] is AuraEffectSpellModifier spellModifierEffect)
+                    if (!appliedModifiers.Contains(spellModifierEffect.SpellModifier))
+                        unappliedModifiers.Add(spellModifierEffect.SpellModifier);
+        }
+
+        internal void HandleUnappliedModifers(Unit unit, SpellModifierType modifierType, SpellModifierApplicationType applicationType, ref float value)
+        {
+            switch (applicationType)
+            {
+                case SpellModifierApplicationType.Flat:
+                    for (int i = unappliedModifiers.Count - 1; i >= 0; i--)
+                    {
+                        if (unappliedModifiers[i].Kind != (modifierType, applicationType))
+                            continue;
+
+                        if (!unit.Spells.IsAffectedBySpellModifier(this, unappliedModifiers[i]))
+                            continue;
+
+                        value += unappliedModifiers[i].Value;
+                        appliedModifiers.Add(unappliedModifiers[i]);
+                        unappliedModifiers.RemoveAt(i);
+                    }
+                    break;
+                case SpellModifierApplicationType.Percent:
+                    for (int i = unappliedModifiers.Count - 1; i >= 0; i--)
+                    {
+                        if (unappliedModifiers[i].Kind != (modifierType, applicationType))
+                            continue;
+
+                        if (!unit.Spells.IsAffectedBySpellModifier(this, unappliedModifiers[i]))
+                            continue;
+
+                        value *= 1.0f + 1.0f.ApplyPercentage(unappliedModifiers[i].Value);
+                        appliedModifiers.Add(unappliedModifiers[i]);
+                        unappliedModifiers.RemoveAt(i);
+                    }
+                    break;
+                case SpellModifierApplicationType.SpellValue:
+                    for (int i = unappliedModifiers.Count - 1; i >= 0; i--)
+                    {
+                        if (unappliedModifiers[i].Kind != (modifierType, applicationType))
+                            continue;
+
+                        if (!unit.Spells.IsAffectedBySpellModifier(this, unappliedModifiers[i]))
+                            continue;
+
+                        if (unappliedModifiers[i].AuraModifier.SpellValueModifier != null)
+                            ApplySpellValueModifier(unappliedModifiers[i].AuraModifier.SpellValueModifier);
+
+                        appliedModifiers.Add(unappliedModifiers[i]);
+                        unappliedModifiers.RemoveAt(i);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(applicationType), applicationType, null);
+            }
+        }
+
 
         internal SpellCastResult Prepare()
         {
@@ -456,8 +530,8 @@ namespace Core
 
             SpellMissType missType = targetEntry.MissCondition;
 
-            EffectDamage = targetEntry.Damage;
-            EffectHealing = -targetEntry.Damage;
+            EffectDamage = 0;
+            EffectHealing = 0;
 
             Unit hitTarget = targetEntry.Target;
             if (missType == SpellMissType.Reflect && targetEntry.ReflectResult == SpellMissType.None)

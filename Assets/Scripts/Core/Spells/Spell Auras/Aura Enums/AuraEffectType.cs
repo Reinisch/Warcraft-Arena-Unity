@@ -240,7 +240,7 @@
         ModTargetResistBySpellClass = 257,
         ScreenEffect = 260,
         Phase = 261,
-        AbilityIgnoreAurastate = 262,
+        IgnoreTargetAuraState = 262,
         AllowOnlyAbility = 263,
         ModImmuneAuraApplySchool = 267,
         ModIgnoreTargetResist = 269,
