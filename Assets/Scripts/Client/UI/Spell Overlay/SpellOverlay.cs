@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -13,9 +14,20 @@ namespace Client
             Disabled
         }
 
+        [Serializable]
+        private class OverlayPerCharge
+        {
+            [SerializeField, UsedImplicitly] private int minCharges;
+            [SerializeField, UsedImplicitly] private CanvasGroup partialCanvasGroup;
+
+            public int MinCharges => minCharges;
+            public CanvasGroup PartialCanvasGroup => partialCanvasGroup;
+        }
+
         [SerializeField, UsedImplicitly] private RectTransform rectTransform;
         [SerializeField, UsedImplicitly] private Animator overlayAnimator;
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
+        [SerializeField, UsedImplicitly] private List<OverlayPerCharge> perChargeSettings;
 
         private const string ActiveStateParamName = "IsPlaying";
 
@@ -42,6 +54,12 @@ namespace Client
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, "Unknown spell overlay state!");
             }
+        }
+
+        public void HandleAuraCharges(int chargeAmount)
+        {
+            foreach (OverlayPerCharge perChargeEntry in perChargeSettings)
+                perChargeEntry.PartialCanvasGroup.alpha = perChargeEntry.MinCharges <= chargeAmount ? 1.0f : 0.0f;
         }
     }
 }

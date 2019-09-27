@@ -66,6 +66,7 @@ namespace Client
                     activeSpellOverlaysByAuraId[auraId] = GameObjectPool.Take(overlaySettingsByAuraId[auraId].Prototype);
                     activeSpellOverlaysByAuraId[auraId].RectTransform.SetParentAndReset(battleScreen.FindTag(BattleHudTagType.SpellOverlay));
                     activeSpellOverlaysByAuraId[auraId].ModifyState(SpellOverlay.State.Active);
+                    activeSpellOverlaysByAuraId[auraId].HandleAuraCharges(CalculateTotalCharges(auraId));
                 }
             }
             else
@@ -77,6 +78,16 @@ namespace Client
                     GameObjectPool.Return(spellOverlay, false);
                 }
             }
+        }
+
+        private int CalculateTotalCharges(int auraId)
+        {
+            int charges = 0;
+            if (activeAurasById.TryGetValue(auraId, out List<IVisibleAura> auras))
+                foreach (var aura in auras)
+                    charges += aura.Charges;
+
+            return charges;
         }
 
         void IScreenHandler<BattleScreen>.OnScreenShown(BattleScreen screen)
@@ -116,6 +127,8 @@ namespace Client
 
         void IVisibleAuraHandler.AuraRefreshed(IVisibleAura visibleAura)
         {
+            if (activeSpellOverlaysByAuraId.TryGetValue(visibleAura.AuraId, out SpellOverlay spellOverlay))
+                spellOverlay.HandleAuraCharges(CalculateTotalCharges(visibleAura.AuraId));
         }
     }
 }

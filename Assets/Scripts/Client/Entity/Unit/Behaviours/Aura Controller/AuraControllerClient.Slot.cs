@@ -48,10 +48,11 @@ namespace Client
                 }
 
                 int oldAuraId = AuraId;
-                if (oldAuraId != state.AuraId)
+                int oldRefrechFrame = ServerRefreshFrame;
+                int oldCharges = Charges;
+
+                if (oldAuraId != AuraId)
                     HandleUnapplication();
-                else if (ServerRefreshFrame != state.RefreshFrame || Charges != state.Charges)
-                    HandleRefresh();
 
                 AuraId = state.AuraId;
                 ServerRefreshFrame = state.RefreshFrame;
@@ -69,6 +70,8 @@ namespace Client
                     DurationLeft = Mathf.RoundToInt(RefreshDuration * cooldownProgressLeft);
                 }
 
+                if (oldAuraId == AuraId && (oldRefrechFrame != ServerRefreshFrame || oldCharges != Charges))
+                    HandleRefresh();
                 if (oldAuraId != AuraId)
                     HandleApplication();
             }
