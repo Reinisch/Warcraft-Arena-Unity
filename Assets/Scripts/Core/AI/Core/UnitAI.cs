@@ -1,39 +1,47 @@
-﻿namespace Core
+﻿using JetBrains.Annotations;
+using UnityEngine;
+using UnityEngine.AI;
+
+namespace Core
 {
-    public abstract class UnitAI
+    public abstract class UnitAI : UnitBehaviour
     {
-        protected UnitAI(Unit unit)
-        {
-        }
-        
-        public abstract void DoUpdate(int deltaTime);
+        [SerializeField, UsedImplicitly] private NavMeshAgent navmeshAgent;
+        [SerializeField, UsedImplicitly] private BalanceReference balance;
 
-        public virtual void InitializeAI()
-        {
-        }
+        private IUnitAIModel unitAIModel;
 
-        public virtual void DeinitializeAI()
-        {
-        }
+        public override bool HasClientLogic => false;
+        public override bool HasServerLogic => true;
 
-        public virtual void DoAction(int actionId)
+        protected override void OnAttach()
         {
-        }
+            base.OnAttach();
 
-        public virtual void DamageDealt(Unit victim, int damage, SpellDamageType spellDamageType)
-        {
-        }
+            navmeshAgent.enabled = false;
 
-        public virtual void DamageTaken(Unit attacker, int damage)
-        {
+            if (balance.UnitInfoAIById.TryGetValue(Unit.UnitCreateToken.OriginalAIInfoId, out UnitInfoAI unitInfoAI))
+            {
+                unitAIModel = unitInfoAI.CreateAI();
+                unitAIModel.Register(Unit);
+            }
         }
 
-        public void DoCast(int spellId)
+        protected override void OnDetach()
         {
+            unitAIModel?.Unregister();
+            unitAIModel = null;
+
+            navmeshAgent.enabled = false;
+
+            base.OnDetach();
         }
 
-        public void DoCast(Unit target, int spellId, bool triggered = false)
+        protected override void OnUpdate(int deltaTime)
         {
+            base.OnUpdate(deltaTime);
+
+            unitAIModel?.DoUpdate(deltaTime);
         }
     }
 }

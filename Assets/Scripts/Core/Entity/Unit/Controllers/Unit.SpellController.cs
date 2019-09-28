@@ -49,11 +49,6 @@ namespace Core
                 unit = null;
             }
 
-            internal SpellCastResult TriggerSpell(SpellInfo spellInfo, Unit target)
-            {
-                return CastSpell(spellInfo, new SpellCastingOptions(new SpellExplicitTargets {Target = target}, SpellCastFlags.TriggeredByAura));
-            }
-
             internal SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastingOptions castOptions)
             {
                 Spell spell = new Spell(unit, spellInfo, castOptions);
@@ -79,6 +74,11 @@ namespace Core
                 }
 
                 return SpellCastResult.Success;
+            }
+
+            internal void TriggerSpell(SpellInfo spellInfo, Unit target)
+            {
+                CastSpell(spellInfo, new SpellCastingOptions(new SpellExplicitTargets { Target = target }, SpellCastFlags.TriggeredByAura));
             }
 
             internal void DamageBySpell(SpellDamageInfo damageInfo, Spell spell = null)

@@ -1,13 +1,21 @@
 ﻿namespace Core
 {
-    public class CreatureAI : UnitAI
+    public sealed class CreatureAI : UnitAI
     {
-        public CreatureAI(Creature creature) : base(creature)
+        private Creature Creature { get; set; }
+
+        protected override void OnAttach()
         {
+            base.OnAttach();
+
+            Creature = (Creature)Unit;
         }
 
-        public override void DoUpdate(int deltaTime)
+        protected override void OnDetach()
         {
+            base.OnDetach();
+
+            Creature = null;
         }
     }
 }

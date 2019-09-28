@@ -53,7 +53,7 @@ namespace Core
                     if (unit.IsOwner)
                     {
                         unitState.Faction.Id = value.FactionId;
-                        unit.createToken.FactionId = value.FactionId;
+                        unit.UnitCreateToken.FactionId = value.FactionId;
                     }
 
                     EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
@@ -70,7 +70,7 @@ namespace Core
                     if (unit.IsOwner)
                     {
                         unitState.DeathState = (int)value;
-                        unit.createToken.DeathState = value;
+                        unit.UnitCreateToken.DeathState = value;
                     }
                 }
             }
@@ -85,7 +85,7 @@ namespace Core
                     if (unit.IsOwner)
                     {
                         unitState.ClassType = (int)value;
-                        unit.createToken.ClassType = value;
+                        unit.UnitCreateToken.ClassType = value;
                     }
                 }
             }
@@ -101,7 +101,7 @@ namespace Core
                     if (unit.IsOwner)
                     {
                         unitState.Scale = value;
-                        unit.createToken.Scale = value;
+                        unit.UnitCreateToken.Scale = value;
                     }
                 }
             }
@@ -116,7 +116,7 @@ namespace Core
                     if (unit.IsOwner)
                     {
                         unitState.ModelId = value;
-                        unit.createToken.ModelId = value;
+                        unit.UnitCreateToken.ModelId = value;
                     }
 
                     EventHandler.ExecuteEvent(unit, GameEvents.UnitModelChanged);
@@ -133,7 +133,7 @@ namespace Core
                     if (unit.IsOwner)
                     {
                         unitState.Faction.FreeForAll = value;
-                        unit.createToken.FreeForAll = value;
+                        unit.UnitCreateToken.FreeForAll = value;
                     }
 
                     EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);

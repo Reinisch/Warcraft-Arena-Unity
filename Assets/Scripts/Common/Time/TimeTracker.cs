@@ -1,12 +1,11 @@
 ﻿namespace Common
 {
-    public class TimeTracker
+    public struct TimeTracker
     {
         public long ExpiryTime { get; private set; }
         public bool Passed => ExpiryTime <= 0;
 
-
-        public TimeTracker(long expiry)
+        public TimeTracker(long expiry = 0)
         {
             ExpiryTime = expiry;
         }

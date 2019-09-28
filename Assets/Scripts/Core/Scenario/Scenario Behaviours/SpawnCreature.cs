@@ -13,22 +13,23 @@ namespace Core.Scenario
         {
             base.Initialize(map);
 
-            EventHandler.RegisterEvent(WorldManager, GameEvents.ServerLaunched, OnServerLaunched);
+            EventHandler.RegisterEvent(World, GameEvents.ServerLaunched, OnServerLaunched);
         }
 
         internal override void DeInitialize()
         {
-            EventHandler.UnregisterEvent(WorldManager, GameEvents.ServerLaunched, OnServerLaunched);
+            EventHandler.UnregisterEvent(World, GameEvents.ServerLaunched, OnServerLaunched);
 
             base.DeInitialize();
         }
 
         private void OnServerLaunched()
         {
-            Creature creature = WorldManager.UnitManager.Create<Creature>(BoltPrefabs.Creature, new Creature.CreateToken
+            Creature creature = World.UnitManager.Create<Creature>(BoltPrefabs.Creature, new Creature.CreateToken
             {
                 Position = customSpawnSettings.SpawnPoint.position,
                 Rotation = customSpawnSettings.SpawnPoint.rotation,
+                OriginalAIInfoId = customSpawnSettings.UnitInfoAI?.Id ?? 0,
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
                 ClassType = ClassType.Warrior,

@@ -18,6 +18,7 @@ MonoBehaviour:
   spellContainer: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
   auraContainer: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
   classContainer: {fileID: 11400000, guid: 8d2f6319ee506234797c9f24cb1cad8b, type: 2}
+  unitAIContainer: {fileID: 11400000, guid: a0a3379225cd40144a30556aa8629bd0, type: 2}
   mapEntries:
   - {fileID: 11400000, guid: 930fb9f3e36b00247b2f30b754492ffa, type: 2}
   - {fileID: 11400000, guid: 71240ed7b1f92cd48a8e7aa84eb9af06, type: 2}

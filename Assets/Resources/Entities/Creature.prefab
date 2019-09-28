@@ -85,10 +85,12 @@ GameObject:
   m_Component:
   - component: {fileID: 845485024815860341}
   - component: {fileID: 8793749810161454766}
-  - component: {fileID: -8026284028472188865}
+  - component: {fileID: 2598279064012491936}
   - component: {fileID: 845485024815860170}
+  - component: {fileID: -8026284028472188865}
   - component: {fileID: 845485024815860167}
   - component: {fileID: 845485024815860285}
+  - component: {fileID: 690920295090748487}
   - component: {fileID: 845485024815860282}
   m_Layer: 9
   m_Name: Creature
@@ -131,8 +133,10 @@ MonoBehaviour:
     type: 2}
   unitBehaviours:
   - {fileID: -8026284028472188865}
+  - {fileID: 2598279064012491936}
   creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
---- !u!114 &-8026284028472188865
+  creatureAI: {fileID: 2598279064012491936}
+--- !u!114 &2598279064012491936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,9 +145,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 845485024815860542}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc8809d6790259948ba6de7564b33d1d, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ed0ef8eed111bf4290bf16032087303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  navmeshAgent: {fileID: 690920295090748487}
+  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
 --- !u!114 &845485024815860170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,6 +168,18 @@ MonoBehaviour:
     type: 2}
   unitRigidbody: {fileID: 845485024815860282}
   groundChecker: {fileID: 845485024815860166}
+--- !u!114 &-8026284028472188865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845485024815860542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc8809d6790259948ba6de7564b33d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &845485024815860167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +223,28 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!195 &690920295090748487
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845485024815860542}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!54 &845485024815860282
 Rigidbody:
   m_ObjectHideFlags: 0

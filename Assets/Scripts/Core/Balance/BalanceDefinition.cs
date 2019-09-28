@@ -18,6 +18,8 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private ClassInfoContainer classContainer;
         [SerializeField, UsedImplicitly]
+        private UnitInfoAIContainer unitAIContainer;
+        [SerializeField, UsedImplicitly]
         private List<MapDefinition> mapEntries;
         [SerializeField, UsedImplicitly]
         private List<FactionDefinition> factionEntries;
@@ -25,6 +27,7 @@ namespace Core
         public IReadOnlyList<SpellInfo> SpellInfos => spellContainer.ItemList;
         public IReadOnlyList<AuraInfo> AuraInfos => auraContainer.ItemList;
         public IReadOnlyList<ClassInfo> ClassInfos => classContainer.ItemList;
+        public IReadOnlyList<UnitInfoAI> UnitAIEntries => unitAIContainer.ItemList;
         public IReadOnlyList<MapDefinition> MapEntries => mapEntries;
         public IReadOnlyList<FactionDefinition> FactionEntries => factionEntries;
         public FactionDefinition DefaultFaction => defaultFaction;

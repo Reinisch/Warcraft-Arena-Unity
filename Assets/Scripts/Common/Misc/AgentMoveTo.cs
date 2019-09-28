@@ -14,13 +14,14 @@ namespace Common
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
-            agent.destination = goal.position;
+            agent.destination = goal?.position ?? agent.transform.position;
         }
 
         [UsedImplicitly]
         private void Update()
         {
-            agent.destination = goal.position;
+            if (agent.enabled && agent.isOnNavMesh && goal != null)
+                agent.destination = goal.position;
         }
     }
 }

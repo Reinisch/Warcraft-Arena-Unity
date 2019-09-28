@@ -4,17 +4,13 @@ namespace Core
 {
     public abstract class ConfusedMovementGenerator<TUnit> : MovementGeneratorMedium<TUnit, ConfusedMovementGenerator<TUnit>> where TUnit : Unit
     {
-        protected TimeTracker NextMoveTime { get; set; }
+        private TimeTracker nextMoveTime;
+
         protected float X { get; set; }
         protected float Y { get; set; }
         protected float Z { get; set; }
 
         public override MovementGeneratorType GeneratorType => MovementGeneratorType.ConfusedMotionType;
-
-        protected ConfusedMovementGenerator()
-        {
-            NextMoveTime = new TimeTracker(0);
-        }
 
         public override void DoInitialize(TUnit unit)
         {
@@ -29,7 +25,7 @@ namespace Core
 
         public override void DoReset(TUnit unit)
         {
-            NextMoveTime.Reset(0);
+            nextMoveTime.Reset(0);
 
             if (!unit.IsAlive || unit.IsStopped)
                 return;
@@ -42,16 +38,16 @@ namespace Core
             if (unit.HasState(UnitControlState.Root | UnitControlState.Stunned | UnitControlState.Distracted))
                 return true;
 
-            if (NextMoveTime.Passed)
+            if (nextMoveTime.Passed)
             {
                 // currently moving, update location
                 unit.AddState(UnitControlState.ConfusedMove);
-                NextMoveTime.Reset(RandomUtils.Next(800, 1500));
+                nextMoveTime.Reset(RandomUtils.Next(800, 1500));
             }
             else
             {
-                NextMoveTime.Update(timeDiff);
-                if (NextMoveTime.Passed)
+                nextMoveTime.Update(timeDiff);
+                if (nextMoveTime.Passed)
                     unit.AddState(UnitControlState.ConfusedMove);
             }
 

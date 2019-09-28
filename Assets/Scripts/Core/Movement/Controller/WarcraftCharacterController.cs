@@ -107,7 +107,7 @@ namespace Core
             groundCheckDistance = controllerDefinition.BaseGroundCheckDistance;
             defaultInputProvider = new IdleControllerInputProvider(unit);
 
-            UpdateOwnership();
+            UpdateRigidbody();
         }
 
         void IUnitBehaviour.HandleUnitDetach()
@@ -147,7 +147,7 @@ namespace Core
             unit.MovementInfo.HasMovementControl = hasMovementControl;
             unit.UpdateSyncTransform(unit.IsOwner || !hasMovementControl);
 
-            UpdateOwnership();
+            UpdateRigidbody();
 
             if (unit.IsOwner && unit is Player player)
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerMovementControlChanged, player, hasMovementControl);
@@ -158,7 +158,7 @@ namespace Core
             unitRigidbody.velocity = Vector3.zero;
         }
 
-        internal void UpdateOwnership()
+        internal void UpdateRigidbody()
         {
             bool isMovingLocally = IsMovementController;
             unitRigidbody.isKinematic = !isMovingLocally;

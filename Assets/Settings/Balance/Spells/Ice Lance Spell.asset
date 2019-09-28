@@ -60,8 +60,6 @@ MonoBehaviour:
   maxRangeHostile: 40
   maxRangeFriend: 0
   speed: 40
-  stackAmount: 0
-  maxAffectedTargets: 1
   spellEffectInfos:
   - {fileID: -7232521499262965016}
   spellPowerEntries: []

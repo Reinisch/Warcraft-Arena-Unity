@@ -14,8 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellInfo: {fileID: 11400000, guid: d0450f64f06f7b24aa8b9238f776c2a5, type: 2}
   spellIcon: {fileID: 21300000, guid: 1bcb9c3a2c6e3f643b5f9f2acbb088d3, type: 3}
-  visualEffects:
-  - attachToTag: 0
-    visualUsageType: 0
-    tagType: 0
-    effectSettings: {fileID: 11400000, guid: 4ff8660a04a17d24c8dbd62a38ffe038, type: 2}
+  visualEffects: []

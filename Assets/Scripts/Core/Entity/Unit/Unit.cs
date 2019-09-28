@@ -20,6 +20,8 @@ namespace Core
             public int OriginalModelId { private get; set; }
             public float Scale { private get; set; } = 1.0f;
 
+            public int OriginalAIInfoId { get; set; }
+
             public override void Read(UdpPacket packet)
             {
                 base.Read(packet);
@@ -29,6 +31,7 @@ namespace Core
                 FactionId = packet.ReadInt();
                 ModelId = packet.ReadInt();
                 OriginalModelId = packet.ReadInt();
+                OriginalAIInfoId = packet.ReadInt();
                 FreeForAll = packet.ReadBool();
                 Scale = packet.ReadFloat();
             }
@@ -42,6 +45,7 @@ namespace Core
                 packet.WriteInt(FactionId);
                 packet.WriteInt(ModelId);
                 packet.WriteInt(OriginalModelId);
+                packet.WriteInt(OriginalAIInfoId);
                 packet.WriteBool(FreeForAll);
                 packet.WriteFloat(Scale);
             }
@@ -68,7 +72,6 @@ namespace Core
         private List<UnitBehaviour> unitBehaviours;
 
         private SingleReference<Unit> selfReference;
-        private CreateToken createToken;
         private UnitControlState controlState;
         private IUnitState entityState;
         private UnitFlags unitFlags;
@@ -84,6 +87,8 @@ namespace Core
 
         internal SpellInfo TransformSpellInfo { get; private set; }
         internal MovementInfo MovementInfo { get; private set; }
+        internal CreateToken UnitCreateToken { get; private set; }
+        internal abstract UnitAI AI { get; }
 
         internal bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
         internal int ModelId { get => Attributes.ModelId; set => Attributes.ModelId = value; }
@@ -159,7 +164,7 @@ namespace Core
         protected virtual void HandleAttach()
         {
             selfReference = new SingleReference<Unit>(this);
-            createToken = (CreateToken)entity.AttachToken;
+            UnitCreateToken = (CreateToken)entity.AttachToken;
             entityState = entity.GetState<IUnitState>();
 
             MovementInfo = CreateMovementInfo(entityState);
@@ -186,13 +191,13 @@ namespace Core
         protected virtual void HandleControlGained()
         {
             UpdateSyncTransform(IsOwner);
-            CharacterController.UpdateOwnership();
+            CharacterController.UpdateRigidbody();
         }
 
         protected virtual void HandleControlLost()
         {
             UpdateSyncTransform(true);
-            CharacterController.UpdateOwnership();
+            CharacterController.UpdateRigidbody();
         }
 
         protected virtual MovementInfo CreateMovementInfo(IUnitState unitState) => new MovementInfo(this, unitState);

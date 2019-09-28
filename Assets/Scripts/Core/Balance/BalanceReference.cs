@@ -15,6 +15,7 @@ namespace Core
         private readonly Dictionary<int, SpellInfo> spellInfosById = new Dictionary<int, SpellInfo>();
         private readonly Dictionary<int, AuraInfo> auraInfosById = new Dictionary<int, AuraInfo>();
         private readonly Dictionary<int, FactionDefinition> factionsById = new Dictionary<int, FactionDefinition>();
+        private readonly Dictionary<int, UnitInfoAI> unitInfoAIById = new Dictionary<int, UnitInfoAI>();
         private readonly Dictionary<ClassType, ClassInfo> classesByType = new Dictionary<ClassType, ClassInfo>();
 
         public FactionDefinition DefaultFaction => definition.DefaultFaction;
@@ -23,6 +24,7 @@ namespace Core
         public IReadOnlyDictionary<int, SpellInfo> SpellInfosById => spellInfosById;
         public IReadOnlyDictionary<int, AuraInfo> AuraInfosById => auraInfosById;
         public IReadOnlyDictionary<int, FactionDefinition> FactionsById => factionsById;
+        public IReadOnlyDictionary<int, UnitInfoAI> UnitInfoAIById => unitInfoAIById;
         public IReadOnlyDictionary<ClassType, ClassInfo> ClassesByType => classesByType;
 
         protected override void OnRegistered()
@@ -41,6 +43,9 @@ namespace Core
             for (int i = 0; i < definition.ClassInfos.Count; i++)
                 classesByType.Add(definition.ClassInfos[i].ClassType, definition.ClassInfos[i]);
 
+            for (int i = 0; i < definition.UnitAIEntries.Count; i++)
+                unitInfoAIById.Add(definition.UnitAIEntries[i].Id, definition.UnitAIEntries[i]);
+
             for (int i = 0; i < definition.SpellInfos.Count; i++)
                 definition.SpellInfos[i].PopulateEffectInfo();
         }
@@ -50,6 +55,7 @@ namespace Core
             spellInfosById.Clear();
             auraInfosById.Clear();
             factionsById.Clear();
+            unitInfoAIById.Clear();
             classesByType.Clear();
             maps.Clear();
         }

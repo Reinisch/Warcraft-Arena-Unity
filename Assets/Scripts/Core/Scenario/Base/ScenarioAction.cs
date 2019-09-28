@@ -5,7 +5,7 @@ namespace Core.Scenario
     public abstract class ScenarioAction : MonoBehaviour
     {
         protected Map Map { get; private set; }
-        protected WorldManager WorldManager => Map.WorldManager;
+        protected WorldManager World => Map.WorldManager;
         protected BalanceReference Balance => Map.Settings.Balance;
 
         internal virtual void Initialize(Map map)

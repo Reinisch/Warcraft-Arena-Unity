@@ -34,10 +34,14 @@ namespace Core
 
         [SerializeField, UsedImplicitly, Header(nameof(Creature)), Space(10)]
         private CreatureDefinition creatureDefinition;
+        [SerializeField, UsedImplicitly]
+        private CreatureAI creatureAI;
 
         private CreateToken createToken;
         private string customNameId;
 
+        internal CreatureAI CreatureAI => creatureAI;
+        internal override UnitAI AI => creatureAI;
         internal override bool AutoScoped => true;
 
         public override string Name { get => string.IsNullOrEmpty(customNameId) ? creatureDefinition.CreatureNameId : customNameId; internal set => customNameId = value; }

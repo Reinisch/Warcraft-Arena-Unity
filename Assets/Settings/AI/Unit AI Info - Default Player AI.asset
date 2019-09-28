@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27bc6de71d4a3b74f97717253c4816d7, type: 3}
+  m_Name: Unit AI Info - Default Player AI
+  m_EditorClassIdentifier: 
+  id: 2
+  container: {fileID: 11400000, guid: a0a3379225cd40144a30556aa8629bd0, type: 2}
+  settings: {fileID: 11400000, guid: 08e380dd4297eda4e9959c56ad698a6b, type: 2}

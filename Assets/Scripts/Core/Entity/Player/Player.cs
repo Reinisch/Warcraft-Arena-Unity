@@ -1,5 +1,7 @@
 ﻿using Bolt;
+using JetBrains.Annotations;
 using UdpKit;
+using UnityEngine;
 
 namespace Core
 {
@@ -51,6 +53,9 @@ namespace Core
             }
         }
 
+        [SerializeField, UsedImplicitly, Header(nameof(Player)), Space(10)]
+        private PlayerAI playerAI;
+
         private CreateToken createToken;
         private IPlayerState playerState;
         private string playerName;
@@ -59,6 +64,8 @@ namespace Core
         internal ClassInfo CurrentClass { get; private set; }
         internal new PlayerMovementInfo MovementInfo { get; private set; }
 
+        internal PlayerAI PlayerAI => playerAI;
+        internal override UnitAI AI => playerAI;
         internal override bool AutoScoped => true;
 
         public override string Name
