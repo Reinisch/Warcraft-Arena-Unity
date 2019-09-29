@@ -6,19 +6,19 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SheepLowerBody
+  m_Name: Sheep - UpperBody
   m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000100000001000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
   - m_Path: sheep
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: sheep 1
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_1
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_1/sheep_bone_3
     m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_1/sheep_bone_3/sheep_bone_7
@@ -38,21 +38,21 @@ AvatarMask:
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_1/sheep_bone_3/sheep_bone_44
     m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_2
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_2/sheep_bone_4
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_2/sheep_bone_4/sheep_bone_11
     m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_2/sheep_bone_4/sheep_bone_11/sheep_bone_19
     m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_2/sheep_bone_5
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_2/sheep_bone_5/sheep_bone_12
     m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_2/sheep_bone_5/sheep_bone_12/sheep_bone_20
     m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_2/sheep_bone_6
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_2/sheep_bone_6/sheep_bone_13
     m_Weight: 1
   - m_Path: sheep 1/sheep_bone_0/sheep_bone_2/sheep_bone_6/sheep_bone_13/sheep_bone_21

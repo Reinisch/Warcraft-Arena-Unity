@@ -92,10 +92,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 957403965b9208746a4504c891036eaf, type: 2}
   - {fileID: 11400000, guid: e52575e9ebb3ac24aa60f12e462ae408, type: 2}
   - {fileID: 11400000, guid: 27e37de3e5c990f46a66f7aa056715e1, type: 2}
-  modelSettings:
-  - {fileID: 11400000, guid: cee96f3e361be5e4eb3deb46c1c4a56b, type: 2}
-  - {fileID: 11400000, guid: 57708be20d719c34abdec60d6b0b918a, type: 2}
-  - {fileID: 11400000, guid: 0940a8a89a777c446b664af42eb6760a, type: 2}
+  modelSettingsContainer: {fileID: 11400000, guid: dfd880d432e89ef4194ba2772d0fd38a,
+    type: 2}
   classIconsByClassType:
     items:
     - classType: 1

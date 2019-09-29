@@ -21,7 +21,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private SelectionCircleController selectionCircleController;
         [SerializeField, UsedImplicitly] private List<SpellEffectSettings> spellEffectSettings;
         [SerializeField, UsedImplicitly] private List<AuraEffectSettings> auraEffectSettings;
-        [SerializeField, UsedImplicitly] private List<UnitModelSettings> modelSettings;
+        [SerializeField, UsedImplicitly] private UnitModelSettingsContainer modelSettingsContainer;
         [SerializeField, UsedImplicitly] private ClassTypeSpriteDictionary classIconsByClassType;
 
         private readonly Dictionary<int, SpellEffectSettings> spellVisualSettingsById = new Dictionary<int, SpellEffectSettings>();
@@ -42,7 +42,9 @@ namespace Client
             base.OnRegistered();
 
             classIconsByClassType.Populate();
-            modelSettings.ForEach(model => modelSettingsById.Add(model.Id, model));
+            for (int i = 0; i < modelSettingsContainer.ItemList.Count; i++)
+                modelSettingsById.Add(modelSettingsContainer.ItemList[i].Id, modelSettingsContainer.ItemList[i]);
+
             auraEffectSettings.ForEach(visual => auraVisualSettingsById.Add(visual.AuraInfo.Id, visual));
             spellEffectSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
             spellEffectSettings.ForEach(visual => visual.Initialize());
@@ -288,21 +290,11 @@ namespace Client
                 auraEffectSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<AuraEffectSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
         }
 
-        [ContextMenu("Collect Unit Models"), UsedImplicitly]
-        private void CollectUnitModelSettings()
-        {
-            modelSettings.Clear();
-
-            foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{nameof(UnitModelSettings)}", null))
-                modelSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<UnitModelSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
-        }
-
         [ContextMenu("Collect Everything"), UsedImplicitly]
         private void CollectEverything()
         {
             CollectAuraEffectSettings();
             CollectSpellEffectSettings();
-            CollectUnitModelSettings();
         }
 #endif
     }

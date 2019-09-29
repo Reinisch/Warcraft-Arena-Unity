@@ -144,11 +144,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 124852103}
-  m_LocalRotation: {x: 0, y: 0.9354441, z: -0, w: -0.35347468}
+  m_LocalRotation: {x: -0, y: 0.9354441, z: -0, w: -0.35347468}
   m_LocalPosition: {x: -33.09, y: 1.58, z: 4.510001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 221.4, z: 0}
 --- !u!1 &144293977
@@ -174,13 +174,111 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 144293977}
-  m_LocalRotation: {x: 0, y: 0.54953337, z: -0, w: -0.83547175}
+  m_LocalRotation: {x: -0, y: 0.54953337, z: -0, w: -0.83547175}
   m_LocalPosition: {x: 10.54, y: -0.17, z: 26.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 293.33, z: 0}
+--- !u!1 &285889212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 285889213}
+  - component: {fileID: 285889214}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (10)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &285889213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285889212}
+  m_LocalRotation: {x: 0, y: -0.44307122, z: 0, w: 0.8964864}
+  m_LocalPosition: {x: 11.7, y: -0.395, z: 8.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: -52.6, z: 0}
+--- !u!114 &285889214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285889212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 285889213}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &341639893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 341639894}
+  - component: {fileID: 341639895}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &341639894
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341639893}
+  m_LocalRotation: {x: 0, y: -0.060177423, z: 0, w: 0.9981877}
+  m_LocalPosition: {x: 1.5, y: -0.395, z: 8.77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: -6.9, z: 0}
+--- !u!114 &341639895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341639893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 341639894}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &367259506
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,13 +302,62 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 367259506}
-  m_LocalRotation: {x: 0, y: 0.17888804, z: 0, w: 0.98386943}
+  m_LocalRotation: {x: -0, y: 0.17888804, z: -0, w: 0.98386943}
   m_LocalPosition: {x: -11.56, y: 0.178, z: 5.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 20.61, z: 0}
+--- !u!1 &369186452
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 369186453}
+  - component: {fileID: 369186454}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &369186453
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369186452}
+  m_LocalRotation: {x: 0, y: -0.32556805, z: 0, w: 0.9455186}
+  m_LocalPosition: {x: 9.340001, y: -0.395, z: 8.530001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: -38, z: 0}
+--- !u!114 &369186454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369186452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 369186453}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &397531457
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,6 +442,26 @@ MonoBehaviour:
   - {fileID: 1115088545}
   - {fileID: 1115088544}
   - {fileID: 1115088543}
+  - {fileID: 1053658180}
+  - {fileID: 341639895}
+  - {fileID: 1123436617}
+  - {fileID: 1397558647}
+  - {fileID: 1345223063}
+  - {fileID: 369186454}
+  - {fileID: 882047745}
+  - {fileID: 1175766290}
+  - {fileID: 1122683017}
+  - {fileID: 285889214}
+  - {fileID: 986889927}
+  - {fileID: 1291554098}
+  - {fileID: 1386678621}
+  - {fileID: 1938576712}
+  - {fileID: 1147489548}
+  - {fileID: 1517310479}
+  - {fileID: 1618946597}
+  - {fileID: 1327414465}
+  - {fileID: 1614241951}
+  - {fileID: 423294305}
   - {fileID: 2045112786}
   - {fileID: 2045112785}
   - {fileID: 2045112784}
@@ -320,6 +487,55 @@ MonoBehaviour:
   - {fileID: 1723975362}
   - {fileID: 1723975361}
   - {fileID: 1723975360}
+--- !u!1 &423294303
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 423294304}
+  - component: {fileID: 423294305}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (20)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &423294304
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423294303}
+  m_LocalRotation: {x: 0, y: -0.2948743, z: 0, w: 0.9555361}
+  m_LocalPosition: {x: 4.36, y: -0.395, z: 9.27}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: -34.3, z: 0}
+--- !u!114 &423294305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423294303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 423294304}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &462837489
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,11 +796,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1115088532}
-  - {fileID: 2045112781}
-  - {fileID: 1551621759}
-  - {fileID: 1723713981}
-  - {fileID: 814015174}
-  - {fileID: 1723975359}
+  - {fileID: 799236943}
   m_Father: {fileID: 397531458}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -611,11 +823,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 538277479}
-  m_LocalRotation: {x: 0, y: 0.9992291, z: -0, w: -0.03925978}
+  m_LocalRotation: {x: -0, y: 0.9992291, z: -0, w: -0.03925978}
   m_LocalPosition: {x: -36.19, y: 1.05, z: -1.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 184.5, z: 0}
 --- !u!1 &573804477
@@ -721,11 +933,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 600385115}
-  m_LocalRotation: {x: 0, y: 0.49394217, z: -0, w: -0.8694948}
+  m_LocalRotation: {x: -0, y: 0.49394217, z: -0, w: -0.8694948}
   m_LocalPosition: {x: 14.07, y: -0.17, z: 23.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 300.8, z: 0}
 --- !u!1 &631784525
@@ -811,11 +1023,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 762751005}
-  m_LocalRotation: {x: 0, y: 0.07845921, z: -0, w: -0.99691737}
+  m_LocalRotation: {x: -0, y: 0.07845921, z: -0, w: -0.99691737}
   m_LocalPosition: {x: 31.46, y: -0.17, z: 3.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 351, z: 0}
 --- !u!1 &784686947
@@ -883,6 +1095,41 @@ Transform:
   m_Father: {fileID: 1723713981}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 194.01099, z: 0}
+--- !u!1 &799236942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 799236943}
+  m_Layer: 0
+  m_Name: Player AI Spawns
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &799236943
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799236942}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2045112781}
+  - {fileID: 1551621759}
+  - {fileID: 1723713981}
+  - {fileID: 814015174}
+  - {fileID: 1723975359}
+  m_Father: {fileID: 529942856}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &800920972
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,11 +1153,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800920972}
-  m_LocalRotation: {x: 0, y: 0.41786712, z: -0, w: -0.9085082}
+  m_LocalRotation: {x: -0, y: 0.41786712, z: -0, w: -0.9085082}
   m_LocalPosition: {x: 16.88, y: -0.17, z: 20.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 310.6, z: 0}
 --- !u!1 &807606278
@@ -936,11 +1183,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 807606278}
-  m_LocalRotation: {x: 0, y: 0.7247734, z: -0, w: -0.6889873}
+  m_LocalRotation: {x: -0, y: 0.7247734, z: -0, w: -0.6889873}
   m_LocalPosition: {x: -29.14, y: 1.61, z: 6.58}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 267.1, z: 0}
 --- !u!1 &807828875
@@ -1001,7 +1248,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 814015173}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1010,8 +1257,8 @@ Transform:
   - {fileID: 1625258587}
   - {fileID: 937210038}
   - {fileID: 2067922466}
-  m_Father: {fileID: 529942856}
-  m_RootOrder: 4
+  m_Father: {fileID: 799236943}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &814015175
 MonoBehaviour:
@@ -1098,6 +1345,55 @@ MonoBehaviour:
     unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
     customNameId: Player AI  - 1
     customScale: 1
+--- !u!1 &882047743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882047744}
+  - component: {fileID: 882047745}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &882047744
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882047743}
+  m_LocalRotation: {x: 0, y: -0.45632148, z: 0, w: 0.889815}
+  m_LocalPosition: {x: 9.520001, y: -0.395, z: 11.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: -54.3, z: 0}
+--- !u!114 &882047745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882047743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 882047744}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &937210037
 GameObject:
   m_ObjectHideFlags: 0
@@ -1151,11 +1447,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 937470649}
-  m_LocalRotation: {x: 0, y: 0.31067672, z: -0, w: -0.9505157}
+  m_LocalRotation: {x: -0, y: 0.31067672, z: -0, w: -0.9505157}
   m_LocalPosition: {x: 24.74, y: -0.17, z: 11.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 323.8, z: 0}
 --- !u!1 &943092861
@@ -1188,6 +1484,55 @@ Transform:
   m_Father: {fileID: 814015174}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 229.771, z: 0}
+--- !u!1 &986889925
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 986889926}
+  - component: {fileID: 986889927}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (11)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &986889926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986889925}
+  m_LocalRotation: {x: 0, y: -0.44775915, z: 0, w: 0.8941542}
+  m_LocalPosition: {x: 8.45, y: -0.395, z: 11.59}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: -53.2, z: 0}
+--- !u!114 &986889927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986889925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 986889926}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1005006517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,6 +1624,55 @@ Transform:
   m_Father: {fileID: 397531458}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1053658178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1053658179}
+  - component: {fileID: 1053658180}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1053658179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053658178}
+  m_LocalRotation: {x: 0, y: -0.15126085, z: 0, w: 0.9884939}
+  m_LocalPosition: {x: 1.3199997, y: -0.395, z: 5.55}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -17.4, z: 0}
+--- !u!114 &1053658180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053658178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1053658179}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1054862037
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,6 +1717,56 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 160, y: 120, z: 160}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1070282206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1070282207}
+  m_Layer: 0
+  m_Name: Dummies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1070282207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070282206}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1597766180}
+  - {fileID: 1892784424}
+  - {fileID: 1745147651}
+  - {fileID: 367259507}
+  - {fileID: 1663585053}
+  - {fileID: 124852104}
+  - {fileID: 1516511730}
+  - {fileID: 807606279}
+  - {fileID: 538277480}
+  - {fileID: 1528644669}
+  - {fileID: 144293978}
+  - {fileID: 600385116}
+  - {fileID: 800920973}
+  - {fileID: 1943771239}
+  - {fileID: 1559358378}
+  - {fileID: 937470650}
+  - {fileID: 2123078853}
+  - {fileID: 1376170248}
+  - {fileID: 762751006}
+  - {fileID: 1316949214}
+  m_Father: {fileID: 1115088532}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1077021455
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,7 +1857,7 @@ GameObject:
   - component: {fileID: 1115088544}
   - component: {fileID: 1115088543}
   m_Layer: 0
-  m_Name: Initial Spawns
+  m_Name: Creature Spawns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1430,26 +1874,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1597766180}
-  - {fileID: 1892784424}
-  - {fileID: 1745147651}
-  - {fileID: 367259507}
-  - {fileID: 1663585053}
-  - {fileID: 124852104}
-  - {fileID: 1516511730}
-  - {fileID: 807606279}
-  - {fileID: 538277480}
-  - {fileID: 1528644669}
-  - {fileID: 144293978}
-  - {fileID: 600385116}
-  - {fileID: 800920973}
-  - {fileID: 1943771239}
-  - {fileID: 1559358378}
-  - {fileID: 937470650}
-  - {fileID: 2123078853}
-  - {fileID: 1376170248}
-  - {fileID: 762751006}
-  - {fileID: 1316949214}
+  - {fileID: 1070282207}
+  - {fileID: 1765204822}
   m_Father: {fileID: 529942856}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1813,6 +2239,104 @@ MonoBehaviour:
     unitInfoAI: {fileID: 0}
     customNameId: Dummy Eleven
     customScale: 1
+--- !u!1 &1122683015
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1122683016}
+  - component: {fileID: 1122683017}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (9)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1122683016
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122683015}
+  m_LocalRotation: {x: 0, y: -0.5828324, z: 0, w: 0.81259245}
+  m_LocalPosition: {x: 7.62, y: 0.73, z: 21.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: -71.3, z: 0}
+--- !u!114 &1122683017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122683015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1122683016}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &1123436615
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1123436616}
+  - component: {fileID: 1123436617}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1123436616
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123436615}
+  m_LocalRotation: {x: 0, y: -0.2932061, z: 0, w: 0.95604926}
+  m_LocalPosition: {x: 6.24, y: -0.395, z: 10.22}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: -34.1, z: 0}
+--- !u!114 &1123436617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123436615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1123436616}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1124758135
 GameObject:
   m_ObjectHideFlags: 0
@@ -1844,6 +2368,104 @@ Transform:
   m_Father: {fileID: 397531458}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1147489546
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1147489547}
+  - component: {fileID: 1147489548}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (15)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1147489547
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147489546}
+  m_LocalRotation: {x: 0, y: -0.48709774, z: 0, w: 0.8733475}
+  m_LocalPosition: {x: 12.49, y: -0.395, z: 13.52}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: -58.3, z: 0}
+--- !u!114 &1147489548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147489546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1147489547}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &1175766288
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1175766289}
+  - component: {fileID: 1175766290}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (8)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1175766289
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175766288}
+  m_LocalRotation: {x: 0, y: -0.53729963, z: 0, w: 0.8433914}
+  m_LocalPosition: {x: 14.3, y: -0.395, z: 14.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: -65, z: 0}
+--- !u!114 &1175766290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175766288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1175766289}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1235808311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1905,6 +2527,55 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1291554096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1291554097}
+  - component: {fileID: 1291554098}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (12)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1291554097
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291554096}
+  m_LocalRotation: {x: 0, y: -0.4702418, z: 0, w: 0.88253766}
+  m_LocalPosition: {x: 8.73, y: -0.395, z: 15.59}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: -56.1, z: 0}
+--- !u!114 &1291554098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291554096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1291554097}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1298741684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1958,13 +2629,62 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1316949213}
-  m_LocalRotation: {x: 0, y: 0.07845921, z: -0, w: -0.99691737}
+  m_LocalRotation: {x: -0, y: 0.07845921, z: -0, w: -0.99691737}
   m_LocalPosition: {x: 29.93, y: 1.67, z: -0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 351, z: 0}
+--- !u!1 &1327414463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1327414464}
+  - component: {fileID: 1327414465}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (18)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1327414464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327414463}
+  m_LocalRotation: {x: 0, y: -0.47408816, z: 0, w: 0.88047737}
+  m_LocalPosition: {x: 6.57, y: -0.395, z: 15.74}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: -56.6, z: 0}
+--- !u!114 &1327414465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327414463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1327414464}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1334117190
 GameObject:
   m_ObjectHideFlags: 0
@@ -1995,6 +2715,55 @@ Transform:
   m_Father: {fileID: 1551621759}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 229.771, z: 0}
+--- !u!1 &1345223061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1345223062}
+  - component: {fileID: 1345223063}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1345223062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345223061}
+  m_LocalRotation: {x: 0, y: -0.18395141, z: 0, w: 0.9829353}
+  m_LocalPosition: {x: 4.46, y: -0.395, z: 5.82}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: -21.2, z: 0}
+--- !u!114 &1345223063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345223061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1345223062}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1376170247
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,13 +2787,111 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1376170247}
-  m_LocalRotation: {x: 0, y: 0.24784473, z: -0, w: -0.96879977}
+  m_LocalRotation: {x: -0, y: 0.24784473, z: -0, w: -0.96879977}
   m_LocalPosition: {x: 29.64, y: -0.17, z: 6.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 331.3, z: 0}
+--- !u!1 &1386678619
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1386678620}
+  - component: {fileID: 1386678621}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (13)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1386678620
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386678619}
+  m_LocalRotation: {x: 0, y: -0.5150381, z: 0, w: 0.85716736}
+  m_LocalPosition: {x: 12.099999, y: -0.395, z: 15.77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: -62, z: 0}
+--- !u!114 &1386678621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386678619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1386678620}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &1397558645
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1397558646}
+  - component: {fileID: 1397558647}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1397558646
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397558645}
+  m_LocalRotation: {x: 0, y: -0.27311984, z: 0, w: 0.96198004}
+  m_LocalPosition: {x: 6.88, y: -0.395, z: 6.44}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: -31.7, z: 0}
+--- !u!114 &1397558647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397558645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1397558646}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1403227279
 GameObject:
   m_ObjectHideFlags: 0
@@ -2289,13 +3156,62 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1516511729}
-  m_LocalRotation: {x: 0, y: 0.8750425, z: -0, w: -0.4840461}
+  m_LocalRotation: {x: -0, y: 0.8750425, z: -0, w: -0.4840461}
   m_LocalPosition: {x: -31.51, y: 1.62, z: 5.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 237.9, z: 0}
+--- !u!1 &1517310477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1517310478}
+  - component: {fileID: 1517310479}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (16)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1517310478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517310477}
+  m_LocalRotation: {x: 0, y: -0.5642468, z: 0, w: 0.82560617}
+  m_LocalPosition: {x: 10.16, y: -0.395, z: 20.88}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: -68.7, z: 0}
+--- !u!114 &1517310479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517310477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1517310478}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1528644668
 GameObject:
   m_ObjectHideFlags: 0
@@ -2319,11 +3235,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528644668}
-  m_LocalRotation: {x: 0, y: 0.6279631, z: -0, w: -0.7782431}
+  m_LocalRotation: {x: -0, y: 0.6279631, z: -0, w: -0.7782431}
   m_LocalPosition: {x: -25.99, y: 1.83, z: 6.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 282.2, z: 0}
 --- !u!1 &1551621758
@@ -2354,7 +3270,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1551621758}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2363,8 +3279,8 @@ Transform:
   - {fileID: 1429467085}
   - {fileID: 1465592018}
   - {fileID: 1496943776}
-  m_Father: {fileID: 529942856}
-  m_RootOrder: 2
+  m_Father: {fileID: 799236943}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1551621760
 MonoBehaviour:
@@ -2504,11 +3420,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1559358377}
-  m_LocalRotation: {x: 0, y: 0.3469358, z: -0, w: -0.9378889}
+  m_LocalRotation: {x: -0, y: 0.3469358, z: -0, w: -0.9378889}
   m_LocalPosition: {x: 22.45, y: -0.17, z: 14.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 319.4, z: 0}
 --- !u!1 &1567741818
@@ -2625,13 +3541,111 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1597766179}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 11.234, y: -0.395, z: -1.665}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &1614241949
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1614241950}
+  - component: {fileID: 1614241951}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (19)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1614241950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614241949}
+  m_LocalRotation: {x: 0, y: -0.54463905, z: 0, w: 0.8386706}
+  m_LocalPosition: {x: 11.5, y: -0.395, z: 18.21}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: -66, z: 0}
+--- !u!114 &1614241951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614241949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1614241950}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &1618946595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1618946596}
+  - component: {fileID: 1618946597}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (17)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1618946596
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618946595}
+  m_LocalRotation: {x: 0, y: -0.29570797, z: 0, w: 0.9552784}
+  m_LocalPosition: {x: 8.79, y: -0.395, z: 5.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: -34.4, z: 0}
+--- !u!114 &1618946597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618946595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1618946596}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1625258586
 GameObject:
   m_ObjectHideFlags: 0
@@ -2685,11 +3699,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663585052}
-  m_LocalRotation: {x: 0, y: 0.9722271, z: -0, w: -0.23403935}
+  m_LocalRotation: {x: -0, y: 0.97222716, z: -0, w: -0.23403937}
   m_LocalPosition: {x: -35.06, y: 1.15, z: 2.210001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 207.07, z: 0}
 --- !u!1 &1675532114
@@ -2750,7 +3764,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1723713980}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2759,8 +3773,8 @@ Transform:
   - {fileID: 573804478}
   - {fileID: 1848832505}
   - {fileID: 795191146}
-  m_Father: {fileID: 529942856}
-  m_RootOrder: 3
+  m_Father: {fileID: 799236943}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1723713982
 MonoBehaviour:
@@ -2875,7 +3889,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1723975358}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2884,8 +3898,8 @@ Transform:
   - {fileID: 1567741819}
   - {fileID: 1108751893}
   - {fileID: 1675532115}
-  m_Father: {fileID: 529942856}
-  m_RootOrder: 5
+  m_Father: {fileID: 799236943}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1723975360
 MonoBehaviour:
@@ -2995,13 +4009,63 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1745147650}
-  m_LocalRotation: {x: 0, y: 0.060177516, z: 0, w: 0.9981877}
+  m_LocalRotation: {x: -0, y: 0.060177516, z: -0, w: 0.9981877}
   m_LocalPosition: {x: -12.64, y: 0.95, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 6.9, z: 0}
+--- !u!1 &1765204821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1765204822}
+  m_Layer: 0
+  m_Name: Zombies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1765204822
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765204821}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1053658179}
+  - {fileID: 341639894}
+  - {fileID: 1123436616}
+  - {fileID: 1397558646}
+  - {fileID: 1345223062}
+  - {fileID: 369186453}
+  - {fileID: 882047744}
+  - {fileID: 1175766289}
+  - {fileID: 1122683016}
+  - {fileID: 285889213}
+  - {fileID: 986889926}
+  - {fileID: 1291554097}
+  - {fileID: 1386678620}
+  - {fileID: 1938576711}
+  - {fileID: 1147489547}
+  - {fileID: 1517310478}
+  - {fileID: 1618946596}
+  - {fileID: 1327414464}
+  - {fileID: 1614241950}
+  - {fileID: 423294304}
+  m_Father: {fileID: 1115088532}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1845948409
 GameObject:
   m_ObjectHideFlags: 0
@@ -3085,13 +4149,62 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892784423}
-  m_LocalRotation: {x: 0, y: -0.3293611, z: 0, w: 0.94420403}
+  m_LocalRotation: {x: -0, y: -0.3293611, z: -0, w: 0.94420403}
   m_LocalPosition: {x: -6.18, y: -0.39, z: -10.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -38.46, z: 0}
+--- !u!1 &1938576710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1938576711}
+  - component: {fileID: 1938576712}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (14)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1938576711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938576710}
+  m_LocalRotation: {x: 0, y: -0.5380354, z: 0, w: 0.8429223}
+  m_LocalPosition: {x: 7.34, y: -0.395, z: 20.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1765204822}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: -65.1, z: 0}
+--- !u!114 &1938576712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938576710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1938576711}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
 --- !u!1 &1943771238
 GameObject:
   m_ObjectHideFlags: 0
@@ -3115,11 +4228,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943771238}
-  m_LocalRotation: {x: 0, y: 0.3915343, z: -0, w: -0.9201636}
+  m_LocalRotation: {x: -0, y: 0.3915343, z: -0, w: -0.9201636}
   m_LocalPosition: {x: 19.92, y: -0.17, z: 17.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 313.9, z: 0}
 --- !u!1 &1956228910
@@ -3241,7 +4354,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2045112780}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3250,8 +4363,8 @@ Transform:
   - {fileID: 1448424475}
   - {fileID: 1077021456}
   - {fileID: 1298741685}
-  m_Father: {fileID: 529942856}
-  m_RootOrder: 1
+  m_Father: {fileID: 799236943}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2045112782
 MonoBehaviour:
@@ -3452,10 +4565,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2123078852}
-  m_LocalRotation: {x: 0, y: 0.3007059, z: -0, w: -0.953717}
+  m_LocalRotation: {x: -0, y: 0.3007059, z: -0, w: -0.953717}
   m_LocalPosition: {x: 27.19, y: -0.17, z: 8.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1115088532}
+  m_Father: {fileID: 1070282207}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 325, z: 0}
