@@ -14,12 +14,6 @@ namespace Common
 
 #if UNITY_EDITOR
         [UsedImplicitly]
-        private void Awake()
-        {
-            OnValidate();
-        }
-
-        [UsedImplicitly]
         protected void OnValidate()
         {
             var takenIds = new HashSet<int>();

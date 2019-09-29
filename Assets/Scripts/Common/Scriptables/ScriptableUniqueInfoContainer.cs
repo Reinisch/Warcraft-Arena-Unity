@@ -14,12 +14,6 @@ namespace Common
         public List<TUnique> EditorList => Items;
 
         [UsedImplicitly]
-        private void Awake()
-        {
-            OnValidate();
-        }
-
-        [UsedImplicitly]
         public void OnValidate()
         {
             if (Items == null)
