@@ -59,7 +59,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8692844075131647005}
-  - component: {fileID: 7923332233528264068}
   - component: {fileID: 4237749462972623577}
   m_Layer: 9
   m_Name: Nameplate
@@ -88,27 +87,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.011993408, y: 1.1394043}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!223 &7923332233528264068
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 539051692569056923}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: -551102459
-  m_SortingOrder: 6
-  m_TargetDisplay: 0
 --- !u!114 &4237749462972623577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f33abf6f4fe0d40ad4d77ec876ec95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 7923332233528264068}
+  combinedCanvasGroup: {fileID: 2867942348795186444}
   generalCanvasGroup: {fileID: 3662168371871093192}
   healthFrame: {fileID: 7602491069641291433}
   contentFrame: {fileID: 1609385048972084374}
@@ -129,6 +107,7 @@ MonoBehaviour:
   unitName: {fileID: 2014926800352644438}
   cameraReference: {fileID: 11400000, guid: 7ec395dbbe5ff3848a39b67a4e093974, type: 2}
   renderReference: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
+  interfaceReference: {fileID: 11400000, guid: ccf630f137a37024798525353afe3883, type: 2}
   nameplateSettings: {fileID: 11400000, guid: 37f466904c8f9314ebdebbd61d7acade, type: 2}
   showDeselectedHealthOption: {fileID: 11400000, guid: 3ecb75c2f46c15241a6bb91c416d4332,
     type: 2}
@@ -214,6 +193,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3025367355775039090}
+  - component: {fileID: 2867942348795186444}
   m_Layer: 9
   m_Name: Content
   m_TagString: Untagged
@@ -242,6 +222,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &2867942348795186444
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609385048972084374}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &2487850142541697556
 GameObject:
   m_ObjectHideFlags: 0

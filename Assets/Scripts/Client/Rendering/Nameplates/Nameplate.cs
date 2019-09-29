@@ -11,7 +11,7 @@ namespace Client
 {
     public class Nameplate : MonoBehaviour
     {
-        [SerializeField, UsedImplicitly] private Canvas canvas;
+        [SerializeField, UsedImplicitly] private CanvasGroup combinedCanvasGroup;
         [SerializeField, UsedImplicitly] private CanvasGroup generalCanvasGroup;
         [SerializeField, UsedImplicitly] private HealthFrame healthFrame;
         [SerializeField, UsedImplicitly] private GameObject contentFrame;
@@ -19,6 +19,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private TextMeshProUGUI unitName;
         [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private RenderingReference renderReference;
+        [SerializeField, UsedImplicitly] private InterfaceReference interfaceReference;
         [SerializeField, UsedImplicitly] private NameplateSettings nameplateSettings;
         [SerializeField, UsedImplicitly] private GameOptionBool showDeselectedHealthOption;
 
@@ -48,7 +49,7 @@ namespace Client
             if (unitRenderer != null)
                 Initialize(unitRenderer);
 
-            canvas.enabled = UnitRenderer != null;
+            combinedCanvasGroup.alpha = UnitRenderer != null ? 1.0f : 0.0f;
         }
 
         public void UpdateSelection(bool instantAlphaTransition = false)
@@ -71,6 +72,10 @@ namespace Client
 
         public bool DoUpdate(float deltaTime)
         {
+            Vector3 targetPosition = UnitRenderer.TagContainer.FindNameplateTag();
+            if (targetPosition != transform.position)
+                transform.position = targetPosition;
+
             float distanceToPlayer = renderReference.Player.DistanceTo(UnitRenderer.Unit);
 
             if (cameraReference.WarcraftCamera != null)
@@ -115,6 +120,8 @@ namespace Client
         {
             UnitRenderer = unitRenderer;
 
+            transform.SetParent(interfaceReference.FindRoot(InterfaceCanvasType.Nameplate));
+            transform.position = UnitRenderer.TagContainer.FindNameplateTag();
             unitName.text = unitRenderer.Unit.Name;
             castFrame.UpdateCaster(unitRenderer.Unit);
             healthFrame.Unit = unitRenderer.Unit;

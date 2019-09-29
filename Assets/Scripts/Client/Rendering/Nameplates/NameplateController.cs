@@ -98,8 +98,7 @@ namespace Client
 
             private void SpawnNameplate(UnitRenderer targetRenderer)
             {
-                Nameplate newNameplate = GameObjectPool.Take(nameplatePrototype, targetRenderer.transform.position, targetRenderer.transform.rotation);
-                targetRenderer.TagContainer.ApplyPositioning(newNameplate);
+                Nameplate newNameplate = GameObjectPool.Take(nameplatePrototype);
                 newNameplate.UpdateUnit(targetRenderer);
 
                 activeNameplates.Add(newNameplate);

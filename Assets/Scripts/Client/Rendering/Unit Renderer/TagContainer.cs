@@ -39,10 +39,9 @@ namespace Client
             }
         }
 
-        public Vector3 FindDefaultLaunchTag()
-        {
-            return FindTag(defaultLaunchTag);
-        }
+        public Vector3 FindNameplateTag() => (nameplateTag ?? defaultTag).transform.position;
+
+        public Vector3 FindDefaultLaunchTag() => FindTag(defaultLaunchTag);
 
         public void TransferChildren(TagContainer otherContainer)
         {
@@ -95,14 +94,6 @@ namespace Client
         public void ApplyPositioning(FloatingText floatingText)
         {
             floatingText.transform.position = (damageTag ?? defaultTag).position;
-        }
-
-        public void ApplyPositioning(Nameplate nameplate)
-        {
-            Transform targetTag = nameplateTag ?? defaultTag;
-
-            nameplate.transform.SetParent(targetTag);
-            nameplate.transform.position = targetTag.position;
         }
 
         private void TransferChildren(Transform source, Transform destination)

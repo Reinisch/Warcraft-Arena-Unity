@@ -16,14 +16,15 @@ namespace Client
 
         private LobbyScreen lobbyScreen;
         private BattleScreen battleScreen;
-        private Transform containerTransform;
+        private InterfaceContainer container;
 
         protected override void OnRegistered()
         {
-            containerTransform = GameObject.FindGameObjectWithTag(containerTag).transform;
+            container = GameObject.FindGameObjectWithTag(containerTag).GetComponent<InterfaceContainer>();
+            container.Register();
 
-            lobbyScreen = Instantiate(lobbyScreenPrototype, containerTransform);
-            battleScreen = Instantiate(battleScreenPrototype, containerTransform);
+            lobbyScreen = Instantiate(lobbyScreenPrototype, container.Root);
+            battleScreen = Instantiate(battleScreenPrototype, container.Root);
 
             lobbyScreen.Initialize(screenController);
             battleScreen.Initialize(screenController);
@@ -37,9 +38,10 @@ namespace Client
             Destroy(lobbyScreen);
             Destroy(battleScreen);
 
+            container.Unregister();
             lobbyScreen = null;
             battleScreen = null;
-            containerTransform = null;
+            container = null;
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -56,6 +58,8 @@ namespace Client
         {
             screenController.RemoveHandler(handler);
         }
+
+        public RectTransform FindRoot(InterfaceCanvasType canvasType) => container.FindRoot(canvasType);
 
         public void ShowScreen<TScreen, TShowPanel>() where TScreen : UIPanelController where TShowPanel : UIPanel, IPanel<TScreen>
         {
