@@ -42,8 +42,6 @@ namespace Client
 
         public void UpdateUnit(UnitRenderer unitRenderer)
         {
-            canvas.worldCamera = cameraReference.WarcraftCamera.Camera;
-
             if (UnitRenderer != null)
                 Deinitialize();
 
@@ -74,7 +72,9 @@ namespace Client
         public bool DoUpdate(float deltaTime)
         {
             float distanceToPlayer = renderReference.Player.DistanceTo(UnitRenderer.Unit);
-            transform.rotation = Quaternion.LookRotation(canvas.worldCamera.transform.forward);
+
+            if (cameraReference.WarcraftCamera != null)
+                transform.rotation = Quaternion.LookRotation(cameraReference.WarcraftCamera.transform.forward);
 
             healthFrame.DoUpdate(deltaTime);
             if (castFrame.gameObject.activeSelf)
