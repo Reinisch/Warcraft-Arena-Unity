@@ -11,12 +11,15 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private string soundContainerTag;
+        [SerializeField, UsedImplicitly] private UnitSoundKitContainer unitSoundKitContainer;
         [SerializeField, UsedImplicitly] private List<SoundSettings> soundSettings;
         [SerializeField, UsedImplicitly] private List<SpellSoundSettings> spellSettings;
 
         private readonly Dictionary<SoundSettings, AudioSource> sourcesBySettings = new Dictionary<SoundSettings, AudioSource>();
         private readonly Dictionary<SpellInfo, SpellSoundSettings> spellSettingsByInfo = new Dictionary<SpellInfo, SpellSoundSettings>();
         private Transform soundContainer;
+
+        public IReadOnlyDictionary<int, UnitSoundKit> UnitSoundKitsById => unitSoundKitContainer.SoundKitsById;
 
         protected override void OnRegistered()
         {
@@ -29,10 +32,14 @@ namespace Client
 
             foreach (var spellSetting in spellSettings)
                 spellSettingsByInfo[spellSetting.SpellInfo] = spellSetting;
+
+            unitSoundKitContainer.Populate();
         }
 
         protected override void OnUnregister()
         {
+            unitSoundKitContainer.Clear();
+
             foreach (var soundSourceEntry in sourcesBySettings)
                 Destroy(soundSourceEntry.Value);
 

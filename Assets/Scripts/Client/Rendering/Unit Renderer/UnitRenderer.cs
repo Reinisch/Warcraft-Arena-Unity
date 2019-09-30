@@ -10,6 +10,7 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private TagContainer dummyTagContainer;
+        [SerializeField, UsedImplicitly] private UnitSoundController soundController;
 
         private readonly AuraEffectController auraEffectController = new AuraEffectController();
         private UnitModel model;
@@ -130,11 +131,15 @@ namespace Client
 
             model = newModel;
             UpdateAnimationState(canAnimate);
+            soundController.HandleModelChange(model);
         }
 
         private void OnDeathStateChanged()
         {
             model?.Animator.SetBool("IsDead", Unit.IsDead);
+
+            if(Unit.IsDead)
+                soundController.PlayOneShot(UnitSounds.Death);
         }
 
         private void OnSpellCastChanged()
