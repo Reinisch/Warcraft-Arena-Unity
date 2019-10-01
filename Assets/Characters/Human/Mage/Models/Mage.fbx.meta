@@ -959,7 +959,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: humanmale_hd_0
-    second: {fileID: 2100000, guid: 0a9dbe9729406cd4798bebbb05edf2ea, type: 2}
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -968,8 +968,38 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: humanmale_hd_12
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: humanmale_hd_13
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: humanmale_hd_14
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: humanmale_hd_15
-    second: {fileID: 2100000, guid: 0a9dbe9729406cd4798bebbb05edf2ea, type: 2}
+    second: {fileID: 2100000, guid: dc97cbe1239968242a547bdc8dba3eb1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: humanmale_hd_16
+    second: {fileID: 2100000, guid: dc97cbe1239968242a547bdc8dba3eb1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: humanmale_hd_17
+    second: {fileID: 2100000, guid: dc97cbe1239968242a547bdc8dba3eb1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: humanmale_hd_18
+    second: {fileID: 2100000, guid: dc97cbe1239968242a547bdc8dba3eb1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -984,7 +1014,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: humanmale_hd_23
-    second: {fileID: 2100000, guid: 0a9dbe9729406cd4798bebbb05edf2ea, type: 2}
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -994,7 +1024,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: humanmale_hd_25
-    second: {fileID: 2100000, guid: 2503ddf41e1effc4688ebe0e58c6854e, type: 2}
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: humanmale_hd_26
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -1019,12 +1054,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: humanmale_hd_4
-    second: {fileID: 2100000, guid: 2503ddf41e1effc4688ebe0e58c6854e, type: 2}
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: humanmale_hd_45
-    second: {fileID: 2100000, guid: 2503ddf41e1effc4688ebe0e58c6854e, type: 2}
+    second: {fileID: 2100000, guid: dc97cbe1239968242a547bdc8dba3eb1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -1038,13 +1073,38 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: humanmale_hd_5
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: humanmale_hd_53
     second: {fileID: 2100000, guid: 2503ddf41e1effc4688ebe0e58c6854e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: humanmale_hd_7
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: humanmale_hd_9
+    second: {fileID: 2100000, guid: 4b3f190335bc63a4cb3e3b8a3342b8a3, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Body
+    second: {fileID: 2800000, guid: 5a624e595e94b3147aba0b2a81e004b7, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: hair02_08_hd
+    second: {fileID: 2800000, guid: e35bdc51d4f17e842bb3823e547d9674, type: 3}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
