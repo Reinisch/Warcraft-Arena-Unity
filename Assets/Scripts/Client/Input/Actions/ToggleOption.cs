@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using JetBrains.Annotations;
 
-namespace Client
+namespace Client.Actions
 {
     [UsedImplicitly, CreateAssetMenu(fileName = "Input Action - Toggle Option", menuName = "Player Data/Input/Actions/Toggle Option", order = 2)]
     public class ToggleOption : InputAction

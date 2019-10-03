@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Client;
+using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -92,7 +93,7 @@ public class WarcraftCamera : MonoBehaviour
         // If either mouse buttons are down, let the mouse govern camera position
         if (GUIUtility.hotControl == 0)
         {
-            if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            if (Input.GetMouseButton(0) && !InterfaceUtils.IsPointerOverUI || Input.GetMouseButton(1))
             {
                 xDeg += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
                 yDeg -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
@@ -110,7 +111,9 @@ public class WarcraftCamera : MonoBehaviour
         }
 
         // calculate the desired distance
-        desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance) * speedDistance;
+        if(!InterfaceUtils.IsPointerOverUI)
+            desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance) * speedDistance;
+
         desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
 
         yDeg = ClampAngle(yDeg, yMinLimit, yMaxLimit);

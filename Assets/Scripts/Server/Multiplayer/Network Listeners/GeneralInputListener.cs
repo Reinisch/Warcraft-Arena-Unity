@@ -1,4 +1,6 @@
-﻿namespace Server
+﻿using Core;
+
+namespace Server
 {
     public partial class PhotonBoltServerListener
     {
@@ -10,6 +12,17 @@
                 return;
 
             World.FindPlayer(targetingRequest.RaisedBy)?.Attributes.UpdateTarget(targetingRequest.TargetId.PackedValue, updateState: true);
+        }
+
+        public override void OnEvent(PlayerEmoteRequestEvent emoteRequest)
+        {
+            base.OnEvent(emoteRequest);
+
+            var emoteType = (EmoteType)emoteRequest.EmoteType;
+            if (!emoteType.IsDefined())
+                return;
+
+            World.FindPlayer(emoteRequest.RaisedBy)?.ModifyEmoteState(emoteType);
         }
     }
 }

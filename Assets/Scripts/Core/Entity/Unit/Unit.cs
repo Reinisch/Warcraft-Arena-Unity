@@ -13,6 +13,7 @@ namespace Core
         public new class CreateToken : WorldEntity.CreateToken
         {
             public DeathState DeathState { private get; set; }
+            public EmoteType EmoteType { private get; set; }
             public ClassType ClassType { private get; set; }
             public bool FreeForAll { private get; set; }
             public int FactionId { private get; set; }
@@ -27,6 +28,7 @@ namespace Core
                 base.Read(packet);
 
                 DeathState = (DeathState)packet.ReadInt();
+                EmoteType = (EmoteType)packet.ReadInt();
                 ClassType = (ClassType)packet.ReadInt();
                 FactionId = packet.ReadInt();
                 ModelId = packet.ReadInt();
@@ -41,6 +43,7 @@ namespace Core
                 base.Write(packet);
 
                 packet.WriteInt((int)DeathState);
+                packet.WriteInt((int)EmoteType);
                 packet.WriteInt((int)ClassType);
                 packet.WriteInt(FactionId);
                 packet.WriteInt(ModelId);
@@ -53,6 +56,7 @@ namespace Core
             protected void Attached(Unit unit)
             {
                 unit.DeathState = DeathState;
+                unit.EmoteType = EmoteType;
                 unit.ClassType = ClassType;
                 unit.Faction = unit.Balance.FactionsById[FactionId];
                 unit.FreeForAll = FreeForAll;
@@ -110,6 +114,7 @@ namespace Core
         public int Mana => Attributes.Mana.Value;
         public int MaxMana => Attributes.MaxMana.Value;
         public int SpellPower => Attributes.SpellPower.Value;
+        public int EmoteFrame => entityState.EmoteFrame;
         public int VisibleAuraMaxCount => entityState.VisibleAuras.Length;
         public float RotationSpeed => CharacterController.Definition.RotateSpeed;
         public float RunSpeed => Attributes.Speed(UnitMoveType.Run);
@@ -123,6 +128,7 @@ namespace Core
         public bool IsStopped => !HasState(UnitControlState.Moving);
         public float Scale { get => Attributes.Scale; internal set => Attributes.Scale = value; }
         public ClassType ClassType { get => Attributes.ClassType; internal set => Attributes.ClassType = value; }
+        public EmoteType EmoteType { get => Attributes.EmoteType; internal set => Attributes.EmoteType = value; }
 
         public sealed override void Attached()
         {
@@ -372,6 +378,12 @@ namespace Core
             ModelId = OriginalModelId;
         }
 
+        internal void ModifyEmoteState(EmoteType emoteType)
+        {
+            if (!IsDead)
+                EmoteType = emoteType;
+        }
+
         internal void ModifyDeathState(DeathState newState)
         {
             DeathState = newState;
@@ -380,7 +392,11 @@ namespace Core
                 SpellCast.Cancel();
 
             if (newState == DeathState.Dead)
+            {
                 Auras.RemoveNonDeathPersistentAuras();
+
+                ModifyEmoteState(EmoteType.None);
+            }
         }
 
         internal void ModifyHealth(int delta)

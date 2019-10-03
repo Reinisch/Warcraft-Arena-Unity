@@ -39,7 +39,7 @@ namespace Client
             if (!Player.ExistsIn(World))
                 return;
 
-            if (Input.GetMouseButtonDown(0) && !Input.GetMouseButton(1))
+            if (Input.GetMouseButtonDown(0) && !Input.GetMouseButton(1) && !InterfaceUtils.IsPointerOverUI)
             {
                 Ray ray = cameraReference.WarcraftCamera.Camera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out var hit, float.MaxValue, PhysicsReference.Mask.Characters | PhysicsReference.Mask.Ground))

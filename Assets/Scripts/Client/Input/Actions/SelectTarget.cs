@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using JetBrains.Annotations;
 
-namespace Client
+namespace Client.Actions
 {
     [UsedImplicitly, CreateAssetMenu(fileName = "Input Action - Select Target", menuName = "Player Data/Input/Actions/Select Target", order = 2)]
     public class SelectTarget : InputAction

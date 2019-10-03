@@ -1,10 +1,24 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Core
 {
     public static class UnitUtils
     {
         public const ulong NoTargetId = 0u;
+        public const int EmoteOneShotFrameThreshold = 120;
+        public const int EmoteStateMovementFrameThreshold = 20;
+
+        private static readonly Dictionary<EmoteType, bool> EmoteStateInfo = new Dictionary<EmoteType, bool>
+        {
+            {EmoteType.Flex, false}
+        };
+
+        public static bool IsOneShot(this EmoteType emoteType) => EmoteStateInfo.TryGetValue(emoteType, out bool isState) && !isState;
+
+        public static bool IsState(this EmoteType emoteType) => EmoteStateInfo.TryGetValue(emoteType, out bool isState) && isState;
+
+        public static bool IsDefined(this EmoteType emoteType) => EmoteStateInfo.ContainsKey(emoteType);
 
         public static bool ExistsIn(this Unit unit, WorldManager world)
         {

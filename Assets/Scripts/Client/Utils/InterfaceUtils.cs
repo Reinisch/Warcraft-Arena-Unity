@@ -1,14 +1,17 @@
 ﻿using System;
 using Common;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Client
 {
     public static class InterfaceUtils
     {
-        private static char[] TempCharArray = new char[32];
-        private static char[] IntChars = new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-        private static char[] MinValue = new[] { '-', '2', '1', '4', '7', '4', '8', '3', '6', '4', '8' };
+        private static readonly char[] TempCharArray = new char[32];
+        private static readonly char[] IntChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        private static readonly char[] MinValue = { '-', '2', '1', '4', '7', '4', '8', '3', '6', '4', '8' };
+
+        public static bool IsPointerOverUI => EventSystem.current.IsPointerOverGameObject();
 
         public static char[] SetSpellTimerNonAlloc(this char[] charArray, int milliseconds, out int length)
         {
@@ -131,7 +134,6 @@ namespace Client
             length = index;
             return charArray;
         }
-
 
         public static void SetParentAndReset(this RectTransform thisTransform, RectTransform parentTransform)
         {

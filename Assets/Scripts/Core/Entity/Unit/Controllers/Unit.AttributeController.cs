@@ -15,6 +15,7 @@ namespace Core
             private FactionDefinition faction;
             private ClassType classType;
             private DeathState deathState;
+            private EmoteType emoteType;
             private IUnitState unitState;
             private bool initialized;
             private bool freeForAll;
@@ -90,6 +91,22 @@ namespace Core
                 }
             }
 
+            internal EmoteType EmoteType
+            {
+                get => emoteType;
+                set
+                {
+                    emoteType = value;
+
+                    if (unit.IsOwner)
+                    {
+                        unitState.EmoteType = (int)value;
+                        unitState.EmoteFrame = BoltNetwork.ServerFrame;
+                        unit.UnitCreateToken.EmoteType = value;
+                    }
+                }
+            }
+
             internal float Scale
             {
                 get => scale;
@@ -142,6 +159,9 @@ namespace Core
 
             void IUnitBehaviour.DoUpdate(int deltaTime)
             {
+                if (EmoteType != EmoteType.None && EmoteType.IsState() && unit.MovementInfo.IsMoving)
+                    if (BoltNetwork.ServerFrame - unit.entityState.EmoteFrame > UnitUtils.EmoteStateMovementFrameThreshold)
+                        unit.ModifyEmoteState(EmoteType.None);
             }
 
             void IUnitBehaviour.HandleUnitAttach(Unit unit)
@@ -165,6 +185,7 @@ namespace Core
                 if (!unit.IsOwner)
                 {
                     unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
+                    unit.AddCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
                     unit.AddCallback(nameof(IUnitState.Health), OnHealthStateChanged);
                     unit.AddCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
                     unit.AddCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
@@ -220,6 +241,7 @@ namespace Core
                 if (!unit.IsOwner)
                 {
                     unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
+                    unit.RemoveCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
                     unit.RemoveCallback(nameof(IUnitState.Health), OnHealthStateChanged);
                     unit.RemoveCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
                     unit.RemoveCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
@@ -353,6 +375,11 @@ namespace Core
             }
 
             internal float Speed(UnitMoveType type) => SpeedRates[type] * unit.Balance.UnitMovementDefinition.BaseSpeedByType(type);
+
+            private void OnEmoteTypeChanged()
+            {
+                EmoteType = (EmoteType)unitState.EmoteType;
+            }
 
             private void OnDeathStateChanged()
             {

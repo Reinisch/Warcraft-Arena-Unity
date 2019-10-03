@@ -33,6 +33,8 @@ namespace Client
             Unit.BoltEntity.AddEventListener(this);
             Unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
             Unit.AddCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
+            Unit.AddCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
+            Unit.AddCallback(nameof(IUnitState.EmoteFrame), OnEmoteFrameChanged);
             EventHandler.RegisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
 
             auraEffectController.HandleAttach(this);
@@ -45,6 +47,8 @@ namespace Client
             Unit.BoltEntity.RemoveEventListener(this);
             Unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
             Unit.RemoveCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
+            Unit.RemoveCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
+            Unit.RemoveCallback(nameof(IUnitState.EmoteFrame), OnEmoteFrameChanged);
             EventHandler.UnregisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
 
             ReplaceModel();
@@ -134,6 +138,23 @@ namespace Client
             soundController.HandleModelChange(model);
         }
 
+        private void HandleEmoteUpdate()
+        {
+            EmoteType emoteType = Unit.EmoteType;
+            if (emoteType.IsState())
+            {
+                model?.Animator.SetInteger("Emote", (int)Unit.EmoteType);
+            }
+            else if (emoteType.IsOneShot())
+            {
+                int framesSinceStart = BoltNetwork.Frame - Unit.EmoteFrame;
+                if (framesSinceStart > UnitUtils.EmoteOneShotFrameThreshold)
+                    return;
+
+                model?.Animator.SetInteger("Emote", (int)Unit.EmoteType);
+            }
+        }
+
         private void OnDeathStateChanged()
         {
             model?.Animator.SetBool("IsDead", Unit.IsDead);
@@ -145,6 +166,16 @@ namespace Client
         private void OnSpellCastChanged()
         {
             model?.Animator.SetBool("Casting", Unit.SpellCast.State.Id != 0);
+        }
+
+        private void OnEmoteTypeChanged()
+        {
+            HandleEmoteUpdate();
+        }
+
+        private void OnEmoteFrameChanged()
+        {
+            HandleEmoteUpdate();
         }
     }
 }

@@ -61,6 +61,16 @@ namespace Client
             targetSelectionRequest.Send();
         }
 
+        public void DoEmote(EmoteType emoteType)
+        {
+            if (!Player.ExistsIn(World))
+                return;
+
+            PlayerEmoteRequestEvent emoteRequest = PlayerEmoteRequestEvent.Create(Bolt.GlobalTargets.OnlyServer);
+            emoteRequest.EmoteType = (int)emoteType;
+            emoteRequest.Send();
+        }
+
         public void CastSpell(int spellId)
         {
             if (!Player.ExistsIn(World))
