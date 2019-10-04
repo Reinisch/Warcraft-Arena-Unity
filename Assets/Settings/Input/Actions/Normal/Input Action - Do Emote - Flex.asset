@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Input Action - Do Emote - Flex
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
-  emoteType: 1
+  emoteType: 9

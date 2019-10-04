@@ -11,7 +11,28 @@ namespace Core
 
         private static readonly Dictionary<EmoteType, bool> EmoteStateInfo = new Dictionary<EmoteType, bool>
         {
-            {EmoteType.Flex, false}
+            {EmoteType.Beg, false},
+            {EmoteType.Bow, false},
+            {EmoteType.Cheer, false},
+            {EmoteType.Chicken, false},
+            {EmoteType.Cry, false},
+            {EmoteType.Dance, true},
+            {EmoteType.Flex, false},
+            {EmoteType.Kiss, false},
+            {EmoteType.Laugh, false},
+            {EmoteType.No, false},
+            {EmoteType.Point, false},
+            {EmoteType.Read, true},
+            {EmoteType.Roar, false},
+            {EmoteType.Rude, false},
+            {EmoteType.Shout, false},
+            {EmoteType.Shy, false},
+            {EmoteType.Talk, true},
+            {EmoteType.TalkExclamation, false},
+            {EmoteType.TalkQuestion, false},
+            {EmoteType.Train, false},
+            {EmoteType.Wave, false},
+            {EmoteType.Yes, false}
         };
 
         public static bool IsOneShot(this EmoteType emoteType) => EmoteStateInfo.TryGetValue(emoteType, out bool isState) && !isState;

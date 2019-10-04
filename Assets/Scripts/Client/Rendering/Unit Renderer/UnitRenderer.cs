@@ -52,6 +52,7 @@ namespace Client
             EventHandler.UnregisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
 
             ReplaceModel();
+            CancelInvoke();
 
             Unit = null;
         }
@@ -141,18 +142,25 @@ namespace Client
         private void HandleEmoteUpdate()
         {
             EmoteType emoteType = Unit.EmoteType;
-            if (emoteType.IsState())
-            {
-                model?.Animator.SetInteger("Emote", (int)Unit.EmoteType);
-            }
-            else if (emoteType.IsOneShot())
-            {
-                int framesSinceStart = BoltNetwork.Frame - Unit.EmoteFrame;
-                if (framesSinceStart > UnitUtils.EmoteOneShotFrameThreshold)
-                    return;
+            if (emoteType.IsState() || emoteType == EmoteType.None)
+                DoEmote();
+            else if (emoteType.IsOneShot() && BoltNetwork.Frame - Unit.EmoteFrame <= UnitUtils.EmoteOneShotFrameThreshold)
+                DoEmote();
+        }
 
-                model?.Animator.SetInteger("Emote", (int)Unit.EmoteType);
-            }
+        private void DoEmote(float cancellationDelay = 0.2f)
+        {
+            CancelInvoke(nameof(ResetEmoteTrigger));
+
+            model?.Animator.SetTrigger("Emote Trigger");
+            model?.Animator.SetInteger("Emote", (int)Unit.EmoteType);
+
+            Invoke(nameof(ResetEmoteTrigger), cancellationDelay);
+        }
+
+        private void ResetEmoteTrigger()
+        {
+            model?.Animator.ResetTrigger("Emote Trigger");
         }
 
         private void OnDeathStateChanged()

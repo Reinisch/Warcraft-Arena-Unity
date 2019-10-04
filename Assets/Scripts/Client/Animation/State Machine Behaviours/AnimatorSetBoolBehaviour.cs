@@ -9,8 +9,12 @@ namespace Client
         [SerializeField, UsedImplicitly] private string parameterName;
         [SerializeField, UsedImplicitly] private bool valueOnEnter;
         [SerializeField, UsedImplicitly] private bool valueOnExit;
+        [SerializeField, UsedImplicitly] private bool valueOnMachineEnter;
+        [SerializeField, UsedImplicitly] private bool valueOnMachineExit;
         [SerializeField, UsedImplicitly] private bool setOnEnter = true;
         [SerializeField, UsedImplicitly] private bool setOnExit = true;
+        [SerializeField, UsedImplicitly] private bool setOnMachineEnter;
+        [SerializeField, UsedImplicitly] private bool setOnMachineExit;
 
         private int parameterHash;
 
@@ -30,6 +34,18 @@ namespace Client
         {
             if (setOnExit)
                 animator.SetBool(parameterHash, valueOnExit);
+        }
+
+        public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash, AnimatorControllerPlayable controller)
+        {
+            if (setOnMachineEnter)
+                animator.SetBool(parameterHash, valueOnMachineEnter);
+        }
+
+        public override void OnStateMachineExit(Animator animator, int stateMachinePathHash, AnimatorControllerPlayable controller)
+        {
+            if (setOnMachineExit)
+                animator.SetBool(parameterHash, valueOnMachineExit);
         }
     }
 }

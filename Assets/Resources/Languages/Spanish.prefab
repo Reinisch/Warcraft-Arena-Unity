@@ -125,3 +125,5 @@ MonoBehaviour:
     Value: 
   - StringReference: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
     Value: Flex
+  - StringReference: {fileID: 11400000, guid: ac43b33aa53b3564ab3c1dac1c2491fd, type: 2}
+    Value: Applaud

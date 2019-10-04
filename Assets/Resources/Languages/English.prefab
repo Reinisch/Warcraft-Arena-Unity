@@ -125,3 +125,21 @@ MonoBehaviour:
     Value: 
   - StringReference: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
     Value: Flex
+  - StringReference: {fileID: 11400000, guid: ac43b33aa53b3564ab3c1dac1c2491fd, type: 2}
+    Value: Beg
+  - StringReference: {fileID: 11400000, guid: 0ebedf9a25d21d54baeea721c6e31269, type: 2}
+    Value: Bow
+  - StringReference: {fileID: 11400000, guid: cb21a32376b3f4945aadd14087e891cb, type: 2}
+    Value: Chicken
+  - StringReference: {fileID: 11400000, guid: fb890bfb3aaa1244a98d96766fb98794, type: 2}
+    Value: Cry
+  - StringReference: {fileID: 11400000, guid: d1758ee999b33f24597ce3376f8e728c, type: 2}
+    Value: Dance
+  - StringReference: {fileID: 11400000, guid: 3590d22e54999c04ebfb229517205c4e, type: 2}
+    Value: Kiss
+  - StringReference: {fileID: 11400000, guid: 8ecf4e8fe98caa34791dff343dedea45, type: 2}
+    Value: Laugh
+  - StringReference: {fileID: 11400000, guid: 0d535573c0e4cd949827e65f51abf02f, type: 2}
+    Value: No
+  - StringReference: {fileID: 11400000, guid: 08c70a414472eeb40813998a9b6e98c9, type: 2}
+    Value: Point

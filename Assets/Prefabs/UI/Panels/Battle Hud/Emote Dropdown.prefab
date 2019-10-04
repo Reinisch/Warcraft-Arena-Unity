@@ -739,8 +739,8 @@ MonoBehaviour:
   captionImage: {fileID: 0}
   itemText: {fileID: 4037625926164257337}
   itemImage: {fileID: 0}
-  notifyOnSameValue: 1
   value: 0
+  notifyOnSameValue: 1
   options:
     optionsList: []
   onValueChanged:
@@ -759,28 +759,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropdown: {fileID: 2344642124662865391}
-  addSelectableDummies: 1
   dropdownItems:
+  - InputString: {fileID: 11400000, guid: ac43b33aa53b3564ab3c1dac1c2491fd, type: 2}
+    InputAction: {fileID: 11400000, guid: 225e38d2ffc183f48a265043132c0e53, type: 2}
+  - InputString: {fileID: 11400000, guid: 0ebedf9a25d21d54baeea721c6e31269, type: 2}
+    InputAction: {fileID: 11400000, guid: f56ef3c88e732b54bad87aa553c620b6, type: 2}
+  - InputString: {fileID: 11400000, guid: cb21a32376b3f4945aadd14087e891cb, type: 2}
+    InputAction: {fileID: 11400000, guid: dfb6495598df67741a0d0c06fc5e4cbe, type: 2}
+  - InputString: {fileID: 11400000, guid: fb890bfb3aaa1244a98d96766fb98794, type: 2}
+    InputAction: {fileID: 11400000, guid: efc77cf5e6f9ccd43a1c96c60af0f82f, type: 2}
+  - InputString: {fileID: 11400000, guid: d1758ee999b33f24597ce3376f8e728c, type: 2}
+    InputAction: {fileID: 11400000, guid: b80fd0cbf0aced74aacc7d65a602cba9, type: 2}
   - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
     InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
-  - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
-    InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
-  - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
-    InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
-  - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
-    InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
-  - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
-    InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
-  - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
-    InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
-  - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
-    InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
-  - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
-    InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
-  - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
-    InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
-  - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
-    InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
+  - InputString: {fileID: 11400000, guid: 3590d22e54999c04ebfb229517205c4e, type: 2}
+    InputAction: {fileID: 11400000, guid: 28eaffadf5b7fe442b34a82b2ad64bf9, type: 2}
+  - InputString: {fileID: 11400000, guid: 8ecf4e8fe98caa34791dff343dedea45, type: 2}
+    InputAction: {fileID: 11400000, guid: e95245203f0de464eb1a08e08274eeb9, type: 2}
+  - InputString: {fileID: 11400000, guid: 0d535573c0e4cd949827e65f51abf02f, type: 2}
+    InputAction: {fileID: 11400000, guid: 913f076e62b2f7540b597afb41181d98, type: 2}
+  - InputString: {fileID: 11400000, guid: 08c70a414472eeb40813998a9b6e98c9, type: 2}
+    InputAction: {fileID: 11400000, guid: 6316cc59c9bd0604288869c8a74fba87, type: 2}
   - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
     InputAction: {fileID: 11400000, guid: eab79b2cc968b0e479d0327c830d6c80, type: 2}
   - InputString: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}

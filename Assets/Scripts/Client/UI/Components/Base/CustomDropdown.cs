@@ -126,17 +126,7 @@ namespace Client
 
             RefreshShownValue();
         }
-
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            if (!IsActive())
-                return;
-
-            RefreshShownValue();
-        }
-
+        
         protected override void OnDisable()
         {
             ImmediateDestroyDropdownList();
@@ -658,5 +648,17 @@ namespace Client
             Value = selectedIndex;
             Hide();
         }
+
+#if UNITY_EDITOR
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+            if (!IsActive())
+                return;
+
+            RefreshShownValue();
+        }
+#endif
     }
 }
