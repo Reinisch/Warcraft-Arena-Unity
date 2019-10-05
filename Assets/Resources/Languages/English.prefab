@@ -143,3 +143,25 @@ MonoBehaviour:
     Value: No
   - StringReference: {fileID: 11400000, guid: 08c70a414472eeb40813998a9b6e98c9, type: 2}
     Value: Point
+  - StringReference: {fileID: 11400000, guid: a5f440d63160c1b4eb8b4d298cd6657c, type: 2}
+    Value: Read
+  - StringReference: {fileID: 11400000, guid: 0d922a6314dcfcc408a7faf78a90415f, type: 2}
+    Value: Roar
+  - StringReference: {fileID: 11400000, guid: 5588aa7387ab0da49a93c173f0a25acc, type: 2}
+    Value: Rude
+  - StringReference: {fileID: 11400000, guid: 28eef515067759745a66650d66436e63, type: 2}
+    Value: Shout
+  - StringReference: {fileID: 11400000, guid: 6a16c794bcd959f4687b35bb3be8dafe, type: 2}
+    Value: Shy
+  - StringReference: {fileID: 11400000, guid: 13cf4f6f4c66d5a42a3a1d9693ee703b, type: 2}
+    Value: Talk
+  - StringReference: {fileID: 11400000, guid: 19a4d307ebd2e5c43a7aa231934e77f9, type: 2}
+    Value: Exclamation
+  - StringReference: {fileID: 11400000, guid: 9190a915af625954882635680495b60f, type: 2}
+    Value: Question
+  - StringReference: {fileID: 11400000, guid: a2140ecfb524de4479e8becfec05291e, type: 2}
+    Value: Train
+  - StringReference: {fileID: 11400000, guid: 6eab4e0efe3087c46bc237b2de246b91, type: 2}
+    Value: Wave
+  - StringReference: {fileID: 11400000, guid: 9b09405e731c4f7429c1308ecebb2981, type: 2}
+    Value: Yes
