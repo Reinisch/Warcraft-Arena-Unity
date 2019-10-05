@@ -9,8 +9,22 @@ namespace Client
         [SerializeField, UsedImplicitly] private AudioSource source;
 
         protected SoundReference Sound => sound;
+        protected AudioSource Source => source;
         protected TSoundKit SoundKit { get; set; }
 
-        public void PlayOneShot(TKey soundType) => SoundKit?.FindSound(soundType).PlayAtPoint(source.transform.position);
+        protected TKey LastSoundType { get; private set; }
+
+        public virtual void PlayOneShot(TKey soundType)
+        {
+            if (SoundKit == null)
+                return;
+
+            SoundEntry entry = SoundKit.FindSound(soundType, false);
+            if (entry == null)
+                return;
+
+            LastSoundType = soundType;
+            entry.PlayAtSource(source);
+        } 
     }
 }

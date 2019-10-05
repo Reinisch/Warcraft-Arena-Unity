@@ -16,6 +16,6 @@ MonoBehaviour:
   continer: {fileID: 11400000, guid: 68fa6e522f3d27c4dba830d835227877, type: 2}
   soundItems:
     items:
-    - soundType: 0
+    - soundType: 1
       soundEntry: {fileID: 11400000, guid: ee89283cfa36f0445a7d8b104e2fe553, type: 2}
     defaultValue: {fileID: 11400000, guid: ee89283cfa36f0445a7d8b104e2fe553, type: 2}

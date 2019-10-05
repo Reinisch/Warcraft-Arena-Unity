@@ -380,7 +380,7 @@ namespace Core
 
         internal void ModifyEmoteState(EmoteType emoteType)
         {
-            if (!IsDead)
+            if (!IsDead && !HasFlag(UnitFlags.Stunned))
                 EmoteType = emoteType;
         }
 

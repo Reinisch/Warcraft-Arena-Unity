@@ -19,6 +19,12 @@ namespace Client
 
         public override void Clear() => soundItems.Clear();
 
-        public override SoundEntry FindSound(UnitSounds soundType) => soundItems.Value(soundType);
+        public override SoundEntry FindSound(UnitSounds soundType, bool allowDefault)
+        {
+            if (!soundItems.ValuesByKey.TryGetValue(soundType, out SoundEntry result))
+                return !allowDefault ? null : soundItems.DefaultValue;
+                
+            return result;
+        }
     }
 }

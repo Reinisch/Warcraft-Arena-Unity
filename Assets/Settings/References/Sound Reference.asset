@@ -16,6 +16,27 @@ MonoBehaviour:
   soundContainerTag: Sound Container
   unitSoundKitContainer: {fileID: 11400000, guid: 68fa6e522f3d27c4dba830d835227877,
     type: 2}
+  unitSoundsByEmoteType:
+    items:
+    - emoteType: 5
+      soundType: 5
+    - emoteType: 12
+      soundType: 3
+    - emoteType: 23
+      soundType: 4
+    - emoteType: 24
+      soundType: 2
+    - emoteType: 16
+      soundType: 10
+    - emoteType: 13
+      soundType: 6
+    - emoteType: 25
+      soundType: 7
+    - emoteType: 10
+      soundType: 8
+    - emoteType: 6
+      soundType: 9
+    defaultValue: 1
   soundSettings:
   - {fileID: 11400000, guid: d1e1a72413fe7224aba07b5c5b27b11e, type: 2}
   - {fileID: 11400000, guid: 637188a259c0f8149a47bc2c267d8f46, type: 2}

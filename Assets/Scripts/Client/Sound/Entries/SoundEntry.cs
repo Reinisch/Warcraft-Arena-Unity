@@ -14,5 +14,11 @@ namespace Client
         public void Play() => soundReference.Play(audioClip, settings, volumeModifier);
 
         public void PlayAtPoint(Vector3 point) => soundReference.PlayAtPoint(audioClip, settings, point, volumeModifier);
+
+        public void PlayAtSource(AudioSource source)
+        {
+            settings.Apply(source);
+            source.PlayOneShot(audioClip, volumeModifier);
+        }
     }
 }

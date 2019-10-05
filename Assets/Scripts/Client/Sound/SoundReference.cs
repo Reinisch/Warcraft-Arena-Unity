@@ -12,6 +12,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private string soundContainerTag;
         [SerializeField, UsedImplicitly] private UnitSoundKitContainer unitSoundKitContainer;
+        [SerializeField, UsedImplicitly] private UnitSoundEmoteTypeDictionary unitSoundsByEmoteType;
         [SerializeField, UsedImplicitly] private List<SoundSettings> soundSettings;
         [SerializeField, UsedImplicitly] private List<SpellSoundSettings> spellSettings;
 
@@ -20,12 +21,15 @@ namespace Client
         private Transform soundContainer;
 
         public IReadOnlyDictionary<int, UnitSoundKit> UnitSoundKitsById => unitSoundKitContainer.SoundKitsById;
+        public IReadOnlyDictionary<EmoteType, UnitSounds> UnitSoundByEmoteType => unitSoundsByEmoteType.ValuesByKey;
 
         protected override void OnRegistered()
         {
             base.OnRegistered();
 
             soundContainer = GameObject.FindGameObjectWithTag(soundContainerTag).transform;
+
+            unitSoundsByEmoteType.Populate();
 
             foreach (var soundSetting in soundSettings)
                 sourcesBySettings[soundSetting] = ApplySettings(new GameObject(soundSetting.name).AddComponent<AudioSource>(), soundSetting);
@@ -43,6 +47,7 @@ namespace Client
             foreach (var soundSourceEntry in sourcesBySettings)
                 Destroy(soundSourceEntry.Value);
 
+            unitSoundsByEmoteType.Clear();
             spellSettingsByInfo.Clear();
             sourcesBySettings.Clear();
             soundContainer = null;
@@ -117,7 +122,7 @@ namespace Client
             {
                 AudioSource pointSource = Instantiate(source, soundContainer);
                 pointSource.transform.position = position;
-                pointSource.volume *= volumeModifier;
+                pointSource.volume = volumeModifier;
                 pointSource.clip = clip;
                 pointSource.Play();
 

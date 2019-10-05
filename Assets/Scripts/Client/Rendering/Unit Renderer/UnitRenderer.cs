@@ -152,6 +152,7 @@ namespace Client
         {
             CancelInvoke(nameof(ResetEmoteTrigger));
 
+            soundController.HandleEmote(Unit.EmoteType);
             model?.Animator.SetTrigger("Emote Trigger");
             model?.Animator.SetInteger("Emote", (int)Unit.EmoteType);
 
