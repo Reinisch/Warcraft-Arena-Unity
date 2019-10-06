@@ -10,9 +10,11 @@ namespace Client
 {
     public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IPointerDownHandler, IPointerUpHandler
     {
+        [SerializeField, UsedImplicitly] private TooltipReference tooltips;
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private InputReference input;
+        [SerializeField, UsedImplicitly] private RectTransform rectTransform;
         [SerializeField, UsedImplicitly] private Image contentImage;
         [SerializeField, UsedImplicitly] private Image cooldownImage;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI cooldownText;
@@ -103,8 +105,14 @@ namespace Client
                 button.OnPointerUp(manualPointerData);
         }
 
-        public void OnPointerEnter(PointerEventData data)
+        public void OnPointerEnter(PointerEventData eventData)
         {
+            tooltips.Show(spellInfo, rectTransform, TooltipAlignment.FromTop, TooltipSize.Normal);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            tooltips.Hide();
         }
 
         public void OnPointerDown(PointerEventData data)
@@ -117,10 +125,6 @@ namespace Client
             isPointerDown = false;
             if (isHotkeyDown)
                 button.OnPointerDown(manualPointerData);
-        }
-
-        public void OnPointerExit(PointerEventData data)
-        {
         }
 
         public void OnDrag(PointerEventData data)

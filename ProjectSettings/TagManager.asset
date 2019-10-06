@@ -14,6 +14,7 @@ TagManager:
   - Pool Container
   - UI Camera
   - Sound Container
+  - Tooltip Container
   layers:
   - Default
   - TransparentFX
