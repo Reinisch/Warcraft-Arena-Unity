@@ -13,6 +13,7 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private LocalizedString missingStringPlaceholder;
         [SerializeField, UsedImplicitly] private LocalizedString emptyStringPlaceholder;
+        [SerializeField, UsedImplicitly] private SpellTooltipInfoContainer spellTooltipSettings;
         [SerializeField, UsedImplicitly] private List<HotKeyModifierLink> hotkeyModifiers;
         [SerializeField, UsedImplicitly] private List<KeyCodeLink> keyCodes;
         [SerializeField, UsedImplicitly] private List<SpellCastResultLink> spellCastResults;
@@ -27,6 +28,8 @@ namespace Client
         private static LocalizedString MissingString;
         private static LocalizedString EmptyString;
 
+        public IReadOnlyDictionary<SpellInfo, SpellTooltipInfo> TooltipInfoBySpell => spellTooltipSettings.TooltipInfoBySpell;
+
         protected override void OnRegistered()
         {
             base.OnRegistered();
@@ -34,6 +37,7 @@ namespace Client
             MissingString = missingStringPlaceholder;
             EmptyString = emptyStringPlaceholder;
 
+            spellTooltipSettings.Populate();
             keyCodes.ForEach(item => StringsByKeyCode.Add(item.KeyCode, item.String));
             hotkeyModifiers.ForEach(item => StringsByHotkeyModifier.Add(item.Modifier, item.String));
             spellCastResults.ForEach(item => StringsBySpellCastResult.Add(item.SpellCastResult, item.LocalizedString));
@@ -55,6 +59,8 @@ namespace Client
             StringsByHotkeyModifier.Clear();
             StringsBySpellCastResult.Clear();
             StringsByClientConnectFailReason.Clear();
+            spellTooltipSettings.Clear();
+
             MissingString = null;
             EmptyString = null;
 

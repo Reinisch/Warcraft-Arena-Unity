@@ -45,12 +45,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   languageType: 2
   entries:
+  - StringReference: {fileID: 11400000, guid: fa5e7ba80087b50448d277f0fa248701, type: 2}
+    Value: Player does not exist
   - StringReference: {fileID: 11400000, guid: a94b4e3ae8b5bb547abc189d14f3b510, type: 2}
     Value: Invalid target
   - StringReference: {fileID: 11400000, guid: 2ee78155435fc20468084c90ffd0b527, type: 2}
     Value: Can't cast while dead
-  - StringReference: {fileID: 11400000, guid: fa5e7ba80087b50448d277f0fa248701, type: 2}
-    Value: Player does not exist
   - StringReference: {fileID: 11400000, guid: 36f40c387c83d4f428866eb0dae4f77a, type: 2}
     Value: Out of range
   - StringReference: {fileID: 11400000, guid: 1d084137052605e4f997a00f517e9172, type: 2}
@@ -126,7 +126,7 @@ MonoBehaviour:
   - StringReference: {fileID: 11400000, guid: 3504a91b02da3794884704b18b98fc7e, type: 2}
     Value: Flex
   - StringReference: {fileID: 11400000, guid: ac43b33aa53b3564ab3c1dac1c2491fd, type: 2}
-    Value: Applaud
+    Value: Beg
   - StringReference: {fileID: 11400000, guid: 0ebedf9a25d21d54baeea721c6e31269, type: 2}
     Value: Bow
   - StringReference: {fileID: 11400000, guid: cb21a32376b3f4945aadd14087e891cb, type: 2}
@@ -165,3 +165,162 @@ MonoBehaviour:
     Value: Wave
   - StringReference: {fileID: 11400000, guid: 9b09405e731c4f7429c1308ecebb2981, type: 2}
     Value: Yes
+  - StringReference: {fileID: 11400000, guid: 33dbdc83e0dd85141ad08db8f8271dbf, type: 2}
+    Value: Accelerates your spellcasting for {0} sec, granting {1}% haste, {2}% critical
+      damage bonus and preventing damage from delaying your spellcasts.
+  - StringReference: {fileID: 11400000, guid: 9b59df259012e2347a57a980a659d9fd, type: 2}
+    Value: Icy Veins
+  - StringReference: {fileID: 11400000, guid: a286977671aa9de438a8f11c09d2eb68, type: 2}
+    Value: 'Stuns the target for {0} sec and causes the target to be considered Frozen
+      for the duration of its stun.
+
+
+      Only usable on Frozen targets or while caster is affected by Fingers of Frost.'
+  - StringReference: {fileID: 11400000, guid: 4f3c87b701321a64aab247cad0d084c2, type: 2}
+    Value: Deep Freeze
+  - StringReference: {fileID: 11400000, guid: 806d4ec15554dcb43a602a61175548af, type: 2}
+    Value: "Infuses the target with brilliance, increasing their Intellect by {0}%
+      for {1} seconds.  \r\n\r\nIf target is in your party or raid, all party and
+      raid members will be affected."
+  - StringReference: {fileID: 11400000, guid: 5b6a2389c3db8f84d96238571663ff66, type: 2}
+    Value: Arcane Intellect
+  - StringReference: {fileID: 11400000, guid: ff839d2e612ae77439a5ba016e8a2020, type: 2}
+    Value: 'Suppresses movement slowing effects and increases your movement speed
+      by {0}% for {1} sec.
+
+
+      Castable while another spell is in progress and unaffected by global cooldown.'
+  - StringReference: {fileID: 11400000, guid: 0cd01f5b497f3b34da4e5abd2b629271, type: 2}
+    Value: Blazing Speed
+  - StringReference: {fileID: 11400000, guid: 237aaae4101bbe948817cfe54dd80c9e, type: 2}
+    Value: 'Teleports you forward {0} yds or until reaching an obstacle, and frees
+      you from all stuns and bonds.
+
+
+      Usable while stunned.'
+  - StringReference: {fileID: 11400000, guid: 5da3cae2f9614aa47a23247d78e30a17, type: 2}
+    Value: Blink
+  - StringReference: {fileID: 11400000, guid: 9017bf1e3a324034b9250d06d1590064, type: 2}
+    Value: Targets in a cone in front of you take ({0}% of Spell power) Frost damage
+      and have movement slowed by {1}% for {2} sec.
+  - StringReference: {fileID: 11400000, guid: 4d32b6263fc56fe43ad4e95e1dfadde2, type: 2}
+    Value: Cone of Cold
+  - StringReference: {fileID: 11400000, guid: 67d5ca24a9927634b9a3af2cfa28693f, type: 2}
+    Value: 'Counters the enemy''s spellcast, preventing any spell from that school
+      of magic from being cast for {0} sec.
+
+
+      Castable while another spell is in progress and unaffected by global cooldown.'
+  - StringReference: {fileID: 11400000, guid: 68fdf268cf1dc0445ad2a777cb2be18f, type: 2}
+    Value: Counterspell
+  - StringReference: {fileID: 11400000, guid: cd5faf9b03574dd4a8ab36abfe9ad062, type: 2}
+    Value: "Blasts the enemy for ({0}% of Spell power) Fire damage. \n\nAlways deals
+      a critical strike."
+  - StringReference: {fileID: 11400000, guid: 613241cedfe2bc142ae4c9e73243516b, type: 2}
+    Value: Fire Blast
+  - StringReference: {fileID: 11400000, guid: 5fa0f2a46c82f0540aafa1212557ceac, type: 2}
+    Value: "\rCalls down a pillar of fire, burning all enemies within the area for
+      ({0}% of Spell power) Fire damage and an additional ({1}% of Spell power) Fire
+      damage every {2} sec for {3} sec."
+  - StringReference: {fileID: 11400000, guid: 0b25c99aa3fe7204bb4435ee6f212ccc, type: 2}
+    Value: Flame Strike
+  - StringReference: {fileID: 11400000, guid: acf4ffcbd3e8395469a6c9c024b8b06a, type: 2}
+    Value: A fast spell that heals an ally for ({0}% of Spell power).
+  - StringReference: {fileID: 11400000, guid: 0b47e54275d105a44a7196740cbc4357, type: 2}
+    Value: Flash Heal
+  - StringReference: {fileID: 11400000, guid: 6ecbc81066fb78d479261881eb7d9d88, type: 2}
+    Value: Launches a bolt of frost at the enemy, causing ({0}% of Spell power) Frost
+      damage and slowing movement speed by {1}% for {2} sec.
+  - StringReference: {fileID: 11400000, guid: f7db0630feec28e44b8d752263c6c214, type: 2}
+    Value: Frost Bolt
+  - StringReference: {fileID: 11400000, guid: 98dee79b4821d5242b01fb86c62f007e, type: 2}
+    Value: 'Blasts enemies within {0} yds of you for ({1}% of Spell power) Frost damage
+      and freezes them in place for {2} sec.
+
+
+      Damage may interrupt the freeze effect.'
+  - StringReference: {fileID: 11400000, guid: 2c6f423dfc6cc594b99c478ee506c66d, type: 2}
+    Value: Frost Nova
+  - StringReference: {fileID: 11400000, guid: 454e9a87e189a774da22eefaf175fc09, type: 2}
+    Value: Perform a miracle, healing an ally for ({0}% of Spell power).
+  - StringReference: {fileID: 11400000, guid: 4b29fdd48c30d6f40a7bedfe80178679, type: 2}
+    Value: 'Holy Word: Serenity'
+  - StringReference: {fileID: 11400000, guid: 3e0b89e6ff04e5341b31829dab0bfdcb, type: 2}
+    Value: Removes all movement impairing effects and all effects which cause loss
+      of control of your character while in PvP combat.
+  - StringReference: {fileID: 11400000, guid: 73025ff39a0bf7e4196724ae32efc30e, type: 2}
+    Value: Honorable Medallion
+  - StringReference: {fileID: 11400000, guid: f734941aa1fd3f146bbc775f2454b169, type: 2}
+    Value: Shields you with ice, absorbing ({0}% of total health) damage.
+  - StringReference: {fileID: 11400000, guid: 71ab1ea4a01153747aadd4f4c47d2aeb, type: 2}
+    Value: Ice Barrier
+  - StringReference: {fileID: 11400000, guid: 5246482c0aac95f49835bf13ad59f31c, type: 2}
+    Value: "\r\nEncases you in a block of ice, protecting you from all attacks and
+      damage for {0} sec, but during that time you cannot attack, move, or cast spells.
+      \ "
+  - StringReference: {fileID: 11400000, guid: 8d1b5b635e3254e40893397cce82bea4, type: 2}
+    Value: Ice Block
+  - StringReference: {fileID: 11400000, guid: 759e1d2c03c121a4a9dc5048148d8311, type: 2}
+    Value: "Quickly fling a shard of ice at the target, dealing (35% of Spell power)
+      Frost damage\r.\n\r\nIce Lance damage is quadrupled against frozen targets."
+  - StringReference: {fileID: 11400000, guid: bdf53c262d6c28646a7e384e733f0c0a, type: 2}
+    Value: Ice Lance
+  - StringReference: {fileID: 11400000, guid: 19371a3de514e854c923b4b9d7f321cf, type: 2}
+    Value: Causes a whirl of icy wind around the enemy, dealing ({0}% of Spell power)
+      Frost damage to the target and to all other enemies within {1} yards, and freezing
+      them in place for {2} sec.
+  - StringReference: {fileID: 11400000, guid: fee1eb1c660b33a49a863bb8b4b1281d, type: 2}
+    Value: Ice Nova
+  - StringReference: {fileID: 11400000, guid: d89b21e87cc6e4642abefe400eb89d0d, type: 2}
+    Value: 'Instantly kills current target.
+
+
+      Only usable against creatures.'
+  - StringReference: {fileID: 11400000, guid: b878ce9388ca0514999326b85eed3a1b, type: 2}
+    Value: Kill Creature
+  - StringReference: {fileID: 11400000, guid: 0c5e57e792d25a64db50a07f86eb8ddd, type: 2}
+    Value: Instantly kills caster.
+  - StringReference: {fileID: 11400000, guid: bfb15adec70dce44bb2c810bf939426d, type: 2}
+    Value: Kill Self
+  - StringReference: {fileID: 11400000, guid: f12b3c00fa470634ca9b07b8d054d6f6, type: 2}
+    Value: The target becomes a Living Bomb, taking ({0}% of Spell power) Fire damage
+      over {1} sec, and then exploding to deal an additional ({2}% of Spell power)
+      Fire damage to the target and all other enemies within {3} yards.
+  - StringReference: {fileID: 11400000, guid: 0c872fa464e694a48ad4127cc5dee6f7, type: 2}
+    Value: Living Bomb
+  - StringReference: {fileID: 11400000, guid: 380e6ec967efae941b5589a09dac819f, type: 2}
+    Value: 'Reduces all damage taken by a friendly target by 40% for 8 sec.
+
+
+      Castable while stunned.'
+  - StringReference: {fileID: 11400000, guid: c3109e87b5a5e5142aa433cc5950f9a3, type: 2}
+    Value: Pain Suppression
+  - StringReference: {fileID: 11400000, guid: d0ac9330aafd16743baa45cc625e89bf, type: 2}
+    Value: "\rTransforms the enemy into a sheep, wandering around incapacitated for
+      {0} sec. While affected, the victim cannot take actions.\n\nDamage will cancel
+      the effect."
+  - StringReference: {fileID: 11400000, guid: ad91641625ca48c4f945e4eeb9c8c416, type: 2}
+    Value: Polymorph
+  - StringReference: {fileID: 11400000, guid: 7686a9e56a2c1a44e97b9c41535a6b25, type: 2}
+    Value: When activated, your next Mage spell with a casting time less than 10 sec
+      becomes an instant cast spell.
+  - StringReference: {fileID: 11400000, guid: 89eadcf948675f4438d29064fb2cecf7, type: 2}
+    Value: Presence of Mind
+  - StringReference: {fileID: 11400000, guid: db8fa94c9dae9284faf8bc309d301259, type: 2}
+    Value: Hurls an immense fiery boulder that causes ({0}% of Spell power) Fire damage.
+  - StringReference: {fileID: 11400000, guid: 86d51d4b249bd7046825b4b94a7bc052, type: 2}
+    Value: Pyroblast
+  - StringReference: {fileID: 11400000, guid: b9093ec58b0024e41bb2904829bfe2bd, type: 2}
+    Value: Fill the target with faith in the light, healing them instantly for ({0}%
+      of Spell power) and then ({1}% of Spell power) over {2} sec.
+  - StringReference: {fileID: 11400000, guid: c82134bb4c98ed04da943863d1f7f98c, type: 2}
+    Value: Renew
+  - StringReference: {fileID: 11400000, guid: af54834f072f24548a9f19d38cb48afe, type: 2}
+    Value: Caster resurrects with 50% health.
+  - StringReference: {fileID: 11400000, guid: 3edc3932dcece9944b24a26333cf5e3e, type: 2}
+    Value: Resurrect Self
+  - StringReference: {fileID: 11400000, guid: ff48892ea033fd948b87808a5e834114, type: 2}
+    Value: "\rScorches an enemy for ({0}% of Spell power) Fire damage. Castable while
+      moving."
+  - StringReference: {fileID: 11400000, guid: b6a8945ddb8188d4097a59f421b53eb0, type: 2}
+    Value: Scorch

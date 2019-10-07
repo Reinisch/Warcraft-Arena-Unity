@@ -17,6 +17,8 @@ MonoBehaviour:
     type: 2}
   emptyStringPlaceholder: {fileID: 11400000, guid: 9296745a40fc5e843a0e4fb31c8e4dfd,
     type: 2}
+  spellTooltipSettings: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9,
+    type: 2}
   hotkeyModifiers:
   - Modifier: 1
     String: c

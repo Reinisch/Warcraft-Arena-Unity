@@ -14,7 +14,7 @@ namespace Common
 
 #if UNITY_EDITOR
         [UsedImplicitly]
-        protected void OnValidate()
+        protected virtual void OnValidate()
         {
             var takenIds = new HashSet<int>();
 

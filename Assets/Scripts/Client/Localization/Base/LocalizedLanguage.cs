@@ -12,7 +12,7 @@ namespace Client.Localization
         private class LocalizationEntry
         {
             public LocalizedString StringReference;
-            public string Value;
+            [TextArea] public string Value;
         }
 
         [SerializeField, UsedImplicitly] private LocalizedLanguageType languageType;

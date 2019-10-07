@@ -13,7 +13,7 @@ namespace Core.AuraEffects
         [SerializeField, UsedImplicitly] private SpellAbsorbCalculationType calculationType;
         [SerializeField, UsedImplicitly, EnumFlag] private SpellSchoolMask schoolMask;
 
-        public override float Value => 1.0f;
+        public override float Value => baseValue;
         public override AuraEffectType AuraEffectType => AuraEffectType.AbsorbDamage;
 
         internal override AuraEffect CreateEffect(Aura aura, Unit caster, int index)

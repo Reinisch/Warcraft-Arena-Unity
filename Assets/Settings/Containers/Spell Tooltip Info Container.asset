@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9def3bca64af1e740aefad67ef44b64f, type: 3}
+  m_Name: Spell Tooltip Info Container
+  m_EditorClassIdentifier: 
+  tooltipInfos:
+  - {fileID: 11400000, guid: c90994085d3547d47827f41191d514b9, type: 2}
+  - {fileID: 11400000, guid: f0f0dc9b40672924f9447d89fdf80128, type: 2}
+  - {fileID: 11400000, guid: ebe976954b781974fb03f0a5d4da8e2f, type: 2}
+  - {fileID: 11400000, guid: c32a0d396a9035340858c0f678b72211, type: 2}
+  - {fileID: 11400000, guid: e39d43fb7deed564bb21e07be4204278, type: 2}
+  - {fileID: 11400000, guid: 404a37c0ef543874492019e0a7ddcbdc, type: 2}
+  - {fileID: 11400000, guid: 4b65a379482ab014a851f7d04b9e3a55, type: 2}
+  - {fileID: 11400000, guid: fc7fa4690211bce44bc20acc9635c704, type: 2}
+  - {fileID: 11400000, guid: bc4ccde31e586134890a6343d0db9be3, type: 2}
+  - {fileID: 11400000, guid: 2ce43fa54429a4844978cce5e85c3938, type: 2}
+  - {fileID: 11400000, guid: af2759a914799d648a7070408c60aa44, type: 2}
+  - {fileID: 11400000, guid: a21fd8432cf72db449b02e465b861d3e, type: 2}
+  - {fileID: 11400000, guid: a2a79803cd5e22a40800f8091089e2f1, type: 2}
+  - {fileID: 11400000, guid: 3f7d069935d5b964dbbb9d0b172c79fb, type: 2}
+  - {fileID: 11400000, guid: 19c48c253fcf920458f122dc1c9a99f1, type: 2}
