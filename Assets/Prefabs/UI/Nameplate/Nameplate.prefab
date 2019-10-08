@@ -920,6 +920,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   balanceReference: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
+  localization: {fileID: 11400000, guid: bc534b915b952ff4c910e58a96b38c6f, type: 2}
   canvasGroup: {fileID: 4404034046614280959}
   spellLabel: {fileID: 8533717032054605320}
   spellIcon: {fileID: 3161477067723837612}

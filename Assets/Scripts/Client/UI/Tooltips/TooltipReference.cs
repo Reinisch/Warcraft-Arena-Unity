@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Text;
 using Core;
 using JetBrains.Annotations;
 
@@ -14,12 +13,7 @@ namespace Client
         private TooltipContainer container;
         private TooltipSlot currentTooltip;
 
-        private const int BodyBuilderCapacity = 500;
-        private const int SubBuilderCapacity = 200;
-
         private static readonly Vector3[] Corners = new Vector3[4];
-        private static readonly StringBuilder TipBodyBuilder = new StringBuilder(BodyBuilderCapacity);
-        private static readonly StringBuilder SubBodyBuilder = new StringBuilder(SubBuilderCapacity);
 
         private TooltipItemNormal TooltipNormal => container.TooltipNormal;
         private TooltipItemSpell TooltipSpell => container.TooltipSpell;
@@ -57,8 +51,8 @@ namespace Client
             if (currentTooltip != null && currentTooltip.Item is TooltipItemSpell == false)
                 currentTooltip.Hide();
 
-            TooltipSpell.ModifyContent(tooltipSpell);
-            Show(TooltipSpell.Slot, targetRect, alignment, size);
+            if (TooltipSpell.ModifyContent(tooltipSpell))
+                Show(TooltipSpell.Slot, targetRect, alignment, size);
         }
 
         public void Show(string tooltipText, RectTransform targetRect, TooltipAlignment alignment, TooltipSize size)
@@ -66,8 +60,8 @@ namespace Client
             if (currentTooltip != null && currentTooltip.Item is TooltipItemNormal == false)
                 currentTooltip.Hide();
 
-            TooltipNormal.ModifyContent(tooltipText);
-            Show(TooltipNormal.Slot, targetRect, alignment, size);
+            if (TooltipNormal.ModifyContent(tooltipText))
+                Show(TooltipNormal.Slot, targetRect, alignment, size);
         }
 
         public void Hide()

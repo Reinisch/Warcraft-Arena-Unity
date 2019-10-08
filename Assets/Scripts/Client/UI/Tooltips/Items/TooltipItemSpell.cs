@@ -20,9 +20,8 @@ namespace Client
 
         private readonly NumberFormatInfo tooltipNumberFormat = new NumberFormatInfo {PercentPositivePattern = 1, PercentNegativePattern = 1};
 
-        public override void ModifyContent(SpellInfo spellInfo)
+        public override bool ModifyContent(SpellInfo spellInfo)
         {
-            spellName.text = spellInfo.SpellName;
             spellIcon.sprite = rendering.SpellVisualSettingsById.ContainsKey(spellInfo.Id)
                 ? rendering.SpellVisualSettingsById[spellInfo.Id].SpellIcon
                 : rendering.DefaultSpellIcon;
@@ -35,7 +34,12 @@ namespace Client
                     descriptionArguments[i] = tooltipInfo.ArgumentSettings[i].Resolve() ?? unknownArguments[i];
 
                 spellDescription.text = string.Format(tooltipNumberFormat, tooltipInfo.SpellDescriptionString.Value, descriptionArguments);
+
+                return true;
             }
+
+            Debug.LogError($"Missing tooltip for spell: {spellInfo.name}!");
+            return false;
         }
     }
 }

@@ -8,9 +8,11 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private TextMeshProUGUI tooltipText;
 
-        public override void ModifyContent(string text)
+        public override bool ModifyContent(string text)
         {
             tooltipText.SetText(text);
+
+            return true;
         }
     }
 }

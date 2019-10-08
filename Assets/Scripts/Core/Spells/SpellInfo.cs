@@ -11,8 +11,6 @@ namespace Core
     public sealed class SpellInfo : ScriptableUniqueInfo<SpellInfo>
     {
         [SerializeField, UsedImplicitly] private SpellInfoContainer container;
-
-        [SerializeField, UsedImplicitly] private string spellName;
         [SerializeField, UsedImplicitly] private SpellExplicitTargetType explicitTargetType;
         [SerializeField, UsedImplicitly] private SpellDamageClass damageClass;
         [SerializeField, UsedImplicitly] private SpellDispelType spellDispel;
@@ -56,8 +54,6 @@ namespace Core
         /// Compressed to 8 bits in <seealso cref="SpellCastRequestEvent"/> and other spell events.
         /// </summary>
         public new int Id => base.Id;
-
-        public string SpellName => spellName;
 
         public SpellExplicitTargetType ExplicitTargetType => explicitTargetType;
         public SpellCastTargetFlags ExplicitCastTargets => explicitCastTargets;

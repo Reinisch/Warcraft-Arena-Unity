@@ -639,6 +639,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   balanceReference: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
+  localization: {fileID: 11400000, guid: bc534b915b952ff4c910e58a96b38c6f, type: 2}
   canvasGroup: {fileID: 6069093700461287869}
   spellLabel: {fileID: 2150601960305191557}
   spellIcon: {fileID: 825425500794233569}
@@ -1978,6 +1979,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045569739417222411, guid: d72ae3745e97ed34382bc1406c72548c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045569739417222411, guid: d72ae3745e97ed34382bc1406c72548c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045569739417222411, guid: d72ae3745e97ed34382bc1406c72548c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8697997272745419128, guid: d72ae3745e97ed34382bc1406c72548c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00001335144
+      objectReference: {fileID: 0}
+    - target: {fileID: 6291006736253493757, guid: d72ae3745e97ed34382bc1406c72548c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6291006736253493757, guid: d72ae3745e97ed34382bc1406c72548c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6455031095640777854, guid: d72ae3745e97ed34382bc1406c72548c,
         type: 3}

@@ -29,6 +29,7 @@ namespace Client
         private static LocalizedString EmptyString;
 
         public IReadOnlyDictionary<SpellInfo, SpellTooltipInfo> TooltipInfoBySpell => spellTooltipSettings.TooltipInfoBySpell;
+        public IReadOnlyDictionary<int, SpellTooltipInfo> TooltipInfoBySpellId => spellTooltipSettings.TooltipInfoBySpellId;
 
         protected override void OnRegistered()
         {

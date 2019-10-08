@@ -12,20 +12,26 @@ namespace Client
         [SerializeField, UsedImplicitly] private List<SpellTooltipInfo> tooltipInfos;
 
         private readonly Dictionary<SpellInfo, SpellTooltipInfo> tooltipInfoBySpell = new Dictionary<SpellInfo, SpellTooltipInfo>();
+        private readonly Dictionary<int, SpellTooltipInfo> tooltipInfoBySpellId = new Dictionary<int, SpellTooltipInfo>();
 
         protected override List<SpellTooltipInfo> Items => tooltipInfos;
 
         public IReadOnlyDictionary<SpellInfo, SpellTooltipInfo> TooltipInfoBySpell => tooltipInfoBySpell;
+        public IReadOnlyDictionary<int, SpellTooltipInfo> TooltipInfoBySpellId => tooltipInfoBySpellId;
 
         public void Populate()
         {
-            foreach(SpellTooltipInfo tooltipInfo in tooltipInfos)
+            foreach (SpellTooltipInfo tooltipInfo in tooltipInfos)
+            {
                 tooltipInfoBySpell.Add(tooltipInfo.SpellInfo, tooltipInfo);
+                tooltipInfoBySpellId.Add(tooltipInfo.SpellInfo.Id, tooltipInfo);
+            }
         }
 
         public void Clear()
         {
             tooltipInfoBySpell.Clear();
+            tooltipInfoBySpellId.Clear();
         }
     }
 }

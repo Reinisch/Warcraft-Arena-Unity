@@ -11,6 +11,7 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private BalanceReference balanceReference;
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
+        [SerializeField, UsedImplicitly] private LocalizationReference localization;
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellLabel;
         [SerializeField, UsedImplicitly] private Image spellIcon;
@@ -68,8 +69,8 @@ namespace Client
         private void OnSpellCastChanged()
         {
             isCasting = caster.SpellCast.State.Id != 0;
-            if (isCasting && balanceReference.SpellInfosById.TryGetValue(caster.SpellCast.State.Id, out SpellInfo spellInfo))
-                spellLabel.text = spellInfo.SpellName;
+            if (isCasting && localization.TooltipInfoBySpellId.TryGetValue(caster.SpellCast.State.Id, out SpellTooltipInfo tooltipInfo))
+                spellLabel.text = tooltipInfo.SpellNameString.Value;
             else
                 spellLabel.text = string.Empty;
 

@@ -5,7 +5,7 @@ namespace Client
 {
     public abstract class TooltipItem<TContent> : TooltipItem
     {
-        public abstract void ModifyContent(TContent newContent);
+        public abstract bool ModifyContent(TContent newContent);
     }
 
     public abstract class TooltipItem : MonoBehaviour

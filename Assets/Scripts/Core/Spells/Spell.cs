@@ -142,7 +142,7 @@ namespace Core
                 case SpellExecutionState.Preparing:
                     goto default;
                 default:
-                    Assert.IsTrue(SpellState == SpellState.Removing, $"Spell {SpellInfo.SpellName} updated in invalid state: {ExecutionState} while not being removed!");
+                    Assert.IsTrue(SpellState == SpellState.Removing, $"Spell {SpellInfo.name} updated in invalid state: {ExecutionState} while not being removed!");
                     break;
             }
         }
