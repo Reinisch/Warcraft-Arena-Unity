@@ -3,6 +3,8 @@
     public enum SpellTooltipArgumentType
     {
         Duration,
-        Value
+        Value,
+        Radius,
+        Period
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Core;
+using Core.AuraEffects;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -50,6 +51,8 @@ namespace Client
             {
                 case SpellTooltipArgumentType.Value:
                     return spellEffectInfo.Value;
+                case SpellTooltipArgumentType.Radius when spellEffectInfo.Targeting is SpellTargetingArea areaTargeting:
+                    return areaTargeting.MaxRadius;
                 default:
                     return null;
             }
@@ -70,6 +73,10 @@ namespace Client
         {
             switch (argumentType)
             {
+                case SpellTooltipArgumentType.Period when auraEffectInfo is AuraEffectInfoPeriodic periodicEffect:
+                    return (float) periodicEffect.Period / 1000;
+                case SpellTooltipArgumentType.Value when auraEffectInfo is AuraEffectInfoModifyDamagePercentTaken:
+                    return Mathf.Abs(auraEffectInfo.Value);
                 case SpellTooltipArgumentType.Value:
                     return auraEffectInfo.Value;
                 default:

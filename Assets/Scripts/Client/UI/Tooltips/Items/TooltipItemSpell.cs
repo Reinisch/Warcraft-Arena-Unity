@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using System.Globalization;
+using Core;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace Client
         private readonly object[] descriptionArguments = new object[SpellTooltipInfo.MaxArguments];
         private readonly object[] unknownArguments = { 'X', 'Y', 'Z', 'N', 'K' };
 
+        private readonly NumberFormatInfo tooltipNumberFormat = new NumberFormatInfo {PercentPositivePattern = 1, PercentNegativePattern = 1};
+
         public override void ModifyContent(SpellInfo spellInfo)
         {
             spellName.text = spellInfo.SpellName;
@@ -31,7 +34,7 @@ namespace Client
                 for (int i = 0; i < tooltipInfo.ArgumentSettings.Count; i++)
                     descriptionArguments[i] = tooltipInfo.ArgumentSettings[i].Resolve() ?? unknownArguments[i];
 
-                spellDescription.text = string.Format(tooltipInfo.SpellDescriptionString.Value, descriptionArguments);
+                spellDescription.text = string.Format(tooltipNumberFormat, tooltipInfo.SpellDescriptionString.Value, descriptionArguments);
             }
         }
     }

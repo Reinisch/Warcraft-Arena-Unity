@@ -25,3 +25,9 @@ MonoBehaviour:
   - argumentSource: {fileID: 4832348296141079496, guid: 1d13f76d2c9c77040bd64e6d8b6d9f59,
       type: 2}
     argumentType: 1
+  - argumentSource: {fileID: 4832348296141079496, guid: 1d13f76d2c9c77040bd64e6d8b6d9f59,
+      type: 2}
+    argumentType: 3
+  - argumentSource: {fileID: -2213274802249647037, guid: 1d13f76d2c9c77040bd64e6d8b6d9f59,
+      type: 2}
+    argumentType: 0

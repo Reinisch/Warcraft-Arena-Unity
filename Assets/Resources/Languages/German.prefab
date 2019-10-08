@@ -201,8 +201,11 @@ MonoBehaviour:
   - StringReference: {fileID: 11400000, guid: 5da3cae2f9614aa47a23247d78e30a17, type: 2}
     Value: Blink
   - StringReference: {fileID: 11400000, guid: 9017bf1e3a324034b9250d06d1590064, type: 2}
-    Value: Targets in a cone in front of you take ({0}% of Spell power) Frost damage
+    Value: 'Targets in a cone in front of you take ({0}% of Spell power) Frost damage
       and have movement slowed by {1}% for {2} sec.
+
+
+      Has {3:P0} chance to trigger Fingers of Frost.'
   - StringReference: {fileID: 11400000, guid: 4d32b6263fc56fe43ad4e95e1dfadde2, type: 2}
     Value: Cone of Cold
   - StringReference: {fileID: 11400000, guid: 67d5ca24a9927634b9a3af2cfa28693f, type: 2}
@@ -215,7 +218,8 @@ MonoBehaviour:
     Value: Counterspell
   - StringReference: {fileID: 11400000, guid: cd5faf9b03574dd4a8ab36abfe9ad062, type: 2}
     Value: "Blasts the enemy for ({0}% of Spell power) Fire damage. \n\nAlways deals
-      a critical strike."
+      a critical strike and causes Hot Streak to trigger unless target is immune to
+      critical strikes."
   - StringReference: {fileID: 11400000, guid: 613241cedfe2bc142ae4c9e73243516b, type: 2}
     Value: Fire Blast
   - StringReference: {fileID: 11400000, guid: 5fa0f2a46c82f0540aafa1212557ceac, type: 2}
@@ -229,8 +233,11 @@ MonoBehaviour:
   - StringReference: {fileID: 11400000, guid: 0b47e54275d105a44a7196740cbc4357, type: 2}
     Value: Flash Heal
   - StringReference: {fileID: 11400000, guid: 6ecbc81066fb78d479261881eb7d9d88, type: 2}
-    Value: Launches a bolt of frost at the enemy, causing ({0}% of Spell power) Frost
+    Value: 'Launches a bolt of frost at the enemy, causing ({0}% of Spell power) Frost
       damage and slowing movement speed by {1}% for {2} sec.
+
+
+      Has {3:P0} chance to trigger Fingers of Frost.'
   - StringReference: {fileID: 11400000, guid: f7db0630feec28e44b8d752263c6c214, type: 2}
     Value: Frost Bolt
   - StringReference: {fileID: 11400000, guid: 98dee79b4821d5242b01fb86c62f007e, type: 2}
@@ -251,45 +258,60 @@ MonoBehaviour:
   - StringReference: {fileID: 11400000, guid: 73025ff39a0bf7e4196724ae32efc30e, type: 2}
     Value: Honorable Medallion
   - StringReference: {fileID: 11400000, guid: f734941aa1fd3f146bbc775f2454b169, type: 2}
-    Value: Shields you with ice, absorbing ({0}% of total health) damage.
+    Value: 'Shields you with ice, absorbing ({0}% of total health) damage. Lasts {1}
+      sec.
+
+
+      While the shield holds, spells will not be interrupted.'
   - StringReference: {fileID: 11400000, guid: 71ab1ea4a01153747aadd4f4c47d2aeb, type: 2}
     Value: Ice Barrier
   - StringReference: {fileID: 11400000, guid: 5246482c0aac95f49835bf13ad59f31c, type: 2}
-    Value: "\r\nEncases you in a block of ice, protecting you from all attacks and
-      damage for {0} sec, but during that time you cannot attack, move, or cast spells.
-      \ "
+    Value: "\rEncases you in a block of ice, protecting you from all attacks and damage
+      for {0} sec, but during that time you cannot attack, move, or cast spells.  "
   - StringReference: {fileID: 11400000, guid: 8d1b5b635e3254e40893397cce82bea4, type: 2}
     Value: Ice Block
   - StringReference: {fileID: 11400000, guid: 759e1d2c03c121a4a9dc5048148d8311, type: 2}
-    Value: "Quickly fling a shard of ice at the target, dealing (35% of Spell power)
-      Frost damage\r.\n\r\nIce Lance damage is quadrupled against frozen targets."
+    Value: "Quickly fling a shard of ice at the target, dealing ({0}% of Spell power)
+      Frost damage\r.\n\r\nIce Lance damage is quadrupled against frozen targets.
+      Targets also confidered being frozen if caster is affected by Fingers of Frost.\n\nDamage
+      is increased by {1}% when consuming Fingers of Frost charge."
   - StringReference: {fileID: 11400000, guid: bdf53c262d6c28646a7e384e733f0c0a, type: 2}
     Value: Ice Lance
   - StringReference: {fileID: 11400000, guid: 19371a3de514e854c923b4b9d7f321cf, type: 2}
-    Value: Causes a whirl of icy wind around the enemy, dealing ({0}% of Spell power)
+    Value: 'Causes a whirl of icy wind around the enemy, dealing ({0}% of Spell power)
       Frost damage to the target and to all other enemies within {1} yards, and freezing
       them in place for {2} sec.
+
+
+      Damage may interrupt the freeze effect.'
   - StringReference: {fileID: 11400000, guid: fee1eb1c660b33a49a863bb8b4b1281d, type: 2}
     Value: Ice Nova
   - StringReference: {fileID: 11400000, guid: d89b21e87cc6e4642abefe400eb89d0d, type: 2}
     Value: 'Instantly kills current target.
 
 
-      Only usable against creatures.'
+      Temporary debug spell, only usable against creatures.'
   - StringReference: {fileID: 11400000, guid: b878ce9388ca0514999326b85eed3a1b, type: 2}
     Value: Kill Creature
   - StringReference: {fileID: 11400000, guid: 0c5e57e792d25a64db50a07f86eb8ddd, type: 2}
-    Value: Instantly kills caster.
+    Value: 'Instantly kills caster.
+
+
+      Temporary debug spell.'
   - StringReference: {fileID: 11400000, guid: bfb15adec70dce44bb2c810bf939426d, type: 2}
     Value: Kill Self
   - StringReference: {fileID: 11400000, guid: f12b3c00fa470634ca9b07b8d054d6f6, type: 2}
-    Value: The target becomes a Living Bomb, taking ({0}% of Spell power) Fire damage
-      over {1} sec, and then exploding to deal an additional ({2}% of Spell power)
-      Fire damage to the target and all other enemies within {3} yards.
+    Value: 'The target becomes a Living Bomb, taking ({0}% of Spell power) Fire damage
+      every {4} sec for {1} sec, and then exploding to deal an additional ({2}% of
+      Spell power) Fire damage to the target and all other enemies within {3} yards.
+
+
+      When applied first time instantly deals single tick damage. Explosion timer
+      is reset with duration on refresh.'
   - StringReference: {fileID: 11400000, guid: 0c872fa464e694a48ad4127cc5dee6f7, type: 2}
     Value: Living Bomb
   - StringReference: {fileID: 11400000, guid: 380e6ec967efae941b5589a09dac819f, type: 2}
-    Value: 'Reduces all damage taken by a friendly target by 40% for 8 sec.
+    Value: 'Reduces all damage taken by a friendly target by {0}% for {1} sec.
 
 
       Castable while stunned.'
@@ -307,20 +329,29 @@ MonoBehaviour:
   - StringReference: {fileID: 11400000, guid: 89eadcf948675f4438d29064fb2cecf7, type: 2}
     Value: Presence of Mind
   - StringReference: {fileID: 11400000, guid: db8fa94c9dae9284faf8bc309d301259, type: 2}
-    Value: Hurls an immense fiery boulder that causes ({0}% of Spell power) Fire damage.
+    Value: 'Hurls an immense fiery boulder that causes ({0}% of Spell power) Fire
+      damage and additional ({1}% of Spell power) every {2} sec for {3} sec after.
+
+
+      Getting two direct-damage critical strikes with Fire Blast or Scorch in a row
+      will make your next Pyroblast instant cast.'
   - StringReference: {fileID: 11400000, guid: 86d51d4b249bd7046825b4b94a7bc052, type: 2}
     Value: Pyroblast
   - StringReference: {fileID: 11400000, guid: b9093ec58b0024e41bb2904829bfe2bd, type: 2}
     Value: Fill the target with faith in the light, healing them instantly for ({0}%
-      of Spell power) and then ({1}% of Spell power) over {2} sec.
+      of Spell power) and then ({1}% of Spell power) every {2} sec for {3} sec.
   - StringReference: {fileID: 11400000, guid: c82134bb4c98ed04da943863d1f7f98c, type: 2}
     Value: Renew
   - StringReference: {fileID: 11400000, guid: af54834f072f24548a9f19d38cb48afe, type: 2}
-    Value: Caster resurrects with 50% health.
+    Value: 'Caster resurrects with 50% health.
+
+
+      Only usable while dead.'
   - StringReference: {fileID: 11400000, guid: 3edc3932dcece9944b24a26333cf5e3e, type: 2}
     Value: Resurrect Self
   - StringReference: {fileID: 11400000, guid: ff48892ea033fd948b87808a5e834114, type: 2}
-    Value: "\rScorches an enemy for ({0}% of Spell power) Fire damage. Castable while
-      moving."
+    Value: "\rScorches an enemy for ({0}% of Spell power) Fire damage.\n\nCastable
+      while moving.\n\nMay trigger Hot Streak after getting 2 critical strikes in
+      a row."
   - StringReference: {fileID: 11400000, guid: b6a8945ddb8188d4097a59f421b53eb0, type: 2}
     Value: Scorch
