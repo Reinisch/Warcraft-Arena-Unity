@@ -860,9 +860,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e420d67d414ef8b40925513aaab58828, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tooltips: {fileID: 0}
   balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
   input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  rectTransform: {fileID: 0}
   contentImage: {fileID: 5753997507592807783}
   cooldownImage: {fileID: 0}
   cooldownText: {fileID: 0}

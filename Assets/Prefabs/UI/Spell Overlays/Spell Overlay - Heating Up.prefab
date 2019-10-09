@@ -201,6 +201,7 @@ MonoBehaviour:
   rectTransform: {fileID: 4043721366429131668}
   overlayAnimator: {fileID: 6744839370179813226}
   canvasGroup: {fileID: 7025251365139010567}
+  perChargeSettings: []
 --- !u!95 &6744839370179813226
 Animator:
   serializedVersion: 3

@@ -1,17 +1,35 @@
 fileFormatVersion: 2
 guid: 6952f3dffed5928438f7ee00a5d79eeb
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: TOMBSTONE02
-    100002: //RootNode
-    400000: TOMBSTONE02
-    400002: //RootNode
-    2100000: tex_132027
-    2100002: TOMBSTONE02Mat
-    2300000: TOMBSTONE02
-    3300000: TOMBSTONE02
-    4300000: TOMBSTONE02
+  serializedVersion: 26
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: TOMBSTONE02
+  - first:
+      1: 100002
+    second: //RootNode
+  - first:
+      4: 400000
+    second: TOMBSTONE02
+  - first:
+      4: 400002
+    second: //RootNode
+  - first:
+      21: 2100000
+    second: tex_132027
+  - first:
+      21: 2100002
+    second: TOMBSTONE02Mat
+  - first:
+      23: 2300000
+    second: TOMBSTONE02
+  - first:
+      33: 3300000
+    second: TOMBSTONE02
+  - first:
+      43: 4300000
+    second: TOMBSTONE02
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -51,6 +69,8 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -58,27 +78,32 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -88,6 +113,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

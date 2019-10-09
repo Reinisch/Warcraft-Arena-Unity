@@ -4727,6 +4727,7 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4924,6 +4925,7 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -14343,6 +14345,7 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -14389,31 +14392,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Deep Freeze
-      objectReference: {fileID: 0}
-    - target: {fileID: -6787985696711386725, guid: 3015470576e314343be50b411751397f,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6787985696711386725, guid: 3015470576e314343be50b411751397f,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6787985696711386725, guid: 3015470576e314343be50b411751397f,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6787985696711386725, guid: 3015470576e314343be50b411751397f,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6787985696711386725, guid: 3015470576e314343be50b411751397f,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6057140222963153312, guid: 3015470576e314343be50b411751397f,
         type: 3}
@@ -14495,14 +14473,29 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.8
       objectReference: {fileID: 0}
-    - target: {fileID: -1399699044612202358, guid: 3015470576e314343be50b411751397f,
+    - target: {fileID: -6787985696711386725, guid: 3015470576e314343be50b411751397f,
         type: 3}
-      propertyPath: m_LightProbeUsage
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1399699044612202358, guid: 3015470576e314343be50b411751397f,
+    - target: {fileID: -6787985696711386725, guid: 3015470576e314343be50b411751397f,
         type: 3}
-      propertyPath: m_ReflectionProbeUsage
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6787985696711386725, guid: 3015470576e314343be50b411751397f,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6787985696711386725, guid: 3015470576e314343be50b411751397f,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6787985696711386725, guid: 3015470576e314343be50b411751397f,
+        type: 3}
+      propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1300089000273105481, guid: 3015470576e314343be50b411751397f,
@@ -14528,6 +14521,16 @@ PrefabInstance:
     - target: {fileID: 1300089000273105481, guid: 3015470576e314343be50b411751397f,
         type: 3}
       propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1399699044612202358, guid: 3015470576e314343be50b411751397f,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1399699044612202358, guid: 3015470576e314343be50b411751397f,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

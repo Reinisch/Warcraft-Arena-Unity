@@ -74,7 +74,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 17
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Polymorph
   explicitTargetType: 1
   damageClass: 0
   spellDispel: 1
@@ -99,8 +98,6 @@ MonoBehaviour:
   maxRangeHostile: 30
   maxRangeFriend: 0
   speed: 50
-  stackAmount: 0
-  maxAffectedTargets: 1
   spellEffectInfos:
   - {fileID: 2373819424652027930}
   spellPowerEntries: []

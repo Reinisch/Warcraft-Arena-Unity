@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
   cameraReference: {fileID: 11400000, guid: 7ec395dbbe5ff3848a39b67a4e093974, type: 2}
-  photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
   targetingSettings: {fileID: 11400000, guid: 84db1ca8b51e45849aae4c5f34a4752e, type: 2}

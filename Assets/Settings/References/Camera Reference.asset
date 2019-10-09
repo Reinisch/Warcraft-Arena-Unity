@@ -12,4 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040affd256691254e84ef97cff5c13df, type: 3}
   m_Name: Camera Reference
   m_EditorClassIdentifier: 
-  photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}

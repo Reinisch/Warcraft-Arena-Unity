@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 14
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Flash Heal
   explicitTargetType: 1
   damageClass: 1
   spellDispel: 0
@@ -39,8 +38,6 @@ MonoBehaviour:
   maxRangeHostile: 0
   maxRangeFriend: 40
   speed: 0
-  stackAmount: 0
-  maxAffectedTargets: 1
   spellEffectInfos:
   - {fileID: 6366165914403853611}
   spellPowerEntries: []

@@ -27,7 +27,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 6
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Kill Creature
   explicitTargetType: 1
   damageClass: 1
   spellDispel: 0
@@ -52,8 +51,6 @@ MonoBehaviour:
   maxRangeHostile: 30
   maxRangeFriend: 0
   speed: 100
-  stackAmount: 0
-  maxAffectedTargets: 1
   spellEffectInfos:
   - {fileID: -8956066876301066860}
   spellPowerEntries: []

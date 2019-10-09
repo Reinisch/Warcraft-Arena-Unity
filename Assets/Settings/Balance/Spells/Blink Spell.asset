@@ -57,7 +57,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 7
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Blink
   explicitTargetType: 2
   damageClass: 0
   spellDispel: 0
@@ -82,8 +81,6 @@ MonoBehaviour:
   maxRangeHostile: 0
   maxRangeFriend: 0
   speed: 0
-  stackAmount: 0
-  maxAffectedTargets: 1
   spellEffectInfos:
   - {fileID: 6990944375048596323}
   - {fileID: -351360445604465773}

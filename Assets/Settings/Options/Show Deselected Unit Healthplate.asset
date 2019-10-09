@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Show Deselected Unit Healthplate
   m_EditorClassIdentifier: 
   defaultValue: 0
-  currentValue: 0
+  currentValue: 1

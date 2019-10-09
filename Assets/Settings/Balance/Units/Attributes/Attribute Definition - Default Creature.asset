@@ -18,4 +18,5 @@ MonoBehaviour:
   baseMana: 100
   baseMaxMana: 100
   baseSpellPower: 10
+  baseIntellect: 0
   critPercentage: 5

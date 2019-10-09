@@ -18,3 +18,4 @@ MonoBehaviour:
     entityTypes: -1
     distance: 0
     mode: 2
+    maxReferringAngle: 180

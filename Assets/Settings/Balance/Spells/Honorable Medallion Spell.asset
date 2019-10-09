@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 22
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Honorable Medallion
   explicitTargetType: 2
   damageClass: 0
   spellDispel: 0
@@ -39,8 +38,6 @@ MonoBehaviour:
   maxRangeHostile: 0
   maxRangeFriend: 0
   speed: 0
-  stackAmount: 0
-  maxAffectedTargets: 0
   spellEffectInfos:
   - {fileID: 1570166548901500317}
   spellPowerEntries: []

@@ -67,7 +67,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 20
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Pyroblast
   explicitTargetType: 1
   damageClass: 1
   spellDispel: 1
@@ -92,8 +91,6 @@ MonoBehaviour:
   maxRangeHostile: 40
   maxRangeFriend: 0
   speed: 30
-  stackAmount: 0
-  maxAffectedTargets: 0
   spellEffectInfos:
   - {fileID: -1962990047301306885}
   - {fileID: -7489870445627554668}

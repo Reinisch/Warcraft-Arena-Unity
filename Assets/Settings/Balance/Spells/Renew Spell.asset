@@ -44,7 +44,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 15
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Renew
   explicitTargetType: 1
   damageClass: 1
   spellDispel: 1
@@ -69,8 +68,6 @@ MonoBehaviour:
   maxRangeHostile: 0
   maxRangeFriend: 40
   speed: 0
-  stackAmount: 0
-  maxAffectedTargets: 0
   spellEffectInfos:
   - {fileID: 2351695964313131711}
   - {fileID: 8904560221490061146}

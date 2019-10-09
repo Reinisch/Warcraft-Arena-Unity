@@ -59,6 +59,7 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4833,6 +4834,7 @@ MonoBehaviour:
   fadeState: Fade
   hasPlayState: 1
   hasFadeState: 1
+  replayPlayState: 0
 --- !u!1001 &2429767076089161758
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4844,6 +4846,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Frost Bolt
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 4d3bb0f4e15ee214fbaa5577a88da448, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 934376dfe8fc08f418656540f1bc4287, type: 2}
     - target: {fileID: 400000, guid: 4d3bb0f4e15ee214fbaa5577a88da448, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4900,10 +4906,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 9500000, guid: 4d3bb0f4e15ee214fbaa5577a88da448, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 934376dfe8fc08f418656540f1bc4287, type: 2}
     - target: {fileID: 400012, guid: 4d3bb0f4e15ee214fbaa5577a88da448, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 180

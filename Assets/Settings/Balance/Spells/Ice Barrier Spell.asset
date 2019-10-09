@@ -32,7 +32,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 13
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Ice Barrier
   explicitTargetType: 2
   damageClass: 0
   spellDispel: 1
@@ -57,8 +56,6 @@ MonoBehaviour:
   maxRangeHostile: 0
   maxRangeFriend: 0
   speed: 0
-  stackAmount: 0
-  maxAffectedTargets: 0
   spellEffectInfos:
   - {fileID: 344792198769940035}
   spellPowerEntries: []

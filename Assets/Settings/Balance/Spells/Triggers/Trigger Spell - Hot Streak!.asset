@@ -17,6 +17,7 @@ MonoBehaviour:
   modifierValue: -100
   modifierType: 8
   applicationType: 2
+  spellValueModifier: {fileID: 0}
   applicationConditions:
   - {fileID: 11400000, guid: 85943d060f3186847b1f7e2fa8c4c454, type: 2}
 --- !u!114 &11400000
@@ -33,7 +34,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 32
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Hot Streak
   explicitTargetType: 2
   damageClass: 0
   spellDispel: 1

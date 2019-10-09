@@ -43,7 +43,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 8
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Blazing Speed
   explicitTargetType: 2
   damageClass: 0
   spellDispel: 1
@@ -68,8 +67,6 @@ MonoBehaviour:
   maxRangeHostile: 0
   maxRangeFriend: 0
   speed: 0
-  stackAmount: 0
-  maxAffectedTargets: 0
   spellEffectInfos:
   - {fileID: -6400558379434216235}
   spellPowerEntries: []

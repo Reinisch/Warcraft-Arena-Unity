@@ -1,60 +1,164 @@
 fileFormatVersion: 2
 guid: 8b3458db37933f74ab7b50e6b9c57586
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Arena
-    100002: InteriorBellTop
-    100004: InteriorStatues
-    100006: InteriorStatues02
-    100008: InteriorStatuesTop
-    100010: //RootNode
-    400000: Arena
-    400002: InteriorBellTop
-    400004: InteriorStatues
-    400006: InteriorStatues02
-    400008: InteriorStatuesTop
-    400010: //RootNode
-    2100000: BM_LDRN_CHAMBERWALL01
-    2100002: BM_LDRN_TRIMS02
-    2100004: BM_LDRN_BELLTOWER01
-    2100006: BM_LDRN_BRICKFLOOR01
-    2100008: BM_LDRN_BROWNSTONE01
-    2100010: BM_LDRN_COBBLESTONE01
-    2100012: BM_LDRN_CRTYRDWALL01
-    2100014: BM_LDRN_DIRT01
-    2100016: BM_LDRN_DOME01
-    2100018: BM_LDRN_DOOR01
-    2100020: BM_LDRN_TRIMS04
-    2100022: BM_LDRN_GREYWALL01
-    2100024: BM_LDRN_PILLARS01
-    2100026: BM_LDRN_RUBBLE01
-    2100028: BM_LDRN_WALL01
-    2100030: BM_LDRN_THRONEFLOOR02
-    2100032: MM_WROUGHTIRON_01
-    2100034: BM_LDRN_VINES01
-    2100036: BM_LDRN_DOMECEILING01
-    2100038: BM_LDRN_STONEFLOOR01
-    2300000: Arena
-    2300002: InteriorBellTop
-    2300004: InteriorStatues
-    2300006: InteriorStatues02
-    2300008: InteriorStatuesTop
-    3300000: Arena
-    3300002: InteriorBellTop
-    3300004: InteriorStatues
-    3300006: InteriorStatues02
-    3300008: InteriorStatuesTop
-    4300000: Arena
-    4300002: InteriorBellTop
-    4300004: InteriorStatues
-    4300006: InteriorStatues02
-    4300008: InteriorStatuesTop
-    6400000: Arena
-    6400002: InteriorBellTop
-    6400004: InteriorStatues
-    6400006: InteriorStatues02
-    6400008: InteriorStatuesTop
+  serializedVersion: 26
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Arena
+  - first:
+      1: 100002
+    second: InteriorBellTop
+  - first:
+      1: 100004
+    second: InteriorStatues
+  - first:
+      1: 100006
+    second: InteriorStatues02
+  - first:
+      1: 100008
+    second: InteriorStatuesTop
+  - first:
+      1: 100010
+    second: //RootNode
+  - first:
+      4: 400000
+    second: Arena
+  - first:
+      4: 400002
+    second: InteriorBellTop
+  - first:
+      4: 400004
+    second: InteriorStatues
+  - first:
+      4: 400006
+    second: InteriorStatues02
+  - first:
+      4: 400008
+    second: InteriorStatuesTop
+  - first:
+      4: 400010
+    second: //RootNode
+  - first:
+      21: 2100000
+    second: BM_LDRN_CHAMBERWALL01
+  - first:
+      21: 2100002
+    second: BM_LDRN_TRIMS02
+  - first:
+      21: 2100004
+    second: BM_LDRN_BELLTOWER01
+  - first:
+      21: 2100006
+    second: BM_LDRN_BRICKFLOOR01
+  - first:
+      21: 2100008
+    second: BM_LDRN_BROWNSTONE01
+  - first:
+      21: 2100010
+    second: BM_LDRN_COBBLESTONE01
+  - first:
+      21: 2100012
+    second: BM_LDRN_CRTYRDWALL01
+  - first:
+      21: 2100014
+    second: BM_LDRN_DIRT01
+  - first:
+      21: 2100016
+    second: BM_LDRN_DOME01
+  - first:
+      21: 2100018
+    second: BM_LDRN_DOOR01
+  - first:
+      21: 2100020
+    second: BM_LDRN_TRIMS04
+  - first:
+      21: 2100022
+    second: BM_LDRN_GREYWALL01
+  - first:
+      21: 2100024
+    second: BM_LDRN_PILLARS01
+  - first:
+      21: 2100026
+    second: BM_LDRN_RUBBLE01
+  - first:
+      21: 2100028
+    second: BM_LDRN_WALL01
+  - first:
+      21: 2100030
+    second: BM_LDRN_THRONEFLOOR02
+  - first:
+      21: 2100032
+    second: MM_WROUGHTIRON_01
+  - first:
+      21: 2100034
+    second: BM_LDRN_VINES01
+  - first:
+      21: 2100036
+    second: BM_LDRN_DOMECEILING01
+  - first:
+      21: 2100038
+    second: BM_LDRN_STONEFLOOR01
+  - first:
+      23: 2300000
+    second: Arena
+  - first:
+      23: 2300002
+    second: InteriorBellTop
+  - first:
+      23: 2300004
+    second: InteriorStatues
+  - first:
+      23: 2300006
+    second: InteriorStatues02
+  - first:
+      23: 2300008
+    second: InteriorStatuesTop
+  - first:
+      33: 3300000
+    second: Arena
+  - first:
+      33: 3300002
+    second: InteriorBellTop
+  - first:
+      33: 3300004
+    second: InteriorStatues
+  - first:
+      33: 3300006
+    second: InteriorStatues02
+  - first:
+      33: 3300008
+    second: InteriorStatuesTop
+  - first:
+      43: 4300000
+    second: Arena
+  - first:
+      43: 4300002
+    second: InteriorBellTop
+  - first:
+      43: 4300004
+    second: InteriorStatues
+  - first:
+      43: 4300006
+    second: InteriorStatues02
+  - first:
+      43: 4300008
+    second: InteriorStatuesTop
+  - first:
+      64: 6400000
+    second: Arena
+  - first:
+      64: 6400002
+    second: InteriorBellTop
+  - first:
+      64: 6400004
+    second: InteriorStatues
+  - first:
+      64: 6400006
+    second: InteriorStatues02
+  - first:
+      64: 6400008
+    second: InteriorStatuesTop
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -190,6 +294,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 1
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -197,18 +302,19 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -217,10 +323,11 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -230,6 +337,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.7
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

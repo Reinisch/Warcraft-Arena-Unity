@@ -4718,6 +4718,7 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4837,6 +4838,7 @@ MonoBehaviour:
   fadeState: Fade
   hasPlayState: 1
   hasFadeState: 1
+  replayPlayState: 0
 --- !u!114 &7455649888232566035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4910,6 +4912,7 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -9615,6 +9618,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Frost Nova State
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 9e8bc1393ad3b3e49ae0121a964c3d4d,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 71b9a441430e4fa488cc506686ac8211, type: 2}
     - target: {fileID: -4216859302048453862, guid: 9e8bc1393ad3b3e49ae0121a964c3d4d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9700,11 +9708,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: 9e8bc1393ad3b3e49ae0121a964c3d4d,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 71b9a441430e4fa488cc506686ac8211, type: 2}
     - target: {fileID: -8547301517160132100, guid: 9e8bc1393ad3b3e49ae0121a964c3d4d,
         type: 3}
       propertyPath: m_CastShadows

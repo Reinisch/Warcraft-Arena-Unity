@@ -15,4 +15,3 @@ MonoBehaviour:
   walkSpeed: 3
   runSpeed: 7
   runBackSpeed: 4.5
-  turnRate: 250

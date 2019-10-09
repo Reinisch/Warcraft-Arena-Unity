@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94fd25d21c0388c43a7dbd6b0da8baf3, type: 3}
   m_Name: Single Direct Target - Spell Targeting
   m_EditorClassIdentifier: 
-  explicitTargetType: 1
+  singleTargetType: 0

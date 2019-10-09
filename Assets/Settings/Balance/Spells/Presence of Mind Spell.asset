@@ -47,6 +47,7 @@ MonoBehaviour:
   modifierValue: -100
   modifierType: 8
   applicationType: 2
+  spellValueModifier: {fileID: 0}
   applicationConditions:
   - {fileID: 11400000, guid: 3edf4f0e31b66d144a031c7bed6a82ba, type: 2}
 --- !u!114 &11400000
@@ -63,7 +64,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 21
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Presence of Mind Spell
   explicitTargetType: 2
   damageClass: 0
   spellDispel: 1

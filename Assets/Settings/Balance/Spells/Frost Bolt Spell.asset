@@ -46,7 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  spellName: Frost Bolt
   explicitTargetType: 1
   damageClass: 1
   spellDispel: 0
@@ -71,8 +70,6 @@ MonoBehaviour:
   maxRangeHostile: 30
   maxRangeFriend: 0
   speed: 25
-  stackAmount: 0
-  maxAffectedTargets: 0
   spellEffectInfos:
   - {fileID: -524682570086448870}
   - {fileID: -6382031074732330876}
