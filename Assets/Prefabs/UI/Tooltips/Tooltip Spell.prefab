@@ -913,6 +913,16 @@ MonoBehaviour:
   localization: {fileID: 11400000, guid: bc534b915b952ff4c910e58a96b38c6f, type: 2}
   spellDescription: {fileID: 7622260664993217651}
   spellName: {fileID: 3463822122810863493}
+  spellRange: {fileID: 2859305978083118375}
+  spellCastTime: {fileID: 8392072345546742533}
+  spellCooldown: {fileID: 8191681974516681640}
+  rangeFormatString: {fileID: 11400000, guid: 8ec72a34d2c629c469c33daa63f1750e, type: 2}
+  cooldownFormatString: {fileID: 11400000, guid: 928cf342ce953fc4f8093d10895d08ba,
+    type: 2}
+  castTimeFormatString: {fileID: 11400000, guid: 966f852b4c0f0f44eace6c051438965d,
+    type: 2}
+  castTimeInstantString: {fileID: 11400000, guid: 4c1f0bfba73c10544bfcd615eb966b96,
+    type: 2}
   spellIcon: {fileID: 451688201685625267}
 --- !u!225 &451688202208120585
 CanvasGroup:

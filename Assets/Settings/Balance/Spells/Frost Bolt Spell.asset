@@ -67,7 +67,7 @@ MonoBehaviour:
   minCastTime: 500
   minRangeHostile: 0
   minRangeFriend: 0
-  maxRangeHostile: 30
+  maxRangeHostile: 40
   maxRangeFriend: 0
   speed: 25
   spellEffectInfos:

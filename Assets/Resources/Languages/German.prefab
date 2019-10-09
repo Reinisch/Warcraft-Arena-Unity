@@ -355,3 +355,11 @@ MonoBehaviour:
       a row."
   - StringReference: {fileID: 11400000, guid: b6a8945ddb8188d4097a59f421b53eb0, type: 2}
     Value: Scorch
+  - StringReference: {fileID: 11400000, guid: 8ec72a34d2c629c469c33daa63f1750e, type: 2}
+    Value: '{0} yd range'
+  - StringReference: {fileID: 11400000, guid: 928cf342ce953fc4f8093d10895d08ba, type: 2}
+    Value: '{0} sec cooldown'
+  - StringReference: {fileID: 11400000, guid: 4c1f0bfba73c10544bfcd615eb966b96, type: 2}
+    Value: Instant
+  - StringReference: {fileID: 11400000, guid: 966f852b4c0f0f44eace6c051438965d, type: 2}
+    Value: '{0} sec cast'

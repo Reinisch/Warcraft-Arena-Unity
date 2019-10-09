@@ -80,7 +80,7 @@ MonoBehaviour:
   minCastTime: 0
   minRangeHostile: 0
   minRangeFriend: 0
-  maxRangeHostile: 40
+  maxRangeHostile: 0
   maxRangeFriend: 0
   speed: 0
   spellEffectInfos:
