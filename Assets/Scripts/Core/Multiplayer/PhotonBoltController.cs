@@ -130,8 +130,6 @@ namespace Core
         {
             base.BoltShutdownBegin(registerDoneCallback, disconnectReason);
 
-            Debug.LogWarning($"Shutting down with reason: {disconnectReason}");
-
             if (worldManager != null && worldManager.HasServerLogic)
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster);
         }
