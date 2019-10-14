@@ -9,6 +9,7 @@ namespace Client
     [UsedImplicitly, CreateAssetMenu(fileName = "Hotkey Input Item", menuName = "Player Data/Input/Hotkey Input Item", order = 1)]
     public class HotkeyInputItem : ScriptableObject
     {
+        [SerializeField, UsedImplicitly] private InputReference input;
         [SerializeField, UsedImplicitly] private string id;
         [SerializeField, UsedImplicitly] private KeyCode key;
         [SerializeField, UsedImplicitly] private HotkeyModifier modifier;
@@ -66,7 +67,8 @@ namespace Client
             if (hotkeyState == HotkeyState.Released && IsPressed)
             {
                 hotkeyState = HotkeyState.Pressed;
-                EventHandler.ExecuteEvent(this, GameEvents.HotkeyStateChanged, HotkeyState.Pressed);
+                if (input.IsPlayerInputAllowed)
+                    EventHandler.ExecuteEvent(this, GameEvents.HotkeyStateChanged, HotkeyState.Pressed);
             }
             else if (hotkeyState == HotkeyState.Pressed && !IsHotkeyDown)
             {

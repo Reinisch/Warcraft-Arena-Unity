@@ -15,6 +15,8 @@ MonoBehaviour:
   cameraReference: {fileID: 11400000, guid: 7ec395dbbe5ff3848a39b67a4e093974, type: 2}
   balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   spellTargeting: {fileID: 11400000, guid: 1d2c1b73490f6af4594f17bc5017efc1, type: 2}
+  unitMouseKeyboardInput: {fileID: 11400000, guid: d49355466cded9942a9c1724d6eef16e,
+    type: 2}
   hotkeys:
   - {fileID: 11400000, guid: da0ca30d1e177d14a9351ca45d955d10, type: 2}
   - {fileID: 11400000, guid: 5daa89dba5d9a134cbfa43b46ea81249, type: 2}
@@ -59,3 +61,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6c11ac7bc2ab40f42a2b7f0d228b5355, type: 2}
   - {fileID: 11400000, guid: 55c705b65548d6f4fb837e1dfc4e4a76, type: 2}
   - {fileID: 11400000, guid: f16f9947db57e834eb6ebca1d3ef6b4d, type: 2}
+  inputDisabledWhen:
+  - {fileID: 11400000, guid: 58a978feccfcb6e49bcd7a0a276b4cae, type: 2}

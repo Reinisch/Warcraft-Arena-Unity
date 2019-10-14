@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 693374c076b9a4144ac7666774b98408, type: 3}
-  m_Name: Hotkey Item - Action Bar 1 Button 1
+  m_Script: {fileID: 11500000, guid: d9fa8e4ea6730934f80415f8a8e73b2d, type: 3}
+  m_Name: Player Unit Input - Mouse Keyboard
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
-  id: Action Bar 1 Button 1
-  key: 49
-  modifier: 0
+  cameraReference: {fileID: 11400000, guid: 7ec395dbbe5ff3848a39b67a4e093974, type: 2}
+  inputReference: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}

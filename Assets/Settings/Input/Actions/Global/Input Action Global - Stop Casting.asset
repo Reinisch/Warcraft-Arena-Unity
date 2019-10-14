@@ -19,5 +19,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 55c705b65548d6f4fb837e1dfc4e4a76, type: 2}
   blockInactiveWhen:
   - {fileID: 11400000, guid: 21e5bbcdb5856f24884ee10a59a42456, type: 2}
-  hotkeyInactiveWhen:
-  - {fileID: 11400000, guid: 58a978feccfcb6e49bcd7a0a276b4cae, type: 2}
+  hotkeyInactiveWhen: []

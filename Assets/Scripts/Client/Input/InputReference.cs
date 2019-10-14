@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Core;
+using Core.Conditions;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -11,8 +12,12 @@ namespace Client
         [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private TargetingSpellReference spellTargeting;
+        [SerializeField, UsedImplicitly] private UnitControllerInputMouseKeyboard unitMouseKeyboardInput;
         [SerializeField, UsedImplicitly] private List<HotkeyInputItem> hotkeys;
         [SerializeField, UsedImplicitly] private List<InputActionGlobal> globalActions;
+        [SerializeField, UsedImplicitly] private List<Condition> inputDisabledWhen;
+
+        public bool IsPlayerInputAllowed { get; private set; }
 
         protected override void OnRegistered()
         {
@@ -32,14 +37,17 @@ namespace Client
 
         protected override void OnUpdate(float deltaTime)
         {
-            hotkeys.ForEach(hotkey => hotkey.DoUpdate());
+            IsPlayerInputAllowed = !inputDisabledWhen.Exists(item => item.IsApplicableAndValid());
+
+            foreach (HotkeyInputItem hotkey in hotkeys)
+                hotkey.DoUpdate();
         }
 
         protected override void OnPlayerControlGained(Player player)
         {
             base.OnPlayerControlGained(player);
 
-            Player.InputProvider = new ClientControllerMouseKeyboardInput(player, cameraReference);
+            Player.InputProvider = unitMouseKeyboardInput;
         }
 
         protected override void OnPlayerControlLost(Player player)

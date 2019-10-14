@@ -47,7 +47,7 @@ namespace Core
                     ? currentInputProvider ?? defaultInputProvider
                     : defaultInputProvider;
 
-                inputProvider.PollInput(out inputVelocity, out var inputRotation, out var shouldJump);
+                inputProvider.PollInput(unit, out inputVelocity, out var inputRotation, out var shouldJump);
 
                 if (shouldJump && unit.IsMovementBlocked)
                     shouldJump = false;
@@ -105,7 +105,7 @@ namespace Core
             this.unit = unit;
 
             groundCheckDistance = controllerDefinition.BaseGroundCheckDistance;
-            defaultInputProvider = new IdleControllerInputProvider(unit);
+            defaultInputProvider = new IdleControllerInputProvider();
 
             UpdateRigidbody();
         }

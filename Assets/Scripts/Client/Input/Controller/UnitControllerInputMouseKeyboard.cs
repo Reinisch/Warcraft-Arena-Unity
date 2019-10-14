@@ -1,24 +1,29 @@
 ﻿using Core;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client
 {
-    public class ClientControllerMouseKeyboardInput : IControllerInputProvider
+    [UsedImplicitly, CreateAssetMenu(fileName = "Player Unit Input - Mouse Keyboard", menuName = "Player Data/Input/Unit/Mouse Keyboard", order = 1)]
+    public class UnitControllerInputMouseKeyboard : ScriptableObject, IControllerInputProvider
     {
-        private readonly Unit unit;
-        private readonly CameraReference cameraReference;
+        [SerializeField, UsedImplicitly] private CameraReference cameraReference;
+        [SerializeField, UsedImplicitly] private InputReference inputReference;
 
-        public ClientControllerMouseKeyboardInput(Unit unit, CameraReference cameraReference)
+        public void PollInput(Unit unit, out Vector3 inputVelocity, out Quaternion inputRotation, out bool jumping)
         {
-            this.unit = unit;
-            this.cameraReference = cameraReference;
-        }
-
-        public void PollInput(out Vector3 inputVelocity, out Quaternion inputRotation, out bool jumping)
-        {
-            inputVelocity = PollMovement();
-            inputRotation = PollRotation();
-            jumping = PollJumping();
+            if (inputReference.IsPlayerInputAllowed)
+            {
+                inputVelocity = PollMovement();
+                inputRotation = PollRotation();
+                jumping = PollJumping();
+            }
+            else
+            {
+                inputVelocity = Vector3.zero;
+                inputRotation = unit.Rotation;
+                jumping = false;
+            }
             
             Quaternion PollRotation()
             {

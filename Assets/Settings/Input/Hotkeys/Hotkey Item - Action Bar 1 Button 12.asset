@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 693374c076b9a4144ac7666774b98408, type: 3}
   m_Name: Hotkey Item - Action Bar 1 Button 12
   m_EditorClassIdentifier: 
+  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
   id: Action Bar 1 Button 12
   key: 99
   modifier: 0

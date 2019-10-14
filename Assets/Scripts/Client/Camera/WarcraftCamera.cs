@@ -7,6 +7,9 @@ using UnityEngine;
 public class WarcraftCamera : MonoBehaviour
 {
     [SerializeField, UsedImplicitly]
+    private InputReference input;
+
+    [SerializeField, UsedImplicitly]
     private float targetHeight = 1.7f;
     [SerializeField, UsedImplicitly]
     private float deadTargetHeight = 0.5f;
@@ -101,7 +104,7 @@ public class WarcraftCamera : MonoBehaviour
             // otherwise, ease behind the target if any of the directional keys are pressed
             else if (!Mathf.Approximately(Input.GetAxis("Vertical"), 0) || !Mathf.Approximately(Input.GetAxis("Horizontal"), 0))
             {
-                if (target.IsAlive)
+                if (target.IsAlive && input.IsPlayerInputAllowed)
                 {
                     float targetRotationAngle = target.transform.eulerAngles.y;
                     float currentRotationAngle = transform.eulerAngles.y;

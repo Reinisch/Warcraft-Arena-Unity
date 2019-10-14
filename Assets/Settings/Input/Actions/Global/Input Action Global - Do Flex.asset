@@ -17,5 +17,4 @@ MonoBehaviour:
   hotkey: {fileID: 11400000, guid: ff5d98c2d16456041af98fc9b4d7fe53, type: 2}
   blockedByActions: []
   blockInactiveWhen: []
-  hotkeyInactiveWhen:
-  - {fileID: 11400000, guid: 58a978feccfcb6e49bcd7a0a276b4cae, type: 2}
+  hotkeyInactiveWhen: []
