@@ -15,6 +15,8 @@ MonoBehaviour:
   input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
   action: {fileID: 11400000, guid: a7324a604acf3864ab6dae7a5203f89c, type: 2}
   hotkey: {fileID: 11400000, guid: 3cf5188b1e7c6ad498f424c4e92cbdae, type: 2}
-  blockedBy: []
-  inactiveWhen:
+  blockedByActions: []
+  blockInactiveWhen:
   - {fileID: 11400000, guid: 0d8b6e35f08b9fc47ba10731d3ce10bc, type: 2}
+  hotkeyInactiveWhen:
+  - {fileID: 11400000, guid: 58a978feccfcb6e49bcd7a0a276b4cae, type: 2}

@@ -1,10 +1,10 @@
-﻿using Client;
+﻿using Core.Conditions;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Core.Conditions
+namespace Client.Conditions
 {
-    [UsedImplicitly, CreateAssetMenu(fileName = "Player Is Selecting Spell Target", menuName = "Game Data/Conditions/Player/Player Is Selecting Spell Target", order = 1)]
+    [UsedImplicitly, CreateAssetMenu(fileName = "Player Is Selecting Spell Target", menuName = "Game Data/Conditions/Player/Selecting Spell Target", order = 1)]
     public sealed class PlayerIsSelectingSpellTarget : Condition
     {
         [SerializeField, UsedImplicitly] private TargetingSpellReference spellTargeting;

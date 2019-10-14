@@ -12,14 +12,27 @@ namespace Client
         [SerializeField, UsedImplicitly] private InputReference input;
         [SerializeField, UsedImplicitly] private InputAction action;
         [SerializeField, UsedImplicitly] private HotkeyInputItem hotkey;
-        [SerializeField, UsedImplicitly] private List<InputActionGlobal> blockedBy;
-        [SerializeField, UsedImplicitly] private List<Condition> inactiveWhen;
+        [SerializeField, UsedImplicitly] private List<InputActionGlobal> blockedByActions;
+        [SerializeField, UsedImplicitly] private List<Condition> blockInactiveWhen;
+        [SerializeField, UsedImplicitly] private List<Condition> hotkeyInactiveWhen;
 
-        private bool IsApplicable
+        private bool IsBlockApplicable
         {
             get
             {
-                foreach (Condition condition in inactiveWhen)
+                foreach (Condition condition in blockInactiveWhen)
+                    if (condition.IsApplicableAndValid(input.Player))
+                        return false;
+
+                return true;
+            }
+        }
+
+        private bool IsHotkeyApplicable
+        {
+            get
+            {
+                foreach (Condition condition in hotkeyInactiveWhen)
                     if (condition.IsApplicableAndValid(input.Player))
                         return false;
 
@@ -39,10 +52,11 @@ namespace Client
 
         private void OnHotkeyStateChanged(HotkeyState state)
         {
-            if (state == HotkeyState.Released || blockedBy.Exists(blocker => blocker.IsApplicable))
+            if (state == HotkeyState.Released || blockedByActions.Exists(blocker => blocker.IsBlockApplicable))
                 return;
 
-            action.Execute();
+            if (IsHotkeyApplicable)
+                action.Execute();
         }
     }
 }

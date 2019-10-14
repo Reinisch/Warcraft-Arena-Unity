@@ -15,6 +15,7 @@ TagManager:
   - UI Camera
   - Sound Container
   - Tooltip Container
+  - Input Field
   layers:
   - Default
   - TransparentFX
