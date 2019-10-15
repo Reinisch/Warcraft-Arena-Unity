@@ -23,6 +23,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private Image itemImage;
         [Header("Options"), Space]
         [SerializeField, UsedImplicitly] private int value;
+        [SerializeField, UsedImplicitly] private bool explicitNavigation;
         [SerializeField, UsedImplicitly] private bool notifyOnSameValue;
         [SerializeField, UsedImplicitly] private OptionDataList options = new OptionDataList();
         [Header("Event"), Space]
@@ -173,6 +174,7 @@ namespace Client
 
             // Add button since it's needed to block, and to close the dropdown when blocking area is clicked.
             Button blockerButton = newBlocker.AddComponent<Button>();
+            blockerButton.navigation = new Navigation {mode = Navigation.Mode.None};
             blockerButton.onClick.AddListener(Hide);
             return newBlocker;
         }
@@ -308,10 +310,11 @@ namespace Client
                 item.Toggle.onValueChanged.AddListener(x => OnSelectItem(item.Toggle));
 
                 // Select current option
-                if (item.Toggle.isOn) item.Toggle.Select();
+                if (item.Toggle.isOn && explicitNavigation)
+                    item.Toggle.Select();
 
                 // Automatically set up explicit navigation
-                if (prev != null)
+                if (prev != null && explicitNavigation)
                 {
                     Navigation prevNav = prev.navigation;
                     Navigation toggleNav = item.Toggle.navigation;
@@ -387,9 +390,12 @@ namespace Client
                 if (IsActive()) StartCoroutine(DelayedDestroyDropdownList(0.15f));
             }
 
-            if (blocker != null) DestroyBlocker(blocker);
+            if (blocker != null)
+                DestroyBlocker(blocker);
             blocker = null;
-            Select();
+
+            if (explicitNavigation)
+                Select();
         }
 
         public void RefreshShownValue()
