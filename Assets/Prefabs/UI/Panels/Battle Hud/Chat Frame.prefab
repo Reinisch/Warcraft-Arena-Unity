@@ -143,6 +143,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3997573792732336981}
+  - {fileID: 2926363644978226083}
   - {fileID: 1902201919533924912}
   m_Father: {fileID: 7045662524781797139}
   m_RootOrder: 0
@@ -152,6 +153,94 @@ RectTransform:
   m_AnchoredPosition: {x: 17, y: 0}
   m_SizeDelta: {x: -34, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1298628740749815407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1477925438819891376}
+  - component: {fileID: 1070250741818506947}
+  - component: {fileID: 1700506003646781832}
+  - component: {fileID: 77915876057231444}
+  m_Layer: 5
+  m_Name: Viewport
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1477925438819891376
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298628740749815407}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 8966246736871185839}
+  m_Father: {fileID: 280217884600902004}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 1}
+--- !u!222 &1070250741818506947
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298628740749815407}
+  m_CullTransparentMesh: 0
+--- !u!114 &1700506003646781832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298628740749815407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &77915876057231444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298628740749815407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 0
 --- !u!1 &1992427296590209188
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,6 +469,82 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2501055778983567720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 280217884600902004}
+  - component: {fileID: 7000148793228062928}
+  - component: {fileID: 5163400722133735372}
+  m_Layer: 5
+  m_Name: Scroll View
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &280217884600902004
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2501055778983567720}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1477925438819891376}
+  m_Father: {fileID: 2926363644978226083}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 21.21}
+  m_SizeDelta: {x: -4, y: -46.42}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &7000148793228062928
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2501055778983567720}
+  m_CullTransparentMesh: 0
+--- !u!114 &5163400722133735372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2501055778983567720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Content: {fileID: 8966246736871185839}
+  m_Horizontal: 0
+  m_Vertical: 1
+  m_MovementType: 1
+  m_Elasticity: 0.1
+  m_Inertia: 1
+  m_DecelerationRate: 0.135
+  m_ScrollSensitivity: 1
+  m_Viewport: {fileID: 1477925438819891376}
+  m_HorizontalScrollbar: {fileID: 0}
+  m_VerticalScrollbar: {fileID: 0}
+  m_HorizontalScrollbarVisibility: 2
+  m_VerticalScrollbarVisibility: 2
+  m_HorizontalScrollbarSpacing: -3
+  m_VerticalScrollbarSpacing: -3
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2709771632106952459
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,6 +910,90 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!1 &5642170095143569110
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8966246736871185839}
+  - component: {fileID: 1022678381489629028}
+  - component: {fileID: 39234668800031809}
+  m_Layer: 5
+  m_Name: Content
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8966246736871185839
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5642170095143569110}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 537756131432457551}
+  - {fileID: 6668099274328865245}
+  - {fileID: 8281971847993567416}
+  - {fileID: 2851504963200785986}
+  - {fileID: 720346350325488616}
+  - {fileID: 4550873542131537578}
+  - {fileID: 7673234492804153928}
+  - {fileID: 4643946310078609854}
+  m_Father: {fileID: 1477925438819891376}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 1}
+--- !u!114 &1022678381489629028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5642170095143569110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 7
+    m_Right: 7
+    m_Top: 5
+    m_Bottom: 5
+  m_ChildAlignment: 0
+  m_Spacing: 5
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+--- !u!114 &39234668800031809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5642170095143569110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &6065892958729409172
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,7 +1026,7 @@ RectTransform:
   - {fileID: 4234130794597260297}
   - {fileID: 5054768589872122914}
   m_Father: {fileID: 1249751479084143644}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -975,6 +1224,42 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &6603297190673226976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2926363644978226083}
+  m_Layer: 5
+  m_Name: Chat View
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2926363644978226083
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6603297190673226976}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 280217884600902004}
+  m_Father: {fileID: 1249751479084143644}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -2.5}
+  m_SizeDelta: {x: -12, y: -5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6820424572369468084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,6 +1573,1433 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1001 &927985667396718575
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8966246736871185839}
+    m_Modifications:
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Name
+      value: Chat Item (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -82.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 36.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Party] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be
+        used to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 290
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294945450
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.6666667
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
+--- !u!224 &6668099274328865245 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+    type: 3}
+  m_PrefabInstance: {fileID: 927985667396718575}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1160691107835940748
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8966246736871185839}
+    m_Modifications:
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Name
+      value: Chat Item (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -330.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 36.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 282
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be used to
+        great effect for finishing off your opponent. The threat of a surprise Pyroblast
+        forces your opponent to always stay above 10 health. In combination with some
+        Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
+--- !u!224 &4643946310078609854 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1160691107835940748}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2487816022636994186
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8966246736871185839}
+    m_Modifications:
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Name
+      value: Chat Item (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -124.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 36.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Announcer] whispers: As a 10 mana, 10 damage spell, Pyroblast can be
+        used to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 291
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294934783
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
+--- !u!224 &8281971847993567416 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2487816022636994186}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4185472310781768826
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8966246736871185839}
+    m_Modifications:
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Name
+      value: Chat Item (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -289.21997
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 36.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 287
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Announcer] says: As a 10 mana, 10 damage spell, Pyroblast can be used
+        to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4282417407
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
+--- !u!224 &7673234492804153928 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+    type: 3}
+  m_PrefabInstance: {fileID: 4185472310781768826}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6277869051170345853
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8966246736871185839}
+    m_Modifications:
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Name
+      value: Chat Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -32.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 54.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: '[General] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can
+        be used to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.surprise your
+        opponent and turn the tide of a battle.
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 344
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 59
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.7529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4290822399
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.7529412
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
+--- !u!224 &537756131432457551 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+    type: 3}
+  m_PrefabInstance: {fileID: 6277869051170345853}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6455393061946715610
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8966246736871185839}
+    m_Modifications:
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Name
+      value: Chat Item (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -206.65999
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 36.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 290
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Guild] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be
+        used to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4282449728
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_isRightToLeft
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
+--- !u!224 &720346350325488616 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+    type: 3}
+  m_PrefabInstance: {fileID: 6455393061946715610}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8020618027106427032
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8966246736871185839}
+    m_Modifications:
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Name
+      value: Chat Item (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -247.93999
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 36.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 288
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Announcer] yells: As a 10 mana, 10 damage spell, Pyroblast can be used
+        to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4282401023
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
+--- !u!224 &4550873542131537578 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+    type: 3}
+  m_PrefabInstance: {fileID: 8020618027106427032}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8645664843004913776
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8966246736871185839}
+    m_Modifications:
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Name
+      value: Chat Item (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -165.37999
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 36.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 289
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Raid] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be
+        used to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.49803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278222847
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
+--- !u!224 &2851504963200785986 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
+    type: 3}
+  m_PrefabInstance: {fileID: 8645664843004913776}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9135129834264647806
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1415,55 +3127,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 35
       objectReference: {fileID: 0}
-    - target: {fileID: 1045569739417222411, guid: d72ae3745e97ed34382bc1406c72548c,
+    - target: {fileID: 5725651033266534653, guid: d72ae3745e97ed34382bc1406c72548c,
         type: 3}
-      propertyPath: m_AnchorMax.x
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1045569739417222411, guid: d72ae3745e97ed34382bc1406c72548c,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045569739417222411, guid: d72ae3745e97ed34382bc1406c72548c,
+        type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1045569739417222411, guid: d72ae3745e97ed34382bc1406c72548c,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4037625926164257337, guid: d72ae3745e97ed34382bc1406c72548c,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4037625926164257337, guid: d72ae3745e97ed34382bc1406c72548c,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4037625926164257337, guid: d72ae3745e97ed34382bc1406c72548c,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4037625926164257337, guid: d72ae3745e97ed34382bc1406c72548c,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4037625926164257337, guid: d72ae3745e97ed34382bc1406c72548c,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6291006736253493757, guid: d72ae3745e97ed34382bc1406c72548c,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6291006736253493757, guid: d72ae3745e97ed34382bc1406c72548c,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.020000458
       objectReference: {fileID: 0}
     - target: {fileID: 8514452120347016056, guid: d72ae3745e97ed34382bc1406c72548c,
         type: 3}

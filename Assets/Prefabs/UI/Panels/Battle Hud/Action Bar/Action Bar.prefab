@@ -29,7 +29,7 @@ RectTransform:
   m_GameObject: {fileID: 4348507627953531193}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.47542, y: 0.47542, z: 0.47542}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8954269285567761124}
   - {fileID: 5479126662632547936}
@@ -51,7 +51,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 563, y: 45}
-  m_SizeDelta: {x: 1000, y: 70}
+  m_SizeDelta: {x: 672, y: 48}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &5495966322099029520
 CanvasRenderer:
@@ -263,6 +263,11 @@ PrefabInstance:
       propertyPath: hotkeyInput
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
 --- !u!224 &1418970247447576086 stripped
@@ -404,6 +409,11 @@ PrefabInstance:
         type: 3}
       propertyPath: hotkeyInput
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
@@ -547,6 +557,11 @@ PrefabInstance:
       propertyPath: hotkeyInput
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
 --- !u!114 &1133894086871222386 stripped
@@ -688,6 +703,11 @@ PrefabInstance:
         type: 3}
       propertyPath: hotkeyInput
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
@@ -831,6 +851,11 @@ PrefabInstance:
       propertyPath: hotkeyInput
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
 --- !u!224 &8954269285567761124 stripped
@@ -972,6 +997,11 @@ PrefabInstance:
         type: 3}
       propertyPath: hotkeyInput
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
@@ -1115,6 +1145,11 @@ PrefabInstance:
       propertyPath: hotkeyInput
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
 --- !u!224 &7798224107329168038 stripped
@@ -1256,6 +1291,11 @@ PrefabInstance:
         type: 3}
       propertyPath: hotkeyInput
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
@@ -1399,6 +1439,11 @@ PrefabInstance:
       propertyPath: hotkeyInput
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
 --- !u!114 &1453029494080495434 stripped
@@ -1540,6 +1585,11 @@ PrefabInstance:
         type: 3}
       propertyPath: hotkeyInput
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
@@ -1683,6 +1733,11 @@ PrefabInstance:
       propertyPath: hotkeyInput
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
 --- !u!114 &3322657920330318516 stripped
@@ -1824,6 +1879,11 @@ PrefabInstance:
         type: 3}
       propertyPath: hotkeyInput
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
@@ -1967,6 +2027,11 @@ PrefabInstance:
       propertyPath: hotkeyInput
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
 --- !u!224 &4937045440831888047 stripped
@@ -2108,6 +2173,11 @@ PrefabInstance:
         type: 3}
       propertyPath: hotkeyInput
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 416116090977879064, guid: c3c042dcfc5edc24fb71583d24318752,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c042dcfc5edc24fb71583d24318752, type: 3}
