@@ -499,6 +499,7 @@ MonoBehaviour:
     damageTag: {fileID: 3677482243864547320}
     nameplateTag: {fileID: 8894277606485288769}
   soundController: {fileID: 2519661404870090023}
+  targetSmoothTime: 0.05
 --- !u!114 &2519661404870090023
 MonoBehaviour:
   m_ObjectHideFlags: 0

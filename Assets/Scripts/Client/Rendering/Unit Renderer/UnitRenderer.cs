@@ -11,6 +11,9 @@ namespace Client
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private TagContainer dummyTagContainer;
         [SerializeField, UsedImplicitly] private UnitSoundController soundController;
+        [SerializeField, UsedImplicitly] private float targetSmoothTime = 0.05f;
+
+        private Vector3 targetSmoothVelocity;
 
         private readonly AuraEffectController auraEffectController = new AuraEffectController();
         private UnitModel model;
@@ -22,13 +25,11 @@ namespace Client
         public void Initialize(Unit unit)
         {
             Unit = unit;
+            transform.position = Unit.Position;
 
-            transform.SetParent(Unit.transform, false);
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
-            transform.localScale = Vector3.one;
-
+            DontDestroyOnLoad(gameObject);
             ReplaceModel(Unit.Model);
+            OnScaleChanged();
 
             Unit.BoltEntity.AddEventListener(this);
             Unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
@@ -36,6 +37,7 @@ namespace Client
             Unit.AddCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
             Unit.AddCallback(nameof(IUnitState.EmoteFrame), OnEmoteFrameChanged);
             EventHandler.RegisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
+            EventHandler.RegisterEvent(Unit, GameEvents.UnitScaleChanged, OnScaleChanged);
 
             auraEffectController.HandleAttach(this);
         }
@@ -50,6 +52,7 @@ namespace Client
             Unit.RemoveCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
             Unit.RemoveCallback(nameof(IUnitState.EmoteFrame), OnEmoteFrameChanged);
             EventHandler.UnregisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
+            EventHandler.UnregisterEvent(Unit, GameEvents.UnitScaleChanged, OnScaleChanged);
 
             ReplaceModel();
             CancelInvoke();
@@ -59,6 +62,9 @@ namespace Client
 
         public void DoUpdate(float deltaTime)
         {
+            transform.rotation = Unit.Rotation;
+            transform.position = Vector3.SmoothDamp(transform.position, Unit.Position, ref targetSmoothVelocity, targetSmoothTime);
+
             model?.DoUpdate(deltaTime);
         }
 
@@ -106,7 +112,9 @@ namespace Client
         }
 
         private void OnModelChanged() => ReplaceModel(Unit.Model);
-      
+
+        private void OnScaleChanged() => transform.localScale = new Vector3(Unit.Scale, Unit.Scale, Unit.Scale);
+
         private void ReplaceModel(int modelId)
         {
             if (model != null && model.Settings.Id == modelId)

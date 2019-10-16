@@ -43,11 +43,15 @@ public class WarcraftCamera : MonoBehaviour
     [SerializeField, UsedImplicitly]
     private float zoomDampening = 5.0f;
     [SerializeField, UsedImplicitly]
+    private float targetSmoothTime = 0.05f;
+    [SerializeField, UsedImplicitly]
     private LayerMask collisionLayers = -1;
     [SerializeField, UsedImplicitly, HideInInspector]
     private Camera targetCamera;
 
     private Unit target;
+    private Vector3 targetPosition;
+    private Vector3 targetPositionVelocity;
 
     private float xDeg;
     private float yDeg;
@@ -64,6 +68,9 @@ public class WarcraftCamera : MonoBehaviour
         {
             target = value;
             currentActualHeight = target == null || target.IsAlive ? targetHeight : deadTargetHeight;
+
+            if (target != null)
+                UpdateTargetPosition(true);
         }
     }
 
@@ -91,6 +98,7 @@ public class WarcraftCamera : MonoBehaviour
         if (!target)
             return;
 
+        UpdateTargetPosition(false);
         currentActualHeight = Mathf.MoveTowards(currentActualHeight, target.IsAlive ? targetHeight : deadTargetHeight, targetHeightDampening * Time.deltaTime);
 
         // If either mouse buttons are down, let the mouse govern camera position
@@ -127,10 +135,10 @@ public class WarcraftCamera : MonoBehaviour
 
         // calculate desired camera position
         var vTargetOffset = new Vector3(0, -currentActualHeight, 0);
-        Vector3 position = target.transform.position - (rotation * Vector3.forward * desiredDistance + vTargetOffset);
+        Vector3 position = targetPosition - (rotation * Vector3.forward * desiredDistance + vTargetOffset);
 
         // check for collision using the true target's desired registration point as set by user using height
-        Vector3 trueTargetPosition = target.transform.position - vTargetOffset;
+        Vector3 trueTargetPosition = targetPosition - vTargetOffset;
 
         // if there was a collision, correct the camera position and calculate the corrected distance
         bool isCorrected = false;
@@ -153,10 +161,15 @@ public class WarcraftCamera : MonoBehaviour
         currentDistance = Mathf.Clamp(currentDistance, minDistance, maxDistance);
 
         // recalculate position based on the new currentDistance
-        position = target.transform.position - (rotation * Vector3.forward * currentDistance + vTargetOffset);
+        position = targetPosition - (rotation * Vector3.forward * currentDistance + vTargetOffset);
 
         transform.rotation = rotation;
         transform.position = position;
+    }
+
+    private void UpdateTargetPosition(bool instantly)
+    {
+        targetPosition = instantly ? target.Position : Vector3.SmoothDamp(targetPosition, target.Position, ref targetPositionVelocity, targetSmoothTime);
     }
 
     private static float ClampAngle(float angle, float min, float max)

@@ -36,6 +36,7 @@
         UnitTargetChanged,
         UnitFactionChanged,
         UnitModelChanged,
+        UnitScaleChanged,
 
         HotkeyStateChanged,
         HotkeyBindingChanged,

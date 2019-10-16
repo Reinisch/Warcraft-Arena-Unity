@@ -163,6 +163,7 @@ namespace Core
             bool isMovingLocally = IsMovementController;
             unitRigidbody.isKinematic = !isMovingLocally;
             unitRigidbody.useGravity = isMovingLocally;
+            unitRigidbody.interpolation = unit.IsOwner && unit is Player ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
         }
 
         private void ProcessMovement()

@@ -120,6 +120,8 @@ namespace Core
                         unitState.Scale = value;
                         unit.UnitCreateToken.Scale = value;
                     }
+
+                    EventHandler.ExecuteEvent(unit, GameEvents.UnitScaleChanged);
                 }
             }
 
