@@ -9,9 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3997573792732336981}
-  - component: {fileID: 9079805141816343957}
   - component: {fileID: 5282866637178301999}
   - component: {fileID: 286610699786722173}
+  - component: {fileID: 7000619755151774798}
+  - component: {fileID: 6549326949966490058}
+  - component: {fileID: 3684772118141241754}
   m_Layer: 5
   m_Name: Chat Border
   m_TagString: Untagged
@@ -39,46 +41,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -2.5}
   m_SizeDelta: {x: -12, y: -5}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &9079805141816343957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 24633405362037568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a98125502f715b4b83cfb77b434e436, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 286610699786722173}
 --- !u!222 &5282866637178301999
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -115,6 +77,51 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &7000619755151774798
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24633405362037568}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9c8cd89843e38d348b570bb5c1ab109c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!225 &6549326949966490058
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24633405362037568}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &3684772118141241754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24633405362037568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e56397e7317912a4fb5de9c438e86cf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7000619755151774798}
+  parameter: PointerEntered
 --- !u!1 &253824257989173236
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,6 +256,7 @@ GameObject:
   - component: {fileID: 1070250741818506947}
   - component: {fileID: 1700506003646781832}
   - component: {fileID: 77915876057231444}
+  - component: {fileID: 6570639879966903170}
   m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
@@ -325,6 +333,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!114 &6570639879966903170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298628740749815407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e56397e7317912a4fb5de9c438e86cf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7000619755151774798}
+  parameter: PointerEntered
 --- !u!1 &1992427296590209188
 GameObject:
   m_ObjectHideFlags: 0
@@ -1873,6 +1895,11 @@ PrefabInstance:
       propertyPath: m_fontColor.g
       value: 0.6666667
       objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
 --- !u!224 &6668099274328865245 stripped
@@ -2056,6 +2083,11 @@ PrefabInstance:
       propertyPath: m_fontColor.g
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
 --- !u!224 &4643946310078609854 stripped
@@ -2223,6 +2255,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294934783
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
@@ -2407,6 +2444,11 @@ PrefabInstance:
       propertyPath: m_fontColor.g
       value: 0.5019608
       objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
 --- !u!224 &7673234492804153928 stripped
@@ -2582,6 +2624,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontColor.b
       value: 0.7529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
@@ -2766,6 +2813,11 @@ PrefabInstance:
       propertyPath: m_isRightToLeft
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
 --- !u!224 &720346350325488616 stripped
@@ -2949,6 +3001,11 @@ PrefabInstance:
       propertyPath: m_fontColor.g
       value: 0.2509804
       objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
 --- !u!224 &4550873542131537578 stripped
@@ -3126,6 +3183,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontColor.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
