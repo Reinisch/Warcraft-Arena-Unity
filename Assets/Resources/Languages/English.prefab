@@ -363,3 +363,5 @@ MonoBehaviour:
     Value: Instant
   - StringReference: {fileID: 11400000, guid: 966f852b4c0f0f44eace6c051438965d, type: 2}
     Value: '{0} sec cast'
+  - StringReference: {fileID: 11400000, guid: 2785eada039f3f14fa7022f43e9a8f24, type: 2}
+    Value: General

@@ -57,6 +57,16 @@ namespace Client
             base.OnPlayerControlLost(player);
         }
 
+        public void Say(string message)
+        {
+            if (!Player.ExistsIn(World))
+                return;
+
+            PlayerChatRequestEvent chatRequest = PlayerChatRequestEvent.Create(Bolt.GlobalTargets.OnlyServer);
+            chatRequest.Message = message;
+            chatRequest.Send();
+        }
+
         public void SelectTarget(Unit target)
         {
             if (!Player.ExistsIn(World))

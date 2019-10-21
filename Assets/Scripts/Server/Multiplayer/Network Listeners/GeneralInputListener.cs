@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Bolt;
+using Core;
 
 namespace Server
 {
@@ -23,6 +24,24 @@ namespace Server
                 return;
 
             World.FindPlayer(emoteRequest.RaisedBy)?.ModifyEmoteState(emoteType);
+        }
+
+        public override void OnEvent(PlayerChatRequestEvent chatRequest)
+        {
+            base.OnEvent(chatRequest);
+
+            Player player = World.FindPlayer(chatRequest.RaisedBy);
+            if (player == null)
+                return;
+
+            if (!player.IsAlive)
+                return;
+
+            UnitChatMessageEvent unitChatMessageEvent = UnitChatMessageEvent.Create(GlobalTargets.Everyone);
+            unitChatMessageEvent.SenderId = player.BoltEntity.NetworkId;
+            unitChatMessageEvent.SenderName = player.Name;
+            unitChatMessageEvent.Message = chatRequest.Message;
+            unitChatMessageEvent.Send();
         }
     }
 }

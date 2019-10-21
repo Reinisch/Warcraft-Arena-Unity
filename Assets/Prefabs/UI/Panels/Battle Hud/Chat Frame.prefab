@@ -587,6 +587,7 @@ GameObject:
   - component: {fileID: 7000148793228062928}
   - component: {fileID: 5163400722133735372}
   - component: {fileID: 1996278465267484419}
+  - component: {fileID: 6968254921982020117}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -668,6 +669,34 @@ MonoBehaviour:
   velocity: {x: 0, y: 500}
   repeatWithDelay: 1
   repeatVelocityDelay: 0.15
+--- !u!114 &6968254921982020117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2501055778983567720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 13
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4823523034693508481}
+          m_MethodName: set_SnapToBottom
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &2709771632106952459
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,6 +745,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7045662524781797139}
+  - component: {fileID: 4823523034693508481}
   m_Layer: 5
   m_Name: Chat Frame
   m_TagString: Untagged
@@ -744,6 +774,26 @@ RectTransform:
   m_AnchoredPosition: {x: 597, y: 281.5}
   m_SizeDelta: {x: 1194, y: 563}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4823523034693508481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2905874631600475075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eabcc984824b0064f8b00c3c95143ce8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  scrollCanvas: {fileID: 0}
+  scrollRect: {fileID: 5163400722133735372}
+  messagePrototype: {fileID: 3071490999461273505, guid: 14aef5c8a7943ff42b18259651c0069c,
+    type: 3}
+  inputField: {fileID: 8124448700723823767}
+  messageContainer: {fileID: 8966246736871185839}
+  maxMessageCount: 100
 --- !u!1 &4434901819018536284
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,6 +915,17 @@ MonoBehaviour:
       - m_Target: {fileID: 1996278465267484419}
         m_MethodName: Backward
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4823523034693508481}
+        m_MethodName: set_SnapToBottom
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1004,10 +1065,21 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 26.7
-  m_CharacterLimit: 0
+  m_CharacterLimit: 140
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4823523034693508481}
+        m_MethodName: OnSubmit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -1038,7 +1110,7 @@ MonoBehaviour:
   m_ReadOnly: 0
   m_RichText: 1
   m_GlobalFontAsset: {fileID: 11400000, guid: 15d9cf82fc4c5d5418bf2dcd67129037, type: 2}
-  m_OnFocusSelectAll: 1
+  m_OnFocusSelectAll: 0
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
   m_isRichTextEditingAllowed: 0
@@ -1742,6 +1814,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chat Item (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1805,7 +1882,7 @@ PrefabInstance:
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -82.82
+      value: -23.14
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -1888,7 +1965,7 @@ PrefabInstance:
     - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4294945450
+      value: 4290816682
       objectReference: {fileID: 0}
     - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -1898,6 +1975,11 @@ PrefabInstance:
     - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1919,6 +2001,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chat Item (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -2108,6 +2195,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chat Item (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2171,7 +2263,7 @@ PrefabInstance:
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -124.1
+      value: -23.14
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -2254,11 +2346,16 @@ PrefabInstance:
     - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4294934783
+      value: 4290806015
       objectReference: {fileID: 0}
     - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2280,6 +2377,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chat Item (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -2469,6 +2571,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chat Item
       objectReference: {fileID: 0}
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2630,6 +2737,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
 --- !u!224 &537756131432457551 stripped
@@ -2649,6 +2761,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chat Item (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -2838,6 +2955,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chat Item (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3025,6 +3147,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chat Item (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4178424873395815134, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}

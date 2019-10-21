@@ -32,6 +32,7 @@
         ServerHealingDone,
         ServerLaunched,
 
+        UnitChat,
         UnitAttributeChanged,
         UnitTargetChanged,
         UnitFactionChanged,

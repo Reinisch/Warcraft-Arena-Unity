@@ -1,4 +1,7 @@
-﻿namespace Client
+﻿using Common;
+using Core;
+
+namespace Client
 {
     public partial class PhotonBoltClientListener
     {
@@ -21,6 +24,15 @@
             base.OnEvent(movementControlChangeEvent);
 
             LocalPlayer?.Handle(movementControlChangeEvent);
+        }
+
+        public override void OnEvent(UnitChatMessageEvent unitChatMessageEvent)
+        {
+            base.OnEvent(unitChatMessageEvent);
+
+            Unit who = World.UnitManager.Find(unitChatMessageEvent.SenderId.PackedValue);
+            if (who != null)
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.UnitChat, who, unitChatMessageEvent.Message);
         }
     }
 }
