@@ -39,64 +39,36 @@ Client is started by default, if connection fails then reason should be displaye
 ![Alt text](/Screenshots/WoW-Unity-1.0.48.png?raw=true "World of Warcraft Unity")
 
 ### Implemented spell effects:
-- Direct teleport
-- Damage
-- Heal
-- Apply aura
-- Kill
-- Resurrect
-- Area effects
-- Dispel Mechanics
-
+| **Direct teleport**  | **Damage** | **Heal** | **Dispel Mechanics** |
+| :---: | :---: | :---: | :---: |
+| **Apply aura** | **Kill** | **Resurrect** | **Area Effects** |
 ### Implemented aura effects:
-- Absorb Damage
-- Change Display Model
-- Speed, critical damage and haste modifiers
-- Pacify & Silence
-- Periodic damage and healing
-- Root
-- Movement slow suppression
-- Confuse
-- Spell Modifier
+| **Absorb Damage**  | **Critical damage** | **Haste** | **Root** |
+| :---: | :---: | :---: | :---: |
+| **Display Model** | **Periodic healing** | **Confuse** | **Speed** |
+| **Slow suppression** | **Periodic damage** | **Pacify** | **Silence** |
+| **Ignore Aura State** | **Damage Reduction** | **Stat Mod** | **Immunity** |
+| **Spell Modifier** | **Spell Trigger** | **Stun** | **Freeze** |
 
 ### Included spells:
-- Blazing Speed
-- Blink
-- Counterspell
-- Fire Blast
-- Flash Heal
-- Frost Bolt
-- Frost Nova
-- Ice Barrier
-- Ice Lance
-- Icy Veins
-- Living Bomb
-- Polymorph
-- Renew
-- Resurrect
-- Presence Of Mind
-- Pyroblast
-- Cone Of Cold
-- Scorch
+| **Ice Block**  | **Renew** | **Ice Lance** | **Holy Word: Serenity** |
+| :---: | :---: | :---: | :---: |
+| **Ice Nova** | **Resurrect** | **Polymorph** | **Pain Suppression** |
+| **Scorch** | **Periodic damage** | **Pacify** | **Silence** |
+| **Icy Veins** | **Presence of Mind** | **Pyroblast** | **PvP Trinket** |
+| **Flash Heal** | **Deep Freeze** | **Flame Strike** | **Cone of Cold** |
+| **Counterspell** | **Ice Barrier** | **Frost Nova** | **Arcane Intellect** |
+| **Living Bomb** | **Frost Bolt** | **Blazing Speed** | **Blink** |
+| **Fire Blast** | **Hot Streak** | **Shatter** | **Fingers of Frost** |
 
 ### Controls:
 
 **Hotkeys:**
-Central Bottom Action Bar - **No Modifiers**, Central Top Action Bar - **Left Shift**, buttons left to right:
-1.  *1*
-2.  *2*
-3.  *3*
-4.  *4*
-5.  *5*
-6.  *Q*
-7.  *E*
-8.  *R*
-9.  *F*
-10. *Z*
-11. *X*
-12. *C*
-13. *V*
-14. *G*
+Central Bottom Action Bar - **No Modifiers**, Central Top Action Bar - **Left Shift**, action buttons:
+
+| S-1 | S-2 | S-3 | S-4 | S-5 | S-Q | S-E | S-R | S-F | S-Z | S-X | S-C | S-V | S-G |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1** | **2** | **3** | **4** | **5** | **Q** | **E** | **R** | **F** | **Z** | **X** | **C** | **V** | **G** |
 
 **Character:**
 - Jump :              *Space*
@@ -104,6 +76,11 @@ Central Bottom Action Bar - **No Modifiers**, Central Top Action Bar - **Left Sh
 - Target :            *Tab* or *Left Click*
 - Rotate Camera :     *Left Click* + *Drag*
 - Rotate Character :  *Right Click* + *Drag*
+- Select Self :       *F1*
+- Chat :              *Enter*
+- Toggle Healthbars : *Ctrl-V*
+- Cancel Cast :       *Esc*
+- Deselect Target :   *Esc*
 
 ## Links
 * [Photon Bolt](https://assetstore.unity.com/packages/tools/network/photon-bolt-free-127156) - networking solution used for server-client communication and game state synchronization. 
