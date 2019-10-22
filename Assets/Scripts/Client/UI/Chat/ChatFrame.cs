@@ -15,20 +15,23 @@ public class ChatFrame : MonoBehaviour
     [SerializeField, UsedImplicitly] private ChatFrameMessage messagePrototype;
     [SerializeField, UsedImplicitly] private TMP_InputField inputField;
     [SerializeField, UsedImplicitly] private Transform messageContainer;
+    [SerializeField, UsedImplicitly] private HotkeyInputItem chatFocusHotkey;
     [SerializeField, UsedImplicitly] private int maxMessageCount = 100;
 
     private readonly List<ChatFrameMessage> chatMessages = new List<ChatFrameMessage>();
     private const float BottomSnapThreshold = 0.001f;
 
     [UsedImplicitly]
-    public bool SnapToBottom { get; set; }
+    public bool SnapToBottom { get; set; } = true;
 
     [UsedImplicitly]
     private void Awake()
     {
         EventHandler.RegisterEvent<Unit, string>(EventHandler.GlobalDispatcher, GameEvents.UnitChat, OnUnitChat);
+        EventHandler.RegisterEvent<HotkeyState>(chatFocusHotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
         inputField.onSubmit.AddListener(OnSubmit);
         inputField.onDeselect.AddListener(OnDeselect);
+
         GameObjectPool.PreInstantiate(messagePrototype, maxMessageCount);
     }
 
@@ -42,6 +45,7 @@ public class ChatFrame : MonoBehaviour
         inputField.onSubmit.RemoveListener(OnSubmit);
         inputField.onDeselect.RemoveListener(OnDeselect);
         EventHandler.UnregisterEvent<Unit, string>(EventHandler.GlobalDispatcher, GameEvents.UnitChat, OnUnitChat);
+        EventHandler.UnregisterEvent<HotkeyState>(chatFocusHotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
     }
 
     [UsedImplicitly]
@@ -87,5 +91,12 @@ public class ChatFrame : MonoBehaviour
 
         if (scrollRect.verticalNormalizedPosition < BottomSnapThreshold)
             SnapToBottom = true;
+    }
+
+    private void OnHotkeyStateChanged(HotkeyState state)
+    {
+        if (enabled && state == HotkeyState.Pressed)
+            if (EventSystem.current.currentSelectedGameObject != inputField.gameObject)
+                EventSystem.current.SetSelectedGameObject(inputField.gameObject);
     }
 }

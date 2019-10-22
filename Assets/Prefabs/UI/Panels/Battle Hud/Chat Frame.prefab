@@ -792,6 +792,7 @@ MonoBehaviour:
     type: 3}
   inputField: {fileID: 8124448700723823767}
   messageContainer: {fileID: 8966246736871185839}
+  chatFocusHotkey: {fileID: 11400000, guid: 412f7345114c7a24bac24d0397c6f7de, type: 2}
   maxMessageCount: 100
 --- !u!1 &4434901819018536284
 GameObject:
@@ -1144,14 +1145,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6277869051170347521}
-  - {fileID: 927985667396716179}
-  - {fileID: 2487816022636992502}
-  - {fileID: 8645664843004911884}
-  - {fileID: 6455393061946713254}
-  - {fileID: 8020618027106429412}
-  - {fileID: 4185472310781771014}
-  - {fileID: 1160691107835938544}
+  - {fileID: 537756131432457551}
+  - {fileID: 6668099274328865245}
+  - {fileID: 8281971847993567416}
+  - {fileID: 2851504963200785986}
+  - {fileID: 720346350325488616}
+  - {fileID: 4550873542131537578}
+  - {fileID: 7673234492804153928}
+  - {fileID: 4643946310078609854}
   m_Father: {fileID: 1477925438819891376}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1983,7 +1984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &927985667396716179 stripped
+--- !u!224 &6668099274328865245 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2176,7 +2177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &1160691107835938544 stripped
+--- !u!224 &4643946310078609854 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2359,7 +2360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &2487816022636992502 stripped
+--- !u!224 &8281971847993567416 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2552,7 +2553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &4185472310781771014 stripped
+--- !u!224 &7673234492804153928 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2743,7 +2744,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &6277869051170347521 stripped
+--- !u!224 &537756131432457551 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2936,7 +2937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &6455393061946713254 stripped
+--- !u!224 &720346350325488616 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -3129,7 +3130,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &8020618027106429412 stripped
+--- !u!224 &4550873542131537578 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -3317,7 +3318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &8645664843004911884 stripped
+--- !u!224 &2851504963200785986 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
