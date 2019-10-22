@@ -36,7 +36,7 @@ Client is started by default, if connection fails then reason should be displaye
 - [ ] Arena or battleground logic
 
 ## Screenshot
-![Alt text](/Screenshots/Lordaeron%20Arena%20Dummies%20Half%20Res.png?raw=true "Lordaeron Dummies")
+![Alt text](/Screenshots/WoW-Unity-1.0.48.png?raw=true "World of Warcraft Unity")
 
 ### Implemented spell effects:
 - Direct teleport
