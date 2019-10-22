@@ -787,7 +787,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
-  scrollCanvas: {fileID: 0}
   scrollRect: {fileID: 5163400722133735372}
   messagePrototype: {fileID: 3071490999461273505, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -1145,14 +1144,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 537756131432457551}
-  - {fileID: 6668099274328865245}
-  - {fileID: 8281971847993567416}
-  - {fileID: 2851504963200785986}
-  - {fileID: 720346350325488616}
-  - {fileID: 4550873542131537578}
-  - {fileID: 7673234492804153928}
-  - {fileID: 4643946310078609854}
+  - {fileID: 6277869051170347521}
+  - {fileID: 927985667396716179}
+  - {fileID: 2487816022636992502}
+  - {fileID: 8645664843004911884}
+  - {fileID: 6455393061946713254}
+  - {fileID: 8020618027106429412}
+  - {fileID: 4185472310781771014}
+  - {fileID: 1160691107835938544}
   m_Father: {fileID: 1477925438819891376}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1819,6 +1818,64 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Party] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be
+        used to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 290
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4290816682
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1924,67 +1981,9 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_text
-      value: "[Party] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be
-        used to great effect for finishing off your opponent. The threat of a surprise
-        Pyroblast forces your opponent to always stay above 10 health. In combination
-        with some Spell Damage minions, you can deal even more damage.\r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 290
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.r
-      value: 0.6666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4290816682
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.g
-      value: 0.6666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &6668099274328865245 stripped
+--- !u!224 &927985667396716179 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2006,6 +2005,69 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 282
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be used to
+        great effect for finishing off your opponent. The threat of a surprise Pyroblast
+        forces your opponent to always stay above 10 health. In combination with some
+        Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -2112,72 +2174,9 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 282
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 48
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 48
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_text
-      value: "[Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be used to
-        great effect for finishing off your opponent. The threat of a surprise Pyroblast
-        forces your opponent to always stay above 10 health. In combination with some
-        Spell Damage minions, you can deal even more damage.\r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &4643946310078609854 stripped
+--- !u!224 &1160691107835938544 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2199,6 +2198,59 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Announcer] whispers: As a 10 mana, 10 damage spell, Pyroblast can be
+        used to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 291
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4290806015
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -2305,62 +2357,9 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_text
-      value: "[Announcer] whispers: As a 10 mana, 10 damage spell, Pyroblast can be
-        used to great effect for finishing off your opponent. The threat of a surprise
-        Pyroblast forces your opponent to always stay above 10 health. In combination
-        with some Spell Damage minions, you can deal even more damage.\r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 291
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.g
-      value: 0.5019608
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4290806015
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &8281971847993567416 stripped
+--- !u!224 &2487816022636992502 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2382,6 +2381,69 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 287
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Announcer] says: As a 10 mana, 10 damage spell, Pyroblast can be used
+        to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4282417407
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -2488,72 +2550,9 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 287
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_text
-      value: "[Announcer] says: As a 10 mana, 10 damage spell, Pyroblast can be used
-        to great effect for finishing off your opponent. The threat of a surprise
-        Pyroblast forces your opponent to always stay above 10 health. In combination
-        with some Spell Damage minions, you can deal even more damage.\r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4282417407
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.b
-      value: 0.2509804
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.g
-      value: 0.5019608
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &7673234492804153928 stripped
+--- !u!224 &4185472310781771014 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2575,6 +2574,67 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: '[General] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can
+        be used to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.surprise your
+        opponent and turn the tide of a battle.
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 344
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 59
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.7529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4290822399
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.7529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -2681,70 +2741,9 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_text
-      value: '[General] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can
-        be used to great effect for finishing off your opponent. The threat of a surprise
-        Pyroblast forces your opponent to always stay above 10 health. In combination
-        with some Spell Damage minions, you can deal even more damage.surprise your
-        opponent and turn the tide of a battle.
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 344
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 58
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 59
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontSizeBase
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.g
-      value: 0.7529412
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4290822399
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.b
-      value: 0.7529412
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &537756131432457551 stripped
+--- !u!224 &6277869051170347521 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2766,6 +2765,69 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 290
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Guild] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be
+        used to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4282449728
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_isRightToLeft
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -2872,72 +2934,9 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 290
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_text
-      value: "[Guild] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be
-        used to great effect for finishing off your opponent. The threat of a surprise
-        Pyroblast forces your opponent to always stay above 10 health. In combination
-        with some Spell Damage minions, you can deal even more damage.\r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.r
-      value: 0.2509804
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4282449728
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.b
-      value: 0.2509804
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_isRightToLeft
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &720346350325488616 stripped
+--- !u!224 &6455393061946713254 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -2959,6 +2958,69 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 288
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Announcer] yells: As a 10 mana, 10 damage spell, Pyroblast can be used
+        to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4282401023
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -3065,72 +3127,9 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 288
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_text
-      value: "[Announcer] yells: As a 10 mana, 10 damage spell, Pyroblast can be used
-        to great effect for finishing off your opponent. The threat of a surprise
-        Pyroblast forces your opponent to always stay above 10 health. In combination
-        with some Spell Damage minions, you can deal even more damage.\r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4282401023
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.b
-      value: 0.2509804
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.g
-      value: 0.2509804
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &4550873542131537578 stripped
+--- !u!224 &8020618027106429412 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}
@@ -3152,6 +3151,64 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 289
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_text
+      value: "[Raid] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be
+        used to great effect for finishing off your opponent. The threat of a surprise
+        Pyroblast forces your opponent to always stay above 10 health. In combination
+        with some Spell Damage minions, you can deal even more damage.\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.49803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278222847
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
         type: 3}
@@ -3258,67 +3315,9 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 289
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_text
-      value: "[Raid] [Announcer]: As a 10 mana, 10 damage spell, Pyroblast can be
-        used to great effect for finishing off your opponent. The threat of a surprise
-        Pyroblast forces your opponent to always stay above 10 health. In combination
-        with some Spell Damage minions, you can deal even more damage.\r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.g
-      value: 0.49803922
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4278222847
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_fontColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3265850371782150518, guid: 14aef5c8a7943ff42b18259651c0069c,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14aef5c8a7943ff42b18259651c0069c, type: 3}
---- !u!224 &2851504963200785986 stripped
+--- !u!224 &8645664843004911884 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5794170065339070002, guid: 14aef5c8a7943ff42b18259651c0069c,
     type: 3}

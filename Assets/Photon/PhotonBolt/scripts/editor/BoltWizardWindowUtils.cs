@@ -34,7 +34,7 @@ public partial class BoltWizardWindow
 		internal static readonly string CONNECTION_INFO = "Connecting to the account service...";
 
 		internal static readonly string FINISH_TITLE = "Bolt Setup Complete";
-		internal static readonly string FINISH_QUESTION = "In order to finish the setup, Bolt needs to compile all Assets, do you want to proceed? If you opt to not compile now, you can run it on \"Assets/Bolt/Compile Assembly\".";
+		internal static readonly string FINISH_QUESTION = "In order to finish the setup, Bolt needs to compile all Assets, do you want to proceed? If you opt to not compile now, you can run it on \"Bolt/Compile Assembly\".";
 
 		internal static readonly string CLOSE_MSG_TITLE = "Incomplete Installation";
 		internal static readonly string CLOSE_MSG_QUESTION = "Are you sure you want to exit the Wizard?";
@@ -70,9 +70,10 @@ Please, feel free to click on the Next button, and get started.";
 	enum BoltSetupStage
 	{
 		SetupIntro = 1,
-		SetupPhoton = 2,
-		SetupBolt = 3,
-		SetupSupport = 4
+		SetupRelease = 2,
+		SetupPhoton = 3,
+		SetupBolt = 4,
+		SetupSupport = 5
 	}
 
 	[Flags]
@@ -83,128 +84,6 @@ Please, feel free to click on the Next button, and get started.";
 		Samples = 1 << 3,
 		XB1 = 1 << 4,
 		PS4 = 1 << 5
-	}
-
-	class AccountService
-	{
-		readonly string REGISTER_URL = "https://www.photonengine.com/api/UnityRegister";
-
-		public static class RegistrationConfig
-		{
-			public static string BOLT_SERVICE_ID = "20";
-		}
-
-		public class RegistrationInfo
-		{
-			public string Email { get; set; }
-			public bool IsApproved { get; set; }
-			public string TempId { get; set; }
-			public string CultureName { get; set; }
-			public Dictionary<string, string> ApplicationIds { get; set; }
-			public string Tags { get; set; }
-			public IList<string> TagsList { get; set; }
-		}
-
-		public class RegistrationResponse
-		{
-			public int ReturnCode { get; set; }
-			public string Message { get; set; }
-			public string MessageDetailed { get; set; }
-			public bool IsSuccess { get; set; }
-			public RegistrationInfo Dto { get; set; }
-		}
-
-		public class RegistrationRequest
-		{
-			public string Email { get; set; }
-			public string ServiceTypes { get; set; }
-		}
-
-		public AccountService()
-		{
-			WebRequest.DefaultWebProxy = null;
-			ServicePointManager.ServerCertificateValidationCallback = Validator;
-		}
-
-		public string RegisterByEmail(string email)
-		{
-			var result = RequestCredentials(email);
-
-			if (!string.IsNullOrEmpty(result))
-			{
-				RegistrationResponse response = JsonConvert.DeserializeObject<RegistrationResponse>(result);
-
-				if (response == null)
-				{
-					throw new Exception("Service temporarily unavailable. Please register through account website.");
-				}
-
-				if (response.ReturnCode == 0)
-				{
-					if (response.Dto.ApplicationIds.ContainsKey(RegistrationConfig.BOLT_SERVICE_ID))
-					{
-						return response.Dto.ApplicationIds[RegistrationConfig.BOLT_SERVICE_ID];
-					}
-				}
-				else if (response.ReturnCode == 8)
-				{
-					throw new Exception(string.Format("Error: User Already exists. Please use another email or get a valid AppId from Photon dashboard."));
-				}
-
-				throw new Exception(string.Format("Error {0}: {1}", response.ReturnCode, response.Message));
-			}
-
-			throw new Exception("Server's response was empty. Please register through account website during this service interruption.");
-		}
-
-		string RequestCredentials(string email)
-		{
-			RegistrationRequest requestData = new RegistrationRequest
-			{
-				Email = email,
-				ServiceTypes = RegistrationConfig.BOLT_SERVICE_ID
-			};
-
-			string body = JsonConvert.SerializeObject(requestData);
-
-			string result = null;
-			try
-			{
-				WebRequest webRequest = WebRequest.Create(REGISTER_URL);
-
-				var data = Encoding.UTF8.GetBytes(body);
-
-				webRequest.Method = "POST";
-				webRequest.ContentType = "application/json";
-				webRequest.ContentLength = data.Length;
-
-				using (var writer = webRequest.GetRequestStream())
-				{
-					writer.Write(data, 0, data.Length);
-					writer.Close();
-
-					using (var resp = webRequest.GetResponse())
-					{
-						using (var reader = new StreamReader(resp.GetResponseStream()))
-						{
-							result = reader.ReadToEnd();
-						}
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				BoltLog.Exception(ex);
-				return null;
-			}
-
-			return result;
-		}
-
-		public static bool Validator(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors)
-		{
-			return true; // any certificate is ok in this case
-		}
 	}
 
 	String PackagePath(String packageName)
@@ -300,9 +179,56 @@ Please, feel free to click on the Next button, and get started.";
 		}
 		return true;
 	}
-
-	static bool IsEmail(string val)
+	
+	private void PrepareReleaseHistoryText()
 	{
-		return new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$").IsMatch(val);
+		var text = (TextAsset) AssetDatabase.LoadAssetAtPath(Path.Combine(BoltPathUtility.BasePath, "release_history.txt"),
+			typeof(TextAsset));
+		var baseText = text.text;
+
+		var rx = new Regex(@"(\b(\d+\.)?\d+\.\d+\.\d+\n)",
+			RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
+		var regexAdded = new Regex(@"\b(Added:)(.*)\b",
+			RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
+		var regexChanged = new Regex(@"\b(Changed:)(.*)\b",
+			RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
+		var regexFixed = new Regex(@"\b(Fixed:)(.*)\b",
+			RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
+		var regexRemoved = new Regex(@"\b(Removed:)(.*)\b",
+			RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
+
+		var matches = rx.Matches(baseText);
+
+		var currentVersionMatch = matches[0];
+		var lastVersionMatch = currentVersionMatch.NextMatch();
+
+		if (currentVersionMatch.Success && lastVersionMatch.Success)
+		{
+			var header = currentVersionMatch.Value.Trim();
+			var mainText = baseText.Substring(currentVersionMatch.Index + currentVersionMatch.Length,
+				lastVersionMatch.Index - lastVersionMatch.Length - 1).Trim();
+
+			var resultAdded = regexAdded.Matches(mainText);
+			var resultChanged = regexChanged.Matches(mainText);
+			var resultFixed = regexFixed.Matches(mainText);
+			var resultRemoved = regexRemoved.Matches(mainText);
+
+			Func<MatchCollection, List<string>> itemProcessor = (match) =>
+			{
+				var resultList = new List<string>();
+				for (var index = 0; index < match.Count; index++)
+				{
+					var result = match[index];
+					resultList.Add(result.Groups[2].Value.Trim());
+				}
+				return resultList;
+			};
+
+			ReleaseHistoryHeader = header;
+			ReleaseHistoryTextAdded = itemProcessor(resultAdded);
+			ReleaseHistoryTextChanged = itemProcessor(resultChanged);
+			ReleaseHistoryTextFixed = itemProcessor(resultFixed);
+			ReleaseHistoryTextRemoved = itemProcessor(resultRemoved);
+		}
 	}
 }

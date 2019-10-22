@@ -219,6 +219,7 @@ MonoBehaviour:
   targetHeightDampening: 0.75
   rotationDampening: 3
   zoomDampening: 5
+  targetSmoothTime: 0.05
   collisionLayers:
     serializedVersion: 2
     m_Bits: 256

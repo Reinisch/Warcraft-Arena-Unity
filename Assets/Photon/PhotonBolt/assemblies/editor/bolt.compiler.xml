@@ -31,6 +31,66 @@
             <param name="path">Path to JSON file.</param>
             <exception cref="T:System.IO.FileNotFoundException">Thrown when the JSON file was not found at path</exception>
         </member>
+        <member name="T:Bolt.Compiler.Assets.BoltProject">
+            <summary>
+            Represents the Asset collection of all networked data on the current game project
+            </summary>
+        </member>
+        <member name="P:Bolt.Compiler.Assets.BoltProject.Assets">
+            <summary>
+            Collection of Assets on this particular project
+            </summary>
+        </member>
+        <member name="P:Bolt.Compiler.Assets.BoltProject.ActiveGroup">
+            <summary>
+            Current active group
+            </summary>
+        </member>
+        <member name="F:Bolt.Compiler.Assets.BoltProject.Filters">
+            <summary>
+            List of filters applied to the assets
+            </summary>
+        </member>
+        <member name="P:Bolt.Compiler.Assets.BoltProject.Groups">
+            <summary>
+            List of Defined groups
+            </summary>
+        </member>
+        <member name="P:Bolt.Compiler.Assets.BoltProject.States">
+            <summary>
+            List of State Assets
+            </summary>
+        </member>
+        <member name="P:Bolt.Compiler.Assets.BoltProject.Structs">
+            <summary>
+            List of Structs (Object) Assets
+            </summary>
+        </member>
+        <member name="P:Bolt.Compiler.Assets.BoltProject.Events">
+            <summary>
+            List of Event Assets
+            </summary>
+        </member>
+        <member name="P:Bolt.Compiler.Assets.BoltProject.Commands">
+            <summary>
+            List of Command Assets
+            </summary>
+        </member>
+        <member name="P:Bolt.Compiler.Assets.BoltProject.EnabledFilters">
+            <summary>
+            List of enabled Filters
+            </summary>
+        </member>
+        <member name="P:Bolt.Compiler.Assets.BoltProject.UseFilters">
+            <summary>
+            If this Project is using Filters
+            </summary>
+        </member>
+        <member name="M:Bolt.Compiler.Assets.BoltProject.#ctor">
+            <summary>
+            Initializes the internal Asset list
+            </summary>
+        </member>
         <member name="M:Bolt.Compiler.Assets.BoltProject.FindState(System.Guid)">
             <summary>
             Finds a state asset by its guid.

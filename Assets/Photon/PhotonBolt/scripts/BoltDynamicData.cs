@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UdpKit;
+using BoltInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Scripting;
@@ -28,6 +28,28 @@ namespace Bolt
 			BoltNetworkInternal.GetGlobalBehaviourTypes = GetGlobalBehaviourTypes;
 			BoltNetworkInternal.EnvironmentSetup = BoltInternal.BoltNetworkInternal_User.EnvironmentSetup;
 			BoltNetworkInternal.EnvironmentReset = BoltInternal.BoltNetworkInternal_User.EnvironmentReset;
+
+			// Setup Unity Config
+
+#if ENABLE_IL2CPP
+			UnitySettings.IsBuildIL2CPP = true;
+#elif ENABLE_MONO
+			UnitySettings.IsBuildMono = true;
+#elif ENABLE_DOTNET
+			UnitySettings.IsBuildDotNet = true;
+#endif
+
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+			UnitySettings.CurrentPlatform = RuntimePlatform.OSXPlayer;
+#elif UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+			UnitySettings.CurrentPlatform = RuntimePlatform.WindowsPlayer;
+#elif UNITY_STANDALONE_LINUX
+			UnitySettings.CurrentPlatform = RuntimePlatform.LinuxPlayer;
+#elif UNITY_IOS || UNITY_IPHONE
+			UnitySettings.CurrentPlatform = RuntimePlatform.IPhonePlayer;
+#elif UNITY_ANDROID
+			UnitySettings.CurrentPlatform = RuntimePlatform.Android;
+#endif
 		}
 
 		static int GetActiveSceneIndex()

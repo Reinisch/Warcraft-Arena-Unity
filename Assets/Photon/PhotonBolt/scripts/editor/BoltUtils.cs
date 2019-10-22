@@ -48,7 +48,7 @@ namespace Bolt.Utils
 		{
 			return SwitchDebugReleaseMode(BoltNetwork.IsDebugMode);
 		}
-
+		
 		// ======= PRIVATE METHODS =====================================================================================
 
 		public static int FindMissingComponents()
@@ -56,7 +56,8 @@ namespace Bolt.Utils
 			int missingScriptsCount = 0;
 			List<Component> components = new List<Component>();
 
-			var iter = AssetDatabase.FindAssets("t:Prefab").GetEnumerator();
+            var folders = new string[] { "Assets" };
+			var iter = AssetDatabase.FindAssets("t:Prefab", folders).GetEnumerator();
 
 			while (iter.MoveNext())
 			{

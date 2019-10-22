@@ -740,6 +740,7 @@ MonoBehaviour:
   itemText: {fileID: 4037625926164257337}
   itemImage: {fileID: 0}
   value: 0
+  explicitNavigation: 0
   notifyOnSameValue: 1
   options:
     optionsList: []
