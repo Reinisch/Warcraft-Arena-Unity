@@ -17,7 +17,7 @@ MonoBehaviour:
   floatingSpeed: 1
   fontSize: 4
   fontColor: {r: 0.19607843, g: 0.5882353, b: 0, a: 1}
-  fontAsset: {fileID: 11400000, guid: 5cdd21a82c43a2a4a9c75f447c89f653, type: 2}
+  fontMaterial: {fileID: 2100000, guid: 4325c17b748c74f47a0c307e533ddaf8, type: 2}
   sizeOverTime:
     serializedVersion: 2
     m_Curve:

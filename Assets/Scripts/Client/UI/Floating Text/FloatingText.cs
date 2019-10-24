@@ -72,7 +72,7 @@ namespace Client
         {
             currentSettings = newSettings;
             textMesh.text = value;
-            textMesh.font = newSettings.FontAsset;
+            textMesh.fontSharedMaterial = newSettings.FontMaterial;
             textMesh.fontSize = currentSettings.FontSize;
             textMesh.color = currentSettings.FontColor;
             targetLifeTime = currentSettings.LifeTime;

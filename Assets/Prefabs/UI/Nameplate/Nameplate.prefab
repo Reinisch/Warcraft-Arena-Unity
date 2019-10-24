@@ -460,8 +460,7 @@ MonoBehaviour:
   m_text: Frost Bolt
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3959f86659b5a8048bc662e74cd16cd5, type: 2}
-  m_sharedMaterial: {fileID: 21627190929590922, guid: 3959f86659b5a8048bc662e74cd16cd5,
-    type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 68d7193b064b6814ab42ba21dd6a3791, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -717,8 +716,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Mage
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: aab13d8eebec68443a0cdd6d65e95741, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: aab13d8eebec68443a0cdd6d65e95741, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: d37a81469b1a216479fff2e820dd4b76, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

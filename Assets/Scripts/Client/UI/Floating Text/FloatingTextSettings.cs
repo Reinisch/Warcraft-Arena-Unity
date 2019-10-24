@@ -12,7 +12,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private float floatingSpeed = 3;
         [SerializeField, UsedImplicitly] private int fontSize = 120;
         [SerializeField, UsedImplicitly] private Color fontColor;
-        [SerializeField, UsedImplicitly] private TMP_FontAsset fontAsset;
+        [SerializeField, UsedImplicitly] private Material fontMaterial;
         [SerializeField, UsedImplicitly] private AnimationCurve sizeOverTime;
         [SerializeField, UsedImplicitly] private AnimationCurve alphaOverTime;
         [SerializeField, UsedImplicitly] private AnimationCurve sizeOverDistanceToCamera;
@@ -23,7 +23,7 @@ namespace Client
         public float FloatingSpeed => floatingSpeed;
         public int FontSize => fontSize;
         public Color FontColor => fontColor;
-        public TMP_FontAsset FontAsset => fontAsset;
+        public Material FontMaterial => fontMaterial;
         public AnimationCurve SizeOverTime => sizeOverTime;
         public AnimationCurve AlphaOverTime => alphaOverTime;
         public AnimationCurve SizeOverDistanceToCamera => sizeOverDistanceToCamera;
