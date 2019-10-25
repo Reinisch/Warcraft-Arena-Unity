@@ -1,6 +1,8 @@
 # Warcraft Arena
 World of Warcraft combat system implementation in Unity with Photon Bolt.
 
+Ask anything about this project in [Discord](https://discord.gg/d62a5zG).
+
 ## Install
 **Setup:**
 
