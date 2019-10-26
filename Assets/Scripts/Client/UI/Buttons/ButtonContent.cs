@@ -20,6 +20,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private TextMeshProUGUI cooldownText;
         [SerializeField, UsedImplicitly] private Button button;
         [SerializeField, UsedImplicitly] private ButtonContentType contentType;
+        [SerializeField, UsedImplicitly] private TooltipAlignment tooltipAlignment = TooltipAlignment.FromTop;
         [SerializeField, UsedImplicitly] private int itemId;
 
         public ButtonSlot ButtonSlot { get; private set; }
@@ -107,7 +108,7 @@ namespace Client
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            tooltips.Show(spellInfo, rectTransform, TooltipAlignment.FromTop, TooltipSize.Normal);
+            tooltips.Show(spellInfo, rectTransform, tooltipAlignment, TooltipSize.Normal);
         }
 
         public void OnPointerExit(PointerEventData eventData)
