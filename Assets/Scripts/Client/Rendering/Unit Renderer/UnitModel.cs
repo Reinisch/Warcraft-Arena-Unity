@@ -27,8 +27,7 @@ namespace Client
             if (Renderer.Unit.IsDead)
             {
                 animator.SetBool("IsDead", true);
-                animator.Play("Death", 0, 1.0f);
-                animator.Play("Death", 1, 1.0f);
+                animator.Play("Death");
             }
         }
 

@@ -38,13 +38,14 @@ MonoBehaviour:
       soundType: 9
     defaultValue: 1
   soundSettings:
+  - {fileID: 11400000, guid: ee786aa39eb585e4484003f75910c3e9, type: 2}
   - {fileID: 11400000, guid: d1e1a72413fe7224aba07b5c5b27b11e, type: 2}
   - {fileID: 11400000, guid: 637188a259c0f8149a47bc2c267d8f46, type: 2}
-  - {fileID: 11400000, guid: ee786aa39eb585e4484003f75910c3e9, type: 2}
   spellSettings:
   - {fileID: 11400000, guid: 6f56afe17e7b1cd47a382496be8d9eb8, type: 2}
   - {fileID: 11400000, guid: 744f6b09408861a4e93868e8293c4b60, type: 2}
   - {fileID: 11400000, guid: f892c60b1945192429703bf29228e553, type: 2}
+  - {fileID: 11400000, guid: d68339d100981394ba554b670bca9131, type: 2}
   - {fileID: 11400000, guid: 7c4ba5424479d4a41a7a619b7710b206, type: 2}
   - {fileID: 11400000, guid: a7c9751f21370194a97c119c0764e730, type: 2}
   - {fileID: 11400000, guid: 3888a56d85676b84fa558be14182ceb9, type: 2}
