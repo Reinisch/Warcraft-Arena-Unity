@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
 
 namespace Client
