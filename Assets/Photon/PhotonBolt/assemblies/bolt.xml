@@ -58,7 +58,7 @@
             <summary>
             Describe a Protocol Token that can be used to transfer data between peers
             when running certain process on Bolt.
-            Read more at <a href="https://doc.photonengine.com/en-us/bolt/current/in-depth/protocol-tokens">here</a>
+            Read more at <see cref="!:https://doc.photonengine.com/en-us/bolt/current/in-depth/protocol-tokens">here</see>.
             Utility methods to work with IProtocolTokens can be found on <see cref="T:Bolt.ProtocolTokenUtils"/>.
             </summary>
         </member>
@@ -364,12 +364,6 @@
             Interface for unity behaviours that want to access Bolt methods
             </summary>
         </member>
-        <member name="T:Bolt.IEntityBehaviour`1">
-            <summary>
-            Interface for unity behaviours that want to access Bolt methods
-            </summary>
-            <typeparam name="TState">Bolt state of the entity</typeparam>
-        </member>
         <member name="T:Bolt.IPriorityCalculator">
             <summary>
             Interface which can be implemented on a behaviour attached to an entity which lets you provide
@@ -391,6 +385,12 @@
             <param name="connection">The connection we are calculating priority for</param>
             <param name="evnt">The event we are calculating priority for</param>
             <returns>The priority of the event</returns>
+        </member>
+        <member name="T:Bolt.IEntityBehaviour`1">
+            <summary>
+            Interface for unity behaviours that want to access Bolt methods
+            </summary>
+            <typeparam name="TState">Bolt state of the entity</typeparam>
         </member>
         <member name="T:Bolt.Event">
             <summary>
@@ -906,7 +906,7 @@
             <returns><c>true</c>, if room property was added, <c>false</c> otherwise.</returns>
             <param name="key">Propety Key.</param>
             <param name="value">Property Value.</param>
-            <param name="showInLobby">If set to <c>true</c> show this property on the Lobby too,
+            <param name="showInLobby">If set to <c>true</c> show this property on the Lobby too, 
             so the client can see the properties before entering the room.</param>
         </member>
         <member name="M:Bolt.Photon.PhotonRoomProperties.RemoveRoomProperty(System.String)">
@@ -1061,7 +1061,7 @@
         </member>
         <member name="T:Bolt.Exceptions.BoltException">
             <summary>
-            Generic Bolt exception.
+            Generci Bolt exception.
             </summary>
         </member>
         <member name="T:Bolt.Exceptions.BoltAssertFailedException">
@@ -1139,13 +1139,6 @@
             Gets the current session this peer is connected.
             </summary>
             <value>The current session.</value>
-        </member>
-        <member name="P:Bolt.Matchmaking.BoltMatchmaking.CurrentMetadata">
-            <summary>
-            Expose custom metadata information about the current platform and connection if a remove server.
-            The information retrieved by this call depends on the current active platform and the current
-            internal status of it.
-            </summary>
         </member>
         <member name="M:Bolt.Matchmaking.BoltMatchmaking.CreateSession(System.String,Bolt.IProtocolToken,System.String)">
              <summary>
@@ -1239,7 +1232,7 @@
              <param name="sessionFilter">Session filter parameters</param>
              <param name="token">Join Token</param>
              <example>
-             *Example*:
+             *Example*: 
             
              <code>
              public void Join(string map, int gameType)
@@ -1259,11 +1252,6 @@
              }
              </code>
              </example>
-        </member>
-        <member name="F:BoltInternal.BoltCore._freezeProxyTempList">
-            <summary>
-            Temporary re-used list for holding current proxies that need to be frozen.
-            </summary>
         </member>
         <member name="M:BoltInternal.GlobalEventListenerBase.PersistBetweenStartupAndShutdown">
              <summary>
@@ -2533,6 +2521,27 @@
              </code>
              </example>
         </member>
+        <member name="M:BoltNetwork.Connect(UdpKit.UdpEndPoint,Bolt.IProtocolToken)">
+             <summary>
+             Connect to a server using their listening endpoint
+             </summary>
+             <remarks>BOLT PRO ONLY</remarks>
+             <param name="endpoint">Server end point to connect to</param>
+             <param name="token">Optional Token used when connecting to server, this can be the client credentials</param>
+             <example>
+             *Example:* A method to connect to any server ip and port as a client.
+            
+             <code>
+             void Connect(string host, int port) {
+               UdpEndPoint serverAddr = new UdpEndPoint(UdpIPv4Address.Parse(host), (ushort)port);
+            
+               Credentials cred = new Credentials("DevUser01", "DevPassword");
+            
+               BoltNetwork.Connect(serverAddr, cred);
+             }
+             </code>
+             </example>
+        </member>
         <member name="M:BoltNetwork.Connect(UdpKit.UdpSession,Bolt.IProtocolToken)">
              <summary>
              Connect to a server using a session description
@@ -2616,33 +2625,6 @@
              public void ChangeMap(string map) {
                ServerMessage message = new ServerMessage("Loading Map ...", GameTips.GetNext());
                BoltNetwork.LoadScene(map, message);
-             }
-             </code>
-             </example>
-        </member>
-        <member name="M:BoltNetwork.LoadSceneSync">
-             <summary>
-             Use this method to sync the local scene on the Client with the remote scene from the Server.
-             This method can only be invoked on the Client and it's only useful if you have the Auto Scene Load disabled.
-             </summary>
-             <example>
-             *Example:* Receiving a signal from the server to sync scenes.
-            
-             <code>
-             // On the game server, send an event when the player count reaches 3
-             public override void Connected(BoltConnection connection)
-             {
-               if (BoltNetwork.Connections.Count() == 3)
-               {
-                 LoadSceneEvent.Create().Send();
-               }
-             }
-            
-             // On any GlobalEventListener on the client
-             public override void OnEvent(LoadSceneEvent evnt)
-             {
-               BoltLog.Info("Received load scene");
-               BoltNetwork.LoadSceneSync();
              }
              </code>
              </example>
@@ -3387,21 +3369,6 @@
         <!-- Badly formed XML comment ignored for member "P:BoltConnection.PingAliased" -->
         <!-- Badly formed XML comment ignored for member "P:BoltConnection.BitsPerSecondIn" -->
         <!-- Badly formed XML comment ignored for member "P:BoltConnection.BitsPerSecondOut" -->
-        <member name="P:BoltConnection.PacketsReceived">
-            <summary>
-            How many packets were received by this connection
-            </summary>
-        </member>
-        <member name="P:BoltConnection.PacketsSent">
-            <summary>
-            How many packets were sent to this connection
-            </summary>
-        </member>
-        <member name="P:BoltConnection.PacketsLost">
-            <summary>
-            How many packets were registered as lost packets
-            </summary>
-        </member>
         <member name="P:BoltConnection.ConnectionId">
              <summary>
              For the host this will be the ID of the client, an on the client it will show the ID of the client
@@ -3710,39 +3677,44 @@
              </code>
              </example>
         </member>
+        <member name="F:BoltCore.FreezeProxyTempList">
+            <summary>
+            Temporary re-used list for holding current proxies that need to be frozen.
+            </summary>
+        </member>
         <member name="T:BoltPoll">
-             <summary>
-             Bolt behaviour to poll the network and step entities in the simulation
-             </summary>
-             <example>
-             *Example:* if bolt is missing the ```BoltPoll`` behaviour then the simulation is broken and we should shut down.
+            <summary>
+            Bolt behaviour to poll the network and step entities in the simulation
+            </summary>
+            <example>
+            *Example:* if bolt is missing the ```BoltPoll`` behaviour then the simulation is broken and we should shut down.
             
-             <code>
-             void CheckBoltHealth() {
-               if(BoltNetwork.globalObject.GetComponent&lt;BoltPoll&gt;() == null) {
-                 Debug.Log("BoltPoll is missing!);
-                 GameApplication.Shutdown(ErrorCode.Bolt);
-               }
-             }
-             </code>
-             </example>
+            <code>
+            void CheckBoltHealth() {
+              if(BoltNetwork.globalObject.GetComponent&lt;BoltPoll&gt;() == null) {
+                Debug.Log("BoltPoll is missing!);
+                GameApplication.Shutdown(ErrorCode.Bolt);
+              }
+            }
+            </code>
+            </example>
         </member>
         <member name="T:BoltSend">
-             <summary>
+            <summary>
             
-             </summary>
-             <example>
-             *Example:* if bolt is missing the ```BoltSend`` behaviour then the simulation is broken and we should shut down.
+            </summary>
+            <example>
+            *Example:* if bolt is missing the ```BoltSend`` behaviour then the simulation is broken and we should shut down.
             
-             <code>
-             void CheckBoltHealth() {
-               if(BoltNetwork.globalObject.GetComponent&lt;BoltSend&gt;() == null) {
-                 Debug.Log("BoltSend is missing!);
-                 GameApplication.Shutdown(ErrorCode.Bolt);
-               }
-             }
-             </code>
-             </example>
+            <code>
+            void CheckBoltHealth() {
+              if(BoltNetwork.globalObject.GetComponent&lt;BoltSend&gt;() == null) {
+                Debug.Log("BoltSend is missing!);
+                GameApplication.Shutdown(ErrorCode.Bolt);
+              }
+            }
+            </code>
+            </example>
         </member>
         <member name="T:BoltEntitySettingsModifier">
              <summary>
@@ -4040,12 +4012,11 @@
             </summary>
             <returns>The object used to modify entity settings</returns>
         </member>
-        <member name="M:BoltEntity.SetScopeAll(System.Boolean,System.Boolean)">
+        <member name="M:BoltEntity.SetScopeAll(System.Boolean)">
              <summary>
              Sets the scope of all currently active connections for this entity. Only usable if Scope Mode has been set to Manual.
              </summary>
              <param name="inScope">If this entity should be in scope or not</param>
-             <param name="force">Force the scope value, used in the case you want to remove from the scope an entity the connection has control</param>
              <example>
              *Example:* A method which renders an entity invisible to all active client connections.
             
@@ -4056,13 +4027,12 @@
              </code>
              </example>
         </member>
-        <member name="M:BoltEntity.SetScope(BoltConnection,System.Boolean,System.Boolean)">
+        <member name="M:BoltEntity.SetScope(BoltConnection,System.Boolean)">
              <summary>
              Sets the scope for the connection passed in for this entity. Only usable if Scope Mode has been set to Manual.
              </summary>
              <param name="connection">The connection being scoped</param>
              <param name="inScope">If this entity should be in scope or not</param>
-             <param name="force">Force the scope value, used in the case you want to remove from the scope an entity the connection has control</param>
              <example>
              *Example:* A coroutine that renders a player invisible to enemies for a given time in seconds.
             
@@ -4282,7 +4252,6 @@
              controlling a proxied entity. The data will be sent to the server for authoritative execution
              </summary>
              <param name="data">The input data to queue</param>
-             <param name="force">Used to force the inclusion of this input, by discarding any other values if the Input Queue is full</param>
              <example>
              *Example:* A ```SimulateController()``` loop that queues WASD-style movement input.
             
