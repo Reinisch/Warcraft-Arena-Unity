@@ -15,4 +15,6 @@ MonoBehaviour:
   id: 11
   container: {fileID: 11400000, guid: 8d2f6319ee506234797c9f24cb1cad8b, type: 2}
   classType: 11
-  classSpells: []
+  classSpells:
+  - {fileID: 11400000, guid: 538f0ebabddb24e4b9d040eddae5d6d7, type: 2}
+  - {fileID: 11400000, guid: 3c8635791c95b6b4d95cdb9b8384b4ee, type: 2}
