@@ -377,3 +377,19 @@ MonoBehaviour:
     Value: Druid
   - StringReference: {fileID: 11400000, guid: b67de7a4e6d45a240ae14dc989ddf2bd, type: 2}
     Value: Mage
+  - StringReference: {fileID: 11400000, guid: 59834240e9c03c747b070ec19485746f, type: 2}
+    Value: 'Rake the target for ({0}% of Attack power) Bleed damage and an additional
+      ({1}% of Attack power) Bleed damage every {2} sec over {3} sec.
+
+
+      Reduces the target''s movement speed by {4}%'
+  - StringReference: {fileID: 11400000, guid: b5b6c6d312da3aa45ba023f0652afcb9, type: 2}
+    Value: Rake
+  - StringReference: {fileID: 11400000, guid: 1c617ebd4371a8d4abaf1a4ca4cb6777, type: 2}
+    Value: 'Shred the target, causing ({0}% of Attack power + 50) Physical damage
+      to the target.
+
+
+      Deals 100% increased damage against bleeding targets'
+  - StringReference: {fileID: 11400000, guid: 7273d884f7fb96645ab00620725a2bda, type: 2}
+    Value: Shred
