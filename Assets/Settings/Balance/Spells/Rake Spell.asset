@@ -27,7 +27,7 @@ MonoBehaviour:
   m_Name: Rake Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 20
+  baseValue: 50
   baseVariance: 5
   additionalValue: 0
   calculationType: 1
@@ -78,7 +78,7 @@ MonoBehaviour:
   mechanics: 15
   period: 1500
   startPeriodicOnApply: 0
-  baseValue: 20
+  baseValue: 50
   additionalValue: 0
   schoolMask: 1
   calculationType: 1
