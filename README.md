@@ -1,6 +1,8 @@
 # Warcraft Arena
 World of Warcraft combat system implementation in Unity with Photon Bolt.
 
+Feel free to ask anything about this project in [Discord](https://discord.gg/d62a5zG).
+
 ## Install
 **Setup:**
 
@@ -84,3 +86,8 @@ Central Bottom Action Bar - **No Modifiers**, Central Top Action Bar - **Left Sh
 
 ## Links
 * [Photon Bolt](https://assetstore.unity.com/packages/tools/network/photon-bolt-free-127156) - networking solution used for server-client communication and game state synchronization. 
+
+## License
+All character models, textures and sound are copyrighted by ©2004 Blizzard Entertainment, Inc. All rights reserved. World of Warcraft, Warcraft and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc. in the U.S. and/or other countries.
+
+The project itself is [GPL-3](LICENSE).

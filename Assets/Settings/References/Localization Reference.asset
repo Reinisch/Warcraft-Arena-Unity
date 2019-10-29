@@ -78,6 +78,8 @@ MonoBehaviour:
     LocalizedString: {fileID: 11400000, guid: d94880cd04263e44bb246f84cbdc238f, type: 2}
   - SpellCastResult: 47
     LocalizedString: {fileID: 11400000, guid: a454fe567ad566446b9ac37ff9ce999e, type: 2}
+  - SpellCastResult: 29
+    LocalizedString: {fileID: 11400000, guid: b9a36bce9dd71df46b0a21452d0cde0d, type: 2}
   spellMissTypes:
   - SpellMissType: 7
     LocalizedString: {fileID: 11400000, guid: 8ec300e1d87b2924ea3efba38e1a41f4, type: 2}

@@ -8,6 +8,7 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private TagContainer tagContainer;
         [SerializeField, UsedImplicitly] private Animator animator;
+        [SerializeField, UsedImplicitly] private float strafeSpeed = 1.0f;
 
         public TagContainer TagContainer => tagContainer;
         public Animator Animator => animator;
@@ -27,8 +28,7 @@ namespace Client
             if (Renderer.Unit.IsDead)
             {
                 animator.SetBool("IsDead", true);
-                animator.Play("Death", 0, 1.0f);
-                animator.Play("Death", 1, 1.0f);
+                animator.Play("Death");
             }
         }
 
@@ -77,7 +77,7 @@ namespace Client
                 float strafeTarget = Renderer.Unit.HasMovementFlag(MovementFlags.StrafeLeft) ? 0 :
                     Renderer.Unit.HasMovementFlag(MovementFlags.StrafeRight) ? 1 : 0.5f;
 
-                float strafeDelta = 2 * Mathf.Sign(strafeTarget - currentStrafe) * deltaTime;
+                float strafeDelta = 2 * Mathf.Sign(strafeTarget - currentStrafe) * deltaTime * strafeSpeed;
                 float resultStrafe = Mathf.Clamp(currentStrafe + strafeDelta, 0.0f, 1.0f);
 
                 if (Mathf.Abs(strafeTarget - currentStrafe) > Mathf.Abs(strafeDelta))

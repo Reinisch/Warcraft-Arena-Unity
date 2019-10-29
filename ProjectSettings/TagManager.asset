@@ -16,7 +16,6 @@ TagManager:
   - Sound Container
   - Tooltip Container
   - Input Field
-  - Fire
   layers:
   - Default
   - TransparentFX
