@@ -20,6 +20,8 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private UnitInfoAIContainer unitAIContainer;
         [SerializeField, UsedImplicitly]
+        private CreatureDefinitionContainer creatureContainer;
+        [SerializeField, UsedImplicitly]
         private List<MapDefinition> mapEntries;
         [SerializeField, UsedImplicitly]
         private List<FactionDefinition> factionEntries;
@@ -32,5 +34,23 @@ namespace Core
         public IReadOnlyList<FactionDefinition> FactionEntries => factionEntries;
         public FactionDefinition DefaultFaction => defaultFaction;
         public UnitMovementDefinition UnitMovementDefinition => unitMovementDefinition;
+
+        public void Register()
+        {
+            auraContainer.Register();
+            classContainer.Register();
+            creatureContainer.Register();
+            spellContainer.Register();
+            unitAIContainer.Register();
+        }
+
+        public void Unregister()
+        {
+            unitAIContainer.Unregister();
+            spellContainer.Unregister();
+            creatureContainer.Unregister();
+            classContainer.Unregister();
+            auraContainer.Unregister();
+        }
     }
 }

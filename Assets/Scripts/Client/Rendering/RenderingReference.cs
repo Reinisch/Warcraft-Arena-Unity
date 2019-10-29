@@ -26,7 +26,6 @@ namespace Client
 
         private readonly Dictionary<int, SpellEffectSettings> spellVisualSettingsById = new Dictionary<int, SpellEffectSettings>();
         private readonly Dictionary<int, AuraEffectSettings> auraVisualSettingsById = new Dictionary<int, AuraEffectSettings>();
-        private readonly Dictionary<int, UnitModelSettings> modelSettingsById = new Dictionary<int, UnitModelSettings>();
         private readonly Dictionary<ulong, UnitRenderer> unitRenderersById = new Dictionary<ulong, UnitRenderer>();
         private readonly List<UnitRenderer> unitRenderers = new List<UnitRenderer>();
         private readonly List<IUnitRendererHandler> unitRendererHandlers = new List<IUnitRendererHandler>();
@@ -34,17 +33,15 @@ namespace Client
         public Sprite DefaultSpellIcon => defaultSpellIcon;
         public IReadOnlyDictionary<int, SpellEffectSettings> SpellVisualSettingsById => spellVisualSettingsById;
         public IReadOnlyDictionary<int, AuraEffectSettings> AuraVisualSettingsById => auraVisualSettingsById;
-        public IReadOnlyDictionary<int, UnitModelSettings> ModelSettingsById => modelSettingsById;
+        public IReadOnlyDictionary<int, UnitModelSettings> ModelSettingsById => modelSettingsContainer.ModelSettingsById;
         public IReadOnlySerializedDictionary<ClassType, Sprite> ClassIconsByClassType => classIconsByClassType;
 
         protected override void OnRegistered()
         {
             base.OnRegistered();
 
-            classIconsByClassType.Populate();
-            for (int i = 0; i < modelSettingsContainer.ItemList.Count; i++)
-                modelSettingsById.Add(modelSettingsContainer.ItemList[i].Id, modelSettingsContainer.ItemList[i]);
-
+            classIconsByClassType.Register();
+            modelSettingsContainer.Register();
             auraEffectSettings.ForEach(visual => auraVisualSettingsById.Add(visual.AuraInfo.Id, visual));
             spellEffectSettings.ForEach(visual => spellVisualSettingsById.Add(visual.SpellInfo.Id, visual));
             spellEffectSettings.ForEach(visual => visual.Initialize());
@@ -55,8 +52,8 @@ namespace Client
             spellEffectSettings.ForEach(visual => visual.Deinitialize());
             spellVisualSettingsById.Clear();
             auraVisualSettingsById.Clear();
-            modelSettingsById.Clear();
-            classIconsByClassType.Clear();
+            classIconsByClassType.Unregister();
+            modelSettingsContainer.Unregister();
 
             base.OnUnregister();
         }

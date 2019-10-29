@@ -10,6 +10,16 @@ namespace Common
 
         public IReadOnlyList<TUnique> ItemList => Items;
 
+        public virtual void Register()
+        {
+            Items.ForEach(item => item.Register());
+        }
+
+        public virtual void Unregister()
+        {
+            Items.ForEach(item => item.Unregister());
+        }
+
 #if UNITY_EDITOR
         public List<TUnique> EditorList => Items;
 

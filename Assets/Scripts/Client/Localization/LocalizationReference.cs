@@ -38,7 +38,7 @@ namespace Client
             MissingString = missingStringPlaceholder;
             EmptyString = emptyStringPlaceholder;
 
-            spellTooltipSettings.Populate();
+            spellTooltipSettings.Register();
             keyCodes.ForEach(item => StringsByKeyCode.Add(item.KeyCode, item.String));
             hotkeyModifiers.ForEach(item => StringsByHotkeyModifier.Add(item.Modifier, item.String));
             spellCastResults.ForEach(item => StringsBySpellCastResult.Add(item.SpellCastResult, item.LocalizedString));
@@ -60,7 +60,7 @@ namespace Client
             StringsByHotkeyModifier.Clear();
             StringsBySpellCastResult.Clear();
             StringsByClientConnectFailReason.Clear();
-            spellTooltipSettings.Clear();
+            spellTooltipSettings.Unregister();
 
             MissingString = null;
             EmptyString = null;

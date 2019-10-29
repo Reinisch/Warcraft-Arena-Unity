@@ -16,19 +16,19 @@ namespace Client
 
         public IReadOnlyDictionary<int, UnitSoundKit> SoundKitsById => soundKitsById;
 
-        public void Populate()
+        public override void Register()
         {
-            soundKits.ForEach(kit => kit.Populate());
+            base.Register();
 
             foreach(var soundKit in soundKits)
                 soundKitsById.Add(soundKit.Id, soundKit);
         }
 
-        public void Clear()
+        public override void Unregister()
         {
             soundKitsById.Clear();
 
-            soundKits.ForEach(kit => kit.Clear());
+            base.Unregister();
         }
     }
 }

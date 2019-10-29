@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Core
@@ -35,11 +37,15 @@ namespace Core
             {EmoteType.Yes, false}
         };
 
+        private static readonly HashSet<ClassType> PlayerClasses = new HashSet<ClassType>(Enum.GetValues(typeof(ClassType)).Cast<ClassType>());
+
         public static bool IsOneShot(this EmoteType emoteType) => EmoteStateInfo.TryGetValue(emoteType, out bool isState) && !isState;
 
         public static bool IsState(this EmoteType emoteType) => EmoteStateInfo.TryGetValue(emoteType, out bool isState) && isState;
 
         public static bool IsDefined(this EmoteType emoteType) => EmoteStateInfo.ContainsKey(emoteType);
+
+        public static bool IsDefined(this ClassType classType) => PlayerClasses.Contains(classType);
 
         public static bool ExistsIn(this Unit unit, WorldManager world)
         {

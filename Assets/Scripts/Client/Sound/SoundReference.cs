@@ -29,7 +29,7 @@ namespace Client
 
             soundContainer = GameObject.FindGameObjectWithTag(soundContainerTag).transform;
 
-            unitSoundsByEmoteType.Populate();
+            unitSoundsByEmoteType.Register();
 
             foreach (var soundSetting in soundSettings)
                 sourcesBySettings[soundSetting] = ApplySettings(new GameObject(soundSetting.name).AddComponent<AudioSource>(), soundSetting);
@@ -37,17 +37,17 @@ namespace Client
             foreach (var spellSetting in spellSettings)
                 spellSettingsByInfo[spellSetting.SpellInfo] = spellSetting;
 
-            unitSoundKitContainer.Populate();
+            unitSoundKitContainer.Register();
         }
 
         protected override void OnUnregister()
         {
-            unitSoundKitContainer.Clear();
+            unitSoundKitContainer.Unregister();
 
             foreach (var soundSourceEntry in sourcesBySettings)
                 Destroy(soundSourceEntry.Value);
 
-            unitSoundsByEmoteType.Clear();
+            unitSoundsByEmoteType.Unregister();
             spellSettingsByInfo.Clear();
             sourcesBySettings.Clear();
             soundContainer = null;

@@ -88,6 +88,8 @@ namespace Core
                         unitState.ClassType = (int)value;
                         unit.UnitCreateToken.ClassType = value;
                     }
+
+                    EventHandler.ExecuteEvent(unit, GameEvents.UnitClassChanged);
                 }
             }
 

@@ -12,6 +12,18 @@ namespace Common
         protected abstract TUnique Data { get; }
         protected abstract ScriptableUniqueInfoContainer<TUnique> Container { get; }
 
+        internal void Register() => OnRegister();
+
+        internal void Unregister() => OnUnregister();
+
+        protected virtual void OnRegister()
+        {
+        }
+
+        protected virtual void OnUnregister()
+        {
+        }
+
 #if UNITY_EDITOR
         [UsedImplicitly]
         protected virtual void OnValidate()

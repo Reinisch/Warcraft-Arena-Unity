@@ -23,6 +23,8 @@ namespace Client
 
         private readonly Action<EntityAttributes> onAttributeChangedAction;
         private readonly Action onUnitTargetChanged;
+        private readonly Action onUnitClassChanged;
+
         private UnitFrame targetUnitFrame;
         private BuffDisplayFrame unitBuffDisplayFrame;
         private Unit unit;
@@ -31,6 +33,7 @@ namespace Client
         {
             onAttributeChangedAction = OnAttributeChanged;
             onUnitTargetChanged = OnUnitTargetChanged;
+            onUnitClassChanged = OnUnitClassChanged;
         }
 
         public void SetTargetUnitFrame(UnitFrame unitFrame)
@@ -71,22 +74,24 @@ namespace Client
         {
             this.unit = unit;
             unitName.text = unit.Name;
-            classIcon.sprite = rendering.ClassIconsByClassType.Value(unit.ClassType);
 
             targetUnitFrame?.UpdateUnit(unit.Target);
             unitBuffDisplayFrame?.UpdateUnit(unit);
 
             OnAttributeChanged(EntityAttributes.Health);
             OnAttributeChanged(EntityAttributes.Power);
+            OnUnitClassChanged();
 
             EventHandler.RegisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
             EventHandler.RegisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
+            EventHandler.RegisterEvent(unit, GameEvents.UnitClassChanged, onUnitClassChanged);
         }
 
         private void DeinitializeUnit()
         {
             EventHandler.UnregisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
             EventHandler.UnregisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
+            EventHandler.UnregisterEvent(unit, GameEvents.UnitClassChanged, onUnitClassChanged);
 
             targetUnitFrame?.UpdateUnit(null);
             unitBuffDisplayFrame?.UpdateUnit(null);
@@ -105,6 +110,11 @@ namespace Client
         private void OnUnitTargetChanged()
         {
             targetUnitFrame?.UpdateUnit(unit.Target);
+        }
+
+        private void OnUnitClassChanged()
+        {
+            classIcon.sprite = rendering.ClassIconsByClassType.Value(unit.ClassType);
         }
     }
 }
