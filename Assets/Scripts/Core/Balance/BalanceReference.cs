@@ -29,6 +29,8 @@ namespace Core
 
         protected override void OnRegistered()
         {
+            definition.Register();
+
             maps.AddRange(definition.MapEntries);
 
             for(int i = 0; i < definition.SpellInfos.Count; i++)
@@ -45,9 +47,6 @@ namespace Core
 
             for (int i = 0; i < definition.UnitAIEntries.Count; i++)
                 unitInfoAIById.Add(definition.UnitAIEntries[i].Id, definition.UnitAIEntries[i]);
-
-            for (int i = 0; i < definition.SpellInfos.Count; i++)
-                definition.SpellInfos[i].PopulateEffectInfo();
         }
 
         protected override void OnUnregister()
@@ -58,6 +57,8 @@ namespace Core
             unitInfoAIById.Clear();
             classesByType.Clear();
             maps.Clear();
+
+            definition.Unregister();
         }
     }
 }

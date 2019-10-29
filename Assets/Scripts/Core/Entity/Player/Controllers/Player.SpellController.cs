@@ -38,11 +38,30 @@ namespace Core
                 {
                     SpellInfo classSpell = classInfo.ClassSpells[i];
 
+                    knownSpells.Add(classSpell);
+
                     if (classSpell.IsPassive)
                         player.Spells.TriggerSpell(classSpell, player);
-                    else
-                        knownSpells.Add(classSpell);
                 }
+            }
+
+            public void UpdateClassSpells(ClassInfo updatedClass)
+            {
+                if (appliedClass != null)
+                {
+                    for (int i = 0; i < appliedClass.ClassSpells.Count; i++)
+                    {
+                        SpellInfo appliedSpell = appliedClass.ClassSpells[i];
+
+                        if (updatedClass.HasSpell(appliedSpell))
+                            continue;
+
+                        player.Auras.RemoveAuraWithSpellInfo(appliedSpell, AuraRemoveMode.Cancel);
+                        knownSpells.Remove(appliedSpell);
+                    }
+                }
+
+                AddClassSpells(updatedClass);
             }
         }
     }

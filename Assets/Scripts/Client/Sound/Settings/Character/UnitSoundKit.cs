@@ -15,9 +15,9 @@ namespace Client
 
         public new int Id => base.Id;
 
-        public override void Populate() => soundItems.Populate();
+        protected override void OnRegister() => soundItems.Register();
 
-        public override void Clear() => soundItems.Clear();
+        protected override void OnUnregister() => soundItems.Unregister();
 
         public override SoundEntry FindSound(UnitSounds soundType, bool allowDefault)
         {

@@ -191,6 +191,16 @@ namespace Core
                 BoltEntity.AssignControl(boltConnection, controlToken);
         }
 
+        internal void SwitchClass(ClassType classType)
+        {
+            if (ClassType == classType)
+                return;
+
+            ClassType = classType;
+            CurrentClass = Balance.ClassesByType[classType];
+            PlayerSpells.UpdateClassSpells(CurrentClass);
+        }
+
         private void HandleStateCallbacks(bool add)
         {
             if (add)

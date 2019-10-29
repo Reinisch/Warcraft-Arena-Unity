@@ -19,8 +19,10 @@ namespace Client
         public IReadOnlyDictionary<SpellInfo, SpellTooltipInfo> TooltipInfoBySpell => tooltipInfoBySpell;
         public IReadOnlyDictionary<int, SpellTooltipInfo> TooltipInfoBySpellId => tooltipInfoBySpellId;
 
-        public void Populate()
+        public override void Register()
         {
+            base.Register();
+
             foreach (SpellTooltipInfo tooltipInfo in tooltipInfos)
             {
                 tooltipInfoBySpell.Add(tooltipInfo.SpellInfo, tooltipInfo);
@@ -28,10 +30,12 @@ namespace Client
             }
         }
 
-        public void Clear()
+        public override void Unregister()
         {
             tooltipInfoBySpell.Clear();
             tooltipInfoBySpellId.Clear();
+
+            base.Unregister();
         }
     }
 }

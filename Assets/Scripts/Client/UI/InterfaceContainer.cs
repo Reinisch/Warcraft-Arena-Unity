@@ -12,12 +12,12 @@ namespace Client
 
         public void Register()
         {
-            transformByInterfaceCanvasType.Populate();
+            transformByInterfaceCanvasType.Register();
         }
 
         public void Unregister()
         {
-            transformByInterfaceCanvasType.Clear();
+            transformByInterfaceCanvasType.Unregister();
         }
 
         public RectTransform FindRoot(InterfaceCanvasType canvasType) => transformByInterfaceCanvasType.Value(canvasType);

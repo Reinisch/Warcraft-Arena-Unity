@@ -10,6 +10,25 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private List<UnitModelSettings> modelSettings;
 
+        private readonly Dictionary<int, UnitModelSettings> modelSettingsById = new Dictionary<int, UnitModelSettings>();
+
         protected override List<UnitModelSettings> Items => modelSettings;
+
+        public IReadOnlyDictionary<int, UnitModelSettings> ModelSettingsById => modelSettingsById;
+
+        public override void Register()
+        {
+            base.Register();
+
+            for (int i = 0; i < ItemList.Count; i++)
+                modelSettingsById.Add(ItemList[i].Id, ItemList[i]);
+        }
+
+        public override void Unregister()
+        {
+            modelSettingsById.Clear();
+
+            base.Unregister();
+        }
     }
 }

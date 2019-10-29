@@ -14,7 +14,7 @@ namespace Client
             base.Initialize(controller);
 
             gameObject.SetActive(false);
-            tagsByKeys.Populate();
+            tagsByKeys.Register();
 
             RegisterPanel<BattleHudPanel, BattleHudPanel.RegisterToken>(battleHudPanel);
         }       
@@ -23,7 +23,7 @@ namespace Client
         {
             UnregisterPanel<BattleHudPanel, BattleHudPanel.UnregisterToken>(battleHudPanel);
 
-            tagsByKeys.Clear();
+            tagsByKeys.Unregister();
             gameObject.SetActive(false);
 
             base.Deinitialize(controller);

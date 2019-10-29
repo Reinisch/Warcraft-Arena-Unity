@@ -16,15 +16,15 @@ namespace Common
         public TValue DefaultValue => defaultValue;
         public IReadOnlyDictionary<TKey, TValue> ValuesByKey => valuesByKey;
 
-        public void Populate()
+        public void Register()
         {
-            Clear();
+            Unregister();
 
             foreach (TItem item in items)
                 valuesByKey.Add(item.Key, item.Value);
         }
 
-        public void Clear()
+        public void Unregister()
         {
             valuesByKey.Clear();
         }

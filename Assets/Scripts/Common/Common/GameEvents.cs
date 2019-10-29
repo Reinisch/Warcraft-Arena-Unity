@@ -36,6 +36,7 @@
         UnitAttributeChanged,
         UnitTargetChanged,
         UnitFactionChanged,
+        UnitClassChanged,
         UnitModelChanged,
         UnitScaleChanged,
 

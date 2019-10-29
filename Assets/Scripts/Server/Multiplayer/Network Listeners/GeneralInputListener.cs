@@ -43,5 +43,20 @@ namespace Server
             unitChatMessageEvent.Message = chatRequest.Message;
             unitChatMessageEvent.Send();
         }
+
+        public override void OnEvent(PlayerClassChangeRequestEvent classRequest)
+        {
+            base.OnEvent(classRequest);
+
+            Player player = World.FindPlayer(classRequest.RaisedBy);
+            if (player == null)
+                return;
+
+            var classType = (ClassType)classRequest.ClassType;
+            if (!classType.IsDefined())
+                return;
+
+            player.SwitchClass(classType);
+        }
     }
 }

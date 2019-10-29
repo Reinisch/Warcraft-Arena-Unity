@@ -89,6 +89,13 @@ namespace Client
             emoteRequest.Send();
         }
 
+        public void SwitchClass(ClassType classType)
+        {
+            PlayerClassChangeRequestEvent classRequest = PlayerClassChangeRequestEvent.Create(Bolt.GlobalTargets.OnlyServer);
+            classRequest.ClassType = (int)classType;
+            classRequest.Send();
+        }
+
         public void CastSpell(int spellId)
         {
             if (!Player.ExistsIn(World))

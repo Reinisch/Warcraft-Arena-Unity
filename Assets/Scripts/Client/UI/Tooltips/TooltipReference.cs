@@ -23,16 +23,16 @@ namespace Client
             base.OnRegistered();
 
             container = GameObject.FindGameObjectWithTag(TooltipContainer.ContainerTag).GetComponent<TooltipContainer>();
-            tooltipSizeSettings.Populate();
-            tooltipAlignmentSettings.Populate();
+            tooltipSizeSettings.Register();
+            tooltipAlignmentSettings.Register();
         }
 
         protected override void OnUnregister()
         {
             Hide();
 
-            tooltipSizeSettings.Clear();
-            tooltipAlignmentSettings.Clear();
+            tooltipSizeSettings.Unregister();
+            tooltipAlignmentSettings.Unregister();
 
             base.OnUnregister();
         }

@@ -22,6 +22,8 @@ namespace Client
         {
             base.OnRegistered();
 
+            spellOverlaySettingsContainer.Register();
+
             for (int i = 0; i < spellOverlaySettingsContainer.ItemList.Count; i++)
                 overlaySettingsByAuraId.Add(spellOverlaySettingsContainer.ItemList[i].TriggerAura.Id, spellOverlaySettingsContainer.ItemList[i]);
 
@@ -33,6 +35,7 @@ namespace Client
             reference.RemoveHandler(this);
 
             overlaySettingsByAuraId.Clear();
+            spellOverlaySettingsContainer.Unregister();
 
             Assert.IsTrue(activeAurasById.Count == 0);
             Assert.IsTrue(activeSpellOverlaysByAuraId.Count == 0);

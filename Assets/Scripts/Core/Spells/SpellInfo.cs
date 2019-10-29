@@ -101,6 +101,32 @@ namespace Core
 
         public bool IsTargetingArea => Effects.Exists(effect => effect.IsTargetingArea());
 
+        protected override void OnRegister()
+        {
+            base.OnRegister();
+
+            combinedEffectMechanics = Mechanic.AsFlag();
+            maxTargetingRadius = 0.0f;
+
+            foreach (SpellEffectInfo spellEffectInfo in spellEffectInfos)
+            {
+                if (spellEffectInfo is EffectApplyAura auraApplyEffect)
+                    for (int index = 0; index < auraApplyEffect.AuraInfo.AuraEffects.Count; index++)
+                        combinedEffectMechanics |= auraApplyEffect.AuraInfo.AuraEffects[index].Mechanics.AsFlag();
+
+                if (spellEffectInfo.Targeting is SpellTargetingArea areaTargeting)
+                    maxTargetingRadius = Mathf.Max(areaTargeting.MaxRadius, maxTargetingRadius);
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            combinedEffectMechanics = Mechanic.AsFlag();
+            maxTargetingRadius = 0.0f;
+
+            base.OnUnregister();
+        }
+
         public bool HasEffect(SpellEffectType effectType)
         {
             return Effects.Exists(effect => effect.EffectType == effectType);
@@ -268,22 +294,6 @@ namespace Core
             if (caster != null && spell != null)
                 range = caster.Spells.ApplySpellModifier(spell, SpellModifierType.Range, range);
             return range;
-        }
-
-        internal void PopulateEffectInfo()
-        {
-            combinedEffectMechanics = Mechanic.AsFlag();
-            maxTargetingRadius = 0.0f;
-
-            foreach (SpellEffectInfo spellEffectInfo in spellEffectInfos)
-            {
-                if (spellEffectInfo is EffectApplyAura auraApplyEffect)
-                    for (int index = 0; index < auraApplyEffect.AuraInfo.AuraEffects.Count; index++)
-                        combinedEffectMechanics |= auraApplyEffect.AuraInfo.AuraEffects[index].Mechanics.AsFlag();
-
-                if (spellEffectInfo.Targeting is SpellTargetingArea areaTargeting)
-                    maxTargetingRadius = Mathf.Max(areaTargeting.MaxRadius, maxTargetingRadius);
-            }
         }
 
 #if UNITY_EDITOR
