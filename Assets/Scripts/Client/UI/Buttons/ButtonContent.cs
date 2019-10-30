@@ -37,10 +37,8 @@ namespace Client
 
         public bool IsAlreadyPressed => isPointerDown || isHotkeyDown;
 
-        public void Initialize(ButtonSlot buttonSlot, ActionButtonData newData)
+        public void Initialize(ButtonSlot buttonSlot)
         {
-            data.Modify(newData);
-
             manualPointerData = new PointerEventData(EventSystem.current);
             ButtonSlot = buttonSlot;
 
@@ -67,6 +65,13 @@ namespace Client
                     throw new ArgumentOutOfRangeException(nameof(data.ActionType),
                         $"Unknown button content: {data.ActionType} with id: {data.ActionId}");
             }
+        }
+
+        public void UpdateContent(ActionButtonData newData)
+        {
+            data.Modify(newData);
+
+            UpdateContent();
         }
 
         public void Activate()
@@ -155,6 +160,9 @@ namespace Client
                     ContentImage.sprite = rendering.SpellVisualSettingsById.ContainsKey(data.ActionId)
                         ? rendering.SpellVisualSettingsById[data.ActionId].SpellIcon
                         : rendering.DefaultSpellIcon;
+
+                    ContentImage.enabled = true;
+                    enabled = true;
                     break;
                 case ButtonContentType.Spell:
                 case ButtonContentType.Empty:

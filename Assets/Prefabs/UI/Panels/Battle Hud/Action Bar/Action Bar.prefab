@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45607871b0ca1aa41a0a4129c0aa6e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  container: {fileID: 11400000, guid: 0740221d02239e4468ce62091e1b3172, type: 2}
   buttonSlots:
   - {fileID: 516465527716174862}
   - {fileID: 3990447086245081226}
@@ -141,6 +142,7 @@ MonoBehaviour:
   - {fileID: 1680393869848147020}
   - {fileID: 8708955933230397613}
   - {fileID: 4605711803602422853}
+  actionBarSettings: {fileID: 0}
 --- !u!1001 &2563684300137056081
 PrefabInstance:
   m_ObjectHideFlags: 0

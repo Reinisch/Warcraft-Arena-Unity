@@ -92,16 +92,28 @@ namespace Client
         {
             localPlayer = player;
 
+            OnPlayerClassChanged();
+
             playerUnitFrame.UpdateUnit(localPlayer);
             playerCastFrame.UpdateCaster(localPlayer);
+
+            EventHandler.RegisterEvent(localPlayer, GameEvents.UnitClassChanged, OnPlayerClassChanged);
         }
 
         private void OnPlayerControlLost(Player player)
         {
+            EventHandler.UnregisterEvent(localPlayer, GameEvents.UnitClassChanged, OnPlayerClassChanged);
+
             playerUnitFrame.UpdateUnit(null);
             playerCastFrame.UpdateCaster(null);
 
             localPlayer = null;
+        }
+
+        private void OnPlayerClassChanged()
+        {
+            foreach (var actionBar in actionBars)
+                actionBar.ModifyContent(localPlayer.ClassType);
         }
     }
 }
