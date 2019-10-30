@@ -15,32 +15,33 @@ MonoBehaviour:
   id: 8
   container: {fileID: 11400000, guid: 0740221d02239e4468ce62091e1b3172, type: 2}
   actionBarSlot: 1
+  classType: 11
   buttons:
-  - actionId: 18
+  - actionId: 37
     actionType: 0
-  - actionId: 5
+  - actionId: 38
     actionType: 0
-  - actionId: 19
+  - actionId: 37
     actionType: 0
-  - actionId: 29
+  - actionId: 38
     actionType: 0
-  - actionId: 4
+  - actionId: 37
     actionType: 0
-  - actionId: 7
+  - actionId: 37
     actionType: 0
-  - actionId: 9
+  - actionId: 37
     actionType: 0
-  - actionId: 11
+  - actionId: 37
     actionType: 0
-  - actionId: 16
+  - actionId: 38
     actionType: 0
-  - actionId: 17
+  - actionId: 38
     actionType: 0
-  - actionId: 15
+  - actionId: 38
     actionType: 0
-  - actionId: 14
+  - actionId: 38
     actionType: 0
-  - actionId: 6
+  - actionId: 38
     actionType: 0
-  - actionId: 3
+  - actionId: 38
     actionType: 0

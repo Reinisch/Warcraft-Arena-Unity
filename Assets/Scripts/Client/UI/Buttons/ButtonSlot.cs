@@ -18,9 +18,9 @@ namespace Client
         public RectTransform RectTransform => rectTransform;
         public ButtonContent ButtonContent => buttonContent;
 
-        public void Initialize(ActionButtonData buttonData)
+        public void Initialize()
         {
-            buttonContent.Initialize(this, buttonData);
+            buttonContent.Initialize(this);
 
             EventHandler.RegisterEvent<HotkeyState>(hotkeyInput, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
             EventHandler.RegisterEvent(hotkeyInput, GameEvents.HotkeyBindingChanged, OnHotkeyBindingChanged);

@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 9
   container: {fileID: 11400000, guid: 0740221d02239e4468ce62091e1b3172, type: 2}
   actionBarSlot: 2
+  classType: 8
   buttons:
   - actionId: 10
     actionType: 0

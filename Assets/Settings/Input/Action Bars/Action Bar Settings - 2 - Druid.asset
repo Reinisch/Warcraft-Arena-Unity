@@ -14,33 +14,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 10
   container: {fileID: 11400000, guid: 0740221d02239e4468ce62091e1b3172, type: 2}
+  saveChanges: 0
   actionBarSlot: 2
+  classType: 11
   buttons:
-  - actionId: 10
+  - actionId: 36
     actionType: 0
-  - actionId: 23
+  - actionId: 36
     actionType: 0
-  - actionId: 25
+  - actionId: 36
     actionType: 0
-  - actionId: 21
+  - actionId: 36
     actionType: 0
-  - actionId: 24
+  - actionId: 36
     actionType: 0
-  - actionId: 22
+  - actionId: 36
     actionType: 0
-  - actionId: 8
+  - actionId: 36
     actionType: 0
-  - actionId: 20
+  - actionId: 36
     actionType: 0
-  - actionId: 13
+  - actionId: 36
     actionType: 0
-  - actionId: 1
+  - actionId: 36
     actionType: 0
-  - actionId: 26
+  - actionId: 36
     actionType: 0
-  - actionId: 27
+  - actionId: 36
     actionType: 0
-  - actionId: 28
+  - actionId: 36
     actionType: 0
-  - actionId: 2
+  - actionId: 36
     actionType: 0
