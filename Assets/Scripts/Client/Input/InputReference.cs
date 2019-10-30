@@ -13,6 +13,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private TargetingSpellReference spellTargeting;
         [SerializeField, UsedImplicitly] private UnitControllerInputMouseKeyboard unitMouseKeyboardInput;
+        [SerializeField, UsedImplicitly] private ActionBarSettingsContainer actionBarSettingsContainer;
         [SerializeField, UsedImplicitly] private List<HotkeyInputItem> hotkeys;
         [SerializeField, UsedImplicitly] private List<InputActionGlobal> globalActions;
         [SerializeField, UsedImplicitly] private List<Condition> inputDisabledWhen;
@@ -23,6 +24,7 @@ namespace Client
         {
             base.OnRegistered();
 
+            actionBarSettingsContainer.Register();
             globalActions.ForEach(globalAction => globalAction.Register());
             hotkeys.ForEach(hotkey => hotkey.Register());
         }
@@ -31,6 +33,7 @@ namespace Client
         {
             hotkeys.ForEach(hotkey => hotkey.Unregister());
             globalActions.ForEach(globalAction => globalAction.Unregister());
+            actionBarSettingsContainer.Unregister();
 
             base.OnUnregister();
         }

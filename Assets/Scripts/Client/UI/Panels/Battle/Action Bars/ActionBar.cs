@@ -7,10 +7,12 @@ namespace Client
     public class ActionBar : MonoBehaviour
     {
         [SerializeField, UsedImplicitly] List<ButtonSlot> buttonSlots;
+        [SerializeField, UsedImplicitly] ActionBarSettings actionBarSettings;
 
         public void Initialize()
         {
-            buttonSlots.ForEach(buttonSlot => buttonSlot.Initialize());
+            for (int i = 0; i < buttonSlots.Count; i++)
+                buttonSlots[i].Initialize(actionBarSettings.ActiveButtonPresets[i]);
         }
 
         public void Denitialize()

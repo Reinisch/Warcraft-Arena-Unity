@@ -17,6 +17,8 @@ MonoBehaviour:
   spellTargeting: {fileID: 11400000, guid: 1d2c1b73490f6af4594f17bc5017efc1, type: 2}
   unitMouseKeyboardInput: {fileID: 11400000, guid: d49355466cded9942a9c1724d6eef16e,
     type: 2}
+  actionBarSettingsContainer: {fileID: 11400000, guid: 0740221d02239e4468ce62091e1b3172,
+    type: 2}
   hotkeys:
   - {fileID: 11400000, guid: da0ca30d1e177d14a9351ca45d955d10, type: 2}
   - {fileID: 11400000, guid: 5daa89dba5d9a134cbfa43b46ea81249, type: 2}

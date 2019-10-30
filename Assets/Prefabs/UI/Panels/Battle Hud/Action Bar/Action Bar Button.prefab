@@ -573,8 +573,7 @@ MonoBehaviour:
   cooldownImage: {fileID: 2137625310040402075}
   cooldownText: {fileID: 416116090977879064}
   button: {fileID: 5555631069964095814}
-  contentType: 0
-  itemId: 1
+  tooltipAlignment: 2
 --- !u!1 &8569464949337771209
 GameObject:
   m_ObjectHideFlags: 0

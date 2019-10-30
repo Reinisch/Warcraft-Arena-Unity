@@ -7,6 +7,9 @@ namespace Client
     {
         private static readonly KeyCode[] HotkeyModifiers = {KeyCode.LeftAlt, KeyCode.LeftControl, KeyCode.LeftShift};
 
+        public const int ActionBarSlotCount = 14;
+        public const int ActionBarCount = 6;
+
         public static KeyCode ToKeyCode(this HotkeyModifier hotkeyModifier)
         {
             switch (hotkeyModifier)

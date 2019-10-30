@@ -19,14 +19,13 @@ namespace Client
         [SerializeField, UsedImplicitly] private Image cooldownImage;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI cooldownText;
         [SerializeField, UsedImplicitly] private Button button;
-        [SerializeField, UsedImplicitly] private ButtonContentType contentType;
         [SerializeField, UsedImplicitly] private TooltipAlignment tooltipAlignment = TooltipAlignment.FromTop;
-        [SerializeField, UsedImplicitly] private int itemId;
 
         public ButtonSlot ButtonSlot { get; private set; }
-        public ButtonContentType ContentType => contentType;
+        public ButtonContentType ContentType => data.ActionType;
         public Image ContentImage => contentImage;
 
+        private readonly ActionButtonData data = new ActionButtonData(0, ButtonContentType.Empty);
         private PointerEventData manualPointerData;
         private SpellInfo spellInfo;
 
@@ -38,8 +37,10 @@ namespace Client
 
         public bool IsAlreadyPressed => isPointerDown || isHotkeyDown;
 
-        public void Initialize(ButtonSlot buttonSlot)
+        public void Initialize(ButtonSlot buttonSlot, ActionButtonData newData)
         {
+            data.Modify(newData);
+
             manualPointerData = new PointerEventData(EventSystem.current);
             ButtonSlot = buttonSlot;
 
@@ -55,7 +56,7 @@ namespace Client
 
         public void DoUpdate()
         {
-            switch (contentType)
+            switch (data.ActionType)
             {
                 case ButtonContentType.Spell:
                     UpdateSpell();
@@ -63,7 +64,8 @@ namespace Client
                 case ButtonContentType.Empty:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(contentType), $"Unknown button content: {contentType} with id: {itemId}");
+                    throw new ArgumentOutOfRangeException(nameof(data.ActionType),
+                        $"Unknown button content: {data.ActionType} with id: {data.ActionId}");
             }
         }
 
@@ -72,22 +74,22 @@ namespace Client
             if (!enabled)
                 return;
 
-            switch (contentType)
+            switch (data.ActionType)
             {
-                case ButtonContentType.Spell when balance.SpellInfosById.ContainsKey(itemId):
-                    input.CastSpell(itemId);
+                case ButtonContentType.Spell when balance.SpellInfosById.ContainsKey(data.ActionId):
+                    input.CastSpell(data.ActionId);
                     break;
                 case ButtonContentType.Empty:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(contentType), $"Unknown button content type: {contentType}");
+                    throw new ArgumentOutOfRangeException(nameof(data.ActionType),
+                        $"Unknown button content type: {data.ActionType}");
             }
         }
 
         public void Remove()
         {
-            contentType = ButtonContentType.Empty;
-            itemId = 0;
+            data.Reset();
 
             spellInfo = null;
             ContentImage.sprite = null;
@@ -146,12 +148,12 @@ namespace Client
 
         private void UpdateContent()
         {
-            switch (contentType)
+            switch (data.ActionType)
             {
-                case ButtonContentType.Spell when balance.SpellInfosById.ContainsKey(itemId):
-                    spellInfo = balance.SpellInfosById[itemId];
-                    ContentImage.sprite = rendering.SpellVisualSettingsById.ContainsKey(itemId)
-                        ? rendering.SpellVisualSettingsById[itemId].SpellIcon
+                case ButtonContentType.Spell when balance.SpellInfosById.ContainsKey(data.ActionId):
+                    spellInfo = balance.SpellInfosById[data.ActionId];
+                    ContentImage.sprite = rendering.SpellVisualSettingsById.ContainsKey(data.ActionId)
+                        ? rendering.SpellVisualSettingsById[data.ActionId].SpellIcon
                         : rendering.DefaultSpellIcon;
                     break;
                 case ButtonContentType.Spell:
@@ -159,7 +161,7 @@ namespace Client
                     Remove();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(contentType), $"Unknown button content: {contentType} with id: {itemId}");
+                    throw new ArgumentOutOfRangeException(nameof(data.ActionType), $"Unknown button content: {data.ActionType} with id: {data.ActionId}");
             }
         }
 
