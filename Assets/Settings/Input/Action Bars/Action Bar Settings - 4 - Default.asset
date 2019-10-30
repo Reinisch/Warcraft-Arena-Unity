@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48864edf2d3c4044390487626fa94db8, type: 3}
+  m_Name: Action Bar Settings - 4 - Default
+  m_EditorClassIdentifier: 
+  id: 4
+  container: {fileID: 11400000, guid: 0740221d02239e4468ce62091e1b3172, type: 2}
+  actionBarSlot: 4
+  buttons:
+  - actionId: 36
+    actionType: 0
+  - actionId: 23
+    actionType: 0
+  - actionId: 25
+    actionType: 0
+  - actionId: 21
+    actionType: 0
+  - actionId: 24
+    actionType: 0
+  - actionId: 22
+    actionType: 0
+  - actionId: 8
+    actionType: 0
+  - actionId: 20
+    actionType: 0
+  - actionId: 13
+    actionType: 0
+  - actionId: 1
+    actionType: 0
+  - actionId: 26
+    actionType: 0
+  - actionId: 27
+    actionType: 0
+  - actionId: 28
+    actionType: 0
+  - actionId: 2
+    actionType: 0

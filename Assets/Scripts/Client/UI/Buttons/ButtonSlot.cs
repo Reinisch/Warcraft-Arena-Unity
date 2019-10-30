@@ -16,10 +16,11 @@ namespace Client
         [SerializeField, UsedImplicitly] private TextMeshProUGUI hotkeyText;
 
         public RectTransform RectTransform => rectTransform;
+        public ButtonContent ButtonContent => buttonContent;
 
-        public void Initialize()
+        public void Initialize(ActionButtonData buttonData)
         {
-            buttonContent.Initialize(this);
+            buttonContent.Initialize(this, buttonData);
 
             EventHandler.RegisterEvent<HotkeyState>(hotkeyInput, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
             EventHandler.RegisterEvent(hotkeyInput, GameEvents.HotkeyBindingChanged, OnHotkeyBindingChanged);

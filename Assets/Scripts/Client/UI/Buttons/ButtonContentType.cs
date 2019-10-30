@@ -2,6 +2,7 @@
 {
     public enum ButtonContentType
     {
-        Spell, Empty
+        Spell,
+        Empty
     }
 }
