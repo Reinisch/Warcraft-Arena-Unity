@@ -30,6 +30,7 @@ namespace Core
             internal EntityAttributeInt MaxHealth { get; private set; }
             internal EntityAttributeInt Mana { get; private set; }
             internal EntityAttributeInt MaxMana { get; private set; }
+            internal EntityAttributeInt ComboPoints { get; private set; }
             internal EntityAttributeInt Level { get; private set; }
             internal EntityAttributeInt SpellPower { get; private set; }
             internal EntityAttributeInt Intellect { get; private set; }
@@ -191,6 +192,7 @@ namespace Core
                     unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
                     unit.AddCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
                     unit.AddCallback(nameof(IUnitState.Health), OnHealthStateChanged);
+                    unit.AddCallback(nameof(IUnitState.ComboPoints), OnComboPointsChanged);
                     unit.AddCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
                     unit.AddCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
@@ -209,6 +211,7 @@ namespace Core
                         MaxHealth.Reset();
                         Mana.Reset();
                         MaxMana.Reset();
+                        ComboPoints.Reset();
                         Level.Reset();
                         SpellPower.Reset();
                         Intellect.Reset();
@@ -224,6 +227,7 @@ namespace Core
                         MaxHealth = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
                         Mana = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMana, int.MaxValue, EntityAttributes.Power);
                         MaxMana = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMaxMana, int.MaxValue, EntityAttributes.MaxPower);
+                        ComboPoints = new EntityAttributeInt(unit, 0, 5, EntityAttributes.ComboPoints);
                         Level = new EntityAttributeInt(unit, 1, int.MaxValue, EntityAttributes.Level);
                         SpellPower = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
                         Intellect = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseIntellect, int.MaxValue, EntityAttributes.Intellect);
@@ -247,6 +251,7 @@ namespace Core
                     unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
                     unit.RemoveCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
                     unit.RemoveCallback(nameof(IUnitState.Health), OnHealthStateChanged);
+                    unit.RemoveCallback(nameof(IUnitState.ComboPoints), OnComboPointsChanged);
                     unit.RemoveCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
                     unit.RemoveCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
@@ -393,6 +398,11 @@ namespace Core
             private void OnHealthStateChanged()
             {
                 SetHealth(unitState.Health);
+            }
+
+            private void OnComboPointsChanged()
+            {
+                ComboPoints.Set(unitState.ComboPoints);
             }
 
             private void OnTargetIdChanged()

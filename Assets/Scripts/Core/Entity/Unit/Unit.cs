@@ -113,6 +113,7 @@ namespace Core
         public int MaxHealth => Attributes.MaxHealth.Value;
         public int Mana => Attributes.Mana.Value;
         public int MaxMana => Attributes.MaxMana.Value;
+        public int ComboPoints => Attributes.ComboPoints.Value;
         public int SpellPower => Attributes.SpellPower.Value;
         public int EmoteFrame => entityState.EmoteFrame;
         public int VisibleAuraMaxCount => entityState.VisibleAuras.Length;

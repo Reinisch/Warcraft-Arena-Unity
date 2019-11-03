@@ -140,5 +140,20 @@ MonoBehaviour:
   spellEffectInfos:
   - {fileID: -3586057116648908537}
   - {fileID: -6352641573744401301}
+  - {fileID: 8478839678636983533}
   spellPowerEntries: []
   targetingConditions: []
+--- !u!114 &8478839678636983533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3975b6f01ba5d543b4243e2dba4a53c, type: 3}
+  m_Name: Rake Effect Add Combo Points
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
+  comboPoints: 1

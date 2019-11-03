@@ -11,7 +11,7 @@ namespace Core
         internal AuraInfo AuraInfo => auraInfo;
 
         public override float Value => 1.0f;
-        public override SpellEffectType EffectType => SpellEffectType.Resurrect;
+        public override SpellEffectType EffectType => SpellEffectType.ApplyAura;
 
         internal override void Handle(Spell spell, int effectIndex, Unit target, SpellEffectHandleMode mode)
         {
