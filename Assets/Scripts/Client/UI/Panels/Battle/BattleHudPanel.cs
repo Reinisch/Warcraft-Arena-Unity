@@ -25,6 +25,7 @@ namespace Client
             }
         }
 
+        [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private UnitFrame playerUnitFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetUnitFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetTargetUnitFrame;
@@ -40,6 +41,7 @@ namespace Client
         {
             base.PanelInitialized();
 
+            canvasGroup.alpha = 0.0f;
             actionBars.ForEach(actionBar => actionBar.Initialize());
             actionErrorDisplay.Initialize();
 
@@ -91,6 +93,7 @@ namespace Client
         private void OnPlayerControlGained(Player player)
         {
             localPlayer = player;
+            canvasGroup.alpha = 1.0f;
 
             OnPlayerClassChanged();
 
@@ -107,6 +110,7 @@ namespace Client
             playerUnitFrame.UpdateUnit(null);
             playerCastFrame.UpdateCaster(null);
 
+            canvasGroup.alpha = 0.0f;
             localPlayer = null;
         }
 
