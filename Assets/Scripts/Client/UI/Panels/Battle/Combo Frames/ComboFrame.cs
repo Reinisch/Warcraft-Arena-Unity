@@ -53,7 +53,7 @@ namespace Client
         {
             if (attributeType == EntityAttributes.ComboPoints)
                 for (int i = 0; i < comboPointSlots.Count; i++)
-                    comboPointSlots[i].ModifyState(false);
+                    comboPointSlots[i].ModifyState(i < unit.ComboPoints);
         }
     }
 }
