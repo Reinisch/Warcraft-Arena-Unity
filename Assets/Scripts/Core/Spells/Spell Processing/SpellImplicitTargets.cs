@@ -7,7 +7,7 @@ namespace Core
     internal class SpellImplicitTargets
     {
         private readonly Spell spell;
-        private readonly HashSet<Unit> targetSet = new HashSet<Unit>();
+        private readonly Dictionary<Unit, SpellTargetEntry> targetEntryByTarget = new Dictionary<Unit, SpellTargetEntry>();
 
         internal List<SpellTargetEntry> Entries { get; } = new List<SpellTargetEntry>();
 
@@ -19,30 +19,34 @@ namespace Core
         internal void Dispose()
         {
             Entries.Clear();
-            targetSet.Clear();
+            targetEntryByTarget.Clear();
         }
 
-        internal void AddTargetIfNotExists(Unit target)
+        internal void AddTargetIfNotExists(Unit target, int effectMask)
         {
-            if (!targetSet.Contains(target))
+            if (!targetEntryByTarget.TryGetValue(target, out SpellTargetEntry targetEntry))
             {
-                targetSet.Add(target);
-
-                Entries.Add(new SpellTargetEntry
+                var newEntry = new SpellTargetEntry
                 {
                     Target = target,
                     Processed = false,
                     Alive = target.IsAlive,
                     Crit = false,
-                });
+                    EffectMask = effectMask
+                };
+
+                targetEntryByTarget.Add(target, newEntry);
+                Entries.Add(newEntry);
             }
+            else
+                targetEntry.EffectMask |= effectMask;
         }
 
         internal void RemoveTargetIfExists(Unit target)
         {
-            if (targetSet.Contains(target))
+            if (targetEntryByTarget.ContainsKey(target))
             {
-                targetSet.Remove(target);
+                targetEntryByTarget.Remove(target);
                 for (int i = Entries.Count - 1; i >= 0; i--)
                     if (Entries[i].Target == target)
                         Entries.RemoveAt(i);
@@ -89,7 +93,7 @@ namespace Core
 
         internal bool Contains(Unit target)
         {
-            return targetSet.Contains(target);
+            return targetEntryByTarget.ContainsKey(target);
         }
 
         internal int TargetCountForEffect(int effectIndex)
