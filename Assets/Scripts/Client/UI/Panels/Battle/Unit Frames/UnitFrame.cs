@@ -17,6 +17,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private Image classIcon;
         [SerializeField, UsedImplicitly] private AttributeBar health;
         [SerializeField, UsedImplicitly] private AttributeBar mainResource;
+        [SerializeField, UsedImplicitly] private ComboFrame comboFrame;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI unitName;
         [SerializeField, UsedImplicitly] private SoundEntry setSound;
         [SerializeField, UsedImplicitly] private SoundEntry lostSound;
@@ -75,6 +76,7 @@ namespace Client
             this.unit = unit;
             unitName.text = unit.Name;
 
+            comboFrame?.UpdateUnit(unit);
             targetUnitFrame?.UpdateUnit(unit.Target);
             unitBuffDisplayFrame?.UpdateUnit(unit);
 
@@ -93,6 +95,7 @@ namespace Client
             EventHandler.UnregisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
             EventHandler.UnregisterEvent(unit, GameEvents.UnitClassChanged, onUnitClassChanged);
 
+            comboFrame?.UpdateUnit(null);
             targetUnitFrame?.UpdateUnit(null);
             unitBuffDisplayFrame?.UpdateUnit(null);
 
