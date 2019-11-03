@@ -405,6 +405,11 @@ namespace Core
             Attributes.SetHealth(Health + delta);
         }
 
+        internal void ModifyComboPoints(int delta)
+        {
+            Attributes.SetComboPoints(ComboPoints + delta);
+        }
+
         internal void DealDamage(Unit target, int damageAmount, SpellDamageType spellDamageType)
         {
             if (damageAmount < 1)

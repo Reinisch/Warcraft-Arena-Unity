@@ -195,6 +195,7 @@ namespace Core
                     unit.AddCallback(nameof(IUnitState.ComboPoints), OnComboPointsChanged);
                     unit.AddCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
                     unit.AddCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
+                    unit.AddCallback(nameof(IUnitState.ClassType), OnClassTypeChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
@@ -254,6 +255,7 @@ namespace Core
                     unit.RemoveCallback(nameof(IUnitState.ComboPoints), OnComboPointsChanged);
                     unit.RemoveCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
                     unit.RemoveCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
+                    unit.RemoveCallback(nameof(IUnitState.ClassType), OnClassTypeChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
@@ -376,11 +378,16 @@ namespace Core
                 return Mathf.Max(0, (int)value);
             }
 
-            internal int SetHealth(int value)
+            internal void SetHealth(int value)
             {
-                int delta = Health.Set(Mathf.Clamp(value, 0, MaxHealth.Value));
+                Health.Set(Mathf.Clamp(value, 0, MaxHealth.Value));
                 unitState.Health = Health.Value;
-                return delta;
+            }
+
+            internal void SetComboPoints(int points)
+            {
+                ComboPoints.Set(points);
+                unitState.ComboPoints = ComboPoints.Value;
             }
 
             internal float Speed(UnitMoveType type) => SpeedRates[type] * unit.Balance.UnitMovementDefinition.BaseSpeedByType(type);
@@ -403,6 +410,11 @@ namespace Core
             private void OnComboPointsChanged()
             {
                 ComboPoints.Set(unitState.ComboPoints);
+            }
+
+            private void OnClassTypeChanged()
+            {
+                ClassType = (ClassType) unitState.ClassType;
             }
 
             private void OnTargetIdChanged()

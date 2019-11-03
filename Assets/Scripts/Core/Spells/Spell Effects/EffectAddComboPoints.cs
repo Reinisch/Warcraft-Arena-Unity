@@ -27,7 +27,7 @@ namespace Core
             if (mode != SpellEffectHandleMode.HitFinal)
                 return;
 
-            target.Attributes.ComboPoints.Modify(effect.ComboPoints);
+            target.ModifyComboPoints(effect.ComboPoints);
         }
     }
 }
