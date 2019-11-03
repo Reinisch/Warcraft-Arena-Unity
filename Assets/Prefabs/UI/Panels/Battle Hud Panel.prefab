@@ -321,6 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelCanvasGroup: {fileID: 2954607046536038257}
+  canvasGroup: {fileID: 2954607046536038257}
   playerUnitFrame: {fileID: 7535603964708335376}
   playerTargetUnitFrame: {fileID: 4310302379031956584}
   playerTargetTargetUnitFrame: {fileID: 1597368176080239887}
