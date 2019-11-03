@@ -51,7 +51,7 @@ namespace Core
             return true;
         }
 
-        internal sealed override void SelectTargets(Spell spell)
+        internal sealed override void SelectTargets(Spell spell, int effectMask)
         {
             Vector3 center = SelectSource(spell.ExplicitTargets, spell.Caster);
             float radius = CalculateRadius(spell);
@@ -61,7 +61,7 @@ namespace Core
 
             foreach (var target in targets)
                 if(IsValidTargetForSpell(target, spell))
-                    spell.ImplicitTargets.AddTargetIfNotExists(target);
+                    spell.ImplicitTargets.AddTargetIfNotExists(target, effectMask);
         }
     }
 }

@@ -504,13 +504,14 @@ namespace Core
             return SpellCastResult.Success;
         }
         
-        private SpellMissType ProcessSpellHit(Unit target)
+        private SpellMissType ProcessSpellHit(SpellTargetEntry targetEntry)
         {
-            if (target.IsImmuneToSpell(SpellInfo, Caster))
+            if (targetEntry.Target.IsImmuneToSpell(SpellInfo, Caster))
                 return SpellMissType.Immune;
 
             for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
-                SpellInfo.Effects[effectIndex].Handle(this, effectIndex, target, SpellEffectHandleMode.HitStart);
+                if (targetEntry.EffectMask.HasBit(effectIndex))
+                    SpellInfo.Effects[effectIndex].Handle(this, effectIndex, targetEntry.Target, SpellEffectHandleMode.HitStart);
 
             return SpellMissType.None;
         }
@@ -537,7 +538,7 @@ namespace Core
             if (missType == SpellMissType.Reflect && targetEntry.ReflectResult == SpellMissType.None)
                 hitTarget = Caster;
 
-            missType = ProcessSpellHit(hitTarget);
+            missType = ProcessSpellHit(targetEntry);
 
             if (missType != SpellMissType.None)
                 EffectDamage = 0;
@@ -545,17 +546,14 @@ namespace Core
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missType);
 
             if (EffectHealing > 0)
-            {
                 caster.Spells.HealBySpell(new SpellHealInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectHealing, targetEntry.Crit));
-            }
             else if (EffectDamage > 0)
-            {
                 caster.Spells.DamageBySpell(new SpellDamageInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectDamage, targetEntry.Crit, SpellDamageType.Direct), this);
-            }
 
             if (missType == SpellMissType.None)
                 for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
-                    SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitFinal);
+                    if (targetEntry.EffectMask.HasBit(effectIndex))
+                        SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitFinal);
         }
 
         private void Launch()
@@ -655,7 +653,7 @@ namespace Core
                         effectMask |= 1 << otherEffectIndex;
 
                 processedAreaEffectsMask |= effectMask;
-                effect.Targeting.SelectTargets(this);
+                effect.Targeting.SelectTargets(this, effectMask);
             }
 
             void SelectRedirectedTargets()
