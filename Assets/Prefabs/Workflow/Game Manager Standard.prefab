@@ -219,6 +219,7 @@ MonoBehaviour:
   targetHeightDampening: 0.75
   rotationDampening: 3
   zoomDampening: 5
+  targetSmoothTime: 0.05
   collisionLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -658,6 +659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
+  photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
 --- !u!114 &1610299905399672731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -682,6 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 501209b94e3ba2a40bc0b3e01335731f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
 --- !u!114 &4778862332019066103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1853,7 +1856,7 @@ PrefabInstance:
     - target: {fileID: 451688201702091553, guid: bda21b2f10fb6b246b6f0a7d75ca51a0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -10.88
+      value: -10.880001
       objectReference: {fileID: 0}
     - target: {fileID: 451688201702091553, guid: bda21b2f10fb6b246b6f0a7d75ca51a0,
         type: 3}
@@ -1963,7 +1966,7 @@ PrefabInstance:
     - target: {fileID: 865578724117461700, guid: bda21b2f10fb6b246b6f0a7d75ca51a0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 59.27
+      value: 59.270004
       objectReference: {fileID: 0}
     - target: {fileID: 865578724117461700, guid: bda21b2f10fb6b246b6f0a7d75ca51a0,
         type: 3}

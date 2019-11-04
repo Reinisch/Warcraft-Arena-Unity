@@ -1,5 +1,6 @@
 ﻿using Bolt;
 using Bolt.Utils;
+using Common;
 using Core;
 using JetBrains.Annotations;
 using UdpKit;
@@ -11,6 +12,7 @@ namespace Server
     public partial class PhotonBoltServerListener : PhotonBoltBaseListener
     {
         [SerializeField, UsedImplicitly] private BalanceReference balance;
+        [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
 
         private new WorldServerManager World { get; set; }
         private ServerLaunchState LaunchState { get; set; }
@@ -21,18 +23,32 @@ namespace Server
             base.Initialize(worldManager);
 
             World = (WorldServerManager)worldManager;
-            World.MapManager.EventMapInitialized += OnMapInitialized;
+
+            EventHandler.RegisterEvent<ServerRoomToken>(photon, GameEvents.ServerMapLoaded, OnMapLoaded);
         }
 
         public override void Deinitialize()
         {
-            World.MapManager.EventMapInitialized -= OnMapInitialized;
+            EventHandler.UnregisterEvent<ServerRoomToken>(photon, GameEvents.ServerMapLoaded, OnMapLoaded);
+
             World = null;
 
             ServerToken = null;
             LaunchState = 0;
 
             base.Deinitialize();
+        }
+
+        public override void SceneLoadLocalDone(string map, IProtocolToken token)
+        {
+            base.SceneLoadLocalDone(map, token);
+
+            if (BoltNetwork.IsConnected)
+            {
+                World.MapManager.InitializeLoadedMap(1);
+
+                EventHandler.ExecuteEvent(photon, GameEvents.ServerMapLoaded, (ServerRoomToken)token);
+            }
         }
 
         public override void SceneLoadRemoteDone(BoltConnection connection)
@@ -46,8 +62,7 @@ namespace Server
         {
             base.SessionCreated(session);
 
-            ServerToken = (ServerRoomToken)session.GetProtocolToken();
-            ProcessServerLaunchState(ServerLaunchState.SessionCreated);
+            HandleRoomCreation((ServerRoomToken)session.GetProtocolToken());
         }
 
         public override void ConnectRequest(UdpEndPoint endpoint, IProtocolToken token)
@@ -103,9 +118,19 @@ namespace Server
             World.EntityDetached(entity);
         }
 
-        private void OnMapInitialized()
+        private void OnMapLoaded(ServerRoomToken roomToken)
         {
             ProcessServerLaunchState(ServerLaunchState.MapLoaded);
+
+            if (BoltNetwork.IsSinglePlayer)
+                HandleRoomCreation(roomToken);
+        }
+
+        private void HandleRoomCreation(ServerRoomToken roomToken)
+        {
+            ServerToken = roomToken;
+
+            ProcessServerLaunchState(ServerLaunchState.SessionCreated);
         }
 
         private void ProcessServerLaunchState(ServerLaunchState state)
