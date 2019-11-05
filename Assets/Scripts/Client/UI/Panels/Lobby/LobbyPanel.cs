@@ -54,6 +54,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private PhotonBoltReference photonReference;
         [SerializeField, UsedImplicitly] private Button startServerButton;
+        [SerializeField, UsedImplicitly] private Button singlePlayerButton;
         [SerializeField, UsedImplicitly] private Button clientServerButton;
         [SerializeField, UsedImplicitly] private Transform mapsContentHolder;
         [SerializeField, UsedImplicitly] private Transform sessionsContentHolder;
@@ -98,6 +99,7 @@ namespace Client
 
             regionDropdown.onValueChanged.AddListener(OnRegionDropdownChanged);
             startServerButton.onClick.AddListener(OnServerButtonClicked);
+            singlePlayerButton.onClick.AddListener(OnSinglePlayerButtonClicked);
             clientServerButton.onClick.AddListener(OnClientButtonClicked);
             playerNameInput.onValueChanged.AddListener(OnPlayerNameChanged);
             serverNameInput.onValueChanged.AddListener(OnServerNameChanged);
@@ -140,6 +142,7 @@ namespace Client
             }
 
             startServerButton.onClick.RemoveListener(OnServerButtonClicked);
+            singlePlayerButton.onClick.RemoveListener(OnSinglePlayerButtonClicked);
             clientServerButton.onClick.RemoveListener(OnClientButtonClicked);
             regionDropdown.onValueChanged.RemoveListener(OnRegionDropdownChanged);
             playerNameInput.onValueChanged.RemoveListener(OnPlayerNameChanged);
@@ -262,6 +265,31 @@ namespace Client
             UpdateInputState(false);
 
             photonReference.StartServer(new ServerRoomToken(serverNameInput.text, playerNameInput.text, selectedMapSlot.MapDefinition.MapName), true, OnServerStartSuccess, OnServerStartFail);
+
+            void OnServerStartFail()
+            {
+                statusLabel.SetString(serverStartFailedString);
+
+                UpdateInputState(true);
+            }
+
+            void OnServerStartSuccess()
+            {
+                statusLabel.SetString(serverStartSuccessString);
+
+                UpdateInputState(true);
+
+                WindowController.HidePanel<LobbyPanel>();
+            }
+        }
+
+        private void OnSinglePlayerButtonClicked()
+        {
+            statusLabel.SetString(serverStartString);
+
+            UpdateInputState(false);
+
+            photonReference.StartSinglePlayer(new ServerRoomToken(serverNameInput.text, playerNameInput.text, selectedMapSlot.MapDefinition.MapName), OnServerStartSuccess, OnServerStartFail);
 
             void OnServerStartFail()
             {

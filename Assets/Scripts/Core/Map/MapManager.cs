@@ -14,8 +14,6 @@ namespace Core
 
         private WorldManager worldManager;
 
-        public event Action EventMapInitialized;
-
         internal MapManager(WorldManager worldManager)
         {
             this.worldManager = worldManager;
@@ -62,8 +60,6 @@ namespace Core
                 baseMaps[mapId].Initialize(worldManager, SceneManager.GetActiveScene());
 
                 mapsLock.ReleaseMutex();
-
-                EventMapInitialized?.Invoke();
             }
 
             Assert.IsNotNull(map);

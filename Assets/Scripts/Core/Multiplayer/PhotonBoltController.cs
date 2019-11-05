@@ -74,7 +74,7 @@ namespace Core
             networkingMode = withClientLogic ? NetworkingMode.Both : NetworkingMode.Server;
             serverToken.Version = Version;
 
-            StartCoroutine(StartServerRoutine(serverToken, onStartSuccess, onStartFail));
+            StartCoroutine(StartServerRoutine(serverToken, false, onStartSuccess, onStartFail));
         }
 
         public void StartClient(Action onStartSuccess, Action onStartFail, bool forceRestart)
@@ -83,6 +83,16 @@ namespace Core
 
             networkingMode = NetworkingMode.Client;
             StartCoroutine(StartClientRoutine(onStartSuccess, onStartFail, forceRestart));
+        }
+
+        public void StartSinglePlayer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail)
+        {
+            StopAllCoroutines();
+
+            networkingMode = NetworkingMode.Both;
+            serverToken.Version = Version;
+
+            StartCoroutine(StartServerRoutine(serverToken, true, onStartSuccess, onStartFail));
         }
 
         public void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action<ClientConnectFailReason> onConnectFail)
@@ -247,7 +257,7 @@ namespace Core
             state = server || client ? State.Active : State.Inactive;
         }
 
-        private IEnumerator StartServerRoutine(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail)
+        private IEnumerator StartServerRoutine(ServerRoomToken serverToken, bool singlePlayer, Action onStartSuccess, Action onStartFail)
         {
             if (BoltNetwork.IsRunning && !BoltNetwork.IsServer)
             {
@@ -258,7 +268,11 @@ namespace Core
 
             state = State.Starting;
 
-            BoltLauncher.StartServer(config);
+            if (singlePlayer)
+                BoltLauncher.StartSinglePlayer(config);
+            else
+                BoltLauncher.StartServer(config);
+
             yield return new WaitUntil(NetworkIsIdle);
 
             for (int i = 0; i < 3; i++)
@@ -268,7 +282,10 @@ namespace Core
             {
                 onStartSuccess?.Invoke();
 
-                BoltMatchmaking.CreateSession(Guid.NewGuid().ToString(), serverToken, serverToken.Map);
+                if (!singlePlayer)
+                    BoltMatchmaking.CreateSession(Guid.NewGuid().ToString(), serverToken);
+
+                BoltNetwork.LoadScene(serverToken.Map, serverToken);
             }
             else
             {

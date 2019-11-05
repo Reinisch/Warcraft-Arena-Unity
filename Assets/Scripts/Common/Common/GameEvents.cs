@@ -30,6 +30,7 @@
         ServerPlayerTeleport,
         ServerDamageDone,
         ServerHealingDone,
+        ServerMapLoaded,
         ServerLaunched,
 
         UnitChat,

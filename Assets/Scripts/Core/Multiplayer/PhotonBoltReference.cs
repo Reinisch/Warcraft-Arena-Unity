@@ -34,6 +34,11 @@ namespace Core
             underlyingController.StartServer(serverToken, withClientLogic, onStartSuccess, onStartFail);
         }
 
+        public void StartSinglePlayer(ServerRoomToken serverToken, Action onStartSuccess, Action onStartFail)
+        {
+            underlyingController.StartSinglePlayer(serverToken, onStartSuccess, onStartFail);
+        }
+
         public void StartConnection(UdpSession session, ClientConnectionToken token, Action onConnectSuccess, Action<ClientConnectFailReason> onConnectFail)
         {
             underlyingController.StartConnection(session, token, onConnectSuccess, onConnectFail);
