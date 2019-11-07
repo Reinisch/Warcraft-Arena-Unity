@@ -419,3 +419,7 @@ MonoBehaviour:
       ({0}% of Attack power) for 24 sec"
   - StringReference: {fileID: 11400000, guid: 0ccc5560b95e0954f840a815d12e7754, type: 2}
     Value: Rip
+  - StringReference: {fileID: 11400000, guid: bb6faeec1f1b1ec428276dc03f4db65b, type: 2}
+    Value: Reduces all damage you take by {0}% for {1} sec.
+  - StringReference: {fileID: 11400000, guid: 38fde2ed91299f74087eb71029be3eaf, type: 2}
+    Value: Survival Instincts
