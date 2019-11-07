@@ -11,6 +11,7 @@
 
         public TValueType Base => BaseValue;
         public TValueType Value => CurrentValue;
+        public TValueType Max => MaxValue;
         
         protected EntityAttribute(Entity entity, TValueType baseValue, TValueType maxValue, EntityAttributes attributeType)
         {

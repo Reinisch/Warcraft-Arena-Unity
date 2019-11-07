@@ -398,3 +398,5 @@ MonoBehaviour:
       33% increased damage against bleeding targets\r\n\r\nAwards 1 combo point."
   - StringReference: {fileID: 11400000, guid: 5704b9ccc9662f34a8333a14c4ea6c31, type: 2}
     Value: Swipe
+  - StringReference: {fileID: 11400000, guid: 77262409bd5194c4cb132f8e71fd9601, type: 2}
+    Value: No Combo Points

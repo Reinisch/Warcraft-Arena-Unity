@@ -27,6 +27,7 @@ namespace Core
 
         internal bool IsTriggered { get; }
         internal bool CanReflect { get; }
+        internal int ConsumedComboPoints { get; set; }
         internal SpellSchoolMask SchoolMask { get; }
         internal int CastTime { get; private set; }
         internal Unit Caster { get; private set; }
@@ -271,6 +272,9 @@ namespace Core
             // check if already casting
             if (Caster.SpellCast.IsCasting && !SpellInfo.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
                 return SpellCastResult.NotReady;
+
+            if (SpellInfo.HasAttribute(SpellAttributes.RequiresComboPoints) && Caster.ComboPoints < 1)
+                return SpellCastResult.NoComboPoints;
 
             SpellCastResult castResult;
             if (!spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreTargetCheck))
@@ -572,6 +576,12 @@ namespace Core
             Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellCast, Caster, this);
 
             DropModifierCharges();
+
+            if (SpellInfo.HasAttribute(SpellAttributes.RequiresComboPoints))
+            {
+                ConsumedComboPoints = Caster.ComboPoints;
+                Caster.Attributes.SetComboPoints(0);
+            }
 
             if (!isDelayed)
             {

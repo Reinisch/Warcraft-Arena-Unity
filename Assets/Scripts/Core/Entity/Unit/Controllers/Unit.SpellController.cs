@@ -500,7 +500,17 @@ namespace Core
                 }
             }
 
-            internal int ModifyAuraDuration(AuraInfo auraInfo, Unit target, int duration) { return duration; }
+            internal int CalculateAuraDuration(AuraInfo auraInfo, Unit target, Spell spell)
+            {
+                int minDuration = auraInfo.Duration;
+                int maxDuration = auraInfo.MaxDuration;
+                int duration = minDuration;
+
+                if (auraInfo.HasAttribute(AuraAttributes.ComboAffectsDuration) && spell.ConsumedComboPoints > 0)
+                    duration = minDuration + (maxDuration - minDuration) * spell.ConsumedComboPoints / target.Attributes.ComboPoints.Max;
+
+                return duration;
+            }
 
             internal int ModifySpellCastTime(Spell spell, int castTime)
             {

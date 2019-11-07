@@ -128,7 +128,7 @@ namespace Core
                 return modifier;
             }
 
-            internal void RefreshOrCreateAura(AuraInfo auraInfo, SpellInfo spellInfo, Unit originalCaster)
+            internal void RefreshOrCreateAura(AuraInfo auraInfo, SpellInfo spellInfo, Unit originalCaster, Spell spell)
             {
                 var ownedAura = FindOwnedAura();
 
@@ -151,12 +151,8 @@ namespace Core
                 if (ownedAura.IsRemoved)
                     return;
 
-                int duration = ownedAura.MaxDuration;
-                duration = originalCaster.Spells.ModifyAuraDuration(ownedAura.AuraInfo, unit, duration);
-
-                if (duration != ownedAura.Duration)
-                    ownedAura.UpdateDuration(duration, duration);
-
+                int duration = originalCaster.Spells.CalculateAuraDuration(ownedAura.AuraInfo, unit, spell);
+                ownedAura.UpdateDuration(duration, duration);
                 ownedAura.UpdateTargets();
 
                 Aura FindOwnedAura()
