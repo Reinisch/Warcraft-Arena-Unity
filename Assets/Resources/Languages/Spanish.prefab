@@ -411,3 +411,11 @@ MonoBehaviour:
       power) * 5] damage"
   - StringReference: {fileID: 11400000, guid: 83bca39240e36864d98565cd66d5994d, type: 2}
     Value: Ferocious Bite
+  - StringReference: {fileID: 11400000, guid: f6563f6813c55f24fb485d037dffcead, type: 2}
+    Value: "Finishing move that causes Bleed damage over time every {1} sec. Lasts
+      longer per combo point.\r\n\r\n  1 point  : ({0}% of Attack power) for 8 sec\r\n
+      \ 2 points: ({0}% of Attack power) for 12 sec\r\n  3 points: ({0}% of Attack
+      power) for 16 sec\r\n  4 points: ({0}% of Attack power) for 20 sec\r\n  5 points:
+      ({0}% of Attack power) for 24 sec"
+  - StringReference: {fileID: 11400000, guid: 0ccc5560b95e0954f840a815d12e7754, type: 2}
+    Value: Rip
