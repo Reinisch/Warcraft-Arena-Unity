@@ -23,10 +23,10 @@ namespace Core.AuraEffects
             return new AuraEffectSharedBasicModifer(aura, this, index, Value);
         }
 
-        public void ModifySpellCrit(Unit caster, Unit target, Spell spell, ref float currentCritChance)
+        public void ModifySpellCrit(Unit caster, Unit target, SpellInfo spellInfo, ref float currentCritChance)
         {
             foreach (var condition in validTargetConditions)
-                if (condition.IsApplicableAndInvalid(caster, target, spell))
+                if (condition.IsApplicableAndInvalid(caster, target, spellInfo: spellInfo))
                     return;
 
             currentCritChance *= multiplier;

@@ -10,8 +10,8 @@ namespace Core.Conditions
         [SerializeField, UsedImplicitly] private ComparisonOperator comparisonOperator;
         [SerializeField, UsedImplicitly] private int castTime;
 
-        protected override bool IsApplicable => base.IsApplicable && Spell != null;
+        protected override bool IsApplicable => base.IsApplicable && SpellInfo != null;
 
-        protected override bool IsValid => base.IsValid && Spell.SpellInfo.CastTime.CompareWith(castTime, comparisonOperator);
+        protected override bool IsValid => base.IsValid && SpellInfo.CastTime.CompareWith(castTime, comparisonOperator);
     }
 }

@@ -8,8 +8,8 @@ namespace Core.Conditions
     {
         [SerializeField, UsedImplicitly] private SpellInfo targetSpell;
 
-        protected override bool IsApplicable => base.IsApplicable && Spell != null;
+        protected override bool IsApplicable => base.IsApplicable && SpellInfo != null;
 
-        protected override bool IsValid => base.IsValid && Spell.SpellInfo == targetSpell;
+        protected override bool IsValid => base.IsValid && SpellInfo == targetSpell;
     }
 }

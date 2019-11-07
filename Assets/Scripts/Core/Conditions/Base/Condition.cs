@@ -11,6 +11,7 @@ namespace Core.Conditions
         protected Unit SourceUnit { get; private set; }
         protected Unit TargetUnit { get; private set; }
         protected Spell Spell { get; private set; }
+        protected SpellInfo SpellInfo { get; private set; }
 
         private readonly HashSet<Condition> usedConditions = new HashSet<Condition>();
 
@@ -24,9 +25,9 @@ namespace Core.Conditions
         /// </summary>
         protected virtual bool IsValid => true;
 
-        public bool IsApplicableAndInvalid(Unit source = null, Unit target = null, Spell spell = null)
+        public bool IsApplicableAndInvalid(Unit source = null, Unit target = null, Spell spell = null, SpellInfo spellInfo = null)
         {
-            SetInternalResources(this, source, target, spell);
+            SetInternalResources(this, source, target, spell, spellInfo);
 
             bool result = IsApplicable && !IsValid;
 
@@ -38,9 +39,9 @@ namespace Core.Conditions
             return result;
         }
 
-        public bool IsApplicableAndValid(Unit source = null, Unit target = null, Spell spell = null)
+        public bool IsApplicableAndValid(Unit source = null, Unit target = null, Spell spell = null, SpellInfo spellInfo = null)
         {
-            SetInternalResources(this, source, target, spell);
+            SetInternalResources(this, source, target, spell, spellInfo);
 
             bool result = IsApplicable && IsValid;
 
@@ -69,14 +70,15 @@ namespace Core.Conditions
         private void SetResources(Condition condition)
         {
             if(!usedConditions.Contains(condition))
-                SetInternalResources(condition, SourceUnit, TargetUnit, Spell);
+                SetInternalResources(condition, SourceUnit, TargetUnit, Spell, SpellInfo);
         }
 
-        private void SetInternalResources(Condition condition, Unit source = null, Unit target = null, Spell spell = null)
+        private void SetInternalResources(Condition condition, Unit source = null, Unit target = null, Spell spell = null, SpellInfo spellInfo = null)
         {
             condition.SourceUnit = source;
             condition.TargetUnit = target;
             condition.Spell = spell;
+            condition.SpellInfo = spellInfo ?? spell?.SpellInfo;
 
             usedConditions.Add(condition);
         }
@@ -86,6 +88,7 @@ namespace Core.Conditions
             condition.SourceUnit = null;
             condition.TargetUnit = null;
             condition.Spell = null;
+            condition.SpellInfo = null;
         }
     }
 }
