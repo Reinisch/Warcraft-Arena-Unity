@@ -37,6 +37,9 @@ Client is started by default, if connection fails then reason should be displaye
 - [ ] New spell and aura mechanics
 - [ ] Arena or battleground logic
 
+## Guides
+* [How to add new spell](https://github.com/Reinisch/Warcraft-Arena-Unity/wiki/Adding-New-Spell)
+
 ## Screenshot
 ![Alt text](/Screenshots/WoW-Unity-1.0.48.png?raw=true "World of Warcraft Unity")
 

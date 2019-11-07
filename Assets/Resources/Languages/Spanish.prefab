@@ -393,3 +393,10 @@ MonoBehaviour:
       Deals 100% increased damage against bleeding targets'
   - StringReference: {fileID: 11400000, guid: 7273d884f7fb96645ab00620725a2bda, type: 2}
     Value: Shred
+    
+  - StringReference: {fileID: 11400000, guid: 0e43cc51bf747264cb96ca14b543c7a5, type: 2}
+    Value: "Swipe nearby enemies, inflicting ({0}% of Attack power) Physical damage.\r\n\nDeals
+      33% increased damage against bleeding targets\r\n\r\nAwards 1 combo point."
+  - StringReference: {fileID: 11400000, guid: 5704b9ccc9662f34a8333a14c4ea6c31, type: 2}
+    Value: Swipe
+    

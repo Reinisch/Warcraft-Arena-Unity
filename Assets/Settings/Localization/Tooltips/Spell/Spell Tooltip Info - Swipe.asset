@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2c4714ebf4c7948b39380ca36fbd21, type: 3}
+  m_Name: Spell Tooltip Info - Swipe
+  m_EditorClassIdentifier: 
+  id: 32
+  container: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9, type: 2}
+  spellInfo: {fileID: 11400000, guid: 9add088008795ad45bf49077c58002df, type: 2}
+  spellNameString: {fileID: 11400000, guid: 5704b9ccc9662f34a8333a14c4ea6c31, type: 2}
+  spellDescriptionString: {fileID: 11400000, guid: 0e43cc51bf747264cb96ca14b543c7a5,
+    type: 2}
+  argumentSettings:
+  - argumentSource: {fileID: -3658781974863921725, guid: 9add088008795ad45bf49077c58002df,
+      type: 2}
+    argumentType: 1

@@ -71,6 +71,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f99c8619d3d2dc546bf19ed57913253b, type: 2}
   - {fileID: 11400000, guid: 182873baae973d040ad7f7b96e4d2df0, type: 2}
   - {fileID: 11400000, guid: 51185c3ec7b89604cbb803852d721168, type: 2}
+  - {fileID: 11400000, guid: 4ab2ab8a4542fbe488441895f366a880, type: 2}
   auraEffectSettings:
   - {fileID: 11400000, guid: ead2673873050dc408333463f7777aea, type: 2}
   - {fileID: 11400000, guid: 81c714e7642f53944ad5911a9e63b01c, type: 2}
