@@ -386,11 +386,11 @@ MonoBehaviour:
   - StringReference: {fileID: 11400000, guid: b5b6c6d312da3aa45ba023f0652afcb9, type: 2}
     Value: Rake
   - StringReference: {fileID: 11400000, guid: 1c617ebd4371a8d4abaf1a4ca4cb6777, type: 2}
-    Value: 'Shred the target, causing ({0}% of Attack power + 50) Physical damage
+    Value: 'Shred the target, causing ({0}% of Attack power + 20) Physical damage
       to the target.
 
 
-      Deals 100% increased damage against bleeding targets'
+      Deals 50% increased damage against bleeding targets'
   - StringReference: {fileID: 11400000, guid: 7273d884f7fb96645ab00620725a2bda, type: 2}
     Value: Shred
   - StringReference: {fileID: 11400000, guid: 0e43cc51bf747264cb96ca14b543c7a5, type: 2}
@@ -400,3 +400,14 @@ MonoBehaviour:
     Value: Swipe
   - StringReference: {fileID: 11400000, guid: 77262409bd5194c4cb132f8e71fd9601, type: 2}
     Value: No Combo Points
+  - StringReference: {fileID: 11400000, guid: 57d72258c0576bb469f3e15a08457b00, type: 2}
+    Value: "Finishing move that causes damage per combo point and consumes up to 25
+      additional Energy to increase damage by up to 100%.\r\n\r\nWhen used on targets
+      below 25% health, Ferocious Bite will also refresh the duration of your Rip
+      on your target\r\n\r\nCritical strike chance doubled against bleeding targets.\r\n\r\n
+      \ 1 point  : [({0}% of Attack power) * 1] damage\r\n  2 points: [({0}% of Attack
+      power) * 2] damage\r\n  3 points: [({0}% of Attack power) * 3] damage\r\n  4
+      points: [({0}% of Attack power) * 4] damage\r\n  5 points: [({0}% of Attack
+      power) * 5] damage"
+  - StringReference: {fileID: 11400000, guid: 83bca39240e36864d98565cd66d5994d, type: 2}
+    Value: Ferocious Bite

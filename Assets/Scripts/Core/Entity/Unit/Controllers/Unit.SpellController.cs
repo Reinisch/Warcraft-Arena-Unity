@@ -238,12 +238,6 @@ namespace Core
                     case SpellDamageClass.Magic:
                         if (!spellInfo.IsPositive)
                             critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerSpellCritChance);
-
-                        IReadOnlyList<AuraEffect> spellCritAuras = unit.GetAuraEffects(AuraEffectType.OverrideSpellCritCalculation);
-                        if (spellCritAuras != null) for (int i = 0; i < spellCritAuras.Count; i++)
-                            if (spellCritAuras[i].EffectInfo is AuraEffectInfoOverrideSpellCritCalculation effectInfo)
-                                effectInfo.ModifySpellCrit(unit, victim, spell, ref critChance);
-
                         goto default;
                     case SpellDamageClass.Melee:
                         if (!spellInfo.IsPositive)
@@ -258,6 +252,11 @@ namespace Core
                         critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerSpellAndWeaponCritChance);
                         break;
                 }
+
+                IReadOnlyList<AuraEffect> spellCritAuras = unit.GetAuraEffects(AuraEffectType.OverrideSpellCritCalculation);
+                if (spellCritAuras != null) for (int i = 0; i < spellCritAuras.Count; i++)
+                    if (spellCritAuras[i].EffectInfo is AuraEffectInfoOverrideSpellCritCalculation effectInfo)
+                        effectInfo.ModifySpellCrit(unit, victim, spell, ref critChance);
 
                 return Mathf.Max(critChance, 0.0f);
             }
