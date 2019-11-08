@@ -213,6 +213,7 @@ namespace Core
                     unit.AddCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
                     unit.AddCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
                     unit.AddCallback(nameof(IUnitState.ClassType), OnClassTypeChanged);
+                    unit.AddCallback(nameof(IUnitState.DisplayPowerType), OnDisplayPowerTypeChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
@@ -282,6 +283,7 @@ namespace Core
                     unit.RemoveCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
                     unit.RemoveCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
                     unit.RemoveCallback(nameof(IUnitState.ClassType), OnClassTypeChanged);
+                    unit.RemoveCallback(nameof(IUnitState.DisplayPowerType), OnDisplayPowerTypeChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
@@ -395,6 +397,18 @@ namespace Core
                 SpellPower.Set(SpellPower.Base + totalIntellect);
             }
 
+            internal void UpdateDisplayPower()
+            {
+                SpellPowerType newPowerType = SpellPowerType.Mana;
+                // TEMP untill shapeshifting implemented: Cat Form
+                if (unit.Auras.HasAuraWithSpell(36))
+                    newPowerType = SpellPowerType.Energy;
+                else if (unit is Player player)
+                    newPowerType = player.CurrentClass.MainPowerType;
+
+                DisplayPowerType = newPowerType;
+            }
+
             internal int CalculateTotalStatValue(StatType statType)
             {
                 float value = statModifiers[(statType, StatModifierType.BaseValue)];
@@ -436,6 +450,11 @@ namespace Core
             private void OnComboPointsChanged()
             {
                 ComboPoints.Set(unitState.ComboPoints);
+            }
+
+            private void OnDisplayPowerTypeChanged()
+            {
+                DisplayPowerType = (SpellPowerType)unitState.DisplayPowerType;
             }
 
             private void OnClassTypeChanged()

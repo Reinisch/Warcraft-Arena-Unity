@@ -25,6 +25,7 @@ namespace Client
 
         private readonly Action<EntityAttributes> onAttributeChangedAction;
         private readonly Action onUnitTargetChanged;
+        private readonly Action onUnitDisplayPowerChanged;
         private readonly Action onUnitClassChanged;
 
         private UnitFrame targetUnitFrame;
@@ -35,6 +36,7 @@ namespace Client
         {
             onAttributeChangedAction = OnAttributeChanged;
             onUnitTargetChanged = OnUnitTargetChanged;
+            onUnitDisplayPowerChanged = OnUnitDisplayPowerChanged;
             onUnitClassChanged = OnUnitClassChanged;
         }
 
@@ -84,10 +86,12 @@ namespace Client
             OnAttributeChanged(EntityAttributes.Health);
             OnAttributeChanged(EntityAttributes.Power);
             OnUnitClassChanged();
+            OnUnitDisplayPowerChanged();
 
             EventHandler.RegisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
             EventHandler.RegisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
             EventHandler.RegisterEvent(unit, GameEvents.UnitClassChanged, onUnitClassChanged);
+            EventHandler.RegisterEvent(unit, GameEvents.UnitDisplayPowerChanged, onUnitDisplayPowerChanged);
         }
 
         private void DeinitializeUnit()
@@ -95,6 +99,7 @@ namespace Client
             EventHandler.UnregisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
             EventHandler.UnregisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
             EventHandler.UnregisterEvent(unit, GameEvents.UnitClassChanged, onUnitClassChanged);
+            EventHandler.UnregisterEvent(unit, GameEvents.UnitDisplayPowerChanged, onUnitDisplayPowerChanged);
 
             comboFrame?.UpdateUnit(null);
             targetUnitFrame?.UpdateUnit(null);
@@ -114,6 +119,11 @@ namespace Client
         private void OnUnitTargetChanged()
         {
             targetUnitFrame?.UpdateUnit(unit.Target);
+        }
+
+        private void OnUnitDisplayPowerChanged()
+        {
+            mainResource.FillImage.color = rendering.ColorsBySpellPowerType.Value(unit.DisplayPowerType);
         }
 
         private void OnUnitClassChanged()

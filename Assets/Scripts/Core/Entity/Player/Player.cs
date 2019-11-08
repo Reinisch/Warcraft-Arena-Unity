@@ -94,11 +94,8 @@ namespace Core
             createToken.Attached(this);
 
             MovementInfo = (PlayerMovementInfo)base.MovementInfo;
-            CurrentClass = Balance.ClassesByType[ClassType];
 
-            if(IsOwner)
-                PlayerSpells.AddClassSpells(CurrentClass);
-
+            HandleClassChange(ClassType, false);
             HandleStateCallbacks(true);
         }
 
@@ -193,12 +190,24 @@ namespace Core
 
         internal void SwitchClass(ClassType classType)
         {
-            if (ClassType == classType)
-                return;
+            if (ClassType != classType)
+                HandleClassChange(classType, true);
+        }
 
+        private void HandleClassChange(ClassType classType, bool isUpdate)
+        {
             ClassType = classType;
             CurrentClass = Balance.ClassesByType[classType];
-            PlayerSpells.UpdateClassSpells(CurrentClass);
+
+            if (IsOwner)
+            {
+                if (isUpdate)
+                    PlayerSpells.UpdateClassSpells(CurrentClass);
+                else
+                    PlayerSpells.AddClassSpells(CurrentClass);
+            }
+
+            Attributes.UpdateDisplayPower();
         }
 
         private void HandleStateCallbacks(bool add)

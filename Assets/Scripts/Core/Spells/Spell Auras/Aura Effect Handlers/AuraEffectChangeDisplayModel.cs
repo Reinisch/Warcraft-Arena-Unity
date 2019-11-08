@@ -30,6 +30,8 @@ namespace Core.AuraEffects
                         if (IsReplacementValid(auraApplication.Target.TransformSpellInfo, transformEffects[i].Aura.SpellInfo))
                             auraApplication.Target.UpdateTransformSpell((AuraEffectChangeDisplayModel)transformEffects[i]);
             }
+
+            auraApplication.Target.Attributes.UpdateDisplayPower();
         }
 
         private bool IsReplacementValid(SpellInfo source, SpellInfo target) => source == null || !target.IsPositive || source.IsPositive;

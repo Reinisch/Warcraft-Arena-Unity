@@ -20,6 +20,7 @@ namespace Core
         protected override ClassInfo Data => this;
 
         public ClassType ClassType => classType;
+        public SpellPowerType MainPowerType => powerTypes[0].PowerType;
         public IReadOnlyList<SpellInfo> ClassSpells => classSpells;
         public IReadOnlyList<SpellPowerTypeInfo> PowerTypes => powerTypes;
 

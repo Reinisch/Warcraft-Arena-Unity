@@ -145,3 +145,12 @@ MonoBehaviour:
         type: 3}
     defaultValue: {fileID: -3848952964880096111, guid: 0e3f604a1abcf3f4f81052fc52ba3a08,
       type: 3}
+  colorsBySpellPowerType:
+    items:
+    - key: 0
+      value: {r: 0, g: 0, b: 1, a: 1}
+    - key: 1
+      value: {r: 1, g: 0, b: 0, a: 1}
+    - key: 3
+      value: {r: 1, g: 1, b: 0, a: 1}
+    defaultValue: {r: 0, g: 0, b: 1, a: 1}
