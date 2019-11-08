@@ -40,6 +40,7 @@
         UnitClassChanged,
         UnitModelChanged,
         UnitScaleChanged,
+        UnitDisplayPowerChanged,
 
         HotkeyStateChanged,
         HotkeyBindingChanged,

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
-using UdpKit;
 using Bolt;
 using Common;
 using Core.AuraEffects;
@@ -10,62 +9,6 @@ namespace Core
 {
     public abstract partial class Unit : WorldEntity
     {
-        public new class CreateToken : WorldEntity.CreateToken
-        {
-            public DeathState DeathState { private get; set; }
-            public EmoteType EmoteType { private get; set; }
-            public ClassType ClassType { private get; set; }
-            public bool FreeForAll { private get; set; }
-            public int FactionId { private get; set; }
-            public int ModelId { private get; set; }
-            public int OriginalModelId { private get; set; }
-            public float Scale { private get; set; } = 1.0f;
-
-            public int OriginalAIInfoId { get; set; }
-
-            public override void Read(UdpPacket packet)
-            {
-                base.Read(packet);
-
-                DeathState = (DeathState)packet.ReadInt();
-                EmoteType = (EmoteType)packet.ReadInt();
-                ClassType = (ClassType)packet.ReadInt();
-                FactionId = packet.ReadInt();
-                ModelId = packet.ReadInt();
-                OriginalModelId = packet.ReadInt();
-                OriginalAIInfoId = packet.ReadInt();
-                FreeForAll = packet.ReadBool();
-                Scale = packet.ReadFloat();
-            }
-
-            public override void Write(UdpPacket packet)
-            {
-                base.Write(packet);
-
-                packet.WriteInt((int)DeathState);
-                packet.WriteInt((int)EmoteType);
-                packet.WriteInt((int)ClassType);
-                packet.WriteInt(FactionId);
-                packet.WriteInt(ModelId);
-                packet.WriteInt(OriginalModelId);
-                packet.WriteInt(OriginalAIInfoId);
-                packet.WriteBool(FreeForAll);
-                packet.WriteFloat(Scale);
-            }
-
-            protected void Attached(Unit unit)
-            {
-                unit.DeathState = DeathState;
-                unit.EmoteType = EmoteType;
-                unit.ClassType = ClassType;
-                unit.Faction = unit.Balance.FactionsById[FactionId];
-                unit.FreeForAll = FreeForAll;
-                unit.ModelId = ModelId;
-                unit.OriginalModelId = OriginalModelId;
-                unit.Scale = Scale;
-            }
-        }
-
         [SerializeField, UsedImplicitly, Header(nameof(Unit)), Space(10)]
         private CapsuleCollider unitCollider;
         [SerializeField, UsedImplicitly]
@@ -111,8 +54,8 @@ namespace Core
         public int Model => Attributes.ModelId;
         public int Health => Attributes.Health.Value;
         public int MaxHealth => Attributes.MaxHealth.Value;
-        public int Mana => Attributes.Mana.Value;
-        public int MaxMana => Attributes.MaxMana.Value;
+        public int Power => 100;
+        public int MaxPower => 100;
         public int ComboPoints => Attributes.ComboPoints.Value;
         public int SpellPower => Attributes.SpellPower.Value;
         public int EmoteFrame => entityState.EmoteFrame;
@@ -128,6 +71,7 @@ namespace Core
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitControlState.Moving);
         public float Scale { get => Attributes.Scale; internal set => Attributes.Scale = value; }
+        public SpellPowerType DisplayPowerType { get => Attributes.DisplayPowerType; internal set => Attributes.DisplayPowerType = value; }
         public ClassType ClassType { get => Attributes.ClassType; internal set => Attributes.ClassType = value; }
         public EmoteType EmoteType { get => Attributes.EmoteType; internal set => Attributes.EmoteType = value; }
 

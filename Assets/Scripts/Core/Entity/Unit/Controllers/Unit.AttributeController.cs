@@ -14,6 +14,7 @@ namespace Core
             private Unit unit;
             private FactionDefinition faction;
             private ClassType classType;
+            private SpellPowerType displayPowerType;
             private DeathState deathState;
             private EmoteType emoteType;
             private IUnitState unitState;
@@ -23,13 +24,12 @@ namespace Core
             private float scale;
             private int modelId;
 
+            private readonly EntityAttributeInt[,] powers = new EntityAttributeInt[UnitUtils.MaxUnitPowers, 2];
             private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
             private readonly Dictionary<(StatType, StatModifierType), float> statModifiers = new Dictionary<(StatType, StatModifierType), float>();
 
             internal EntityAttributeInt Health { get; private set; }
             internal EntityAttributeInt MaxHealth { get; private set; }
-            internal EntityAttributeInt Mana { get; private set; }
-            internal EntityAttributeInt MaxMana { get; private set; }
             internal EntityAttributeInt ComboPoints { get; private set; }
             internal EntityAttributeInt Level { get; private set; }
             internal EntityAttributeInt SpellPower { get; private set; }
@@ -107,6 +107,23 @@ namespace Core
                         unitState.EmoteFrame = BoltNetwork.ServerFrame;
                         unit.UnitCreateToken.EmoteType = value;
                     }
+                }
+            }
+
+            internal SpellPowerType DisplayPowerType
+            {
+                get => displayPowerType;
+                set
+                {
+                    displayPowerType = value;
+
+                    if (unit.IsOwner)
+                    {
+                        unitState.DisplayPowerType = (int)value;
+                        unit.UnitCreateToken.DisplayPowerType = value;
+                    }
+
+                    EventHandler.ExecuteEvent(unit, GameEvents.UnitDisplayPowerChanged);
                 }
             }
 
@@ -210,8 +227,6 @@ namespace Core
                     {
                         Health.Reset();
                         MaxHealth.Reset();
-                        Mana.Reset();
-                        MaxMana.Reset();
                         ComboPoints.Reset();
                         Level.Reset();
                         SpellPower.Reset();
@@ -219,6 +234,12 @@ namespace Core
                         ModHaste.Reset();
                         ModRegenHaste.Reset();
                         CritPercentage.Reset();
+
+                        for (int i = 0; i < powers.GetLength(0); i++)
+                        {
+                            powers[i, 0].Reset();
+                            powers[i, 1].Reset();
+                        }
                     }
                     else
                     {
@@ -226,8 +247,7 @@ namespace Core
 
                         Health = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseHealth, int.MaxValue, EntityAttributes.Health);
                         MaxHealth = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
-                        Mana = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMana, int.MaxValue, EntityAttributes.Power);
-                        MaxMana = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMaxMana, int.MaxValue, EntityAttributes.MaxPower);
+                        
                         ComboPoints = new EntityAttributeInt(unit, 0, 5, EntityAttributes.ComboPoints);
                         Level = new EntityAttributeInt(unit, 1, int.MaxValue, EntityAttributes.Level);
                         SpellPower = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
@@ -235,6 +255,12 @@ namespace Core
                         ModHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModHaste);
                         ModRegenHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModRegenHaste);
                         CritPercentage = new EntityAttributeFloat(unit, unit.unitAttributeDefinition.CritPercentage, float.MaxValue, EntityAttributes.CritPercentage);
+
+                        for (int i = 0; i < powers.GetLength(0); i++)
+                        {
+                            powers[i, 0] = new EntityAttributeInt(unit, 0, int.MaxValue, EntityAttributes.Power);
+                            powers[i, 1] = new EntityAttributeInt(unit, 0, int.MaxValue, EntityAttributes.MaxPower);
+                        }
                     }
 
                     statModifiers[(StatType.Intellect, StatModifierType.BaseValue)] = Intellect.Base;

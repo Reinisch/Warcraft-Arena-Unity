@@ -12,6 +12,7 @@ namespace Client
 {
     public class UnitFrame : MonoBehaviour
     {
+        [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private Image classIcon;
@@ -107,7 +108,7 @@ namespace Client
             if (attributeType == EntityAttributes.Health || attributeType == EntityAttributes.MaxHealth)
                 health.Ratio = unit.HealthRatio;
             else if (attributeType == EntityAttributes.Power || attributeType == EntityAttributes.MaxPower)
-                mainResource.Ratio = Mathf.Clamp01((float)unit.Mana / unit.MaxMana);
+                mainResource.Ratio = Mathf.Clamp01((float)unit.Power / unit.MaxPower);
         }
 
         private void OnUnitTargetChanged()
@@ -118,6 +119,8 @@ namespace Client
         private void OnUnitClassChanged()
         {
             classIcon.sprite = rendering.ClassIconsByClassType.Value(unit.ClassType);
+            if (comboFrame != null && balance.ClassesByType.TryGetValue(unit.ClassType, out ClassInfo classInfo))
+                comboFrame.Canvas.enabled = classInfo.HasPower(SpellPowerType.ComboPoints);
         }
     }
 }

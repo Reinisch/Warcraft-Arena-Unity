@@ -1,6 +1,9 @@
 ﻿namespace Core
 {
-    public enum SpellResourceType
+    /// <summary>
+    /// Compressed to 5 bits in <seealso cref="IUnitState.DisplayPowerType"/>
+    /// </summary>
+    public enum SpellPowerType
     {
         Mana,
         Rage,

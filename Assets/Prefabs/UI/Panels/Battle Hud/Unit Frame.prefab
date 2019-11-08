@@ -214,11 +214,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c074f5418eef14c4d816b5a7593616f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
   canvasGroup: {fileID: -8373605524482637000}
   classIcon: {fileID: 681161362479221511}
   health: {fileID: 4854979383301074145}
   mainResource: {fileID: 4854979384034867819}
+  comboFrame: {fileID: 0}
   unitName: {fileID: 3625758516588223680}
   setSound: {fileID: 0}
   lostSound: {fileID: 0}

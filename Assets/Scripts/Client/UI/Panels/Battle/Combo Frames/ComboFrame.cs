@@ -11,6 +11,7 @@ namespace Client
 {
     public class ComboFrame : MonoBehaviour
     {
+        [SerializeField, UsedImplicitly] private Canvas canvas;
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private List<ComboPointSlot> comboPointSlots;
 
@@ -19,6 +20,8 @@ namespace Client
         private Unit unit;
 
         private ComboFrame() => onAttributeChangedAction = OnAttributeChanged;
+
+        public Canvas Canvas => canvas;
 
         public void UpdateUnit(Unit newUnit)
         {
