@@ -11,6 +11,8 @@ namespace Core
     {
         internal class AttributeController : IUnitBehaviour
         {
+            private const int RegenerationSyncTime = 2000;
+
             private Unit unit;
             private FactionDefinition faction;
             private ClassType classType;
@@ -23,10 +25,12 @@ namespace Core
             private ulong targetId;
             private float scale;
             private int modelId;
+            private int accumulatedRegenerationTime;
 
+            private readonly float[] accumulatedRegeneration = new float[UnitUtils.MaxUnitPowers];
             private readonly EntityAttributeInt[,] powers = new EntityAttributeInt[UnitUtils.MaxUnitPowers, 3];
             private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
-            private readonly Dictionary<SpellPowerType, int> spellPowerIndexes = new Dictionary<SpellPowerType, int>();
+            private readonly Dictionary<SpellPowerType, (int, SpellPowerTypeInfo)> spellPowerIndexes = new Dictionary<SpellPowerType, (int, SpellPowerTypeInfo)>();
             private readonly Dictionary<(StatType, StatModifierType), float> statModifiers = new Dictionary<(StatType, StatModifierType), float>();
 
             internal EntityAttributeInt Health { get; private set; }
@@ -185,6 +189,30 @@ namespace Core
                 if (EmoteType != EmoteType.None && EmoteType.IsState() && unit.MovementInfo.IsMoving)
                     if (BoltNetwork.ServerFrame - unit.entityState.EmoteFrame > UnitUtils.EmoteStateMovementFrameThreshold)
                         unit.ModifyEmoteState(EmoteType.None);
+
+                if (unit.IsAlive)
+                {
+                    accumulatedRegenerationTime += deltaTime;
+                    bool timeToUpdateDisplay = accumulatedRegenerationTime >= RegenerationSyncTime;
+
+                    foreach (var powerEntry in spellPowerIndexes)
+                    {
+                        int oldValue = powers[powerEntry.Value.Item1, 0].Value;
+                        int minValue = powers[powerEntry.Value.Item1, 0].Min;
+                        int maxValue = powers[powerEntry.Value.Item1, 1].Value;
+
+                        accumulatedRegeneration[powerEntry.Value.Item1] += powerEntry.Value.Item2.Regeneration * deltaTime / 1000;
+                        int deltaValue = Mathf.FloorToInt(accumulatedRegeneration[powerEntry.Value.Item1]);
+                        accumulatedRegeneration[powerEntry.Value.Item1] -= deltaValue;
+
+                        int newValue = Mathf.Clamp(oldValue + deltaValue, minValue, maxValue);
+                        if (newValue != oldValue || timeToUpdateDisplay && DisplayPowerType == powerEntry.Key)
+                           SetPower(powerEntry.Key, newValue, timeToUpdateDisplay);
+                    }
+
+                    if (timeToUpdateDisplay)
+                        accumulatedRegenerationTime -= RegenerationSyncTime;
+                }
             }
 
             void IUnitBehaviour.HandleUnitAttach(Unit unit)
@@ -292,11 +320,11 @@ namespace Core
                 unit = null;
             }
 
-            internal int Power(SpellPowerType powerType) => spellPowerIndexes.TryGetValue(powerType, out int i) ? powers[i, 0].Value : 0;
+            internal int Power(SpellPowerType powerType) => spellPowerIndexes.TryGetValue(powerType, out var i) ? powers[i.Item1, 0].Value : 0;
 
-            internal int MaxPower(SpellPowerType powerType) => spellPowerIndexes.TryGetValue(powerType, out int i) ? powers[i, 1].Value : 0;
+            internal int MaxPower(SpellPowerType powerType) => spellPowerIndexes.TryGetValue(powerType, out var i) ? powers[i.Item1, 1].Value : 0;
 
-            internal int MaxPowerWithNoMods(SpellPowerType powerType) => spellPowerIndexes.TryGetValue(powerType, out int i) ? powers[i, 2].Value : 0;
+            internal int MaxPowerWithNoMods(SpellPowerType powerType) => spellPowerIndexes.TryGetValue(powerType, out var i) ? powers[i.Item1, 2].Value : 0;
 
             internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
             {
@@ -437,7 +465,7 @@ namespace Core
                     powers[i, 0].ModifyAttribute(powerTypeInfo.MinBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeCurrent);
                     powers[i, 1].ModifyAttribute(powerTypeInfo.MinBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeMax);
                     powers[i, 2].ModifyAttribute(powerTypeInfo.MinBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeMaxNoMods);
-                    spellPowerIndexes[powerTypeInfo.PowerType] = i;
+                    spellPowerIndexes[powerTypeInfo.PowerType] = (i, powerTypeInfo);
                 }
 
                 for (int i = usedPowers; i < maxPowers; i++)
@@ -476,13 +504,13 @@ namespace Core
                 SetPower(powerType, Power(powerType) + delta);
             }
 
-            internal void SetPower(SpellPowerType powerType, int newValue)
+            internal void SetPower(SpellPowerType powerType, int newValue, bool updateDisplayPower = true)
             {
-                if (spellPowerIndexes.TryGetValue(powerType, out int i))
+                if (spellPowerIndexes.TryGetValue(powerType, out var i))
                 {
-                    powers[i, 0].Set(newValue);
+                    powers[i.Item1, 0].Set(newValue);
 
-                    if (powerType == DisplayPowerType)
+                    if (powerType == DisplayPowerType && updateDisplayPower)
                     {
                         if (unit.IsOwner)
                         {
@@ -497,9 +525,9 @@ namespace Core
 
             internal void SetMaxPower(SpellPowerType powerType, int newValue)
             {
-                if (spellPowerIndexes.TryGetValue(powerType, out int i))
+                if (spellPowerIndexes.TryGetValue(powerType, out var i))
                 {
-                    powers[i, 1].Set(newValue);
+                    powers[i.Item1, 1].Set(newValue);
 
                     if (powerType == DisplayPowerType)
                     {

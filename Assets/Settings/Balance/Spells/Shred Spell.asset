@@ -63,7 +63,10 @@ MonoBehaviour:
   spellEffectInfos:
   - {fileID: -2517736162014244104}
   - {fileID: 3183479664869301193}
-  spellPowerEntries: []
+  spellPowerCostInfos:
+  - spellPowerType: 3
+    powerCostPercentage: 0
+    powerCost: 20
   targetingConditions: []
 --- !u!114 &3183479664869301193
 MonoBehaviour:

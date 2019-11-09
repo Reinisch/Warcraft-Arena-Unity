@@ -42,7 +42,7 @@ MonoBehaviour:
   - {fileID: 7579322667602895417}
   spellPowerCostInfos:
   - spellPowerType: 0
-    powerCostPercentage: 10
+    powerCostPercentage: 1
     powerCost: 0
   targetingConditions: []
 --- !u!114 &1778134328234201322
