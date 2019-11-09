@@ -212,21 +212,23 @@ namespace Core
 
         private void HandleStateCallbacks(bool add)
         {
+            if (IsOwner)
+                return;
+
             if (add)
             {
-                if (!IsOwner)
-                    playerState.AddCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
+                playerState.AddCallback(nameof(playerState.PlayerName), OnRemotePlayerNameChanged);
+                playerState.AddCallback(nameof(playerState.ClassType), OnRemoteClassTypeChanged);
             }
             else
             {
-                if (!IsOwner)
-                    playerState.RemoveCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
+                playerState.RemoveCallback(nameof(playerState.PlayerName), OnRemotePlayerNameChanged);
+                playerState.RemoveCallback(nameof(playerState.ClassType), OnRemoteClassTypeChanged);
             }
         }
 
-        private void OnPlayerNameChanged()
-        {
-            Name = playerState.PlayerName;
-        }
+        private void OnRemotePlayerNameChanged() => Name = playerState.PlayerName;
+
+        private void OnRemoteClassTypeChanged() => HandleClassChange((ClassType)playerState.ClassType, true);
     }
 }

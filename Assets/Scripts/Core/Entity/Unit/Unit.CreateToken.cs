@@ -11,6 +11,8 @@ namespace Core
             public EmoteType EmoteType { private get; set; }
             public ClassType ClassType { private get; set; }
             public bool FreeForAll { private get; set; }
+            public int DisplayPower { private get; set; }
+            public int DisplayPowerMax { private get; set; }
             public int FactionId { private get; set; }
             public int ModelId { private get; set; }
             public int OriginalModelId { private get; set; }
@@ -30,6 +32,8 @@ namespace Core
                 ModelId = packet.ReadInt();
                 OriginalModelId = packet.ReadInt();
                 OriginalAIInfoId = packet.ReadInt();
+                DisplayPower = packet.ReadInt();
+                DisplayPowerMax = packet.ReadInt();
                 FreeForAll = packet.ReadBool();
                 Scale = packet.ReadFloat();
             }
@@ -46,6 +50,8 @@ namespace Core
                 packet.WriteInt(ModelId);
                 packet.WriteInt(OriginalModelId);
                 packet.WriteInt(OriginalAIInfoId);
+                packet.WriteInt(DisplayPower);
+                packet.WriteInt(DisplayPowerMax);
                 packet.WriteBool(FreeForAll);
                 packet.WriteFloat(Scale);
             }
@@ -61,6 +67,8 @@ namespace Core
                 unit.ModelId = ModelId;
                 unit.OriginalModelId = OriginalModelId;
                 unit.Scale = Scale;
+                unit.Attributes.SetMaxPower(DisplayPowerType, DisplayPowerMax);
+                unit.Attributes.SetPower(DisplayPowerType, DisplayPower);
             }
         }
     }

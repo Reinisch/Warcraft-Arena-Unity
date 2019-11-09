@@ -631,12 +631,7 @@ namespace Core
             Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellCast, Caster, this);
 
             DropModifierCharges();
-
-            if (SpellInfo.HasAttribute(SpellAttributes.RequiresComboPoints))
-            {
-                ConsumedComboPoints = Caster.ComboPoints;
-                Caster.Attributes.SetComboPoints(0);
-            }
+            ConsumePowers();
 
             if (!isDelayed)
             {
@@ -654,6 +649,28 @@ namespace Core
             DropModifierCharges();
 
             spellManager.Remove(this);
+        }
+
+        private void ConsumePowers()
+        {
+            if (SpellInfo.HasAttribute(SpellAttributes.RequiresComboPoints))
+            {
+                ConsumedComboPoints = Caster.ComboPoints;
+                Caster.Attributes.SetComboPoints(0);
+            }
+
+            foreach ((SpellPowerType, int) powerCost in powerCosts)
+            {
+                if (powerCost.Item1 == SpellPowerType.Health)
+                {
+                    if (Caster.IsAlive)
+                        Caster.ModifyHealth(-Mathf.Min(Caster.Health - 1, powerCost.Item2));
+
+                    continue;
+                }
+
+                Caster.Attributes.ModifyPower(powerCost.Item1, -powerCost.Item2);
+            }
         }
 
         private void DropModifierCharges()

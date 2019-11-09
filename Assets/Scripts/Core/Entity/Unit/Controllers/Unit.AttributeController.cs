@@ -215,6 +215,8 @@ namespace Core
                     unit.AddCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
                     unit.AddCallback(nameof(IUnitState.ClassType), OnClassTypeChanged);
                     unit.AddCallback(nameof(IUnitState.DisplayPowerType), OnDisplayPowerTypeChanged);
+                    unit.AddCallback(nameof(IUnitState.DisplayPower), OnDisplayPowerChanged);
+                    unit.AddCallback(nameof(IUnitState.DisplayPowerMax), OnDisplayPowerMaxChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
@@ -280,6 +282,8 @@ namespace Core
                     unit.RemoveCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
                     unit.RemoveCallback(nameof(IUnitState.ClassType), OnClassTypeChanged);
                     unit.RemoveCallback(nameof(IUnitState.DisplayPowerType), OnDisplayPowerTypeChanged);
+                    unit.RemoveCallback(nameof(IUnitState.DisplayPower), OnDisplayPowerChanged);
+                    unit.RemoveCallback(nameof(IUnitState.DisplayPowerMax), OnDisplayPowerMaxChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
@@ -409,6 +413,13 @@ namespace Core
                     newPowerType = unit.Balance.ClassesByType[unit.ClassType].MainPowerType;
 
                 DisplayPowerType = newPowerType;
+
+                if (unit.IsOwner)
+                {
+                    SetMaxPower(DisplayPowerType, MaxPower(DisplayPowerType));
+
+                    SetPower(DisplayPowerType, Power(DisplayPowerType));
+                }
             }
 
             internal void UpdateAvailablePowers()
@@ -460,6 +471,11 @@ namespace Core
                 unitState.ComboPoints = ComboPoints.Value;
             }
 
+            internal void ModifyPower(SpellPowerType powerType, int delta)
+            {
+                SetPower(powerType, Power(powerType) + delta);
+            }
+
             internal void SetPower(SpellPowerType powerType, int newValue)
             {
                 if (spellPowerIndexes.TryGetValue(powerType, out int i))
@@ -467,7 +483,15 @@ namespace Core
                     powers[i, 0].Set(newValue);
 
                     if (powerType == DisplayPowerType)
+                    {
+                        if (unit.IsOwner)
+                        {
+                            unitState.DisplayPower = newValue;
+                            unit.UnitCreateToken.DisplayPower = newValue;
+                        }
+
                         EventHandler.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.Power);
+                    }
                 }
             }
 
@@ -478,7 +502,15 @@ namespace Core
                     powers[i, 1].Set(newValue);
 
                     if (powerType == DisplayPowerType)
+                    {
+                        if (unit.IsOwner)
+                        {
+                            unitState.DisplayPowerMax = newValue;
+                            unit.UnitCreateToken.DisplayPowerMax = newValue;
+                        }
+
                         EventHandler.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.MaxPower);
+                    }
                 }
             }
 
@@ -507,6 +539,16 @@ namespace Core
             private void OnDisplayPowerTypeChanged()
             {
                 DisplayPowerType = (SpellPowerType)unitState.DisplayPowerType;
+            }
+
+            private void OnDisplayPowerMaxChanged()
+            {
+                SetMaxPower(DisplayPowerType, unitState.DisplayPowerMax);
+            }
+
+            private void OnDisplayPowerChanged()
+            {
+                SetPower(DisplayPowerType, unitState.DisplayPower);
             }
 
             private void OnClassTypeChanged()

@@ -13,8 +13,8 @@ namespace Client
     public partial class RenderingReference : ScriptableReferenceClient
     { 
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
-        [SerializeField, UsedImplicitly] private UnitRenderer unitRendererPrototype;
         [SerializeField, UsedImplicitly] private BalanceReference balance;
+        [SerializeField, UsedImplicitly] private UnitRenderer unitRendererPrototype;
         [SerializeField, UsedImplicitly] private NameplateController nameplateController;
         [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
         [SerializeField, UsedImplicitly] private SpellVisualController spellVisualController;

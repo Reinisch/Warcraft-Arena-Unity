@@ -34,7 +34,7 @@ namespace Core
         private State state;
 
         public Map<Guid, UdpSession> Sessions => BoltNetwork.SessionList;
-        public string Version => "1.0.60";
+        public string Version => "1.0.61";
 
         internal void Register()
         {
