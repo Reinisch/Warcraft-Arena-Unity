@@ -12,6 +12,8 @@ namespace Core
     {
         private static int SpellAliveCount;
 
+        private List<(SpellPowerType, int)> powerCosts = ListPoolContainer<(SpellPowerType, int)>.Take();
+
         private SpellValue spellValue;
         private readonly SpellManager spellManager;
         private readonly SpellCastFlags spellCastFlags;
@@ -89,6 +91,9 @@ namespace Core
             chargeDroppedModifierAuras.Clear();
             appliedModifiers.Clear();
             unappliedModifiers.Clear();
+
+            ListPoolContainer<(SpellPowerType, int)>.Return(powerCosts);
+            powerCosts = null;
 
             ImplicitTargets.Dispose();
             ExplicitTargets.Dispose();
@@ -236,11 +241,11 @@ namespace Core
             }
         }
 
-
         internal SpellCastResult Prepare()
         {
             ExecutionState = SpellExecutionState.Preparing;
             PrepareExplicitTarget();
+            SpellInfo.CalculatePowerCosts(Caster, powerCosts, this);
 
             SpellCastResult result = ValidateCast();
             if (result != SpellCastResult.Success)
@@ -298,6 +303,56 @@ namespace Core
             castResult = ValidateAuras();
             if (castResult != SpellCastResult.Success)
                 return castResult;
+
+            castResult = ValidatePowers();
+            if (castResult != SpellCastResult.Success)
+                return castResult;
+
+            return SpellCastResult.Success;
+        }
+
+        private SpellCastResult ValidatePowers()
+        {
+            foreach ((SpellPowerType, int) cost in powerCosts)
+            {
+                if (cost.Item1 == SpellPowerType.Health && Caster.Health <= cost.Item2)
+                    return SpellCastResult.NoPower;
+
+                if (Caster.Attributes.Power(cost.Item1) < cost.Item2)
+                {
+                    switch (cost.Item1)
+                    {
+                        case SpellPowerType.Mana:
+                            return SpellCastResult.NoMana;
+                        case SpellPowerType.Rage:
+                            return SpellCastResult.NoRage;
+                        case SpellPowerType.Health:
+                            return SpellCastResult.NoHealth;
+                        case SpellPowerType.Energy:
+                            return SpellCastResult.NoEnergy;
+                        case SpellPowerType.ComboPoints:
+                            return SpellCastResult.NoComboPoints;
+                        case SpellPowerType.Focus:
+                        case SpellPowerType.Runes:
+                        case SpellPowerType.RunicPower:
+                        case SpellPowerType.SoulShards:
+                        case SpellPowerType.LunarPower:
+                        case SpellPowerType.HolyPower:
+                        case SpellPowerType.AlternatePower:
+                        case SpellPowerType.Maelstrom:
+                        case SpellPowerType.Chi:
+                        case SpellPowerType.Insanity:
+                        case SpellPowerType.BurningEmbers:
+                        case SpellPowerType.DemonicFury:
+                        case SpellPowerType.ArcaneCharges:
+                        case SpellPowerType.Fury:
+                        case SpellPowerType.Pain:
+                            goto default;
+                        default:
+                            return SpellCastResult.NoPower;
+                    }
+                }
+            }
 
             return SpellCastResult.Success;
         }

@@ -15,6 +15,9 @@ MonoBehaviour:
   id: 2
   container: {fileID: 11400000, guid: 1799f213e8705f444bcac9d7b6ff3cb6, type: 2}
   powerType: 3
+  attributeTypeCurrent: 100
+  attributeTypeMax: 102
+  attributeTypeMaxNoMods: 101
   minBasePower: 0
   maxBasePower: 100
   maxTotalPower: 1000

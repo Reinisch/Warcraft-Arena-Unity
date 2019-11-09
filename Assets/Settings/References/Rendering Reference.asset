@@ -148,9 +148,9 @@ MonoBehaviour:
   colorsBySpellPowerType:
     items:
     - key: 0
-      value: {r: 0, g: 0, b: 1, a: 1}
+      value: {r: 0.09803922, g: 0.09803922, b: 0.92156863, a: 1}
     - key: 1
-      value: {r: 1, g: 0, b: 0, a: 1}
+      value: {r: 0.92156863, g: 0.09985761, b: 0.09985761, a: 1}
     - key: 3
-      value: {r: 1, g: 1, b: 0, a: 1}
-    defaultValue: {r: 0, g: 0, b: 1, a: 1}
+      value: {r: 0.88235295, g: 0.88235295, b: 0.09803922, a: 1}
+    defaultValue: {r: 0.09803922, g: 0.09803922, b: 0.92156863, a: 1}

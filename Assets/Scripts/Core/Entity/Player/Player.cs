@@ -207,7 +207,7 @@ namespace Core
                     PlayerSpells.AddClassSpells(CurrentClass);
             }
 
-            Attributes.UpdateDisplayPower();
+            Attributes.UpdateAvailablePowers();
         }
 
         private void HandleStateCallbacks(bool add)

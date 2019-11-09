@@ -41,7 +41,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private float speed;
 
         [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos = new List<SpellEffectInfo>();
-        [SerializeField, UsedImplicitly] private List<SpellPowerEntry> spellPowerEntries = new List<SpellPowerEntry>();
+        [SerializeField, UsedImplicitly] private List<SpellPowerCostInfo> spellPowerCostInfos = new List<SpellPowerCostInfo>();
         [SerializeField, UsedImplicitly] private List<SpellCastCondition> targetingConditions;
 
         [UsedImplicitly] private SpellMechanicsFlags combinedEffectMechanics;
@@ -73,7 +73,7 @@ namespace Core
         public SpellRangeFlags RangedFlags => rangedFlags;
         public SpellInterruptFlags InterruptFlags => interruptFlags;
 
-        public List<SpellPowerEntry> PowerCosts => spellPowerEntries;
+        public List<SpellPowerCostInfo> PowerCosts => spellPowerCostInfos;
         public List<SpellEffectInfo> Effects => spellEffectInfos;
 
         public int CooldownTime => cooldownTime;
@@ -294,6 +294,38 @@ namespace Core
             if (caster != null && spell != null)
                 range = caster.Spells.ApplySpellModifier(spell, SpellModifierType.Range, range);
             return range;
+        }
+
+        public void CalculatePowerCosts(Unit caster, List<(SpellPowerType, int)> powerCosts, Spell spell = null)
+        {
+            foreach (SpellPowerCostInfo powerCostInfo in spellPowerCostInfos)
+            {
+                int powerCost = powerCostInfo.PowerCost;
+                if (powerCostInfo.PowerCostPercentage > 0)
+                {
+                    switch (powerCostInfo.SpellPowerType)
+                    {
+                        case SpellPowerType.Health:
+                            powerCost += caster.MaxHealth.ApplyPercentage(powerCostInfo.PowerCostPercentage);
+                            break;
+                        case SpellPowerType.Mana:
+                            powerCost += caster.Attributes.MaxPowerWithNoMods(SpellPowerType.Mana).ApplyPercentage(powerCostInfo.PowerCostPercentage);
+                            break;
+                        case SpellPowerType.Rage:
+                        case SpellPowerType.Focus:
+                        case SpellPowerType.Energy:
+                            powerCost += caster.Attributes.MaxPower(powerCostInfo.SpellPowerType).ApplyPercentage(powerCostInfo.PowerCostPercentage);
+                            break;
+                        default:
+                            continue;
+                    }
+                }
+
+                if (spell != null && caster is Player player)
+                    powerCost = (int)player.Spells.ApplySpellModifier(spell, SpellModifierType.Cost, powerCost);
+
+                powerCosts.Add((powerCostInfo.SpellPowerType, powerCost));
+            }
         }
 
 #if UNITY_EDITOR

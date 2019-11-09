@@ -82,6 +82,14 @@ MonoBehaviour:
     LocalizedString: {fileID: 11400000, guid: b9a36bce9dd71df46b0a21452d0cde0d, type: 2}
   - SpellCastResult: 34
     LocalizedString: {fileID: 11400000, guid: 77262409bd5194c4cb132f8e71fd9601, type: 2}
+  - SpellCastResult: 36
+    LocalizedString: {fileID: 11400000, guid: 55b6944407906054383d8f6a53be28e3, type: 2}
+  - SpellCastResult: 37
+    LocalizedString: {fileID: 11400000, guid: fb7a223487a587648b0e24ea60057944, type: 2}
+  - SpellCastResult: 38
+    LocalizedString: {fileID: 11400000, guid: 00a91d0fc4464ae4f8d96a51e29bf5d2, type: 2}
+  - SpellCastResult: 39
+    LocalizedString: {fileID: 11400000, guid: e72612149acbffc4bb3f4c933dc2ce48, type: 2}
   spellMissTypes:
   - SpellMissType: 7
     LocalizedString: {fileID: 11400000, guid: 8ec300e1d87b2924ea3efba38e1a41f4, type: 2}

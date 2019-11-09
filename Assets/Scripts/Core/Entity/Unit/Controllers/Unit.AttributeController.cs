@@ -24,8 +24,9 @@ namespace Core
             private float scale;
             private int modelId;
 
-            private readonly EntityAttributeInt[,] powers = new EntityAttributeInt[UnitUtils.MaxUnitPowers, 2];
+            private readonly EntityAttributeInt[,] powers = new EntityAttributeInt[UnitUtils.MaxUnitPowers, 3];
             private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
+            private readonly Dictionary<SpellPowerType, int> spellPowerIndexes = new Dictionary<SpellPowerType, int>();
             private readonly Dictionary<(StatType, StatModifierType), float> statModifiers = new Dictionary<(StatType, StatModifierType), float>();
 
             internal EntityAttributeInt Health { get; private set; }
@@ -41,9 +42,6 @@ namespace Core
             internal int OriginalModelId { get; set; }
             internal Unit Target { get; private set; }
             internal IReadOnlyDictionary<UnitMoveType, float> SpeedRates => speedRates;
-
-            public bool HasClientLogic => true;
-            public bool HasServerLogic => true;
 
             internal FactionDefinition Faction
             {
@@ -179,6 +177,9 @@ namespace Core
                 }
             }
 
+            public bool HasClientLogic => true;
+            public bool HasServerLogic => true;
+
             void IUnitBehaviour.DoUpdate(int deltaTime)
             {
                 if (EmoteType != EmoteType.None && EmoteType.IsState() && unit.MovementInfo.IsMoving)
@@ -235,12 +236,6 @@ namespace Core
                         ModHaste.Reset();
                         ModRegenHaste.Reset();
                         CritPercentage.Reset();
-
-                        for (int i = 0; i < powers.GetLength(0); i++)
-                        {
-                            powers[i, 0].Reset();
-                            powers[i, 1].Reset();
-                        }
                     }
                     else
                     {
@@ -259,8 +254,9 @@ namespace Core
 
                         for (int i = 0; i < powers.GetLength(0); i++)
                         {
-                            powers[i, 0] = new EntityAttributeInt(unit, 0, int.MaxValue, EntityAttributes.Power);
-                            powers[i, 1] = new EntityAttributeInt(unit, 0, int.MaxValue, EntityAttributes.MaxPower);
+                            powers[i, 0] = new EntityAttributeInt(unit, 0, int.MaxValue, 0);
+                            powers[i, 1] = new EntityAttributeInt(unit, 0, int.MaxValue, 0);
+                            powers[i, 2] = new EntityAttributeInt(unit, 0, int.MaxValue, 0);
                         }
                     }
 
@@ -291,7 +287,13 @@ namespace Core
                 unitState = null;
                 unit = null;
             }
-            
+
+            internal int Power(SpellPowerType powerType) => spellPowerIndexes.TryGetValue(powerType, out int i) ? powers[i, 0].Value : 0;
+
+            internal int MaxPower(SpellPowerType powerType) => spellPowerIndexes.TryGetValue(powerType, out int i) ? powers[i, 1].Value : 0;
+
+            internal int MaxPowerWithNoMods(SpellPowerType powerType) => spellPowerIndexes.TryGetValue(powerType, out int i) ? powers[i, 2].Value : 0;
+
             internal void UpdateTarget(ulong newTargetId = UnitUtils.NoTargetId, Unit newTarget = null, bool updateState = false)
             {
                 targetId = newTarget?.Id ?? newTargetId;
@@ -399,14 +401,42 @@ namespace Core
 
             internal void UpdateDisplayPower()
             {
-                SpellPowerType newPowerType = SpellPowerType.Mana;
+                SpellPowerType newPowerType;
                 // TEMP untill shapeshifting implemented: Cat Form
                 if (unit.Auras.HasAuraWithSpell(36))
                     newPowerType = SpellPowerType.Energy;
-                else if (unit is Player player)
-                    newPowerType = player.CurrentClass.MainPowerType;
+                else
+                    newPowerType = unit.Balance.ClassesByType[unit.ClassType].MainPowerType;
 
                 DisplayPowerType = newPowerType;
+            }
+
+            internal void UpdateAvailablePowers()
+            {
+                ClassInfo unitClassInfo = unit.Balance.ClassesByType[ClassType];
+                int maxPowers = powers.GetLength(0);
+                int usedPowers = unitClassInfo.PowerTypes.Count;
+
+                Assert.IsTrue(usedPowers <= maxPowers);
+
+                spellPowerIndexes.Clear();
+                for (int i = 0; i < usedPowers ; i++)
+                {
+                    SpellPowerTypeInfo powerTypeInfo = unitClassInfo.PowerTypes[i];
+                    powers[i, 0].ModifyAttribute(powerTypeInfo.MinBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeCurrent);
+                    powers[i, 1].ModifyAttribute(powerTypeInfo.MinBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeMax);
+                    powers[i, 2].ModifyAttribute(powerTypeInfo.MinBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeMaxNoMods);
+                    spellPowerIndexes[powerTypeInfo.PowerType] = i;
+                }
+
+                for (int i = usedPowers; i < maxPowers; i++)
+                {
+                    powers[i, 0].ModifyAttribute(0, 0, 0, 0, 0);
+                    powers[i, 1].ModifyAttribute(0, 0, 0, 0, 0);
+                    powers[i, 2].ModifyAttribute(0, 0, 0, 0, 0);
+                }
+
+                UpdateDisplayPower();
             }
 
             internal int CalculateTotalStatValue(StatType statType)
@@ -428,6 +458,28 @@ namespace Core
             {
                 ComboPoints.Set(points);
                 unitState.ComboPoints = ComboPoints.Value;
+            }
+
+            internal void SetPower(SpellPowerType powerType, int newValue)
+            {
+                if (spellPowerIndexes.TryGetValue(powerType, out int i))
+                {
+                    powers[i, 0].Set(newValue);
+
+                    if (powerType == DisplayPowerType)
+                        EventHandler.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.Power);
+                }
+            }
+
+            internal void SetMaxPower(SpellPowerType powerType, int newValue)
+            {
+                if (spellPowerIndexes.TryGetValue(powerType, out int i))
+                {
+                    powers[i, 1].Set(newValue);
+
+                    if (powerType == DisplayPowerType)
+                        EventHandler.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.MaxPower);
+                }
             }
 
             internal float Speed(UnitMoveType type) => SpeedRates[type] * unit.Balance.UnitMovementDefinition.BaseSpeedByType(type);

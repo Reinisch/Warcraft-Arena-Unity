@@ -52,6 +52,8 @@ namespace Core
 
             createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
+
+            Attributes.UpdateAvailablePowers();
         }
 
         protected override void HandleDetach()

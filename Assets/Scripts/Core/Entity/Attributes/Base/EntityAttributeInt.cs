@@ -20,7 +20,7 @@ namespace Core
         internal override int Set(int value)
         {
             int oldValue = CurrentValue;
-            int newValue = Mathf.Clamp(value, 0, MaxValue);
+            int newValue = Mathf.Clamp(value, MinValue, MaxValue);
             CurrentValue = newValue;
 
             if (oldValue != newValue)

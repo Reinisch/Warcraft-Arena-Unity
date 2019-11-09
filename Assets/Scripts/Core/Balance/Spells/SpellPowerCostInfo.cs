@@ -5,16 +5,14 @@ using UnityEngine;
 namespace Core
 {
     [Serializable]
-    public class SpellPowerEntry
+    public class SpellPowerCostInfo
     {
         [SerializeField, UsedImplicitly] private SpellPowerType spellPowerType;
-        [SerializeField, UsedImplicitly] private int powerCost;
         [SerializeField, UsedImplicitly] private float powerCostPercentage;
-        [SerializeField, UsedImplicitly] private float powerCostPercentagePerSecond;
+        [SerializeField, UsedImplicitly] private int powerCost;
 
         public SpellPowerType SpellPowerType => spellPowerType;
-        public int PowerCost => powerCost;
         public float PowerCostPercentage => powerCostPercentage;
-        public float PowerCostPercentagePerSecond => powerCostPercentagePerSecond;
+        public int PowerCost => powerCost;
     }
 }

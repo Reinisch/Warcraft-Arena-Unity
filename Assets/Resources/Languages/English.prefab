@@ -423,3 +423,11 @@ MonoBehaviour:
     Value: Reduces all damage you take by {0}% for {1} sec.
   - StringReference: {fileID: 11400000, guid: 38fde2ed91299f74087eb71029be3eaf, type: 2}
     Value: Survival Instincts
+  - StringReference: {fileID: 11400000, guid: fb7a223487a587648b0e24ea60057944, type: 2}
+    Value: Not Enough Energy
+  - StringReference: {fileID: 11400000, guid: e72612149acbffc4bb3f4c933dc2ce48, type: 2}
+    Value: Not Enough Health
+  - StringReference: {fileID: 11400000, guid: 55b6944407906054383d8f6a53be28e3, type: 2}
+    Value: Not Enough Mana
+  - StringReference: {fileID: 11400000, guid: 00a91d0fc4464ae4f8d96a51e29bf5d2, type: 2}
+    Value: Not Enough Rage

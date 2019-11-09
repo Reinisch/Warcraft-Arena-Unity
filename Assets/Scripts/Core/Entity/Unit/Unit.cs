@@ -54,8 +54,8 @@ namespace Core
         public int Model => Attributes.ModelId;
         public int Health => Attributes.Health.Value;
         public int MaxHealth => Attributes.MaxHealth.Value;
-        public int Power => 100;
-        public int MaxPower => 100;
+        public int Power => Attributes.Power(DisplayPowerType);
+        public int MaxPower => Attributes.MaxPower(DisplayPowerType);
         public int ComboPoints => Attributes.ComboPoints.Value;
         public int SpellPower => Attributes.SpellPower.Value;
         public int EmoteFrame => entityState.EmoteFrame;
