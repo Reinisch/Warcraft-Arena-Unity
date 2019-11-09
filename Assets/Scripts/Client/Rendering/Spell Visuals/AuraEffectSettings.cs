@@ -24,4 +24,3 @@ namespace Client.Spells
         public bool KeepAliveWithNoParticles => true;
     }
 }
-

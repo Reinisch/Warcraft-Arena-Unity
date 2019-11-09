@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Spell Effect Settings - Shred
   m_EditorClassIdentifier: 
   spellInfo: {fileID: 11400000, guid: 3c8635791c95b6b4d95cdb9b8384b4ee, type: 2}
-  spellIcon: {fileID: 21300000, guid: f466f42de26a90c489e372a1e298f059, type: 3}
+  spellIcon: {fileID: 21300000, guid: 03906d5ec267208488eea588941246ee, type: 3}
   visualEffects: []
