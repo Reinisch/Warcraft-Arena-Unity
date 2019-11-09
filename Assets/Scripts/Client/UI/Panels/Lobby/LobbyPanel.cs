@@ -226,7 +226,13 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonReference.StartConnection(lobbySessionSlot.UdpSession, new ClientConnectionToken(playerNameInput.text), OnConnectSuccess, OnConnectFail);
+            var clientConnectionToken = new ClientConnectionToken
+            {
+                PrefferedClass = (ClassType) PlayerPrefs.GetInt(UnitUtils.PreferredClassPrefName, 0),
+                Name = playerNameInput.text
+            };
+
+            photonReference.StartConnection(lobbySessionSlot.UdpSession, clientConnectionToken, OnConnectSuccess, OnConnectFail);
 
             void OnConnectFail(ClientConnectFailReason failReason)
             {

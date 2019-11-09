@@ -22,6 +22,7 @@ namespace Client
 
             MapDefinition = mapDefiniton;
             mapFrame.sprite = mapDefiniton.SlotBackground;
+            slotButton.interactable = MapDefinition.IsAvailable;
 
             slotButton.onClick.AddListener(OnMapSlotClicked);
         }

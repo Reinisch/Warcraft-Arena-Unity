@@ -125,19 +125,25 @@ namespace Server
             Map mainMap = MapManager.FindMap(1);
             Transform spawnPoint = RandomUtils.GetRandomElement(mainMap.Settings.FindSpawnPoints(Team.Alliance));
 
+            ClassType classType;
             string playerName;
             string unityId;
             if (boltConnection == null)
             {
                 playerName = serverRoomToken.LocalPlayerName;
                 unityId = SystemInfo.deviceUniqueIdentifier;
+                classType = (ClassType)PlayerPrefs.GetInt(UnitUtils.PreferredClassPrefName, 0);
             }
             else
             {
                 var connectionToken = (ClientConnectionToken) boltConnection.ConnectToken;
                 playerName = connectionToken.Name;
                 unityId = connectionToken.UnityId;
+                classType = connectionToken.PrefferedClass;
             }
+
+            if (!mainMap.Settings.Balance.ClassesByType.TryGetValue(classType, out ClassInfo classInfo) || !classInfo.IsAvailable)
+                classType = ClassType.Mage;
 
             var playerCreateToken = new Player.CreateToken
             {
@@ -146,7 +152,7 @@ namespace Server
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
                 ModelId = 1,
-                ClassType = ClassType.Mage,
+                ClassType = classType,
                 OriginalModelId = 1,
                 FactionId = mainMap.Settings.Balance.DefaultFaction.FactionId,
                 PlayerName = playerName

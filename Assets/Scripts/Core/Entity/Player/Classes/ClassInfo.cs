@@ -9,6 +9,7 @@ namespace Core
     public class ClassInfo : ScriptableUniqueInfo<ClassInfo>
     {
         [SerializeField, UsedImplicitly] private ClassInfoContainer container;
+        [SerializeField, UsedImplicitly] private bool isAvailable;
         [SerializeField, UsedImplicitly] private ClassType classType;
         [SerializeField, UsedImplicitly] private List<SpellPowerTypeInfo> powerTypes;
         [SerializeField, UsedImplicitly] private List<SpellInfo> classSpells;
@@ -19,6 +20,7 @@ namespace Core
         protected override ScriptableUniqueInfoContainer<ClassInfo> Container => container;
         protected override ClassInfo Data => this;
 
+        public bool IsAvailable => isAvailable;
         public ClassType ClassType => classType;
         public SpellPowerType MainPowerType => powerTypes[0].PowerType;
         public IReadOnlyList<SpellInfo> ClassSpells => classSpells;

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Lordaeron 1 Map Definition
   m_EditorClassIdentifier: 
   id: 1
+  isAvailable: 1
   mapName: Lordaeron
   maxPlayers: 8
   mapType: 4

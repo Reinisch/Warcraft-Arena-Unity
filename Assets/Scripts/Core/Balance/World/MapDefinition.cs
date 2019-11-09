@@ -7,6 +7,7 @@ namespace Core
     public class MapDefinition : ScriptableObject
     {
         [SerializeField, UsedImplicitly] private int id;
+        [SerializeField, UsedImplicitly] private bool isAvailable;
         [SerializeField, UsedImplicitly] private string mapName;
         [SerializeField, UsedImplicitly] private int maxPlayers = 10;
         [SerializeField, UsedImplicitly] private MapType mapType;
@@ -14,6 +15,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private Sprite slotBackground;
 
         public int Id => id;
+        public bool IsAvailable => isAvailable;
         public string MapName => mapName;
         public int MaxPlayers => maxPlayers;
         public MapType MapType => mapType;

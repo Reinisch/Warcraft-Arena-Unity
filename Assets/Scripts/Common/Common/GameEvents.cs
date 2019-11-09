@@ -44,6 +44,7 @@
 
         HotkeyStateChanged,
         HotkeyBindingChanged,
+        LobbyClassChanged,
         GameOptionChanged
     }
 }

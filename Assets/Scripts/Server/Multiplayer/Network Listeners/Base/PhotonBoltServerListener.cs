@@ -69,7 +69,7 @@ namespace Server
         {
             base.ConnectRequest(endpoint, token);
 
-            if (!(token is ClientConnectionToken clientToken))
+            if (!(token is ClientConnectionToken clientToken) || !clientToken.IsValid)
             {
                 BoltNetwork.Refuse(endpoint, new ClientRefuseToken(ConnectRefusedReason.InvalidToken));
                 return;

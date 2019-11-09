@@ -8,6 +8,7 @@ namespace Core
     public static class UnitUtils
     {
         public const ulong NoTargetId = 0u;
+        public const string PreferredClassPrefName = nameof(PreferredClassPrefName);
         public const int EmoteOneShotFrameThreshold = 120;
         public const int EmoteStateMovementFrameThreshold = 20;
         public const int MaxUnitPowers = 6;
