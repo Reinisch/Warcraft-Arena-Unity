@@ -21,4 +21,4 @@ MonoBehaviour:
   minBasePower: 0
   maxBasePower: 100
   maxTotalPower: 1000
-  regeneration: 20
+  regeneration: 15

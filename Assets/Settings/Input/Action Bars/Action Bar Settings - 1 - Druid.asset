@@ -20,7 +20,7 @@ MonoBehaviour:
   buttons:
   - actionId: 37
     actionType: 0
-  - actionId: 38
+  - actionId: 46
     actionType: 0
   - actionId: 39
     actionType: 0

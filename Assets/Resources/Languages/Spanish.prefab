@@ -443,3 +443,8 @@ MonoBehaviour:
       by {1}% for their full duration. Lasts {3} sec.
   - StringReference: {fileID: 11400000, guid: 7c1044c4705d1c54f8ad53dd5f7cbaa1, type: 2}
     Value: Tiger's Fury
+  - StringReference: {fileID: 11400000, guid: 09073f45895c36a4a9d791ad10b39ec8, type: 2}
+    Value: "Mangle the target for ({0}% of Attack power) Physical damage.\r\n\r\nDeals
+      20% additional damage against bleeding targets\r\n\r\nGenerates {1} Energy."
+  - StringReference: {fileID: 11400000, guid: 4e51c054968a3ea41a123db75c199528, type: 2}
+    Value: Mangle
