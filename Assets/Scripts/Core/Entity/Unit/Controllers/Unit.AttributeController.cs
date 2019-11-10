@@ -508,6 +508,7 @@ namespace Core
             {
                 if (spellPowerIndexes.TryGetValue(powerType, out var i))
                 {
+                    newValue = Mathf.Clamp(newValue, powers[i.Item1, 0].Min, powers[i.Item1, 1].Value);
                     int delta = powers[i.Item1, 0].Set(newValue);
 
                     if (powerType == DisplayPowerType && updateDisplayPower)

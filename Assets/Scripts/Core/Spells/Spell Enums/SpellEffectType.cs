@@ -83,7 +83,7 @@
         Attack = 78,
         Sanctuary = 79,
         AddComboPoints = 80,
-        PushAbilityToActionBar = 81,
+        AddPower = 81,
         BindSight = 82,
         Duel = 83,
         Stuck = 84,

@@ -186,8 +186,11 @@ namespace Core
 
             internal Unit GetMeleeHitRedirectTarget(Unit victim, SpellInfo spellInfo = null) { return null; }
             
-            internal uint SpellDamageBonusDone(Unit target, uint damage, SpellDamageType damageType, SpellInfo spellInfo, Spell spell = null, uint stack = 1)
+            internal uint SpellDamageBonusDone(Unit target, uint damage, SpellDamageType damageType, SpellInfo spellInfo, Spell spell = null)
             {
+                float damageMultiplier = unit.Auras.TotalAuraMultiplier(AuraEffectType.ModifyDamagePercentDone);
+                damage = (uint) (damage * damageMultiplier);
+
                 if (spell != null)
                     damage = (uint)unit.Spells.ApplySpellModifier(spell, SpellModifierType.DamageMultiplier, damage);
 

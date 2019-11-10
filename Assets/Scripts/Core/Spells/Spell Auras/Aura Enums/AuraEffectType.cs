@@ -84,7 +84,7 @@
         ModBaseResistance = 83,
         ModRegen = 84,
         ModPowerRegen = 85,
-        ChannelDeathItem = 86,
+        ModifyDamagePercentDone = 86,
         ModifyDamagePercentTaken = 87,
         ModHealthRegenPercent = 88,
         PeriodicDamagePercent = 89,
