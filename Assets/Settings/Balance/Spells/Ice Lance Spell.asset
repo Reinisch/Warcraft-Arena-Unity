@@ -16,6 +16,7 @@ MonoBehaviour:
   baseValue: 35
   baseVariance: 5
   additionalValue: 0
+  usesComboPoints: 0
   calculationType: 1
   conditionalModifiers:
   - value: 400
@@ -61,5 +62,8 @@ MonoBehaviour:
   speed: 40
   spellEffectInfos:
   - {fileID: -7232521499262965016}
-  spellPowerEntries: []
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 1
+    powerCost: 0
   targetingConditions: []

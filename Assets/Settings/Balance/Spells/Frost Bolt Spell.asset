@@ -30,6 +30,7 @@ MonoBehaviour:
   baseValue: 140
   baseVariance: 20
   additionalValue: 0
+  usesComboPoints: 0
   calculationType: 1
   conditionalModifiers: []
 --- !u!114 &11400000
@@ -73,7 +74,10 @@ MonoBehaviour:
   spellEffectInfos:
   - {fileID: -524682570086448870}
   - {fileID: -6382031074732330876}
-  spellPowerEntries: []
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 1
+    powerCost: 0
   targetingConditions: []
 --- !u!114 &2556698898117067804
 MonoBehaviour:
