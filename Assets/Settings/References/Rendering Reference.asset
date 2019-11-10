@@ -76,6 +76,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 51185c3ec7b89604cbb803852d721168, type: 2}
   - {fileID: 11400000, guid: d9743b8209927ab45a2857b0a654b01c, type: 2}
   - {fileID: 11400000, guid: 4ab2ab8a4542fbe488441895f366a880, type: 2}
+  - {fileID: 11400000, guid: 23bd92933babe0f488d57007253e4916, type: 2}
   auraEffectSettings:
   - {fileID: 11400000, guid: ead2673873050dc408333463f7777aea, type: 2}
   - {fileID: 11400000, guid: 81c714e7642f53944ad5911a9e63b01c, type: 2}
@@ -105,6 +106,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 27e37de3e5c990f46a66f7aa056715e1, type: 2}
   - {fileID: 11400000, guid: a04647f342131e246a411c4dd93ab9e3, type: 2}
   - {fileID: 11400000, guid: b4ec6f9516f09834fb5f461de531c794, type: 2}
+  - {fileID: 11400000, guid: 450fc693f4fa6f949862528a66ce0cf0, type: 2}
   modelSettingsContainer: {fileID: 11400000, guid: dfd880d432e89ef4194ba2772d0fd38a,
     type: 2}
   classIconsByClassType:

@@ -438,3 +438,8 @@ MonoBehaviour:
       Does not break prowling.'
   - StringReference: {fileID: 11400000, guid: fcb2775d2ad2f5f4f8d084dfced77011, type: 2}
     Value: Dash
+  - StringReference: {fileID: 11400000, guid: 7fd4a68b19c952741b019955c63d5357, type: 2}
+    Value: Instantly restores {0} Energy, and increases the damage of all your attacks
+      by {1}% for their full duration. Lasts {3} sec.
+  - StringReference: {fileID: 11400000, guid: 7c1044c4705d1c54f8ad53dd5f7cbaa1, type: 2}
+    Value: Tiger's Fury
