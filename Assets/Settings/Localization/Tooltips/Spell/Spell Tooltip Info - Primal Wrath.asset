@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2c4714ebf4c7948b39380ca36fbd21, type: 3}
+  m_Name: Spell Tooltip Info - Primal Wrath
+  m_EditorClassIdentifier: 
+  id: 40
+  container: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9, type: 2}
+  spellInfo: {fileID: 11400000, guid: e4ffcafee0c31aa499c805b395c97da8, type: 2}
+  spellNameString: {fileID: 11400000, guid: c4a6c342c93145b4eb9e7518eede1854, type: 2}
+  spellDescriptionString: {fileID: 11400000, guid: e4b3b48d27dde2a42b2380dc6df9577f,
+    type: 2}
+  argumentSettings:
+  - argumentSource: {fileID: 6733214444326560321, guid: e4ffcafee0c31aa499c805b395c97da8,
+      type: 2}
+    argumentType: 2
+  - argumentSource: {fileID: -3594919580810645934, guid: e4ffcafee0c31aa499c805b395c97da8,
+      type: 2}
+    argumentType: 1

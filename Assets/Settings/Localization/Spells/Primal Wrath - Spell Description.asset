@@ -9,12 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8561c76506537e144af228b520bfa5c9, type: 3}
-  m_Name: Cone Front 120 deg Max 6m From Caster vs Enemy - Spell Targeting 1
+  m_Script: {fileID: 11500000, guid: ebf30e8866844a947970eda779ff76d5, type: 3}
+  m_Name: Primal Wrath - Spell Description
   m_EditorClassIdentifier: 
-  referenceType: 1
-  targetChecks: 2
-  minRadius: 0
-  maxRadius: 6
-  targetDirection: 0
-  coneAngle: 120

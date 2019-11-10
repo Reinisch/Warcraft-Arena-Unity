@@ -9,7 +9,7 @@
         PortalTeleport = 4,
         TeleportDirect = 5,
         ApplyAura = 6,
-        EnvironmentalDamage = 7,
+        ApplyAuraOverride = 7,
         PowerDrain = 8,
         HealthLeech = 9,
         Heal = 10,

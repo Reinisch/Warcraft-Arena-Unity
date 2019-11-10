@@ -476,3 +476,12 @@ MonoBehaviour:
     Value: '{0} Rage'
   - StringReference: {fileID: 11400000, guid: f8d3b6863e5bac84f975e6708c4c60ab, type: 2}
     Value: '{0}% of Max Rage'
+  - StringReference: {fileID: 11400000, guid: e4b3b48d27dde2a42b2380dc6df9577f, type: 2}
+    Value: "Finishing move that deals instant damage and applies Rip to all enemies
+      within {0} yards. Lasts longer per combo point.\r\n\r\n  1 point  : ({1}% of
+      Attack power) * 1 plus Rip for 4 sec\r\n  2 points: ({1}% of Attack power) *
+      2 plus Rip for 6 sec\r\n  3 points: ({1}% of Attack power) * 3 plus Rip for
+      8 sec\r\n  4 points: ({1}% of Attack power) * 4 plus Rip for 10 sec\r\n  5 points:
+      ({1}% of Attack power) * 5 plus Rip for 12 sec"
+  - StringReference: {fileID: 11400000, guid: c4a6c342c93145b4eb9e7518eede1854, type: 2}
+    Value: Primal Wrath

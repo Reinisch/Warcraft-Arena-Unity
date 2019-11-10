@@ -128,9 +128,10 @@ namespace Core
                 return modifier;
             }
 
-            internal void RefreshOrCreateAura(AuraInfo auraInfo, SpellInfo spellInfo, Unit originalCaster, Spell spell)
+            internal void RefreshOrCreateAura(AuraInfo auraInfo, SpellInfo spellInfo, Unit originalCaster, Spell spell, int overrideDuration = -1)
             {
                 var ownedAura = FindOwnedAura();
+                bool refreshed = false;
 
                 if (ownedAura != null && ownedAura.AuraInfo.HasAttribute(AuraAttributes.StackSameAuraInMultipleSlots))
                     ownedAura = null;
@@ -146,13 +147,16 @@ namespace Core
                     RemoveNonStackableAuras(ownedAura);
                 }
                 else
+                {
                     ownedAura.Refresh();
+                    refreshed = true;
+                }
 
                 if (ownedAura.IsRemoved)
                     return;
 
-                int duration = originalCaster.Spells.CalculateAuraDuration(ownedAura.AuraInfo, unit, spell);
-                ownedAura.UpdateDuration(duration, duration);
+                (int, int) duration = originalCaster.Spells.CalculateAuraDuration(ownedAura.AuraInfo, unit, spell, refreshed ? ownedAura : null, overrideDuration);
+                ownedAura.UpdateDuration(duration.Item1, duration.Item2);
                 ownedAura.UpdateTargets();
 
                 Aura FindOwnedAura()

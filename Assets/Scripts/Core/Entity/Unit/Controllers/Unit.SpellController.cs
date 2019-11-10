@@ -502,16 +502,19 @@ namespace Core
                 }
             }
 
-            internal int CalculateAuraDuration(AuraInfo auraInfo, Unit target, Spell spell)
+            internal (int,int) CalculateAuraDuration(AuraInfo auraInfo, Unit target, Spell spell, Aura refreshedAura, int overridenDuration = -1)
             {
-                int minDuration = auraInfo.Duration;
-                int maxDuration = auraInfo.MaxDuration;
-                int duration = minDuration;
+                int duration = auraInfo.Duration;
 
-                if (auraInfo.HasAttribute(AuraAttributes.ComboAffectsDuration) && spell.ConsumedComboPoints > 0)
-                    duration = minDuration + (maxDuration - minDuration) * spell.ConsumedComboPoints / target.Attributes.ComboPoints.Max;
+                if (overridenDuration != -1)
+                    duration = overridenDuration;
+                else if (auraInfo.HasAttribute(AuraAttributes.ComboAffectsDuration) && spell.ConsumedComboPoints > 0)
+                    duration = auraInfo.Duration + (auraInfo.MaxDuration - auraInfo.Duration) * spell.ConsumedComboPoints / target.Attributes.ComboPoints.Max;
 
-                return duration;
+                if (refreshedAura != null && refreshedAura.Duration > duration)
+                    return (refreshedAura.Duration, refreshedAura.MaxDuration);
+
+                return (duration, duration);
             }
 
             internal int ModifySpellCastTime(Spell spell, int castTime)
