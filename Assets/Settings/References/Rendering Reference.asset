@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Rendering Reference
   m_EditorClassIdentifier: 
   defaultSpellIcon: {fileID: 21300000, guid: 76cd4c99ae5fb62478da1b60870f7f63, type: 3}
+  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   unitRendererPrototype: {fileID: 8283757307345493563, guid: dac238eecc77761418818a22bb332b12,
     type: 3}
-  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   nameplateController:
     rendering: {fileID: 11400000}
     nameplatePrototype: {fileID: 4237749462972623577, guid: 6938372095c24704a884bf0e6ad7c457,
@@ -45,6 +45,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 334b1daef42870940bc59ba8bfa326de, type: 2}
   - {fileID: 11400000, guid: 3be41a41312d0ff4d85e682954af6d0d, type: 2}
   - {fileID: 11400000, guid: c9a04cce21c36f74295bf39e533a7769, type: 2}
+  - {fileID: 11400000, guid: 96b164caf819e2149b5d62faa63bd69b, type: 2}
   - {fileID: 11400000, guid: 33a246ff290203047859532aa9d81303, type: 2}
   - {fileID: 11400000, guid: cc29c8cb9590af94399d15bc5b38917a, type: 2}
   - {fileID: 11400000, guid: 9f8631a0c71ef5b49a8aad690687982d, type: 2}
@@ -82,6 +83,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 23ce59855296ac64dac8cfcfd792f968, type: 2}
   - {fileID: 11400000, guid: 84bec5e5010050f4e82c16c477fa882f, type: 2}
   - {fileID: 11400000, guid: 9be18eafeb4bdb249a1275730f707c9a, type: 2}
+  - {fileID: 11400000, guid: cc3444a66907f1043b247420ffcadae4, type: 2}
   - {fileID: 11400000, guid: 145f192aaad9021468c6fad37b2b151a, type: 2}
   - {fileID: 11400000, guid: 88c4667d724aea7458037b35625665cd, type: 2}
   - {fileID: 11400000, guid: 1ca83cee00f686240af7f733601b9188, type: 2}

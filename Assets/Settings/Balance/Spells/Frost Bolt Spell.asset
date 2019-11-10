@@ -27,7 +27,7 @@ MonoBehaviour:
   m_Name: Frost Bolt Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 140
+  baseValue: 180
   baseVariance: 20
   additionalValue: 0
   usesComboPoints: 0

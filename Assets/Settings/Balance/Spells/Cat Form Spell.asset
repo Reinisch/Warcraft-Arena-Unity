@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
   mechanics: 0
-  increasePercent: 60
+  increasePercent: 40
 --- !u!114 &-2960885932938454696
 MonoBehaviour:
   m_ObjectHideFlags: 0

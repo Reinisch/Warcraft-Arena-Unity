@@ -431,3 +431,10 @@ MonoBehaviour:
     Value: Not Enough Mana
   - StringReference: {fileID: 11400000, guid: 00a91d0fc4464ae4f8d96a51e29bf5d2, type: 2}
     Value: Not Enough Rage
+  - StringReference: {fileID: 11400000, guid: 351e874136d257e41b0eb764c584a855, type: 2}
+    Value: 'Increases movement speed by {0}% for {1} sec.
+
+
+      Does not break prowling.'
+  - StringReference: {fileID: 11400000, guid: fcb2775d2ad2f5f4f8d084dfced77011, type: 2}
+    Value: Dash
