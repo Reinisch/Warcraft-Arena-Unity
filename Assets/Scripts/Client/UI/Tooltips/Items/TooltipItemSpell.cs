@@ -16,6 +16,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellName;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellRange;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellCastTime;
+        [SerializeField, UsedImplicitly] private TextMeshProUGUI spellCost;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellCooldown;
         [SerializeField, UsedImplicitly] private LocalizedString rangeFormatString;
         [SerializeField, UsedImplicitly] private LocalizedString cooldownFormatString;
@@ -58,6 +59,36 @@ namespace Client
                 // update cast time label
                 float castTime = (float)spellInfo.CastTime / 1000;
                 spellCastTime.text = castTime <= 0 ? castTimeInstantString.Value : string.Format(castTimeFormatString.Value, castTime);
+
+                // update cost
+                spellCost.text = string.Empty;
+                for (int i = 0; i < spellInfo.PowerCosts.Count; i++)
+                {
+                    SpellPowerCostInfo powerCost = spellInfo.PowerCosts[i];
+                    if (powerCost.PowerCostPercentage > 0)
+                    {
+                        if (spellCost.text != string.Empty)
+                            spellCost.text += " / ";
+
+                        spellCost.text += string.Format(LocalizationReference.Localize(powerCost.SpellPowerType, true).Value, powerCost.PowerCostPercentage);
+                    }
+
+                    if (powerCost.PowerCost > 0)
+                    {
+                        if (spellCost.text != string.Empty)
+                            spellCost.text += " / ";
+
+                        spellCost.text += string.Format(LocalizationReference.Localize(powerCost.SpellPowerType, false).Value, powerCost.PowerCost);
+                    }
+                }
+
+                if (spellInfo.HasAttribute(SpellAttributes.RequiresComboPoints))
+                {
+                    if (spellCost.text != string.Empty)
+                        spellCost.text += " / ";
+
+                    spellCost.text += LocalizationReference.Localize(SpellPowerType.ComboPoints, false).Value;
+                }
 
                 return true;
             }

@@ -19,12 +19,15 @@ namespace Client
         [SerializeField, UsedImplicitly] private List<SpellCastResultLink> spellCastResults;
         [SerializeField, UsedImplicitly] private List<SpellMissTypeLink> spellMissTypes;
         [SerializeField, UsedImplicitly] private List<ClientConnectFailReasonLink> clientConnectFailReasons;
+        [SerializeField, UsedImplicitly] private List<PowerTypeCostLink> powerTypeCosts;
 
         private static readonly Dictionary<KeyCode, string> StringsByKeyCode = new Dictionary<KeyCode, string>();
         private static readonly Dictionary<HotkeyModifier, string> StringsByHotkeyModifier = new Dictionary<HotkeyModifier, string>();
         private static readonly Dictionary<SpellCastResult, LocalizedString> StringsBySpellCastResult = new Dictionary<SpellCastResult, LocalizedString>();
         private static readonly Dictionary<SpellMissType, LocalizedString> StringsBySpellMissType = new Dictionary<SpellMissType, LocalizedString>();
         private static readonly Dictionary<ClientConnectFailReason, LocalizedString> StringsByClientConnectFailReason = new Dictionary<ClientConnectFailReason, LocalizedString>();
+        private static readonly Dictionary<SpellPowerType, PowerTypeCostLink> StringsBySpellPowerType = new Dictionary<SpellPowerType, PowerTypeCostLink>();
+
         private static LocalizedString MissingString;
         private static LocalizedString EmptyString;
 
@@ -44,8 +47,9 @@ namespace Client
             spellCastResults.ForEach(item => StringsBySpellCastResult.Add(item.SpellCastResult, item.LocalizedString));
             spellMissTypes.ForEach(item => StringsBySpellMissType.Add(item.SpellMissType, item.LocalizedString));
             clientConnectFailReasons.ForEach(item => StringsByClientConnectFailReason.Add(item.FailReason, item.LocalizedString));
+            powerTypeCosts.ForEach(item => StringsBySpellPowerType.Add(item.PowerType, item));
 
-            foreach(KeyCode item in Enum.GetValues(typeof(KeyCode)))
+            foreach (KeyCode item in Enum.GetValues(typeof(KeyCode)))
                 if (!StringsByKeyCode.ContainsKey(item))
                     StringsByKeyCode[item] = item.ToString();
 
@@ -60,6 +64,7 @@ namespace Client
             StringsByHotkeyModifier.Clear();
             StringsBySpellCastResult.Clear();
             StringsByClientConnectFailReason.Clear();
+            StringsBySpellPowerType.Clear();
             spellTooltipSettings.Unregister();
 
             MissingString = null;
@@ -92,6 +97,16 @@ namespace Client
 
             if (StringsByClientConnectFailReason.TryGetValue(failReason, out LocalizedString localizedString))
                 return localizedString;
+
+            return MissingString;
+        }
+
+        public static LocalizedString Localize(SpellPowerType powerType, bool isPercentage)
+        {
+            Assert.IsTrue(StringsBySpellPowerType.ContainsKey(powerType), $"Missing localization for PowerType: {powerType}");
+
+            if (StringsBySpellPowerType.TryGetValue(powerType, out PowerTypeCostLink powerTypeEntry))
+                return isPercentage ? powerTypeEntry.LocalizedPercentageString : powerTypeEntry.LocalizedRawString;
 
             return MissingString;
         }
