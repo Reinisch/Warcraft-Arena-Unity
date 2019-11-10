@@ -448,3 +448,11 @@ MonoBehaviour:
       20% additional damage against bleeding targets\r\n\r\nGenerates {1} Energy."
   - StringReference: {fileID: 11400000, guid: 4e51c054968a3ea41a123db75c199528, type: 2}
     Value: Mangle
+  - StringReference: {fileID: 11400000, guid: 5c36c00495c69c943908ab93102c6012, type: 2}
+    Value: "Finishing move that causes Physical damage and stuns the target. Damage
+      and duration increased per combo point:\r\n\r\n  1 point  : {0}%*1 Attack power
+      damage, 1 sec\r\n  2 points: {0}%*2 Attack power damage, 2 sec\r\n  3 points:
+      {0}%*3 Attack power damage, 3 sec\r\n  4 points: {0}%*4 Attack power damage,
+      4 sec\r\n  5 points: {0}%*5 Attack power damage, 5 sec"
+  - StringReference: {fileID: 11400000, guid: cbff82f50ee2ec440a6bc115690cf826, type: 2}
+    Value: Maim
