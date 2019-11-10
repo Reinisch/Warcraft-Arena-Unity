@@ -440,7 +440,7 @@ MonoBehaviour:
     Value: Dash
   - StringReference: {fileID: 11400000, guid: 7fd4a68b19c952741b019955c63d5357, type: 2}
     Value: Instantly restores {0} Energy, and increases the damage of all your attacks
-      by {1}% for their full duration. Lasts {3} sec.
+      by {1}% for their full duration. Lasts {2} sec.
   - StringReference: {fileID: 11400000, guid: 7c1044c4705d1c54f8ad53dd5f7cbaa1, type: 2}
     Value: Tiger's Fury
   - StringReference: {fileID: 11400000, guid: 09073f45895c36a4a9d791ad10b39ec8, type: 2}
