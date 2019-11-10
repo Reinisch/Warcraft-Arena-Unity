@@ -58,9 +58,14 @@ MonoBehaviour:
   m_Name: Ferocious Bite Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 90
+  baseValue: 70
   baseVariance: 5
   additionalValue: 0
   usesComboPoints: 1
   calculationType: 1
-  conditionalModifiers: []
+  conditionalModifiers:
+  - value: 100
+    condition: {fileID: 11400000, guid: a6546b56f534e424f9582e308d473c6e, type: 2}
+    conditionalModifierValue: {fileID: 11400000, guid: 484fc3b97d990044fb7a5c8be76ce602,
+      type: 2}
+    applicationType: 2

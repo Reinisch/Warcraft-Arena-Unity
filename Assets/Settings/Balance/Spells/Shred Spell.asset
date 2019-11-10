@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: Shred Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 100
+  baseValue: 150
   baseVariance: 10
   additionalValue: 20
   usesComboPoints: 0
   calculationType: 1
   conditionalModifiers:
-  - value: 150
+  - value: 50
     condition: {fileID: 11400000, guid: 2b91d1ec2baa1a34097b592f85566fe5, type: 2}
+    conditionalModifierValue: {fileID: 0}
     applicationType: 2
 --- !u!114 &11400000
 MonoBehaviour:
@@ -66,7 +67,7 @@ MonoBehaviour:
   spellPowerCostInfos:
   - spellPowerType: 3
     powerCostPercentage: 0
-    powerCost: 20
+    powerCost: 40
   targetingConditions: []
 --- !u!114 &3183479664869301193
 MonoBehaviour:
@@ -81,4 +82,4 @@ MonoBehaviour:
   m_Name: Shred Effect Add Combo Points
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
-  comboPoints: 1
+  comboPoints: 2

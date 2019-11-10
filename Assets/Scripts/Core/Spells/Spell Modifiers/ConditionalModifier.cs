@@ -11,19 +11,23 @@ namespace Core
     {
         [SerializeField, UsedImplicitly] private float value;
         [SerializeField, UsedImplicitly] private Condition condition;
+        [SerializeField, UsedImplicitly] private ConditionalModiferValue conditionalModifierValue;
         [SerializeField, UsedImplicitly] private SpellModifierApplicationType applicationType;
 
         public Condition Condition => condition;
 
-        public void Modify(ref float baseValue)
+        public void Modify(Unit caster, Unit target, ref float baseValue)
         {
+            float finalValue = value;
+            conditionalModifierValue?.Modify(caster, target, ref finalValue);
+
             switch (applicationType)
             {
                 case SpellModifierApplicationType.Flat:
-                    baseValue += value;
+                    baseValue += finalValue;
                     break;
                 case SpellModifierApplicationType.Percent:
-                    baseValue = baseValue.ApplyPercentage(value);
+                    baseValue += baseValue.ApplyPercentage(finalValue);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(applicationType), applicationType, "Unknown modifier application type!");

@@ -19,8 +19,9 @@ MonoBehaviour:
   usesComboPoints: 0
   calculationType: 1
   conditionalModifiers:
-  - value: 133
+  - value: 33
     condition: {fileID: 11400000, guid: 2b91d1ec2baa1a34097b592f85566fe5, type: 2}
+    conditionalModifierValue: {fileID: 0}
     applicationType: 2
 --- !u!114 &11400000
 MonoBehaviour:

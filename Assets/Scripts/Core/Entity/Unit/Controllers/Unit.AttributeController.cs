@@ -499,16 +499,16 @@ namespace Core
                 unitState.ComboPoints = ComboPoints.Value;
             }
 
-            internal void ModifyPower(SpellPowerType powerType, int delta)
+            internal int ModifyPower(SpellPowerType powerType, int delta)
             {
-                SetPower(powerType, Power(powerType) + delta);
+                return SetPower(powerType, Power(powerType) + delta);
             }
 
-            internal void SetPower(SpellPowerType powerType, int newValue, bool updateDisplayPower = true)
+            internal int SetPower(SpellPowerType powerType, int newValue, bool updateDisplayPower = true)
             {
                 if (spellPowerIndexes.TryGetValue(powerType, out var i))
                 {
-                    powers[i.Item1, 0].Set(newValue);
+                    int delta = powers[i.Item1, 0].Set(newValue);
 
                     if (powerType == DisplayPowerType && updateDisplayPower)
                     {
@@ -520,7 +520,11 @@ namespace Core
 
                         EventHandler.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.Power);
                     }
+
+                    return delta;
                 }
+
+                return 0;
             }
 
             internal void SetMaxPower(SpellPowerType powerType, int newValue)

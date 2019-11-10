@@ -46,7 +46,7 @@ MonoBehaviour:
   mechanics: 15
   period: 2000
   startPeriodicOnApply: 0
-  baseValue: 60
+  baseValue: 70
   additionalValue: 0
   schoolMask: 1
   calculationType: 1
