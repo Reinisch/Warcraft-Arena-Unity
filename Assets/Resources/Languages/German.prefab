@@ -485,3 +485,9 @@ MonoBehaviour:
       ({1}% of Attack power) * 5 plus Rip for 12 sec"
   - StringReference: {fileID: 11400000, guid: c4a6c342c93145b4eb9e7518eede1854, type: 2}
     Value: Primal Wrath
+  - StringReference: {fileID: 11400000, guid: d18501a181e703f4f8687c4a2c1684ac, type: 2}
+    Value: "Strikes all nearby enemies, dealing ({0}% of Attack power) Bleed damage
+      and an additional ({1}% of Attack power) Bleed damage every {2} sec for {3}
+      sec.\r\n\r\nAwards 1 combo point."
+  - StringReference: {fileID: 11400000, guid: 99b0395491efb2d499b11e42c6462523, type: 2}
+    Value: Thrash
