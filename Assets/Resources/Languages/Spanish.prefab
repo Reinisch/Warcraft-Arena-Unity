@@ -491,3 +491,7 @@ MonoBehaviour:
       sec.\r\n\r\nAwards 1 combo point."
   - StringReference: {fileID: 11400000, guid: 99b0395491efb2d499b11e42c6462523, type: 2}
     Value: Thrash
+  - StringReference: {fileID: 11400000, guid: 2c05406be42bdb7428d93b770a150258, type: 2}
+    Value: Roots the target in place for {0} sec. Damage may cancel the effect.
+  - StringReference: {fileID: 11400000, guid: f72ba9567a0cb974a9e4bfac01686b4c, type: 2}
+    Value: Entangling Roots
