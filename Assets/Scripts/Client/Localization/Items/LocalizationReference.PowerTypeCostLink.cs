@@ -1,6 +1,7 @@
 ﻿using System;
 using Client.Localization;
 using Core;
+using JetBrains.Annotations;
 
 namespace Client
 {
@@ -9,9 +10,9 @@ namespace Client
         [Serializable]
         private class PowerTypeCostLink
         {
-            public SpellPowerType PowerType;
-            public LocalizedString LocalizedRawString;
-            public LocalizedString LocalizedPercentageString;
+            [UsedImplicitly] public SpellPowerType PowerType;
+            [UsedImplicitly] public LocalizedString LocalizedRawString;
+            [UsedImplicitly] public LocalizedString LocalizedPercentageString;
         }
     }
 }

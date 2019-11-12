@@ -4,7 +4,7 @@ namespace Core
 {
     public abstract class ConfusedMovementGenerator<TUnit> : MovementGeneratorMedium<TUnit, ConfusedMovementGenerator<TUnit>> where TUnit : Unit
     {
-        private TimeTracker nextMoveTime;
+        private TimeTracker nextMoveTime = new TimeTracker();
 
         protected float X { get; set; }
         protected float Y { get; set; }

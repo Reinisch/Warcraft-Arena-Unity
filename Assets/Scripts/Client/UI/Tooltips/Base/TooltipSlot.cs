@@ -1,24 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using JetBrains.Annotations;
 
 namespace Client
 {
     public class TooltipSlot : MonoBehaviour
     {
-        [SerializeField]
-        private TooltipReference tooltipReference;
-        [SerializeField]
+        [UsedImplicitly, SerializeField]
         private RectTransform bounds;
-        [SerializeField]
+        [UsedImplicitly, SerializeField]
         private LayoutElement layoutElement;
-        [SerializeField]
+        [UsedImplicitly, SerializeField]
         private RectTransform rectTransform;
-        [SerializeField]
+        [UsedImplicitly, SerializeField]
         private VerticalLayoutGroup layoutGroup;
-        [SerializeField]
+        [UsedImplicitly, SerializeField]
         private TooltipItem item;
-        [SerializeField]
+        [UsedImplicitly, SerializeField]
         private float showingDelay;
 
         private IEnumerator tooltipRoutine;

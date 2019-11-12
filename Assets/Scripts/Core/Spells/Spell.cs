@@ -702,9 +702,9 @@ namespace Core
             if (ExplicitTargets.Target == null && targetsUnits)
             {
                 // try to use player selection as target, it has to be valid target for the spell
-                if (Caster is Player playerCaster && playerCaster.Target is Unit playerTarget)
-                    if (SpellInfo.CheckExplicitTarget(Caster, playerTarget) == SpellCastResult.Success)
-                        ExplicitTargets.Target = playerTarget;
+                if (Caster is Player playerCaster && playerCaster.Target != null)
+                    if (SpellInfo.CheckExplicitTarget(Caster, playerCaster.Target) == SpellCastResult.Success)
+                        ExplicitTargets.Target = playerCaster.Target;
 
                 // didn't find anything, try to use self as target
                 if (ExplicitTargets.Target == null && SpellInfo.ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitAlly))

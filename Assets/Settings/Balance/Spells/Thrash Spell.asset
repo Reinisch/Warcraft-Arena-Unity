@@ -90,6 +90,7 @@ MonoBehaviour:
   spellEffectInfos:
   - {fileID: 6008413051559781998}
   - {fileID: -8200027739462355239}
+  - {fileID: -8971187313066190627}
   spellPowerCostInfos:
   - spellPowerType: 3
     powerCostPercentage: 0

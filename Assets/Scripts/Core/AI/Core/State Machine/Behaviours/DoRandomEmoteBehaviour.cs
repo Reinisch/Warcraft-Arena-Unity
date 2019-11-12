@@ -12,7 +12,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private int emoteIntervalMin;
         [SerializeField, UsedImplicitly] private int emoteIntervalMax;
 
-        private TimeTracker emoteTimeTracker;
+        private TimeTracker emoteTimeTracker = new TimeTracker();
 
         protected override void OnStart()
         {
