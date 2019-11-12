@@ -4,7 +4,6 @@
     {
         public Unit Actor { get; private set; }
         public Unit ActionTarget { get; private set; }
-        public Unit TriggerTarget { get; private set; }
 
         public SpellTriggerFlags SpellTriggerFlags { get; private set; }
         public SpellDamageInfo SpellDamageInfo { get; private set; }
@@ -12,12 +11,11 @@
 
         public Spell Spell { get; }
 
-        public SpellTriggerActivationInfo(Unit actor, Unit actionTarget, Unit triggerTarget, Spell spell, 
+        public SpellTriggerActivationInfo(Unit actor, Unit actionTarget, Spell spell, 
             SpellTriggerFlags spellTriggerFlags, SpellDamageInfo spellDamageInfo, SpellHealInfo spellHealInfo)
         {
             Actor = actor;
             ActionTarget = actionTarget;
-            TriggerTarget = triggerTarget;
 
             Spell = spell;
             SpellDamageInfo = spellDamageInfo;

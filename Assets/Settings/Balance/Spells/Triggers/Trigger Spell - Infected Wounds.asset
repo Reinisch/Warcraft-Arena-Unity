@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5269379653665922444
+--- !u!114 &-1106450590350250659
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,32 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a080d3d8e3bb514cbc41be973e0210c, type: 3}
-  m_Name: Fingers of Frost Spell Trigger
+  m_Script: {fileID: 11500000, guid: 59b09348badfe3745a62b94099ca0063, type: 3}
+  m_Name: Trigger Spell - Infected Wounds Aura Decrease Speed
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
-  mechanics: 0
-  chance: 0.5
-  isCasterTriggerTarget: 1
-  canCasterBeTriggerTarget: 1
-  triggeredSpell: {fileID: 11400000, guid: 3eeb641152dd92e4db82461677a1fff0, type: 2}
-  triggerFlags: 32
-  triggerConditions:
-  - {fileID: 11400000, guid: c8237e57bf195e8449fccd52b040f453, type: 2}
---- !u!114 &-4341946936298652133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
-  m_Name: Fingers of Frost Effect Apply Aura
-  m_EditorClassIdentifier: 
-  targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
-  auraInfo: {fileID: 8598909192897174911}
+  mechanics: 11
+  decreasePercent: 20
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,20 +25,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
-  m_Name: Passive - Fingers of Frost
+  m_Name: Trigger Spell - Infected Wounds
   m_EditorClassIdentifier: 
-  id: 34
+  id: 53
   container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  explicitTargetType: 2
-  damageClass: 0
-  spellDispel: 0
-  mechanic: 0
-  explicitCastTargets: 8
-  schoolMask: 16
+  explicitTargetType: 1
+  damageClass: 2
+  spellDispel: 3
+  mechanic: 11
+  explicitCastTargets: 4
+  schoolMask: 8
   preventionType: 0
-  attributes: 1
-  attributesExtra: 49156
-  attributesCustom: 2048
+  attributes: 49152
+  attributesExtra: 49152
+  attributesCustom: 3072
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0
@@ -74,10 +54,10 @@ MonoBehaviour:
   maxRangeFriend: 0
   speed: 0
   spellEffectInfos:
-  - {fileID: -4341946936298652133}
+  - {fileID: 7654851986412684219}
   spellPowerCostInfos: []
   targetingConditions: []
---- !u!114 &8598909192897174911
+--- !u!114 &3019128723821459948
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,19 +67,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
-  m_Name: Fingers of Frost Aura
+  m_Name: Trigger Spell - Infected Wounds Aura
   m_EditorClassIdentifier: 
-  id: 24
+  id: 38
   container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
-  duration: -1
-  maxDuration: -1
+  duration: 8000
+  maxDuration: 8000
   maxStack: 1
   stateType: 0
   targetingMode: 1
   interruptFlags: 0
-  attributes: 0
+  attributes: 2
   auraEffects:
-  - {fileID: -5269379653665922444}
+  - {fileID: -1106450590350250659}
   auraScriptables: []
   usesCharges: 0
   maxCharges: 0
@@ -107,3 +87,17 @@ MonoBehaviour:
   damageInterruptValue: 0
   damageInterruptDelay: 0
   interruptValueType: 0
+--- !u!114 &7654851986412684219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Trigger Spell - Infected Wounds Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  auraInfo: {fileID: 3019128723821459948}

@@ -25,6 +25,9 @@ namespace Core.AuraEffects
             if (activationInfo.Spell.IsTriggered)
                 return false;
 
+            if (!EffectInfo.CanCasterBeTriggerTarget && activationInfo.Actor == activationInfo.ActionTarget)
+                return false;
+
             if (Aura.AuraInfo.UsesCharges && Aura.Charges < 1)
                 return false;
 

@@ -487,7 +487,7 @@ namespace Core
                     return;
 
                 var activatedSpellTriggers = new List<AuraEffectSpellTrigger>();
-                var activationInfo = new SpellTriggerActivationInfo(unit, target, null, spell, spellTriggerFlags, default, default);
+                var activationInfo = new SpellTriggerActivationInfo(unit, target, spell, spellTriggerFlags, default, default);
 
                 foreach (AuraEffectSpellTrigger spellTrigger in spellTriggers)
                     if (spellTrigger.WillTrigger(activationInfo))
@@ -498,7 +498,7 @@ namespace Core
                     if (activatedTrigger.Aura.AuraInfo.UsesCharges)
                         activatedTrigger.Aura.DropCharge();
 
-                    unit.Spells.TriggerSpell(activatedTrigger.EffectInfo.TriggeredSpell, target);
+                    unit.Spells.TriggerSpell(activatedTrigger.EffectInfo.TriggeredSpell, activatedTrigger.EffectInfo.IsCasterTriggerTarget ? unit : target);
                 }
             }
 
