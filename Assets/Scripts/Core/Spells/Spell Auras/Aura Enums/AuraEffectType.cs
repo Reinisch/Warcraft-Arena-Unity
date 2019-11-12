@@ -107,7 +107,7 @@
         AddFlatModifier = 107,
         AddPctModifier = 108,
         AddTargetTrigger = 109,
-        ModPowerRegenPercent = 110,
+        ModifyPowerRegenPercent = 110,
         AddCasterHitTrigger = 111,
         OverrideClassScripts = 112,
         ModRangedDamageTaken = 113,

@@ -201,7 +201,10 @@ namespace Core
                         int minValue = powers[powerEntry.Value.Item1, 0].Min;
                         int maxValue = powers[powerEntry.Value.Item1, 1].Value;
 
-                        accumulatedRegeneration[powerEntry.Value.Item1] += powerEntry.Value.Item2.Regeneration * deltaTime / 1000;
+                        float regeneratedValue = powerEntry.Value.Item2.Regeneration * deltaTime / 1000;
+                        regeneratedValue *= unit.Auras.TotalAuraMultiplier(AuraEffectType.ModifyPowerRegenPercent, (int)powerEntry.Key, ComparisonOperator.Equal);
+
+                        accumulatedRegeneration[powerEntry.Value.Item1] += regeneratedValue;
                         int deltaValue = Mathf.FloorToInt(accumulatedRegeneration[powerEntry.Value.Item1]);
                         accumulatedRegeneration[powerEntry.Value.Item1] -= deltaValue;
 

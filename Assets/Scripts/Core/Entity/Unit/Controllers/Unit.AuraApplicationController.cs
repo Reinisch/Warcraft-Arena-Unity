@@ -102,6 +102,20 @@ namespace Core
                 return multiplier;
             }
 
+            internal float TotalAuraMultiplier(AuraEffectType auraType, float secondaryValue, ComparisonOperator comparison)
+            {
+                if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
+                    return 1.0f;
+
+                float multiplier = 1.0f;
+
+                foreach (AuraEffect auraEffect in auraEffects)
+                    if (auraEffect.EffectInfo.SecondaryValue.CompareWith(secondaryValue, comparison))
+                        multiplier = multiplier.AddPercentage(auraEffect.Value);
+
+                return multiplier;
+            }
+
             internal float MaxPositiveAuraModifier(AuraEffectType auraType)
             {
                 if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
