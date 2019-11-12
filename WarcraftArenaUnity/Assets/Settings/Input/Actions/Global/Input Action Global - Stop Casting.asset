@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d738595b20e964785aa582a9648a67, type: 3}
+  m_Name: Input Action Global - Stop Casting
+  m_EditorClassIdentifier: 
+  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  action: {fileID: 11400000, guid: 9515b9e511b36164da18b9a571bc514d, type: 2}
+  hotkey: {fileID: 11400000, guid: 7d8c9c48c2a72d541aa40a0bbe6e7349, type: 2}
+  blockedByActions:
+  - {fileID: 11400000, guid: 55c705b65548d6f4fb837e1dfc4e4a76, type: 2}
+  blockInactiveWhen:
+  - {fileID: 11400000, guid: 21e5bbcdb5856f24884ee10a59a42456, type: 2}
+  hotkeyInactiveWhen: []

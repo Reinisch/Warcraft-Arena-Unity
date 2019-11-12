@@ -1,0 +1,22 @@
+{
+    "name": "Arena.Client",
+    "references": [
+        "Arena.Core",
+        "Arena.Common",
+        "Unity.TextMeshPro",
+        "Arena.Client.Effects",
+        "Arena.Client.UI",
+        "Arena.Client.Localization"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "CLIENT"
+    ],
+    "versionDefines": []
+}

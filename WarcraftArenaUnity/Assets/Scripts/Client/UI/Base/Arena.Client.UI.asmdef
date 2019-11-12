@@ -1,0 +1,17 @@
+{
+    "name": "Arena.Client.UI",
+    "references": [
+        "GUID:a284d292de88366448b0c312a762d5b3"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "CLIENT"
+    ],
+    "versionDefines": []
+}

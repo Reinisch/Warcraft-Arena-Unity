@@ -1,0 +1,15 @@
+{
+    "name": "Arena.Server",
+    "references": [
+        "Arena.Core",
+        "Arena.Common"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

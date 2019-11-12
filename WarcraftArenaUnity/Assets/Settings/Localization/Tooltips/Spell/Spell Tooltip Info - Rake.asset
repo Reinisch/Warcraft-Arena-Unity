@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2c4714ebf4c7948b39380ca36fbd21, type: 3}
+  m_Name: Spell Tooltip Info - Rake
+  m_EditorClassIdentifier: 
+  id: 30
+  container: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9, type: 2}
+  spellInfo: {fileID: 11400000, guid: 0fcbec3231a266244bb039eaa2ac68cf, type: 2}
+  spellNameString: {fileID: 11400000, guid: b5b6c6d312da3aa45ba023f0652afcb9, type: 2}
+  spellDescriptionString: {fileID: 11400000, guid: 59834240e9c03c747b070ec19485746f,
+    type: 2}
+  argumentSettings:
+  - argumentSource: {fileID: -3586057116648908537, guid: 0fcbec3231a266244bb039eaa2ac68cf,
+      type: 2}
+    argumentType: 1
+  - argumentSource: {fileID: -2205612922990015234, guid: 0fcbec3231a266244bb039eaa2ac68cf,
+      type: 2}
+    argumentType: 1
+  - argumentSource: {fileID: -2205612922990015234, guid: 0fcbec3231a266244bb039eaa2ac68cf,
+      type: 2}
+    argumentType: 3
+  - argumentSource: {fileID: -2444214905826940366, guid: 0fcbec3231a266244bb039eaa2ac68cf,
+      type: 2}
+    argumentType: 0
+  - argumentSource: {fileID: -95418200682359114, guid: 0fcbec3231a266244bb039eaa2ac68cf,
+      type: 2}
+    argumentType: 1

@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8071882942517910092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3355d1ae24de5154ea3cae67627fd581, type: 3}
+  m_Name: Hot Streak Aura Script
+  m_EditorClassIdentifier: 
+  critCheckedSpells:
+  - {fileID: 11400000, guid: 9f1abb6f8f5d45044bebb6287120da06, type: 2}
+  - {fileID: 11400000, guid: 9f925a37e1e897e49bfa08c77027dc32, type: 2}
+  - {fileID: 11400000, guid: f3d84b42c86ef574f9389831a1eb2bb2, type: 2}
+  heatingUpSpell: {fileID: 11400000, guid: 63446fad7cd6efc4fac58dbc0ff14ff3, type: 2}
+  hotStreakSpell: {fileID: 11400000, guid: 9479f5e56dcda3446be5bcf4f267db6c, type: 2}
+--- !u!114 &-7561512189280960927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Hot Streak Aura
+  m_EditorClassIdentifier: 
+  id: 20
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: -1
+  maxDuration: -1
+  maxStack: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 0
+  attributes: 0
+  auraEffects:
+  - {fileID: 7312786217584198437}
+  auraScriptables:
+  - {fileID: -8071882942517910092}
+  usesCharges: 0
+  maxCharges: 0
+  baseCharges: 0
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0
+--- !u!114 &-636793833560846440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Hot Streak Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  auraInfo: {fileID: -7561512189280960927}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Passive - Hot Streak
+  m_EditorClassIdentifier: 
+  id: 30
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 2
+  damageClass: 0
+  spellDispel: 0
+  mechanic: 0
+  explicitCastTargets: 8
+  schoolMask: 4
+  preventionType: 0
+  attributes: 1
+  attributesExtra: 49156
+  attributesCustom: 2048
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 0
+  castTime: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 0
+  maxRangeFriend: 0
+  speed: 0
+  spellEffectInfos:
+  - {fileID: -636793833560846440}
+  spellPowerEntries: []
+  targetingConditions: []
+--- !u!114 &7312786217584198437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4094da64b1a2fbb4b977858521ad61ea, type: 3}
+  m_Name: Hot Streak Aura Dummy
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0

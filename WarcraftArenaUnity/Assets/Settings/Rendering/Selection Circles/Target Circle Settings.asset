@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0803d1c866e722c4f9d488b6cf3a0b7f, type: 3}
+  m_Name: Target Circle Settings
+  m_EditorClassIdentifier: 
+  friendlyColor: {r: 0.18324094, g: 0.9811321, b: 0.1018156, a: 0.15686275}
+  neutralColor: {r: 0.98039216, g: 0.90320116, b: 0.101960756, a: 0.3137255}
+  enemyColor: {r: 1, g: 0, b: 0, a: 0.58431375}
+  targetTag: 1

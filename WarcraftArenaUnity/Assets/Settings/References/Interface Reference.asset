@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925cc9f0fe3470444a3243aaaec886e1, type: 3}
+  m_Name: Interface Reference
+  m_EditorClassIdentifier: 
+  containerTag: Interface Container
+  lobbyScreenPrototype: {fileID: 7504457265678994054, guid: 08c3870094daea24f8c42ee3fa3ba488,
+    type: 3}
+  battleScreenPrototype: {fileID: 5753997506663100325, guid: 20d4271ae60cd0b468d43da4fbcb360e,
+    type: 3}

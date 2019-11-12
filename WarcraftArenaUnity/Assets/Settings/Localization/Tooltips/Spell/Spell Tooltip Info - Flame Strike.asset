@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2c4714ebf4c7948b39380ca36fbd21, type: 3}
+  m_Name: Spell Tooltip Info - Flame Strike
+  m_EditorClassIdentifier: 
+  id: 9
+  container: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9, type: 2}
+  spellInfo: {fileID: 11400000, guid: 1d13f76d2c9c77040bd64e6d8b6d9f59, type: 2}
+  spellNameString: {fileID: 11400000, guid: 0b25c99aa3fe7204bb4435ee6f212ccc, type: 2}
+  spellDescriptionString: {fileID: 11400000, guid: 5fa0f2a46c82f0540aafa1212557ceac,
+    type: 2}
+  argumentSettings:
+  - argumentSource: {fileID: 586873846971705441, guid: 1d13f76d2c9c77040bd64e6d8b6d9f59,
+      type: 2}
+    argumentType: 1
+  - argumentSource: {fileID: 4832348296141079496, guid: 1d13f76d2c9c77040bd64e6d8b6d9f59,
+      type: 2}
+    argumentType: 1
+  - argumentSource: {fileID: 4832348296141079496, guid: 1d13f76d2c9c77040bd64e6d8b6d9f59,
+      type: 2}
+    argumentType: 3
+  - argumentSource: {fileID: -2213274802249647037, guid: 1d13f76d2c9c77040bd64e6d8b6d9f59,
+      type: 2}
+    argumentType: 0

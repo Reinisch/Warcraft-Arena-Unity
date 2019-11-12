@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abf6f5237a974ef40963e8c14c3b8a4a, type: 3}
+  m_Name: Unit Sound Kit - Default Human
+  m_EditorClassIdentifier: 
+  id: 1
+  continer: {fileID: 11400000, guid: 68fa6e522f3d27c4dba830d835227877, type: 2}
+  soundItems:
+    items:
+    - soundType: 1
+      soundEntry: {fileID: 11400000, guid: d6f2342d7e781c04db8cb2789d526bd9, type: 2}
+    - soundType: 2
+      soundEntry: {fileID: 11400000, guid: 6f00c68c8b5eeb943b3c4640bef92462, type: 2}
+    - soundType: 3
+      soundEntry: {fileID: 11400000, guid: 88457677a56a9704e9a71c4a346154ce, type: 2}
+    - soundType: 4
+      soundEntry: {fileID: 11400000, guid: 6604ed7ba7d27c945b983a4870f8dc3f, type: 2}
+    - soundType: 5
+      soundEntry: {fileID: 11400000, guid: 5b8588ad7e753f941bd50f6bc1638b66, type: 2}
+    - soundType: 6
+      soundEntry: {fileID: 11400000, guid: 61a0e4ab0f3221442a8842223e0d06ab, type: 2}
+    - soundType: 7
+      soundEntry: {fileID: 11400000, guid: bc6215f9ce9e6614eb138daecc1492d1, type: 2}
+    - soundType: 8
+      soundEntry: {fileID: 11400000, guid: 239ae379e954e1249a4aa2f32ccb25b4, type: 2}
+    - soundType: 9
+      soundEntry: {fileID: 11400000, guid: 410665cd537eff34a9e9aebeb1ada0ef, type: 2}
+    - soundType: 10
+      soundEntry: {fileID: 11400000, guid: a147c88429a4d86428daacd4519a92dc, type: 2}
+    defaultValue: {fileID: 11400000, guid: 6604ed7ba7d27c945b983a4870f8dc3f, type: 2}

@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6221769307853349810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150c5cce9eac3a94fa15b564d801b28d, type: 3}
+  m_Name: Polymorph Aura Confuse
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 17
+--- !u!114 &-5524114067339867472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 213753ba2b053b44786ebf5c33db2b8b, type: 3}
+  m_Name: Polymorph Aura Change Model
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  modelId: 3
+--- !u!114 &-2638056616509559948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Polymorph Aura
+  m_EditorClassIdentifier: 
+  id: 10
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 10000
+  maxDuration: 10000
+  maxStack: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 2
+  attributes: 2
+  auraEffects:
+  - {fileID: -5524114067339867472}
+  - {fileID: -6221769307853349810}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 1
+  baseCharges: 1
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Polymorph Spell
+  m_EditorClassIdentifier: 
+  id: 17
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 1
+  damageClass: 0
+  spellDispel: 1
+  mechanic: 17
+  explicitCastTargets: 4
+  schoolMask: 64
+  preventionType: -1
+  attributes: 0
+  attributesExtra: 128
+  attributesCustom: 1024
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 1
+  castIgnoringMechanics: 0
+  cooldownTime: 15000
+  categoryCooldownTime: 0
+  globalCooldownTime: 0
+  castTime: 1500
+  minCastTime: 750
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 30
+  maxRangeFriend: 0
+  speed: 50
+  spellEffectInfos:
+  - {fileID: 2373819424652027930}
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 1
+    powerCost: 0
+  targetingConditions: []
+--- !u!114 &2373819424652027930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Polymorph Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  auraInfo: {fileID: -2638056616509559948}

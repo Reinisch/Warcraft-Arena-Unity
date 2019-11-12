@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Honorable Medallion Spell
+  m_EditorClassIdentifier: 
+  id: 22
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 2
+  damageClass: 0
+  spellDispel: 0
+  mechanic: 0
+  explicitCastTargets: 8
+  schoolMask: 1
+  preventionType: 0
+  attributes: 8
+  attributesExtra: 49984
+  attributesCustom: 128
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  castIgnoringMechanics: 998244351
+  cooldownTime: 60000
+  categoryCooldownTime: 0
+  globalCooldownTime: 0
+  castTime: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 0
+  maxRangeFriend: 0
+  speed: 0
+  spellEffectInfos:
+  - {fileID: 1570166548901500317}
+  spellPowerEntries: []
+  targetingConditions: []
+--- !u!114 &1570166548901500317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0dfedd0f2d3c149bbe83e9dac3b2fa, type: 3}
+  m_Name: Honorable Medallion Effect Dispell Loss of Control
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
+  mechanicToDispel: 138616659

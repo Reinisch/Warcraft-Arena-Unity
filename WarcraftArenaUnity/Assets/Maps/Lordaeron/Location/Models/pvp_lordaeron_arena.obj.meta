@@ -1,0 +1,351 @@
+fileFormatVersion: 2
+guid: 8b3458db37933f74ab7b50e6b9c57586
+ModelImporter:
+  serializedVersion: 26
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Arena
+  - first:
+      1: 100002
+    second: InteriorBellTop
+  - first:
+      1: 100004
+    second: InteriorStatues
+  - first:
+      1: 100006
+    second: InteriorStatues02
+  - first:
+      1: 100008
+    second: InteriorStatuesTop
+  - first:
+      1: 100010
+    second: //RootNode
+  - first:
+      4: 400000
+    second: Arena
+  - first:
+      4: 400002
+    second: InteriorBellTop
+  - first:
+      4: 400004
+    second: InteriorStatues
+  - first:
+      4: 400006
+    second: InteriorStatues02
+  - first:
+      4: 400008
+    second: InteriorStatuesTop
+  - first:
+      4: 400010
+    second: //RootNode
+  - first:
+      21: 2100000
+    second: BM_LDRN_CHAMBERWALL01
+  - first:
+      21: 2100002
+    second: BM_LDRN_TRIMS02
+  - first:
+      21: 2100004
+    second: BM_LDRN_BELLTOWER01
+  - first:
+      21: 2100006
+    second: BM_LDRN_BRICKFLOOR01
+  - first:
+      21: 2100008
+    second: BM_LDRN_BROWNSTONE01
+  - first:
+      21: 2100010
+    second: BM_LDRN_COBBLESTONE01
+  - first:
+      21: 2100012
+    second: BM_LDRN_CRTYRDWALL01
+  - first:
+      21: 2100014
+    second: BM_LDRN_DIRT01
+  - first:
+      21: 2100016
+    second: BM_LDRN_DOME01
+  - first:
+      21: 2100018
+    second: BM_LDRN_DOOR01
+  - first:
+      21: 2100020
+    second: BM_LDRN_TRIMS04
+  - first:
+      21: 2100022
+    second: BM_LDRN_GREYWALL01
+  - first:
+      21: 2100024
+    second: BM_LDRN_PILLARS01
+  - first:
+      21: 2100026
+    second: BM_LDRN_RUBBLE01
+  - first:
+      21: 2100028
+    second: BM_LDRN_WALL01
+  - first:
+      21: 2100030
+    second: BM_LDRN_THRONEFLOOR02
+  - first:
+      21: 2100032
+    second: MM_WROUGHTIRON_01
+  - first:
+      21: 2100034
+    second: BM_LDRN_VINES01
+  - first:
+      21: 2100036
+    second: BM_LDRN_DOMECEILING01
+  - first:
+      21: 2100038
+    second: BM_LDRN_STONEFLOOR01
+  - first:
+      23: 2300000
+    second: Arena
+  - first:
+      23: 2300002
+    second: InteriorBellTop
+  - first:
+      23: 2300004
+    second: InteriorStatues
+  - first:
+      23: 2300006
+    second: InteriorStatues02
+  - first:
+      23: 2300008
+    second: InteriorStatuesTop
+  - first:
+      33: 3300000
+    second: Arena
+  - first:
+      33: 3300002
+    second: InteriorBellTop
+  - first:
+      33: 3300004
+    second: InteriorStatues
+  - first:
+      33: 3300006
+    second: InteriorStatues02
+  - first:
+      33: 3300008
+    second: InteriorStatuesTop
+  - first:
+      43: 4300000
+    second: Arena
+  - first:
+      43: 4300002
+    second: InteriorBellTop
+  - first:
+      43: 4300004
+    second: InteriorStatues
+  - first:
+      43: 4300006
+    second: InteriorStatues02
+  - first:
+      43: 4300008
+    second: InteriorStatuesTop
+  - first:
+      64: 6400000
+    second: Arena
+  - first:
+      64: 6400002
+    second: InteriorBellTop
+  - first:
+      64: 6400004
+    second: InteriorStatues
+  - first:
+      64: 6400006
+    second: InteriorStatues02
+  - first:
+      64: 6400008
+    second: InteriorStatuesTop
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_BELLTOWER01
+    second: {fileID: 2100000, guid: 437a33b91d78334408fec6fa6334c086, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_BRICKFLOOR01
+    second: {fileID: 2100000, guid: e54c2a0cc2890d549b66031f01f85c2b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_BROWNSTONE01
+    second: {fileID: 2100000, guid: 68c979e8d6fa61644a9e208d412f03bf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_CHAMBERWALL01
+    second: {fileID: 2100000, guid: 6b8c0e9d8e9778e4aad9b484061fcb09, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_COBBLESTONE01
+    second: {fileID: 2100000, guid: 8b027cb724e874b48bcb51d4b77e3168, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_CRTYRDWALL01
+    second: {fileID: 2100000, guid: b05bd5ebd73a4804f918f8db31187de3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_DIRT01
+    second: {fileID: 2100000, guid: a0c7580a14b18ee4eba60e3f6d7bc6d3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_DOME01
+    second: {fileID: 2100000, guid: 8ff1183eb16b99d419a4c794fa0a4f33, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_DOMECEILING01
+    second: {fileID: 2100000, guid: c111401f79f84074aaa3f63b3217a4da, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_DOOR01
+    second: {fileID: 2100000, guid: 50900abe5c3a33643bb2bfe336acf87d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_GREYWALL01
+    second: {fileID: 2100000, guid: 975ad640e19ece8488ab20018924b311, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_PILLARS01
+    second: {fileID: 2100000, guid: 800e1a9b6351f1449b390b05ecd683d2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_RUBBLE01
+    second: {fileID: 2100000, guid: ceb38e674f188a24584744e23507973d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_STONEFLOOR01
+    second: {fileID: 2100000, guid: 7e1c5d87e8452a34e8975e47876e2487, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_THRONEFLOOR02
+    second: {fileID: 2100000, guid: c6465e8934ea4014e81055037cc5accc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_TRIMS02
+    second: {fileID: 2100000, guid: 517a223377e3a7a49a40c4540b35769c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_TRIMS04
+    second: {fileID: 2100000, guid: a41761c3f06d6464daa385515643f0f7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_VINES01
+    second: {fileID: 2100000, guid: 020e9091085118643b28edb7c6910ecf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BM_LDRN_WALL01
+    second: {fileID: 2100000, guid: 17d81b40f3ab19545b6dfd2e0d45df8b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MM_WROUGHTIRON_01
+    second: {fileID: 2100000, guid: 17dfcf6ae6de7494f95f5b3909c52563, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.7
+    meshCompression: 0
+    addColliders: 1
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 0.7
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

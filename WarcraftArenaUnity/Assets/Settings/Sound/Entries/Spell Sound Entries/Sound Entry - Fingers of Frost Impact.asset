@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a9f92409454067439c2e802923148cf, type: 3}
+  m_Name: Sound Entry - Fingers of Frost Impact
+  m_EditorClassIdentifier: 
+  soundReference: {fileID: 11400000, guid: 9c01542db10d5bc46819a6f11752769e, type: 2}
+  settings: {fileID: 11400000, guid: 637188a259c0f8149a47bc2c267d8f46, type: 2}
+  audioClip: {fileID: 8300000, guid: 6eb1980ed9f12a04e83d1a3e309ea15f, type: 3}
+  volumeModifier: 1

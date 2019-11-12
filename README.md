@@ -3,6 +3,9 @@ World of Warcraft combat system implementation in Unity with Photon Bolt.
 
 Feel free to ask anything about this project in [Discord](https://discord.gg/d62a5zG).
 
+## Before development
+Download [THIS](https://mega.nz/#!KtR3yIKC!ew9CDB8eLzVMhLCspUg7N8Sr-vRTifr7GYWQ85cdSSc) folder and extract it at the same level of Unity project.
+
 ## Install
 **Setup:**
 

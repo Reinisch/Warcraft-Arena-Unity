@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<linker>
+    <assembly fullname="bolt" preserve="all" />
+    <assembly fullname="bolt.user" preserve="all" />
+    <assembly fullname="udpkit" preserve="all" />
+    <assembly fullname="udpkit.common" preserve="all" />
+    <assembly fullname="System" preserve="all">
+        <namespace fullname="System.Net" preserve="all" />
+    </assembly>
+    <assembly fullname="System">
+        <namespace fullname="System.Net.Configuration" preserve="all" />
+    </assembly>
+    <assembly fullname="udpkit.platform.dotnet" preserve="all"/>
+</linker>

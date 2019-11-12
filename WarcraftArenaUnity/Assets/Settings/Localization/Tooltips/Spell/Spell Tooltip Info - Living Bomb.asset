@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2c4714ebf4c7948b39380ca36fbd21, type: 3}
+  m_Name: Spell Tooltip Info - Living Bomb
+  m_EditorClassIdentifier: 
+  id: 21
+  container: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9, type: 2}
+  spellInfo: {fileID: 11400000, guid: b1e257063d9cca242850b0dfa3ffe7b7, type: 2}
+  spellNameString: {fileID: 11400000, guid: 0c872fa464e694a48ad4127cc5dee6f7, type: 2}
+  spellDescriptionString: {fileID: 11400000, guid: f12b3c00fa470634ca9b07b8d054d6f6,
+    type: 2}
+  argumentSettings:
+  - argumentSource: {fileID: -3214065591488343424, guid: b1e257063d9cca242850b0dfa3ffe7b7,
+      type: 2}
+    argumentType: 1
+  - argumentSource: {fileID: -777456122772641352, guid: b1e257063d9cca242850b0dfa3ffe7b7,
+      type: 2}
+    argumentType: 0
+  - argumentSource: {fileID: 3847627232554351958, guid: 5392bb18832ef55419933fd4c8fca00e,
+      type: 2}
+    argumentType: 1
+  - argumentSource: {fileID: 3847627232554351958, guid: 5392bb18832ef55419933fd4c8fca00e,
+      type: 2}
+    argumentType: 2
+  - argumentSource: {fileID: -3214065591488343424, guid: b1e257063d9cca242850b0dfa3ffe7b7,
+      type: 2}
+    argumentType: 3

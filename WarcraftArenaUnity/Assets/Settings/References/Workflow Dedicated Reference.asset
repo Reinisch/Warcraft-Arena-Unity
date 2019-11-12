@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222b74d149ce2154384a6178a215e818, type: 3}
+  m_Name: Workflow Dedicated Reference
+  m_EditorClassIdentifier: 
+  photon: {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}
+  settings: {fileID: 11400000, guid: 4d5c20fdef6d78c4597e5f2149c14e65, type: 2}
+  maxRestartAttempts: 5

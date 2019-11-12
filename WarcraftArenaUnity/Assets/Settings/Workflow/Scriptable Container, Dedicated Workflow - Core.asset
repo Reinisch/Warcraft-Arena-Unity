@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc23906676683449e7a2f5848ba702, type: 3}
+  m_Name: Scriptable Container, Dedicated Workflow - Core
+  m_EditorClassIdentifier: 
+  scriptableReferences:
+  - {fileID: 11400000, guid: e59c6223a3853c7449ca9ef8042141bf, type: 2}
+  - {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
+  - {fileID: 11400000, guid: fc3ecd93c0de16f449cfc6fa9a90cc32, type: 2}
+  - {fileID: 11400000, guid: 8a48ed5d407300243beef216241c445a, type: 2}

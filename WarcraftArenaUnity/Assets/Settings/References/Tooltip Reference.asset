@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d03968bf796b554cb907ae909a1d0fa, type: 3}
+  m_Name: Tooltip Reference
+  m_EditorClassIdentifier: 
+  tooltipSizeSettings:
+    items:
+    - tooltipSize: 0
+      tooltipSettings:
+        flexibleWidth: 250
+        preferredWidth: 250
+    - tooltipSize: 1
+      tooltipSettings:
+        flexibleWidth: 375
+        preferredWidth: 375
+    defaultValue:
+      flexibleWidth: 375
+      preferredWidth: 375
+  tooltipAlignmentSettings:
+    items:
+    - tooltipAlignment: 1
+      tooltipSettings:
+        pivot: {x: 0, y: 1}
+        anghoredPosition: {x: -5, y: 13}
+        alignment: 0
+        worldCornerIndexes: 02000000
+    - tooltipAlignment: 0
+      tooltipSettings:
+        pivot: {x: 0.5, y: 1}
+        anghoredPosition: {x: 0, y: 8}
+        alignment: 1
+        worldCornerIndexes: 0000000003000000
+    - tooltipAlignment: 2
+      tooltipSettings:
+        pivot: {x: 0.5, y: 0}
+        anghoredPosition: {x: 0, y: -8}
+        alignment: 7
+        worldCornerIndexes: 0100000002000000
+    - tooltipAlignment: 3
+      tooltipSettings:
+        pivot: {x: 1, y: 1}
+        anghoredPosition: {x: 5, y: 13}
+        alignment: 2
+        worldCornerIndexes: 01000000
+    - tooltipAlignment: 4
+      tooltipSettings:
+        pivot: {x: 1, y: 0}
+        anghoredPosition: {x: 12, y: -10}
+        alignment: 8
+        worldCornerIndexes: 01000000
+    defaultValue:
+      pivot: {x: 0.5, y: 0}
+      anghoredPosition: {x: 0, y: -8}
+      alignment: 7
+      worldCornerIndexes: 0100000002000000

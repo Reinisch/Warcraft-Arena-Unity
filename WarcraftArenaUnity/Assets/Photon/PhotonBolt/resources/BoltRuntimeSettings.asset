@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 95238504, guid: 5b00bf8b25851d440940a40ec23344f4, type: 3}
+  m_Name: BoltRuntimeSettings
+  m_EditorClassIdentifier: 
+  _config:
+    framesPerSecond: 60
+    packetSize: 1200
+    packetMaxEventSize: 512
+    maxEntityPriority: 65536
+    maxPropertyPriority: 2048
+    scopeMode: 1
+    logTargets: 0
+    disableDejitterBuffer: 0
+    clientSendRate: 3
+    clientDejitterDelay: 6
+    clientDejitterDelayMin: 3
+    clientDejitterDelayMax: 9
+    serverSendRate: 3
+    serverDejitterDelay: 6
+    serverDejitterDelayMin: 3
+    serverDejitterDelayMax: 9
+    serverConnectionLimit: 32
+    serverConnectionAcceptMode: 1
+    commandQueueSize: 60
+    commandRedundancy: 6
+    commandPingMultiplier: 1.25
+    useNetworkSimulation: 1
+    simulatedLoss: 0.02
+    simulatedPingMean: 150
+    simulatedPingJitter: 10
+    simulatedRandomFunction: 0
+    connectionTimeout: 100000
+    connectionRequestTimeout: 50000
+    connectionRequestAttempts: 50
+    disableAutoSceneLoading: 0
+    EnableIPv6: 0
+  debugClientCount: 2
+  debugStartPort: 50538
+  debugStartMapName: PhotonGame
+  debugPlayAsServer: 0
+  showDebugInfo: 0
+  overrideTimeScale: 1
+  logUncaughtExceptions: 0
+  debugEditorMode: 1
+  consoleToggleKey: 9
+  consoleVisibleByDefault: 0
+  compilationWarnLevel: 4
+  editorSkin: 4
+  scopeModeHideWarningInGui: 1
+  showHelpButtons: 1
+  masterServerGameId: 09A20926-601A-4EF4-BFEE-374761B0D2A5
+  showBoltEntityHints: 0
+  serializeProjectAsText: 0
+  photonAppId: 9e4af054-d4df-41ea-917f-0a0abc198b17
+  photonUsePunch: 1
+  photonCloudRegionIndex: 5
+  instantiateMode: 2
+  globalEntityBehaviourQueryOption: 3
+  globalEntityPriorityCalculatorQueryOption: 3
+  globalEntityReplicationFilterQueryOption: 3
+  a2sServerPort: 21777
+  enableA2sServer: 1
+  RoomUpdateRate: 5
+  RoomCreateTimeout: 50
+  RoomJoinTimeout: 50
+  enableClientMetrics: 0

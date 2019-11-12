@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8561c76506537e144af228b520bfa5c9, type: 3}
+  m_Name: Cone Front 90 deg Max 10m From Caster vs Enemy - Spell Targeting
+  m_EditorClassIdentifier: 
+  referenceType: 1
+  targetChecks: 2
+  minRadius: 0
+  maxRadius: 10
+  targetDirection: 0
+  coneAngle: 90

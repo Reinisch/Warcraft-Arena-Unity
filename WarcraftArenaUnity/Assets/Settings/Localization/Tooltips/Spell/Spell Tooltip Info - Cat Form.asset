@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2c4714ebf4c7948b39380ca36fbd21, type: 3}
+  m_Name: Spell Tooltip Info - Cat Form
+  m_EditorClassIdentifier: 
+  id: 29
+  container: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9, type: 2}
+  spellInfo: {fileID: 11400000, guid: 538f0ebabddb24e4b9d040eddae5d6d7, type: 2}
+  spellNameString: {fileID: 11400000, guid: 73571ff6b1f449448bc806c5cad9dc5e, type: 2}
+  spellDescriptionString: {fileID: 11400000, guid: 7ef4ca565ffc7884a90b343af1c6ef3d,
+    type: 2}
+  argumentSettings:
+  - argumentSource: {fileID: -4335347148446222354, guid: 538f0ebabddb24e4b9d040eddae5d6d7,
+      type: 2}
+    argumentType: 1

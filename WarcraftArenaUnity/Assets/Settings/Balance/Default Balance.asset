@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7729f0aaf01428a820ac9ae5dfb2fc0, type: 3}
+  m_Name: Default Balance
+  m_EditorClassIdentifier: 
+  defaultFaction: {fileID: 11400000, guid: 77ea5f96cb7523d4a904fefc14363a6f, type: 2}
+  unitMovementDefinition: {fileID: 11400000, guid: 4dfbd44b5dd771148a0bba3405cc2f25,
+    type: 2}
+  spellContainer: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  auraContainer: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  classContainer: {fileID: 11400000, guid: 8d2f6319ee506234797c9f24cb1cad8b, type: 2}
+  unitAIContainer: {fileID: 11400000, guid: a0a3379225cd40144a30556aa8629bd0, type: 2}
+  creatureContainer: {fileID: 11400000, guid: 61ac6d0da2734be42886059862d4f25e, type: 2}
+  mapEntries:
+  - {fileID: 11400000, guid: 930fb9f3e36b00247b2f30b754492ffa, type: 2}
+  - {fileID: 11400000, guid: 71240ed7b1f92cd48a8e7aa84eb9af06, type: 2}
+  - {fileID: 11400000, guid: 64e732d5f092d7441a827977f4216ba2, type: 2}
+  - {fileID: 11400000, guid: 9bf22e30ad1ce0e40bf3193ed2f78e93, type: 2}
+  - {fileID: 11400000, guid: 5c75ca91bbcdb314da2df911e5e6a6ed, type: 2}
+  - {fileID: 11400000, guid: 3a4fcded24da5e44eb1d37691486b3da, type: 2}
+  - {fileID: 11400000, guid: f235b141aaece294ab9aa7c6bccb0a10, type: 2}
+  factionEntries:
+  - {fileID: 11400000, guid: 9dfbe50137f9a6a4bb56ec2768a53ae2, type: 2}
+  - {fileID: 11400000, guid: 77ea5f96cb7523d4a904fefc14363a6f, type: 2}
+  - {fileID: 11400000, guid: 2e4b7033c29048140a9c800d513e00a9, type: 2}
+  - {fileID: 11400000, guid: f346e9f4ae20eb14285ee46c0934c02c, type: 2}

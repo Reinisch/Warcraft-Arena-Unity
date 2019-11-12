@@ -1,0 +1,22 @@
+{
+    "name": "Arena.Workflow.Standard",
+    "references": [
+        "GUID:3492a2e8a1108844690758e6bdeb6066",
+        "GUID:a284d292de88366448b0c312a762d5b3",
+        "GUID:83f104cbc0b9d984197326df7fa96e23",
+        "GUID:93b24e5ace5bf8149b18e4ee0e8b3986",
+        "GUID:625fcf98fc2038b4394cf8f23e7d94d6",
+        "GUID:6f9595683d79aa04d97249ef3adf72b5"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "CLIENT"
+    ],
+    "versionDefines": []
+}
