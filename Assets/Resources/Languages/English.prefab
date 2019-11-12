@@ -495,3 +495,10 @@ MonoBehaviour:
     Value: Roots the target in place for {0} sec. Damage may cancel the effect.
   - StringReference: {fileID: 11400000, guid: f72ba9567a0cb974a9e4bfac01686b4c, type: 2}
     Value: Entangling Roots
+  - StringReference: {fileID: 11400000, guid: fc915b86cd49ddd4a92c961f2637f778, type: 2}
+    Value: "Finishing move that increases damage by {0}% and energy regeneration rate
+      by {1}% while in Cat Form. Lasts longer per combo point:\r\n\r\n  1 point  :
+      12 seconds\r\n  2 points: 18 seconds\r\n  3 points: 24 seconds\r\n  4 points:
+      30 seconds\r\n  5 points: 36 seconds"
+  - StringReference: {fileID: 11400000, guid: 1c1b8954ce563b941b5bbfaff5fbe8dd, type: 2}
+    Value: Savage Roar
