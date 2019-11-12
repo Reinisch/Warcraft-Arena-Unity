@@ -5,6 +5,7 @@ Feel free to ask anything about this project in [Discord](https://discord.gg/d62
 
 ## Before development
 Download [THIS](https://mega.nz/#!KtR3yIKC!ew9CDB8eLzVMhLCspUg7N8Sr-vRTifr7GYWQ85cdSSc) folder and extract it at the same level of Unity project.
+Download [THIS](https://mega.nz/#!u9oRHarB!yaj9saQUh17H62go7-8PsRBpUreFhc_71lA6kozZ-wA) folder and extract it at "WarcraftArenaUnity\Assets\Plugins\Grpc.Core\runtimes".
 
 ## Install
 **Setup:**
