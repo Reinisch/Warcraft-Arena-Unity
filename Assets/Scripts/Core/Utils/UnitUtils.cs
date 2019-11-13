@@ -74,5 +74,10 @@ namespace Core
         {
             return Vector3.Magnitude(entity.Position - target.Position) <= range;
         }
+
+        public static bool HasTargetFlag(this UnitFlags baseFlags, UnitFlags flag)
+        {
+            return (baseFlags & flag) == flag;
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace Core
             private readonly EntityAttributeInt[,] powers = new EntityAttributeInt[UnitUtils.MaxUnitPowers, 3];
             private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
             private readonly Dictionary<SpellPowerType, (int, SpellPowerTypeInfo)> spellPowerIndexes = new Dictionary<SpellPowerType, (int, SpellPowerTypeInfo)>();
-            private readonly Dictionary<(StatType, StatModifierType), float> statModifiers = new Dictionary<(StatType, StatModifierType), float>();
+            private readonly Dictionary<(UnitModifierType, StatModifierType), float> statModifiers = new Dictionary<(UnitModifierType, StatModifierType), float>();
 
             internal EntityAttributeInt Health { get; private set; }
             internal EntityAttributeInt MaxHealth { get; private set; }
@@ -226,12 +226,12 @@ namespace Core
                 foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
                     speedRates[moveType] = 1.0f;
 
-                foreach (StatType statType in StatUtils.UnitStatTypes)
+                foreach (UnitModifierType modType in StatUtils.UnitModTypes)
                 {
-                    statModifiers[(statType, StatModifierType.BaseValue)] = 0.0f;
-                    statModifiers[(statType, StatModifierType.BasePercent)] = 1.0f;
-                    statModifiers[(statType, StatModifierType.TotalValue)] = 0.0f;
-                    statModifiers[(statType, StatModifierType.TotalPercent)] = 1.0f;
+                    statModifiers[(modType, StatModifierType.BaseValue)] = 0.0f;
+                    statModifiers[(modType, StatModifierType.BasePercent)] = 1.0f;
+                    statModifiers[(modType, StatModifierType.TotalValue)] = 0.0f;
+                    statModifiers[(modType, StatModifierType.TotalPercent)] = 1.0f;
                 }
 
                 InitializeAttributes();
@@ -293,7 +293,7 @@ namespace Core
                         }
                     }
 
-                    statModifiers[(StatType.Intellect, StatModifierType.BaseValue)] = Intellect.Base;
+                    statModifiers[(UnitModifierType.Intellect, StatModifierType.BaseValue)] = Intellect.Base;
                 }
 
                 UpdateIntellect();
@@ -397,41 +397,76 @@ namespace Core
                 }
             }
 
-            internal void HandleStatPercentModifier(StatType statType, StatModifierType modifierType, float value, bool apply)
+            internal void HandleStatPercentModifier(UnitModifierType unitModifierType, StatModifierType modifierType, float value, bool apply)
             {
                 switch (modifierType)
                 {
                     case StatModifierType.BaseValue:
                     case StatModifierType.TotalValue:
-                        statModifiers[(statType, modifierType)] += apply ? value : -value;
+                        statModifiers[(unitModifierType, modifierType)] += apply ? value : -value;
                         break;
                     case StatModifierType.BasePercent:
                     case StatModifierType.TotalPercent:
-                        statModifiers[(statType, modifierType)] = StatUtils.ModifyMultiplierPercent(statModifiers[(statType, modifierType)], value, apply);
+                        statModifiers[(unitModifierType, modifierType)] = StatUtils.ModifyMultiplierPercent(statModifiers[(unitModifierType, modifierType)], value, apply);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(modifierType), modifierType, nameof(StatModifierType));
                 }
 
-                switch (statType)
+                switch (unitModifierType)
                 {
-                    case StatType.Strength:
+                    case UnitModifierType.Strength:
                         break;
-                    case StatType.Agility:
+                    case UnitModifierType.Agility:
                         break;
-                    case StatType.Stamina:
+                    case UnitModifierType.Stamina:
                         break;
-                    case StatType.Intellect:
+                    case UnitModifierType.Intellect:
                         UpdateIntellect();
+                        break;
+                    case UnitModifierType.Mana:
+                    case UnitModifierType.Rage:
+                    case UnitModifierType.Focus:
+                    case UnitModifierType.Energy:
+                    case UnitModifierType.ComboPoints:
+                    case UnitModifierType.Runes:
+                    case UnitModifierType.RunicPower:
+                    case UnitModifierType.SoulShards:
+                    case UnitModifierType.LunarPower:
+                    case UnitModifierType.HolyPower:
+                    case UnitModifierType.AlternatePower:
+                    case UnitModifierType.Maelstrom:
+                    case UnitModifierType.Chi:
+                    case UnitModifierType.Insanity:
+                    case UnitModifierType.BurningEmbers:
+                    case UnitModifierType.DemonicFury:
+                    case UnitModifierType.ArcaneCharges:
+                    case UnitModifierType.Fury:
+                    case UnitModifierType.Pain:
+                        UpdateMaxPower(unitModifierType.AsPower());
                         break;
                 }
             }
 
             internal void UpdateIntellect()
             {
-                int totalIntellect = CalculateTotalStatValue(StatType.Intellect);
+                int totalIntellect = CalculateTotalStatValue(UnitModifierType.Intellect);
 
                 SpellPower.Set(SpellPower.Base + totalIntellect);
+            }
+
+            internal void UpdateMaxPower(SpellPowerType powerType)
+            {
+                if (!spellPowerIndexes.TryGetValue(powerType, out (int, SpellPowerTypeInfo) powerTypeInfo))
+                    return;
+
+                UnitModifierType unitModifierType = powerType.AsModifier();
+                float value = statModifiers[(unitModifierType, StatModifierType.BaseValue)] + powers[powerTypeInfo.Item1, 1].Base;
+                value *= statModifiers[(unitModifierType, StatModifierType.BasePercent)];
+                value += statModifiers[(unitModifierType, StatModifierType.TotalValue)];
+                value *= statModifiers[(unitModifierType, StatModifierType.TotalPercent)];
+
+                SetMaxPower(powerType, (int)Math.Round(value));
             }
 
             internal void UpdateDisplayPower()
@@ -465,9 +500,9 @@ namespace Core
                 for (int i = 0; i < usedPowers ; i++)
                 {
                     SpellPowerTypeInfo powerTypeInfo = unitClassInfo.PowerTypes[i];
-                    powers[i, 0].ModifyAttribute(powerTypeInfo.MinBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeCurrent);
-                    powers[i, 1].ModifyAttribute(powerTypeInfo.MinBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeMax);
-                    powers[i, 2].ModifyAttribute(powerTypeInfo.MinBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeMaxNoMods);
+                    powers[i, 0].ModifyAttribute(powerTypeInfo.MaxBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeCurrent);
+                    powers[i, 1].ModifyAttribute(powerTypeInfo.MaxBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeMax);
+                    powers[i, 2].ModifyAttribute(powerTypeInfo.MaxBasePower, powerTypeInfo.MaxBasePower, powerTypeInfo.MinBasePower, powerTypeInfo.MaxTotalPower, powerTypeInfo.AttributeTypeMaxNoMods);
                     spellPowerIndexes[powerTypeInfo.PowerType] = (i, powerTypeInfo);
                 }
 
@@ -481,12 +516,12 @@ namespace Core
                 UpdateDisplayPower();
             }
 
-            internal int CalculateTotalStatValue(StatType statType)
+            internal int CalculateTotalStatValue(UnitModifierType modType)
             {
-                float value = statModifiers[(statType, StatModifierType.BaseValue)];
-                value *= statModifiers[(statType, StatModifierType.BasePercent)];
-                value += statModifiers[(statType, StatModifierType.TotalValue)];
-                value *= statModifiers[(statType, StatModifierType.TotalPercent)];
+                float value = statModifiers[(modType, StatModifierType.BaseValue)];
+                value *= statModifiers[(modType, StatModifierType.BasePercent)];
+                value += statModifiers[(modType, StatModifierType.TotalValue)];
+                value *= statModifiers[(modType, StatModifierType.TotalPercent)];
                 return Mathf.Max(0, (int)value);
             }
 

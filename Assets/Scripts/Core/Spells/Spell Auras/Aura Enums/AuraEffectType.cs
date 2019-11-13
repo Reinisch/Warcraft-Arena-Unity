@@ -23,7 +23,7 @@
         ModInvisibility = 18,
         ModInvisibilityDetect = 19,
         ObsModHealth = 20,
-        ObsModPower = 21,
+        ModifyMaxPower = 21,
         ModResistance = 22,
         PeriodicTriggerSpell = 23,
         PeriodicEnergize = 24,

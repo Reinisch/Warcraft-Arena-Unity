@@ -99,6 +99,7 @@ MonoBehaviour:
   attributes: 0
   auraEffects:
   - {fileID: -1416951902040148594}
+  - {fileID: 5992393238918387536}
   auraScriptables: []
   usesCharges: 0
   maxCharges: 0
@@ -106,3 +107,19 @@ MonoBehaviour:
   damageInterruptValue: 0
   damageInterruptDelay: 0
   interruptValueType: 0
+--- !u!114 &5992393238918387536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca06f40bd43bf864588a391c8d629d18, type: 3}
+  m_Name: Berserk Aura Modify Max Power
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  power: 50
+  powerType: 3
