@@ -502,3 +502,8 @@ MonoBehaviour:
       30 seconds\r\n  5 points: 36 seconds"
   - StringReference: {fileID: 11400000, guid: 1c1b8954ce563b941b5bbfaff5fbe8dd, type: 2}
     Value: Savage Roar
+  - StringReference: {fileID: 11400000, guid: 2fb9377bf97194f4f935705d9f7baf8f, type: 2}
+    Value: "\rReduces the energy cost of all Cat Form abilities by {0}% and increases
+      maximum Energy by {1} for {2} sec."
+  - StringReference: {fileID: 11400000, guid: 1673635637f28aa448fca56d9e98419f, type: 2}
+    Value: Berserk

@@ -75,6 +75,7 @@ namespace Client
             {
                 case SpellTooltipArgumentType.Period when auraEffectInfo is AuraEffectInfoPeriodic periodicEffect:
                     return (float) periodicEffect.Period / 1000;
+                case SpellTooltipArgumentType.Value when auraEffectInfo is AuraEffectInfoSpellModifier:
                 case SpellTooltipArgumentType.Value when auraEffectInfo is AuraEffectInfoModifyDamagePercentTaken:
                     return Mathf.Abs(auraEffectInfo.Value);
                 case SpellTooltipArgumentType.Value:

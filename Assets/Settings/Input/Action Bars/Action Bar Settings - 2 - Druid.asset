@@ -18,7 +18,7 @@ MonoBehaviour:
   actionBarSlot: 2
   classType: 11
   buttons:
-  - actionId: 36
+  - actionId: 54
     actionType: 0
   - actionId: 45
     actionType: 0
