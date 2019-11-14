@@ -507,3 +507,7 @@ MonoBehaviour:
       maximum Energy by {1} for {2} sec."
   - StringReference: {fileID: 11400000, guid: 1673635637f28aa448fca56d9e98419f, type: 2}
     Value: Berserk
+  - StringReference: {fileID: 11400000, guid: b7c2c886007b7804f93ff61e94bf0286, type: 2}
+    Value: Heals the target for ({0}% of Spell power) every {1} sec for {2} sec.
+  - StringReference: {fileID: 11400000, guid: adb9741ade078d64a9a47ffad858e2b9, type: 2}
+    Value: Rejuvenation
