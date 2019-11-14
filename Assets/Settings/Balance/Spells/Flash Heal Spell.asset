@@ -42,7 +42,7 @@ MonoBehaviour:
   - {fileID: 6366165914403853611}
   spellPowerCostInfos:
   - spellPowerType: 0
-    powerCostPercentage: 3
+    powerCostPercentage: 20
     powerCost: 0
   targetingConditions: []
 --- !u!114 &6366165914403853611
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: Flash Heal Effect Heal
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 80
+  baseValue: 150
   baseVariance: 20
   additionalValue: 0
   calculationType: 1
