@@ -32,7 +32,7 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
     {
         try
         {
-            
+
             this.InitializeClient();
         }
         catch (RpcException ex)
@@ -48,7 +48,7 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public static string GetCurrentPlayerName()
@@ -58,9 +58,7 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
 
     private async void InitializeClient()
     {
-        System.Random rnd = new System.Random();
-        int randomId = rnd.Next(1, 20);
-        currentPlayerName = "Elle_" + randomId;
+        currentPlayerName = "Elle_" + Guid.NewGuid();
 
         // Initialize the Hub
         this.channel = new Channel("localhost", 12345, ChannelCredentials.Insecure);
@@ -72,7 +70,7 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
     {
         this.streamingClient = StreamingHubClient.Connect<IGamingHub, IGamingHubReceiver>(grpcChannel, this);
 
-        var roomPlayers = await this.streamingClient.JoinAsync(roomName, playerName, /*Vector3.zero*/ new Vector3(22.79f, 0.197f, 32.23f), Quaternion.identity);
+        var roomPlayers = await this.streamingClient.JoinAsync(roomName, playerName, /*Vector3.zero*/ new Vector3(11.13949f, 4.719501f, -116.671f), Quaternion.identity);
         foreach (var player in roomPlayers)
         {
             (this as IGamingHubReceiver).OnJoin(player);
@@ -125,6 +123,11 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
         return streamingClient.MoveAsync(position, rotation);
     }
 
+    public Task SendAnimationAsync(CharAnimState state)
+    {
+        return streamingClient.SendAnimStateAsync((int)state);
+    }
+
     // dispose client-connection before channel.ShutDownAsync is important!
     public Task DisposeAsync()
     {
@@ -133,6 +136,8 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
 
     protected async void OnDestroy()
     {
+        //It seems it doesn't let the client close.
+        //await LeaveAsync();
         await this.streamingClient.DisposeAsync();
     }
 
@@ -156,16 +161,17 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
         {
             Debug.Log("OnJoin: player already joined!!");
         }
-        
+
     }
 
     void IGamingHubReceiver.OnLeave(Player player)
     {
         Debug.Log("Leave Player:" + player.Name);
 
-        if (players.TryGetValue(player.Name, out var cube))
+        if (players.TryGetValue(player.Name, out var otherPerson))
         {
-            GameObject.Destroy(cube);
+            GameObject.Destroy(otherPerson);
+            players.Remove(player.Name);
         }
     }
 
@@ -177,13 +183,23 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
         {
             if (otherPerson != null && otherPerson.name != currentPlayerName)
             {
-                var animator = otherPerson.GetComponent<Animator>();
-                animator.SetInteger("CharAnimState", (int)CharAnimState.Walk);
                 otherPerson.transform.position = Vector3.MoveTowards(otherPerson.transform.position, player.Position, 1.0f * Time.deltaTime);
-
+                otherPerson.transform.Rotate(Vector3.up, Quaternion.Angle(otherPerson.transform.rotation, player.Rotation), Space.World);
             }
-                
-            //otherPerson.transform.SetPositionAndRotation(player.Position, player.Rotation);
+        }
+    }
+
+    void IGamingHubReceiver.OnAnimStateChange(string playerName, int state)
+    {
+        Debug.Log($"{playerName} CHANGE ANIM STATE!!");
+
+        if (players.TryGetValue(playerName, out var otherPerson))
+        {
+            if (otherPerson != null && otherPerson.name != currentPlayerName)
+            {
+                var animator = otherPerson.GetComponent<Animator>();
+                animator.SetInteger("CharAnimState", state);
+            }
         }
     }
 }

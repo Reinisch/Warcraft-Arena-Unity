@@ -7,25 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MagicOnion" Version="2.6.3" />
-    <PackageReference Include="MessagePack" Version="1.8.74" />
-    <PackageReference Include="MessagePack.UnityShims" Version="1.8.74" />
-    <PackageReference Include="MessagePackAnalyzer" Version="1.8.74" />
+    <PackageReference Include="NLog" Version="4.6.8" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.6.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="../../WarcraftArenaUnity/ServerShared/**/*.cs" LinkBase="LinkFromUnity" />
+    <None Update="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-
+  
   <ItemGroup>
-    <Folder Include="LinkFromUnity\" />
+    <ProjectReference Include="..\ElleFramework.Utils\ElleFramework.Utils.csproj" />
+    <ProjectReference Include="..\ElleFramework\ElleFramework.Database.csproj" />
+    <ProjectReference Include="..\ElleRealTime.MySql\ElleRealTime.MySql.csproj" />
+    <ProjectReference Include="..\ElleRealTime.Shared\ElleRealTime.Shared.csproj" />
+    <ProjectReference Include="..\ElleRealTime.SqlServer\ElleRealTime.SqlServer.csproj" />
+    <ProjectReference Include="..\ElleRealTimeBaseDAO\ElleRealTimeBaseDAO.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <SourceFiles Include="$(ProjectDir)../../WarcraftArenaUnity/ServerShared/**/*.cs" Exclude="**\bin\**\*.*;**\obj\**\*.*" />
-  </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Copy SourceFiles="@(SourceFiles)" DestinationFiles="$(ProjectDir)\LinkFromUnity\%(RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
-  </Target>
 
 </Project>

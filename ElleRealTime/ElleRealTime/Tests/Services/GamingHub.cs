@@ -17,7 +17,7 @@ namespace ElleRealTime.Tests.Services
 
         public async Task<Player[]> JoinAsync(string roomName, string userName, Vector3 position, Quaternion rotation)
         {
-            Vector3 tmpPos = new Vector3(22.79f, 0.197f, 32.23f);
+            Vector3 tmpPos = new Vector3(11.13949f, 4.719501f, -116.671f);
             self = new Player
             {
                 Name = userName,
@@ -51,6 +51,11 @@ namespace ElleRealTime.Tests.Services
             Console.WriteLine($"Quaternion: x={rotation.x}, y={rotation.y}, z={rotation.z}, w={rotation.w}");
 
             Broadcast(room).OnMove(self);
+        }
+
+        public async Task SendAnimStateAsync(int state)
+        {
+            Broadcast(room).OnAnimStateChange(self.Name, state);
         }
 
     }

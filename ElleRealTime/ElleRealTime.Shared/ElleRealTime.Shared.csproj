@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MagicOnion" Version="2.6.3" />
+    <PackageReference Include="MessagePack" Version="1.8.74" />
+    <PackageReference Include="MessagePack.UnityShims" Version="1.8.74" />
+    <PackageReference Include="MessagePackAnalyzer" Version="1.8.74" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\ElleFramework\ElleFramework.Database.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../../MagicOnionTest/Assets/Scripts/ServerShared/**/*.cs" LinkBase="LinkFromUnity" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceFiles Include="$(ProjectDir)../../MagicOnionTest/ServerShared/**/*.cs" Exclude="**\bin\**\*.*;**\obj\**\*.*" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Copy SourceFiles="@(SourceFiles)" DestinationFiles="$(ProjectDir)\LinkFromUnity\%(RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

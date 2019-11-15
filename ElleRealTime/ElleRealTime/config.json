@@ -1,0 +1,43 @@
+{
+  "Logging": {
+    "TraceExceptions": 1,
+    "TraceSourceName": "ElleRealTime",
+    "UseTrace": true
+  },
+  /* FOR MYSQL
+   "Database": {
+    "Type": 0,
+    "Host": "localhost",
+    "User": "root",
+    "Password": "password",
+    "Name": "ellerealtime",
+    "Port": 3306,
+    "DAOAssembly": "ElleRealTime.MySql",
+    "DAONamespace": "",
+    "DbConnectionPoolSize": 10,
+    "DBCmdTimeout": -1,
+    "DbTraceQueries": 1,
+    "DbSlowQueryLog": 0,
+    "ProviderName": "MySql.Data.MySqlClient"
+  }
+   */
+  "Database": {
+    "Type": 1,
+    "Host": "localhost\\SQLEXPRESS",
+    "User": "sa",
+    "Password": "smemo2012",
+    "Name": "ellerealtime",
+    "Port": 1433,
+    "DAOAssembly": "ElleRealTime.SqlServer",
+    "DAONamespace": "",
+    "DbConnectionPoolSize": 10,
+    "DBCmdTimeout": -1,
+    "DbTraceQueries": 1,
+    "DbSlowQueryLog": 0,
+    "ProviderName": "System.Data.SqlClient"
+  },
+  "Application": {
+    
+  }
+
+}

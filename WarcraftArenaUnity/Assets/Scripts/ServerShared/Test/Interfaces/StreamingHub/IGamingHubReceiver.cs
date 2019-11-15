@@ -7,5 +7,6 @@ namespace ElleRealTimeStd.Shared.Test.Interfaces.StreamingHub
         void OnJoin(Player player);
         void OnLeave(Player player);
         void OnMove(Player player);
+        void OnAnimStateChange(string playerName, int state);
     }
 }

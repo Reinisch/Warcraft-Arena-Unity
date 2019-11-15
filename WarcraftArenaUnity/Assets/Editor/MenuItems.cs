@@ -43,7 +43,7 @@ public class MenuItems : MonoBehaviour
             RedirectStandardError = true,
             UseShellExecute = false,
             FileName = filePath + exeFileName,
-            Arguments = $@"-i ""{rootPath}/ElleRealTime/ElleRealTime/ElleRealTime.csproj"" -o ""{Application.dataPath}/Scripts/Generated/MagicOnion.Generated.cs""",
+            Arguments = $@"-i ""{rootPath}/ElleRealTime/ElleRealTime.Shared/ElleRealTime.Shared.csproj"" -o ""{Application.dataPath}/Scripts/Generated/MagicOnion.Generated.cs""",
         };
 
         var p = Process.Start(psi);
