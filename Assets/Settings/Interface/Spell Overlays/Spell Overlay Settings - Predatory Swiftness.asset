@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd018f7fff8dcd34f8f48cb4fb7cb673, type: 3}
+  m_Name: Spell Overlay Settings - Predatory Swiftness
+  m_EditorClassIdentifier: 
+  id: 4
+  container: {fileID: 11400000, guid: 497f80b41e383724084965aa56771369, type: 2}
+  prototype: {fileID: 5238403333640153013, guid: 7a0099073e5e7ca409b863a4cf767b06,
+    type: 3}
+  triggerAura: {fileID: -3261386352893804096, guid: e8f0d86bcf945ad42b721e0480f708d0,
+    type: 2}
