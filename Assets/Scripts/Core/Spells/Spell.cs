@@ -630,10 +630,10 @@ namespace Core
 
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, SpellInfo, processingToken);
 
-            Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellCast, Caster, this);
-
             DropModifierCharges();
             ConsumePowers();
+
+            Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellCast, Caster, this);
 
             if (!isDelayed)
             {
