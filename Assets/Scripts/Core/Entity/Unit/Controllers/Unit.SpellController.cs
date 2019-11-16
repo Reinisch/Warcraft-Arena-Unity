@@ -259,7 +259,7 @@ namespace Core
                 IReadOnlyList<AuraEffect> spellCritAuras = unit.GetAuraEffects(AuraEffectType.OverrideSpellCritCalculation);
                 if (spellCritAuras != null) for (int i = 0; i < spellCritAuras.Count; i++)
                     if (spellCritAuras[i].EffectInfo is AuraEffectInfoOverrideSpellCritCalculation effectInfo)
-                        effectInfo.ModifySpellCrit(unit, victim, spellInfo, ref critChance);
+                        effectInfo.ModifySpellCrit(unit, victim, spellInfo, ref critChance, spell);
 
                 return Mathf.Max(critChance, 0.0f);
             }
