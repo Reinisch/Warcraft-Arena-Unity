@@ -220,10 +220,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetAnimator: {fileID: 724169619782448581}
-  targetBone: {fileID: 5614467091080765101}
+  targetBone: {fileID: 5085787027773180006}
   parameterRange: {x: 0, y: 1}
-  maxRotation: {x: 0, y: 45, z: 0}
-  parameterTarget: Strafe
+  maxRotation: {x: 0, y: 90, z: 0}
+  attackParam: IsInstaCasting
+  forwardParam: Forward
+  strafeParam: Strafe
+  overrideRotation: 1
 --- !u!1 &6148578231299482095
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,12 +951,6 @@ Transform:
 --- !u!95 &724169619782448581 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 99922968ab6c8994780ce0c492470b54,
-    type: 3}
-  m_PrefabInstance: {fileID: 2448959160512820133}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &5614467091080765101 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7788671484891983112, guid: 99922968ab6c8994780ce0c492470b54,
     type: 3}
   m_PrefabInstance: {fileID: 2448959160512820133}
   m_PrefabAsset: {fileID: 0}

@@ -83,7 +83,12 @@ namespace Client
                 if (Mathf.Abs(strafeTarget - currentStrafe) > Mathf.Abs(strafeDelta))
                     Animator.SetFloat("Strafe", resultStrafe);
 
-                if (Renderer.Unit.HasMovementFlag(MovementFlags.Forward | MovementFlags.StrafeRight | MovementFlags.StrafeLeft))
+                if (Renderer.Unit.HasMovementFlag(MovementFlags.Forward))
+                    Animator.SetFloat("Forward", 1.0f);
+                else
+                    Animator.SetFloat("Forward", Mathf.Clamp(Animator.GetFloat("Forward") - 10 * deltaTime, 0.0f, 1.0f));
+
+                if (Renderer.Unit.HasMovementFlag(MovementFlags.Forward | MovementFlags.Backward | MovementFlags.StrafeRight | MovementFlags.StrafeLeft))
                     Animator.SetFloat("Speed", 1);
                 else
                     Animator.SetFloat("Speed", Mathf.Clamp(Animator.GetFloat("Speed") - 10 * deltaTime, 0.0f, 1.0f));

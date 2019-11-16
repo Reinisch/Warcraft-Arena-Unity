@@ -75,7 +75,6 @@ namespace Core
 
                 bool movingRight = rawInputVelocity.x > 0;
                 bool movingLeft = rawInputVelocity.x < 0;
-                bool moving = rawInputVelocity.magnitude > 0;
 
                 if (movingRight)
                 {
@@ -90,7 +89,12 @@ namespace Core
                 else
                     unit.MovementInfo.RemoveMovementFlag(MovementFlags.StrafeRight | MovementFlags.StrafeLeft);
 
-                if (moving)
+                if (rawInputVelocity.z < 0)
+                    unit.MovementInfo.AddMovementFlag(MovementFlags.Backward);
+                else
+                    unit.MovementInfo.RemoveMovementFlag(MovementFlags.Backward);
+
+                if (rawInputVelocity.z > 0)
                     unit.MovementInfo.AddMovementFlag(MovementFlags.Forward);
                 else
                     unit.MovementInfo.RemoveMovementFlag(MovementFlags.Forward);
