@@ -68,7 +68,7 @@ public class Login : MonoBehaviour
             Debug.Log($"Welcome, {accountId}");
             //Change scene with accountId
             Client.GlobalVariables.CurrentAccountID = accountId;
-            SceneManager.LoadScene("Launcher", LoadSceneMode.Single);
+            SceneManager.LoadScene("Lordaeron", LoadSceneMode.Single);
         }
         else
         {
