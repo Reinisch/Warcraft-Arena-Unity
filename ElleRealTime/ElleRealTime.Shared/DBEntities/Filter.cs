@@ -23,19 +23,17 @@ namespace ElleRealTime.Shared.DBEntities
         //public Utente CurrentUser { get; set; }
 
         /// <summary>
-        /// L'operatore per la concatenazione di stringhe voluto dal DB
+        /// Concat operator for string concatenation
         /// </summary>
         public string ConcatOperator { get; set; }
         /// <summary>
-        /// La clausola FROM richiesta per le SELECT che non vanno su una tabella vera
-        /// (es. "FROM DUAL" per Oracle)
+        /// FROM clause required for SELECTs that doesn't use a true table.
+        /// (ex. "FROM DUAL" for Oracle)
         /// </summary>
         public string DummyFrom { get; set; }
         /// <summary>
-        /// Lo schema in cui si trovano le funzioni utente. Necessario perché SQL Server vuole sempre
-        /// il nome dello schema esplicitato per le funzioni scalari (sigh).
-        /// 
-        /// Include il punto finale per un piů semplice utilizzo.
+        /// Schema in which you can find user function. Required because SqlServer always want the schema name for user functions.
+        /// Required because SQL Server always wants schema name for scalar functions. 
         /// </summary>
         public string FunctionSchema { get; set; }
 
@@ -43,7 +41,7 @@ namespace ElleRealTime.Shared.DBEntities
         {
             FirstRow = 1;
             RowNumber = int.MaxValue;
-            ConcatOperator = "+"; // SQL Server, per default
+            ConcatOperator = "+"; // SQL Server - default.
             FunctionSchema = "dbo.";
             DummyFrom = "";
         }
