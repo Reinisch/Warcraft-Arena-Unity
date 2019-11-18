@@ -32,7 +32,7 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
     {
         try
         {
-
+            
             this.InitializeClient();
         }
         catch (RpcException ex)
@@ -48,7 +48,7 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     public static string GetCurrentPlayerName()
@@ -70,13 +70,13 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
     {
         this.streamingClient = StreamingHubClient.Connect<IGamingHub, IGamingHubReceiver>(grpcChannel, this);
 
-        var roomPlayers = await this.streamingClient.JoinAsync(roomName, playerName, /*Vector3.zero*/ new Vector3(11.13949f, 4.719501f, -116.671f), Quaternion.identity);
+        var roomPlayers = await this.streamingClient.JoinAsync(roomName, Client.GlobalVariables.CurrentAccountID);
         foreach (var player in roomPlayers)
         {
             (this as IGamingHubReceiver).OnJoin(player);
         }
 
-        return players[playerName];
+        return players[Client.GlobalVariables.CurrentAccountID.ToString()];
     }
 
     private async void RegisterDisconnectEvent(IGamingHub streamingClient)
@@ -128,6 +128,11 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
         return streamingClient.SendAnimStateAsync((int)state);
     }
 
+    public Task SavePlayer()
+    {
+        return streamingClient.SavePlayerAsync();
+    }
+
     // dispose client-connection before channel.ShutDownAsync is important!
     public Task DisposeAsync()
     {
@@ -161,7 +166,7 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
         {
             Debug.Log("OnJoin: player already joined!!");
         }
-
+        
     }
 
     void IGamingHubReceiver.OnLeave(Player player)
@@ -185,13 +190,14 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
             {
                 otherPerson.transform.position = Vector3.MoveTowards(otherPerson.transform.position, player.Position, 1.0f * Time.deltaTime);
                 otherPerson.transform.Rotate(Vector3.up, Quaternion.Angle(otherPerson.transform.rotation, player.Rotation), Space.World);
+                //otherPerson.transform.rotation = Quaternion.RotateTowards(otherPerson.transform.rotation, player.Rotation, 1.0f * Time.deltaTime);
             }
         }
     }
 
     void IGamingHubReceiver.OnAnimStateChange(string playerName, int state)
     {
-        Debug.Log($"{playerName} CHANGE ANIM STATE!!");
+        Debug.Log($"{playerName} CAMBIA ANIM STATE!!");
 
         if (players.TryGetValue(playerName, out var otherPerson))
         {
@@ -201,5 +207,11 @@ public class InitClient : MonoBehaviour, IGamingHubReceiver
                 animator.SetInteger("CharAnimState", state);
             }
         }
+    }
+
+    void IGamingHubReceiver.OnPlayerInfoSaved()
+    {
+        //ToDO: close the Pause menu
+        Debug.Log("Successfully saved!");
     }
 }

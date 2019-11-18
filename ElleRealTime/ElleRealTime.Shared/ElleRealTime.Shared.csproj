@@ -17,11 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="../../MagicOnionTest/Assets/Scripts/ServerShared/**/*.cs" LinkBase="LinkFromUnity" />
+    <Compile Include="../../WarcraftArenaUnity/Assets/Scripts/ServerShared/**/*.cs" LinkBase="LinkFromUnity" />
   </ItemGroup>
 
   <ItemGroup>
-    <SourceFiles Include="$(ProjectDir)../../MagicOnionTest/ServerShared/**/*.cs" Exclude="**\bin\**\*.*;**\obj\**\*.*" />
+    <SourceFiles Include="$(ProjectDir)../../WarcraftArenaUnity/ServerShared/**/*.cs" Exclude="**\bin\**\*.*;**\obj\**\*.*" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -42,3 +42,27 @@ WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW
 ON [PRIMARY]
 GO
 
+
+
+CREATE TABLE [dbo].[players_info] (
+  [AccountID] int  NOT NULL,
+  [PosX] float(53)  NOT NULL,
+  [PosY] float(53)  NOT NULL,
+  [PosZ] float(53)  NOT NULL,
+  [RotX] float(53)  NOT NULL,
+  [RotY] float(53)  NOT NULL,
+  [RotZ] float(53)  NOT NULL
+)
+GO
+
+ALTER TABLE [dbo].[players_info] SET (LOCK_ESCALATION = TABLE)
+GO
+
+
+-- ----------------------------
+-- Primary Key structure for table players_info
+-- ----------------------------
+ALTER TABLE [dbo].[players_info] ADD CONSTRAINT [PK__players___349DA586E401A15B] PRIMARY KEY CLUSTERED ([AccountID])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO

@@ -20,7 +20,23 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Lâ€™esportazione dei dati non era selezionata.
+-- L’esportazione dei dati non era selezionata.
+
+-- Dump della struttura di tabella ellerealtime.players_info
+DROP TABLE IF EXISTS `players_info`;
+CREATE TABLE IF NOT EXISTS `players_info` (
+  `AccountID` int(11) NOT NULL,
+  `PosX` float NOT NULL,
+  `PosY` float NOT NULL,
+  `PosZ` float NOT NULL,
+  `RotX` float NOT NULL,
+  `RotY` float NOT NULL,
+  `RotZ` float NOT NULL,
+  PRIMARY KEY (`AccountID`),
+  CONSTRAINT `FK_Info_Accounts` FOREIGN KEY (`AccountID`) REFERENCES `accounts` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- L’esportazione dei dati non era selezionata.
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

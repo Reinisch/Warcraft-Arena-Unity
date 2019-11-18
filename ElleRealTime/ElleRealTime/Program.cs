@@ -3,9 +3,11 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using ElleFramework.Utils;
 using ElleRealTime.Core.BO;
+using ElleRealTime.Core.BO.World;
 using ElleRealTime.Core.Configuration;
 using ElleRealTime.Core.Logging;
 using ElleRealTime.Shared.BO;
+using ElleRealTime.Shared.DBEntities.PlayersInfo;
 using Grpc.Core;
 using MagicOnion.Server;
 using MySql.Data.MySqlClient;
@@ -88,6 +90,47 @@ namespace ElleRealTime
                             else
                             {
                                 Logger.Error("Syntax error: .modifypassword {username} {newpassword}");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex.InnerException?.Message ?? ex.Message, true);
+                        }
+                    }
+                    else if (line.StartsWith(".getplayerinfo"))
+                    {
+                        try
+                        {
+                            string[] parameters = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                            if (parameters.Length == 2)
+                            {
+                                int accountId;
+                                if (int.TryParse(parameters[1], out accountId))
+                                {
+                                    var bo = new Players();
+                                    var playerInfo = bo.GetPlayerInfo(new PlayersInfoFilter { AccountID = accountId });
+                                    if (playerInfo != null && playerInfo.Length > 0)
+                                    {
+                                        Logger.Success($"Position X: {playerInfo[0].PosX}");
+                                        Logger.Success($"Position Y: {playerInfo[0].PosY}");
+                                        Logger.Success($"Position Z: {playerInfo[0].PosZ}");
+                                        Logger.Success($"Rotation X: {playerInfo[0].RotX}");
+                                        Logger.Success($"Rotation Y: {playerInfo[0].RotY}");
+                                        Logger.Success($"Rotation Z: {playerInfo[0].RotZ}");
+                                    }
+                                    else
+                                    {
+                                        Logger.Error($"No account with id={accountId} have data stored.");
+                                    }
+                                }
+                                else
+                                {
+                                    Logger.Error($"Invalid account id: {parameters[1]}");
+                                }
+                            }
+                            else
+                            {
+                                Logger.Error("Syntax error: .getplayerinfo {AccountID}");
                             }
                         }
                         catch (Exception ex)
