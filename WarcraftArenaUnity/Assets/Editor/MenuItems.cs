@@ -87,7 +87,7 @@ public class MenuItems : MonoBehaviour
             RedirectStandardError = true,
             UseShellExecute = false,
             FileName = filePath + exeFileName,
-            Arguments = $@"-i ""{Application.dataPath}/../Assembly-CSharp.csproj"" -o ""{Application.dataPath}/Scripts/Generated/MessagePack.Generated.cs""",
+            Arguments = $@"-i ""{Application.dataPath}/../../ElleRealTime/ElleRealTime.Shared/ElleRealTime.Shared.csproj"" -o ""{Application.dataPath}/Scripts/Generated/MessagePack.Generated.cs""",
         };
 
         var p = Process.Start(psi);

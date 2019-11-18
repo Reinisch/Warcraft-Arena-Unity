@@ -15,7 +15,7 @@ namespace Assets.Scripts
             (
                 //MessagePack.Resolvers.GeneratedResolver.Instance,
 
-                //MagicOnion.Resolvers.MagicOnionResolver.Instance,
+                MagicOnion.Resolvers.MagicOnionResolver.Instance,
                 BuiltinResolver.Instance,
                 PrimitiveObjectResolver.Instance,
                 UnityResolver.Instance
