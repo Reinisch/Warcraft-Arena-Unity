@@ -7,16 +7,38 @@ Feel free to ask anything about this project in [Discord](https://discord.gg/d62
 Download [THIS](https://mega.nz/#!KtR3yIKC!ew9CDB8eLzVMhLCspUg7N8Sr-vRTifr7GYWQ85cdSSc) folder and extract it at the same level of Unity project.<br/>
 Download [THIS](https://mega.nz/#!u9oRHarB!yaj9saQUh17H62go7-8PsRBpUreFhc_71lA6kozZ-wA) folder and extract it at "WarcraftArenaUnity\Assets\Plugins\Grpc.Core\runtimes".
 
+## Setup to start developing
+- Clone the repo
+- Open with Unity3D "WarcraftArenaUnity" folder.
+- Double click on a .cs file under the "Project" tab in unity. (ex. Assets/Scripts/InitClient.cs)
+- If you modify/add an Interface in the ServerShared folder, make sure to generate/update some files by doing so: Click "MagicOnion" in the upper menù of Unity, then click "CodeGenerate". Check in the "Console" tab when it's finished.
+- The starting scene is named **"LoginForm"** and you can find it under "Assets/Scenes"
+
+## Start Playing
+- .Net Standard 2.0 .Net Core 3 are required.
+- Compile the solution with Visual Studio (i'm using Visual Studio 2019 Community edition).
+- Execute .sql files inside Database folder. You can choose between MySql & SqlServer, execute their schema.sql and then execute InitData.sql
+- Write config.json file with your data (it's inside "ElleRealTime/ElleRealTime/bin/Debug(or Release)/netcoreapp3.0/") [reference](https://github.com/LuigiElleBalotta/ElleRealTime/wiki/Configuration-file)
+- Start the server console 
+- Use your credential by creating an account (see server command [here](https://github.com/LuigiElleBalotta/ElleRealTime/wiki/Commands) or by using test/test or admin/admin)
+- Enjoy
+
 ## Install
 **Setup:**
 
 Open project in **Unity Editor** with version specified in [ProjectSettings/ProjectVersion](ProjectSettings/ProjectVersion.txt).<br/>
-Enter playmode from **Launcher** scene in Assets/Scenes/Launcher.<br/>
+Enter playmode from **LoginForm** scene in Assets/Scenes/LoginForm.<br/>
 
 **Build:**
 
-**Launcher** scene should be always included first, followed by other locations, currently only Lordaeron.<br/>
+**Launcher** scene should be always included second (the first is LoginForm), followed by other locations, currently only Lordaeron.<br/>
 Dedicated server may also be built using **Launcher Dedicated** scene.
+
+> **Note**: For the moment the "bridge" between login and room selection is broken, in fact you can start play from **Launcher** > scene. We need to code:
+> - Choose a room
+> - ConnectAsync to that room
+> - Spawn everything
+> - Use **ElleRealTime** for networking and remove **Photon** (one day will be done).
 
 **Play:**
 
