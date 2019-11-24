@@ -27,7 +27,7 @@ MonoBehaviour:
   m_Name: Polymorph Aura Change Model
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
-  mechanics: 0
+  mechanics: 17
   modelId: 3
 --- !u!114 &-2638056616509559948
 MonoBehaviour:
@@ -43,8 +43,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 10
   container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
-  duration: 10000
-  maxDuration: 10000
+  duration: 1000000
+  maxDuration: 1000000
   maxStack: 1
   stateType: 0
   targetingMode: 1

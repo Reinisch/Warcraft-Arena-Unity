@@ -38,7 +38,7 @@
         SpeedDecreaseModifier = 33,
         ModIncreaseHealth = 34,
         ModIncreaseEnergy = 35,
-        ModShapeshift = 36,
+        ShapeShift = 36,
         EffectImmunity = 37,
         StateImmunity = 38,
         SchoolImmunity = 39,

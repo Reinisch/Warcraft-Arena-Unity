@@ -6,6 +6,7 @@ using UnityEngine;
 
 using SpellModifierContainer = System.Collections.Generic.Dictionary<(Core.SpellModifierType, Core.SpellModifierApplicationType), System.Collections.Generic.List<Core.SpellModifier>>;
 using SchoolImmunityContainer = System.Collections.Generic.Dictionary<Core.SpellSchoolMask, System.Collections.Generic.List<Core.SpellInfo>>;
+using MechanicsImmunityContainer = System.Collections.Generic.Dictionary<Core.SpellMechanics, System.Collections.Generic.List<Core.SpellInfo>>;
 
 namespace Core
 {
@@ -15,6 +16,7 @@ namespace Core
         {
             private readonly SpellModifierContainer spellModifiers = new SpellModifierContainer();
             private readonly SchoolImmunityContainer schoolImmunities = new SchoolImmunityContainer();
+            private readonly MechanicsImmunityContainer mechanicsImmunities = new MechanicsImmunityContainer();
             private readonly List<AuraEffectSpellTrigger> spellTriggers = new List<AuraEffectSpellTrigger>();
 
             private Unit unit;
@@ -393,12 +395,47 @@ namespace Core
                         return true;
                 }
 
+                bool isImmuneToAllEffects = true;
+                foreach (SpellEffectInfo spellEffectInfo in spellInfo.Effects)
+                {
+                    if (!IsImmuneToSpellEffect(spellEffectInfo, caster))
+                    {
+                        isImmuneToAllEffects = false;
+                        break;
+                    }
+                }
+
+                if (isImmuneToAllEffects)
+                    return true;
+                    
                 return false;
             }
 
-            internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster) { return false; }
+            internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster)
+            {
+                foreach (AuraEffectInfo auraEffect in auraInfo.AuraEffects)
+                    if (!IsImmuneToAuraEffect(auraEffect, caster))
+                        return false;
 
-            internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffectInfo, Unit caster) { return false; }
+                return true;
+            }
+
+            internal bool IsImmuneToSpellEffect(SpellEffectInfo spellEffectInfo, Unit caster)
+            {
+                if (spellEffectInfo is EffectApplyAura spellEffectApplyAura)
+                    return IsImmuneToAura(spellEffectApplyAura.AuraInfo, caster);
+
+                return false;
+            }
+
+            internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffectInfo, Unit caster)
+            {
+                if (auraEffectInfo.Mechanics != SpellMechanics.None)
+                    if (mechanicsImmunities.ContainsKey(auraEffectInfo.Mechanics))
+                        return true;
+
+                return false;
+            }
 
             internal bool IsAffectedBySpellModifier(Spell spell, SpellModifier modifier)
             {
@@ -539,6 +576,11 @@ namespace Core
             internal void ModifySchoolImmunity(SpellInfo spellInfo, SpellSchoolMask schoolMask, bool apply)
             {
                 schoolImmunities.HandleEntry(schoolMask, spellInfo, apply);
+            }
+
+            internal void ModifyMechanicsImmunity(SpellInfo spellInfo, SpellMechanics mechanics, bool apply)
+            {
+                mechanicsImmunities.HandleEntry(mechanics, spellInfo, apply);
             }
         }
     }

@@ -193,6 +193,10 @@ namespace Core
         internal void Refresh()
         {
             UpdateCharges(Charges + AuraInfo.Charges);
+
+            for (int i = 0; i < Effects.Count; i++)
+                for (int j = 0; j < Applications.Count; j++)
+                    Effects[i].HandleEffect(Applications[j], AuraEffectHandleMode.Refresh, true);
         }
 
         internal bool CanStackWith(Aura existingAura)
@@ -202,6 +206,27 @@ namespace Core
 
             bool sameCaster = CasterId == existingAura.CasterId;
             if (!sameCaster && AuraInfo == existingAura.AuraInfo && !AuraInfo.HasAttribute(AuraAttributes.StackForAnyCasters))
+                return false;
+
+            return true;
+        }
+
+        internal bool CanDispel(Aura otherAura)
+        {
+            // check for auras that ignore immunities and can't be dispelled
+            if (!SpellInfo.CanDispelAura(otherAura.SpellInfo))
+                return false;
+
+            // don't dispel self
+            if (this == otherAura)
+                return false;
+
+            // don't dispel passives
+            if (otherAura.SpellInfo.IsPassive)
+                return false;
+
+            // don't dispel same positivity effects
+            if (otherAura.AuraInfo.IsPositive == AuraInfo.IsPositive)
                 return false;
 
             return true;

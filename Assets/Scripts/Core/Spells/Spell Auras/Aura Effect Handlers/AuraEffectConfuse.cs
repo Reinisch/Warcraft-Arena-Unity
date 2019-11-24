@@ -12,7 +12,8 @@
         {
             base.HandleEffect(auraApplication, mode, apply);
 
-            auraApplication.Target.UpdateControlState(UnitControlState.Confused, apply);
+            if (mode == AuraEffectHandleMode.Normal)
+                auraApplication.Target.UpdateControlState(UnitControlState.Confused, apply);
         }
     }
 }

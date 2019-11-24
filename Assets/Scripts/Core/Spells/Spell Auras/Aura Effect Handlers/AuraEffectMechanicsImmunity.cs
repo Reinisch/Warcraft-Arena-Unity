@@ -2,13 +2,13 @@
 
 namespace Core.AuraEffects
 {
-    public class AuraEffectSchoolImmunity : AuraEffect
+    public class AuraEffectMechanicsImmunity : AuraEffect
     {
-        public new AuraEffectInfoSchoolImmunity EffectInfo { get; }
+        public new AuraEffectInfoMechanicsImmunity EffectInfo { get; }
 
         public override AuraEffectHandleGroup HandleGroup => AuraEffectHandleGroup.Unique;
 
-        public AuraEffectSchoolImmunity(Aura aura, AuraEffectInfoSchoolImmunity effectInfo, int index, float value) : base(aura, effectInfo, index, value)
+        public AuraEffectMechanicsImmunity(Aura aura, AuraEffectInfoMechanicsImmunity effectInfo, int index, float value) : base(aura, effectInfo, index, value)
         {
             EffectInfo = effectInfo;
         }
@@ -20,7 +20,12 @@ namespace Core.AuraEffects
             if (mode != AuraEffectHandleMode.Normal)
                 return;
 
-            auraApplication.Target.Spells.ModifySchoolImmunity(Aura.SpellInfo, EffectInfo.SchoolMask, apply);
+            SpellMechanicsFlags immuneMechanics = 0;
+            for (int i = 0; i < EffectInfo.ImmuneMechanics.Count; i++)
+            {
+                auraApplication.Target.Spells.ModifyMechanicsImmunity(Aura.SpellInfo, EffectInfo.ImmuneMechanics[i], apply);
+                immuneMechanics |= EffectInfo.ImmuneMechanics[i].AsFlag();
+            }
 
             if (apply && Aura.SpellInfo.HasAttribute(SpellAttributes.DispelAurasOnImmunity))
             {
@@ -28,7 +33,7 @@ namespace Core.AuraEffects
                 for (var index = 0; index < auraApplication.Target.AuraApplications.Count; index++)
                 {
                     AuraApplication otherApplication = auraApplication.Target.AuraApplications[index];
-                    if (!otherApplication.Aura.SpellInfo.SchoolMask.HasAnyFlag(EffectInfo.SchoolMask))
+                    if (!otherApplication.Aura.AuraInfo.HasAnyMechanics(immuneMechanics))
                         continue;
 
                     if (!Aura.CanDispel(otherApplication.Aura))

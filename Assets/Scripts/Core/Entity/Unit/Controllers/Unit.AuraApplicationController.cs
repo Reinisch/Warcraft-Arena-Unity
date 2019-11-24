@@ -259,6 +259,42 @@ namespace Core
                 tempAuraApplications.Clear();
             }
 
+            internal void RemoveAurasWithEffect(AuraEffectType auraEffectType, AuraEffect except)
+            {
+                IReadOnlyList<AuraEffect> auraEffects = GetAuraEffects(auraEffectType);
+                if (auraEffects == null)
+                    return;
+
+                var auraEffectsToRemove = ListPoolContainer<AuraEffect>.Take();
+                auraEffectsToRemove.AddRange(auraEffects);
+                auraEffectsToRemove.Remove(except);
+
+                foreach (AuraEffect auraEffectToRemove in auraEffectsToRemove)
+                    if (!auraEffectToRemove.Aura.IsRemoved)
+                        auraEffectToRemove.Aura.Remove(AuraRemoveMode.Spell);
+
+                ListPoolContainer<AuraEffect>.Return(auraEffectsToRemove);
+            }
+
+            internal void RemoveAurasWithEffectMechanics(AuraEffectType auraEffectType, SpellMechanics mechanics)
+            {
+                IReadOnlyList<AuraEffect> auraEffects = GetAuraEffects(auraEffectType);
+                if (auraEffects == null)
+                    return;
+
+                var auraEffectsToRemove = ListPoolContainer<AuraEffect>.Take();
+
+                for(int i = 0; i < auraEffects.Count; i++)
+                    if (auraEffects[i].EffectInfo.Mechanics == mechanics)
+                        auraEffectsToRemove.Add(auraEffects[i]);
+
+                foreach (AuraEffect auraEffectToRemove in auraEffectsToRemove)
+                    if (!auraEffectToRemove.Aura.IsRemoved)
+                        auraEffectToRemove.Aura.Remove(AuraRemoveMode.Spell);
+
+                ListPoolContainer<AuraEffect>.Return(auraEffectsToRemove);
+            }
+
             internal void RemoveAurasWithCombinedDamageInterrupt(int damageTaken)
             {
                 if (!HasAuraAnyInterrupt(AuraInterruptFlags.CombinedDamageTaken))

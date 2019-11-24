@@ -16,6 +16,9 @@ namespace Core.AuraEffects
         {
             base.HandleEffect(auraApplication, mode, apply);
 
+            if (mode != AuraEffectHandleMode.Normal)
+                return;
+
             if (apply)
             {
                 if (IsReplacementValid(auraApplication.Target.TransformSpellInfo, Aura.SpellInfo))
@@ -30,8 +33,6 @@ namespace Core.AuraEffects
                         if (IsReplacementValid(auraApplication.Target.TransformSpellInfo, transformEffects[i].Aura.SpellInfo))
                             auraApplication.Target.UpdateTransformSpell((AuraEffectChangeDisplayModel)transformEffects[i]);
             }
-
-            auraApplication.Target.Attributes.UpdateDisplayPower();
         }
 
         private bool IsReplacementValid(SpellInfo source, SpellInfo target) => source == null || !target.IsPositive || source.IsPositive;
