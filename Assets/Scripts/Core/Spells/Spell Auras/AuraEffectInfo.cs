@@ -16,5 +16,7 @@ namespace Core
         public SpellMechanics Mechanics => mechanics;
 
         internal abstract AuraEffect CreateEffect(Aura aura, Unit caster, int index);
+
+        internal bool IsAffectingSpell(SpellInfo spellInfo) => true;
     }
 }

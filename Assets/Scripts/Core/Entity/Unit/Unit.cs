@@ -32,6 +32,8 @@ namespace Core
         internal SpellController Spells { get; } = new SpellController();
         internal WarcraftCharacterController CharacterController => characterController;
 
+        internal ShapeShiftForm ShapeShiftForm { get; private set; }
+        internal SpellInfo ShapeShiftSpellInfo { get; private set; }
         internal SpellInfo TransformSpellInfo { get; private set; }
         internal MovementInfo MovementInfo { get; private set; }
         internal CreateToken UnitCreateToken { get; private set; }
@@ -127,6 +129,8 @@ namespace Core
         protected virtual void HandleDetach()
         {
             ResetMap();
+            ResetShapeShiftForm();
+            ResetTransformSpell();
 
             behaviourController.HandleUnitDetach();
             MovementInfo.Dispose();
@@ -309,6 +313,18 @@ namespace Core
                 if (!HasState(UnitControlState.Confused) && HasAuraType(AuraEffectType.ConfusionState))
                     UpdateConfusionState(true);
             }
+        }
+
+        internal void UpdateShapeShiftForm(AuraEffectShapeShift shapeShiftEffect)
+        {
+            ShapeShiftForm = shapeShiftEffect.EffectInfo.ShapeShiftForm;
+            ShapeShiftSpellInfo = shapeShiftEffect.Aura.SpellInfo;
+        }
+
+        internal void ResetShapeShiftForm()
+        {
+            ShapeShiftForm = ShapeShiftForm.None;
+            ShapeShiftSpellInfo = null;
         }
 
         internal void UpdateTransformSpell(AuraEffectChangeDisplayModel changeDisplayEffect)

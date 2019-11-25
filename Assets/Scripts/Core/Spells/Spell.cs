@@ -308,6 +308,10 @@ namespace Core
             if (castResult != SpellCastResult.Success)
                 return castResult;
 
+            castResult = ValidateShapeShift();
+            if (castResult != SpellCastResult.Success)
+                return castResult;
+
             return SpellCastResult.Success;
         }
 
@@ -512,6 +516,19 @@ namespace Core
             }
         }
 
+        private SpellCastResult ValidateShapeShift()
+        {
+            if (spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreShapeShift))
+                return SpellCastResult.Success;
+
+            IReadOnlyList<AuraEffect> shapeShiftIgnoreEffects = Caster.Auras.GetAuraEffects(AuraEffectType.IgnoreShapeShift);
+            if (shapeShiftIgnoreEffects != null) for (int i = 0; i < shapeShiftIgnoreEffects.Count; i++)
+                if (shapeShiftIgnoreEffects[i].IsAffectingSpell(SpellInfo))
+                    return SpellCastResult.Success;
+
+            return SpellInfo.CheckShapeShift(Caster);
+        }
+
         private SpellCastResult ValidateMechanics(AuraEffectType auraEffectType)
         {
             IReadOnlyList<AuraEffect> activeEffects = Caster.Auras.GetAuraEffects(auraEffectType);
@@ -554,6 +571,9 @@ namespace Core
             bool instantCast = CastTime <= 0.0f || Caster.SpellCast.IsCasting || spellCastFlags.HasTargetFlag(SpellCastFlags.CastDirectly);
             if (casterMovementFlags.IsMoving() && !instantCast && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving))
                 return SpellCastResult.Moving;
+
+            if (SpellInfo.CanCancelForm(this))
+                Caster.Auras.RemoveAurasWithEffect(AuraEffectType.ShapeShift);
 
             Caster.SpellHistory.StartGlobalCooldown(SpellInfo);
 

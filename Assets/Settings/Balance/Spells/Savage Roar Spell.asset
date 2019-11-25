@@ -68,7 +68,7 @@ MonoBehaviour:
   schoolMask: 1
   preventionType: 0
   attributes: 2097152
-  attributesExtra: 0
+  attributesExtra: 4096
   attributesCustom: 2048
   targetEntityTypeMask: 8
   rangedFlags: 1
@@ -91,6 +91,8 @@ MonoBehaviour:
     powerCostPercentage: 0
     powerCost: 25
   targetingConditions: []
+  shapeShiftAlwaysCastable: 01000000
+  shapeShiftNeverCastable: 
 --- !u!114 &5348580251014477433
 MonoBehaviour:
   m_ObjectHideFlags: 0

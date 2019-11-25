@@ -516,3 +516,9 @@ MonoBehaviour:
       Spell power) every {2} sec for {3} sec.
   - StringReference: {fileID: 11400000, guid: ae14b33f7b5fe5745b837577a8554b8d, type: 2}
     Value: Regrowth
+  - StringReference: {fileID: 11400000, guid: fc58ebd3b36d8e44b9e1e21410dc78e5, type: 2}
+    Value: Can't Use While Shapeshifted
+  - StringReference: {fileID: 11400000, guid: bcf33cd1f01a6d94c9396324d3a98104, type: 2}
+    Value: Can't Use When Not Shapeshifted
+  - StringReference: {fileID: 11400000, guid: 37720b86a988c4f4aa34b50d65f21f69, type: 2}
+    Value: Can't Use In This Form

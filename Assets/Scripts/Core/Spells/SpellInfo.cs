@@ -40,10 +40,14 @@ namespace Core
         [SerializeField, UsedImplicitly] private float maxRangeFriend;
         [SerializeField, UsedImplicitly] private float speed;
 
-        [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos = new List<SpellEffectInfo>();
-        [SerializeField, UsedImplicitly] private List<SpellPowerCostInfo> spellPowerCostInfos = new List<SpellPowerCostInfo>();
+        [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos;
+        [SerializeField, UsedImplicitly] private List<SpellPowerCostInfo> spellPowerCostInfos;
         [SerializeField, UsedImplicitly] private List<SpellCastCondition> targetingConditions;
+        [SerializeField, UsedImplicitly] private List<ShapeShiftForm> shapeShiftAlwaysCastable;
+        [SerializeField, UsedImplicitly] private List<ShapeShiftForm> shapeShiftNeverCastable;
 
+        [UsedImplicitly] private HashSet<ShapeShiftForm> shapeShiftAlwaysCastableSet = new HashSet<ShapeShiftForm>();
+        [UsedImplicitly] private HashSet<ShapeShiftForm> shapeShiftNeverCastableSet = new HashSet<ShapeShiftForm>();
         [UsedImplicitly] private SpellMechanicsFlags combinedEffectMechanics;
         [UsedImplicitly] private float maxTargetingRadius;
 
@@ -107,6 +111,8 @@ namespace Core
 
             combinedEffectMechanics = Mechanic.AsFlag();
             maxTargetingRadius = 0.0f;
+            shapeShiftAlwaysCastableSet = new HashSet<ShapeShiftForm>(shapeShiftAlwaysCastable);
+            shapeShiftNeverCastableSet = new HashSet<ShapeShiftForm>(shapeShiftNeverCastable);
 
             foreach (SpellEffectInfo spellEffectInfo in spellEffectInfos)
             {
@@ -121,6 +127,8 @@ namespace Core
 
         protected override void OnUnregister()
         {
+            shapeShiftAlwaysCastableSet.Clear();
+            shapeShiftNeverCastableSet.Clear();
             combinedEffectMechanics = Mechanic.AsFlag();
             maxTargetingRadius = 0.0f;
 
@@ -227,6 +235,22 @@ namespace Core
             return false;
         }
 
+        public bool CanCancelForm(Spell spell)
+        {
+            if (spell.Caster.ShapeShiftForm == ShapeShiftForm.None)
+                return false;
+
+            if (!HasAttribute(SpellExtraAttributes.CastableOnlyNonShapeShifted))
+                return false;
+
+            if (shapeShiftAlwaysCastableSet.Contains(spell.Caster.ShapeShiftForm))
+                return false;
+
+            bool impossibleToCancel = spell.Caster.ShapeShiftSpellInfo.HasAttribute(SpellAttributes.CantCancel);
+            bool mayNotCancel = HasAttribute(SpellExtraAttributes.CastCantCancelShapeShift);
+            return !impossibleToCancel && !mayNotCancel;
+        }
+
         public SpellCastResult CheckTarget(Unit caster, Unit target, Spell spell, bool isImplicit = true)
         {
             if (HasAttribute(SpellAttributes.CantTargetSelf) && caster == target)
@@ -279,6 +303,31 @@ namespace Core
 
                 return SpellCastResult.BadTargets;
             }
+
+            return SpellCastResult.Success;
+        }
+
+        public SpellCastResult CheckShapeShift(Unit caster)
+        {
+            if (shapeShiftNeverCastableSet.Contains(caster.ShapeShiftForm))
+                return SpellCastResult.NotThisShapeShift;
+
+            if (shapeShiftAlwaysCastableSet.Contains(caster.ShapeShiftForm))
+                return SpellCastResult.Success;
+
+            if (caster.ShapeShiftForm != ShapeShiftForm.None)
+            {
+                if (HasAttribute(SpellExtraAttributes.CastableOnlyShapeShifted))
+                    return SpellCastResult.NotThisShapeShift;
+
+                bool impossibleToCancel = caster.ShapeShiftSpellInfo.HasAttribute(SpellAttributes.CantCancel);
+                bool mayNotCancel = HasAttribute(SpellExtraAttributes.CastCantCancelShapeShift);
+
+                if (HasAttribute(SpellExtraAttributes.CastableOnlyNonShapeShifted) && (impossibleToCancel || mayNotCancel))
+                    return SpellCastResult.NotOutOfShapeShift;
+            }
+            else if (HasAttribute(SpellExtraAttributes.CastableOnlyShapeShifted))
+                return SpellCastResult.NotShapeShifted;
 
             return SpellCastResult.Success;
         }

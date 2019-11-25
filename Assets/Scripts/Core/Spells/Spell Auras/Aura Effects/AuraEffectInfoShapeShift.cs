@@ -9,6 +9,7 @@ namespace Core.AuraEffects
         [SerializeField, UsedImplicitly] 
         private ShapeShiftForm shapeShiftForm;
 
+        public ShapeShiftForm ShapeShiftForm => shapeShiftForm;
         public override float Value => (int)shapeShiftForm;
         public override AuraEffectType AuraEffectType => AuraEffectType.ShapeShift;
 

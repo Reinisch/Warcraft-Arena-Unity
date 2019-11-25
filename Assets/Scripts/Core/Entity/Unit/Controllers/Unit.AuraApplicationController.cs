@@ -259,7 +259,7 @@ namespace Core
                 tempAuraApplications.Clear();
             }
 
-            internal void RemoveAurasWithEffect(AuraEffectType auraEffectType, AuraEffect except)
+            internal void RemoveAurasWithEffect(AuraEffectType auraEffectType, AuraEffect except = null)
             {
                 IReadOnlyList<AuraEffect> auraEffects = GetAuraEffects(auraEffectType);
                 if (auraEffects == null)

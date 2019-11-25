@@ -18,7 +18,15 @@
                 return;
 
             if (apply)
+            {
                 auraApplication.Target.Auras.RemoveAurasWithEffect(AuraEffectType.ShapeShift, this);
+
+                auraApplication.Target.UpdateShapeShiftForm(this);
+            }
+            else
+            {
+                auraApplication.Target.ResetShapeShiftForm();
+            }
 
             auraApplication.Target.Attributes.UpdateDisplayPower();
         }

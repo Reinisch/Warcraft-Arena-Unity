@@ -67,7 +67,7 @@ MonoBehaviour:
   schoolMask: 1
   preventionType: 0
   attributes: 0
-  attributesExtra: 49152
+  attributesExtra: 53248
   attributesCustom: 2048
   targetEntityTypeMask: 8
   rangedFlags: 1
@@ -85,8 +85,10 @@ MonoBehaviour:
   speed: 0
   spellEffectInfos:
   - {fileID: 8099043429160440376}
-  spellPowerEntries: []
+  spellPowerCostInfos: []
   targetingConditions: []
+  shapeShiftAlwaysCastable: 01000000
+  shapeShiftNeverCastable: 
 --- !u!114 &8099043429160440376
 MonoBehaviour:
   m_ObjectHideFlags: 0

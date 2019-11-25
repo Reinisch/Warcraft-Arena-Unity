@@ -247,7 +247,7 @@
         ModSpellDamageFromCaster = 271,
         IgnoreMeleeReset = 272,
         XRay = 273,
-        ModIgnoreShapeshift = 275,
+        IgnoreShapeShift = 275,
         ModDamageDoneForMechanic = 276,
         ModDisarmRanged = 278,
         InitializeImages = 279,
