@@ -522,3 +522,8 @@ MonoBehaviour:
     Value: Can't Use When Not Shapeshifted
   - StringReference: {fileID: 11400000, guid: 37720b86a988c4f4aa34b50d65f21f69, type: 2}
     Value: Can't Use In This Form
+  - StringReference: {fileID: 11400000, guid: 0778747268762ef49b88fd06e3f38b4c, type: 2}
+    Value: "\rLets loose a wild roar, increasing the movement speed of all friendly
+      players within {2} yards by {0}% for {1} sec."
+  - StringReference: {fileID: 11400000, guid: d0448bf969dca8542b41177a7ed94ae4, type: 2}
+    Value: Stampeding Roar
