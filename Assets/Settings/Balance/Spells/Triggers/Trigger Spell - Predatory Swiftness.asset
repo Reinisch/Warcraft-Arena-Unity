@@ -37,6 +37,7 @@ MonoBehaviour:
   attributes: 0
   auraEffects:
   - {fileID: 2374564275985881236}
+  - {fileID: -3010124529734531400}
   auraScriptables: []
   usesCharges: 1
   maxCharges: 1
@@ -44,6 +45,26 @@ MonoBehaviour:
   damageInterruptValue: 0
   damageInterruptDelay: 0
   interruptValueType: 0
+--- !u!114 &-3010124529734531400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 523423395275b1646a23b0a31b7a4c68, type: 3}
+  m_Name: Trigger Spell - Predatory Swiftness Aura Ignore Shapeshift
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  modifierValue: 1
+  modifierType: 9
+  applicationType: 3
+  spellValueModifier: {fileID: 11400000, guid: d2704886106f8dc4db7b5eb14e881ef3, type: 2}
+  applicationConditions:
+  - {fileID: 11400000, guid: de0c81c2f7c276a4c9471b2c086ab6e9, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,6 +107,8 @@ MonoBehaviour:
   - {fileID: -3630811807679999311}
   spellPowerCostInfos: []
   targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
 --- !u!114 &2374564275985881236
 MonoBehaviour:
   m_ObjectHideFlags: 0

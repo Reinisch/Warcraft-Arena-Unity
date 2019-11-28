@@ -16,7 +16,6 @@ namespace Core
 
         private SpellValue spellValue;
         private readonly SpellManager spellManager;
-        private readonly SpellCastFlags spellCastFlags;
         private readonly MovementFlags casterMovementFlags;
         private readonly HashSet<Aura> appliedModifierAuras = new HashSet<Aura>();
         private readonly HashSet<Aura> chargeDroppedModifierAuras = new HashSet<Aura>();
@@ -45,7 +44,7 @@ namespace Core
             Logging.LogSpell($"Created new spell, current count: {++SpellAliveCount}");
 
             spellManager = caster.World.SpellManager;
-            spellCastFlags = options.SpellFlags;
+            spellValue.CastFlags = options.SpellFlags;
             casterMovementFlags = options.MovementFlags ?? caster.MovementInfo.Flags;
             SchoolMask = info.SchoolMask;
 
@@ -53,19 +52,19 @@ namespace Core
             Caster = OriginalCaster = caster;
             SpellInfo = info;
 
-            IsTriggered = spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura);
+            IsTriggered = spellValue.CastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura);
 
             if (IsTriggered)
-                spellCastFlags |= SpellCastFlags.IgnoreTargetCheck | SpellCastFlags.IgnoreRangeCheck;
+                spellValue.CastFlags |= SpellCastFlags.IgnoreTargetCheck | SpellCastFlags.IgnoreRangeCheck | SpellCastFlags.IgnoreShapeShift;
 
             if (info.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
-                spellCastFlags |= SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
+                spellValue.CastFlags |= SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
 
             if (info.HasAttribute(SpellExtraAttributes.IgnoreGcd))
-                spellCastFlags |= SpellCastFlags.IgnoreGcd;
+                spellValue.CastFlags |= SpellCastFlags.IgnoreGcd;
 
             if (info.HasAttribute(SpellExtraAttributes.IgnoreCasterAuras))
-                spellCastFlags |= SpellCastFlags.IgnoreCasterAuras;
+                spellValue.CastFlags |= SpellCastFlags.IgnoreCasterAuras;
 
             CanReflect = SpellInfo.DamageClass == SpellDamageClass.Magic && !SpellInfo.HasAttribute(SpellAttributes.CantBeReflected) &&
                 !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive && !SpellInfo.IsPositive;
@@ -256,7 +255,7 @@ namespace Core
 
         private SpellCastResult ValidateCast()
         {
-            if (spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
+            if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
                 return SpellCastResult.Success;
 
             if (Caster is Player player && !player.PlayerSpells.HasKnownSpell(SpellInfo))
@@ -271,7 +270,7 @@ namespace Core
                 return SpellCastResult.NotReady;
 
             // check global cooldown
-            if (!spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreGcd) && Caster.SpellHistory.HasGlobalCooldown)
+            if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreGcd) && Caster.SpellHistory.HasGlobalCooldown)
                 return SpellCastResult.NotReady;
 
             // check if already casting
@@ -282,7 +281,7 @@ namespace Core
                 return SpellCastResult.NoComboPoints;
 
             SpellCastResult castResult;
-            if (!spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreTargetCheck))
+            if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreTargetCheck))
             {
                 castResult = SpellInfo.CheckExplicitTarget(Caster, ExplicitTargets.Target);
                 if (castResult != SpellCastResult.Success)
@@ -363,7 +362,7 @@ namespace Core
 
         private SpellCastResult ValidateAuras()
         {
-            if (spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreCasterAuras))
+            if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreCasterAuras))
                 return SpellCastResult.Success;
 
             bool usableWhileStunned = SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileStunned);
@@ -445,7 +444,7 @@ namespace Core
 
         private SpellCastResult ValidateRange()
         {
-            if (spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreRangeCheck))
+            if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreRangeCheck))
                 return SpellCastResult.Success;
 
             switch (SpellInfo.ExplicitTargetType)
@@ -518,7 +517,7 @@ namespace Core
 
         private SpellCastResult ValidateShapeShift()
         {
-            if (spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreShapeShift))
+            if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreShapeShift))
                 return SpellCastResult.Success;
 
             IReadOnlyList<AuraEffect> shapeShiftIgnoreEffects = Caster.Auras.GetAuraEffects(AuraEffectType.IgnoreShapeShift);
@@ -568,11 +567,11 @@ namespace Core
             CastTimeLeft = CastTime;
 
             // cast if needed, if already casting launch instead, should only be possible with CanCastWhileCasting
-            bool instantCast = CastTime <= 0.0f || Caster.SpellCast.IsCasting || spellCastFlags.HasTargetFlag(SpellCastFlags.CastDirectly);
+            bool instantCast = CastTime <= 0.0f || Caster.SpellCast.IsCasting || spellValue.CastFlags.HasTargetFlag(SpellCastFlags.CastDirectly);
             if (casterMovementFlags.IsMoving() && !instantCast && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving))
                 return SpellCastResult.Moving;
 
-            if (SpellInfo.CanCancelForm(this))
+            if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreShapeShift) && SpellInfo.CanCancelForm(this))
                 Caster.Auras.RemoveAurasWithEffect(AuraEffectType.ShapeShift);
 
             Caster.SpellHistory.StartGlobalCooldown(SpellInfo);
