@@ -3,9 +3,9 @@
     "references": [
         "Arena.Core",
         "Arena.Client",
-        "Arena.Common"
+        "Arena.Common",
+        "Arena.Client.Localization"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -14,5 +14,6 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": []
 }

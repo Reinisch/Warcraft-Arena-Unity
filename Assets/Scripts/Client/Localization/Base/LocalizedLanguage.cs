@@ -9,7 +9,7 @@ namespace Client.Localization
     internal class LocalizedLanguage : MonoBehaviour
     {
         [Serializable]
-        private class LocalizationEntry
+        internal class LocalizationEntry
         {
             public LocalizedString StringReference;
             [TextArea] public string Value;
@@ -17,6 +17,9 @@ namespace Client.Localization
 
         [SerializeField, UsedImplicitly] private LocalizedLanguageType languageType;
         [SerializeField, UsedImplicitly] private List<LocalizationEntry> entries;
+
+        internal LocalizedLanguageType LanguageType => languageType;
+        internal List<LocalizationEntry> Entries => entries;
 
         internal void Localize()
         {
