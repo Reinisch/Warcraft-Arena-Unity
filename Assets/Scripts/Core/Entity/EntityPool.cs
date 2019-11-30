@@ -41,7 +41,6 @@ namespace Core
                 takenEntities.Add(gameObject, createdEntity);
             }
 
-            gameObject.transform.SetParent(null);
             return gameObject;
         }
 

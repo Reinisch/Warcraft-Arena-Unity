@@ -104,9 +104,9 @@ namespace Server
             }
         }
 
-        internal void SetScope(BoltConnection connection, bool inScope)
+        internal void SetDefaultScope(BoltConnection connection)
         {
-            UnitManager.SetScope(connection, inScope);
+            UnitManager.SetDefaultScope(connection);
         }
 
         internal void SetNetworkState(BoltConnection connection, PlayerNetworkState state)
@@ -160,6 +160,7 @@ namespace Server
 
             Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.Player, playerCreateToken);
             newPlayer.AssignControl(boltConnection);
+            mainMap.UpdateVisibilityFor(newPlayer);
 
             var newPlayerInfo = new PlayerServerInfo(boltConnection, newPlayer, unityId);
             playerInfos.Add(newPlayerInfo);

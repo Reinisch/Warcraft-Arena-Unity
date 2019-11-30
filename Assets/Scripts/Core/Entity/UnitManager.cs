@@ -30,9 +30,9 @@ namespace Core
             return entity;
         }
 
-        internal override void SetScope(BoltConnection connection, bool inScope)
+        internal override void SetDefaultScope(BoltConnection connection)
         {
-            base.SetScope(connection, inScope);
+            base.SetDefaultScope(connection);
 
             foreach (Player player in players)
                 player.MovementInfo.MoveEntity?.SetScope(connection, false);

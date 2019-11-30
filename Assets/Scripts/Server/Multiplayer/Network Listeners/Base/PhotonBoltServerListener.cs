@@ -94,7 +94,7 @@ namespace Server
         {
             base.Connected(boltConnection);
 
-            World.SetScope(boltConnection, true);
+            World.SetDefaultScope(boltConnection);
         }
 
         public override void Disconnected(BoltConnection boltConnection)

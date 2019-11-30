@@ -30,6 +30,7 @@ namespace Client
         private readonly Dictionary<ulong, UnitRenderer> unitRenderersById = new Dictionary<ulong, UnitRenderer>();
         private readonly List<UnitRenderer> unitRenderers = new List<UnitRenderer>();
         private readonly List<IUnitRendererHandler> unitRendererHandlers = new List<IUnitRendererHandler>();
+        private Transform container;
 
         public Sprite DefaultSpellIcon => defaultSpellIcon;
         public IReadOnlyDictionary<int, SpellEffectSettings> SpellVisualSettingsById => spellVisualSettingsById;
@@ -41,6 +42,8 @@ namespace Client
         protected override void OnRegistered()
         {
             base.OnRegistered();
+
+            container = GameObject.FindGameObjectWithTag("Renderer Container").transform;
 
             classIconsByClassType.Register();
             colorsBySpellPowerType.Register();
@@ -58,6 +61,8 @@ namespace Client
             classIconsByClassType.Unregister();
             colorsBySpellPowerType.Unregister();
             modelSettingsContainer.Unregister();
+
+            container = null;
 
             base.OnUnregister();
         }
@@ -227,6 +232,7 @@ namespace Client
             if (worldEntity is Unit unitEntity)
             {
                 var unitRenderer = GameObjectPool.Take(unitRendererPrototype);
+                unitRenderer.transform.SetParent(container);
                 unitRenderer.Initialize(unitEntity);
                 unitRenderersById.Add(unitEntity.Id, unitRenderer);
                 unitRenderers.Add(unitRenderer);

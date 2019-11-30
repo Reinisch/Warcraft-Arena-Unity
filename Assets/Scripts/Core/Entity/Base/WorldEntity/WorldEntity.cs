@@ -27,6 +27,7 @@ namespace Core
         }
 
         private IWorldEntityState worldEntityState;
+        private CreateToken createToken;
 
         public Vector3 Position { get => transform.position; set => transform.position = value; }
         public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
@@ -36,6 +37,7 @@ namespace Core
 
         public Map Map { get; private set; }
         public GridCell CurrentCell { get; internal set; }
+        public bool VisibilityChanged { get; internal set; }
 
         public override void Attached()
         {
@@ -44,19 +46,27 @@ namespace Core
             worldEntityState = entity.GetState<IWorldEntityState>();
             worldEntityState.SetTransforms(worldEntityState.Transform, transform);
 
-            if (entity.AttachToken is CreateToken createInfo)
-            {
-                Position = createInfo.Position;
-                Rotation = createInfo.Rotation;
-            }
+            createToken = (CreateToken) entity.AttachToken;
+            Position = createToken.Position;
+            Rotation = createToken.Rotation;
         }
 
         public override void Detached()
         {
             worldEntityState.SetTransforms(worldEntityState.Transform, null);
             worldEntityState = null;
+            createToken = null;
 
             base.Detached();
+        }
+
+        internal void PrepareForScoping()
+        {
+            if (IsOwner)
+            {
+                createToken.Position = Position;
+                createToken.Rotation = Rotation;
+            }
         }
 
         internal void UpdateSyncTransform(bool shouldSync)
@@ -85,6 +95,9 @@ namespace Core
 
         public bool CanSeeOrDetect(WorldEntity target, bool ignoreStealth = false, bool distanceCheck = false, bool checkAlert = false)
         {
+            if (this == target)
+                return true;
+
             return true;
         }
 

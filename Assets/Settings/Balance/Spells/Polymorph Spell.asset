@@ -43,8 +43,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 10
   container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
-  duration: 1000000
-  maxDuration: 1000000
+  duration: 10000
+  maxDuration: 10000
   maxStack: 1
   stateType: 0
   targetingMode: 1
@@ -105,6 +105,8 @@ MonoBehaviour:
     powerCostPercentage: 1
     powerCost: 0
   targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
 --- !u!114 &2373819424652027930
 MonoBehaviour:
   m_ObjectHideFlags: 0

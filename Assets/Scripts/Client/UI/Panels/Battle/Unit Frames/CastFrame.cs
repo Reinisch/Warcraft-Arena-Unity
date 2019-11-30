@@ -9,7 +9,6 @@ namespace Client
 {
     public class CastFrame : MonoBehaviour
     {
-        [SerializeField, UsedImplicitly] private BalanceReference balanceReference;
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private LocalizationReference localization;
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;

@@ -27,7 +27,6 @@ namespace Client
             Unit = unit;
             transform.position = Unit.Position;
 
-            DontDestroyOnLoad(gameObject);
             ReplaceModel(Unit.Model);
             OnScaleChanged();
 

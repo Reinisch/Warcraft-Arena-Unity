@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using UnityEngine;
 
 namespace Core
 {
@@ -8,18 +9,27 @@ namespace Core
     {
         private readonly Dictionary<ulong, T> entitiesById = new Dictionary<ulong, T>();
         protected readonly List<T> Entities = new List<T>();
+        private Transform container;
 
         public event Action<T> EventEntityAttached;
         public event Action<T> EventEntityDetach;
+
+        protected EntityManager()
+        {
+            container = GameObject.FindGameObjectWithTag("Entity Container").transform;
+        }
 
         public virtual void Dispose()
         {
             while (Entities.Count > 0)
                 Destroy(Entities[0]);
+
+            container = null;
         }
 
         public void Attach(T entity)
         {
+            entity.transform.SetParent(container);
             Entities.Add(entity);
             entitiesById.Add(entity.Id, entity);
 
@@ -58,10 +68,10 @@ namespace Core
             return entitiesById.TryGetValue(networkId, out entity);
         }
 
-        internal virtual void SetScope(BoltConnection connection, bool inScope)
+        internal virtual void SetDefaultScope(BoltConnection connection)
         {
             foreach (T entity in Entities)
-                entity.BoltEntity.SetScope(connection, inScope);
+                entity.BoltEntity.SetScope(connection, entity.AutoScoped);
         }
 
         internal virtual void DoUpdate(int deltaTime)

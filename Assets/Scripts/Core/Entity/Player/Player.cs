@@ -60,13 +60,14 @@ namespace Core
         private IPlayerState playerState;
         private string playerName;
 
+        internal VisibilityController Visibility { get; } = new VisibilityController();
         internal SpellController PlayerSpells { get; } = new SpellController();
         internal ClassInfo CurrentClass { get; private set; }
         internal new PlayerMovementInfo MovementInfo { get; private set; }
 
         internal PlayerAI PlayerAI => playerAI;
         internal override UnitAI AI => playerAI;
-        internal override bool AutoScoped => true;
+        internal override bool AutoScoped => false;
 
         public override string Name
         {
@@ -142,6 +143,7 @@ namespace Core
             base.AddBehaviours(unitBehaviourController);
 
             unitBehaviourController.TryAddBehaviour(PlayerSpells);
+            unitBehaviourController.TryAddBehaviour(Visibility);
         }
 
         public void Accept(IUnitVisitor visitor) => visitor.Visit(this);

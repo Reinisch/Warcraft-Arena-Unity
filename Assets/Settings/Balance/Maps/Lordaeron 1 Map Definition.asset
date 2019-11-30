@@ -16,6 +16,7 @@ MonoBehaviour:
   isAvailable: 1
   mapName: Lordaeron
   maxPlayers: 8
+  maxVisibilityRange: 25
   mapType: 4
   expansion: 1
   slotBackground: {fileID: 21300000, guid: 3bfdf0f51f1919947aec29c8791e915f, type: 3}

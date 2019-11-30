@@ -42,7 +42,7 @@ namespace Core
 
         internal CreatureAI CreatureAI => creatureAI;
         internal override UnitAI AI => creatureAI;
-        internal override bool AutoScoped => true;
+        internal override bool AutoScoped => false;
 
         public override string Name { get => string.IsNullOrEmpty(customNameId) ? creatureDefinition.CreatureNameId : customNameId; internal set => customNameId = value; }
 

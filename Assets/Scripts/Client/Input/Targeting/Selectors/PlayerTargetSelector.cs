@@ -47,12 +47,12 @@ namespace Client
                 BestTarget = null;
             }
 
-            public void Visit(Player entity)
+            public void Visit(Player player)
             {
                 if (!options.EntityTypes.HasTargetFlag(TargetingEntityType.Players))
                     return;
 
-                VisitUnit(entity);
+                VisitUnit(player);
             }
 
             public void Visit(Creature entity)
