@@ -29,6 +29,8 @@ namespace Core
         private IWorldEntityState worldEntityState;
         private CreateToken createToken;
 
+        internal MapGrid.Cell CurrentCell { get; set; }
+
         public Vector3 Position { get => transform.position; set => transform.position = value; }
         public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
 
@@ -36,7 +38,6 @@ namespace Core
         public bool IsVisible { get; } = true;
 
         public Map Map { get; private set; }
-        public GridCell CurrentCell { get; internal set; }
         public bool VisibilityChanged { get; internal set; }
 
         public override void Attached()

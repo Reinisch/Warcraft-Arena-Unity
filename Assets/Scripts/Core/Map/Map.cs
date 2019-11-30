@@ -8,7 +8,7 @@ namespace Core
 {
     public class Map
     {
-        private readonly WorldGrid mapGrid = new WorldGrid();
+        private readonly MapGrid mapGrid = new MapGrid();
         private readonly Dictionary<ulong, WorldEntity> worldEntitiesById = new Dictionary<ulong, WorldEntity>();
         private readonly Collider[] raycastResults = new Collider[200];
 
