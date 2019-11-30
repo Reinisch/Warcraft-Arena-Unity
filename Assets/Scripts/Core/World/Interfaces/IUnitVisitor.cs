@@ -2,7 +2,7 @@
 {
     public interface IUnitVisitor
     {
-        void Visit(Player entity);
-        void Visit(Creature entity);
+        void Visit(Player player);
+        void Visit(Creature creature);
     }
 }

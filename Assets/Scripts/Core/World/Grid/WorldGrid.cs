@@ -17,9 +17,9 @@ namespace Core
 
             public void Visit(Player player)
             {
-                if (player.World.HasServerLogic && player.VisibilityChanged)
+                if (player.World.HasServerLogic && (player.VisibilityChanged || worldGrid.gridCellOutOfRangeTimer.Passed))
                 {
-                    worldGrid.UpdateVisibility(player);
+                    worldGrid.UpdateVisibility(player, false);
                     worldGrid.visibilityChangedEntities.Add(player);
                 }
 
@@ -40,24 +40,16 @@ namespace Core
             private bool IsOutOfCellBounds(Vector3 position, GridCell cell)
             {
                 if (position.x + MovementUtils.GridCellSwitchDifference < cell.MinBounds.x)
-                {
                     return true;
-                }
 
                 if (position.x > cell.MaxBounds.x + MovementUtils.GridCellSwitchDifference)
-                {
                     return true;
-                }
 
                 if (position.z + MovementUtils.GridCellSwitchDifference < cell.MinBounds.z)
-                {
                     return true;
-                }
 
                 if (position.z > cell.MaxBounds.z + MovementUtils.GridCellSwitchDifference)
-                {
                     return true;
-                }
 
                 return false;
             }
@@ -77,24 +69,27 @@ namespace Core
             private readonly WorldGrid worldGrid;
             private readonly List<ulong> unhandledEntities = new List<ulong>();
             private Player player;
+            private bool forceUpdateOthers;
 
             public PlayerRelocator(WorldGrid worldGrid)
             {
                 this.worldGrid = worldGrid;
             }
 
-            public void Configure(Player player)
+            public void Configure(Player player, bool forceUpdateOthers)
             {
                 this.player = player;
+                this.forceUpdateOthers = forceUpdateOthers;
 
                 unhandledEntities.AddRange(player.Visibility.VisibleEntities);
+                unhandledEntities.Remove(player.Id);
             }
 
             public void Visit(Player player)
             {
                 HandleUnitVisibility(player);
 
-                if (!player.VisibilityChanged)
+                if (forceUpdateOthers || !player.VisibilityChanged)
                 {
                     player.Visibility.UpdateVisibilityOf(this.player);
                     worldGrid.visibilityChangedEntities.Add(player);
@@ -109,6 +104,7 @@ namespace Core
             public void Complete()
             {
                 player.Visibility.ScopeOutOf(unhandledEntities);
+                unhandledEntities.Clear();
                 player = null;
             } 
 
@@ -163,6 +159,9 @@ namespace Core
             }
         }
 
+        private const int GridRelocatorTime = 500;
+        private const int GridRelocatorOutOfRangeTimer = 2000;
+
         private readonly List<WorldEntity> relocatableEntities = new List<WorldEntity>();
         private readonly HashSet<WorldEntity> visibilityChangedEntities = new HashSet<WorldEntity>();
         private GridCellRelocator gridCellRelocator;
@@ -174,6 +173,9 @@ namespace Core
         private int cellCountZ;
         private float gridCellSize;
         private Map map;
+
+        private TimeTracker gridCellRelocatorTimer = new TimeTracker(GridRelocatorTime);
+        private TimeTracker gridCellOutOfRangeTimer = new TimeTracker(GridRelocatorOutOfRangeTimer);
 
         internal void Initialize(Map map)
         {
@@ -220,32 +222,42 @@ namespace Core
 
         internal void DoUpdate(int deltaTime)
         {
-            for (int i = 0; i < cellCountX; i++)
+            gridCellRelocatorTimer.Update(deltaTime);
+            gridCellOutOfRangeTimer.Update(deltaTime);
+
+            if (gridCellRelocatorTimer.Passed)
+            {
+                for (int i = 0; i < cellCountX; i++)
                 for (int j = 0; j < cellCountZ; j++)
                     cells[i, j].Visit(gridCellRelocator);
 
-            foreach (WorldEntity worldEntity in visibilityChangedEntities)
-                worldEntity.VisibilityChanged = false;
+                foreach (WorldEntity worldEntity in visibilityChangedEntities)
+                    worldEntity.VisibilityChanged = false;
 
-            foreach (WorldEntity relocatableEntity in relocatableEntities)
-            {
-                GridCell currentCell = relocatableEntity.CurrentCell;
-                GridCell nextCell = FindCell(relocatableEntity.Position);
-                if (nextCell == null)
+                foreach (WorldEntity relocatableEntity in relocatableEntities)
                 {
-                    relocatableEntity.Position = map.Settings.DefaultSpawnPoint.position;
-                    nextCell = FindCell(relocatableEntity.Position);
+                    GridCell currentCell = relocatableEntity.CurrentCell;
+                    GridCell nextCell = FindCell(relocatableEntity.Position);
+                    if (nextCell == null)
+                    {
+                        relocatableEntity.Position = map.Settings.DefaultSpawnPoint.position;
+                        nextCell = FindCell(relocatableEntity.Position);
+                    }
+
+                    if (currentCell != nextCell)
+                    {
+                        currentCell.RemoveWorldEntity(relocatableEntity);
+                        nextCell.AddWorldEntity(relocatableEntity);
+                    }
                 }
 
-                if (currentCell != nextCell)
-                {
-                    currentCell.RemoveWorldEntity(relocatableEntity);
-                    nextCell.AddWorldEntity(relocatableEntity);
-                }
+                visibilityChangedEntities.Clear();
+                relocatableEntities.Clear();
+
+                gridCellRelocatorTimer.Reset(GridRelocatorTime);
+                if (gridCellOutOfRangeTimer.Passed)
+                    gridCellOutOfRangeTimer.Reset(GridRelocatorOutOfRangeTimer);
             }
-
-            visibilityChangedEntities.Clear();
-            relocatableEntities.Clear();
         }
 
         internal void AddEntity(WorldEntity entity)
@@ -268,13 +280,9 @@ namespace Core
             entity.CurrentCell.RemoveWorldEntity(entity);
         }
 
-        internal void UpdateVisibility(Player player)
+        internal void UpdateVisibility(Player player, bool forceUpdateOthers)
         {
-            // don't update for bots or disconnected players
-            if (player.BoltEntity.Controller == null)
-                return;
-
-            playerRelocator.Configure(player);
+            playerRelocator.Configure(player, forceUpdateOthers);
             VisitInRadius(player, map.Settings.Definition.MaxVisibilityRange, playerRelocator);
             playerRelocator.Complete();
         }

@@ -55,12 +55,12 @@ namespace Client
                 VisitUnit(player);
             }
 
-            public void Visit(Creature entity)
+            public void Visit(Creature creature)
             {
                 if (!options.EntityTypes.HasTargetFlag(TargetingEntityType.Creatures))
                     return;
 
-                VisitUnit(entity);
+                VisitUnit(creature);
             }
 
             private void VisitUnit(Unit unit)

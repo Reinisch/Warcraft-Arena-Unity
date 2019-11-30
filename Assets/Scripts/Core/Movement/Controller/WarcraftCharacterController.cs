@@ -132,6 +132,9 @@ namespace Core
                 unit.Position = unit.MovementInfo.MoveEntity.transform.position;
                 unit.Rotation = unit.MovementInfo.MoveEntity.transform.rotation;
             }
+
+            if (unit.MovementInfo.IsMoving)
+                unit.VisibilityChanged = true;
         }
 
         public override void SimulateController()

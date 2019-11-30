@@ -99,7 +99,7 @@ namespace Core
             }
         }
 
-        public void UpdateVisibilityFor(Player player) => mapGrid.UpdateVisibility(player);
+        public void UpdateVisibilityFor(Player player) => mapGrid.UpdateVisibility(player, true);
 
         public TEntity FindMapEntity<TEntity>(ulong networkId) where TEntity : Entity
         {
