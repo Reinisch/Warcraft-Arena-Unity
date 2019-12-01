@@ -527,3 +527,7 @@ MonoBehaviour:
       players within {2} yards by {0}% for {1} sec."
   - StringReference: {fileID: 11400000, guid: d0448bf969dca8542b41177a7ed94ae4, type: 2}
     Value: Stampeding Roar
+  - StringReference: {fileID: 11400000, guid: afdd756f95c154d408bcfd175990580f, type: 2}
+    Value: Prowl
+  - StringReference: {fileID: 11400000, guid: e4bd31629f667cc4696d641fdd6a19bb, type: 2}
+    Value: Activates Cat Form and places you into stealth until cancelled.

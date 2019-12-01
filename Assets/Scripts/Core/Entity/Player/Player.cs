@@ -140,10 +140,10 @@ namespace Core
 
         protected override void AddBehaviours(BehaviourController unitBehaviourController)
         {
-            base.AddBehaviours(unitBehaviourController);
-
-            unitBehaviourController.TryAddBehaviour(PlayerSpells);
             unitBehaviourController.TryAddBehaviour(Visibility);
+            unitBehaviourController.TryAddBehaviour(PlayerSpells);
+
+            base.AddBehaviours(unitBehaviourController);
         }
 
         public void Accept(IUnitVisitor visitor) => visitor.Visit(this);

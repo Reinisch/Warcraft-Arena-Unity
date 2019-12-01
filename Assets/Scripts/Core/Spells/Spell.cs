@@ -55,7 +55,8 @@ namespace Core
             IsTriggered = spellValue.CastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura);
 
             if (IsTriggered)
-                spellValue.CastFlags |= SpellCastFlags.IgnoreTargetCheck | SpellCastFlags.IgnoreRangeCheck | SpellCastFlags.IgnoreShapeShift;
+                spellValue.CastFlags |= SpellCastFlags.IgnoreTargetCheck | SpellCastFlags.IgnoreRangeCheck |
+                    SpellCastFlags.IgnoreShapeShift | SpellCastFlags.IgnoreAuraInterruptFlags;
 
             if (info.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
                 spellValue.CastFlags |= SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
@@ -575,6 +576,9 @@ namespace Core
                 Caster.Auras.RemoveAurasWithEffect(AuraEffectType.ShapeShift);
 
             Caster.SpellHistory.StartGlobalCooldown(SpellInfo);
+
+            if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreAuraInterruptFlags) && !SpellInfo.HasAttribute(SpellCustomAttributes.DontBreakStealth))
+                Caster.Auras.RemoveAurasWithInterrupt(AuraInterruptFlags.Cast);
 
             if (instantCast)
                 Launch();

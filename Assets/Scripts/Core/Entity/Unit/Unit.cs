@@ -128,12 +128,13 @@ namespace Core
 
         protected virtual void HandleDetach()
         {
-            ResetMap();
             ResetShapeShiftForm();
             ResetTransformSpell();
 
             behaviourController.HandleUnitDetach();
             MovementInfo.Dispose();
+
+            ResetMap();
 
             selfReference.Invalidate();
             selfReference = null;

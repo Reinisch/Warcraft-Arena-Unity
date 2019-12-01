@@ -14,7 +14,7 @@ namespace Core
         DontBreakStealth = 1 << 6,
         DirectDamage = 1 << 7,
         Charge = 1 << 8,
-        Pickpocket = 1 << 0,
+        Pickpocket = 1 << 9,
         Negative = 1 << 10,
         CastWithoutAnimation = 1 << 11,
         ReqTargetFacingCaster = 1 << 12,
