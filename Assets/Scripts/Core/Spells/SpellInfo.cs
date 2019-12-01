@@ -256,9 +256,6 @@ namespace Core
             if (HasAttribute(SpellAttributes.CantTargetSelf) && caster == target)
                 return SpellCastResult.BadTargets;
 
-            if (!HasAttribute(SpellExtraAttributes.CanTargetInvisible) && !caster.CanSeeOrDetect(target, isImplicit))
-                return SpellCastResult.BadTargets;
-
             if (HasAttribute(SpellCustomAttributes.Pickpocket) && caster is Player && target is Player && caster != target)
                 return SpellCastResult.BadTargets;
 
@@ -294,6 +291,9 @@ namespace Core
 
                 if (target.IsDead && !HasAttribute(SpellAttributes.CanTargetDead))
                     return SpellCastResult.TargetDead;
+
+                if (!HasAttribute(SpellExtraAttributes.CanTargetInvisible) && !caster.CanSeeOrDetect(target))
+                    return SpellCastResult.BadTargets;
 
                 if (ExplicitCastTargets.HasTargetFlag(SpellCastTargetFlags.UnitEnemy) && caster.IsHostileTo(target))
                     return SpellCastResult.Success;
