@@ -6,20 +6,16 @@
         DisconnectedFromHost,
         DisconnectedFromMaster,
         SessionListUpdated,
+        WorldStateChanged,
 
-        WorldInitialized,
-        WorldDeinitializing,
-
-        PlayerControlGained,
-        PlayerControlLost,
+        ClientControlStateChanged,
+        ClientSpellFailed,
 
         SpellLaunched,
         SpellHit,
         SpellDamageDone,
         SpellHealingDone,
         SpellMissDone,
-
-        ClientSpellFailed,
 
         ServerPlayerSpeedChanged,
         ServerPlayerRootChanged,
@@ -45,6 +41,7 @@
         HotkeyStateChanged,
         HotkeyBindingChanged,
         LobbyClassChanged,
-        GameOptionChanged
+        GameOptionChanged,
+        EntityPooled
     }
 }

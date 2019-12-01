@@ -29,7 +29,7 @@ namespace Core
 
         private readonly ConnectionAttemptInfo connectionAttemptInfo = new ConnectionAttemptInfo();
         private NetworkingMode networkingMode;
-        private WorldManager worldManager;
+        private World world;
         private BoltConfig config;
         private State state;
 
@@ -43,14 +43,12 @@ namespace Core
 
             SetListeners(false, false, false);
 
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+            EventHandler.RegisterEvent<World, bool>(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, OnWorldStateChanged);
         }
 
         internal void Unregister()
         {
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+            EventHandler.UnregisterEvent<World, bool>(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, OnWorldStateChanged);
 
             SetListeners(false, false, false);
         }
@@ -140,7 +138,7 @@ namespace Core
         {
             base.BoltShutdownBegin(registerDoneCallback, disconnectReason);
 
-            if (worldManager != null && worldManager.HasServerLogic)
+            if (world != null && world.HasServerLogic)
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster);
         }
 
@@ -218,30 +216,32 @@ namespace Core
             }
         }
 
-        private void OnWorldInitialized(WorldManager worldManager)
+        private void OnWorldStateChanged(World world, bool created)
         {
-            this.worldManager = worldManager;
+            if (created)
+            {
+                this.world = world;
 
-            boltSharedListener.Initialize(worldManager);
+                boltSharedListener.Initialize(world);
 
-            if (worldManager.HasServerLogic)
-                boltServerListener.Initialize(worldManager);
-            if (worldManager.HasClientLogic)
-                boltClientListener.Initialize(worldManager);
-        }
+                if (world.HasServerLogic)
+                    boltServerListener.Initialize(world);
+                if (world.HasClientLogic)
+                    boltClientListener.Initialize(world);
+            }
+            else
+            {
+                SetListeners(false, false, false);
 
-        private void OnWorldDeinitializing(WorldManager worldManager)
-        {
-            SetListeners(false, false, false);
+                boltSharedListener.Deinitialize();
 
-            boltSharedListener.Deinitialize();
+                if (world.HasServerLogic)
+                    boltServerListener.Deinitialize();
+                if (world.HasClientLogic)
+                    boltClientListener.Deinitialize();
 
-            if (worldManager.HasServerLogic)
-                boltServerListener.Deinitialize();
-            if (worldManager.HasClientLogic)
-                boltClientListener.Deinitialize();
-
-            this.worldManager = null;
+                this.world = null;
+            }
         }
 
         private void SetListeners(bool shared, bool server, bool client)

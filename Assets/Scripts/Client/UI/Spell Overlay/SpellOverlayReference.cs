@@ -43,18 +43,20 @@ namespace Client
             base.OnUnregister();
         }
 
-        protected override void OnPlayerControlGained(Player player)
+        protected override void OnControlStateChanged(Player player, bool underControl)
         {
-            base.OnPlayerControlGained(player);
+            if (underControl)
+            {
+                base.OnControlStateChanged(player, true);
 
-            player.FindBehaviour<AuraControllerClient>().AddHandler(this);
-        }
+                player.FindBehaviour<AuraControllerClient>().AddHandler(this);
+            }
+            else
+            {
+                player.FindBehaviour<AuraControllerClient>().RemoveHandler(this);
 
-        protected override void OnPlayerControlLost(Player player)
-        {
-            player.FindBehaviour<AuraControllerClient>().RemoveHandler(this);
-
-            base.OnPlayerControlLost(player);
+                base.OnControlStateChanged(player, false);
+            }
         }
 
         private void HandleSpellOverlay(int auraId, bool addedAura)

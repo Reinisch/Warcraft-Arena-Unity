@@ -77,12 +77,12 @@ namespace Client
             spellVisualController.DoUpdate(deltaTime);
         }
         
-        protected override void OnWorldInitialized(WorldManager world)
+        protected override void OnWorldStateChanged(World world, bool created)
         {
-            base.OnWorldInitialized(world);
-
-            if (world.HasClientLogic)
+            if (created)
             {
+                base.OnWorldStateChanged(world, true);
+
                 world.UnitManager.EventEntityAttached += OnEventEntityAttached;
                 world.UnitManager.EventEntityDetach += OnEventEntityDetach;
 
@@ -97,11 +97,7 @@ namespace Client
                 spellVisualController.Initialize();
                 selectionCircleController.Initialize();
             }
-        }
-
-        protected override void OnWorldDeinitializing(WorldManager world)
-        {
-            if (world.HasClientLogic)
+            else
             {
                 nameplateController.Deinitialize();
                 selectionCircleController.Deinitialize();
@@ -122,25 +118,27 @@ namespace Client
 
                 unitRenderersById.Clear();
                 unitRenderers.Clear();
+
+                base.OnWorldStateChanged(world, false);
             }
-
-            base.OnWorldDeinitializing(world);
         }
 
-        protected override void OnPlayerControlGained(Player player)
+        protected override void OnControlStateChanged(Player player, bool underControl)
         {
-            base.OnPlayerControlGained(player);
+            if (underControl)
+            {
+                base.OnControlStateChanged(player, true);
 
-            nameplateController.HandlePlayerControlGained();
-            selectionCircleController.HandlePlayerControlGained();
-        }
+                nameplateController.HandlePlayerControlGained();
+                selectionCircleController.HandlePlayerControlGained();
+            }
+            else
+            {
+                nameplateController.HandlePlayerControlLost();
+                selectionCircleController.HandlePlayerControlLost();
 
-        protected override void OnPlayerControlLost(Player player)
-        {
-            nameplateController.HandlePlayerControlLost();
-            selectionCircleController.HandlePlayerControlLost();
-
-            base.OnPlayerControlLost(player);
+                base.OnControlStateChanged(player, false);
+            }
         }
 
         private bool TryFind(Unit unit, out UnitRenderer unitRenderer)

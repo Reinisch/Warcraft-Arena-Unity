@@ -1,8 +1,8 @@
 ﻿namespace Core
 {
-    public class WorldClientManager : WorldManager
+    public class WorldClient : World
     {
-        public WorldClientManager(bool hasServerLogic)
+        public WorldClient(bool hasServerLogic)
         {
             HasServerLogic = hasServerLogic;
             HasClientLogic = true;

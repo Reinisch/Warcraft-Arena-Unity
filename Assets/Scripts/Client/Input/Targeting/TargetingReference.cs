@@ -48,22 +48,24 @@ namespace Client
             }
         }
 
-        protected override void OnWorldInitialized(WorldManager world)
+        protected override void OnWorldStateChanged(World world, bool created)
         {
-            base.OnWorldInitialized(world);
+            if (created)
+            {
+                base.OnWorldStateChanged(world, true);
 
-            previousTargets.Clear();
+                previousTargets.Clear();
 
-            world.UnitManager.EventEntityDetach += OnEntityDetach;
-        }
+                world.UnitManager.EventEntityDetach += OnEntityDetach;
+            }
+            else
+            {
+                world.UnitManager.EventEntityDetach -= OnEntityDetach;
 
-        protected override void OnWorldDeinitializing(WorldManager world)
-        {
-            world.UnitManager.EventEntityDetach -= OnEntityDetach;
+                previousTargets.Clear();
 
-            previousTargets.Clear();
-
-            base.OnWorldDeinitializing(world);
+                base.OnWorldStateChanged(world, false);
+            }
         }
 
         private void OnEntityDetach(Unit unit)

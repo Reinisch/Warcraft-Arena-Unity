@@ -37,21 +37,23 @@ namespace Client
             base.OnUnregister();
         }
 
-        protected override void OnPlayerControlGained(Player player)
+        protected override void OnControlStateChanged(Player player, bool underControl)
         {
-            base.OnPlayerControlGained(player);
+            if (underControl)
+            {
+                base.OnControlStateChanged(player, true);
 
-            selectionCircle = GameObjectPool.Take(selectionCirclePrototype);
-            StopTargeting();
-        }
+                selectionCircle = GameObjectPool.Take(selectionCirclePrototype);
+                StopTargeting();
+            }
+            else
+            {
+                StopTargeting();
+                GameObjectPool.Return(selectionCircle, false);
+                selectionCircle = null;
 
-        protected override void OnPlayerControlLost(Player player)
-        {
-            base.OnPlayerControlLost(player);
-
-            StopTargeting();
-            GameObjectPool.Return(selectionCircle, false);
-            selectionCircle = null;
+                base.OnControlStateChanged(player, false);
+            }
         }
 
         protected override void OnUpdate(float deltaTime)

@@ -10,18 +10,18 @@ namespace Core
     internal class EntityPool : IPrefabPool
     {
         private readonly Dictionary<GameObject, Entity> takenEntities = new Dictionary<GameObject, Entity>();
-        private WorldManager worldManager;
+        private World world;
 
-        public void Initialize(WorldManager worldManager)
+        public void Initialize(World world)
         {
-            this.worldManager = worldManager;
+            this.world = world;
         }
 
         public void Deinitialize()
         {
             takenEntities.Clear();
 
-            worldManager = null;
+            world = null;
         }
 
         public GameObject LoadPrefab(PrefabId prefabId)
@@ -37,7 +37,7 @@ namespace Core
             {
                 Entity createdEntity = gameObject.GetComponent<Entity>();
 
-                createdEntity.TakenFromPool(worldManager);
+                EventHandler.ExecuteEvent(gameObject, GameEvents.EntityPooled, true, world);
                 takenEntities.Add(gameObject, createdEntity);
             }
 
@@ -50,7 +50,7 @@ namespace Core
             {
                 Assert.IsTrue(takenEntities.ContainsKey(gameObject), $"Trying to destroy pooled entity, but pool has no such object: {gameObject.name}");
 
-                takenEntities[gameObject].ReturnedToPool();
+                EventHandler.ExecuteEvent(gameObject, GameEvents.EntityPooled, false, world);
                 takenEntities.Remove(gameObject);
             }
 

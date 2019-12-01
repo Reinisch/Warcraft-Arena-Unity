@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Core
 {
-    public class EntityManager<T> where T : Entity
+    public abstract class EntityManager<T> where T : Entity
     {
         private readonly Dictionary<ulong, T> entitiesById = new Dictionary<ulong, T>();
         protected readonly List<T> Entities = new List<T>();

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Server
 {
-    public class WorldServerManager : WorldManager
+    public class WorldServer : World
     {
         private readonly List<PlayerServerInfo> playerInfos = new List<PlayerServerInfo>();
         private readonly Dictionary<BoltConnection, PlayerServerInfo> playerInfosByConnection = new Dictionary<BoltConnection, PlayerServerInfo>();
@@ -18,7 +18,7 @@ namespace Server
 
         private const int DisconnectedPlayerDestroyTime = 10000;
 
-        public WorldServerManager(bool hasClientLogic)
+        public WorldServer(bool hasClientLogic)
         {
             HasServerLogic = true;
             HasClientLogic = hasClientLogic;

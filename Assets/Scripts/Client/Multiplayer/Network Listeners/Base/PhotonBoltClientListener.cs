@@ -12,9 +12,9 @@ namespace Client
     {
         private Player LocalPlayer { get; set; }
 
-        public override void Initialize(WorldManager worldManager)
+        public override void Initialize(World world)
         {
-            base.Initialize(worldManager);
+            base.Initialize(world);
 
             World.UnitManager.EventEntityDetach += OnEntityDetach;
         }
@@ -38,7 +38,7 @@ namespace Client
                 Assert.IsNull(LocalPlayer, "Gained control of another player while already controlling one!");
 
                 LocalPlayer = (Player)World.UnitManager.Find(entity.NetworkId.PackedValue);
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.PlayerControlGained, LocalPlayer);
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, LocalPlayer, true);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Client
             {
                 Assert.IsTrue(LocalPlayer.BoltEntity == entity, "Lost control of non-local player!");
 
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.PlayerControlLost, LocalPlayer);
+                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, LocalPlayer, false);
                 LocalPlayer = null;
             }
         }

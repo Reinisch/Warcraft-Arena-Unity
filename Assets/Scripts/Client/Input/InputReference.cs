@@ -46,18 +46,20 @@ namespace Client
                 hotkey.DoUpdate();
         }
 
-        protected override void OnPlayerControlGained(Player player)
+        protected override void OnControlStateChanged(Player player, bool underControl)
         {
-            base.OnPlayerControlGained(player);
+            if (underControl)
+            {
+                base.OnControlStateChanged(player, true);
 
-            Player.InputProvider = unitMouseKeyboardInput;
-        }
+                Player.InputProvider = unitMouseKeyboardInput;
+            }
+            else
+            {
+                Player.InputProvider = null;
 
-        protected override void OnPlayerControlLost(Player player)
-        {
-            Player.InputProvider = null;
-
-            base.OnPlayerControlLost(player);
+                base.OnControlStateChanged(player, false);
+            }
         }
 
         public void Say(string message)

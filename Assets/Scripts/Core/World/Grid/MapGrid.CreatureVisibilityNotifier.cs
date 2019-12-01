@@ -7,17 +7,15 @@
             private readonly MapGrid mapGrid;
             private Creature creature;
 
-            public CreatureVisibilityNotifier(MapGrid mapGrid)
-            {
-                this.mapGrid = mapGrid;
-            }
+            public CreatureVisibilityNotifier(MapGrid mapGrid) => this.mapGrid = mapGrid;
 
-            public void Configure(Creature creature)
-            {
-                this.creature = creature;
-            }
+            public void Configure(Creature creature) => this.creature = creature;
 
-            public void Visit(Player player)
+            public void Complete() => creature = null;
+            
+            private void HandleUnitVisibility(Unit target) => mapGrid.visibilityChangedEntities.Add(target);
+
+            void IUnitVisitor.Visit(Player player)
             {
                 HandleUnitVisibility(player);
 
@@ -28,19 +26,9 @@
                 }
             }
 
-            public void Visit(Creature creature)
+            void IUnitVisitor.Visit(Creature creature)
             {
                 HandleUnitVisibility(creature);
-            }
-
-            public void Complete()
-            {
-                creature = null;
-            }
-
-            private void HandleUnitVisibility(Unit target)
-            {
-                mapGrid.visibilityChangedEntities.Add(target);
             }
         }
     }

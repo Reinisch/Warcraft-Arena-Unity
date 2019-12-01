@@ -25,22 +25,6 @@ namespace Core
                 unhandledEntities.Remove(player.Id);
             }
 
-            public void Visit(Player player)
-            {
-                HandleUnitVisibility(player);
-
-                if (forceUpdateOthers || !player.VisibilityChanged)
-                {
-                    player.Visibility.UpdateVisibilityOf(this.player);
-                    mapGrid.visibilityChangedEntities.Add(player);
-                }
-            }
-
-            public void Visit(Creature creature)
-            {
-                HandleUnitVisibility(creature);
-            }
-
             public void Complete()
             {
                 player.Visibility.ScopeOutOf(unhandledEntities);
@@ -54,6 +38,22 @@ namespace Core
 
                 player.Visibility.UpdateVisibilityOf(target);
                 mapGrid.visibilityChangedEntities.Add(target);
+            }
+
+            void IUnitVisitor.Visit(Player player)
+            {
+                HandleUnitVisibility(player);
+
+                if (forceUpdateOthers || !player.VisibilityChanged)
+                {
+                    player.Visibility.UpdateVisibilityOf(this.player);
+                    mapGrid.visibilityChangedEntities.Add(player);
+                }
+            }
+
+            void IUnitVisitor.Visit(Creature creature)
+            {
+                HandleUnitVisibility(creature);
             }
         }
     }

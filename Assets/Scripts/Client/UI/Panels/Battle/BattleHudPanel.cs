@@ -45,8 +45,7 @@ namespace Client
             actionBars.ForEach(actionBar => actionBar.Initialize());
             actionErrorDisplay.Initialize();
 
-            EventHandler.RegisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.RegisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlLost, OnPlayerControlLost);
+            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, OnControlStateChanged);
 
             playerCastFrame.UpdateCaster(localPlayer);
             playerUnitFrame.UpdateUnit(localPlayer);
@@ -58,8 +57,7 @@ namespace Client
 
         protected override void PanelDeinitialized()
         {
-            EventHandler.UnregisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.UnregisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlLost, OnPlayerControlLost);
+            EventHandler.UnregisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, OnControlStateChanged);
 
             actionErrorDisplay.Deinitialize();
             actionBars.ForEach(actionBar => actionBar.Denitialize());
@@ -90,28 +88,30 @@ namespace Client
                     actionBar.DoUpdate(deltaTime);
         }
 
-        private void OnPlayerControlGained(Player player)
+        private void OnControlStateChanged(Player player, bool underControl)
         {
-            localPlayer = player;
-            canvasGroup.alpha = 1.0f;
+            if (underControl)
+            {
+                localPlayer = player;
+                canvasGroup.alpha = 1.0f;
 
-            OnPlayerClassChanged();
+                OnPlayerClassChanged();
 
-            playerUnitFrame.UpdateUnit(localPlayer);
-            playerCastFrame.UpdateCaster(localPlayer);
+                playerUnitFrame.UpdateUnit(localPlayer);
+                playerCastFrame.UpdateCaster(localPlayer);
 
-            EventHandler.RegisterEvent(localPlayer, GameEvents.UnitClassChanged, OnPlayerClassChanged);
-        }
+                EventHandler.RegisterEvent(localPlayer, GameEvents.UnitClassChanged, OnPlayerClassChanged);
+            }
+            else
+            {
+                EventHandler.UnregisterEvent(localPlayer, GameEvents.UnitClassChanged, OnPlayerClassChanged);
 
-        private void OnPlayerControlLost(Player player)
-        {
-            EventHandler.UnregisterEvent(localPlayer, GameEvents.UnitClassChanged, OnPlayerClassChanged);
+                playerUnitFrame.UpdateUnit(null);
+                playerCastFrame.UpdateCaster(null);
 
-            playerUnitFrame.UpdateUnit(null);
-            playerCastFrame.UpdateCaster(null);
-
-            canvasGroup.alpha = 0.0f;
-            localPlayer = null;
+                canvasGroup.alpha = 0.0f;
+                localPlayer = null;
+            }
         }
 
         private void OnPlayerClassChanged()

@@ -11,15 +11,15 @@ namespace Core
         {
             private readonly List<Player> worldPlayers = new List<Player>();
             private readonly List<Creature> worldCreatures = new List<Creature>();
-            private Bounds bounds;
+            private readonly Bounds bounds;
 
-            public Vector3 Center { get; private set; }
-            public Vector3 MaxBounds { get; private set; }
-            public Vector3 MinBounds { get; private set; }
-            public int X { get; private set; }
-            public int Z { get; private set; }
+            public Vector3 Center { get; }
+            public Vector3 MaxBounds { get; }
+            public Vector3 MinBounds { get; }
+            public int X { get; }
+            public int Z { get; }
 
-            internal void Initialize(Map map, int xIndex, int zIndex, Bounds bounds)
+            internal Cell(int xIndex, int zIndex, Bounds bounds)
             {
                 X = xIndex;
                 Z = zIndex;
@@ -31,7 +31,7 @@ namespace Core
                 MinBounds = bounds.min;
             }
 
-            internal void Deinitialize()
+            internal void Dispose()
             {
                 worldPlayers.Clear();
                 worldCreatures.Clear();
@@ -74,7 +74,7 @@ namespace Core
                 }
             }
 
-            public void Visit(IUnitVisitor unitVisitor)
+            internal void Visit(IUnitVisitor unitVisitor)
             {
                 for (var i = 0; i < worldPlayers.Count; i++)
                     worldPlayers[i].Accept(unitVisitor);
@@ -83,10 +83,7 @@ namespace Core
                     worldCreatures[i].Accept(unitVisitor);
             }
 
-            public override string ToString()
-            {
-                return $"X:{X} Z:{Z} Bounds:{bounds}";
-            }
+            public override string ToString() => $"X:{X} Z:{Z} Bounds:{bounds}";
         }
     }
 }

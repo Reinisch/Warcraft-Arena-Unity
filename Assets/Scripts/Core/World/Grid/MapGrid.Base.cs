@@ -11,22 +11,23 @@ namespace Core
 
         private readonly List<WorldEntity> relocatableEntities = new List<WorldEntity>();
         private readonly HashSet<WorldEntity> visibilityChangedEntities = new HashSet<WorldEntity>();
-        private PlayerVisibilityNotifier playerVisibilityNotifier;
-        private CreatureVisibilityNotifier creatureVisibilityNotifier;
-        private CellRelocator gridCellRelocator;
-        private Cell invalidCell;
-        private Cell[,] cells;
-        private Map map;
-        private int cellCountX;
-        private int cellCountZ;
-        private float gridCellSize;
+        private readonly PlayerVisibilityNotifier playerVisibilityNotifier;
+        private readonly CreatureVisibilityNotifier creatureVisibilityNotifier;
+        private readonly CellRelocator gridCellRelocator;
+        private readonly Cell invalidCell;
+        private readonly Cell[,] cells;
+        private readonly Map map;
+        private readonly int cellCountX;
+        private readonly int cellCountZ;
+        private readonly float gridCellSize;
 
         private TimeTracker gridCellRelocatorTimer = new TimeTracker(GridRelocatorTime);
         private TimeTracker gridCellOutOfRangeTimer = new TimeTracker(GridRelocatorOutOfRangeTimer);
 
-        internal void Initialize(Map map)
+        internal MapGrid(Map map)
         {
             this.map = map;
+
             gridCellRelocator = new CellRelocator(this);
             playerVisibilityNotifier = new PlayerVisibilityNotifier(this);
             creatureVisibilityNotifier = new CreatureVisibilityNotifier(this);
@@ -36,10 +37,6 @@ namespace Core
             cellCountZ = Mathf.CeilToInt(map.Settings.BoundingBox.bounds.size.z / gridCellSize);
 
             cells = new Cell[cellCountX, cellCountZ];
-            for (int i = 0; i < cellCountX; i++)
-                for (int j = 0; j < cellCountZ; j++)
-                    cells[i, j] = new Cell();
-
             Vector3 minBounds = map.Settings.BoundingBox.bounds.min;
             Vector3 origin = new Vector3(minBounds.x, map.Settings.BoundingBox.center.y, minBounds.z);
             Vector3 cellSize = new Vector3(gridCellSize, 1.0f, gridCellSize);
@@ -50,21 +47,20 @@ namespace Core
                 {
                     float zOffset = (j + 0.5f) * gridCellSize;
                     Vector3 cellCenter = origin + new Vector3(xOffset, 0.0f, zOffset);
-                    cells[i, j].Initialize(map, i, j, new Bounds(cellCenter, cellSize));
+                    cells[i, j] = new Cell(i, j, new Bounds(cellCenter, cellSize));
                 }
             }
 
-            invalidCell = new Cell();
-            invalidCell.Initialize(map, -1, -1, new Bounds(Vector3.zero, Vector3.positiveInfinity));
+            invalidCell = new Cell(-1, -1, new Bounds(Vector3.zero, Vector3.positiveInfinity));
         }
 
-        internal void Deinitialize()
+        internal void Dispose()
         {
-            invalidCell.Deinitialize();
+            invalidCell.Dispose();
 
             for (int i = 0; i < cellCountX; i++)
                 for (int j = 0; j < cellCountZ; j++)
-                    cells[i, j].Deinitialize();
+                    cells[i, j].Dispose();
         }
 
         internal void DoUpdate(int deltaTime)

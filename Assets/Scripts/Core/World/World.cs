@@ -1,9 +1,8 @@
 ﻿using Bolt;
-using Common;
 
 namespace Core
 {
-    public abstract class WorldManager
+    public abstract class World
     {
         private readonly EntityPool entityPool = new EntityPool();
         private readonly IPrefabPool defaultPool = new DefaultPrefabPool();
@@ -16,7 +15,7 @@ namespace Core
         public bool HasServerLogic { get; protected set; }
         public bool HasClientLogic { get; protected set; }
 
-        protected WorldManager()
+        protected World()
         {
             entityPool.Initialize(this);
             BoltNetwork.SetPrefabPool(entityPool);
@@ -28,8 +27,6 @@ namespace Core
 
         public virtual void Dispose()
         {
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, this);
-
             SpellManager.Dispose();
             UnitManager.Dispose();
             MapManager.Dispose();

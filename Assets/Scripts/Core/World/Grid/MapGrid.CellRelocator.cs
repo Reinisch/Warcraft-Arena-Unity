@@ -13,28 +13,6 @@ namespace Core
                 this.mapGrid = mapGrid;
             }
 
-            public void Visit(Player player)
-            {
-                if (player.World.HasServerLogic && (player.VisibilityChanged || mapGrid.gridCellOutOfRangeTimer.Passed))
-                {
-                    mapGrid.UpdateVisibility(player, false);
-                    mapGrid.visibilityChangedEntities.Add(player);
-                }
-
-                HandleRelocation(player);
-            }
-
-            public void Visit(Creature creature)
-            {
-                if (creature.World.HasServerLogic && creature.VisibilityChanged)
-                {
-                    mapGrid.UpdateVisibility(creature);
-                    mapGrid.visibilityChangedEntities.Add(creature);
-                }
-
-                HandleRelocation(creature);
-            }
-
             private bool IsOutOfCellBounds(Vector3 position, Cell cell)
             {
                 if (position.x + MovementUtils.GridCellSwitchDifference < cell.MinBounds.x)
@@ -59,6 +37,28 @@ namespace Core
 
                 if (IsOutOfCellBounds(unit.Position, unit.CurrentCell))
                     mapGrid.relocatableEntities.Add(unit);
+            }
+
+            void IUnitVisitor.Visit(Player player)
+            {
+                if (player.World.HasServerLogic && (player.VisibilityChanged || mapGrid.gridCellOutOfRangeTimer.Passed))
+                {
+                    mapGrid.UpdateVisibility(player, false);
+                    mapGrid.visibilityChangedEntities.Add(player);
+                }
+
+                HandleRelocation(player);
+            }
+
+            void IUnitVisitor.Visit(Creature creature)
+            {
+                if (creature.World.HasServerLogic && creature.VisibilityChanged)
+                {
+                    mapGrid.UpdateVisibility(creature);
+                    mapGrid.visibilityChangedEntities.Add(creature);
+                }
+
+                HandleRelocation(creature);
             }
         }
     }

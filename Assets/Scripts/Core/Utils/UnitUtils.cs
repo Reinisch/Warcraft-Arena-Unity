@@ -49,12 +49,12 @@ namespace Core
 
         public static bool IsDefined(this ClassType classType) => PlayerClasses.Contains(classType);
 
-        public static bool ExistsIn(this Unit unit, WorldManager world)
+        public static bool ExistsIn(this Unit unit, World world)
         {
             if (unit == null || world == null || unit.Map == null)
                 return false;
 
-            return unit.Map.WorldManager == world;
+            return unit.Map.World == world;
         }
 
         public static bool ExistsIn(this Unit unit, Map map)

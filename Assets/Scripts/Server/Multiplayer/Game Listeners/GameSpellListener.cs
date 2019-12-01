@@ -7,7 +7,7 @@ namespace Server
 {
     internal class GameSpellListener : BaseGameListener
     {
-        internal GameSpellListener(WorldServerManager world) : base(world)
+        internal GameSpellListener(WorldServer world) : base(world)
         {
             EventHandler.RegisterEvent<SpellDamageInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, OnSpellDamageDone);
             EventHandler.RegisterEvent<SpellHealInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerHealingDone, OnSpellHealingDone);
@@ -17,7 +17,7 @@ namespace Server
             EventHandler.RegisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
         }
 
-        internal override void Dispose()
+        internal void Dispose()
         {
             EventHandler.UnregisterEvent<SpellDamageInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, OnSpellDamageDone);
             EventHandler.UnregisterEvent<SpellHealInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerHealingDone, OnSpellHealingDone);
