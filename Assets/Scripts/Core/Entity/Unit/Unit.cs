@@ -167,6 +167,25 @@ namespace Core
             unitBehaviourController.TryAddBehaviour(VisibleAuras);
         }
 
+        internal override void PrepareForScoping()
+        {
+            base.PrepareForScoping();
+
+            if (IsOwner)
+            {
+                UnitCreateToken.FactionId = Faction.FactionId;
+                UnitCreateToken.DeathState = Attributes.DeathState;
+                UnitCreateToken.ClassType = Attributes.ClassType;
+                UnitCreateToken.EmoteType = Attributes.EmoteType;
+                UnitCreateToken.DisplayPowerType = Attributes.DisplayPowerType;
+                UnitCreateToken.Scale = Attributes.Scale;
+                UnitCreateToken.ModelId = Attributes.ModelId;
+                UnitCreateToken.FreeForAll = Attributes.FreeForAll;
+                UnitCreateToken.DisplayPower = Power;
+                UnitCreateToken.DisplayPowerMax = MaxPower;
+            }
+        }
+
         internal override void DoUpdate(int deltaTime)
         {
             base.DoUpdate(deltaTime);

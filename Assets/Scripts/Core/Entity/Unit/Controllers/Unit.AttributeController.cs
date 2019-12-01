@@ -55,10 +55,7 @@ namespace Core
                     faction = value;
 
                     if (unit.IsOwner)
-                    {
                         unitState.Faction.Id = value.FactionId;
-                        unit.UnitCreateToken.FactionId = value.FactionId;
-                    }
 
                     EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
                 }
@@ -72,10 +69,7 @@ namespace Core
                     deathState = value;
 
                     if (unit.IsOwner)
-                    {
                         unitState.DeathState = (int)value;
-                        unit.UnitCreateToken.DeathState = value;
-                    }
                 }
             }
 
@@ -87,10 +81,7 @@ namespace Core
                     classType = value;
 
                     if (unit.IsOwner)
-                    {
                         unitState.ClassType = (int)value;
-                        unit.UnitCreateToken.ClassType = value;
-                    }
 
                     EventHandler.ExecuteEvent(unit, GameEvents.UnitClassChanged);
                 }
@@ -107,7 +98,6 @@ namespace Core
                     {
                         unitState.EmoteType = (int)value;
                         unitState.EmoteFrame = BoltNetwork.ServerFrame;
-                        unit.UnitCreateToken.EmoteType = value;
                     }
                 }
             }
@@ -120,10 +110,7 @@ namespace Core
                     displayPowerType = value;
 
                     if (unit.IsOwner)
-                    {
                         unitState.DisplayPowerType = (int)value;
-                        unit.UnitCreateToken.DisplayPowerType = value;
-                    }
 
                     EventHandler.ExecuteEvent(unit, GameEvents.UnitDisplayPowerChanged);
                 }
@@ -138,10 +125,7 @@ namespace Core
                     unit.transform.localScale = new Vector3(scale, scale, scale);
 
                     if (unit.IsOwner)
-                    {
                         unitState.Scale = value;
-                        unit.UnitCreateToken.Scale = value;
-                    }
 
                     EventHandler.ExecuteEvent(unit, GameEvents.UnitScaleChanged);
                 }
@@ -155,10 +139,7 @@ namespace Core
                     modelId = value;
 
                     if (unit.IsOwner)
-                    {
                         unitState.ModelId = value;
-                        unit.UnitCreateToken.ModelId = value;
-                    }
 
                     EventHandler.ExecuteEvent(unit, GameEvents.UnitModelChanged);
                 }
@@ -172,10 +153,7 @@ namespace Core
                     freeForAll = value;
 
                     if (unit.IsOwner)
-                    {
                         unitState.Faction.FreeForAll = value;
-                        unit.UnitCreateToken.FreeForAll = value;
-                    }
 
                     EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
                 }
@@ -552,10 +530,7 @@ namespace Core
                     if (powerType == DisplayPowerType && updateDisplayPower)
                     {
                         if (unit.IsOwner)
-                        {
                             unitState.DisplayPower = newValue;
-                            unit.UnitCreateToken.DisplayPower = newValue;
-                        }
 
                         EventHandler.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.Power);
                     }
@@ -575,10 +550,7 @@ namespace Core
                     if (powerType == DisplayPowerType)
                     {
                         if (unit.IsOwner)
-                        {
                             unitState.DisplayPowerMax = newValue;
-                            unit.UnitCreateToken.DisplayPowerMax = newValue;
-                        }
 
                         EventHandler.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.MaxPower);
                     }

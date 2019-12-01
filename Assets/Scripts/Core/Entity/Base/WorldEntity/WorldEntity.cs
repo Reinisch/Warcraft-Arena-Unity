@@ -61,7 +61,7 @@ namespace Core
             base.Detached();
         }
 
-        internal void PrepareForScoping()
+        internal virtual void PrepareForScoping()
         {
             if (IsOwner)
             {
