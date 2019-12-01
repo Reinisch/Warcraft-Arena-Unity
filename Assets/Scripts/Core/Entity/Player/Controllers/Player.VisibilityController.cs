@@ -38,10 +38,11 @@ namespace Core
                     target.BoltEntity.SetScope(player.BoltEntity.Controller, inScope);
             }
 
-            public void ScopeOutOf(IEnumerable<ulong> targets)
+            public void ScopeOutOf(IReadOnlyList<ulong> targets)
             {
-                foreach (ulong invisibleEntityId in targets)
+                for (int i = 0; i < targets.Count; i++)
                 {
+                    ulong invisibleEntityId = targets[i];
                     visibleEntities.Remove(invisibleEntityId);
 
                     if (player.World.UnitManager.TryFind(invisibleEntityId, out Unit target))
