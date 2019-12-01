@@ -18,7 +18,7 @@
         ModDamageDone = 13,
         ModDamageTaken = 14,
         DamageShield = 15,
-        ModStealth = 16,
+        Stealth = 16,
         ModStealthDetect = 17,
         ModInvisibility = 18,
         ModInvisibilityDetect = 19,

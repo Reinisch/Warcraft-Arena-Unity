@@ -134,7 +134,7 @@ namespace Core
             }
 
             if (unit.MovementInfo.IsMoving)
-                unit.VisibilityChanged = true;
+                unit.IsVisibilityChanged = true;
         }
 
         public override void SimulateController()

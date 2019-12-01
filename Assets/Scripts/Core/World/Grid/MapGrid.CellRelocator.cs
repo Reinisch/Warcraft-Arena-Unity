@@ -41,7 +41,7 @@ namespace Core
 
             void IUnitVisitor.Visit(Player player)
             {
-                if (player.World.HasServerLogic && (player.VisibilityChanged || mapGrid.gridCellOutOfRangeTimer.Passed))
+                if (player.World.HasServerLogic && (player.IsVisibilityChanged || mapGrid.gridCellOutOfRangeTimer.Passed))
                 {
                     mapGrid.UpdateVisibility(player, false);
                     mapGrid.visibilityChangedEntities.Add(player);
@@ -52,7 +52,7 @@ namespace Core
 
             void IUnitVisitor.Visit(Creature creature)
             {
-                if (creature.World.HasServerLogic && creature.VisibilityChanged)
+                if (creature.World.HasServerLogic && creature.IsVisibilityChanged)
                 {
                     mapGrid.UpdateVisibility(creature);
                     mapGrid.visibilityChangedEntities.Add(creature);

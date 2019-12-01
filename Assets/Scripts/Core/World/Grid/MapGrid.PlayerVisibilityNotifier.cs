@@ -44,7 +44,7 @@ namespace Core
             {
                 HandleUnitVisibility(player);
 
-                if (forceUpdateOthers || !player.VisibilityChanged)
+                if (forceUpdateOthers || !player.IsVisibilityChanged)
                 {
                     player.Visibility.UpdateVisibilityOf(this.player);
                     mapGrid.visibilityChangedEntities.Add(player);

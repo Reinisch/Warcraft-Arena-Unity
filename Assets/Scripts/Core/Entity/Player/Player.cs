@@ -181,6 +181,14 @@ namespace Core
             CharacterController.UpdateMovementControl(movementControlChangeEvent.PlayerHasControl);
         }
 
+        internal override void UpdateVisibility(bool forced)
+        {
+            base.UpdateVisibility(forced);
+
+            if (forced)
+                Map.UpdateVisibilityFor(this);
+        }
+
         internal void AssignControl(BoltConnection boltConnection = null)
         {
             var controlToken = new ControlGainToken { HasMovementControl = MovementInfo.HasMovementControl };

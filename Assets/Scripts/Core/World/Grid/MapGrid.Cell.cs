@@ -40,7 +40,7 @@ namespace Core
             internal void AddWorldEntity(WorldEntity worldEntity)
             {
                 worldEntity.CurrentCell = this;
-                worldEntity.VisibilityChanged = true;
+                worldEntity.IsVisibilityChanged = true;
 
                 switch (worldEntity)
                 {

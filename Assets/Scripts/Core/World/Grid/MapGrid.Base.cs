@@ -75,7 +75,7 @@ namespace Core
                     cells[i, j].Visit(gridCellRelocator);
 
                 foreach (WorldEntity worldEntity in visibilityChangedEntities)
-                    worldEntity.VisibilityChanged = false;
+                    worldEntity.IsVisibilityChanged = false;
 
                 foreach (WorldEntity relocatableEntity in relocatableEntities)
                 {

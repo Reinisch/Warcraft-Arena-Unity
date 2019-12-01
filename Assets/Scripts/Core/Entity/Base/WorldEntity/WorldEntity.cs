@@ -35,10 +35,13 @@ namespace Core
         public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
 
         public abstract string Name { get; internal set; }
-        public bool IsVisible { get; } = true;
 
         public Map Map { get; private set; }
-        public bool VisibilityChanged { get; internal set; }
+
+        public bool IsVisible { get; } = true;
+        public bool IsVisibilityChanged { get; internal set; }
+        public int StealthSubtlety { get; internal set; }
+        public int StealthDetection { get; internal set; }
 
         public override void Attached()
         {
@@ -70,6 +73,11 @@ namespace Core
             }
         }
 
+        internal virtual void UpdateVisibility(bool forced)
+        {
+            IsVisibilityChanged = true;
+        }
+
         internal void UpdateSyncTransform(bool shouldSync)
         {
             worldEntityState.SetTransforms(worldEntityState.Transform, shouldSync ? transform : null);
@@ -98,6 +106,9 @@ namespace Core
         {
             if (this == target)
                 return true;
+
+            if (target.StealthSubtlety > 0)
+                return false;
 
             return true;
         }

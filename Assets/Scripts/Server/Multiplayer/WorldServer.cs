@@ -160,7 +160,7 @@ namespace Server
 
             Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.Player, playerCreateToken);
             newPlayer.AssignControl(boltConnection);
-            mainMap.UpdateVisibilityFor(newPlayer);
+            newPlayer.UpdateVisibility(true);
 
             var newPlayerInfo = new PlayerServerInfo(boltConnection, newPlayer, unityId);
             playerInfos.Add(newPlayerInfo);
