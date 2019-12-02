@@ -149,7 +149,7 @@ namespace Core
                 if (distance < combatReach)
                     return true;
 
-                if (!IsFacing(target, SpellTargetDirections.Front, 180.0f))
+                if (!IsFacing(target, SpellTargetDirections.Front, 90.0f, combatReach))
                     return false;
 
                 int detectionValue = 30 + StealthDetection - target.StealthSubtlety;
