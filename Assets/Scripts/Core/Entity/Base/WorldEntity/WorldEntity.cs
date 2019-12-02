@@ -35,6 +35,7 @@ namespace Core
         public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
 
         public abstract string Name { get; internal set; }
+        public virtual float Size { get; } = StatUtils.DefaultEntitySize;
 
         public Map Map { get; private set; }
 
@@ -102,15 +103,83 @@ namespace Core
             Map = null;
         }
 
-        public bool CanSeeOrDetect(WorldEntity target, bool ignoreStealth = false, bool distanceCheck = false, bool checkAlert = false)
+        public bool CanSeeOrDetect(WorldEntity target, bool ignoreStealth = false, bool checkDistance = false)
         {
             if (this == target)
                 return true;
 
-            if (target.StealthSubtlety > 0)
+            if (target.IsNeverVisibleFor(this) || CanNeverSee(target))
+                return false;
+
+            if (target.IsAlwaysVisibleFor(this) || CanAlwaysSee(target))
+                return true;
+
+            if (checkDistance && !IsWithinDistance(target, Map.VisibilityRange, false))
+                return false;
+
+            if (!ignoreStealth && !CanDetectInvisibility())
+                return false;
+
+            if (!ignoreStealth && !CanDetectStealthOf())
                 return false;
 
             return true;
+
+            bool CanDetectInvisibility()
+            {
+                return true;
+            }
+
+            bool CanDetectStealthOf()
+            {
+                if (target.StealthSubtlety <= 0)
+                    return true;
+
+                float distance = DistanceTo(target);
+                float combatReach = 0.0f;
+
+                if (this is Unit unit)
+                {
+                    if (unit.Auras.HasAuraType(AuraEffectType.DetectStealth))
+                        return true;
+
+                    combatReach = StatUtils.DefaultCombatReach;
+                }
+
+                if (distance < combatReach)
+                    return true;
+
+                if (!IsFacing(target, SpellTargetDirections.Front, 180.0f))
+                    return false;
+
+                int detectionValue = 30 + StealthDetection - target.StealthSubtlety;
+                float visibilityRange = detectionValue * 0.3f + combatReach;
+
+                if (distance > visibilityRange)
+                    return false;
+
+                return true;
+            }
+        }
+
+        public bool IsNeverVisibleFor(WorldEntity observer)
+        {
+            return false;
+        }
+
+        public bool IsAlwaysVisibleFor(WorldEntity observer)
+        {
+            return this == observer;
+        }
+
+        public bool CanNeverSee(WorldEntity target)
+        {
+            return Map != target.Map;
+        }
+
+        public bool CanAlwaysSee(WorldEntity target)
+        {
+            return this == target;
         }
 
         public bool IsFacing(WorldEntity target, SpellTargetDirections direction, float angle, float backBuffer = StatUtils.DefaultCombatReach)
@@ -150,6 +219,25 @@ namespace Core
             Vector3 pointOfView = Position - projectedFacingDirection.normalized * backBuffer;
             Vector3 targetDirection = Vector3.ProjectOnPlane(target.Position - pointOfView, Vector3.up);
             return Vector3.Angle(targetDirection, projectedFacingDirection) < angle;
+        }
+
+        public bool IsWithinDistance(WorldEntity target, float range, bool is3D)
+        {
+            float sizeDistance = Size + target.Size;
+            float actualRange = range + sizeDistance;
+            Vector3 position = Position;
+            Vector3 targetPosition = target.Position;
+
+            float dx = position.x - targetPosition.x;
+            float dz = position.z - targetPosition.z;
+            float sqrDistance = dx * dx + dz * dz;
+            if (is3D)
+            {
+                float dy = position.y - targetPosition.y;
+                sqrDistance += dy * dy;
+            }
+
+            return sqrDistance < actualRange * actualRange;
         }
 
         public float DistanceTo(Vector3 position)

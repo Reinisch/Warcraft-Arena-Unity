@@ -15,6 +15,7 @@ namespace Core
         internal World World { get; }
 
         public MapSettings Settings { get; }
+        public float VisibilityRange => Settings.Definition.MaxVisibilityRange;
 
         internal Map(World world, Scene mapScene)
         {

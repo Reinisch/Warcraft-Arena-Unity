@@ -5,6 +5,7 @@ namespace Core
 {
     public static class StatUtils
     {
+        public const float DefaultEntitySize = 0.2f;
         public const float DefaultCombatReach = 1.5f;
         public const float MinMeleeReach = 3.0f;
         public const float NominalMeleeRange = 5.0f;

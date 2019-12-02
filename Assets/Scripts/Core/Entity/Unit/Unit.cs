@@ -46,6 +46,8 @@ namespace Core
         internal DeathState DeathState { get => Attributes.DeathState; set => Attributes.DeathState = value; }
         internal IReadOnlyList<AuraApplication> AuraApplications => Auras.AuraApplications;
 
+        public override float Size => base.Size * Scale;
+
         public MovementFlags MovementFlags => MovementInfo.Flags;
         public IReadOnlyReference<Unit> SelfReference => selfReference;
         public Unit Target => Attributes.Target;

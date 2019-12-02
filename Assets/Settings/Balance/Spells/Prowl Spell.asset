@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
   mechanics: 0
-  stealthValue: 5
+  stealthValue: 15
 --- !u!114 &5588924780639879781
 MonoBehaviour:
   m_ObjectHideFlags: 0
