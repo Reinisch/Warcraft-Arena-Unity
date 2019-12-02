@@ -487,10 +487,10 @@ namespace Core
 
                 maxRange += rangeMod;
 
-                if (Vector3.Distance(Caster.Position, target.Position) > maxRange)
+                if (!Caster.IsWithinDistance(target, maxRange, true))
                     return SpellCastResult.OutOfRange;
 
-                if (minRange > 0.0f && Vector3.Distance(Caster.Position, target.Position) < minRange)
+                if (minRange > 0.0f && Caster.IsWithinDistance(target, minRange, true))
                     return SpellCastResult.OutOfRange;
 
                 return SpellCastResult.Success;
@@ -506,10 +506,10 @@ namespace Core
                 float minRange = SpellInfo.GetMinRange(false);
                 float maxRange = SpellInfo.GetMaxRange(false);
 
-                if (Vector3.Distance(Caster.Position, targetPosition) > maxRange)
+                if (Caster.ExactDistanceTo(targetPosition) > maxRange)
                     return SpellCastResult.OutOfRange;
 
-                if (minRange > 0.0f && Vector3.Distance(Caster.Position, targetPosition) < minRange)
+                if (minRange > 0.0f && Caster.ExactDistanceTo(targetPosition) < minRange)
                     return SpellCastResult.OutOfRange;
 
                 return SpellCastResult.Success;

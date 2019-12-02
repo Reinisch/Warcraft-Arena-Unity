@@ -76,7 +76,7 @@ namespace Client
             if (targetPosition != transform.position)
                 transform.position = targetPosition;
 
-            float distanceToPlayer = renderReference.Player.DistanceTo(UnitRenderer.Unit);
+            float distanceToPlayer = renderReference.Player.ExactDistanceTo(UnitRenderer.Unit);
 
             if (cameraReference.WarcraftCamera != null)
                 transform.rotation = Quaternion.LookRotation(cameraReference.WarcraftCamera.transform.forward);
@@ -160,7 +160,7 @@ namespace Client
             healthFrame.HealthBar.FillImage.color = HostilitySettings.HealthColor;
             unitName.color = HostilitySettings.NameWithoutPlateColor;
 
-            InDetailRange = referer.DistanceTo(target) < nameplateSettings.DetailedDistance;
+            InDetailRange = referer.ExactDistanceTo(target) < nameplateSettings.DetailedDistance;
 
             UpdateSelection(true);
 

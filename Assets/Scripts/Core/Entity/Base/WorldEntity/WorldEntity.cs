@@ -120,7 +120,7 @@ namespace Core
             if (!ignoreStealth && !CanDetectInvisibility())
                 return false;
 
-            if (!ignoreStealth && !CanDetectStealthOf())
+            if (!ignoreStealth && !CanDetectStealth())
                 return false;
 
             return true;
@@ -130,17 +130,17 @@ namespace Core
                 return true;
             }
 
-            bool CanDetectStealthOf()
+            bool CanDetectStealth()
             {
                 if (target.StealthSubtlety <= 0)
                     return true;
 
-                float distance = DistanceTo(target);
+                float distance = ExactDistanceTo(target);
                 float combatReach = 0.0f;
 
                 if (this is Unit unit)
                 {
-                    if (unit.Auras.HasAuraType(AuraEffectType.DetectStealth))
+                    if (unit.Auras.HasAuraType(AuraEffectType.DetectAllStealth))
                         return true;
 
                     combatReach = StatUtils.DefaultCombatReach;
@@ -240,24 +240,24 @@ namespace Core
             return sqrDistance < actualRange * actualRange;
         }
 
-        public float DistanceTo(Vector3 position)
+        public float ExactDistanceTo(Vector3 position)
         {
             return Vector3.Distance(Position, position);
         }
 
-        public float DistanceSqrTo(Vector3 position)
+        public float ExactDistanceSqrTo(Vector3 position)
         {
             return Vector3.SqrMagnitude(Position - position);
         }
 
-        public float DistanceTo(WorldEntity target)
+        public float ExactDistanceTo(WorldEntity target)
         {
-            return DistanceTo(target.Position);
+            return ExactDistanceTo(target.Position);
         }
 
-        public float DistanceSqrTo(WorldEntity target)
+        public float ExactDistanceSqrTo(WorldEntity target)
         {
-            return DistanceTo(target.Position);
+            return ExactDistanceTo(target.Position);
         }
 
         public void SetFacingTo(WorldEntity target)

@@ -101,7 +101,7 @@ namespace Client
                         }
                         break;
                     case TargetingDistance.Near:
-                        float nextTargetNearDistance = referer.DistanceTo(nextTarget);
+                        float nextTargetNearDistance = referer.ExactDistanceTo(nextTarget);
                         if (BestTarget == null || nextTargetNearDistance < bestTargetDistance)
                         {
                             BestTarget = nextTarget;
@@ -109,7 +109,7 @@ namespace Client
                         }
                         break;
                     case TargetingDistance.Far:
-                        float nextTargetFarDistance = referer.DistanceTo(nextTarget);
+                        float nextTargetFarDistance = referer.ExactDistanceTo(nextTarget);
                         if (BestTarget == null || nextTargetFarDistance > bestTargetDistance)
                         {
                             BestTarget = nextTarget;

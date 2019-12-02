@@ -47,7 +47,7 @@ namespace Client
 
             public void HandleUnitRendererAttach(UnitRenderer attachedRenderer)
             {
-                if (rendering.Player.DistanceSqrTo(attachedRenderer.Unit) < settings.MaxDistanceSqr)
+                if (rendering.Player.ExactDistanceSqrTo(attachedRenderer.Unit) < settings.MaxDistanceSqr)
                     SpawnNameplate(attachedRenderer);
                 else
                     unplatedRenderers.Add(attachedRenderer);
@@ -79,7 +79,7 @@ namespace Client
             {
                 for (int i = unplatedRenderers.Count - 1; i >= 0; i--)
                 {
-                    if (rendering.Player.DistanceSqrTo(unplatedRenderers[i].Unit) < settings.MaxDistanceSqr)
+                    if (rendering.Player.ExactDistanceSqrTo(unplatedRenderers[i].Unit) < settings.MaxDistanceSqr)
                     {
                         SpawnNameplate(unplatedRenderers[i]);
                         unplatedRenderers.RemoveAt(i);
