@@ -44,7 +44,7 @@ namespace Client
                         Detach();
 
                     circledUnit = newUnit;
-                    if (circledUnit != null && controller.renderingReference.TryFind(circledUnit, out circledRenderer))
+                    if (circledUnit != null && controller.rendering.unitRendererController.TryFind(circledUnit, out circledRenderer))
                         HandleRendererAttach(circledRenderer);
                 }
 
@@ -62,18 +62,17 @@ namespace Client
 
                 private void Attach(UnitRenderer attachedRenderer)
                 {
-                    circleProjector.gameObject.SetActive(true);
+                    circledRenderer = attachedRenderer;
                     circleProjector.transform.SetParent(attachedRenderer.transform, false);
                     circleProjector.transform.position = circledRenderer.TagContainer.FindTag(settings.TargetTag);
+                    circleProjector.gameObject.SetActive(true);
 
-                    if (circledUnit.IsHostileTo(controller.renderingReference.Player))
+                    if (circledUnit.IsHostileTo(controller.rendering.Player))
                         circleProjector.material.SetColor(MaterialColorProperty, settings.EnemyColor);
-                    else if (circledUnit.IsFriendlyTo(controller.renderingReference.Player))
+                    else if (circledUnit.IsFriendlyTo(controller.rendering.Player))
                         circleProjector.material.SetColor(MaterialColorProperty, settings.FriendlyColor);
                     else
                         circleProjector.material.SetColor(MaterialColorProperty, settings.NeutralColor);
-
-                    circledRenderer = attachedRenderer;
                 }
 
                 private void Detach()

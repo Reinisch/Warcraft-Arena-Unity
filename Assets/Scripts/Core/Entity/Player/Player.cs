@@ -65,6 +65,7 @@ namespace Core
         internal ClassInfo CurrentClass { get; private set; }
         internal new PlayerMovementInfo MovementInfo { get; private set; }
 
+        internal bool IsLocalServerPlayer => IsOwner && IsController;
         internal PlayerAI PlayerAI => playerAI;
         internal override UnitAI AI => playerAI;
         internal override bool AutoScoped => false;
@@ -180,6 +181,8 @@ namespace Core
         {
             CharacterController.UpdateMovementControl(movementControlChangeEvent.PlayerHasControl);
         }
+
+        public bool HasClientVisiblityOf(WorldEntity target) => !World.HasServerLogic || Visibility.HasClientVisiblityOf(target);
 
         internal override void UpdateVisibility(bool forced)
         {

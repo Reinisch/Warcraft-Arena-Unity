@@ -28,6 +28,7 @@
         ServerHealingDone,
         ServerMapLoaded,
         ServerLaunched,
+        ServerVisibilityChanged,
 
         UnitChat,
         UnitAttributeChanged,

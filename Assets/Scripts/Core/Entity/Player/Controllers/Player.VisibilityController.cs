@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Common;
 
 namespace Core
 {
@@ -30,12 +31,15 @@ namespace Core
                 player = null;
             }
 
-            public bool HasClientVisiblityOf(WorldEntity target) => visibleEntities.Contains(target.Id);
+            public bool HasClientVisiblityOf(WorldEntity target) => visibleEntities.Contains(target.Id) || target == player;
 
             public void SetScopeOf(WorldEntity target, bool inScope)
             {
                 if (player.BoltEntity.Controller != null)
                     target.BoltEntity.SetScope(player.BoltEntity.Controller, inScope);
+
+                if (player.IsLocalServerPlayer)
+                    EventHandler.ExecuteEvent(player.World, GameEvents.ServerVisibilityChanged, target, inScope);
             }
 
             public void ScopeOutOf(IReadOnlyList<ulong> targets)

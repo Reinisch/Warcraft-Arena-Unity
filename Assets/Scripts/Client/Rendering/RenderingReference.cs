@@ -14,22 +14,22 @@ namespace Client
     { 
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
         [SerializeField, UsedImplicitly] private BalanceReference balance;
-        [SerializeField, UsedImplicitly] private UnitRenderer unitRendererPrototype;
+        [SerializeField, UsedImplicitly] private UnitModelSettingsContainer modelSettingsContainer;
+        [Header("Controllers")]
         [SerializeField, UsedImplicitly] private NameplateController nameplateController;
         [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
         [SerializeField, UsedImplicitly] private SpellVisualController spellVisualController;
         [SerializeField, UsedImplicitly] private SelectionCircleController selectionCircleController;
+        [SerializeField, UsedImplicitly] private UnitRendererController unitRendererController;
+        [Header("Collections")]
         [SerializeField, UsedImplicitly] private List<SpellEffectSettings> spellEffectSettings;
         [SerializeField, UsedImplicitly] private List<AuraEffectSettings> auraEffectSettings;
-        [SerializeField, UsedImplicitly] private UnitModelSettingsContainer modelSettingsContainer;
         [SerializeField, UsedImplicitly] private ClassTypeSpriteDictionary classIconsByClassType;
         [SerializeField, UsedImplicitly] private SpellPowerTypeColorDictionary colorsBySpellPowerType;
 
         private readonly Dictionary<int, SpellEffectSettings> spellVisualSettingsById = new Dictionary<int, SpellEffectSettings>();
         private readonly Dictionary<int, AuraEffectSettings> auraVisualSettingsById = new Dictionary<int, AuraEffectSettings>();
-        private readonly Dictionary<ulong, UnitRenderer> unitRenderersById = new Dictionary<ulong, UnitRenderer>();
-        private readonly List<UnitRenderer> unitRenderers = new List<UnitRenderer>();
-        private readonly List<IUnitRendererHandler> unitRendererHandlers = new List<IUnitRendererHandler>();
+        
         private Transform container;
 
         public Sprite DefaultSpellIcon => defaultSpellIcon;
@@ -69,9 +69,7 @@ namespace Client
 
         protected override void OnUpdate(float deltaTime)
         {
-            foreach (var unitRenderer in unitRenderers)
-                unitRenderer.DoUpdate(deltaTime);
-
+            unitRendererController.DoUpdate(deltaTime);
             nameplateController.DoUpdate(deltaTime);
             floatingTextController.DoUpdate(deltaTime);
             spellVisualController.DoUpdate(deltaTime);
@@ -83,9 +81,6 @@ namespace Client
             {
                 base.OnWorldStateChanged(world, true);
 
-                world.UnitManager.EventEntityAttached += OnEventEntityAttached;
-                world.UnitManager.EventEntityDetach += OnEventEntityDetach;
-
                 EventHandler.RegisterEvent<Unit, Unit, int, HitType>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
                 EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
                 EventHandler.RegisterEvent<Unit, Unit, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.SpellMissDone, OnSpellMiss);
@@ -96,9 +91,11 @@ namespace Client
                 floatingTextController.Initialize();
                 spellVisualController.Initialize();
                 selectionCircleController.Initialize();
+                unitRendererController.Initialize();
             }
             else
             {
+                unitRendererController.Deinitialize();
                 nameplateController.Deinitialize();
                 selectionCircleController.Deinitialize();
                 floatingTextController.Deinitialize();
@@ -109,15 +106,6 @@ namespace Client
                 EventHandler.UnregisterEvent<Unit, Unit, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.SpellMissDone, OnSpellMiss);
                 EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
-
-                world.UnitManager.EventEntityAttached -= OnEventEntityAttached;
-                world.UnitManager.EventEntityDetach -= OnEventEntityDetach;
-
-                foreach (UnitRenderer unitRenderer in unitRenderers)
-                    unitRenderer.Deinitialize();
-
-                unitRenderersById.Clear();
-                unitRenderers.Clear();
 
                 base.OnWorldStateChanged(world, false);
             }
@@ -131,9 +119,11 @@ namespace Client
 
                 nameplateController.HandlePlayerControlGained();
                 selectionCircleController.HandlePlayerControlGained();
+                unitRendererController.UpdateClientsideVisibility();
             }
             else
             {
+                unitRendererController.UpdateClientsideVisibility();
                 nameplateController.HandlePlayerControlLost();
                 selectionCircleController.HandlePlayerControlLost();
 
@@ -141,20 +131,13 @@ namespace Client
             }
         }
 
-        private bool TryFind(Unit unit, out UnitRenderer unitRenderer)
-        {
-            return unitRenderersById.TryGetValue(unit.Id, out unitRenderer);
-        }
-
         private void OnSpellDamageDone(Unit caster, Unit target, int damageAmount, HitType hitType)
         {
             if (!caster.IsController)
                 return;
 
-            if (!unitRenderersById.TryGetValue(target.Id, out UnitRenderer targetRenderer))
-                return;
-
-            floatingTextController.SpawnDamageText(targetRenderer, damageAmount, hitType);
+            if (unitRendererController.TryFind(target, out UnitRenderer targetRenderer))
+                floatingTextController.SpawnDamageText(targetRenderer, damageAmount, hitType);
         }
 
         private void OnSpellMiss(Unit caster, Unit target, SpellMissType missType)
@@ -162,7 +145,7 @@ namespace Client
             if (!caster.IsController)
                 return;
 
-            if (!unitRenderersById.TryGetValue(target.Id, out UnitRenderer targetRenderer))
+            if (!unitRendererController.TryFind(target.Id, out UnitRenderer targetRenderer))
                 return;
 
             floatingTextController.SpawnMissText(targetRenderer, missType);
@@ -173,7 +156,7 @@ namespace Client
             if (!caster.IsController)
                 return;
 
-            if (!unitRenderersById.TryGetValue(target.Id, out UnitRenderer targetRenderer))
+            if (!unitRendererController.TryFind(target.Id, out UnitRenderer targetRenderer))
                 return;
 
             floatingTextController.SpawnHealingText(targetRenderer, healingAmount, isCrit);
@@ -184,7 +167,7 @@ namespace Client
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
-            if (!unitRenderersById.TryGetValue(caster.Id, out UnitRenderer casterRenderer))
+            if (!unitRendererController.TryFind(caster.Id, out UnitRenderer casterRenderer))
                 return;
 
             if (!spellInfo.HasAttribute(SpellCustomAttributes.CastWithoutAnimation))
@@ -195,7 +178,7 @@ namespace Client
 
             if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Projectile, out EffectSpellSettings settings))
                 foreach (var entry in processingToken.ProcessingEntries)
-                    if (unitRenderersById.TryGetValue(entry.Item1, out UnitRenderer targetRenderer))
+                    if (unitRendererController.TryFind(entry.Item1, out UnitRenderer targetRenderer))
                         spellVisualController.SpawnVisual(casterRenderer, targetRenderer, settings, processingToken.ServerFrame, entry.Item2);
 
             if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Cast, out EffectSpellSettings spellVisualEffect))
@@ -212,7 +195,7 @@ namespace Client
 
         private void OnSpellHit(Unit target, int spellId)
         {
-            if (!unitRenderersById.TryGetValue(target.Id, out UnitRenderer targetRenderer))
+            if (!unitRendererController.TryFind(target.Id, out UnitRenderer targetRenderer))
                 return;
 
             if (!SpellVisualSettingsById.TryGetValue(spellId, out SpellEffectSettings spellVisuals))
@@ -225,56 +208,9 @@ namespace Client
             }
         }
 
-        private void OnEventEntityAttached(WorldEntity worldEntity)
-        {
-            if (worldEntity is Unit unitEntity)
-            {
-                var unitRenderer = GameObjectPool.Take(unitRendererPrototype);
-                unitRenderer.transform.SetParent(container);
-                unitRenderer.Initialize(unitEntity);
-                unitRenderersById.Add(unitEntity.Id, unitRenderer);
-                unitRenderers.Add(unitRenderer);
+        private void RegisterHandler(IUnitRendererHandler unitRendererHandler) => unitRendererController.RegisterHandler(unitRendererHandler);
 
-                selectionCircleController.HandleRendererAttach(unitRenderer);
-
-                foreach (IUnitRendererHandler handler in unitRendererHandlers)
-                    handler.HandleUnitRendererAttach(unitRenderer);
-            }
-        }
-
-        private void OnEventEntityDetach(WorldEntity worldEntity)
-        {
-            if (worldEntity is Unit unitEntity && unitRenderersById.TryGetValue(unitEntity.Id, out UnitRenderer unitRenderer))
-            {
-                spellVisualController.HandleRendererDetach(unitRenderer);
-                selectionCircleController.HandleRendererDetach(unitRenderer);
-
-                foreach (IUnitRendererHandler handler in unitRendererHandlers)
-                    handler.HandleUnitRendererDetach(unitRenderer);
-
-                unitRenderer.Deinitialize();
-                unitRenderersById.Remove(unitEntity.Id);
-                unitRenderers.Remove(unitRenderer);
-
-                GameObjectPool.Return(unitRenderer, unitRenderer.gameObject == null);
-            }
-        }
-
-        private void RegisterHandler(IUnitRendererHandler unitRendererHandler)
-        {
-            unitRendererHandlers.Add(unitRendererHandler);
-
-            foreach (UnitRenderer unitRenderer in unitRenderers)
-                unitRendererHandler.HandleUnitRendererAttach(unitRenderer);
-        }
-
-        private void UnregisterHandler(IUnitRendererHandler unitRendererHandler)
-        {
-            foreach (UnitRenderer unitRenderer in unitRenderers)
-                unitRendererHandler.HandleUnitRendererDetach(unitRenderer);
-
-            unitRendererHandlers.Remove(unitRendererHandler);
-        }
+        private void UnregisterHandler(IUnitRendererHandler unitRendererHandler) => unitRendererController.UnregisterHandler(unitRendererHandler);
 
 #if UNITY_EDITOR
         [ContextMenu("Collect Spell Effects"), UsedImplicitly]

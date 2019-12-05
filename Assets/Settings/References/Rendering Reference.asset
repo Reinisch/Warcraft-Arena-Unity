@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultSpellIcon: {fileID: 21300000, guid: 76cd4c99ae5fb62478da1b60870f7f63, type: 3}
   balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
-  unitRendererPrototype: {fileID: 8283757307345493563, guid: dac238eecc77761418818a22bb332b12,
-    type: 3}
+  modelSettingsContainer: {fileID: 11400000, guid: dfd880d432e89ef4194ba2772d0fd38a,
+    type: 2}
   nameplateController:
     rendering: {fileID: 11400000}
     nameplatePrototype: {fileID: 4237749462972623577, guid: 6938372095c24704a884bf0e6ad7c457,
@@ -33,11 +33,15 @@ MonoBehaviour:
   selectionCircleController:
     selectionCirclePrototype: {fileID: 11939280, guid: dc884a6ec589ce249acc9b5326859165,
       type: 3}
-    renderingReference: {fileID: 11400000}
+    rendering: {fileID: 11400000}
     playerCircleSettings: {fileID: 11400000, guid: 98a751b25d9928a45bdc81364cb01ed7,
       type: 2}
     targetCircleSettings: {fileID: 11400000, guid: 69d99f2d9141714428272b398771ae99,
       type: 2}
+  unitRendererController:
+    rendering: {fileID: 11400000}
+    unitRendererPrototype: {fileID: 8283757307345493563, guid: dac238eecc77761418818a22bb332b12,
+      type: 3}
   spellEffectSettings:
   - {fileID: 11400000, guid: ed368651e4a469a46b66ab2995556266, type: 2}
   - {fileID: 11400000, guid: ba7a61305c5ca964293ee28932f70564, type: 2}
@@ -130,8 +134,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b4ec6f9516f09834fb5f461de531c794, type: 2}
   - {fileID: 11400000, guid: 0f83bdcca1c61724c80ec4177e4c0b08, type: 2}
   - {fileID: 11400000, guid: 450fc693f4fa6f949862528a66ce0cf0, type: 2}
-  modelSettingsContainer: {fileID: 11400000, guid: dfd880d432e89ef4194ba2772d0fd38a,
-    type: 2}
   classIconsByClassType:
     items:
     - classType: 1
