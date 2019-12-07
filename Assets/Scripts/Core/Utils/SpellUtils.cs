@@ -49,6 +49,16 @@ namespace Core
             return (baseFlags & flag) != 0;
         }
 
+        public static bool HasTargetFlag(this UnitVisualEffectFlags baseFlags, UnitVisualEffectFlags flag)
+        {
+            return (baseFlags & flag) == flag;
+        }
+
+        public static UnitVisualEffectFlags SetFlag(this UnitVisualEffectFlags baseFlags, UnitVisualEffectFlags flag, bool set)
+        {
+            return set ? baseFlags | flag : baseFlags & ~flag;
+        }
+
         public static bool HasTargetFlag(this SpellPreventionType baseFlags, SpellPreventionType flag)
         {
             return (baseFlags & flag) == flag;

@@ -22,6 +22,9 @@
             else
                 auraApplication.Target.StealthSubtlety -= (int)EffectInfo.Value;
 
+            bool hasStealthAura = auraApplication.Target.Auras.HasAuraType(AuraEffectType.Stealth);
+            UnitVisualEffectFlags visualEffectFlags = auraApplication.Target.Attributes.VisualEffectFlags;
+            auraApplication.Target.Attributes.VisualEffectFlags = visualEffectFlags.SetFlag(UnitVisualEffectFlags.StealthTransparency, hasStealthAura);
             auraApplication.Target.UpdateVisibility(true);
         }
     }

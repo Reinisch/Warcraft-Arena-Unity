@@ -9,7 +9,7 @@ QualitySettings:
   - serializedVersion: 2
     name: Good
     pixelLightCount: 2
-    shadows: 1
+    shadows: 2
     shadowResolution: 1
     shadowProjection: 1
     shadowCascades: 4
@@ -41,5 +41,4 @@ QualitySettings:
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
     excludedTargetPlatforms: []
-  m_PerPlatformDefaultQuality:
-    Standalone: 0
+  m_PerPlatformDefaultQuality: {}

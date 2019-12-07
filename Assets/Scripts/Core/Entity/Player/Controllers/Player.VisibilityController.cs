@@ -36,7 +36,12 @@ namespace Core
             public void SetScopeOf(WorldEntity target, bool inScope)
             {
                 if (player.BoltEntity.Controller != null)
+                {
+                    if (inScope)
+                        target.PrepareForScoping();
+
                     target.BoltEntity.SetScope(player.BoltEntity.Controller, inScope);
+                }
 
                 if (player.IsLocalServerPlayer)
                     EventHandler.ExecuteEvent(player.World, GameEvents.ServerVisibilityChanged, target, inScope);
@@ -69,8 +74,6 @@ namespace Core
                 {
                     if (player.CanSeeOrDetect(target, false, true))
                     {
-                        target.PrepareForScoping();
-
                         SetScopeOf(target, true);
 
                         visibleEntities.Add(target.Id);

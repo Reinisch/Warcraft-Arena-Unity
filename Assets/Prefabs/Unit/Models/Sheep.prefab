@@ -55,7 +55,9 @@ MonoBehaviour:
     leftHandTag: {fileID: 5900005973924532403}
     damageTag: {fileID: 2291063085725660373}
     nameplateTag: {fileID: 2396036922027929731}
+  meshRenderer: {fileID: 5313242027494150666}
   animator: {fileID: 8890536455923211727}
+  strafeSpeed: 1
 --- !u!1 &2487548871698084230
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,6 +726,12 @@ Transform:
 --- !u!95 &8890536455923211727 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 74c2832ea46912746a2e7976e48174a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 5805475005957118895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &5313242027494150666 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1814209284721641893, guid: 74c2832ea46912746a2e7976e48174a2,
     type: 3}
   m_PrefabInstance: {fileID: 5805475005957118895}
   m_PrefabAsset: {fileID: 0}

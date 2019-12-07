@@ -15,10 +15,11 @@ namespace Core
 
             private Unit unit;
             private FactionDefinition faction;
-            private ClassType classType;
+            private UnitVisualEffectFlags visualEffectFlags;
             private SpellPowerType displayPowerType;
             private DeathState deathState;
             private EmoteType emoteType;
+            private ClassType classType;
             private IUnitState unitState;
             private bool initialized;
             private bool freeForAll;
@@ -113,6 +114,20 @@ namespace Core
                         unitState.DisplayPowerType = (int)value;
 
                     EventHandler.ExecuteEvent(unit, GameEvents.UnitDisplayPowerChanged);
+                }
+            }
+
+            internal UnitVisualEffectFlags VisualEffectFlags
+            {
+                get => visualEffectFlags;
+                set
+                {
+                    visualEffectFlags = value;
+
+                    if (unit.IsOwner)
+                        unitState.VisualEffects = (int)value;
+
+                    EventHandler.ExecuteEvent(unit, GameEvents.UnitVisualsChanged);
                 }
             }
 
@@ -226,6 +241,7 @@ namespace Core
                     unit.AddCallback(nameof(IUnitState.DisplayPowerType), OnDisplayPowerTypeChanged);
                     unit.AddCallback(nameof(IUnitState.DisplayPower), OnDisplayPowerChanged);
                     unit.AddCallback(nameof(IUnitState.DisplayPowerMax), OnDisplayPowerMaxChanged);
+                    unit.AddCallback(nameof(IUnitState.VisualEffects), OnUnitVisualEffectChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
                     unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
@@ -293,10 +309,12 @@ namespace Core
                     unit.RemoveCallback(nameof(IUnitState.DisplayPowerType), OnDisplayPowerTypeChanged);
                     unit.RemoveCallback(nameof(IUnitState.DisplayPower), OnDisplayPowerChanged);
                     unit.RemoveCallback(nameof(IUnitState.DisplayPowerMax), OnDisplayPowerMaxChanged);
+                    unit.RemoveCallback(nameof(IUnitState.VisualEffects), OnUnitVisualEffectChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
                     unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
                 }
 
+                VisualEffectFlags = 0;
                 unitState = null;
                 unit = null;
             }
@@ -592,6 +610,11 @@ namespace Core
             private void OnDisplayPowerChanged()
             {
                 SetPower(DisplayPowerType, unitState.DisplayPower);
+            }
+
+            private void OnUnitVisualEffectChanged()
+            {
+                VisualEffectFlags = (UnitVisualEffectFlags)unitState.VisualEffects;
             }
 
             private void OnClassTypeChanged()

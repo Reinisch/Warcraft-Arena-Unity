@@ -6,6 +6,7 @@ namespace Core
     {
         public new class CreateToken : WorldEntity.CreateToken
         {
+            public UnitVisualEffectFlags VisualEffectFlags { private get; set; }
             public SpellPowerType DisplayPowerType { private get; set; }
             public DeathState DeathState { private get; set; }
             public EmoteType EmoteType { private get; set; }
@@ -16,14 +17,14 @@ namespace Core
             public int FactionId { private get; set; }
             public int ModelId { private get; set; }
             public int OriginalModelId { private get; set; }
-            public float Scale { private get; set; } = 1.0f;
-
             public int OriginalAIInfoId { get; set; }
+            public float Scale { private get; set; } = 1.0f;
 
             public override void Read(UdpPacket packet)
             {
                 base.Read(packet);
 
+                VisualEffectFlags = (UnitVisualEffectFlags) packet.ReadInt();
                 DisplayPowerType = (SpellPowerType) packet.ReadInt();
                 DeathState = (DeathState) packet.ReadInt();
                 EmoteType = (EmoteType) packet.ReadInt();
@@ -42,7 +43,8 @@ namespace Core
             {
                 base.Write(packet);
 
-                packet.WriteInt((int)DisplayPowerType);
+                packet.WriteInt((int) VisualEffectFlags);
+                packet.WriteInt((int) DisplayPowerType);
                 packet.WriteInt((int) DeathState);
                 packet.WriteInt((int) EmoteType);
                 packet.WriteInt((int) ClassType);
@@ -69,6 +71,7 @@ namespace Core
                 unit.Scale = Scale;
                 unit.Attributes.SetMaxPower(DisplayPowerType, DisplayPowerMax);
                 unit.Attributes.SetPower(DisplayPowerType, DisplayPower);
+                unit.Attributes.VisualEffectFlags = VisualEffectFlags;
             }
         }
     }

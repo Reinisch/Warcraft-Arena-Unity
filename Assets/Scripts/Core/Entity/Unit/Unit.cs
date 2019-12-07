@@ -75,6 +75,7 @@ namespace Core
         public bool IsControlledByPlayer => this is Player;
         public bool IsStopped => !HasState(UnitControlState.Moving);
         public float Scale { get => Attributes.Scale; internal set => Attributes.Scale = value; }
+        public UnitVisualEffectFlags VisualEffects => Attributes.VisualEffectFlags;
         public SpellPowerType DisplayPowerType { get => Attributes.DisplayPowerType; internal set => Attributes.DisplayPowerType = value; }
         public ClassType ClassType { get => Attributes.ClassType; internal set => Attributes.ClassType = value; }
         public EmoteType EmoteType { get => Attributes.EmoteType; internal set => Attributes.EmoteType = value; }
@@ -176,6 +177,7 @@ namespace Core
 
             if (IsOwner)
             {
+                UnitCreateToken.VisualEffectFlags = Attributes.VisualEffectFlags;
                 UnitCreateToken.FactionId = Faction.FactionId;
                 UnitCreateToken.DeathState = Attributes.DeathState;
                 UnitCreateToken.ClassType = Attributes.ClassType;

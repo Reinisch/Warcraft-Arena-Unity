@@ -35,6 +35,7 @@
         UnitTargetChanged,
         UnitFactionChanged,
         UnitClassChanged,
+        UnitVisualsChanged,
         UnitModelChanged,
         UnitScaleChanged,
         UnitDisplayPowerChanged,

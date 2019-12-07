@@ -295,7 +295,9 @@ MonoBehaviour:
     leftHandTag: {fileID: 1835877156582937784}
     damageTag: {fileID: 8515829182547903483}
     nameplateTag: {fileID: 4538552129771246449}
+  meshRenderer: {fileID: 4853877570967939094}
   animator: {fileID: 8846111294059486624}
+  strafeSpeed: 1
 --- !u!1 &3638181116700260971
 GameObject:
   m_ObjectHideFlags: 0

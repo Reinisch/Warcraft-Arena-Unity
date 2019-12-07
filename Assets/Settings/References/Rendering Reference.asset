@@ -42,6 +42,9 @@ MonoBehaviour:
     rendering: {fileID: 11400000}
     unitRendererPrototype: {fileID: 8283757307345493563, guid: dac238eecc77761418818a22bb332b12,
       type: 3}
+  autoIncludedMaterials:
+  - {fileID: 2100000, guid: a2775595ab0f7e64097cc0b46ddecb08, type: 2}
+  - {fileID: 2100000, guid: ef510e38a4d9a7e41bf60650b12b6b6d, type: 2}
   spellEffectSettings:
   - {fileID: 11400000, guid: ed368651e4a469a46b66ab2995556266, type: 2}
   - {fileID: 11400000, guid: ba7a61305c5ca964293ee28932f70564, type: 2}

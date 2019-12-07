@@ -22,6 +22,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private SelectionCircleController selectionCircleController;
         [SerializeField, UsedImplicitly] private UnitRendererController unitRendererController;
         [Header("Collections")]
+        [SerializeField, UsedImplicitly] private List<Material> autoIncludedMaterials;
         [SerializeField, UsedImplicitly] private List<SpellEffectSettings> spellEffectSettings;
         [SerializeField, UsedImplicitly] private List<AuraEffectSettings> auraEffectSettings;
         [SerializeField, UsedImplicitly] private ClassTypeSpriteDictionary classIconsByClassType;
