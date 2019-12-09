@@ -43,6 +43,8 @@ namespace Core
         public bool IsVisibilityChanged { get; internal set; }
         public int StealthSubtlety { get; internal set; }
         public int StealthDetection { get; internal set; }
+        public int InvisibilityPower { get; internal set; }
+        public int InvisibilityDetection { get; internal set; }
 
         public override void Attached()
         {
@@ -127,7 +129,7 @@ namespace Core
 
             bool CanDetectInvisibility()
             {
-                return true;
+                return InvisibilityDetection >= target.InvisibilityPower;
             }
 
             bool CanDetectStealth()
