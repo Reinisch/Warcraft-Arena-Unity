@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Common
 {
-    public abstract class ScriptableUniqueInfoContainer<TUnique> : ScriptableObject where TUnique : ScriptableUniqueInfo<TUnique>
+    public abstract class ScriptableUniqueInfoContainer<TUnique> : ScriptableObject, IScriptablePostProcess where TUnique : ScriptableUniqueInfo<TUnique>
     {
         protected abstract List<TUnique> Items { get; }
 
@@ -22,17 +21,23 @@ namespace Common
 
 #if UNITY_EDITOR
         public List<TUnique> EditorList => Items;
+#endif
 
-        [UsedImplicitly]
-        public void OnValidate()
+        bool IScriptablePostProcess.OnPostProcess(bool isDeleted)
         {
-            if (Items == null)
-                return;
+            bool hasChanges = false;
+#if UNITY_EDITOR
+            if (isDeleted)
+                return false;
 
             for(int i = Items.Count - 1; i >= 0; i--)
-               if (Items[i] == null)
-                   Items.RemoveAt(i);
-        }
+                if (Items[i] == null)
+                {
+                    hasChanges = true;
+                    Items.RemoveAt(i);
+                }
 #endif
+            return hasChanges;
+        }
     }
 }

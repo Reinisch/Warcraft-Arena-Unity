@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Common
 {
-    public abstract class ScriptableUniqueInfo<TUnique> : ScriptableObject where TUnique : ScriptableUniqueInfo<TUnique>
+    public abstract class ScriptableUniqueInfo<TUnique> : ScriptableObject, IScriptablePostProcess where TUnique : ScriptableUniqueInfo<TUnique>
     {
         [SerializeField, UsedImplicitly, HideInInspector] private int id;
 
@@ -24,18 +24,26 @@ namespace Common
         {
         }
 
-#if UNITY_EDITOR
-        [UsedImplicitly]
-        protected virtual void OnValidate()
+        bool IScriptablePostProcess.OnPostProcess(bool isDeleted)
         {
+            bool hasChanges = false;
+#if UNITY_EDITOR
             var takenIds = new HashSet<int>();
 
             if (Container != null)
             {
-                Container.OnValidate();
+                if (isDeleted)
+                {
+                    Container.EditorList.Remove(Data);
+                    UnityEditor.EditorUtility.SetDirty(Container);
+                    return true;
+                }
+
+                if (Container is IScriptablePostProcess postProcessContainer)
+                    hasChanges |= postProcessContainer.OnPostProcess(false);
 
                 if (Container.EditorList.Contains(Data))
-                    return;
+                    return false;
 
                 foreach (var item in Container.ItemList)
                     takenIds.Add(item.Id);
@@ -46,7 +54,6 @@ namespace Common
                     {
                         Container.EditorList.Add(Data);
                         UnityEditor.EditorUtility.SetDirty(Container);
-                        UnityEditor.AssetDatabase.SaveAssets();
 
                         Debug.Log($"Added existing item: {GetType().Name}: {name} id:{id} to container {Container.GetType()}");
                     }
@@ -54,9 +61,10 @@ namespace Common
                     {
                         Debug.Log($"Resetting id for existing item : {GetType().Name}: {name} id:{id} in container {Container.GetType()}");
                         UnityEditor.EditorUtility.SetDirty(this);
-                        UnityEditor.AssetDatabase.SaveAssets();
                         id = 0;
                     }
+
+                    hasChanges = true;
                 }
             }
 
@@ -84,12 +92,13 @@ namespace Common
                         }
 
                         UnityEditor.EditorUtility.SetDirty(this);
-                        UnityEditor.AssetDatabase.SaveAssets();
+                        hasChanges = true;
                         break;
                     }
                 }
             }
-        }
 #endif
+            return hasChanges;
+        }
     }
 }

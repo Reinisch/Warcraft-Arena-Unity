@@ -28,10 +28,8 @@ namespace Client
 
 #if UNITY_EDITOR
         [UsedImplicitly]
-        protected override void OnValidate()
+        private void OnValidate()
         {
-            base.OnValidate();
-
             if (argumentSettings.Count > MaxArguments)
                 Debug.LogError($"Max argument amount of {MaxArguments} reached for {name}, increase size or decrease argument count!");
 
