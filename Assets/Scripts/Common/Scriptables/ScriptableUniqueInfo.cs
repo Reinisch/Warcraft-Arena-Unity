@@ -54,12 +54,9 @@ namespace Common
                     {
                         Container.EditorList.Add(Data);
                         UnityEditor.EditorUtility.SetDirty(Container);
-
-                        Debug.Log($"Added existing item: {GetType().Name}: {name} id:{id} to container {Container.GetType()}");
                     }
                     else
                     {
-                        Debug.Log($"Resetting id for existing item : {GetType().Name}: {name} id:{id} in container {Container.GetType()}");
                         UnityEditor.EditorUtility.SetDirty(this);
                         id = 0;
                     }
@@ -97,6 +94,9 @@ namespace Common
                     }
                 }
             }
+
+            if (hasChanges && Container != null)
+                Container.EditorList.Sort((x, y) => x.Id.CompareTo(y.Id));
 #endif
             return hasChanges;
         }
