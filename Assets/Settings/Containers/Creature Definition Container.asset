@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Creature Definition Container
   m_EditorClassIdentifier: 
   definitions:
-  - {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   - {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  - {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   - {fileID: 11400000, guid: f923dcbdd8a452740a64b724a04e4c59, type: 2}

@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Action Bar Settings Container
   m_EditorClassIdentifier: 
   actionBars:
-  - {fileID: 11400000, guid: f727d350daba9cf4e9c460fcd86b7f60, type: 2}
-  - {fileID: 11400000, guid: 46894917298ec704fb4de8ec82cd7f29, type: 2}
-  - {fileID: 11400000, guid: 790a4ae1399ed784999bf4fdc4c4f239, type: 2}
+  - {fileID: 11400000, guid: 3f6c20a14c6361e46b629f0431445073, type: 2}
   - {fileID: 11400000, guid: 4599410810b8ae548acf91b9b9c49b25, type: 2}
-  - {fileID: 11400000, guid: 80efd0153fed7c540871bb34bdb16a79, type: 2}
-  - {fileID: 11400000, guid: 66cd899e47a51b6409f63aa2c2edfd09, type: 2}
+  - {fileID: 11400000, guid: 46894917298ec704fb4de8ec82cd7f29, type: 2}
   - {fileID: 11400000, guid: 6624126652f7aec4abde2118392613b5, type: 2}
   - {fileID: 11400000, guid: 66b2e5e1fb7d4f4458fead48049ca3e3, type: 2}
-  - {fileID: 11400000, guid: 3f6c20a14c6361e46b629f0431445073, type: 2}
+  - {fileID: 11400000, guid: 66cd899e47a51b6409f63aa2c2edfd09, type: 2}
+  - {fileID: 11400000, guid: 790a4ae1399ed784999bf4fdc4c4f239, type: 2}
+  - {fileID: 11400000, guid: 80efd0153fed7c540871bb34bdb16a79, type: 2}
   - {fileID: 11400000, guid: bf2ff85528390f84e8d7e3e519e00608, type: 2}
+  - {fileID: 11400000, guid: f727d350daba9cf4e9c460fcd86b7f60, type: 2}

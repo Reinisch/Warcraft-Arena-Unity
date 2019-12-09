@@ -4,6 +4,7 @@
     {
         English,
         Spanish,
-        German
+        German,
+        Italian
     }
 }

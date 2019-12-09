@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spell Overlay Settings Container
   m_EditorClassIdentifier: 
   settings:
-  - {fileID: 11400000, guid: d8bdb73622aba2841b75ecd92b2414ae, type: 2}
-  - {fileID: 11400000, guid: 49892b9ec19faa94fa7b3d513da1f917, type: 2}
   - {fileID: 11400000, guid: 308b230a9c38a9d40b30ed9f8557f3ea, type: 2}
   - {fileID: 11400000, guid: 16b8899900093a548a63dbb0c50ceb2d, type: 2}
+  - {fileID: 11400000, guid: 49892b9ec19faa94fa7b3d513da1f917, type: 2}
+  - {fileID: 11400000, guid: d8bdb73622aba2841b75ecd92b2414ae, type: 2}
