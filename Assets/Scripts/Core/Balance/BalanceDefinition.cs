@@ -52,5 +52,7 @@ namespace Core
             classContainer.Unregister();
             auraContainer.Unregister();
         }
+
+        public bool IsStealthAura(int auraId) => auraContainer.IsStealthAura(auraId);
     }
 }

@@ -9,6 +9,7 @@ namespace Client
     public sealed partial class UnitRenderer : EntityEventListener<IUnitState>
     {
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
+        [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private TagContainer dummyTagContainer;
         [SerializeField, UsedImplicitly] private UnitSoundController soundController;
         [SerializeField, UsedImplicitly] private float targetSmoothTime = 0.05f;

@@ -60,5 +60,7 @@ namespace Core
 
             definition.Unregister();
         }
+
+        public bool IsStealthAura(int auraId) => definition.IsStealthAura(auraId);
     }
 }

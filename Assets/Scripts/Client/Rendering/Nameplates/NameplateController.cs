@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -47,7 +48,7 @@ namespace Client
 
             public void HandleUnitRendererAttach(UnitRenderer attachedRenderer)
             {
-                if (rendering.Player.ExactDistanceSqrTo(attachedRenderer.Unit) < settings.MaxDistanceSqr)
+                if (CanHaveNameplate(attachedRenderer))
                     SpawnNameplate(attachedRenderer);
                 else
                     unplatedRenderers.Add(attachedRenderer);
@@ -79,7 +80,7 @@ namespace Client
             {
                 for (int i = unplatedRenderers.Count - 1; i >= 0; i--)
                 {
-                    if (rendering.Player.ExactDistanceSqrTo(unplatedRenderers[i].Unit) < settings.MaxDistanceSqr)
+                    if (CanHaveNameplate(unplatedRenderers[i]))
                     {
                         SpawnNameplate(unplatedRenderers[i]);
                         unplatedRenderers.RemoveAt(i);
@@ -112,6 +113,13 @@ namespace Client
 
                 nameplate.UpdateUnit(null);
                 GameObjectPool.Return(nameplate, false);
+            }
+
+            private bool CanHaveNameplate(UnitRenderer unitRenderer)
+            {
+                bool withinRange = rendering.Player.ExactDistanceSqrTo(unitRenderer.Unit) < settings.MaxDistanceSqr;
+                bool isStealthed = unitRenderer.Unit.VisualEffects.HasTargetFlag(UnitVisualEffectFlags.StealthTransparency);
+                return withinRange && !isStealthed;
             }
 
             private void OnPlayerTargetChanged()

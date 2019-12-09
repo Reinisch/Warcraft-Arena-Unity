@@ -72,6 +72,9 @@ namespace Client
 
         public bool DoUpdate(float deltaTime)
         {
+            if (UnitRenderer.Unit.VisualEffects.HasTargetFlag(UnitVisualEffectFlags.StealthTransparency))
+                return false;
+
             Vector3 targetPosition = UnitRenderer.TagContainer.FindNameplateTag();
             if (targetPosition != transform.position)
                 transform.position = targetPosition;

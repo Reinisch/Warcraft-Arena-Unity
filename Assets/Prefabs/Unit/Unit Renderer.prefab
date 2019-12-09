@@ -487,6 +487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
+  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   dummyTagContainer:
     defaultLaunchTag: 2
     defaultTag: {fileID: 2968045187551779246}
