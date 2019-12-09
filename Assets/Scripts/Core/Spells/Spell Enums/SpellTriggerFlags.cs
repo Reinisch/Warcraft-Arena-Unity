@@ -11,6 +11,7 @@ namespace Core
         DonePeriodicDamage = 1 << 3,
         TakenPeriodicDamage = 1 << 4,
         DoneSpellCast = 1 << 5,
-        TakenSpellHit = 1 << 6,
+        DoneSpellHit = 1 << 6,
+        TakenSpellHit = 1 << 7,
     }
 }

@@ -64,7 +64,7 @@ namespace Core
             {
                 ConditionalModifier modifier = effect.ConditionalModifiers[i];
                 if (modifier.Condition.IsApplicableAndValid(Caster, target, this))
-                    modifier.Modify(ref spellHealAmount);
+                    modifier.Modify(Caster, target, ref spellHealAmount);
             }
 
             EffectHealing += (int)spellHealAmount;

@@ -1,4 +1,5 @@
 ﻿using Bolt;
+using Common;
 using JetBrains.Annotations;
 using UdpKit;
 using UnityEngine;
@@ -19,13 +20,19 @@ namespace Core
         protected BalanceReference Balance => balance;
         protected bool IsValid { get; private set; }
 
-        internal WorldManager World { get; private set; }
+        internal World World { get; private set; }
         internal abstract bool AutoScoped { get; }
 
         public BoltEntity BoltEntity => entity;
         public bool IsOwner => entity.IsOwner;
         public bool IsController => entity.HasControl;
         public ulong Id { get; private set; }
+
+        [UsedImplicitly]
+        private void Awake() => EventHandler.RegisterEvent<bool, World>(gameObject, GameEvents.EntityPooled, OnEntityPooled);
+
+        [UsedImplicitly]
+        private void OnDestroy() => EventHandler.UnregisterEvent<bool, World>(gameObject, GameEvents.EntityPooled, OnEntityPooled);
 
         public override void Attached()
         {
@@ -46,14 +53,6 @@ namespace Core
         {
         }
 
-        internal void TakenFromPool(WorldManager worldManager)
-        {
-            World = worldManager;
-        }
-
-        internal void ReturnedToPool()
-        {
-            World = null;
-        }
+        private void OnEntityPooled(bool isTaken, World world) => World = isTaken ? world : null;
     }
 }

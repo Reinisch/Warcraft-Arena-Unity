@@ -6,14 +6,14 @@ namespace Server
 {
     internal class GamePlayerListener : BaseGameListener
     {
-        internal GamePlayerListener(WorldServerManager world) : base(world)
+        internal GamePlayerListener(WorldServer world) : base(world)
         {
             EventHandler.RegisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
             EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);
             EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerMovementControlChanged, OnPlayerMovementControlChanged);
         }
 
-        internal override void Dispose()
+        internal void Dispose()
         {
             EventHandler.UnregisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
             EventHandler.UnregisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);

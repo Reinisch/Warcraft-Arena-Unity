@@ -71,7 +71,10 @@ MonoBehaviour:
   spellEffectInfos:
   - {fileID: 2351695964313131711}
   - {fileID: 8904560221490061146}
-  spellPowerEntries: []
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 20
+    powerCost: 0
   targetingConditions: []
 --- !u!114 &2351695964313131711
 MonoBehaviour:
@@ -103,7 +106,7 @@ MonoBehaviour:
   mechanics: 0
   period: 2000
   startPeriodicOnApply: 0
-  baseValue: 30
+  baseValue: 50
   additionalValue: 10
   calculationType: 1
   conditionalModifiers: []
@@ -120,7 +123,7 @@ MonoBehaviour:
   m_Name: Renew Effect Heal
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 25
+  baseValue: 55
   baseVariance: 5
   additionalValue: 0
   calculationType: 1

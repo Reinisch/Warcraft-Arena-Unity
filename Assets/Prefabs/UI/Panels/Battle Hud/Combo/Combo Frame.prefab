@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8291946938864902663}
   - component: {fileID: 2379562431490090151}
   - component: {fileID: 2505638900363313600}
+  - component: {fileID: -683705079926664698}
   m_Layer: 5
   m_Name: Combo Frame
   m_TagString: Untagged
@@ -92,6 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d5bac74b212c84bab75cf15a7d4c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: -683705079926664698}
   canvasGroup: {fileID: 2505638900363313600}
   comboPointSlots:
   - {fileID: 3502317244070877458}
@@ -111,6 +113,27 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!223 &-683705079926664698
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8976798173481941008}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1001 &3790318851943831636
 PrefabInstance:
   m_ObjectHideFlags: 0

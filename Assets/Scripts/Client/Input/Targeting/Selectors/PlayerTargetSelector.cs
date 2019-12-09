@@ -47,20 +47,20 @@ namespace Client
                 BestTarget = null;
             }
 
-            public void Visit(Player entity)
+            public void Visit(Player player)
             {
                 if (!options.EntityTypes.HasTargetFlag(TargetingEntityType.Players))
                     return;
 
-                VisitUnit(entity);
+                VisitUnit(player);
             }
 
-            public void Visit(Creature entity)
+            public void Visit(Creature creature)
             {
                 if (!options.EntityTypes.HasTargetFlag(TargetingEntityType.Creatures))
                     return;
 
-                VisitUnit(entity);
+                VisitUnit(creature);
             }
 
             private void VisitUnit(Unit unit)
@@ -101,7 +101,7 @@ namespace Client
                         }
                         break;
                     case TargetingDistance.Near:
-                        float nextTargetNearDistance = referer.DistanceTo(nextTarget);
+                        float nextTargetNearDistance = referer.ExactDistanceTo(nextTarget);
                         if (BestTarget == null || nextTargetNearDistance < bestTargetDistance)
                         {
                             BestTarget = nextTarget;
@@ -109,7 +109,7 @@ namespace Client
                         }
                         break;
                     case TargetingDistance.Far:
-                        float nextTargetFarDistance = referer.DistanceTo(nextTarget);
+                        float nextTargetFarDistance = referer.ExactDistanceTo(nextTarget);
                         if (BestTarget == null || nextTargetFarDistance > bestTargetDistance)
                         {
                             BestTarget = nextTarget;

@@ -1,5 +1,20 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5884376216835951679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c37cd860b0bcac541a2aafb76a90cdd6, type: 3}
+  m_Name: Cat Form Aura Shape Shift
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  shapeShiftForm: 1
 --- !u!114 &-4335347148446222354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14,7 +29,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
   mechanics: 0
-  increasePercent: 60
+  increasePercent: 40
 --- !u!114 &-2960885932938454696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51,8 +66,8 @@ MonoBehaviour:
   explicitCastTargets: 8
   schoolMask: 8
   preventionType: 0
-  attributes: 0
-  attributesExtra: 4
+  attributes: 128
+  attributesExtra: 516
   attributesCustom: 2048
   targetEntityTypeMask: 8
   rangedFlags: 1
@@ -71,7 +86,10 @@ MonoBehaviour:
   spellEffectInfos:
   - {fileID: 8979897278113818587}
   - {fileID: 1592577263915307925}
-  spellPowerEntries: []
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 5
+    powerCost: 0
   targetingConditions: []
 --- !u!114 &187988811448460497
 MonoBehaviour:
@@ -95,8 +113,10 @@ MonoBehaviour:
   interruptFlags: 0
   attributes: 0
   auraEffects:
+  - {fileID: -5884376216835951679}
   - {fileID: -2960885932938454696}
   - {fileID: -4335347148446222354}
+  - {fileID: 3232694406821637314}
   auraScriptables: []
   usesCharges: 0
   maxCharges: 0
@@ -118,6 +138,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
   mechanicToDispel: 1088
+--- !u!114 &3232694406821637314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a906e8de530d0564cb570d31f05430e5, type: 3}
+  m_Name: Cat Form Aura Polymorph Mechanics Immunity
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  immuneMechanics: 11000000
 --- !u!114 &8979897278113818587
 MonoBehaviour:
   m_ObjectHideFlags: 0

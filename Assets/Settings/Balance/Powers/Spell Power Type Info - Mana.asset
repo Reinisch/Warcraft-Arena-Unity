@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47e3135dcc2a1f244b17a1a9913455ea, type: 3}
+  m_Name: Spell Power Type Info - Mana
+  m_EditorClassIdentifier: 
+  id: 1
+  container: {fileID: 11400000, guid: 1799f213e8705f444bcac9d7b6ff3cb6, type: 2}
+  powerType: 0
+  attributeTypeCurrent: 97
+  attributeTypeMax: 99
+  attributeTypeMaxNoMods: 98
+  minBasePower: 0
+  maxBasePower: 1000
+  maxTotalPower: 1000000
+  regeneration: 100

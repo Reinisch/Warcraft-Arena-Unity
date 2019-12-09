@@ -85,7 +85,10 @@ MonoBehaviour:
   spellEffectInfos:
   - {fileID: 745908430916510532}
   - {fileID: 7685882171163820430}
-  spellPowerEntries: []
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 3
+    powerCost: 0
   targetingConditions: []
 --- !u!114 &745908430916510532
 MonoBehaviour:
@@ -117,5 +120,6 @@ MonoBehaviour:
   baseValue: 50
   baseVariance: 10
   additionalValue: 0
+  usesComboPoints: 0
   calculationType: 1
   conditionalModifiers: []

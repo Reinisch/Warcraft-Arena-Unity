@@ -15,7 +15,7 @@ namespace Core
         CastDirectly = 1 << 7,
         IgnoreAuraInterruptFlags = 1 << 8,
         IgnoreSetFacing = 1 << 9,
-        IgnoreShapeshift = 1 << 10,
+        IgnoreShapeShift = 1 << 10,
         IgnoreCasterAurastate = 1 << 11,
         IgnoreCasterMountedOrOnVehicle = 1 << 12,
         IgnoreCasterAuras = 1 << 13,

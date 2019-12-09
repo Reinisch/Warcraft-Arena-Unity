@@ -2,13 +2,13 @@
 {
     public class AuraEffectModifyStatPercent : AuraEffect
     {
-        public new AuraEffectInfoModifyStatPercent EffectInfo { get; }
+        private readonly UnitModifierType modifierType;
 
         public override AuraEffectHandleGroup HandleGroup => AuraEffectHandleGroup.Unique;
 
         public AuraEffectModifyStatPercent(Aura aura, AuraEffectInfoModifyStatPercent effectInfo, int index, float value) : base(aura, effectInfo, index, value)
         {
-            EffectInfo = effectInfo;
+            modifierType = effectInfo.StatType.AsModifier();
         }
 
         public override void HandleEffect(AuraApplication auraApplication, AuraEffectHandleMode mode, bool apply)
@@ -16,7 +16,7 @@
             base.HandleEffect(auraApplication, mode, apply);
 
             if (mode == AuraEffectHandleMode.Normal)
-                auraApplication.Target.Attributes.HandleStatPercentModifier(EffectInfo.StatType, StatModifierType.BasePercent, Value, apply);
+                auraApplication.Target.Attributes.HandleStatPercentModifier(modifierType, StatModifierType.BasePercent, Value, apply);
         }
     }
 }

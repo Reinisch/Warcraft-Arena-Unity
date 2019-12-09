@@ -30,7 +30,7 @@ namespace Core
         internal BoxCollider BoundingBox => boundingBox;
         internal Transform DefaultSpawnPoint => defaultSpawnPoint;
         internal BalanceReference Balance => balance;
-        internal MapDefinition MapDefinition => mapDefinition;
+        internal MapDefinition Definition => mapDefinition;
 
         internal List<ScenarioAction> ScenarioActions => scenarioActions;
 

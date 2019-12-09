@@ -382,15 +382,21 @@ MonoBehaviour:
       ({1}% of Attack power) Bleed damage every {2} sec over {3} sec.
 
 
-      Reduces the target''s movement speed by {4}%'
+      Reduces the target''s movement speed by {4}%
+
+
+      Awards 1 combo point.'
   - StringReference: {fileID: 11400000, guid: b5b6c6d312da3aa45ba023f0652afcb9, type: 2}
     Value: Rake
   - StringReference: {fileID: 11400000, guid: 1c617ebd4371a8d4abaf1a4ca4cb6777, type: 2}
-    Value: 'Shred the target, causing ({0}% of Attack power + 50) Physical damage
+    Value: 'Shred the target, causing ({0}% of Attack power + 20) Physical damage
       to the target.
 
 
-      Deals 100% increased damage against bleeding targets'
+      Deals 50% increased damage against bleeding targets.
+
+
+      Awards 2 combo points.'
   - StringReference: {fileID: 11400000, guid: 7273d884f7fb96645ab00620725a2bda, type: 2}
     Value: Shred
   - StringReference: {fileID: 11400000, guid: 0e43cc51bf747264cb96ca14b543c7a5, type: 2}
@@ -398,3 +404,130 @@ MonoBehaviour:
       33% increased damage against bleeding targets\r\n\r\nAwards 1 combo point."
   - StringReference: {fileID: 11400000, guid: 5704b9ccc9662f34a8333a14c4ea6c31, type: 2}
     Value: Swipe
+  - StringReference: {fileID: 11400000, guid: 77262409bd5194c4cb132f8e71fd9601, type: 2}
+    Value: No Combo Points
+  - StringReference: {fileID: 11400000, guid: 57d72258c0576bb469f3e15a08457b00, type: 2}
+    Value: "Finishing move that causes damage per combo point and consumes up to 25
+      additional Energy to increase damage by up to 100%.\r\n\r\nWhen used on targets
+      below 25% health, Ferocious Bite will also refresh the duration of your Rip
+      on your target\r\n\r\nCritical strike chance doubled against bleeding targets.\r\n\r\n
+      \ 1 point  : [({0}% of Attack power) * 1] damage\r\n  2 points: [({0}% of Attack
+      power) * 2] damage\r\n  3 points: [({0}% of Attack power) * 3] damage\r\n  4
+      points: [({0}% of Attack power) * 4] damage\r\n  5 points: [({0}% of Attack
+      power) * 5] damage"
+  - StringReference: {fileID: 11400000, guid: 83bca39240e36864d98565cd66d5994d, type: 2}
+    Value: Ferocious Bite
+  - StringReference: {fileID: 11400000, guid: f6563f6813c55f24fb485d037dffcead, type: 2}
+    Value: "Finishing move that causes Bleed damage over time every {1} sec. Lasts
+      longer per combo point.\r\n\r\n  1 point  : ({0}% of Attack power) for 8 sec\r\n
+      \ 2 points: ({0}% of Attack power) for 12 sec\r\n  3 points: ({0}% of Attack
+      power) for 16 sec\r\n  4 points: ({0}% of Attack power) for 20 sec\r\n  5 points:
+      ({0}% of Attack power) for 24 sec"
+  - StringReference: {fileID: 11400000, guid: 0ccc5560b95e0954f840a815d12e7754, type: 2}
+    Value: Rip
+  - StringReference: {fileID: 11400000, guid: bb6faeec1f1b1ec428276dc03f4db65b, type: 2}
+    Value: Reduces all damage you take by {0}% for {1} sec.
+  - StringReference: {fileID: 11400000, guid: 38fde2ed91299f74087eb71029be3eaf, type: 2}
+    Value: Survival Instincts
+  - StringReference: {fileID: 11400000, guid: fb7a223487a587648b0e24ea60057944, type: 2}
+    Value: Not Enough Energy
+  - StringReference: {fileID: 11400000, guid: e72612149acbffc4bb3f4c933dc2ce48, type: 2}
+    Value: Not Enough Health
+  - StringReference: {fileID: 11400000, guid: 55b6944407906054383d8f6a53be28e3, type: 2}
+    Value: Not Enough Mana
+  - StringReference: {fileID: 11400000, guid: 00a91d0fc4464ae4f8d96a51e29bf5d2, type: 2}
+    Value: Not Enough Rage
+  - StringReference: {fileID: 11400000, guid: 351e874136d257e41b0eb764c584a855, type: 2}
+    Value: 'Increases movement speed by {0}% for {1} sec.
+
+
+      Does not break prowling.'
+  - StringReference: {fileID: 11400000, guid: fcb2775d2ad2f5f4f8d084dfced77011, type: 2}
+    Value: Dash
+  - StringReference: {fileID: 11400000, guid: 7fd4a68b19c952741b019955c63d5357, type: 2}
+    Value: Instantly restores {0} Energy, and increases the damage of all your attacks
+      by {1}% for their full duration. Lasts {2} sec.
+  - StringReference: {fileID: 11400000, guid: 7c1044c4705d1c54f8ad53dd5f7cbaa1, type: 2}
+    Value: Tiger's Fury
+  - StringReference: {fileID: 11400000, guid: 09073f45895c36a4a9d791ad10b39ec8, type: 2}
+    Value: "Mangle the target for ({0}% of Attack power) Physical damage.\r\n\r\nDeals
+      20% additional damage against bleeding targets\r\n\r\nGenerates {1} Energy."
+  - StringReference: {fileID: 11400000, guid: 4e51c054968a3ea41a123db75c199528, type: 2}
+    Value: Mangle
+  - StringReference: {fileID: 11400000, guid: 5c36c00495c69c943908ab93102c6012, type: 2}
+    Value: "Finishing move that causes Physical damage and stuns the target. Damage
+      and duration increased per combo point:\r\n\r\n  1 point  : {0}%*1 Attack power
+      damage, 1 sec\r\n  2 points: {0}%*2 Attack power damage, 2 sec\r\n  3 points:
+      {0}%*3 Attack power damage, 3 sec\r\n  4 points: {0}%*4 Attack power damage,
+      4 sec\r\n  5 points: {0}%*5 Attack power damage, 5 sec"
+  - StringReference: {fileID: 11400000, guid: cbff82f50ee2ec440a6bc115690cf826, type: 2}
+    Value: Maim
+  - StringReference: {fileID: 11400000, guid: e313caa3615a175438d55f5a17dd4452, type: 2}
+    Value: 1 to 5 Combo Points
+  - StringReference: {fileID: 11400000, guid: e111699c26d1e2d49af4beb94826bb21, type: 2}
+    Value: '{0} Energy'
+  - StringReference: {fileID: 11400000, guid: f23819bc2751d4d48a79676bf6af7a8a, type: 2}
+    Value: '{0}% of Max Energy'
+  - StringReference: {fileID: 11400000, guid: 5c2db0aadee8e434b86af640abe0129e, type: 2}
+    Value: '{0} Mana'
+  - StringReference: {fileID: 11400000, guid: 981321212db28ab41b7c1169f65e4962, type: 2}
+    Value: '{0}% of Base Mana'
+  - StringReference: {fileID: 11400000, guid: 5a400a01447651447bf99f958d8762af, type: 2}
+    Value: '{0} Rage'
+  - StringReference: {fileID: 11400000, guid: f8d3b6863e5bac84f975e6708c4c60ab, type: 2}
+    Value: '{0}% of Max Rage'
+  - StringReference: {fileID: 11400000, guid: e4b3b48d27dde2a42b2380dc6df9577f, type: 2}
+    Value: "Finishing move that deals instant damage and applies Rip to all enemies
+      within {0} yards. Lasts longer per combo point.\r\n\r\n  1 point  : ({1}% of
+      Attack power) * 1 plus Rip for 4 sec\r\n  2 points: ({1}% of Attack power) *
+      2 plus Rip for 6 sec\r\n  3 points: ({1}% of Attack power) * 3 plus Rip for
+      8 sec\r\n  4 points: ({1}% of Attack power) * 4 plus Rip for 10 sec\r\n  5 points:
+      ({1}% of Attack power) * 5 plus Rip for 12 sec"
+  - StringReference: {fileID: 11400000, guid: c4a6c342c93145b4eb9e7518eede1854, type: 2}
+    Value: Primal Wrath
+  - StringReference: {fileID: 11400000, guid: d18501a181e703f4f8687c4a2c1684ac, type: 2}
+    Value: "Strikes all nearby enemies, dealing ({0}% of Attack power) Bleed damage
+      and an additional ({1}% of Attack power) Bleed damage every {2} sec for {3}
+      sec.\r\n\r\nAwards 1 combo point."
+  - StringReference: {fileID: 11400000, guid: 99b0395491efb2d499b11e42c6462523, type: 2}
+    Value: Thrash
+  - StringReference: {fileID: 11400000, guid: 2c05406be42bdb7428d93b770a150258, type: 2}
+    Value: Roots the target in place for {0} sec. Damage may cancel the effect.
+  - StringReference: {fileID: 11400000, guid: f72ba9567a0cb974a9e4bfac01686b4c, type: 2}
+    Value: Entangling Roots
+  - StringReference: {fileID: 11400000, guid: fc915b86cd49ddd4a92c961f2637f778, type: 2}
+    Value: "Finishing move that increases damage by {0}% and energy regeneration rate
+      by {1}% while in Cat Form. Lasts longer per combo point:\r\n\r\n  1 point  :
+      12 seconds\r\n  2 points: 18 seconds\r\n  3 points: 24 seconds\r\n  4 points:
+      30 seconds\r\n  5 points: 36 seconds"
+  - StringReference: {fileID: 11400000, guid: 1c1b8954ce563b941b5bbfaff5fbe8dd, type: 2}
+    Value: Savage Roar
+  - StringReference: {fileID: 11400000, guid: 2fb9377bf97194f4f935705d9f7baf8f, type: 2}
+    Value: "\rReduces the energy cost of all Cat Form abilities by {0}% and increases
+      maximum Energy by {1} for {2} sec."
+  - StringReference: {fileID: 11400000, guid: 1673635637f28aa448fca56d9e98419f, type: 2}
+    Value: Berserk
+  - StringReference: {fileID: 11400000, guid: b7c2c886007b7804f93ff61e94bf0286, type: 2}
+    Value: Heals the target for ({0}% of Spell power) every {1} sec for {2} sec.
+  - StringReference: {fileID: 11400000, guid: adb9741ade078d64a9a47ffad858e2b9, type: 2}
+    Value: Rejuvenation
+  - StringReference: {fileID: 11400000, guid: e2882023ec098634baef5596f9fcf8a6, type: 2}
+    Value: Heals a friendly target for ({0}% of Spell power) and another ({1}% of
+      Spell power) every {2} sec for {3} sec.
+  - StringReference: {fileID: 11400000, guid: ae14b33f7b5fe5745b837577a8554b8d, type: 2}
+    Value: Regrowth
+  - StringReference: {fileID: 11400000, guid: fc58ebd3b36d8e44b9e1e21410dc78e5, type: 2}
+    Value: Can't Use While Shapeshifted
+  - StringReference: {fileID: 11400000, guid: bcf33cd1f01a6d94c9396324d3a98104, type: 2}
+    Value: Can't Use When Not Shapeshifted
+  - StringReference: {fileID: 11400000, guid: 37720b86a988c4f4aa34b50d65f21f69, type: 2}
+    Value: Can't Use In This Form
+  - StringReference: {fileID: 11400000, guid: 0778747268762ef49b88fd06e3f38b4c, type: 2}
+    Value: "\rLets loose a wild roar, increasing the movement speed of all friendly
+      players within {2} yards by {0}% for {1} sec."
+  - StringReference: {fileID: 11400000, guid: d0448bf969dca8542b41177a7ed94ae4, type: 2}
+    Value: Stampeding Roar
+  - StringReference: {fileID: 11400000, guid: afdd756f95c154d408bcfd175990580f, type: 2}
+    Value: Prowl
+  - StringReference: {fileID: 11400000, guid: e4bd31629f667cc4696d641fdd6a19bb, type: 2}
+    Value: Activates Cat Form and places you into stealth until cancelled.

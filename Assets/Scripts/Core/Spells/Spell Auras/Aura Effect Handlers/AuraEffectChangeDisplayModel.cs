@@ -16,6 +16,9 @@ namespace Core.AuraEffects
         {
             base.HandleEffect(auraApplication, mode, apply);
 
+            if (mode != AuraEffectHandleMode.Normal)
+                return;
+
             if (apply)
             {
                 if (IsReplacementValid(auraApplication.Target.TransformSpellInfo, Aura.SpellInfo))

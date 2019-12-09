@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2872934803936240331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Rejuvenation Aura
+  m_EditorClassIdentifier: 
+  id: 40
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 12000
+  maxDuration: 12000
+  maxStack: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 0
+  attributes: 0
+  auraEffects:
+  - {fileID: 4381763175070907433}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 0
+  baseCharges: 0
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Rejuvenation Spell
+  m_EditorClassIdentifier: 
+  id: 55
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 1
+  damageClass: 0
+  spellDispel: 1
+  mechanic: 0
+  explicitCastTargets: 8
+  schoolMask: 8
+  preventionType: 1
+  attributes: 0
+  attributesExtra: 2048
+  attributesCustom: 0
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 1000
+  castTime: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 0
+  maxRangeFriend: 40
+  speed: 0
+  spellEffectInfos:
+  - {fileID: 4323644521256213990}
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 25
+    powerCost: 0
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
+--- !u!114 &4323644521256213990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Rejuvenation Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  auraInfo: {fileID: -2872934803936240331}
+--- !u!114 &4381763175070907433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95b1cdaf67f25c849bc461059d6ca399, type: 3}
+  m_Name: Rejuvenation Aura Periodic Healing
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  period: 3000
+  startPeriodicOnApply: 0
+  baseValue: 90
+  additionalValue: 0
+  calculationType: 1
+  conditionalModifiers: []

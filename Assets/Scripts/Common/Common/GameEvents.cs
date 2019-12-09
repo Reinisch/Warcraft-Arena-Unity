@@ -6,20 +6,16 @@
         DisconnectedFromHost,
         DisconnectedFromMaster,
         SessionListUpdated,
+        WorldStateChanged,
 
-        WorldInitialized,
-        WorldDeinitializing,
-
-        PlayerControlGained,
-        PlayerControlLost,
+        ClientControlStateChanged,
+        ClientSpellFailed,
 
         SpellLaunched,
         SpellHit,
         SpellDamageDone,
         SpellHealingDone,
         SpellMissDone,
-
-        ClientSpellFailed,
 
         ServerPlayerSpeedChanged,
         ServerPlayerRootChanged,
@@ -32,17 +28,22 @@
         ServerHealingDone,
         ServerMapLoaded,
         ServerLaunched,
+        ServerVisibilityChanged,
 
         UnitChat,
         UnitAttributeChanged,
         UnitTargetChanged,
         UnitFactionChanged,
         UnitClassChanged,
+        UnitVisualsChanged,
         UnitModelChanged,
         UnitScaleChanged,
+        UnitDisplayPowerChanged,
 
         HotkeyStateChanged,
         HotkeyBindingChanged,
-        GameOptionChanged
+        LobbyClassChanged,
+        GameOptionChanged,
+        EntityPooled
     }
 }

@@ -30,6 +30,7 @@ MonoBehaviour:
   baseValue: 50
   baseVariance: 5
   additionalValue: 0
+  usesComboPoints: 0
   calculationType: 1
   conditionalModifiers: []
 --- !u!114 &-2444214905826940366
@@ -55,7 +56,6 @@ MonoBehaviour:
   attributes: 2
   auraEffects:
   - {fileID: -2205612922990015234}
-  - {fileID: -95418200682359114}
   auraScriptables: []
   usesCharges: 0
   maxCharges: 0
@@ -84,21 +84,6 @@ MonoBehaviour:
   schoolMask: 1
   calculationType: 1
   conditionalModifiers: []
---- !u!114 &-95418200682359114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59b09348badfe3745a62b94099ca0063, type: 3}
-  m_Name: Rake Aura Decrease Speed
-  m_EditorClassIdentifier: 
-  maxEffectiveCharges: 1
-  mechanics: 0
-  decreasePercent: 20
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +106,7 @@ MonoBehaviour:
   schoolMask: 1
   preventionType: 2
   attributes: 0
-  attributesExtra: 0
+  attributesExtra: 4096
   attributesCustom: 1024
   targetEntityTypeMask: 8
   rangedFlags: 2
@@ -141,8 +126,13 @@ MonoBehaviour:
   - {fileID: -3586057116648908537}
   - {fileID: -6352641573744401301}
   - {fileID: 8478839678636983533}
-  spellPowerEntries: []
+  spellPowerCostInfos:
+  - spellPowerType: 3
+    powerCostPercentage: 0
+    powerCost: 20
   targetingConditions: []
+  shapeShiftAlwaysCastable: 01000000
+  shapeShiftNeverCastable: 
 --- !u!114 &8478839678636983533
 MonoBehaviour:
   m_ObjectHideFlags: 0

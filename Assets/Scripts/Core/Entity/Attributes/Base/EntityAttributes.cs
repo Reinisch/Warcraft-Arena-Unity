@@ -101,6 +101,15 @@
         MaxRangedDamage = UnitAttributes.MaxRangedDamage,
         PowerCostModifier = UnitAttributes.PowerCostModifier,
         PowerCostMultiplier = UnitAttributes.PowerCostMultiplier,
+        Mana = UnitAttributes.Mana,
+        ManaMaxNoMods = UnitAttributes.ManaMaxNoMods,
+        ManaMaxTotal = UnitAttributes.ManaMaxTotal,
+        Energy = UnitAttributes.Energy,
+        EnergyMaxNoMods = UnitAttributes.EnergyMaxNoMods,
+        EnergyMaxTotal = UnitAttributes.EnergyMax,
+        Rage = UnitAttributes.Rage,
+        RageMaxNoMods = UnitAttributes.RageMaxNoMods,
+        RageMaxTotal = UnitAttributes.RageMax,
 
         PlayerFlags = PlayerAttributes.PlayerFlags,
         ArenaTeam = PlayerAttributes.ArenaTeam,
@@ -137,7 +146,7 @@
 
     public enum GameEntityAttributes
     {
-        CreatedBy = BaseEntityAttributes.DynamicFlags + 1,
+        CreatedBy = 1000,
         DisplayId,
         GameEntityFlags,
         Faction,
@@ -152,7 +161,7 @@
 
     public enum DynamicEntityAttributes
     {
-        DynamicCaster = GameEntityAttributes.StateWorldEffectId + 1,
+        DynamicCaster = 2000,
         DynamicEntityType,
         DynamicSpellVisualID,
         DynamicSpellid,
@@ -162,7 +171,7 @@
 
     public enum UnitAttributes
     {
-        Charm = DynamicEntityAttributes.DynamicCastTime + 1,
+        Charm = 3000,
         Summon,
         CharmedBy,
         SummonedBy,
@@ -238,11 +247,20 @@
         MaxRangedDamage,
         PowerCostModifier,
         PowerCostMultiplier,
+        Mana,
+        ManaMaxNoMods,
+        ManaMaxTotal,
+        Energy,
+        EnergyMaxNoMods,
+        EnergyMax,
+        Rage,
+        RageMaxNoMods,
+        RageMax,
     }
 
     public enum PlayerAttributes
     {
-        PlayerFlags = UnitAttributes.PowerCostMultiplier + 1,
+        PlayerFlags = 4000,
         ArenaTeam,
         DuelTeam,
         ChosenTitle,

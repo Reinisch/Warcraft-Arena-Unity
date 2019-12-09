@@ -12,26 +12,27 @@ namespace Core
         private readonly Mutex mapsLock = new Mutex(true);
         private readonly MapUpdater mapUpdater = new MapUpdater();
 
-        private WorldManager worldManager;
+        private World world;
 
-        internal MapManager(WorldManager worldManager)
+        internal MapManager(World world)
         {
-            this.worldManager = worldManager;
+            this.world = world;
 
-            if (!worldManager.HasClientLogic)
+            if (!world.HasClientLogic)
                 mapUpdater.Activate(0);
         }
 
         internal void Dispose()
         {
             foreach (var mapEntry in baseMaps)
-                mapEntry.Value.Deinitialize();
+                mapEntry.Value.Dispose();
+
             baseMaps.Clear();
 
-            if (!worldManager.HasClientLogic)
+            if (!world.HasClientLogic)
                 mapUpdater.Deactivate();
 
-            worldManager = null;
+            world = null;
         }
 
         internal void DoUpdate(int timeDiff)
@@ -56,8 +57,7 @@ namespace Core
             {
                 mapsLock.WaitOne();
 
-                baseMaps[mapId] = map = new Map();
-                baseMaps[mapId].Initialize(worldManager, SceneManager.GetActiveScene());
+                baseMaps[mapId] = map = new Map(world, SceneManager.GetActiveScene());
 
                 mapsLock.ReleaseMutex();
             }

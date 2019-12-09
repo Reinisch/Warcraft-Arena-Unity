@@ -9,11 +9,11 @@ using UnityEngine;
 namespace Game.Workflow.Standard
 {
     [CreateAssetMenu(fileName = "Workflow Standard Reference", menuName = "Game Data/Scriptable/Workflow Standard", order = 1)]
-    internal class WorkflowStandard : ScriptableReference
+    internal sealed class WorkflowStandard : ScriptableReference
     {
         [SerializeField, UsedImplicitly] private InterfaceReference interfaceReference;
 
-        private WorldManager worldManager;
+        private GameManager gameManager;
 
         protected override void OnRegistered()
         {
@@ -21,11 +21,14 @@ namespace Game.Workflow.Standard
             EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
             EventHandler.RegisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
+            gameManager = FindObjectOfType<GameManager>();
             interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(true));
         }
 
         protected override void OnUnregister()
         {
+            gameManager = null;
+
             EventHandler.UnregisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.UnregisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
             EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
@@ -36,8 +39,7 @@ namespace Game.Workflow.Standard
             bool hasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
             bool hasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;
 
-            worldManager = hasServerLogic ? (WorldManager)new WorldServerManager(hasClientLogic) : new WorldClientManager(false);
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, worldManager);
+            gameManager.CreateWorld(hasServerLogic ? (World)new WorldServer(hasClientLogic) : new WorldClient(false));
 
             interfaceReference.HideScreen<LobbyScreen>();
             interfaceReference.ShowScreen<BattleScreen, BattleHudPanel>();
@@ -55,8 +57,7 @@ namespace Game.Workflow.Standard
 
         private void ProcessDisconnect(DisconnectReason disconnectReason)
         {
-            worldManager?.Dispose();
-            worldManager = null;
+            gameManager.DestroyWorld();
 
             interfaceReference.HideScreen<BattleScreen>();
             interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(false, disconnectReason));

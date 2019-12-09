@@ -40,10 +40,14 @@ namespace Core
         [SerializeField, UsedImplicitly] private float maxRangeFriend;
         [SerializeField, UsedImplicitly] private float speed;
 
-        [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos = new List<SpellEffectInfo>();
-        [SerializeField, UsedImplicitly] private List<SpellPowerEntry> spellPowerEntries = new List<SpellPowerEntry>();
+        [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos;
+        [SerializeField, UsedImplicitly] private List<SpellPowerCostInfo> spellPowerCostInfos;
         [SerializeField, UsedImplicitly] private List<SpellCastCondition> targetingConditions;
+        [SerializeField, UsedImplicitly] private List<ShapeShiftForm> shapeShiftAlwaysCastable;
+        [SerializeField, UsedImplicitly] private List<ShapeShiftForm> shapeShiftNeverCastable;
 
+        [UsedImplicitly] private HashSet<ShapeShiftForm> shapeShiftAlwaysCastableSet = new HashSet<ShapeShiftForm>();
+        [UsedImplicitly] private HashSet<ShapeShiftForm> shapeShiftNeverCastableSet = new HashSet<ShapeShiftForm>();
         [UsedImplicitly] private SpellMechanicsFlags combinedEffectMechanics;
         [UsedImplicitly] private float maxTargetingRadius;
 
@@ -73,7 +77,7 @@ namespace Core
         public SpellRangeFlags RangedFlags => rangedFlags;
         public SpellInterruptFlags InterruptFlags => interruptFlags;
 
-        public List<SpellPowerEntry> PowerCosts => spellPowerEntries;
+        public List<SpellPowerCostInfo> PowerCosts => spellPowerCostInfos;
         public List<SpellEffectInfo> Effects => spellEffectInfos;
 
         public int CooldownTime => cooldownTime;
@@ -107,6 +111,8 @@ namespace Core
 
             combinedEffectMechanics = Mechanic.AsFlag();
             maxTargetingRadius = 0.0f;
+            shapeShiftAlwaysCastableSet = new HashSet<ShapeShiftForm>(shapeShiftAlwaysCastable);
+            shapeShiftNeverCastableSet = new HashSet<ShapeShiftForm>(shapeShiftNeverCastable);
 
             foreach (SpellEffectInfo spellEffectInfo in spellEffectInfos)
             {
@@ -121,6 +127,8 @@ namespace Core
 
         protected override void OnUnregister()
         {
+            shapeShiftAlwaysCastableSet.Clear();
+            shapeShiftNeverCastableSet.Clear();
             combinedEffectMechanics = Mechanic.AsFlag();
             maxTargetingRadius = 0.0f;
 
@@ -227,12 +235,25 @@ namespace Core
             return false;
         }
 
+        public bool CanCancelForm(Spell spell)
+        {
+            if (spell.Caster.ShapeShiftForm == ShapeShiftForm.None)
+                return false;
+
+            if (!HasAttribute(SpellExtraAttributes.CastableOnlyNonShapeShifted))
+                return false;
+
+            if (shapeShiftAlwaysCastableSet.Contains(spell.Caster.ShapeShiftForm))
+                return false;
+
+            bool impossibleToCancel = spell.Caster.ShapeShiftSpellInfo.HasAttribute(SpellAttributes.CantCancel);
+            bool mayNotCancel = HasAttribute(SpellExtraAttributes.CastCantCancelShapeShift);
+            return !impossibleToCancel && !mayNotCancel;
+        }
+
         public SpellCastResult CheckTarget(Unit caster, Unit target, Spell spell, bool isImplicit = true)
         {
             if (HasAttribute(SpellAttributes.CantTargetSelf) && caster == target)
-                return SpellCastResult.BadTargets;
-
-            if (!HasAttribute(SpellExtraAttributes.CanTargetInvisible) && !caster.CanSeeOrDetect(target, isImplicit))
                 return SpellCastResult.BadTargets;
 
             if (HasAttribute(SpellCustomAttributes.Pickpocket) && caster is Player && target is Player && caster != target)
@@ -271,6 +292,9 @@ namespace Core
                 if (target.IsDead && !HasAttribute(SpellAttributes.CanTargetDead))
                     return SpellCastResult.TargetDead;
 
+                if (!HasAttribute(SpellExtraAttributes.CanTargetInvisible) && !caster.CanSeeOrDetect(target))
+                    return SpellCastResult.BadTargets;
+
                 if (ExplicitCastTargets.HasTargetFlag(SpellCastTargetFlags.UnitEnemy) && caster.IsHostileTo(target))
                     return SpellCastResult.Success;
 
@@ -279,6 +303,31 @@ namespace Core
 
                 return SpellCastResult.BadTargets;
             }
+
+            return SpellCastResult.Success;
+        }
+
+        public SpellCastResult CheckShapeShift(Unit caster)
+        {
+            if (shapeShiftNeverCastableSet.Contains(caster.ShapeShiftForm))
+                return SpellCastResult.NotThisShapeShift;
+
+            if (shapeShiftAlwaysCastableSet.Contains(caster.ShapeShiftForm))
+                return SpellCastResult.Success;
+
+            if (caster.ShapeShiftForm != ShapeShiftForm.None)
+            {
+                if (HasAttribute(SpellExtraAttributes.CastableOnlyShapeShifted))
+                    return SpellCastResult.NotThisShapeShift;
+
+                bool impossibleToCancel = caster.ShapeShiftSpellInfo.HasAttribute(SpellAttributes.CantCancel);
+                bool mayNotCancel = HasAttribute(SpellExtraAttributes.CastCantCancelShapeShift);
+
+                if (HasAttribute(SpellExtraAttributes.CastableOnlyNonShapeShifted) && (impossibleToCancel || mayNotCancel))
+                    return SpellCastResult.NotOutOfShapeShift;
+            }
+            else if (HasAttribute(SpellExtraAttributes.CastableOnlyShapeShifted))
+                return SpellCastResult.NotShapeShifted;
 
             return SpellCastResult.Success;
         }
@@ -294,6 +343,38 @@ namespace Core
             if (caster != null && spell != null)
                 range = caster.Spells.ApplySpellModifier(spell, SpellModifierType.Range, range);
             return range;
+        }
+
+        public void CalculatePowerCosts(Unit caster, List<(SpellPowerType, int)> powerCosts, Spell spell = null)
+        {
+            foreach (SpellPowerCostInfo powerCostInfo in spellPowerCostInfos)
+            {
+                int powerCost = powerCostInfo.PowerCost;
+                if (powerCostInfo.PowerCostPercentage > 0)
+                {
+                    switch (powerCostInfo.SpellPowerType)
+                    {
+                        case SpellPowerType.Health:
+                            powerCost += caster.MaxHealth.ApplyPercentage(powerCostInfo.PowerCostPercentage);
+                            break;
+                        case SpellPowerType.Mana:
+                            powerCost += caster.Attributes.MaxPowerWithNoMods(SpellPowerType.Mana).ApplyPercentage(powerCostInfo.PowerCostPercentage);
+                            break;
+                        case SpellPowerType.Rage:
+                        case SpellPowerType.Focus:
+                        case SpellPowerType.Energy:
+                            powerCost += caster.Attributes.MaxPower(powerCostInfo.SpellPowerType).ApplyPercentage(powerCostInfo.PowerCostPercentage);
+                            break;
+                        default:
+                            continue;
+                    }
+                }
+
+                if (spell != null && caster is Player player)
+                    powerCost = (int)player.Spells.ApplySpellModifier(spell, SpellModifierType.Cost, powerCost);
+
+                powerCosts.Add((powerCostInfo.SpellPowerType, powerCost));
+            }
         }
 
 #if UNITY_EDITOR

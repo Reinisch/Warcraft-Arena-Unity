@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8971187313066190627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3975b6f01ba5d543b4243e2dba4a53c, type: 3}
+  m_Name: Thrash Effect Add Combo Points
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
+  comboPoints: 1
+--- !u!114 &-8275538001039583464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d045db0cacab33d4799982e5c41253f8, type: 3}
+  m_Name: Thrash Aura Periodic Damage
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 15
+  period: 3000
+  startPeriodicOnApply: 0
+  baseValue: 10
+  additionalValue: 0
+  schoolMask: 1
+  calculationType: 1
+  conditionalModifiers: []
+--- !u!114 &-8200027739462355239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Thrash Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 7fc25f7dfcef7b04eadd279f457bcad7, type: 2}
+  auraInfo: {fileID: 7433058726513906329}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Thrash Spell
+  m_EditorClassIdentifier: 
+  id: 49
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 0
+  damageClass: 2
+  spellDispel: 0
+  mechanic: 15
+  explicitCastTargets: 4
+  schoolMask: 1
+  preventionType: 2
+  attributes: 0
+  attributesExtra: 4096
+  attributesCustom: 1024
+  targetEntityTypeMask: 8
+  rangedFlags: 2
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 1000
+  castTime: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 6
+  maxRangeFriend: 0
+  speed: 0
+  spellEffectInfos:
+  - {fileID: 6008413051559781998}
+  - {fileID: -8200027739462355239}
+  - {fileID: -8971187313066190627}
+  spellPowerCostInfos:
+  - spellPowerType: 3
+    powerCostPercentage: 0
+    powerCost: 40
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 01000000
+  shapeShiftNeverCastable: 
+--- !u!114 &6008413051559781998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Thrash Effect Damage
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 7fc25f7dfcef7b04eadd279f457bcad7, type: 2}
+  baseValue: 10
+  baseVariance: 0
+  additionalValue: 0
+  usesComboPoints: 0
+  calculationType: 1
+  conditionalModifiers: []
+--- !u!114 &7433058726513906329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Thrash Aura
+  m_EditorClassIdentifier: 
+  id: 34
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 15000
+  maxDuration: 15000
+  maxStack: 1
+  stateType: 9
+  targetingMode: 1
+  interruptFlags: 0
+  attributes: 2
+  auraEffects:
+  - {fileID: -8275538001039583464}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 0
+  baseCharges: 0
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0

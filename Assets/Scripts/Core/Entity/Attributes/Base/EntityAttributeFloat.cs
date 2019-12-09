@@ -20,7 +20,7 @@ namespace Core
         internal override float Set(float value)
         {
             float oldValue = CurrentValue;
-            float newValue = Mathf.Clamp(value, 0.0f, MaxValue);
+            float newValue = Mathf.Clamp(value, MinValue, MaxValue);
 
             if (!Mathf.Approximately(oldValue, newValue))
             {

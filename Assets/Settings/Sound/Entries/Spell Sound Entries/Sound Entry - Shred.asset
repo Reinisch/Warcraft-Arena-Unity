@@ -15,4 +15,4 @@ MonoBehaviour:
   soundReference: {fileID: 11400000, guid: 9c01542db10d5bc46819a6f11752769e, type: 2}
   settings: {fileID: 11400000, guid: 637188a259c0f8149a47bc2c267d8f46, type: 2}
   audioClip: {fileID: 8300000, guid: aaea179d96087c44a807c017bc54653e, type: 3}
-  volumeModifier: 1
+  volumeModifier: 0.2

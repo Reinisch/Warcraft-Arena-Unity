@@ -2,12 +2,12 @@
 {
     public struct SpellResourceCost
     {
-        public SpellResourceType SpellResource;
+        public SpellPowerType SpellPower;
         public int Amount;
 
-        public SpellResourceCost(SpellResourceType spellResource, int amount)
+        public SpellResourceCost(SpellPowerType spellPower, int amount)
         {
-            SpellResource = spellResource;
+            SpellPower = spellPower;
             Amount = amount;
         }
     }

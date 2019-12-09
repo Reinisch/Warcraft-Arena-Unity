@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2521910361332085410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473742722d45357498298f5561b9f9bb, type: 3}
+  m_Name: Mangle Effect Add Power
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
+  powerType: 3
+  powerAmount: 10
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Mangle Spell
+  m_EditorClassIdentifier: 
+  id: 46
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 1
+  damageClass: 2
+  spellDispel: 0
+  mechanic: 0
+  explicitCastTargets: 4
+  schoolMask: 1
+  preventionType: 2
+  attributes: 0
+  attributesExtra: 4096
+  attributesCustom: 1024
+  targetEntityTypeMask: 8
+  rangedFlags: 2
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 1000
+  castTime: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 8
+  maxRangeFriend: 0
+  speed: 0
+  spellEffectInfos:
+  - {fileID: -2521910361332085410}
+  - {fileID: 7277068140602956060}
+  spellPowerCostInfos: []
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 01000000
+  shapeShiftNeverCastable: 
+--- !u!114 &7277068140602956060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Mangle Effect Damage
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  baseValue: 60
+  baseVariance: 0
+  additionalValue: 0
+  usesComboPoints: 0
+  calculationType: 1
+  conditionalModifiers:
+  - value: 20
+    condition: {fileID: 11400000, guid: 2b91d1ec2baa1a34097b592f85566fe5, type: 2}
+    conditionalModifierValue: {fileID: 0}
+    applicationType: 2

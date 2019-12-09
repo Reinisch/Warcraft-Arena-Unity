@@ -8,7 +8,7 @@ using EventHandler = Common.EventHandler;
 
 namespace Game
 {
-    public class GameManager : MonoBehaviour
+    public sealed class GameManager : MonoBehaviour
     {
         private enum UpdatePolicy
         {
@@ -22,9 +22,9 @@ namespace Game
         [SerializeField, UsedImplicitly] private ScriptableContainer scriptableClientContainer;
 
         private readonly Stopwatch gameTimer = new Stopwatch();
-        private WorldManager world;
         private long lastWorldUpdateTime;
         private long lastGameUpdateTime;
+        private World world;
 
         [UsedImplicitly]
         private void Awake()
@@ -35,9 +35,6 @@ namespace Game
             scriptableClientContainer.Register();
 
             gameTimer.Start();
-
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
         }
 
         [UsedImplicitly]
@@ -75,21 +72,27 @@ namespace Game
         [UsedImplicitly]
         private void OnApplicationQuit()
         {
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+            DestroyWorld();
 
-            world?.Dispose();
             scriptableClientContainer.Unregister();
             scriptableCoreContainer.Unregister();
         }
 
-        private void OnWorldInitialized(WorldManager initializedWorld)
+        public void CreateWorld(World newWorld)
         {
-            world = initializedWorld;
+            world = newWorld;
+
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, world, true);
         }
 
-        private void OnWorldDeinitializing(WorldManager deinitializingWorld)
+        public void DestroyWorld()
         {
+            if (world == null)
+                return;
+
+            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, world, false);
+
+            world.Dispose();
             world = null;
         }
     }

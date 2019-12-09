@@ -60,13 +60,15 @@ namespace Core
         private IPlayerState playerState;
         private string playerName;
 
+        internal VisibilityController Visibility { get; } = new VisibilityController();
         internal SpellController PlayerSpells { get; } = new SpellController();
         internal ClassInfo CurrentClass { get; private set; }
         internal new PlayerMovementInfo MovementInfo { get; private set; }
 
+        internal bool IsLocalServerPlayer => IsOwner && IsController;
         internal PlayerAI PlayerAI => playerAI;
         internal override UnitAI AI => playerAI;
-        internal override bool AutoScoped => true;
+        internal override bool AutoScoped => false;
 
         public override string Name
         {
@@ -94,11 +96,8 @@ namespace Core
             createToken.Attached(this);
 
             MovementInfo = (PlayerMovementInfo)base.MovementInfo;
-            CurrentClass = Balance.ClassesByType[ClassType];
 
-            if(IsOwner)
-                PlayerSpells.AddClassSpells(CurrentClass);
-
+            HandleClassChange(ClassType, false);
             HandleStateCallbacks(true);
         }
 
@@ -142,9 +141,10 @@ namespace Core
 
         protected override void AddBehaviours(BehaviourController unitBehaviourController)
         {
-            base.AddBehaviours(unitBehaviourController);
-
+            unitBehaviourController.TryAddBehaviour(Visibility);
             unitBehaviourController.TryAddBehaviour(PlayerSpells);
+
+            base.AddBehaviours(unitBehaviourController);
         }
 
         public void Accept(IUnitVisitor visitor) => visitor.Visit(this);
@@ -182,6 +182,16 @@ namespace Core
             CharacterController.UpdateMovementControl(movementControlChangeEvent.PlayerHasControl);
         }
 
+        public bool HasClientVisiblityOf(WorldEntity target) => !World.HasServerLogic || Visibility.HasClientVisiblityOf(target);
+
+        internal override void UpdateVisibility(bool forced)
+        {
+            base.UpdateVisibility(forced);
+
+            if (forced)
+                Map.UpdateVisibilityFor(this);
+        }
+
         internal void AssignControl(BoltConnection boltConnection = null)
         {
             var controlToken = new ControlGainToken { HasMovementControl = MovementInfo.HasMovementControl };
@@ -193,31 +203,45 @@ namespace Core
 
         internal void SwitchClass(ClassType classType)
         {
-            if (ClassType == classType)
-                return;
+            if (ClassType != classType)
+                HandleClassChange(classType, true);
+        }
 
+        private void HandleClassChange(ClassType classType, bool isUpdate)
+        {
             ClassType = classType;
             CurrentClass = Balance.ClassesByType[classType];
-            PlayerSpells.UpdateClassSpells(CurrentClass);
+
+            if (IsOwner)
+            {
+                if (isUpdate)
+                    PlayerSpells.UpdateClassSpells(CurrentClass);
+                else
+                    PlayerSpells.AddClassSpells(CurrentClass);
+            }
+
+            Attributes.UpdateAvailablePowers();
         }
 
         private void HandleStateCallbacks(bool add)
         {
+            if (IsOwner)
+                return;
+
             if (add)
             {
-                if (!IsOwner)
-                    playerState.AddCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
+                playerState.AddCallback(nameof(playerState.PlayerName), OnRemotePlayerNameChanged);
+                playerState.AddCallback(nameof(playerState.ClassType), OnRemoteClassTypeChanged);
             }
             else
             {
-                if (!IsOwner)
-                    playerState.RemoveCallback(nameof(playerState.PlayerName), OnPlayerNameChanged);
+                playerState.RemoveCallback(nameof(playerState.PlayerName), OnRemotePlayerNameChanged);
+                playerState.RemoveCallback(nameof(playerState.ClassType), OnRemoteClassTypeChanged);
             }
         }
 
-        private void OnPlayerNameChanged()
-        {
-            Name = playerState.PlayerName;
-        }
+        private void OnRemotePlayerNameChanged() => Name = playerState.PlayerName;
+
+        private void OnRemoteClassTypeChanged() => HandleClassChange((ClassType)playerState.ClassType, true);
     }
 }

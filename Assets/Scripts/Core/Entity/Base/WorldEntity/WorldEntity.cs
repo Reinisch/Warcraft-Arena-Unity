@@ -27,15 +27,22 @@ namespace Core
         }
 
         private IWorldEntityState worldEntityState;
+        private CreateToken createToken;
+
+        internal MapGrid.Cell CurrentCell { get; set; }
 
         public Vector3 Position { get => transform.position; set => transform.position = value; }
         public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
 
         public abstract string Name { get; internal set; }
-        public bool IsVisible { get; } = true;
+        public virtual float Size { get; } = StatUtils.DefaultEntitySize;
 
         public Map Map { get; private set; }
-        public GridCell CurrentCell { get; internal set; }
+
+        public bool IsVisible { get; } = true;
+        public bool IsVisibilityChanged { get; internal set; }
+        public int StealthSubtlety { get; internal set; }
+        public int StealthDetection { get; internal set; }
 
         public override void Attached()
         {
@@ -44,19 +51,32 @@ namespace Core
             worldEntityState = entity.GetState<IWorldEntityState>();
             worldEntityState.SetTransforms(worldEntityState.Transform, transform);
 
-            if (entity.AttachToken is CreateToken createInfo)
-            {
-                Position = createInfo.Position;
-                Rotation = createInfo.Rotation;
-            }
+            createToken = (CreateToken) entity.AttachToken;
+            Position = createToken.Position;
+            Rotation = createToken.Rotation;
         }
 
         public override void Detached()
         {
             worldEntityState.SetTransforms(worldEntityState.Transform, null);
             worldEntityState = null;
+            createToken = null;
 
             base.Detached();
+        }
+
+        internal virtual void PrepareForScoping()
+        {
+            if (IsOwner)
+            {
+                createToken.Position = Position;
+                createToken.Rotation = Rotation;
+            }
+        }
+
+        internal virtual void UpdateVisibility(bool forced)
+        {
+            IsVisibilityChanged = true;
         }
 
         internal void UpdateSyncTransform(bool shouldSync)
@@ -83,9 +103,83 @@ namespace Core
             Map = null;
         }
 
-        public bool CanSeeOrDetect(WorldEntity target, bool ignoreStealth = false, bool distanceCheck = false, bool checkAlert = false)
+        public bool CanSeeOrDetect(WorldEntity target, bool ignoreStealth = false, bool checkDistance = false)
         {
+            if (this == target)
+                return true;
+
+            if (target.IsNeverVisibleFor(this) || CanNeverSee(target))
+                return false;
+
+            if (target.IsAlwaysVisibleFor(this) || CanAlwaysSee(target))
+                return true;
+
+            if (checkDistance && !IsWithinDistance(target, Map.VisibilityRange, false))
+                return false;
+
+            if (!ignoreStealth && !CanDetectInvisibility())
+                return false;
+
+            if (!ignoreStealth && !CanDetectStealth())
+                return false;
+
             return true;
+
+            bool CanDetectInvisibility()
+            {
+                return true;
+            }
+
+            bool CanDetectStealth()
+            {
+                if (target.StealthSubtlety <= 0)
+                    return true;
+
+                float distance = ExactDistanceTo(target);
+                float combatReach = 0.0f;
+
+                if (this is Unit unit)
+                {
+                    if (unit.Auras.HasAuraType(AuraEffectType.DetectAllStealth))
+                        return true;
+
+                    combatReach = StatUtils.DefaultCombatReach;
+                }
+
+                if (distance < combatReach)
+                    return true;
+
+                if (!IsFacing(target, SpellTargetDirections.Front, 90.0f, combatReach))
+                    return false;
+
+                int detectionValue = 30 + StealthDetection - target.StealthSubtlety;
+                float visibilityRange = detectionValue * 0.3f + combatReach;
+
+                if (distance > visibilityRange)
+                    return false;
+
+                return true;
+            }
+        }
+
+        public bool IsNeverVisibleFor(WorldEntity observer)
+        {
+            return false;
+        }
+
+        public bool IsAlwaysVisibleFor(WorldEntity observer)
+        {
+            return this == observer;
+        }
+
+        public bool CanNeverSee(WorldEntity target)
+        {
+            return Map != target.Map;
+        }
+
+        public bool CanAlwaysSee(WorldEntity target)
+        {
+            return this == target;
         }
 
         public bool IsFacing(WorldEntity target, SpellTargetDirections direction, float angle, float backBuffer = StatUtils.DefaultCombatReach)
@@ -127,24 +221,43 @@ namespace Core
             return Vector3.Angle(targetDirection, projectedFacingDirection) < angle;
         }
 
-        public float DistanceTo(Vector3 position)
+        public bool IsWithinDistance(WorldEntity target, float range, bool is3D)
+        {
+            float sizeDistance = Size + target.Size;
+            float actualRange = range + sizeDistance;
+            Vector3 position = Position;
+            Vector3 targetPosition = target.Position;
+
+            float dx = position.x - targetPosition.x;
+            float dz = position.z - targetPosition.z;
+            float sqrDistance = dx * dx + dz * dz;
+            if (is3D)
+            {
+                float dy = position.y - targetPosition.y;
+                sqrDistance += dy * dy;
+            }
+
+            return sqrDistance < actualRange * actualRange;
+        }
+
+        public float ExactDistanceTo(Vector3 position)
         {
             return Vector3.Distance(Position, position);
         }
 
-        public float DistanceSqrTo(Vector3 position)
+        public float ExactDistanceSqrTo(Vector3 position)
         {
             return Vector3.SqrMagnitude(Position - position);
         }
 
-        public float DistanceTo(WorldEntity target)
+        public float ExactDistanceTo(WorldEntity target)
         {
-            return DistanceTo(target.Position);
+            return ExactDistanceTo(target.Position);
         }
 
-        public float DistanceSqrTo(WorldEntity target)
+        public float ExactDistanceSqrTo(WorldEntity target)
         {
-            return DistanceTo(target.Position);
+            return ExactDistanceTo(target.Position);
         }
 
         public void SetFacingTo(WorldEntity target)

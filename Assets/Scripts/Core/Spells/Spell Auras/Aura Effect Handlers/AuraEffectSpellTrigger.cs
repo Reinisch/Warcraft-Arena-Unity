@@ -25,6 +25,9 @@ namespace Core.AuraEffects
             if (activationInfo.Spell.IsTriggered)
                 return false;
 
+            if (!EffectInfo.CanCasterBeTriggerTarget && activationInfo.Actor == activationInfo.ActionTarget)
+                return false;
+
             if (Aura.AuraInfo.UsesCharges && Aura.Charges < 1)
                 return false;
 
@@ -38,7 +41,7 @@ namespace Core.AuraEffects
                 if (EffectInfo.TriggerConditions[i].IsApplicableAndInvalid(activationInfo.Actor, activationInfo.ActionTarget, activationInfo.Spell))
                     return false;
 
-            return RandomUtils.CheckSuccess(EffectInfo.Chance);
+            return RandomUtils.CheckSuccess(EffectInfo.Chance + activationInfo.Spell.ConsumedComboPoints * EffectInfo.ChancePerCombo);
         }
     }
 }

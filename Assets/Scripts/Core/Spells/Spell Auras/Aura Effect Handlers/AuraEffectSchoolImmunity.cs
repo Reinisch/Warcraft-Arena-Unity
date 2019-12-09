@@ -31,20 +31,7 @@ namespace Core.AuraEffects
                     if (!otherApplication.Aura.SpellInfo.SchoolMask.HasAnyFlag(EffectInfo.SchoolMask))
                         continue;
 
-                    // check for auras that ignore immunities and can't be dispelled
-                    if (!Aura.SpellInfo.CanDispelAura(otherApplication.Aura.SpellInfo))
-                        continue;
-
-                    // don't dispel self
-                    if (Aura == otherApplication.Aura)
-                        continue;
-
-                    // don't dispel passives
-                    if (otherApplication.Aura.SpellInfo.IsPassive)
-                        continue;
-
-                    // don't dispel same positivity effects
-                    if (otherApplication.Aura.AuraInfo.IsPositive == Aura.AuraInfo.IsPositive)
+                    if (!Aura.CanDispel(otherApplication.Aura))
                         continue;
 
                     applicaionsToRemove.Add(otherApplication);

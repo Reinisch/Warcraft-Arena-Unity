@@ -6,19 +6,20 @@ using Common;
 
 namespace Core
 {
-    public class Map
+    public sealed class Map
     {
-        private readonly WorldGrid mapGrid = new WorldGrid();
+        private readonly MapGrid mapGrid;
         private readonly Dictionary<ulong, WorldEntity> worldEntitiesById = new Dictionary<ulong, WorldEntity>();
-        private readonly Collider[] raycastResults = new Collider[200];
+        private readonly Collider[] raycastResults = new Collider[300];
 
-        internal WorldManager WorldManager { get; private set; }
+        internal World World { get; }
 
-        public MapSettings Settings { get; private set; }
+        public MapSettings Settings { get; }
+        public float VisibilityRange => Settings.Definition.MaxVisibilityRange;
 
-        internal void Initialize(WorldManager worldManager, Scene mapScene)
+        internal Map(World world, Scene mapScene)
         {
-            WorldManager = worldManager;
+            World = world;
 
             foreach (var rootObject in mapScene.GetRootGameObjects())
             {
@@ -29,30 +30,27 @@ namespace Core
             }
 
             Assert.IsNotNull(Settings, $"Map settings are missing in map: {mapScene.name}");
-            mapGrid.Initialize(this);
+            mapGrid = new MapGrid(this);
 
-            if(worldManager.HasServerLogic)
+            if (world.HasServerLogic)
                 foreach (var scenarioAction in Settings.ScenarioActions)
                     scenarioAction.Initialize(this);
         }
 
-        internal void Deinitialize()
+        internal void Dispose()
         {
-            if (WorldManager.HasServerLogic)
+            if (World.HasServerLogic)
                 foreach (var scenarioAction in Settings.ScenarioActions)
                     scenarioAction.DeInitialize();
 
-            mapGrid.Deinitialize();
-
-            Settings = null;
-            WorldManager = null;
+            mapGrid.Dispose();
         }
 
         internal void DoUpdate(int deltaTime)
         {
             mapGrid.DoUpdate(deltaTime);
 
-            if (WorldManager.HasServerLogic)
+            if (World.HasServerLogic)
                 foreach (var scenarioAction in Settings.ScenarioActions)
                     scenarioAction.DoUpdate(deltaTime);
         }
@@ -80,7 +78,7 @@ namespace Core
             Assert.IsFalse(hitCount == raycastResults.Length, "Raycast results reached maximum!");
             for (int i = 0; i < hitCount; i++)
             {
-                if (!WorldManager.UnitManager.TryFind(raycastResults[i], out Unit targetUnit) || targetUnit.Map != this)
+                if (!World.UnitManager.TryFind(raycastResults[i], out Unit targetUnit) || targetUnit.Map != this)
                     continue;
 
                 switch (checkType)
@@ -98,6 +96,8 @@ namespace Core
                 targets.Add(targetUnit);
             }
         }
+
+        public void UpdateVisibilityFor(Player player) => mapGrid.UpdateVisibility(player, true);
 
         public TEntity FindMapEntity<TEntity>(ulong networkId) where TEntity : Entity
         {

@@ -13,5 +13,6 @@ namespace Core
         StackForAnyCasters = 1 << 5,
         DeathPersistent = 1 << 6,
         HasteAffectsDuration = 1 << 7,
+        ComboAffectsDuration = 1 << 8
     }
 }

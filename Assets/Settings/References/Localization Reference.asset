@@ -80,6 +80,22 @@ MonoBehaviour:
     LocalizedString: {fileID: 11400000, guid: a454fe567ad566446b9ac37ff9ce999e, type: 2}
   - SpellCastResult: 29
     LocalizedString: {fileID: 11400000, guid: b9a36bce9dd71df46b0a21452d0cde0d, type: 2}
+  - SpellCastResult: 34
+    LocalizedString: {fileID: 11400000, guid: 77262409bd5194c4cb132f8e71fd9601, type: 2}
+  - SpellCastResult: 36
+    LocalizedString: {fileID: 11400000, guid: 55b6944407906054383d8f6a53be28e3, type: 2}
+  - SpellCastResult: 37
+    LocalizedString: {fileID: 11400000, guid: fb7a223487a587648b0e24ea60057944, type: 2}
+  - SpellCastResult: 38
+    LocalizedString: {fileID: 11400000, guid: 00a91d0fc4464ae4f8d96a51e29bf5d2, type: 2}
+  - SpellCastResult: 39
+    LocalizedString: {fileID: 11400000, guid: e72612149acbffc4bb3f4c933dc2ce48, type: 2}
+  - SpellCastResult: 31
+    LocalizedString: {fileID: 11400000, guid: bcf33cd1f01a6d94c9396324d3a98104, type: 2}
+  - SpellCastResult: 32
+    LocalizedString: {fileID: 11400000, guid: 37720b86a988c4f4aa34b50d65f21f69, type: 2}
+  - SpellCastResult: 33
+    LocalizedString: {fileID: 11400000, guid: fc58ebd3b36d8e44b9e1e21410dc78e5, type: 2}
   spellMissTypes:
   - SpellMissType: 7
     LocalizedString: {fileID: 11400000, guid: 8ec300e1d87b2924ea3efba38e1a41f4, type: 2}
@@ -106,3 +122,24 @@ MonoBehaviour:
     LocalizedString: {fileID: 11400000, guid: 5abad0f7644f45d4b8901e7bf6ad63f5, type: 2}
   - FailReason: 7
     LocalizedString: {fileID: 11400000, guid: 301902de4cd73c544a009efb646f9c54, type: 2}
+  powerTypeCosts:
+  - PowerType: 0
+    LocalizedRawString: {fileID: 11400000, guid: 5c2db0aadee8e434b86af640abe0129e,
+      type: 2}
+    LocalizedPercentageString: {fileID: 11400000, guid: 981321212db28ab41b7c1169f65e4962,
+      type: 2}
+  - PowerType: 1
+    LocalizedRawString: {fileID: 11400000, guid: 5a400a01447651447bf99f958d8762af,
+      type: 2}
+    LocalizedPercentageString: {fileID: 11400000, guid: f8d3b6863e5bac84f975e6708c4c60ab,
+      type: 2}
+  - PowerType: 3
+    LocalizedRawString: {fileID: 11400000, guid: e111699c26d1e2d49af4beb94826bb21,
+      type: 2}
+    LocalizedPercentageString: {fileID: 11400000, guid: f23819bc2751d4d48a79676bf6af7a8a,
+      type: 2}
+  - PowerType: 4
+    LocalizedRawString: {fileID: 11400000, guid: e313caa3615a175438d55f5a17dd4452,
+      type: 2}
+    LocalizedPercentageString: {fileID: 11400000, guid: e313caa3615a175438d55f5a17dd4452,
+      type: 2}

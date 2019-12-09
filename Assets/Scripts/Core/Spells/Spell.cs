@@ -12,9 +12,10 @@ namespace Core
     {
         private static int SpellAliveCount;
 
+        private List<(SpellPowerType, int)> powerCosts = ListPoolContainer<(SpellPowerType, int)>.Take();
+
         private SpellValue spellValue;
         private readonly SpellManager spellManager;
-        private readonly SpellCastFlags spellCastFlags;
         private readonly MovementFlags casterMovementFlags;
         private readonly HashSet<Aura> appliedModifierAuras = new HashSet<Aura>();
         private readonly HashSet<Aura> chargeDroppedModifierAuras = new HashSet<Aura>();
@@ -27,6 +28,7 @@ namespace Core
 
         internal bool IsTriggered { get; }
         internal bool CanReflect { get; }
+        internal int ConsumedComboPoints { get; set; }
         internal SpellSchoolMask SchoolMask { get; }
         internal int CastTime { get; private set; }
         internal Unit Caster { get; private set; }
@@ -42,7 +44,7 @@ namespace Core
             Logging.LogSpell($"Created new spell, current count: {++SpellAliveCount}");
 
             spellManager = caster.World.SpellManager;
-            spellCastFlags = options.SpellFlags;
+            spellValue.CastFlags = options.SpellFlags;
             casterMovementFlags = options.MovementFlags ?? caster.MovementInfo.Flags;
             SchoolMask = info.SchoolMask;
 
@@ -50,19 +52,20 @@ namespace Core
             Caster = OriginalCaster = caster;
             SpellInfo = info;
 
-            IsTriggered = spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura);
+            IsTriggered = spellValue.CastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura);
 
             if (IsTriggered)
-                spellCastFlags |= SpellCastFlags.IgnoreTargetCheck | SpellCastFlags.IgnoreRangeCheck;
+                spellValue.CastFlags |= SpellCastFlags.IgnoreTargetCheck | SpellCastFlags.IgnoreRangeCheck |
+                    SpellCastFlags.IgnoreShapeShift | SpellCastFlags.IgnoreAuraInterruptFlags;
 
             if (info.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
-                spellCastFlags |= SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
+                spellValue.CastFlags |= SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
 
             if (info.HasAttribute(SpellExtraAttributes.IgnoreGcd))
-                spellCastFlags |= SpellCastFlags.IgnoreGcd;
+                spellValue.CastFlags |= SpellCastFlags.IgnoreGcd;
 
             if (info.HasAttribute(SpellExtraAttributes.IgnoreCasterAuras))
-                spellCastFlags |= SpellCastFlags.IgnoreCasterAuras;
+                spellValue.CastFlags |= SpellCastFlags.IgnoreCasterAuras;
 
             CanReflect = SpellInfo.DamageClass == SpellDamageClass.Magic && !SpellInfo.HasAttribute(SpellAttributes.CantBeReflected) &&
                 !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive && !SpellInfo.IsPositive;
@@ -88,6 +91,9 @@ namespace Core
             chargeDroppedModifierAuras.Clear();
             appliedModifiers.Clear();
             unappliedModifiers.Clear();
+
+            ListPoolContainer<(SpellPowerType, int)>.Return(powerCosts);
+            powerCosts = null;
 
             ImplicitTargets.Dispose();
             ExplicitTargets.Dispose();
@@ -235,11 +241,11 @@ namespace Core
             }
         }
 
-
         internal SpellCastResult Prepare()
         {
             ExecutionState = SpellExecutionState.Preparing;
             PrepareExplicitTarget();
+            SpellInfo.CalculatePowerCosts(Caster, powerCosts, this);
 
             SpellCastResult result = ValidateCast();
             if (result != SpellCastResult.Success)
@@ -250,7 +256,7 @@ namespace Core
 
         private SpellCastResult ValidateCast()
         {
-            if (spellCastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
+            if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.TriggeredByAura))
                 return SpellCastResult.Success;
 
             if (Caster is Player player && !player.PlayerSpells.HasKnownSpell(SpellInfo))
@@ -265,15 +271,18 @@ namespace Core
                 return SpellCastResult.NotReady;
 
             // check global cooldown
-            if (!spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreGcd) && Caster.SpellHistory.HasGlobalCooldown)
+            if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreGcd) && Caster.SpellHistory.HasGlobalCooldown)
                 return SpellCastResult.NotReady;
 
             // check if already casting
             if (Caster.SpellCast.IsCasting && !SpellInfo.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
                 return SpellCastResult.NotReady;
 
+            if (SpellInfo.HasAttribute(SpellAttributes.RequiresComboPoints) && Caster.ComboPoints < 1)
+                return SpellCastResult.NoComboPoints;
+
             SpellCastResult castResult;
-            if (!spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreTargetCheck))
+            if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreTargetCheck))
             {
                 castResult = SpellInfo.CheckExplicitTarget(Caster, ExplicitTargets.Target);
                 if (castResult != SpellCastResult.Success)
@@ -295,12 +304,66 @@ namespace Core
             if (castResult != SpellCastResult.Success)
                 return castResult;
 
+            castResult = ValidatePowers();
+            if (castResult != SpellCastResult.Success)
+                return castResult;
+
+            castResult = ValidateShapeShift();
+            if (castResult != SpellCastResult.Success)
+                return castResult;
+
+            return SpellCastResult.Success;
+        }
+
+        private SpellCastResult ValidatePowers()
+        {
+            foreach ((SpellPowerType, int) cost in powerCosts)
+            {
+                if (cost.Item1 == SpellPowerType.Health && Caster.Health <= cost.Item2)
+                    return SpellCastResult.NoPower;
+
+                if (Caster.Attributes.Power(cost.Item1) < cost.Item2)
+                {
+                    switch (cost.Item1)
+                    {
+                        case SpellPowerType.Mana:
+                            return SpellCastResult.NoMana;
+                        case SpellPowerType.Rage:
+                            return SpellCastResult.NoRage;
+                        case SpellPowerType.Health:
+                            return SpellCastResult.NoHealth;
+                        case SpellPowerType.Energy:
+                            return SpellCastResult.NoEnergy;
+                        case SpellPowerType.ComboPoints:
+                            return SpellCastResult.NoComboPoints;
+                        case SpellPowerType.Focus:
+                        case SpellPowerType.Runes:
+                        case SpellPowerType.RunicPower:
+                        case SpellPowerType.SoulShards:
+                        case SpellPowerType.LunarPower:
+                        case SpellPowerType.HolyPower:
+                        case SpellPowerType.AlternatePower:
+                        case SpellPowerType.Maelstrom:
+                        case SpellPowerType.Chi:
+                        case SpellPowerType.Insanity:
+                        case SpellPowerType.BurningEmbers:
+                        case SpellPowerType.DemonicFury:
+                        case SpellPowerType.ArcaneCharges:
+                        case SpellPowerType.Fury:
+                        case SpellPowerType.Pain:
+                            goto default;
+                        default:
+                            return SpellCastResult.NoPower;
+                    }
+                }
+            }
+
             return SpellCastResult.Success;
         }
 
         private SpellCastResult ValidateAuras()
         {
-            if (spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreCasterAuras))
+            if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreCasterAuras))
                 return SpellCastResult.Success;
 
             bool usableWhileStunned = SpellInfo.HasAttribute(SpellExtraAttributes.UsableWhileStunned);
@@ -382,7 +445,7 @@ namespace Core
 
         private SpellCastResult ValidateRange()
         {
-            if (spellCastFlags.HasTargetFlag(SpellCastFlags.IgnoreRangeCheck))
+            if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreRangeCheck))
                 return SpellCastResult.Success;
 
             switch (SpellInfo.ExplicitTargetType)
@@ -424,10 +487,10 @@ namespace Core
 
                 maxRange += rangeMod;
 
-                if (Vector3.Distance(Caster.Position, target.Position) > maxRange)
+                if (!Caster.IsWithinDistance(target, maxRange, true))
                     return SpellCastResult.OutOfRange;
 
-                if (minRange > 0.0f && Vector3.Distance(Caster.Position, target.Position) < minRange)
+                if (minRange > 0.0f && Caster.IsWithinDistance(target, minRange, true))
                     return SpellCastResult.OutOfRange;
 
                 return SpellCastResult.Success;
@@ -443,14 +506,27 @@ namespace Core
                 float minRange = SpellInfo.GetMinRange(false);
                 float maxRange = SpellInfo.GetMaxRange(false);
 
-                if (Vector3.Distance(Caster.Position, targetPosition) > maxRange)
+                if (Caster.ExactDistanceTo(targetPosition) > maxRange)
                     return SpellCastResult.OutOfRange;
 
-                if (minRange > 0.0f && Vector3.Distance(Caster.Position, targetPosition) < minRange)
+                if (minRange > 0.0f && Caster.ExactDistanceTo(targetPosition) < minRange)
                     return SpellCastResult.OutOfRange;
 
                 return SpellCastResult.Success;
             }
+        }
+
+        private SpellCastResult ValidateShapeShift()
+        {
+            if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreShapeShift))
+                return SpellCastResult.Success;
+
+            IReadOnlyList<AuraEffect> shapeShiftIgnoreEffects = Caster.Auras.GetAuraEffects(AuraEffectType.IgnoreShapeShift);
+            if (shapeShiftIgnoreEffects != null) for (int i = 0; i < shapeShiftIgnoreEffects.Count; i++)
+                if (shapeShiftIgnoreEffects[i].IsAffectingSpell(SpellInfo))
+                    return SpellCastResult.Success;
+
+            return SpellInfo.CheckShapeShift(Caster);
         }
 
         private SpellCastResult ValidateMechanics(AuraEffectType auraEffectType)
@@ -492,11 +568,17 @@ namespace Core
             CastTimeLeft = CastTime;
 
             // cast if needed, if already casting launch instead, should only be possible with CanCastWhileCasting
-            bool instantCast = CastTime <= 0.0f || Caster.SpellCast.IsCasting || spellCastFlags.HasTargetFlag(SpellCastFlags.CastDirectly);
+            bool instantCast = CastTime <= 0.0f || Caster.SpellCast.IsCasting || spellValue.CastFlags.HasTargetFlag(SpellCastFlags.CastDirectly);
             if (casterMovementFlags.IsMoving() && !instantCast && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving))
                 return SpellCastResult.Moving;
 
+            if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreShapeShift) && SpellInfo.CanCancelForm(this))
+                Caster.Auras.RemoveAurasWithEffect(AuraEffectType.ShapeShift);
+
             Caster.SpellHistory.StartGlobalCooldown(SpellInfo);
+
+            if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreAuraInterruptFlags) && !SpellInfo.HasAttribute(SpellCustomAttributes.DontBreakStealth))
+                Caster.Auras.RemoveAurasWithInterrupt(AuraInterruptFlags.Cast);
 
             if (instantCast)
                 Launch();
@@ -545,6 +627,8 @@ namespace Core
 
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missType);
 
+            Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellHit, hitTarget, this);
+
             if (EffectHealing > 0)
                 caster.Spells.HealBySpell(new SpellHealInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectHealing, targetEntry.Crit));
             else if (EffectDamage > 0)
@@ -569,9 +653,10 @@ namespace Core
 
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, SpellInfo, processingToken);
 
-            Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellCast, Caster, this);
-
             DropModifierCharges();
+            ConsumePowers();
+
+            Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellCast, Caster, this);
 
             if (!isDelayed)
             {
@@ -589,6 +674,28 @@ namespace Core
             DropModifierCharges();
 
             spellManager.Remove(this);
+        }
+
+        private void ConsumePowers()
+        {
+            if (SpellInfo.HasAttribute(SpellAttributes.RequiresComboPoints))
+            {
+                ConsumedComboPoints = Caster.ComboPoints;
+                Caster.Attributes.SetComboPoints(0);
+            }
+
+            foreach ((SpellPowerType, int) powerCost in powerCosts)
+            {
+                if (powerCost.Item1 == SpellPowerType.Health)
+                {
+                    if (Caster.IsAlive)
+                        Caster.ModifyHealth(-Mathf.Min(Caster.Health - 1, powerCost.Item2));
+
+                    continue;
+                }
+
+                Caster.Attributes.ModifyPower(powerCost.Item1, -powerCost.Item2);
+            }
         }
 
         private void DropModifierCharges()
@@ -620,9 +727,9 @@ namespace Core
             if (ExplicitTargets.Target == null && targetsUnits)
             {
                 // try to use player selection as target, it has to be valid target for the spell
-                if (Caster is Player playerCaster && playerCaster.Target is Unit playerTarget)
-                    if (SpellInfo.CheckExplicitTarget(Caster, playerTarget) == SpellCastResult.Success)
-                        ExplicitTargets.Target = playerTarget;
+                if (Caster is Player playerCaster && playerCaster.Target != null)
+                    if (SpellInfo.CheckExplicitTarget(Caster, playerCaster.Target) == SpellCastResult.Success)
+                        ExplicitTargets.Target = playerCaster.Target;
 
                 // didn't find anything, try to use self as target
                 if (ExplicitTargets.Target == null && SpellInfo.ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitAlly))

@@ -12,18 +12,19 @@ using EventHandler = Common.EventHandler;
 namespace Game.Workflow.Dedicated
 {
     [CreateAssetMenu(fileName = "Workflow Dedicated Reference", menuName = "Game Data/Scriptable/Workflow Dedicated", order = 1)]
-    internal class WorkflowDedicated : ScriptableReference
+    internal sealed class WorkflowDedicated : ScriptableReference
     {
         [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
         [SerializeField, UsedImplicitly] private DedicatedServerSettings settings;
         [SerializeField, UsedImplicitly] private int maxRestartAttempts = 3;
 
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
-        private WorldManager worldManager;
+        private GameManager gameManager;
         private int restartCount;
 
         protected override void OnRegistered()
         {
+            gameManager = FindObjectOfType<GameManager>();
             settings.Apply();
 
             EventHandler.RegisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnMapLoaded);
@@ -39,6 +40,8 @@ namespace Game.Workflow.Dedicated
 
             restartCount = 0;
             tokenSource.Cancel();
+
+            gameManager = null;
         }
 
         private void StartServer()
@@ -62,16 +65,14 @@ namespace Game.Workflow.Dedicated
         {
             Assert.AreEqual(mode, NetworkingMode.Server);
 
-            worldManager = new WorldServerManager(false);
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, worldManager);
+            gameManager.CreateWorld(new WorldServer(false));
         }
 
         private void OnDisconnectedFromMaster()
         {
             Debug.LogWarning("Disconnected from master!");
 
-            worldManager?.Dispose();
-            worldManager = null;
+            gameManager.DestroyWorld();
 
             HandleRestart();
         }

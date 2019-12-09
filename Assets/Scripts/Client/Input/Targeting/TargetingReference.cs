@@ -39,31 +39,37 @@ namespace Client
             if (!Player.ExistsIn(World))
                 return;
 
+            // case when server is also a client
+            if (Player.Target != null && !Player.HasClientVisiblityOf(Player.Target))
+                input.SelectTarget(null);
+
             if (Input.GetMouseButtonDown(0) && !Input.GetMouseButton(1) && !InterfaceUtils.IsPointerOverUI)
             {
                 Ray ray = cameraReference.WarcraftCamera.Camera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out var hit, float.MaxValue, PhysicsReference.Mask.Characters | PhysicsReference.Mask.Ground))
-                    if (World.UnitManager.TryFind(hit.collider, out Unit target))
+                    if (World.UnitManager.TryFind(hit.collider, out Unit target) && Player.HasClientVisiblityOf(target))
                         input.SelectTarget(target);
             }
         }
 
-        protected override void OnWorldInitialized(WorldManager world)
+        protected override void OnWorldStateChanged(World world, bool created)
         {
-            base.OnWorldInitialized(world);
+            if (created)
+            {
+                base.OnWorldStateChanged(world, true);
 
-            previousTargets.Clear();
+                previousTargets.Clear();
 
-            world.UnitManager.EventEntityDetach += OnEntityDetach;
-        }
+                world.UnitManager.EventEntityDetach += OnEntityDetach;
+            }
+            else
+            {
+                world.UnitManager.EventEntityDetach -= OnEntityDetach;
 
-        protected override void OnWorldDeinitializing(WorldManager world)
-        {
-            world.UnitManager.EventEntityDetach -= OnEntityDetach;
+                previousTargets.Clear();
 
-            previousTargets.Clear();
-
-            base.OnWorldDeinitializing(world);
+                base.OnWorldStateChanged(world, false);
+            }
         }
 
         private void OnEntityDetach(Unit unit)

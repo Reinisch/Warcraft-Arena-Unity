@@ -20,11 +20,11 @@ MonoBehaviour:
         preferredWidth: 250
     - tooltipSize: 1
       tooltipSettings:
-        flexibleWidth: 350
-        preferredWidth: 350
+        flexibleWidth: 375
+        preferredWidth: 375
     defaultValue:
-      flexibleWidth: 350
-      preferredWidth: 350
+      flexibleWidth: 375
+      preferredWidth: 375
   tooltipAlignmentSettings:
     items:
     - tooltipAlignment: 1

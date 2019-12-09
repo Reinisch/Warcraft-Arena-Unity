@@ -5,43 +5,29 @@ namespace Client
 {
     public abstract class ScriptableReferenceClient : ScriptableReference
     {
-        protected WorldManager World { get; private set; }
+        protected World World { get; private set; }
         public Player Player { get; private set; }
 
         protected override void OnRegistered()
         {
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.RegisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
-            EventHandler.RegisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.RegisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlLost, OnPlayerControlLost);
+            EventHandler.RegisterEvent<World, bool>(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, OnWorldStateChanged);
+            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, OnControlStateChanged);
         }
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlGained, OnPlayerControlGained);
-            EventHandler.UnregisterEvent<Player>(EventHandler.GlobalDispatcher, GameEvents.PlayerControlLost, OnPlayerControlLost);
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldInitialized, OnWorldInitialized);
-            EventHandler.UnregisterEvent<WorldManager>(EventHandler.GlobalDispatcher, GameEvents.WorldDeinitializing, OnWorldDeinitializing);
+            EventHandler.UnregisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, OnControlStateChanged);
+            EventHandler.UnregisterEvent<World, bool>(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, OnWorldStateChanged);
         }
 
-        protected virtual void OnWorldInitialized(WorldManager world)
+        protected virtual void OnWorldStateChanged(World world, bool created)
         {
-            World = world;
+            World = created ? world : null;
         }
 
-        protected virtual void OnWorldDeinitializing(WorldManager world)
+        protected virtual void OnControlStateChanged(Player player, bool underControl)
         {
-            World = null;
-        }
-
-        protected virtual void OnPlayerControlGained(Player player)
-        {
-            Player = player;
-        }
-
-        protected virtual void OnPlayerControlLost(Player player)
-        {
-            Player = null;
+            Player = underControl ? player : null;
         }
     }
 }

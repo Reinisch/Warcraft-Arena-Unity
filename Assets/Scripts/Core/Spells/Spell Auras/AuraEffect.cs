@@ -30,6 +30,8 @@ namespace Core
             Logging.LogAura($"Handle aura effect {EffectInfo.name} for target: {auraApplication.Target.Name} in mode {mode}, applying: {apply}");
         }
 
+        public bool IsAffectingSpell(SpellInfo spellInfo) => EffectInfo.IsAffectingSpell(spellInfo);
+
         public void ModifyValue(float delta)
         {
             Value += delta;

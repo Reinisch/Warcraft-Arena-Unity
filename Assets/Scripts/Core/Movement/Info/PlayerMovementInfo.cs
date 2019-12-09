@@ -11,7 +11,6 @@ namespace Core
 
         public PlayerMovementInfo(Unit unit, IUnitState unitState) : base(unit, unitState)
         {
-
         }
 
         public override void Dispose()

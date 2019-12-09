@@ -13,6 +13,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private int baseValue;
         [SerializeField, UsedImplicitly] private uint baseVariance;
         [SerializeField, UsedImplicitly] private uint additionalValue;
+        [SerializeField, UsedImplicitly] private bool usesComboPoints;
         [SerializeField, UsedImplicitly] private SpellDamageCalculationType calculationType;
         [SerializeField, UsedImplicitly] private List<ConditionalModifier> conditionalModifiers;
 
@@ -25,9 +26,13 @@ namespace Core
             spell.EffectSchoolDamage(this, effectIndex, target, mode);
         }
 
-        internal int CalculateSpellDamage(SpellInfo spellInfo, int effectIndex, Unit caster = null, Unit target = null)
+        internal int CalculateSpellDamage(SpellInfo spellInfo, int effectIndex, Unit caster = null, Spell spell = null)
         {
             int rolledValue = RandomUtils.Next(baseValue, (int) (baseValue + baseVariance));
+
+            if (usesComboPoints && spell != null && spell.ConsumedComboPoints > 0)
+                rolledValue *= spell.ConsumedComboPoints;
+
             float baseDamage = 0;
 
             switch (calculationType)
@@ -59,7 +64,7 @@ namespace Core
             if (mode != SpellEffectHandleMode.HitStart || target == null || !target.IsAlive)
                 return;
 
-            float spellDamage = effect.CalculateSpellDamage(SpellInfo, effectIndex, Caster, target);
+            float spellDamage = effect.CalculateSpellDamage(SpellInfo, effectIndex, Caster, this);
             if (SpellInfo.HasAttribute(SpellCustomAttributes.ShareDamage))
                 spellDamage /= Mathf.Min(1, ImplicitTargets.TargetCountForEffect(effectIndex));
 
@@ -67,7 +72,7 @@ namespace Core
             {
                 ConditionalModifier modifier = effect.ConditionalModifiers[i];
                 if (modifier.Condition.IsApplicableAndValid(Caster, target, this))
-                    modifier.Modify(ref spellDamage);
+                    modifier.Modify(Caster, target, ref spellDamage);
             }
 
             EffectDamage += (int) spellDamage;

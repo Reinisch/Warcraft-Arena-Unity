@@ -9,8 +9,8 @@ namespace Core.Conditions
     {
         [SerializeField, UsedImplicitly] private List<SpellInfo> validSpells;
 
-        protected override bool IsApplicable => base.IsApplicable && Spell != null;
+        protected override bool IsApplicable => base.IsApplicable && SpellInfo != null;
 
-        protected override bool IsValid => base.IsValid && validSpells.Contains(Spell.SpellInfo);
+        protected override bool IsValid => base.IsValid && validSpells.Contains(SpellInfo);
     }
 }

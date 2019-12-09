@@ -13,7 +13,7 @@ namespace Client
         private partial class SelectionCircleController
         {
             [SerializeField, UsedImplicitly] private Projector selectionCirclePrototype;
-            [SerializeField, UsedImplicitly] private RenderingReference renderingReference;
+            [SerializeField, UsedImplicitly] private RenderingReference rendering;
             [SerializeField, UsedImplicitly] private SelectionCircleSettings playerCircleSettings;
             [SerializeField, UsedImplicitly] private SelectionCircleSettings targetCircleSettings;
 
@@ -57,10 +57,10 @@ namespace Client
 
             public void HandlePlayerControlGained()
             {
-                playerCircle.UpdateUnit(renderingReference.Player);
-                targetCircle.UpdateUnit(renderingReference.Player.Target);
+                playerCircle.UpdateUnit(rendering.Player);
+                targetCircle.UpdateUnit(rendering.Player.Target);
 
-                EventHandler.RegisterEvent(renderingReference.Player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
+                EventHandler.RegisterEvent(rendering.Player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
             }
 
             public void HandlePlayerControlLost()
@@ -68,12 +68,12 @@ namespace Client
                 playerCircle.UpdateUnit(null);
                 targetCircle.UpdateUnit(null);
 
-                EventHandler.UnregisterEvent(renderingReference.Player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
+                EventHandler.UnregisterEvent(rendering.Player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
             }
 
             private void OnPlayerTargetChanged()
             {
-                targetCircle.UpdateUnit(renderingReference.Player.Target);
+                targetCircle.UpdateUnit(rendering.Player.Target);
             }
         }
     }

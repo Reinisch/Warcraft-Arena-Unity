@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3630811807679999311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Trigger Spell - Predatory Swiftness Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
+  auraInfo: {fileID: -3261386352893804096}
+--- !u!114 &-3261386352893804096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Trigger Spell - Predatory Swiftness Aura
+  m_EditorClassIdentifier: 
+  id: 43
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 10000
+  maxDuration: 10000
+  maxStack: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 0
+  attributes: 0
+  auraEffects:
+  - {fileID: 2374564275985881236}
+  - {fileID: -3010124529734531400}
+  auraScriptables: []
+  usesCharges: 1
+  maxCharges: 1
+  baseCharges: 1
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0
+--- !u!114 &-3010124529734531400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 523423395275b1646a23b0a31b7a4c68, type: 3}
+  m_Name: Trigger Spell - Predatory Swiftness Aura Ignore Shapeshift
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  modifierValue: 1
+  modifierType: 9
+  applicationType: 3
+  spellValueModifier: {fileID: 11400000, guid: d2704886106f8dc4db7b5eb14e881ef3, type: 2}
+  applicationConditions:
+  - {fileID: 11400000, guid: de0c81c2f7c276a4c9471b2c086ab6e9, type: 2}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Trigger Spell - Predatory Swiftness
+  m_EditorClassIdentifier: 
+  id: 58
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 2
+  damageClass: 0
+  spellDispel: 0
+  mechanic: 0
+  explicitCastTargets: 8
+  schoolMask: 8
+  preventionType: 0
+  attributes: 0
+  attributesExtra: 49152
+  attributesCustom: 2048
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 0
+  castTime: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 0
+  maxRangeFriend: 0
+  speed: 0
+  spellEffectInfos:
+  - {fileID: -3630811807679999311}
+  spellPowerCostInfos: []
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
+--- !u!114 &2374564275985881236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 523423395275b1646a23b0a31b7a4c68, type: 3}
+  m_Name: Trigger Spell - Predatory Swiftness Aura Instant Cast
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  modifierValue: -100
+  modifierType: 8
+  applicationType: 2
+  spellValueModifier: {fileID: 0}
+  applicationConditions:
+  - {fileID: 11400000, guid: de0c81c2f7c276a4c9471b2c086ab6e9, type: 2}

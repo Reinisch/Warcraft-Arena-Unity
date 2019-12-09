@@ -22,18 +22,20 @@ namespace Client
             base.OnUnregister();
         }
 
-        protected override void OnPlayerControlGained(Player player)
+        protected override void OnControlStateChanged(Player player, bool underControl)
         {
-            base.OnPlayerControlGained(player);
+            if (underControl)
+            {
+                base.OnControlStateChanged(player, true);
 
-            WarcraftCamera.Target = player;
-        }
+                WarcraftCamera.Target = player;
+            }
+            else
+            {
+                WarcraftCamera.Target = null;
 
-        protected override void OnPlayerControlLost(Player player)
-        {
-            WarcraftCamera.Target = null;
-
-            base.OnPlayerControlLost(player);
+                base.OnControlStateChanged(player, false);
+            }
         }
     }
 }

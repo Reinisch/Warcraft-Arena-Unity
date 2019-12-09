@@ -13,8 +13,8 @@ namespace Client
         [Serializable]
         private class LocalizedInputActions
         {
-            public LocalizedString InputString;
-            public InputAction InputAction;
+            [UsedImplicitly] public LocalizedString InputString;
+            [UsedImplicitly] public InputAction InputAction;
         }
 
         [SerializeField, UsedImplicitly] private CustomDropdown dropdown;

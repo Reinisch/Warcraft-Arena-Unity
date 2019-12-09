@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3594919580810645934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Primal Wrath Effect Damage
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 7fc25f7dfcef7b04eadd279f457bcad7, type: 2}
+  baseValue: 10
+  baseVariance: 0
+  additionalValue: 0
+  usesComboPoints: 1
+  calculationType: 1
+  conditionalModifiers: []
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Primal Wrath Spell
+  m_EditorClassIdentifier: 
+  id: 48
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 0
+  damageClass: 2
+  spellDispel: 0
+  mechanic: 15
+  explicitCastTargets: 4
+  schoolMask: 1
+  preventionType: 2
+  attributes: 2097152
+  attributesExtra: 4096
+  attributesCustom: 1024
+  targetEntityTypeMask: 8
+  rangedFlags: 2
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 1000
+  castTime: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 6
+  maxRangeFriend: 0
+  speed: 0
+  spellEffectInfos:
+  - {fileID: -3594919580810645934}
+  - {fileID: 6733214444326560321}
+  spellPowerCostInfos:
+  - spellPowerType: 3
+    powerCostPercentage: 0
+    powerCost: 20
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 01000000
+  shapeShiftNeverCastable: 
+--- !u!114 &6733214444326560321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89e546ccb45750842b891f205badfe6d, type: 3}
+  m_Name: Primal Wrath Effect Apply Aura Override
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 7fc25f7dfcef7b04eadd279f457bcad7, type: 2}
+  auraInfo: {fileID: -5597878663564954743, guid: 2a8e172f376fd984ea1c705663775810,
+    type: 2}
+  baseDuration: 2000
+  durationPerCombo: 2000

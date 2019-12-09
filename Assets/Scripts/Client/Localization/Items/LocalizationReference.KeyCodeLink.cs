@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client
@@ -8,8 +9,8 @@ namespace Client
         [Serializable]
         private class KeyCodeLink
         {
-            public KeyCode KeyCode;
-            public string String;
+            [UsedImplicitly] public KeyCode KeyCode;
+            [UsedImplicitly] public string String;
         }
     }
 }

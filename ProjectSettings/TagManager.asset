@@ -16,6 +16,8 @@ TagManager:
   - Sound Container
   - Tooltip Container
   - Input Field
+  - Entity Container
+  - Renderer Container
   layers:
   - Default
   - TransparentFX

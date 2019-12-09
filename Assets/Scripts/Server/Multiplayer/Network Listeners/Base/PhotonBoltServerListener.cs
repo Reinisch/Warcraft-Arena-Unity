@@ -14,15 +14,15 @@ namespace Server
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private PhotonBoltReference photon;
 
-        private new WorldServerManager World { get; set; }
+        private new WorldServer World { get; set; }
         private ServerLaunchState LaunchState { get; set; }
         private ServerRoomToken ServerToken { get; set; }
 
-        public override void Initialize(WorldManager worldManager)
+        public override void Initialize(World world)
         {
-            base.Initialize(worldManager);
+            base.Initialize(world);
 
-            World = (WorldServerManager)worldManager;
+            World = (WorldServer)world;
 
             EventHandler.RegisterEvent<ServerRoomToken>(photon, GameEvents.ServerMapLoaded, OnMapLoaded);
         }
@@ -69,7 +69,7 @@ namespace Server
         {
             base.ConnectRequest(endpoint, token);
 
-            if (!(token is ClientConnectionToken clientToken))
+            if (!(token is ClientConnectionToken clientToken) || !clientToken.IsValid)
             {
                 BoltNetwork.Refuse(endpoint, new ClientRefuseToken(ConnectRefusedReason.InvalidToken));
                 return;
@@ -94,7 +94,7 @@ namespace Server
         {
             base.Connected(boltConnection);
 
-            World.SetScope(boltConnection, true);
+            World.SetDefaultScope(boltConnection);
         }
 
         public override void Disconnected(BoltConnection boltConnection)

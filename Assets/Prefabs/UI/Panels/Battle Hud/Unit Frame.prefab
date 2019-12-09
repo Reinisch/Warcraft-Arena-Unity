@@ -214,11 +214,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c074f5418eef14c4d816b5a7593616f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
   canvasGroup: {fileID: -8373605524482637000}
   classIcon: {fileID: 681161362479221511}
   health: {fileID: 4854979383301074145}
   mainResource: {fileID: 4854979384034867819}
+  comboFrame: {fileID: 0}
   unitName: {fileID: 3625758516588223680}
   setSound: {fileID: 0}
   lostSound: {fileID: 0}
@@ -745,12 +747,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.24313726, b: 1, a: 0.9607843}
+  m_Color: {r: 0.026165903, g: 0.2519838, b: 0.9245283, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6a57c82a7e9cf174eaaed0af41ba082b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 65d6070db0b854f4681d1da6f4376897, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -897,7 +899,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 4854979384034867816}
-  fillImage: {fileID: 0}
+  fillImage: {fileID: 4854979383720512683}
 --- !u!1 &6546486127281156879
 GameObject:
   m_ObjectHideFlags: 0

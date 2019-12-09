@@ -44,12 +44,10 @@ namespace Core
 
         protected virtual void OnActiveUpdate(int deltaTime)
         {
-
         }
 
         protected virtual void OnDisabledUpdate(int deltaTime)
         {
-
         }
 
         public sealed override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex, AnimatorControllerPlayable controller)

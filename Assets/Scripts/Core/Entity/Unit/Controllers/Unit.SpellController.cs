@@ -6,6 +6,7 @@ using UnityEngine;
 
 using SpellModifierContainer = System.Collections.Generic.Dictionary<(Core.SpellModifierType, Core.SpellModifierApplicationType), System.Collections.Generic.List<Core.SpellModifier>>;
 using SchoolImmunityContainer = System.Collections.Generic.Dictionary<Core.SpellSchoolMask, System.Collections.Generic.List<Core.SpellInfo>>;
+using MechanicsImmunityContainer = System.Collections.Generic.Dictionary<Core.SpellMechanics, System.Collections.Generic.List<Core.SpellInfo>>;
 
 namespace Core
 {
@@ -15,6 +16,7 @@ namespace Core
         {
             private readonly SpellModifierContainer spellModifiers = new SpellModifierContainer();
             private readonly SchoolImmunityContainer schoolImmunities = new SchoolImmunityContainer();
+            private readonly MechanicsImmunityContainer mechanicsImmunities = new MechanicsImmunityContainer();
             private readonly List<AuraEffectSpellTrigger> spellTriggers = new List<AuraEffectSpellTrigger>();
 
             private Unit unit;
@@ -186,8 +188,11 @@ namespace Core
 
             internal Unit GetMeleeHitRedirectTarget(Unit victim, SpellInfo spellInfo = null) { return null; }
             
-            internal uint SpellDamageBonusDone(Unit target, uint damage, SpellDamageType damageType, SpellInfo spellInfo, Spell spell = null, uint stack = 1)
+            internal uint SpellDamageBonusDone(Unit target, uint damage, SpellDamageType damageType, SpellInfo spellInfo, Spell spell = null)
             {
+                float damageMultiplier = unit.Auras.TotalAuraMultiplier(AuraEffectType.ModifyDamagePercentDone);
+                damage = (uint) (damage * damageMultiplier);
+
                 if (spell != null)
                     damage = (uint)unit.Spells.ApplySpellModifier(spell, SpellModifierType.DamageMultiplier, damage);
 
@@ -238,12 +243,6 @@ namespace Core
                     case SpellDamageClass.Magic:
                         if (!spellInfo.IsPositive)
                             critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerSpellCritChance);
-
-                        IReadOnlyList<AuraEffect> spellCritAuras = unit.GetAuraEffects(AuraEffectType.OverrideSpellCritCalculation);
-                        if (spellCritAuras != null) for (int i = 0; i < spellCritAuras.Count; i++)
-                            if (spellCritAuras[i].EffectInfo is AuraEffectInfoOverrideSpellCritCalculation effectInfo)
-                                effectInfo.ModifySpellCrit(unit, victim, spell, ref critChance);
-
                         goto default;
                     case SpellDamageClass.Melee:
                         if (!spellInfo.IsPositive)
@@ -258,6 +257,11 @@ namespace Core
                         critChance += victim.Auras.TotalAuraModifier(AuraEffectType.ModAttackerSpellAndWeaponCritChance);
                         break;
                 }
+
+                IReadOnlyList<AuraEffect> spellCritAuras = unit.GetAuraEffects(AuraEffectType.OverrideSpellCritCalculation);
+                if (spellCritAuras != null) for (int i = 0; i < spellCritAuras.Count; i++)
+                    if (spellCritAuras[i].EffectInfo is AuraEffectInfoOverrideSpellCritCalculation effectInfo)
+                        effectInfo.ModifySpellCrit(unit, victim, spellInfo, ref critChance, spell);
 
                 return Mathf.Max(critChance, 0.0f);
             }
@@ -391,12 +395,47 @@ namespace Core
                         return true;
                 }
 
+                bool isImmuneToAllEffects = true;
+                foreach (SpellEffectInfo spellEffectInfo in spellInfo.Effects)
+                {
+                    if (!IsImmuneToSpellEffect(spellEffectInfo, caster))
+                    {
+                        isImmuneToAllEffects = false;
+                        break;
+                    }
+                }
+
+                if (isImmuneToAllEffects)
+                    return true;
+                    
                 return false;
             }
 
-            internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster) { return false; }
+            internal bool IsImmuneToAura(AuraInfo auraInfo, Unit caster)
+            {
+                foreach (AuraEffectInfo auraEffect in auraInfo.AuraEffects)
+                    if (!IsImmuneToAuraEffect(auraEffect, caster))
+                        return false;
 
-            internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffectInfo, Unit caster) { return false; }
+                return true;
+            }
+
+            internal bool IsImmuneToSpellEffect(SpellEffectInfo spellEffectInfo, Unit caster)
+            {
+                if (spellEffectInfo is EffectApplyAura spellEffectApplyAura)
+                    return IsImmuneToAura(spellEffectApplyAura.AuraInfo, caster);
+
+                return false;
+            }
+
+            internal bool IsImmuneToAuraEffect(AuraEffectInfo auraEffectInfo, Unit caster)
+            {
+                if (auraEffectInfo.Mechanics != SpellMechanics.None)
+                    if (mechanicsImmunities.ContainsKey(auraEffectInfo.Mechanics))
+                        return true;
+
+                return false;
+            }
 
             internal bool IsAffectedBySpellModifier(Spell spell, SpellModifier modifier)
             {
@@ -485,7 +524,7 @@ namespace Core
                     return;
 
                 var activatedSpellTriggers = new List<AuraEffectSpellTrigger>();
-                var activationInfo = new SpellTriggerActivationInfo(unit, target, null, spell, spellTriggerFlags, default, default);
+                var activationInfo = new SpellTriggerActivationInfo(unit, target, spell, spellTriggerFlags, default, default);
 
                 foreach (AuraEffectSpellTrigger spellTrigger in spellTriggers)
                     if (spellTrigger.WillTrigger(activationInfo))
@@ -496,11 +535,24 @@ namespace Core
                     if (activatedTrigger.Aura.AuraInfo.UsesCharges)
                         activatedTrigger.Aura.DropCharge();
 
-                    unit.Spells.TriggerSpell(activatedTrigger.EffectInfo.TriggeredSpell, target);
+                    unit.Spells.TriggerSpell(activatedTrigger.EffectInfo.TriggeredSpell, activatedTrigger.EffectInfo.IsCasterTriggerTarget ? unit : target);
                 }
             }
 
-            internal int ModifyAuraDuration(AuraInfo auraInfo, Unit target, int duration) { return duration; }
+            internal (int,int) CalculateAuraDuration(AuraInfo auraInfo, Unit target, Spell spell, Aura refreshedAura, int overridenDuration = -1)
+            {
+                int duration = auraInfo.Duration;
+
+                if (overridenDuration != -1)
+                    duration = overridenDuration;
+                else if (auraInfo.HasAttribute(AuraAttributes.ComboAffectsDuration) && spell.ConsumedComboPoints > 0)
+                    duration = auraInfo.Duration + (auraInfo.MaxDuration - auraInfo.Duration) * spell.ConsumedComboPoints / target.Attributes.ComboPoints.Max;
+
+                if (refreshedAura != null && refreshedAura.Duration > duration)
+                    return (refreshedAura.Duration, refreshedAura.MaxDuration);
+
+                return (duration, duration);
+            }
 
             internal int ModifySpellCastTime(Spell spell, int castTime)
             {
@@ -524,6 +576,11 @@ namespace Core
             internal void ModifySchoolImmunity(SpellInfo spellInfo, SpellSchoolMask schoolMask, bool apply)
             {
                 schoolImmunities.HandleEntry(schoolMask, spellInfo, apply);
+            }
+
+            internal void ModifyMechanicsImmunity(SpellInfo spellInfo, SpellMechanics mechanics, bool apply)
+            {
+                mechanicsImmunities.HandleEntry(mechanics, spellInfo, apply);
             }
         }
     }

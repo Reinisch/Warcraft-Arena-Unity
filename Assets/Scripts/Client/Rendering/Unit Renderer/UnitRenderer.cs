@@ -27,9 +27,9 @@ namespace Client
             Unit = unit;
             transform.position = Unit.Position;
 
-            DontDestroyOnLoad(gameObject);
             ReplaceModel(Unit.Model);
             OnScaleChanged();
+            HandleVisualEffects(true);
 
             Unit.BoltEntity.AddEventListener(this);
             Unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
@@ -38,6 +38,7 @@ namespace Client
             Unit.AddCallback(nameof(IUnitState.EmoteFrame), OnEmoteFrameChanged);
             EventHandler.RegisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
             EventHandler.RegisterEvent(Unit, GameEvents.UnitScaleChanged, OnScaleChanged);
+            EventHandler.RegisterEvent(Unit, GameEvents.UnitVisualsChanged, OnVisualsChanged);
 
             auraEffectController.HandleAttach(this);
         }
@@ -53,6 +54,7 @@ namespace Client
             Unit.RemoveCallback(nameof(IUnitState.EmoteFrame), OnEmoteFrameChanged);
             EventHandler.UnregisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
             EventHandler.UnregisterEvent(Unit, GameEvents.UnitScaleChanged, OnScaleChanged);
+            EventHandler.UnregisterEvent(Unit, GameEvents.UnitVisualsChanged, OnVisualsChanged);
 
             ReplaceModel();
             CancelInvoke();
@@ -115,6 +117,8 @@ namespace Client
 
         private void OnScaleChanged() => transform.localScale = new Vector3(Unit.Scale, Unit.Scale, Unit.Scale);
 
+        private void OnVisualsChanged() => HandleVisualEffects(false);
+
         private void ReplaceModel(int modelId)
         {
             if (model != null && model.Settings.Id == modelId)
@@ -143,9 +147,13 @@ namespace Client
             }
 
             model = newModel;
+            HandleVisualEffects(true);
+
             UpdateAnimationState(canAnimate);
             soundController.HandleModelChange(model);
         }
+
+        private void HandleVisualEffects(bool instantly) => model?.HandleVisualEffects(instantly);
 
         private void HandleEmoteUpdate()
         {

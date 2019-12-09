@@ -27,7 +27,7 @@ MonoBehaviour:
   m_Name: Polymorph Aura Change Model
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
-  mechanics: 0
+  mechanics: 17
   modelId: 3
 --- !u!114 &-2638056616509559948
 MonoBehaviour:
@@ -100,8 +100,13 @@ MonoBehaviour:
   speed: 50
   spellEffectInfos:
   - {fileID: 2373819424652027930}
-  spellPowerEntries: []
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 1
+    powerCost: 0
   targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
 --- !u!114 &2373819424652027930
 MonoBehaviour:
   m_ObjectHideFlags: 0

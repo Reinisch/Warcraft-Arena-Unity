@@ -102,6 +102,20 @@ namespace Core
                 return multiplier;
             }
 
+            internal float TotalAuraMultiplier(AuraEffectType auraType, float secondaryValue, ComparisonOperator comparison)
+            {
+                if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
+                    return 1.0f;
+
+                float multiplier = 1.0f;
+
+                foreach (AuraEffect auraEffect in auraEffects)
+                    if (auraEffect.EffectInfo.SecondaryValue.CompareWith(secondaryValue, comparison))
+                        multiplier = multiplier.AddPercentage(auraEffect.Value);
+
+                return multiplier;
+            }
+
             internal float MaxPositiveAuraModifier(AuraEffectType auraType)
             {
                 if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
@@ -128,9 +142,10 @@ namespace Core
                 return modifier;
             }
 
-            internal void RefreshOrCreateAura(AuraInfo auraInfo, SpellInfo spellInfo, Unit originalCaster)
+            internal void RefreshOrCreateAura(AuraInfo auraInfo, SpellInfo spellInfo, Unit originalCaster, Spell spell, int overrideDuration = -1)
             {
                 var ownedAura = FindOwnedAura();
+                bool refreshed = false;
 
                 if (ownedAura != null && ownedAura.AuraInfo.HasAttribute(AuraAttributes.StackSameAuraInMultipleSlots))
                     ownedAura = null;
@@ -146,17 +161,16 @@ namespace Core
                     RemoveNonStackableAuras(ownedAura);
                 }
                 else
+                {
                     ownedAura.Refresh();
+                    refreshed = true;
+                }
 
                 if (ownedAura.IsRemoved)
                     return;
 
-                int duration = ownedAura.MaxDuration;
-                duration = originalCaster.Spells.ModifyAuraDuration(ownedAura.AuraInfo, unit, duration);
-
-                if (duration != ownedAura.Duration)
-                    ownedAura.UpdateDuration(duration, duration);
-
+                (int, int) duration = originalCaster.Spells.CalculateAuraDuration(ownedAura.AuraInfo, unit, spell, refreshed ? ownedAura : null, overrideDuration);
+                ownedAura.UpdateDuration(duration.Item1, duration.Item2);
                 ownedAura.UpdateTargets();
 
                 Aura FindOwnedAura()
@@ -243,6 +257,42 @@ namespace Core
                     RemoveAuraWithApplication(auraApplicationToRemove, AuraRemoveMode.Interrupt);
 
                 tempAuraApplications.Clear();
+            }
+
+            internal void RemoveAurasWithEffect(AuraEffectType auraEffectType, AuraEffect except = null)
+            {
+                IReadOnlyList<AuraEffect> auraEffects = GetAuraEffects(auraEffectType);
+                if (auraEffects == null)
+                    return;
+
+                var auraEffectsToRemove = ListPoolContainer<AuraEffect>.Take();
+                auraEffectsToRemove.AddRange(auraEffects);
+                auraEffectsToRemove.Remove(except);
+
+                foreach (AuraEffect auraEffectToRemove in auraEffectsToRemove)
+                    if (!auraEffectToRemove.Aura.IsRemoved)
+                        auraEffectToRemove.Aura.Remove(AuraRemoveMode.Spell);
+
+                ListPoolContainer<AuraEffect>.Return(auraEffectsToRemove);
+            }
+
+            internal void RemoveAurasWithEffectMechanics(AuraEffectType auraEffectType, SpellMechanics mechanics)
+            {
+                IReadOnlyList<AuraEffect> auraEffects = GetAuraEffects(auraEffectType);
+                if (auraEffects == null)
+                    return;
+
+                var auraEffectsToRemove = ListPoolContainer<AuraEffect>.Take();
+
+                for(int i = 0; i < auraEffects.Count; i++)
+                    if (auraEffects[i].EffectInfo.Mechanics == mechanics)
+                        auraEffectsToRemove.Add(auraEffects[i]);
+
+                foreach (AuraEffect auraEffectToRemove in auraEffectsToRemove)
+                    if (!auraEffectToRemove.Aura.IsRemoved)
+                        auraEffectToRemove.Aura.Remove(AuraRemoveMode.Spell);
+
+                ListPoolContainer<AuraEffect>.Return(auraEffectsToRemove);
             }
 
             internal void RemoveAurasWithCombinedDamageInterrupt(int damageTaken)

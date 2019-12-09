@@ -12,7 +12,8 @@
         {
             base.HandleEffect(auraApplication, mode, apply);
 
-            auraApplication.Target.Attributes.UpdateSpeed(UnitMoveType.Run);
+            if (mode == AuraEffectHandleMode.Normal)
+                auraApplication.Target.Attributes.UpdateSpeed(UnitMoveType.Run);
         }
     }
 }

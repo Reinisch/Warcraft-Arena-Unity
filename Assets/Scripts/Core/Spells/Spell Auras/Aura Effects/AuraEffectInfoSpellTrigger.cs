@@ -10,6 +10,12 @@ namespace Core.AuraEffects
     {
         [SerializeField, UsedImplicitly, Range(0.0f, 1.0f)]
         private float chance;
+        [SerializeField, UsedImplicitly, Range(0.0f, 1.0f)]
+        private float chancePerCombo;
+        [SerializeField, UsedImplicitly]
+        private bool isCasterTriggerTarget;
+        [SerializeField, UsedImplicitly]
+        private bool canCasterBeTriggerTarget;
         [SerializeField, UsedImplicitly]
         private SpellInfo triggeredSpell;
         [SerializeField, UsedImplicitly]
@@ -17,7 +23,10 @@ namespace Core.AuraEffects
         [SerializeField, UsedImplicitly]
         private List<Condition> triggerConditions;
 
+        public bool IsCasterTriggerTarget => isCasterTriggerTarget;
+        public bool CanCasterBeTriggerTarget => canCasterBeTriggerTarget;
         public float Chance => chance;
+        public float ChancePerCombo => chancePerCombo;
         public SpellInfo TriggeredSpell => triggeredSpell;
         public SpellTriggerFlags TriggerFlags => triggerFlags;
         public IReadOnlyList<Condition> TriggerConditions => triggerConditions;

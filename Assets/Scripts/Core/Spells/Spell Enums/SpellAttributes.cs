@@ -26,5 +26,6 @@ namespace Core
         OnlyTargetPlayers = 1 << 18,
         IgnoreHitResult = 1 << 19,
         DeathPersistent = 1 << 20,
+        RequiresComboPoints = 1 << 21
     }
 }

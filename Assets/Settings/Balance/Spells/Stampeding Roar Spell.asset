@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Stampeding Roar Spell
+  m_EditorClassIdentifier: 
+  id: 59
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 0
+  damageClass: 0
+  spellDispel: 0
+  mechanic: 0
+  explicitCastTargets: 8
+  schoolMask: 1
+  preventionType: 2
+  attributes: 0
+  attributesExtra: 4096
+  attributesCustom: 2048
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 30000
+  categoryCooldownTime: 0
+  globalCooldownTime: 0
+  castTime: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 0
+  maxRangeFriend: 15
+  speed: 0
+  spellEffectInfos:
+  - {fileID: 2371423737806453034}
+  spellPowerCostInfos: []
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 01000000
+  shapeShiftNeverCastable: 
+--- !u!114 &2371423737806453034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Stampeding Roar Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 6bef746e539a1164e9773d5abc532eb6, type: 2}
+  auraInfo: {fileID: 7136525332288770913}
+--- !u!114 &3759250970226073011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c694090182b984c974cfa92b34d905, type: 3}
+  m_Name: Stampeding Roar Aura Increase Speed
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  increasePercent: 120
+--- !u!114 &7136525332288770913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Stampeding Roar Aura
+  m_EditorClassIdentifier: 
+  id: 44
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 4000
+  maxDuration: 4000
+  maxStack: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 0
+  attributes: 0
+  auraEffects:
+  - {fileID: 3759250970226073011}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 0
+  baseCharges: 0
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0

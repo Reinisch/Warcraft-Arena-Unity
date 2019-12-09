@@ -11,7 +11,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private int castIntervalMin;
         [SerializeField, UsedImplicitly] private int castIntervalMax;
 
-        private TimeTracker castTimeTracker;
+        private TimeTracker castTimeTracker = new TimeTracker();
 
         protected override void OnStart()
         {

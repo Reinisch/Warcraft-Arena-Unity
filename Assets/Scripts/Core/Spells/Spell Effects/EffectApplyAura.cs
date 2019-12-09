@@ -29,7 +29,7 @@ namespace Core
             if (target.IsDead && !effect.AuraInfo.HasAttribute(AuraAttributes.DeathPersistent))
                 return;
 
-            target.Auras.RefreshOrCreateAura(effect.AuraInfo, SpellInfo, OriginalCaster);
+            target.Auras.RefreshOrCreateAura(effect.AuraInfo, SpellInfo, OriginalCaster, this);
         }
     }
 }

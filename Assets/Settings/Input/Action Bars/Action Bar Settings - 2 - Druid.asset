@@ -18,31 +18,31 @@ MonoBehaviour:
   actionBarSlot: 2
   classType: 11
   buttons:
-  - actionId: 36
+  - actionId: 54
+    actionType: 0
+  - actionId: 45
+    actionType: 0
+  - actionId: 43
     actionType: 0
   - actionId: 36
     actionType: 0
   - actionId: 36
     actionType: 0
-  - actionId: 36
+  - actionId: 22
     actionType: 0
-  - actionId: 36
+  - actionId: 44
     actionType: 0
-  - actionId: 36
+  - actionId: 50
     actionType: 0
-  - actionId: 36
+  - actionId: 51
     actionType: 0
-  - actionId: 36
+  - actionId: 49
     actionType: 0
-  - actionId: 36
+  - actionId: 56
     actionType: 0
-  - actionId: 36
+  - actionId: 60
     actionType: 0
-  - actionId: 36
+  - actionId: 59
     actionType: 0
-  - actionId: 36
-    actionType: 0
-  - actionId: 36
-    actionType: 0
-  - actionId: 36
+  - actionId: 2
     actionType: 0

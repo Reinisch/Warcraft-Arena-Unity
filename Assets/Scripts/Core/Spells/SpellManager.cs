@@ -4,23 +4,23 @@ namespace Core
 {
     internal class SpellManager
     {
-        private readonly WorldManager worldManager;
+        private readonly World world;
         private readonly List<Spell> activeSpells = new List<Spell>();
         private readonly List<Spell> spellsToRemove = new List<Spell>();
         private readonly List<Spell> spellsToAdd = new List<Spell>();
 
         private bool IsProcessing { get; set; }
 
-        internal SpellManager(WorldManager worldManager)
+        internal SpellManager(World world)
         {
-            this.worldManager = worldManager;
+            this.world = world;
 
-            worldManager.UnitManager.EventEntityDetach += OnEntityDetach;
+            world.UnitManager.EventEntityDetach += OnEntityDetach;
         }
 
         internal void Dispose()
         {
-            worldManager.UnitManager.EventEntityDetach -= OnEntityDetach;
+            world.UnitManager.EventEntityDetach -= OnEntityDetach;
 
             activeSpells.ForEach(spell => spell.Dispose());
             spellsToRemove.ForEach(spell => spell.Dispose());

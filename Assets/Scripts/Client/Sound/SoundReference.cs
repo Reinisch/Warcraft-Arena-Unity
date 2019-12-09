@@ -55,26 +55,22 @@ namespace Client
             base.OnUnregister();
         }
 
-        protected override void OnWorldInitialized(WorldManager world)
+        protected override void OnWorldStateChanged(World world, bool created)
         {
-            base.OnWorldInitialized(world);
-
-            if (world.HasClientLogic)
+            if (created)
             {
+                base.OnWorldStateChanged(world, true);
+
                 EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
             }
-        }
-
-        protected override void OnWorldDeinitializing(WorldManager world)
-        {
-            if (world.HasClientLogic)
+            else
             {
                 EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
                 EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
-            }
 
-            base.OnWorldDeinitializing(world);
+                base.OnWorldStateChanged(world, false);
+            }
         }
 
         private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken)

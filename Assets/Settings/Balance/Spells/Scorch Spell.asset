@@ -40,7 +40,10 @@ MonoBehaviour:
   speed: 100
   spellEffectInfos:
   - {fileID: 863744723482566261}
-  spellPowerEntries: []
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 1
+    powerCost: 0
   targetingConditions: []
 --- !u!114 &863744723482566261
 MonoBehaviour:
@@ -55,8 +58,9 @@ MonoBehaviour:
   m_Name: Scorch Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 80
+  baseValue: 120
   baseVariance: 20
   additionalValue: 0
+  usesComboPoints: 0
   calculationType: 1
   conditionalModifiers: []

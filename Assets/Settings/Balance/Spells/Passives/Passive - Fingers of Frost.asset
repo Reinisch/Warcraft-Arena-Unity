@@ -15,6 +15,8 @@ MonoBehaviour:
   maxEffectiveCharges: 1
   mechanics: 0
   chance: 0.5
+  isCasterTriggerTarget: 1
+  canCasterBeTriggerTarget: 1
   triggeredSpell: {fileID: 11400000, guid: 3eeb641152dd92e4db82461677a1fff0, type: 2}
   triggerFlags: 32
   triggerConditions:
@@ -73,7 +75,7 @@ MonoBehaviour:
   speed: 0
   spellEffectInfos:
   - {fileID: -4341946936298652133}
-  spellPowerEntries: []
+  spellPowerCostInfos: []
   targetingConditions: []
 --- !u!114 &8598909192897174911
 MonoBehaviour:

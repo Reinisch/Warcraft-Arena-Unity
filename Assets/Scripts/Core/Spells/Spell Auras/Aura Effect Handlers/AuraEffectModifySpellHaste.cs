@@ -12,7 +12,8 @@
         {
             base.HandleEffect(auraApplication, mode, apply);
 
-            auraApplication.Target.Attributes.ModHaste.ModifyPercentage(Value, apply);
+            if (mode == AuraEffectHandleMode.Normal)
+                auraApplication.Target.Attributes.ModHaste.ModifyPercentage(Value, apply);
         }
     }
 }

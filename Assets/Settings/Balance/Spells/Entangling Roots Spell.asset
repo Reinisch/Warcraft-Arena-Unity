@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5895870498307521375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80fffac95d0d644bb79c6f4c98aeab8, type: 3}
+  m_Name: Entangling Roots Aura Root
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 7
+--- !u!114 &-943757299644722636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Entangling Roots Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  auraInfo: {fileID: 4453657229669410947}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Entangling Roots Spell
+  m_EditorClassIdentifier: 
+  id: 50
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 1
+  damageClass: 0
+  spellDispel: 1
+  mechanic: 7
+  explicitCastTargets: 4
+  schoolMask: 8
+  preventionType: -1
+  attributes: 0
+  attributesExtra: 2176
+  attributesCustom: 1024
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 12000
+  categoryCooldownTime: 0
+  globalCooldownTime: 1000
+  castTime: 1700
+  minCastTime: 500
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 40
+  maxRangeFriend: 0
+  speed: 0
+  spellEffectInfos:
+  - {fileID: -943757299644722636}
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 5
+    powerCost: 0
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
+--- !u!114 &4453657229669410947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Entangling Roots Aura
+  m_EditorClassIdentifier: 
+  id: 35
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 6000
+  maxDuration: 6000
+  maxStack: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 8
+  attributes: 2
+  auraEffects:
+  - {fileID: -5895870498307521375}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 0
+  baseCharges: 0
+  damageInterruptValue: 10
+  damageInterruptDelay: 0
+  interruptValueType: 1
