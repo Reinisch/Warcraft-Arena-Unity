@@ -59,5 +59,11 @@ namespace Client.Localization
         {
             LoadLanguage(LocalizedLanguageType.German);
         }
+
+        [ContextMenu("Set to Italian"), UsedImplicitly]
+        private void SetItalianLanguage()
+        {
+            LoadLanguage(LocalizedLanguageType.Italian);
+        }
     }
 }
