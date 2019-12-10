@@ -32,6 +32,9 @@ namespace Client
         [UsedImplicitly]
         private void LateUpdate()
         {
+            if (!targetAnimator.enabled)
+                return;
+
             float currentValue = targetAnimator.GetFloat(strafeHash);
             bool isAttacking = targetAnimator.GetBool(attackHash);
             forwardValue = Mathf.MoveTowards(forwardValue, targetAnimator.GetFloat(forwardHash), 5 * Time.deltaTime);

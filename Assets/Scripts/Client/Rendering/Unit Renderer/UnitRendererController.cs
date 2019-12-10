@@ -19,6 +19,7 @@ namespace Client
 
             private readonly Dictionary<ulong, UnitRenderer> unitRenderersById = new Dictionary<ulong, UnitRenderer>();
             private readonly List<UnitRenderer> unitRenderers = new List<UnitRenderer>();
+            private readonly List<UnitModel> fadingModels = new List<UnitModel>();
             private readonly HashSet<Unit> detachedUnits = new HashSet<Unit>();
             private readonly List<IUnitRendererHandler> unitRendererHandlers = new List<IUnitRendererHandler>();
 
@@ -41,17 +42,31 @@ namespace Client
                 rendering.World.UnitManager.EventEntityDetach -= OnEventEntityDetach;
 
                 foreach (UnitRenderer unitRenderer in unitRenderers)
-                    unitRenderer.Deinitialize();
+                    unitRenderer.Detach(UnitModelReplacementMode.Complete);
+
+                foreach (UnitModel fadingModel in fadingModels)
+                    fadingModel.Deinitialize();
 
                 unitRenderersById.Clear();
                 unitRenderers.Clear();
                 detachedUnits.Clear();
+                fadingModels.Clear();
             }
 
             public void DoUpdate(float deltaTime)
             {
                 foreach (var unitRenderer in unitRenderers)
                     unitRenderer.DoUpdate(deltaTime);
+
+                for (int i = fadingModels.Count - 1; i >= 0; i--)
+                {
+                    fadingModels[i].DoUpdate(null, deltaTime);
+                    if (fadingModels[i].CurrentAlpha <= 0.0f)
+                    {
+                        fadingModels[i].Deinitialize();
+                        fadingModels.RemoveAt(i);
+                    }
+                }
             }
            
             public void RegisterHandler(IUnitRendererHandler unitRendererHandler)
@@ -103,7 +118,7 @@ namespace Client
             {
                 var unitRenderer = GameObjectPool.Take(unitRendererPrototype);
                 unitRenderer.transform.SetParent(rendering.container);
-                unitRenderer.Initialize(unit);
+                unitRenderer.Attach(unit);
                 unitRenderersById.Add(unit.Id, unitRenderer);
                 unitRenderers.Add(unitRenderer);
                 detachedUnits.Remove(unit);
@@ -126,9 +141,17 @@ namespace Client
                     foreach (IUnitRendererHandler handler in unitRendererHandlers)
                         handler.HandleUnitRendererDetach(unitRenderer);
 
-                    unitRenderer.Deinitialize();
+                    UnitModel detachedModel = unitRenderer.Detach(UnitModelReplacementMode.ScopeOut);
                     unitRenderersById.Remove(unit.Id);
                     unitRenderers.Remove(unitRenderer);
+
+                    if (detachedModel != null)
+                    {
+                        detachedModel.transform.SetParent(rendering.container, true);
+                        detachedModel.Animator.enabled = false;
+                        detachedModel.ToggleTransparentMode(true, detachedModel.CurrentAlpha, 0.0f);
+                        fadingModels.Add(detachedModel);
+                    }
 
                     GameObjectPool.Return(unitRenderer, unitRenderer.gameObject == null);
                 }

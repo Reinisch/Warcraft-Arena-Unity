@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -8,19 +9,16 @@ namespace Client
 {
     public sealed class UnitModel : MonoBehaviour
     {
+        [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private TagContainer tagContainer;
         [SerializeField, UsedImplicitly] private SkinnedMeshRenderer meshRenderer;
         [SerializeField, UsedImplicitly] private Animator animator;
         [SerializeField, UsedImplicitly] private float strafeSpeed = 1.0f;
 
-        private Unit Unit => Renderer.Unit;
-
         public TagContainer TagContainer => tagContainer;
         public Animator Animator => animator;
         public float TargetAlpha { get; private set; } = 1.0f;
         public float CurrentAlpha { get; private set; } = 1.0f;
-
-        public UnitRenderer Renderer { get; private set; }
         public UnitModelSettings Settings { get; private set; }
 
         private readonly Dictionary<Material, Material> sharedMaterialsByInstancedTransparentMaterials = new Dictionary<Material, Material>();
@@ -31,22 +29,22 @@ namespace Client
         private bool transparentMaterialsUsed;
 
         [UsedImplicitly]
+        private void Awake() => originalMaterials = meshRenderer.sharedMaterials;
+
+        [UsedImplicitly]
         private void OnDestroy() => DestroyTransparentMaterials();
 
         public void Initialize(UnitModelInitializer initializer)
         {
-            if (originalMaterials == null)
-                originalMaterials = meshRenderer.sharedMaterials;
-
             transform.SetParent(initializer.UnitRenderer.transform, false);
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
             transform.localScale = Vector3.one;
 
-            Renderer = initializer.UnitRenderer;
             Settings = initializer.ModelSettings;
+            Animator.enabled = true;
 
-            if (Renderer.Unit.IsDead)
+            if (initializer.UnitRenderer.Unit.IsDead)
             {
                 animator.SetBool("IsDead", true);
                 animator.Play("Death");
@@ -65,26 +63,30 @@ namespace Client
                     throw new ArgumentOutOfRangeException(nameof(initializer.ReplacementMode), initializer.ReplacementMode, "Unhandled model replacement mode!");
             }
 
-            HandleVisualEffects(false);
+            HandleVisualEffects(initializer.UnitRenderer, false, true);
         }
 
         public void Deinitialize()
         {
             Animator.WriteDefaultValues();
+            Animator.enabled = false;
 
             CurrentAlpha = 1.0f;
             TargetAlpha = 1.0f;
 
             Settings = null;
-            Renderer = null;
 
             meshRenderer.materials = originalMaterials;
             unitHasTransparency = false;
+
+            GameObjectPool.Return(this, false);
         }
 
-        public void DoUpdate(float deltaTime)
+        public void DoUpdate(UnitRenderer unitRenderer, float deltaTime)
         {
-            UpdateAnimations(deltaTime);
+            if (unitRenderer != null)
+                UpdateAnimations(unitRenderer, deltaTime);
+
             UpdateTransparencyTransition(deltaTime);
         }
 
@@ -105,17 +107,17 @@ namespace Client
                 animator.Play("Cast", 1, 0.1f);
         }
 
-        public void HandleVisualEffects(bool instantly)
+        public void HandleVisualEffects(UnitRenderer unitRenderer, bool instantly, bool forced = false)
         {
-            bool isUnitTransperent = Unit.VisualEffects.HasTargetFlag(UnitVisualEffectFlags.StealthTransparency);
-            if (isUnitTransperent && !unitHasTransparency)
+            bool isUnitTransperent = unitRenderer.Unit.VisualEffects.HasTargetFlag(UnitVisualEffectFlags.StealthTransparency);
+            if (isUnitTransperent && (!unitHasTransparency || forced))
             {
-                float targetAlpha = Renderer.Settings.StealthTransparencyAlpha;
+                float targetAlpha = rendering.UnitRendererSettings.StealthTransparencyAlpha;
                 float currentAlpha = instantly ? targetAlpha : CurrentAlpha;
 
                 ToggleTransparentMode(true, currentAlpha, targetAlpha);
             }
-            else if (!isUnitTransperent && unitHasTransparency)
+            else if (!isUnitTransperent && (unitHasTransparency || forced))
             {
                 float targetAlpha = 1.0f;
                 float currentAlpha = instantly ? targetAlpha : CurrentAlpha;
@@ -124,7 +126,7 @@ namespace Client
             }
         }
 
-        private void ToggleTransparentMode(bool apply, float currentAlpha, float targetAlpha)
+        public void ToggleTransparentMode(bool apply, float currentAlpha, float targetAlpha)
         {
             unitHasTransparency = apply;
 
@@ -142,7 +144,7 @@ namespace Client
         {
             if (transparentMaterialsUsed && !Mathf.Approximately(CurrentAlpha, TargetAlpha))
             {
-                CurrentAlpha = Mathf.MoveTowards(CurrentAlpha, TargetAlpha, deltaTime * Renderer.Settings.TransparencyTransitionSpeed);
+                CurrentAlpha = Mathf.MoveTowards(CurrentAlpha, TargetAlpha, deltaTime * rendering.UnitRendererSettings.TransparencyTransitionSpeed);
 
                 if (CurrentAlpha >= 1.0f)
                     SwitchTransparentMaterials(false);
@@ -209,21 +211,21 @@ namespace Client
             }
         }
 
-        private void UpdateAnimations(float deltaTime)
+        private void UpdateAnimations(UnitRenderer unitRenderer, float deltaTime)
         {
-            if (!Renderer.Unit.IsAlive)
+            if (!unitRenderer.Unit.IsAlive)
             {
                 animator.SetBool("IsDead", true);
                 return;
             }
 
-            if (!Renderer.Unit.HasMovementFlag(MovementFlags.Flying))
+            if (!unitRenderer.Unit.HasMovementFlag(MovementFlags.Flying))
             {
                 Animator.SetBool("Grounded", true);
 
                 float currentStrafe = Animator.GetFloat("Strafe");
-                float strafeTarget = Renderer.Unit.HasMovementFlag(MovementFlags.StrafeLeft) ? 0 :
-                    Renderer.Unit.HasMovementFlag(MovementFlags.StrafeRight) ? 1 : 0.5f;
+                float strafeTarget = unitRenderer.Unit.HasMovementFlag(MovementFlags.StrafeLeft) ? 0 :
+                    unitRenderer.Unit.HasMovementFlag(MovementFlags.StrafeRight) ? 1 : 0.5f;
 
                 float strafeDelta = 2 * Mathf.Sign(strafeTarget - currentStrafe) * deltaTime * strafeSpeed;
                 float resultStrafe = Mathf.Clamp(currentStrafe + strafeDelta, 0.0f, 1.0f);
@@ -231,12 +233,12 @@ namespace Client
                 if (Mathf.Abs(strafeTarget - currentStrafe) > Mathf.Abs(strafeDelta))
                     Animator.SetFloat("Strafe", resultStrafe);
 
-                if (Renderer.Unit.HasMovementFlag(MovementFlags.Forward))
+                if (unitRenderer.Unit.HasMovementFlag(MovementFlags.Forward))
                     Animator.SetFloat("Forward", 1.0f);
                 else
                     Animator.SetFloat("Forward", Mathf.Clamp(Animator.GetFloat("Forward") - 10 * deltaTime, 0.0f, 1.0f));
 
-                if (Renderer.Unit.HasMovementFlag(MovementFlags.Forward | MovementFlags.Backward | MovementFlags.StrafeRight | MovementFlags.StrafeLeft))
+                if (unitRenderer.Unit.HasMovementFlag(MovementFlags.Forward | MovementFlags.Backward | MovementFlags.StrafeRight | MovementFlags.StrafeLeft))
                     Animator.SetFloat("Speed", 1);
                 else
                     Animator.SetFloat("Speed", Mathf.Clamp(Animator.GetFloat("Speed") - 10 * deltaTime, 0.0f, 1.0f));

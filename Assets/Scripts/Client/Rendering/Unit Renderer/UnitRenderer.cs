@@ -9,7 +9,6 @@ namespace Client
     public sealed partial class UnitRenderer : EntityEventListener<IUnitState>
     {
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
-        [SerializeField, UsedImplicitly] private UnitRendererSettings renderSettings;
         [SerializeField, UsedImplicitly] private TagContainer dummyTagContainer;
         [SerializeField, UsedImplicitly] private UnitSoundController soundController;
 
@@ -20,10 +19,9 @@ namespace Client
         private bool canAnimate = true;
 
         public TagContainer TagContainer => model == null ? dummyTagContainer : model.TagContainer;
-        public UnitRendererSettings Settings => renderSettings;
         public Unit Unit { get; private set; }
 
-        public void Initialize(Unit unit)
+        public void Attach(Unit unit)
         {
             Unit = unit;
             transform.position = Unit.Position;
@@ -43,7 +41,7 @@ namespace Client
             auraEffectController.HandleAttach(this);
         }
 
-        public void Deinitialize()
+        public UnitModel Detach(UnitModelReplacementMode mode)
         {
             auraEffectController.HandleDetach();
 
@@ -56,18 +54,19 @@ namespace Client
             EventHandler.UnregisterEvent(Unit, GameEvents.UnitScaleChanged, OnScaleChanged);
             EventHandler.UnregisterEvent(Unit, GameEvents.UnitVisualsChanged, OnVisualsChanged);
 
-            ReplaceModel();
             CancelInvoke();
-
             Unit = null;
+
+            return ReplaceModel(mode: mode);
         }
 
         public void DoUpdate(float deltaTime)
         {
             transform.rotation = Unit.Rotation;
-            transform.position = Vector3.SmoothDamp(transform.position, Unit.Position, ref targetSmoothVelocity, Settings.RenderInterpolationSmoothTime);
+            transform.position = Vector3.SmoothDamp(transform.position, Unit.Position,
+                ref targetSmoothVelocity, rendering.UnitRendererSettings.RenderInterpolationSmoothTime);
 
-            model?.DoUpdate(deltaTime);
+            model?.DoUpdate(this, deltaTime);
         }
 
         public override void OnEvent(UnitSpellLaunchEvent launchEvent)
@@ -121,6 +120,8 @@ namespace Client
 
         private void ReplaceModel(int modelId, UnitModelReplacementMode mode)
         {
+            Assert.IsTrue(mode != UnitModelReplacementMode.ScopeOut);
+
             if (model != null && model.Settings.Id == modelId)
                 return;
 
@@ -142,24 +143,26 @@ namespace Client
                 Debug.LogError($"Missing model with id: {modelId}");
         }
 
-        private void ReplaceModel(UnitModel newModel = null)
+        private UnitModel ReplaceModel(UnitModel newModel = null, UnitModelReplacementMode mode = UnitModelReplacementMode.ScopeIn)
         {
-            if (model != null)
-            {
-                if (newModel != null)
-                    model.TagContainer.TransferChildren(newModel.TagContainer);
-
-                model.Deinitialize();
-                GameObjectPool.Return(model, false);
-            }
+            UnitModel oldModel = model;
+            if (oldModel != null && newModel != null)
+                model.TagContainer.TransferChildren(newModel.TagContainer);
 
             model = newModel;
-
             UpdateAnimationState(canAnimate);
             soundController.HandleModelChange(model);
+
+            if (oldModel != null && mode != UnitModelReplacementMode.ScopeOut)
+            {
+                oldModel.Deinitialize();
+                oldModel = null;
+            }
+
+            return oldModel;
         }
 
-        private void HandleVisualEffects(bool instantly) => model?.HandleVisualEffects(instantly);
+        private void HandleVisualEffects(bool instantly) => model?.HandleVisualEffects(this, instantly);
 
         private void HandleEmoteUpdate()
         {

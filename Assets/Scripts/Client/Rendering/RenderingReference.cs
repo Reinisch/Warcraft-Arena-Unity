@@ -15,6 +15,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private Sprite defaultSpellIcon;
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private UnitModelSettingsContainer modelSettingsContainer;
+        [SerializeField, UsedImplicitly] private UnitRendererSettings unitRendererSettings;
         [Header("Controllers")]
         [SerializeField, UsedImplicitly] private NameplateController nameplateController;
         [SerializeField, UsedImplicitly] private FloatingTextController floatingTextController;
@@ -34,6 +35,7 @@ namespace Client
         private Transform container;
 
         public Sprite DefaultSpellIcon => defaultSpellIcon;
+        public UnitRendererSettings UnitRendererSettings => unitRendererSettings;
         public IReadOnlyDictionary<int, SpellEffectSettings> SpellVisualSettingsById => spellVisualSettingsById;
         public IReadOnlyDictionary<int, AuraEffectSettings> AuraVisualSettingsById => auraVisualSettingsById;
         public IReadOnlyDictionary<int, UnitModelSettings> ModelSettingsById => modelSettingsContainer.ModelSettingsById;

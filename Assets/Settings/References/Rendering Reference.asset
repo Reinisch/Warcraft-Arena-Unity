@@ -16,6 +16,8 @@ MonoBehaviour:
   balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   modelSettingsContainer: {fileID: 11400000, guid: dfd880d432e89ef4194ba2772d0fd38a,
     type: 2}
+  unitRendererSettings: {fileID: 11400000, guid: f0a33dbce5edd1a42aaac991a5b4793f,
+    type: 2}
   nameplateController:
     rendering: {fileID: 11400000}
     nameplatePrototype: {fileID: 4237749462972623577, guid: 6938372095c24704a884bf0e6ad7c457,
