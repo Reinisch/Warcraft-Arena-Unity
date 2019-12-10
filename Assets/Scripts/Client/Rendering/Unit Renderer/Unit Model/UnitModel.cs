@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -16,6 +17,9 @@ namespace Client
 
         public TagContainer TagContainer => tagContainer;
         public Animator Animator => animator;
+        public float TargetAlpha { get; private set; } = 1.0f;
+        public float CurrentAlpha { get; private set; } = 1.0f;
+
         public UnitRenderer Renderer { get; private set; }
         public UnitModelSettings Settings { get; private set; }
 
@@ -25,38 +29,51 @@ namespace Client
 
         private bool unitHasTransparency;
         private bool transparentMaterialsUsed;
-        private float targetAlpha = 1.0f;
-        private float currentAlpha = 1.0f;
 
         [UsedImplicitly]
         private void OnDestroy() => DestroyTransparentMaterials();
 
-        public void Initialize(UnitRenderer unitRenderer, UnitModelSettings modelSettings)
+        public void Initialize(UnitModelInitializer initializer)
         {
             if (originalMaterials == null)
                 originalMaterials = meshRenderer.sharedMaterials;
 
-            transform.SetParent(unitRenderer.transform, false);
+            transform.SetParent(initializer.UnitRenderer.transform, false);
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
             transform.localScale = Vector3.one;
 
-            Renderer = unitRenderer;
-            Settings = modelSettings;
+            Renderer = initializer.UnitRenderer;
+            Settings = initializer.ModelSettings;
 
             if (Renderer.Unit.IsDead)
             {
                 animator.SetBool("IsDead", true);
                 animator.Play("Death");
             }
+
+            switch (initializer.ReplacementMode)
+            {
+                case UnitModelReplacementMode.ScopeIn:
+                    ToggleTransparentMode(true, 0.0f, 1.0f);
+                    break;
+                case UnitModelReplacementMode.Transformation:
+                    if (initializer.PreviousModel != null && initializer.PreviousModel.CurrentAlpha < 1.0f)
+                        ToggleTransparentMode(true, initializer.PreviousModel.CurrentAlpha, initializer.PreviousModel.TargetAlpha);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(initializer.ReplacementMode), initializer.ReplacementMode, "Unhandled model replacement mode!");
+            }
+
+            HandleVisualEffects(false);
         }
 
         public void Deinitialize()
         {
             Animator.WriteDefaultValues();
 
-            currentAlpha = 1.0f;
-            targetAlpha = 1.0f;
+            CurrentAlpha = 1.0f;
+            TargetAlpha = 1.0f;
 
             Settings = null;
             Renderer = null;
@@ -92,34 +109,42 @@ namespace Client
         {
             bool isUnitTransperent = Unit.VisualEffects.HasTargetFlag(UnitVisualEffectFlags.StealthTransparency);
             if (isUnitTransperent && !unitHasTransparency)
-                ToggleTransparentMode(true, instantly);
+            {
+                float targetAlpha = Renderer.Settings.StealthTransparencyAlpha;
+                float currentAlpha = instantly ? targetAlpha : CurrentAlpha;
+
+                ToggleTransparentMode(true, currentAlpha, targetAlpha);
+            }
             else if (!isUnitTransperent && unitHasTransparency)
-                ToggleTransparentMode(false, instantly);
+            {
+                float targetAlpha = 1.0f;
+                float currentAlpha = instantly ? targetAlpha : CurrentAlpha;
+
+                ToggleTransparentMode(false, currentAlpha, targetAlpha);
+            }
         }
 
-        private void ToggleTransparentMode(bool apply, bool instantly)
+        private void ToggleTransparentMode(bool apply, float currentAlpha, float targetAlpha)
         {
             unitHasTransparency = apply;
 
-            targetAlpha = apply ? Renderer.Settings.StealthTransparencyAlpha : 1.0f;
+            CurrentAlpha = currentAlpha;
+            TargetAlpha = targetAlpha;
 
             if (apply && transparentMaterialInstances == null)
                 CreateTransparentMaterials();
 
-            if (instantly)
-                currentAlpha = targetAlpha;
-
-            if (apply || instantly)
+            if (apply || Mathf.Approximately(CurrentAlpha, TargetAlpha))
                 SwitchTransparentMaterials(apply);
         }
 
         private void UpdateTransparencyTransition(float deltaTime)
         {
-            if (transparentMaterialsUsed && !Mathf.Approximately(currentAlpha, targetAlpha))
+            if (transparentMaterialsUsed && !Mathf.Approximately(CurrentAlpha, TargetAlpha))
             {
-                currentAlpha = Mathf.MoveTowards(currentAlpha, targetAlpha, deltaTime * Renderer.Settings.TransparencyTransitionSpeed);
+                CurrentAlpha = Mathf.MoveTowards(CurrentAlpha, TargetAlpha, deltaTime * Renderer.Settings.TransparencyTransitionSpeed);
 
-                if (currentAlpha >= 1.0f)
+                if (CurrentAlpha >= 1.0f)
                     SwitchTransparentMaterials(false);
                 else
                     UpdateTransparentColor();
@@ -131,7 +156,7 @@ namespace Client
             foreach (var materialEntry in sharedMaterialsByInstancedTransparentMaterials)
             {
                 Color newColor = materialEntry.Value.color;
-                newColor.a = currentAlpha;
+                newColor.a = CurrentAlpha;
                 materialEntry.Value.SetColor("_Color", newColor);
             }
         }

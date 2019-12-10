@@ -28,9 +28,8 @@ namespace Client
             Unit = unit;
             transform.position = Unit.Position;
 
-            ReplaceModel(Unit.Model);
+            ReplaceModel(Unit.Model, UnitModelReplacementMode.ScopeIn);
             OnScaleChanged();
-            HandleVisualEffects(true);
 
             Unit.BoltEntity.AddEventListener(this);
             Unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
@@ -114,13 +113,13 @@ namespace Client
                 model.Animator.speed = canAnimate ? 1.0f : 0.0f;
         }
 
-        private void OnModelChanged() => ReplaceModel(Unit.Model);
+        private void OnModelChanged() => ReplaceModel(Unit.Model, UnitModelReplacementMode.Transformation);
 
         private void OnScaleChanged() => transform.localScale = new Vector3(Unit.Scale, Unit.Scale, Unit.Scale);
 
         private void OnVisualsChanged() => HandleVisualEffects(false);
 
-        private void ReplaceModel(int modelId)
+        private void ReplaceModel(int modelId, UnitModelReplacementMode mode)
         {
             if (model != null && model.Settings.Id == modelId)
                 return;
@@ -128,8 +127,15 @@ namespace Client
             if (rendering.ModelSettingsById.TryGetValue(modelId, out UnitModelSettings newModelSettings))
             {
                 UnitModel newModel = GameObjectPool.Take(newModelSettings.Prototype);
-                newModel.Initialize(this, newModelSettings);
+                var modelInitializer = new UnitModelInitializer
+                {
+                    UnitRenderer = this,
+                    ModelSettings = newModelSettings,
+                    PreviousModel = model,
+                    ReplacementMode = mode
+                };
 
+                newModel.Initialize(modelInitializer);
                 ReplaceModel(newModel);
             }
             else
@@ -148,7 +154,6 @@ namespace Client
             }
 
             model = newModel;
-            HandleVisualEffects(true);
 
             UpdateAnimationState(canAnimate);
             soundController.HandleModelChange(model);
