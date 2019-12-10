@@ -22,22 +22,14 @@ namespace Client
         private readonly Dictionary<Material, Material> sharedMaterialsByInstancedTransparentMaterials = new Dictionary<Material, Material>();
         private Material[] originalMaterials;
         private Material[] transparentMaterialInstances;
-        private bool isTransparencyApplied;
+
+        private bool unitHasTransparency;
+        private bool transparentMaterialsUsed;
+        private float targetAlpha = 1.0f;
+        private float currentAlpha = 1.0f;
 
         [UsedImplicitly]
-        private void OnDestroy()
-        {
-            if (sharedMaterialsByInstancedTransparentMaterials.Count > 0)
-            {
-                meshRenderer.materials = originalMaterials;
-
-                foreach (var materialInstanceEntry in sharedMaterialsByInstancedTransparentMaterials)
-                    Destroy(materialInstanceEntry.Value);
-
-                sharedMaterialsByInstancedTransparentMaterials.Clear();
-                transparentMaterialInstances = null;
-            }
-        }
+        private void OnDestroy() => DestroyTransparentMaterials();
 
         public void Initialize(UnitRenderer unitRenderer, UnitModelSettings modelSettings)
         {
@@ -63,16 +55,20 @@ namespace Client
         {
             Animator.WriteDefaultValues();
 
+            currentAlpha = 1.0f;
+            targetAlpha = 1.0f;
+
             Settings = null;
             Renderer = null;
 
             meshRenderer.materials = originalMaterials;
-            isTransparencyApplied = false;
+            unitHasTransparency = false;
         }
 
         public void DoUpdate(float deltaTime)
         {
             UpdateAnimations(deltaTime);
+            UpdateTransparencyTransition(deltaTime);
         }
 
         public void TriggerInstantCast()
@@ -95,46 +91,97 @@ namespace Client
         public void HandleVisualEffects(bool instantly)
         {
             bool isUnitTransperent = Unit.VisualEffects.HasTargetFlag(UnitVisualEffectFlags.StealthTransparency);
-            if (isUnitTransperent && !isTransparencyApplied)
-                HandleTransparency(true);
-            else if (!isUnitTransperent && isTransparencyApplied)
-                HandleTransparency(false);
+            if (isUnitTransperent && !unitHasTransparency)
+                ToggleTransparentMode(true, instantly);
+            else if (!isUnitTransperent && unitHasTransparency)
+                ToggleTransparentMode(false, instantly);
         }
 
-        private void HandleTransparency(bool apply)
+        private void ToggleTransparentMode(bool apply, bool instantly)
         {
-            isTransparencyApplied = apply;
+            unitHasTransparency = apply;
+
+            targetAlpha = apply ? Renderer.Settings.StealthTransparencyAlpha : 1.0f;
 
             if (apply && transparentMaterialInstances == null)
+                CreateTransparentMaterials();
+
+            if (instantly)
+                currentAlpha = targetAlpha;
+
+            if (apply || instantly)
+                SwitchTransparentMaterials(apply);
+        }
+
+        private void UpdateTransparencyTransition(float deltaTime)
+        {
+            if (transparentMaterialsUsed && !Mathf.Approximately(currentAlpha, targetAlpha))
             {
-                Color newColor = meshRenderer.sharedMaterial.color;
-                newColor.a = 0.5f;
+                currentAlpha = Mathf.MoveTowards(currentAlpha, targetAlpha, deltaTime * Renderer.Settings.TransparencyTransitionSpeed);
 
-                transparentMaterialInstances = new Material[meshRenderer.sharedMaterials.Length];
-                for (int i = 0; i < meshRenderer.sharedMaterials.Length; i++)
-                {
-                    Material sharedMaterial = meshRenderer.sharedMaterials[i];
-
-                    if (!sharedMaterialsByInstancedTransparentMaterials.TryGetValue(sharedMaterial, out Material instancedMaterial))
-                    {
-                        instancedMaterial = new Material(sharedMaterial);
-                        instancedMaterial.SetColor("_Color", newColor);
-                        instancedMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                        instancedMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                        instancedMaterial.SetInt("_ZWrite", 1);
-                        instancedMaterial.DisableKeyword("_ALPHATEST_ON");
-                        instancedMaterial.DisableKeyword("_ALPHABLEND_ON");
-                        instancedMaterial.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-                        instancedMaterial.renderQueue = 3000;
-
-                        sharedMaterialsByInstancedTransparentMaterials.Add(sharedMaterial, instancedMaterial);
-                    }
-
-                    transparentMaterialInstances[i] = instancedMaterial;
-                }
+                if (currentAlpha >= 1.0f)
+                    SwitchTransparentMaterials(false);
+                else
+                    UpdateTransparentColor();
             }
+        }
 
-            meshRenderer.materials = apply ? transparentMaterialInstances : originalMaterials;
+        private void UpdateTransparentColor()
+        {
+            foreach (var materialEntry in sharedMaterialsByInstancedTransparentMaterials)
+            {
+                Color newColor = materialEntry.Value.color;
+                newColor.a = currentAlpha;
+                materialEntry.Value.SetColor("_Color", newColor);
+            }
+        }
+
+        private void SwitchTransparentMaterials(bool useTransparent)
+        {
+            meshRenderer.materials = useTransparent ? transparentMaterialInstances : originalMaterials;
+            transparentMaterialsUsed = useTransparent;
+
+            if (transparentMaterialsUsed)
+                UpdateTransparentColor();
+        }
+
+        private void CreateTransparentMaterials()
+        {
+            transparentMaterialInstances = new Material[meshRenderer.sharedMaterials.Length];
+            for (int i = 0; i < meshRenderer.sharedMaterials.Length; i++)
+            {
+                Material sharedMaterial = meshRenderer.sharedMaterials[i];
+
+                if (!sharedMaterialsByInstancedTransparentMaterials.TryGetValue(sharedMaterial, out Material instancedMaterial))
+                {
+                    instancedMaterial = new Material(sharedMaterial);
+                    instancedMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    instancedMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    instancedMaterial.SetInt("_ZWrite", 1);
+                    instancedMaterial.DisableKeyword("_ALPHATEST_ON");
+                    instancedMaterial.DisableKeyword("_ALPHABLEND_ON");
+                    instancedMaterial.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+                    instancedMaterial.renderQueue = 3000;
+
+                    sharedMaterialsByInstancedTransparentMaterials.Add(sharedMaterial, instancedMaterial);
+                }
+
+                transparentMaterialInstances[i] = instancedMaterial;
+            }
+        }
+
+        private void DestroyTransparentMaterials()
+        {
+            if (sharedMaterialsByInstancedTransparentMaterials.Count > 0)
+            {
+                meshRenderer.materials = originalMaterials;
+
+                foreach (var materialInstanceEntry in sharedMaterialsByInstancedTransparentMaterials)
+                    Destroy(materialInstanceEntry.Value);
+
+                sharedMaterialsByInstancedTransparentMaterials.Clear();
+                transparentMaterialInstances = null;
+            }
         }
 
         private void UpdateAnimations(float deltaTime)

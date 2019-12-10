@@ -9,10 +9,9 @@ namespace Client
     public sealed partial class UnitRenderer : EntityEventListener<IUnitState>
     {
         [SerializeField, UsedImplicitly] private RenderingReference rendering;
-        [SerializeField, UsedImplicitly] private BalanceReference balance;
+        [SerializeField, UsedImplicitly] private UnitRendererSettings renderSettings;
         [SerializeField, UsedImplicitly] private TagContainer dummyTagContainer;
         [SerializeField, UsedImplicitly] private UnitSoundController soundController;
-        [SerializeField, UsedImplicitly] private float targetSmoothTime = 0.05f;
 
         private Vector3 targetSmoothVelocity;
 
@@ -21,6 +20,7 @@ namespace Client
         private bool canAnimate = true;
 
         public TagContainer TagContainer => model == null ? dummyTagContainer : model.TagContainer;
+        public UnitRendererSettings Settings => renderSettings;
         public Unit Unit { get; private set; }
 
         public void Initialize(Unit unit)
@@ -66,7 +66,7 @@ namespace Client
         public void DoUpdate(float deltaTime)
         {
             transform.rotation = Unit.Rotation;
-            transform.position = Vector3.SmoothDamp(transform.position, Unit.Position, ref targetSmoothVelocity, targetSmoothTime);
+            transform.position = Vector3.SmoothDamp(transform.position, Unit.Position, ref targetSmoothVelocity, Settings.RenderInterpolationSmoothTime);
 
             model?.DoUpdate(deltaTime);
         }

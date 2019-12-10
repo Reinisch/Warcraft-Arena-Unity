@@ -487,7 +487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
-  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
+  renderSettings: {fileID: 11400000, guid: f0a33dbce5edd1a42aaac991a5b4793f, type: 2}
   dummyTagContainer:
     defaultLaunchTag: 2
     defaultTag: {fileID: 2968045187551779246}
@@ -500,7 +500,6 @@ MonoBehaviour:
     damageTag: {fileID: 3677482243864547320}
     nameplateTag: {fileID: 8894277606485288769}
   soundController: {fileID: 2519661404870090023}
-  targetSmoothTime: 0.05
 --- !u!114 &2519661404870090023
 MonoBehaviour:
   m_ObjectHideFlags: 0
