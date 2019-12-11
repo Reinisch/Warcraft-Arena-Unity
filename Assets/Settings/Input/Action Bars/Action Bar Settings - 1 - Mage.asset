@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 7
   container: {fileID: 11400000, guid: 0740221d02239e4468ce62091e1b3172, type: 2}
+  saveChanges: 0
   actionBarSlot: 1
   classType: 8
   buttons:
@@ -41,7 +42,7 @@ MonoBehaviour:
     actionType: 0
   - actionId: 14
     actionType: 0
-  - actionId: 6
+  - actionId: 61
     actionType: 0
   - actionId: 3
     actionType: 0
