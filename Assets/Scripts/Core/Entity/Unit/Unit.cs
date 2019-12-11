@@ -28,7 +28,7 @@ namespace Core
         internal AuraVisibleController VisibleAuras { get; } = new AuraVisibleController();
         internal AuraApplicationController Auras { get; } = new AuraApplicationController();
         internal AttributeController Attributes { get; } = new AttributeController();
-        internal ThreatController Threat { get; } = new ThreatController();
+        internal CombatController Combat { get; } = new CombatController();
         internal SpellController Spells { get; } = new SpellController();
         internal WarcraftCharacterController CharacterController => characterController;
 
@@ -165,7 +165,7 @@ namespace Core
         {
             unitBehaviourController.TryAddBehaviour(Attributes);
             unitBehaviourController.TryAddBehaviour(CharacterController);
-            unitBehaviourController.TryAddBehaviour(Threat);
+            unitBehaviourController.TryAddBehaviour(Combat);
             unitBehaviourController.TryAddBehaviour(Spells);
             unitBehaviourController.TryAddBehaviour(Auras);
             unitBehaviourController.TryAddBehaviour(VisibleAuras);

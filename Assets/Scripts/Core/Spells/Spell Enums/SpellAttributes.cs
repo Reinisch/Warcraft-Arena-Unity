@@ -10,7 +10,7 @@ namespace Core
         CastableWhileMoving = 1 << 2,
         UnaffectedByInvulnerability = 1 << 3,
         CantCancel = 1 << 4,
-        Channeled = 1 << 5,
+        CantBeUsedInCombat = 1 << 5,
         CantBeReflected = 1 << 6,
         DispelAurasOnImmunity = 1 << 7,
         UnaffectedBySchoolImmune = 1 << 8,

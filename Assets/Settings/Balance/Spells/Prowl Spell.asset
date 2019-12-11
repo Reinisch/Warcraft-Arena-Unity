@@ -66,7 +66,7 @@ MonoBehaviour:
   explicitCastTargets: 8
   schoolMask: 1
   preventionType: 0
-  attributes: 0
+  attributes: 32
   attributesExtra: 4096
   attributesCustom: 2048
   targetEntityTypeMask: 8

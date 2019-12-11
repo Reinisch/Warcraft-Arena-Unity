@@ -56,7 +56,7 @@ namespace Core
 
             if (IsTriggered)
                 spellValue.CastFlags |= SpellCastFlags.IgnoreTargetCheck | SpellCastFlags.IgnoreRangeCheck |
-                    SpellCastFlags.IgnoreShapeShift | SpellCastFlags.IgnoreAuraInterruptFlags;
+                    SpellCastFlags.IgnoreShapeShift | SpellCastFlags.IgnoreAuraInterruptFlags | SpellCastFlags.IgnoreCasterState;
 
             if (info.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
                 spellValue.CastFlags |= SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
@@ -304,6 +304,10 @@ namespace Core
             if (castResult != SpellCastResult.Success)
                 return castResult;
 
+            castResult = ValidateCasterState();
+            if (castResult != SpellCastResult.Success)
+                return castResult;
+
             castResult = ValidatePowers();
             if (castResult != SpellCastResult.Success)
                 return castResult;
@@ -357,6 +361,17 @@ namespace Core
                     }
                 }
             }
+
+            return SpellCastResult.Success;
+        }
+
+        private SpellCastResult ValidateCasterState()
+        {
+            if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreCasterState))
+                return SpellCastResult.Success;
+
+            if (SpellInfo.HasAttribute(SpellAttributes.CantBeUsedInCombat) && Caster.Combat.InCombat)
+                return SpellCastResult.AffectingCombat;
 
             return SpellCastResult.Success;
         }
@@ -638,6 +653,9 @@ namespace Core
                 for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
                     if (targetEntry.EffectMask.HasBit(effectIndex))
                         SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitFinal);
+
+            if (missType != SpellMissType.Evade && !caster.IsFriendlyTo(hitTarget) && !SpellInfo.IsPositive)
+                caster.Combat.StartCombatWith(hitTarget);
         }
 
         private void Launch()

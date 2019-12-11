@@ -16,7 +16,7 @@ namespace Core
         IgnoreAuraInterruptFlags = 1 << 8,
         IgnoreSetFacing = 1 << 9,
         IgnoreShapeShift = 1 << 10,
-        IgnoreCasterAurastate = 1 << 11,
+        IgnoreCasterState = 1 << 11,
         IgnoreCasterMountedOrOnVehicle = 1 << 12,
         IgnoreCasterAuras = 1 << 13,
         DisallowProcEvents = 1 << 14,

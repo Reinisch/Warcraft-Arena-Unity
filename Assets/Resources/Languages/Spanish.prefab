@@ -531,3 +531,5 @@ MonoBehaviour:
     Value: Prowl
   - StringReference: {fileID: 11400000, guid: e4bd31629f667cc4696d641fdd6a19bb, type: 2}
     Value: Activates Cat Form and places you into stealth until cancelled.
+  - StringReference: {fileID: 11400000, guid: 463359bebf68ea84d9cfebc3e9ba0101, type: 2}
+    Value: Can't Be Used In Combat
