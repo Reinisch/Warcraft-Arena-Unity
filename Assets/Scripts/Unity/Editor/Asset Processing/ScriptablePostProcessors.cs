@@ -15,11 +15,9 @@ namespace Arena.Editor
         {
             bool hasChanged = false;
             foreach (string path in importedAssets)
-            {
-                var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
-                if (asset is IScriptablePostProcess postProcessable)
-                    hasChanged |= postProcessable.OnPostProcess(false);
-            }
+                foreach(var asset in AssetDatabase.LoadAllAssetsAtPath(path))
+                    if (asset is IScriptablePostProcess postProcessable)
+                        hasChanged |= postProcessable.OnPostProcess(false);
 
             if (HasDeletedPostprocessableAssets)
             {
