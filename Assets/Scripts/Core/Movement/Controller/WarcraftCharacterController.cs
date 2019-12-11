@@ -207,6 +207,9 @@ namespace Core
 
             ProcessGroundState();
 
+            if (unit.SlowFallSpeed != 0 && unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && unitRigidbody.velocity.y < -unit.SlowFallSpeed)
+                unitRigidbody.velocity = new Vector3(unitRigidbody.velocity.x, -unit.SlowFallSpeed, unitRigidbody.velocity.z);
+
             void ProcessGroundState()
             {
                 wasFlying = unit.MovementInfo.HasMovementFlag(MovementFlags.Flying);

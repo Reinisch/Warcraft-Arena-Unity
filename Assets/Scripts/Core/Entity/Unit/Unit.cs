@@ -79,6 +79,7 @@ namespace Core
         public SpellPowerType DisplayPowerType { get => Attributes.DisplayPowerType; internal set => Attributes.DisplayPowerType = value; }
         public ClassType ClassType { get => Attributes.ClassType; internal set => Attributes.ClassType = value; }
         public EmoteType EmoteType { get => Attributes.EmoteType; internal set => Attributes.EmoteType = value; }
+        public int SlowFallSpeed { get => entityState.SlowFallSpeed; internal set => entityState.SlowFallSpeed = value; }
 
         public sealed override void Attached()
         {

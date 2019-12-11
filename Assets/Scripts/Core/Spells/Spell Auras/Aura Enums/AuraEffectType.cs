@@ -102,7 +102,7 @@
         ModMeleeAttackPowerVersus = 102,
         ModTotalThreat = 103,
         WaterWalk = 104,
-        FeatherFall = 105,
+        SlowFall = 105,
         Hover = 106,
         AddFlatModifier = 107,
         AddPctModifier = 108,

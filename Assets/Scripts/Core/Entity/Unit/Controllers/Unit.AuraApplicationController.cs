@@ -129,6 +129,25 @@ namespace Core
                 return modifier;
             }
 
+            internal float MinPositiveAuraModifier(AuraEffectType auraType)
+            {
+                if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
+                    return 0.0f;
+
+                float modifier = float.MaxValue;
+                bool hasPositive = false;
+                foreach (AuraEffect auraEffect in auraEffects)
+                {
+                    if (auraEffect.Value > 0.0f)
+                    {
+                        modifier = Mathf.Min(modifier, auraEffect.Value);
+                        hasPositive = true;
+                    }
+                }
+                    
+                return hasPositive ? modifier : 0.0f;
+            }
+
             internal float MaxNegativeAuraModifier(AuraEffectType auraType)
             {
                 if (!auraEffectsByAuraType.TryGetValue(auraType, out List<AuraEffect> auraEffects))
