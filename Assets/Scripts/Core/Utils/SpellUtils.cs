@@ -54,6 +54,11 @@ namespace Core
             return (baseFlags & flag) == flag;
         }
 
+        public static bool HasAnyFlag(this UnitVisualEffectFlags baseFlags, UnitVisualEffectFlags flag)
+        {
+            return (baseFlags & flag) != 0;
+        }
+
         public static UnitVisualEffectFlags SetFlag(this UnitVisualEffectFlags baseFlags, UnitVisualEffectFlags flag, bool set)
         {
             return set ? baseFlags | flag : baseFlags & ~flag;

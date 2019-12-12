@@ -118,8 +118,8 @@ namespace Client
             private bool CanHaveNameplate(UnitRenderer unitRenderer)
             {
                 bool withinRange = rendering.Player.ExactDistanceSqrTo(unitRenderer.Unit) < settings.MaxDistanceSqr;
-                bool isStealthed = unitRenderer.Unit.VisualEffects.HasTargetFlag(UnitVisualEffectFlags.StealthTransparency);
-                return withinRange && !isStealthed;
+                bool isTransparent = unitRenderer.Unit.VisualEffects.HasTargetFlag(UnitVisualEffectFlags.AnyTransparency);
+                return withinRange && !isTransparent;
             }
 
             private void OnPlayerTargetChanged()

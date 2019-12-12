@@ -9,6 +9,8 @@ namespace Core
     public enum UnitVisualEffectFlags
     {
         StealthTransparency = 1 << 0,
-        InvisibilityTransparency = 1 << 1
+        InvisibilityTransparency = 1 << 1,
+
+        AnyTransparency = StealthTransparency | InvisibilityTransparency
     }
 }

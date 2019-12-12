@@ -72,7 +72,7 @@ namespace Client
 
         public bool DoUpdate(float deltaTime)
         {
-            if (UnitRenderer.Unit.VisualEffects.HasTargetFlag(UnitVisualEffectFlags.StealthTransparency))
+            if (UnitRenderer.Unit.VisualEffects.HasAnyFlag(UnitVisualEffectFlags.AnyTransparency))
                 return false;
 
             Vector3 targetPosition = UnitRenderer.TagContainer.FindNameplateTag();

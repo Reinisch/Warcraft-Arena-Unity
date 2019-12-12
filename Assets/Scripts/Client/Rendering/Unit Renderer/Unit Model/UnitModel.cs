@@ -109,7 +109,7 @@ namespace Client
 
         public void HandleVisualEffects(UnitRenderer unitRenderer, bool instantly, bool forced = false)
         {
-            bool isUnitTransperent = unitRenderer.Unit.VisualEffects.HasTargetFlag(UnitVisualEffectFlags.StealthTransparency);
+            bool isUnitTransperent = unitRenderer.Unit.VisualEffects.HasAnyFlag(UnitVisualEffectFlags.AnyTransparency);
             if (isUnitTransperent && (!unitHasTransparency || forced))
             {
                 float targetAlpha = rendering.UnitRendererSettings.StealthTransparencyAlpha;
