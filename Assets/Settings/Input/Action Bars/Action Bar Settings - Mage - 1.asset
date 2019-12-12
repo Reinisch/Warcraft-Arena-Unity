@@ -10,39 +10,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48864edf2d3c4044390487626fa94db8, type: 3}
-  m_Name: Action Bar Settings - 2 - Druid
+  m_Name: Action Bar Settings - Mage - 1
   m_EditorClassIdentifier: 
-  id: 10
+  id: 7
   container: {fileID: 11400000, guid: 0740221d02239e4468ce62091e1b3172, type: 2}
   saveChanges: 0
-  actionBarSlot: 2
-  classType: 11
+  actionBarSlot: 1
+  classType: 8
   buttons:
-  - actionId: 54
+  - actionId: 18
     actionType: 0
-  - actionId: 45
+  - actionId: 5
     actionType: 0
-  - actionId: 43
+  - actionId: 19
     actionType: 0
-  - actionId: 36
+  - actionId: 29
     actionType: 0
-  - actionId: 36
+  - actionId: 4
     actionType: 0
-  - actionId: 22
+  - actionId: 7
     actionType: 0
-  - actionId: 44
+  - actionId: 9
     actionType: 0
-  - actionId: 50
+  - actionId: 11
     actionType: 0
-  - actionId: 51
+  - actionId: 16
     actionType: 0
-  - actionId: 49
+  - actionId: 17
     actionType: 0
-  - actionId: 56
+  - actionId: 15
     actionType: 0
-  - actionId: 60
+  - actionId: 14
     actionType: 0
-  - actionId: 59
+  - actionId: 61
     actionType: 0
-  - actionId: 2
+  - actionId: 3
     actionType: 0

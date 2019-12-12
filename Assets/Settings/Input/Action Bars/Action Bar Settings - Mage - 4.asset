@@ -10,37 +10,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48864edf2d3c4044390487626fa94db8, type: 3}
-  m_Name: Action Bar Settings - 4 - Default
+  m_Name: Action Bar Settings - Mage - 4
   m_EditorClassIdentifier: 
-  id: 4
+  id: 12
   container: {fileID: 11400000, guid: 0740221d02239e4468ce62091e1b3172, type: 2}
+  saveChanges: 0
   actionBarSlot: 4
+  classType: 8
   buttons:
-  - actionId: 36
+  - actionId: 62
     actionType: 0
-  - actionId: 23
+  - actionId: 62
     actionType: 0
-  - actionId: 25
+  - actionId: 62
     actionType: 0
-  - actionId: 21
+  - actionId: 62
     actionType: 0
-  - actionId: 24
+  - actionId: 62
     actionType: 0
-  - actionId: 22
+  - actionId: 62
     actionType: 0
-  - actionId: 8
+  - actionId: 62
     actionType: 0
-  - actionId: 20
+  - actionId: 62
     actionType: 0
-  - actionId: 13
+  - actionId: 62
     actionType: 0
-  - actionId: 1
+  - actionId: 62
     actionType: 0
-  - actionId: 26
+  - actionId: 62
     actionType: 0
-  - actionId: 27
+  - actionId: 62
     actionType: 0
-  - actionId: 28
+  - actionId: 62
     actionType: 0
-  - actionId: 2
+  - actionId: 62
     actionType: 0

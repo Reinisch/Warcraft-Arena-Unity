@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core.AuraEffects
 {
-    [UsedImplicitly, CreateAssetMenu(fileName = "Aura Effect Stealth", menuName = "Game Data/Spells/Auras/Effects/Stealth", order = 3)]
+    [UsedImplicitly, CreateAssetMenu(fileName = "Aura Effect Invisibility", menuName = "Game Data/Spells/Auras/Effects/Invisibility", order = 3)]
     public class AuraEffectInfoInvisibility : AuraEffectInfo
     {
         [SerializeField, UsedImplicitly, Range(0.0f, 100f)]
