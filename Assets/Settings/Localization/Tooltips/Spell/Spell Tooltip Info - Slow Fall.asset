@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2c4714ebf4c7948b39380ca36fbd21, type: 3}
+  m_Name: Spell Tooltip Info - Slow Fall
+  m_EditorClassIdentifier: 
+  id: 49
+  container: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9, type: 2}
+  spellInfo: {fileID: 11400000, guid: b6188624fa16b294498f195d8152a302, type: 2}
+  spellNameString: {fileID: 11400000, guid: 307374919bba4e944849e44e8d2db08a, type: 2}
+  spellDescriptionString: {fileID: 11400000, guid: 69e5c94b08e295f4cabd560c546f3d42,
+    type: 2}
+  argumentSettings:
+  - argumentSource: {fileID: -160444093295509903, guid: b6188624fa16b294498f195d8152a302,
+      type: 2}
+    argumentType: 0

@@ -533,3 +533,7 @@ MonoBehaviour:
     Value: Activates Cat Form and places you into stealth until cancelled.
   - StringReference: {fileID: 11400000, guid: 463359bebf68ea84d9cfebc3e9ba0101, type: 2}
     Value: Can't Be Used In Combat
+  - StringReference: {fileID: 11400000, guid: 307374919bba4e944849e44e8d2db08a, type: 2}
+    Value: Slow Fall
+  - StringReference: {fileID: 11400000, guid: 69e5c94b08e295f4cabd560c546f3d42, type: 2}
+    Value: "\rSlows a group member's falling speed for {0} sec."
