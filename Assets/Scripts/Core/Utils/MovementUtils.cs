@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Core
 {
@@ -28,6 +29,8 @@ namespace Core
         public const int MaxPointPathLength = 74;
         public const int VertexSize = 3;
         public const int InvalidPolyref = 0;
+
+        public static readonly MovementSlot[] MovementSlots = (MovementSlot[])Enum.GetValues(typeof(MovementSlot));
 
         public static bool IsMoving(this MovementFlags movementFlags) => (movementFlags & MovementFlags.MaskMoving) != 0;
 

@@ -29,6 +29,7 @@ namespace Core
         internal AuraApplicationController Auras { get; } = new AuraApplicationController();
         internal AttributeController Attributes { get; } = new AttributeController();
         internal CombatController Combat { get; } = new CombatController();
+        internal MotionController Motion { get; } = new MotionController();
         internal SpellController Spells { get; } = new SpellController();
         internal WarcraftCharacterController CharacterController => characterController;
 
@@ -167,6 +168,7 @@ namespace Core
             unitBehaviourController.TryAddBehaviour(Attributes);
             unitBehaviourController.TryAddBehaviour(CharacterController);
             unitBehaviourController.TryAddBehaviour(Combat);
+            unitBehaviourController.TryAddBehaviour(Motion);
             unitBehaviourController.TryAddBehaviour(Spells);
             unitBehaviourController.TryAddBehaviour(Auras);
             unitBehaviourController.TryAddBehaviour(VisibleAuras);
@@ -437,7 +439,7 @@ namespace Core
             victim.ModifyDeathState(DeathState.Dead);
         }
 
-        protected void StopMoving()
+        internal void StopMoving()
         {
             MovementInfo.RemoveMovementFlag(MovementFlags.MaskMoving);
 
