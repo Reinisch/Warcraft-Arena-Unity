@@ -497,11 +497,13 @@ namespace Core
             {
                 SetFlag(UnitFlags.Confused);
                 AddState(UnitControlState.Confused);
+                Motion.HandleConfusedMovement(true);
             }
             else
             {
                 RemoveFlag(UnitFlags.Confused);
                 RemoveState(UnitControlState.Confused);
+                Motion.HandleConfusedMovement(false);
             }
         }
     }

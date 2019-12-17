@@ -119,5 +119,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
   m_Name: Polymorph Effect Apply Aura
   m_EditorClassIdentifier: 
-  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  targeting: {fileID: 11400000, guid: da17621d1a7511a429d66c6327625d03, type: 2}
   auraInfo: {fileID: -2638056616509559948}

@@ -14,6 +14,13 @@ namespace Core
         public override bool HasClientLogic => false;
         public override bool HasServerLogic => true;
 
+        public Vector3 NextPosition { get => navmeshAgent.nextPosition; set => navmeshAgent.nextPosition = value; }
+        public bool UpdateRotation { get => navmeshAgent.updateRotation; set => navmeshAgent.updateRotation = value; }
+        public bool UpdatePosition { get => navmeshAgent.updatePosition; set => navmeshAgent.updatePosition = value; }
+        public bool NavMeshAgentEnabled { get => navmeshAgent.enabled; set => navmeshAgent.enabled = value; }
+        public bool HasPath => navmeshAgent.hasPath;
+        public float RemainingDistance => navmeshAgent.remainingDistance;
+
         protected override void OnAttach()
         {
             base.OnAttach();
@@ -43,5 +50,9 @@ namespace Core
 
             unitAIModel?.DoUpdate(deltaTime);
         }
+
+        public bool SetDestination(Vector3 destination) => navmeshAgent.SetDestination(destination);
+
+        public bool SetPath(NavMeshPath path) => navmeshAgent.SetPath(path);
     }
 }

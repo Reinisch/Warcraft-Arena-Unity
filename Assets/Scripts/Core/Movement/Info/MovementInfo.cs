@@ -44,6 +44,14 @@
             UpdateMovementState();
         }
 
+        public void SetMovementFlag(MovementFlags flag, bool add)
+        {
+            if (add)
+                AddMovementFlag(flag);
+            else
+                RemoveMovementFlag(flag);
+        }
+
         public bool HasMovementFlag(MovementFlags flag)
         {
             return (Flags & flag) != 0;

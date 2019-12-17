@@ -29,6 +29,8 @@ namespace Core
 
         protected override void OnRegistered()
         {
+            MovementUtils.Initialize();
+
             Layer.Characters = LayerMask.NameToLayer("Characters");
             Layer.Ground = LayerMask.NameToLayer("Ground");
 

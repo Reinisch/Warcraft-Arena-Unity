@@ -7,7 +7,6 @@ namespace Core
 {
     internal class WarcraftCharacterController : EntityBehaviour<IUnitState>, IUnitBehaviour
     {
-        [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private PhysicsReference physics;
         [SerializeField, UsedImplicitly] private PlayerControllerDefinition controllerDefinition;
         [SerializeField, UsedImplicitly] private Rigidbody unitRigidbody;
@@ -168,8 +167,9 @@ namespace Core
         internal void UpdateRigidbody()
         {
             bool isMovingLocally = IsMovementController;
-            unitRigidbody.isKinematic = !isMovingLocally;
-            unitRigidbody.useGravity = isMovingLocally;
+            bool isKinematic = !isMovingLocally || unit.AI.NavMeshAgentEnabled;
+            unitRigidbody.isKinematic = isKinematic;
+            unitRigidbody.useGravity = !isKinematic;
             unitRigidbody.interpolation = unit.IsOwner && unit is Player ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
         }
 
