@@ -1,4 +1,6 @@
-﻿namespace Core
+﻿using UnityEngine;
+
+namespace Core
 {
     public abstract partial class Unit
     {
@@ -40,12 +42,17 @@
                 unit = null;
             }
 
-            public void HandleConfusedMovement(bool isConfused)
+            public void ModifyConfusedMovement(bool isConfused)
             {
                 if (isConfused)
                     StartMovement(new ConfusedMovement(), MovementSlot.Controlled);
                 else
                     CancelMovement(MovementType.Confused, MovementSlot.Controlled);
+            }
+
+            public void StartChargingMovement(Vector3 chargePoint, float chargeSpeed)
+            {
+                StartMovement(new ChargeMovement(chargePoint, chargeSpeed), MovementSlot.Controlled);
             }
 
             private void StartMovement(MovementGenerator movement, MovementSlot newMovementSlot)

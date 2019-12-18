@@ -17,6 +17,8 @@ namespace Core
 
             unit.AI.NavMeshAgentEnabled = true;
             unit.AI.UpdatePosition = false;
+            unit.AI.Speed = unit.RunSpeed;
+            unit.AI.AngularSpeed = MovementUtils.MoveRotationSpeed;
         }
 
         public override void Finish(Unit unit)
@@ -36,7 +38,7 @@ namespace Core
 
         public override bool Update(Unit unit, int deltaTime)
         {
-            bool cantMove = unit.HasState(UnitControlState.Root | UnitControlState.Stunned | UnitControlState.Distracted);
+            bool cantMove = unit.HasAnyState(UnitControlState.Root | UnitControlState.Stunned | UnitControlState.Distracted);
             unit.AI.UpdateRotation = !cantMove;
 
             if (cantMove)

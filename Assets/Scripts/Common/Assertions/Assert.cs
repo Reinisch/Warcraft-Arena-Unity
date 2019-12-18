@@ -27,6 +27,13 @@ namespace Common
         }
 
         /// <summary>
+        ///   <para>Perfroms failed assertion.</para>
+        /// </summary>
+        /// <param name="message"></param>
+        [Conditional(AssertionDefine)]
+        public static void Fail(string message = null) => UnityAssert.IsTrue(false, message);
+
+        /// <summary>
         ///   <para>Asserts that the condition is true.</para>
         /// </summary>
         /// <param name="condition"></param>

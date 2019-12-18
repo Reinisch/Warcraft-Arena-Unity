@@ -263,7 +263,9 @@ namespace Core
 
         internal void AddState(UnitControlState state) => controlState |= state;
 
-        internal bool HasState(UnitControlState state) => (controlState & state) != 0;
+        internal bool HasState(UnitControlState state) => (controlState & state) == state;
+
+        internal bool HasAnyState(UnitControlState state) => (controlState & state) != 0;
 
         internal void RemoveState(UnitControlState state) => controlState &= ~state;
 
@@ -280,6 +282,8 @@ namespace Core
 
             if (!applied && !HasState(state))
                 return;
+
+            bool hadControl = MovementInfo.HasMovementControl;
 
             if (applied)
             {
@@ -340,6 +344,10 @@ namespace Core
                 if (!HasState(UnitControlState.Confused) && HasAuraType(AuraEffectType.ConfusionState))
                     UpdateConfusionState(true);
             }
+
+            bool hasControl = !HasAnyState(UnitControlState.LostControl);
+            if (hasControl != hadControl)
+                CharacterController.UpdateMovementControl(hasControl);
         }
 
         internal void UpdateShapeShiftForm(AuraEffectShapeShift shapeShiftEffect)
@@ -448,8 +456,6 @@ namespace Core
 
         private void UpdateStunState(bool applied)
         {
-            CharacterController.UpdateMovementControl(!applied);
-
             if (applied)
             {
                 SpellCast.Cancel();
@@ -491,19 +497,17 @@ namespace Core
 
         private void UpdateConfusionState(bool applied)
         {
-            CharacterController.UpdateMovementControl(!applied);
-
             if (applied)
             {
                 SetFlag(UnitFlags.Confused);
                 AddState(UnitControlState.Confused);
-                Motion.HandleConfusedMovement(true);
+                Motion.ModifyConfusedMovement(true);
             }
             else
             {
                 RemoveFlag(UnitFlags.Confused);
                 RemoveState(UnitControlState.Confused);
-                Motion.HandleConfusedMovement(false);
+                Motion.ModifyConfusedMovement(false);
             }
         }
     }

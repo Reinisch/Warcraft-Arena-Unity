@@ -16,5 +16,6 @@
         Follow = 12,
         Rotate = 13,
         Knockback = 14,
+        Charge = 15
     }
 }

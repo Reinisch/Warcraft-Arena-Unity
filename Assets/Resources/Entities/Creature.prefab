@@ -162,7 +162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eb07d2c9afffce4b9439c4518121fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   physics: {fileID: 11400000, guid: fc3ecd93c0de16f449cfc6fa9a90cc32, type: 2}
   controllerDefinition: {fileID: 11400000, guid: 58b44ed081fe2bc49ac23003a9c3bfb0,
     type: 2}
@@ -234,7 +233,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 200
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0

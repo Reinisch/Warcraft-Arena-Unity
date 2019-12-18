@@ -25,6 +25,11 @@ namespace Core
         public const int MaxConfusedPath = 30;
         public const int MaxNavMeshSampleRange = 30;
         public const int MaxPointPathLength = 120;
+        public const int PointArrivalRange = 2;
+
+        public const float ChargeRotationSpeed = 360;
+        public const float MoveRotationSpeed = 180;
+
         public static int WalkableAreaMask { get; private set; }
 
         public const float DirectionalMovementThreshold = 0.01f;
