@@ -541,3 +541,7 @@ MonoBehaviour:
     Value: "Makes you invisible and untargetable for {0} sec, removing all threat.
       Any action taken cancels this effect.\r\n\r\nYou take {1}% reduced damage while
       invisible."
+  - StringReference: {fileID: 11400000, guid: 9b95a75a2a5f0d345a8f75deb00073b8, type: 2}
+    Value: Feral Charge
+  - StringReference: {fileID: 11400000, guid: 740b248cca2a70449b4b65bb20fc7028, type: 2}
+    Value: Charge to an enemy, immobilizing them for {0} sec.

@@ -51,7 +51,14 @@ namespace Core
                     return unit.AI.SetDestination(targetPoint);
 
                 NavMeshPath chargePath = new NavMeshPath();
-                if (NavMesh.CalculatePath(unit.Position, targetPoint, MovementUtils.WalkableAreaMask, chargePath))
+                Vector3 startPosition = unit.Position;
+                if (!NavMesh.SamplePosition(startPosition, out NavMeshHit hit, MovementUtils.MaxChargeSampleRange, MovementUtils.WalkableAreaMask))
+                    return false;
+
+                startPosition = hit.position;
+                unit.Position = startPosition;
+
+                if (NavMesh.CalculatePath(startPosition, targetPoint, MovementUtils.WalkableAreaMask, chargePath))
                     return unit.AI.SetPath(chargePath);
 
                 return false;

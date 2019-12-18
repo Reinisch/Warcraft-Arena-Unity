@@ -5,8 +5,6 @@ namespace Core
 {
     public static class MovementUtils
     {
-        public const float SpeedCharge = 42.0f;
-        public const int SplineStepsPerSegment = 3;
         public const int SpellMovementInterruptThreshold = 200;
 
         public const float GridCellSwitchDifference = 1.0f;
@@ -24,6 +22,7 @@ namespace Core
 
         public const int MaxConfusedPath = 30;
         public const int MaxNavMeshSampleRange = 30;
+        public const int MaxChargeSampleRange = 5;
         public const int MaxPointPathLength = 120;
         public const int PointArrivalRange = 2;
 
