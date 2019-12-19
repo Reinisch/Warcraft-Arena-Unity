@@ -15,9 +15,15 @@ namespace Arena.Editor
         {
             bool hasChanged = false;
             foreach (string path in importedAssets)
-                foreach(var asset in AssetDatabase.LoadAllAssetsAtPath(path))
+            {
+                if (path.StartsWith("Assets/Scenes/"))
+                    continue;
+
+                foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(path))
                     if (asset is IScriptablePostProcess postProcessable)
                         hasChanged |= postProcessable.OnPostProcess(false);
+            }
+                
 
             if (HasDeletedPostprocessableAssets)
             {
@@ -36,6 +42,9 @@ namespace Arena.Editor
         [UsedImplicitly]
         private static AssetDeleteResult OnWillDeleteAsset(string path, RemoveAssetOptions removeOptions)
         {
+            if (path.StartsWith("Assets/Scenes/"))
+                return AssetDeleteResult.DidNotDelete;
+
             var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
             if (asset is IScriptablePostProcess postProcessable)
             {

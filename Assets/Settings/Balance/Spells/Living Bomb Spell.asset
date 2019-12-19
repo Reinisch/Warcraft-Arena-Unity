@@ -97,6 +97,8 @@ MonoBehaviour:
     powerCostPercentage: 20
     powerCost: 0
   targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
 --- !u!114 &135374983142573760
 MonoBehaviour:
   m_ObjectHideFlags: 0

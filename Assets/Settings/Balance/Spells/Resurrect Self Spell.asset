@@ -40,9 +40,11 @@ MonoBehaviour:
   speed: 0
   spellEffectInfos:
   - {fileID: 601579479738059981}
-  spellPowerEntries: []
+  spellPowerCostInfos: []
   targetingConditions:
   - {fileID: 11400000, guid: 758926f2ccbcbc94ea545f9c58fb5cbd, type: 2}
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
 --- !u!114 &601579479738059981
 MonoBehaviour:
   m_ObjectHideFlags: 0

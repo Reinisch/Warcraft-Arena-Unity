@@ -917,7 +917,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544741107a2384546a6ad5557a4b090e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  balanceReference: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
   localization: {fileID: 11400000, guid: bc534b915b952ff4c910e58a96b38c6f, type: 2}
   canvasGroup: {fileID: 4404034046614280959}

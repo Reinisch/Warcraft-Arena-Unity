@@ -565,7 +565,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01498666d33da934ab1e3d2cfd7b637c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltipReference: {fileID: 11400000, guid: 5ce31aa931fbf2645ac1cc4c75217d21, type: 2}
   bounds: {fileID: 451688202350500125}
   layoutElement: {fileID: 4869954776702582835}
   rectTransform: {fileID: 451688202208120583}

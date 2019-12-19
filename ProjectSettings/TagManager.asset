@@ -18,6 +18,7 @@ TagManager:
   - Input Field
   - Entity Container
   - Renderer Container
+  - Fire
   layers:
   - Default
   - TransparentFX

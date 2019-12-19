@@ -64,3 +64,5 @@ MonoBehaviour:
     powerCostPercentage: 1
     powerCost: 0
   targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 

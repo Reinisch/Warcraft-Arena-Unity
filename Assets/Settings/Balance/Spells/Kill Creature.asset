@@ -53,6 +53,8 @@ MonoBehaviour:
   speed: 100
   spellEffectInfos:
   - {fileID: -8956066876301066860}
-  spellPowerEntries: []
+  spellPowerCostInfos: []
   targetingConditions:
   - {fileID: 11400000, guid: 1aee7840b345f4140a58d8e51873b9d8, type: 2}
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 

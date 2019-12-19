@@ -57,6 +57,8 @@ MonoBehaviour:
   - {fileID: 7654851986412684219}
   spellPowerCostInfos: []
   targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
 --- !u!114 &3019128723821459948
 MonoBehaviour:
   m_ObjectHideFlags: 0

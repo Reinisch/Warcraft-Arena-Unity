@@ -42,6 +42,8 @@ MonoBehaviour:
   - {fileID: 5110474875710026981}
   spellPowerCostInfos: []
   targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
 --- !u!114 &20027806565487265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,6 +103,7 @@ MonoBehaviour:
   maxEffectiveCharges: 1
   mechanics: 0
   chance: 1
+  chancePerCombo: 0
   isCasterTriggerTarget: 0
   canCasterBeTriggerTarget: 0
   triggeredSpell: {fileID: 11400000, guid: 8d1c97c4f47da2945a545cca57e290cd, type: 2}

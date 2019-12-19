@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   container: {fileID: 11400000, guid: 8d2f6319ee506234797c9f24cb1cad8b, type: 2}
+  isAvailable: 0
   classType: 5
+  powerTypes: []
   classSpells: []

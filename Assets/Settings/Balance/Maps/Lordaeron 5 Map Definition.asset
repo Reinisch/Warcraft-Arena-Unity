@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Lordaeron 5 Map Definition
   m_EditorClassIdentifier: 
   id: 5
+  isAvailable: 0
   mapName: Lordaeron
   maxPlayers: 8
+  maxVisibilityRange: 10
   mapType: 4
   expansion: 1
   slotBackground: {fileID: 21300000, guid: 67bb14f9159484c46970c896f63ed558, type: 3}
