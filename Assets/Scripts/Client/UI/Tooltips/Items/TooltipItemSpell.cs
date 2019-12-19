@@ -31,8 +31,8 @@ namespace Client
 
         public override bool ModifyContent(SpellInfo spellInfo)
         {
-            spellIcon.sprite = rendering.SpellVisualSettingsById.ContainsKey(spellInfo.Id)
-                ? rendering.SpellVisualSettingsById[spellInfo.Id].SpellIcon
+            spellIcon.sprite = rendering.SpellVisuals.ContainsKey(spellInfo.Id)
+                ? rendering.SpellVisuals[spellInfo.Id].SpellIcon
                 : rendering.DefaultSpellIcon;
 
             if (localization.TooltipInfoBySpell.TryGetValue(spellInfo, out SpellTooltipInfo tooltipInfo))

@@ -157,8 +157,8 @@ namespace Client
             {
                 case ButtonContentType.Spell when balance.SpellInfosById.ContainsKey(data.ActionId):
                     spellInfo = balance.SpellInfosById[data.ActionId];
-                    ContentImage.sprite = rendering.SpellVisualSettingsById.ContainsKey(data.ActionId)
-                        ? rendering.SpellVisualSettingsById[data.ActionId].SpellIcon
+                    ContentImage.sprite = rendering.SpellVisuals.ContainsKey(data.ActionId)
+                        ? rendering.SpellVisuals[data.ActionId].SpellIcon
                         : rendering.DefaultSpellIcon;
 
                     ContentImage.enabled = true;

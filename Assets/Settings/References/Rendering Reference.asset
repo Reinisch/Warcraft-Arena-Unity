@@ -44,62 +44,8 @@ MonoBehaviour:
     rendering: {fileID: 11400000}
     unitRendererPrototype: {fileID: 8283757307345493563, guid: dac238eecc77761418818a22bb332b12,
       type: 3}
-  autoIncludedMaterials:
-  - {fileID: 2100000, guid: a2775595ab0f7e64097cc0b46ddecb08, type: 2}
-  - {fileID: 2100000, guid: ef510e38a4d9a7e41bf60650b12b6b6d, type: 2}
-  spellEffectSettings:
-  - {fileID: 11400000, guid: ed368651e4a469a46b66ab2995556266, type: 2}
-  - {fileID: 11400000, guid: ba7a61305c5ca964293ee28932f70564, type: 2}
-  - {fileID: 11400000, guid: 343ed82112bcfa5449de8c04e491f167, type: 2}
-  - {fileID: 11400000, guid: 248314ec8db1fc443ab04d2791ed71b0, type: 2}
-  - {fileID: 11400000, guid: 334b1daef42870940bc59ba8bfa326de, type: 2}
-  - {fileID: 11400000, guid: 3be41a41312d0ff4d85e682954af6d0d, type: 2}
-  - {fileID: 11400000, guid: c9a04cce21c36f74295bf39e533a7769, type: 2}
-  - {fileID: 11400000, guid: 96b164caf819e2149b5d62faa63bd69b, type: 2}
-  - {fileID: 11400000, guid: 33a246ff290203047859532aa9d81303, type: 2}
-  - {fileID: 11400000, guid: 0eda20cc478c81c408ec4a8dd90e5974, type: 2}
-  - {fileID: 11400000, guid: 7c6be8c9491fdb24b8f8f2f3c5e50fd6, type: 2}
-  - {fileID: 11400000, guid: cc29c8cb9590af94399d15bc5b38917a, type: 2}
-  - {fileID: 11400000, guid: 9f8631a0c71ef5b49a8aad690687982d, type: 2}
-  - {fileID: 11400000, guid: 65a13558fa64e07418d2cc0be77f06b6, type: 2}
-  - {fileID: 11400000, guid: 8c45e48ebd14078489c9e58d2b4750e7, type: 2}
-  - {fileID: 11400000, guid: abeaff18fdf983c4e86acfe3153980ed, type: 2}
-  - {fileID: 11400000, guid: 9a8bf2f475500fc40a27a870b88efcd2, type: 2}
-  - {fileID: 11400000, guid: aaff025cfc15284409afe30a634726ca, type: 2}
-  - {fileID: 11400000, guid: 747ceaeb8d396c64580870ffb9af0912, type: 2}
-  - {fileID: 11400000, guid: 1a4fe408f2d48f64c85bccf2e313658d, type: 2}
-  - {fileID: 11400000, guid: 77cb39dc5bbae00448e5d1ff4a815a3e, type: 2}
-  - {fileID: 11400000, guid: 5ad86771674bd2349a48d31a7370f24f, type: 2}
-  - {fileID: 11400000, guid: 8fed2282fbe0ea241aa521dfe7cdfd21, type: 2}
-  - {fileID: 11400000, guid: 0e544c819bf2d5f47a7c756964452c7c, type: 2}
-  - {fileID: 11400000, guid: 74939f623f6cc4d45bb958efcedd2f5f, type: 2}
-  - {fileID: 11400000, guid: fa8a162b7fa44074d97b3b52b0ddbd8e, type: 2}
-  - {fileID: 11400000, guid: 3e70f97bb5d201f4fac273263375064e, type: 2}
-  - {fileID: 11400000, guid: 7402b310fb35dcf4aa6373e0b360436b, type: 2}
-  - {fileID: 11400000, guid: 8bf3b51e429503a4d821bbdf369063a5, type: 2}
-  - {fileID: 11400000, guid: 5213d1acc6a076e429bf52c2e90f56fa, type: 2}
-  - {fileID: 11400000, guid: 3bd59bf6ac14ea24aa573b84ac12ed99, type: 2}
-  - {fileID: 11400000, guid: ac2d7197c4004fd438175d6779b4f761, type: 2}
-  - {fileID: 11400000, guid: 653e53d5c138ac44197634d2252816bb, type: 2}
-  - {fileID: 11400000, guid: 4913df1f870e39f499e9a9a6c981a20f, type: 2}
-  - {fileID: 11400000, guid: 4c84cfd2ca331da4b815e4367049e811, type: 2}
-  - {fileID: 11400000, guid: 4f0dfae1f7f73374ab9ce77f32d5f9cc, type: 2}
-  - {fileID: 11400000, guid: ba9cd31b8f8f37f4fb2231f76edf89bb, type: 2}
-  - {fileID: 11400000, guid: 457cdca5a7bbe324dae6172b5acbb899, type: 2}
-  - {fileID: 11400000, guid: 6e21da076af98b44f9f489e81fa63c9e, type: 2}
-  - {fileID: 11400000, guid: 38a0ef328b60ca64b803034c502fcd6f, type: 2}
-  - {fileID: 11400000, guid: 3ed5388a3f7fd5f44a67c88fb1da0019, type: 2}
-  - {fileID: 11400000, guid: f99c8619d3d2dc546bf19ed57913253b, type: 2}
-  - {fileID: 11400000, guid: f68f54cd5be34c7498b3120a407dba84, type: 2}
-  - {fileID: 11400000, guid: b79ab4d46f0c9174cbf23d26191513ee, type: 2}
-  - {fileID: 11400000, guid: 182873baae973d040ad7f7b96e4d2df0, type: 2}
-  - {fileID: 11400000, guid: 51185c3ec7b89604cbb803852d721168, type: 2}
-  - {fileID: 11400000, guid: 97a7d3b5e3dfaa9449931009218fc6f1, type: 2}
-  - {fileID: 11400000, guid: 80cd145dc2fa13143892fdb8f1cfeb84, type: 2}
-  - {fileID: 11400000, guid: d9743b8209927ab45a2857b0a654b01c, type: 2}
-  - {fileID: 11400000, guid: 4ab2ab8a4542fbe488441895f366a880, type: 2}
-  - {fileID: 11400000, guid: e444c02f9e5c93449aa859e20e47ca2e, type: 2}
-  - {fileID: 11400000, guid: 23bd92933babe0f488d57007253e4916, type: 2}
+  spellVisualsInfoContainer: {fileID: 11400000, guid: f9eef9e1a6ce9ac46a48fd5fbf0430a1,
+    type: 2}
   auraEffectSettings:
   - {fileID: 11400000, guid: ead2673873050dc408333463f7777aea, type: 2}
   - {fileID: 11400000, guid: 7b04a8ab00136244baef722dd95dff46, type: 2}
@@ -194,3 +140,6 @@ MonoBehaviour:
     - key: 3
       value: {r: 0.88235295, g: 0.88235295, b: 0.09803922, a: 1}
     defaultValue: {r: 0.09803922, g: 0.09803922, b: 0.92156863, a: 1}
+  autoIncludedMaterials:
+  - {fileID: 2100000, guid: a2775595ab0f7e64097cc0b46ddecb08, type: 2}
+  - {fileID: 2100000, guid: ef510e38a4d9a7e41bf60650b12b6b6d, type: 2}
