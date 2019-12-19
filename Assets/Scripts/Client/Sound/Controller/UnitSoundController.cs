@@ -20,10 +20,13 @@ namespace Client
 
             if (newModel == null)
                 SoundKit = null;
-            else if (Sound.UnitSoundKitsById.TryGetValue(newModel.Settings.DefaultSoundKit, out UnitSoundKit soundKit))
-                SoundKit = soundKit;
             else
-                Debug.LogError($"Sound kit with id={newModel.Settings.DefaultSoundKit} for model {newModel.name} not found!");
+            {
+                SoundKit = newModel.Settings.SoundKit;
+
+                if (SoundKit == null)
+                    Debug.LogError($"Sound kit for model {newModel.name} not found!");
+            }
         }
 
         public void HandleEmote(EmoteType emoteType)

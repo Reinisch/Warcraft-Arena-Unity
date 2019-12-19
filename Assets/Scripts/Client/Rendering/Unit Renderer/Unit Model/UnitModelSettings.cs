@@ -9,13 +9,13 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private UnitModelSettingsContainer container;
         [SerializeField, UsedImplicitly] private UnitModel prototype;
-        [SerializeField, UsedImplicitly] private int defaultSoundKit;
+        [SerializeField, UsedImplicitly] private UnitSoundKit soundKit;
 
         protected override ScriptableUniqueInfoContainer<UnitModelSettings> Container => container;
         protected override UnitModelSettings Data => this;
 
         public new int Id => base.Id;
-        public int DefaultSoundKit => defaultSoundKit;
+        public UnitSoundKit SoundKit => soundKit;
         public UnitModel Prototype => prototype;
     }
 }

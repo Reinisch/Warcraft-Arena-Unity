@@ -16,4 +16,4 @@ MonoBehaviour:
   container: {fileID: 11400000, guid: dfd880d432e89ef4194ba2772d0fd38a, type: 2}
   prototype: {fileID: 5041366270056931295, guid: bb9d6d01f02588d4ba35394632b87080,
     type: 3}
-  defaultSoundKit: 2
+  soundKit: {fileID: 11400000, guid: 73b246d83425c4b4894fe680143ab86f, type: 2}
