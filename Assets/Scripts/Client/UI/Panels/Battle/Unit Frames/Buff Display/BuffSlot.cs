@@ -39,7 +39,7 @@ namespace Client
                     chargesText.SetCharArray(emptyTimerText, 0, 0);
 
                 canvasGroup.alpha = 1.0f;
-                contentImage.sprite = rendering.AuraVisualSettingsById.TryGetValue(visibleAura.AuraId, out AuraEffectSettings settings)
+                contentImage.sprite = rendering.AuraVisuals.TryGetValue(visibleAura.AuraId, out AuraVisualsInfo settings)
                     ? settings.AuraIcon
                     : rendering.DefaultSpellIcon;
             }

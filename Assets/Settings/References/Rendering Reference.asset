@@ -46,51 +46,8 @@ MonoBehaviour:
       type: 3}
   spellVisualsInfoContainer: {fileID: 11400000, guid: f9eef9e1a6ce9ac46a48fd5fbf0430a1,
     type: 2}
-  auraEffectSettings:
-  - {fileID: 11400000, guid: ead2673873050dc408333463f7777aea, type: 2}
-  - {fileID: 11400000, guid: 7b04a8ab00136244baef722dd95dff46, type: 2}
-  - {fileID: 11400000, guid: 81c714e7642f53944ad5911a9e63b01c, type: 2}
-  - {fileID: 11400000, guid: ddc68973ea3c4644cb68098caa4a237b, type: 2}
-  - {fileID: 11400000, guid: 23ce59855296ac64dac8cfcfd792f968, type: 2}
-  - {fileID: 11400000, guid: 84bec5e5010050f4e82c16c477fa882f, type: 2}
-  - {fileID: 11400000, guid: 9be18eafeb4bdb249a1275730f707c9a, type: 2}
-  - {fileID: 11400000, guid: cc3444a66907f1043b247420ffcadae4, type: 2}
-  - {fileID: 11400000, guid: 145f192aaad9021468c6fad37b2b151a, type: 2}
-  - {fileID: 11400000, guid: c77fb4ece5b1afb4482a5cb1fefc4470, type: 2}
-  - {fileID: 11400000, guid: 510a33cc221896c428fe797563da2895, type: 2}
-  - {fileID: 11400000, guid: 88c4667d724aea7458037b35625665cd, type: 2}
-  - {fileID: 11400000, guid: 1ca83cee00f686240af7f733601b9188, type: 2}
-  - {fileID: 11400000, guid: 4cd63d4fdd232e94b8228c702bb35833, type: 2}
-  - {fileID: 11400000, guid: 0e7c2b7330730e44b948d76d40725cda, type: 2}
-  - {fileID: 11400000, guid: 794cac45ea1ecd44f851dee4f8b996d4, type: 2}
-  - {fileID: 11400000, guid: 5030e184eaf80fe489ea1d343614279f, type: 2}
-  - {fileID: 11400000, guid: b525a010a9ed6f644b7ad85596dd1984, type: 2}
-  - {fileID: 11400000, guid: af1a71306e1559a40bd643fd1a9df752, type: 2}
-  - {fileID: 11400000, guid: 61dc282d524dbcf4b84121c6ef9f03e6, type: 2}
-  - {fileID: 11400000, guid: 16f58d627d524944dba1bfdbd7aab45c, type: 2}
-  - {fileID: 11400000, guid: f2aa37957fca43a449514cff93a8b530, type: 2}
-  - {fileID: 11400000, guid: 61e5b1250a394ef4f828fe788c22187b, type: 2}
-  - {fileID: 11400000, guid: 163fe9eda2d60ef4ab2965e89ce848d7, type: 2}
-  - {fileID: 11400000, guid: 805b8ae403776ff408573ea525354424, type: 2}
-  - {fileID: 11400000, guid: fb0179001492b9e419988cc8bd6c8551, type: 2}
-  - {fileID: 11400000, guid: c21d576dc8a375642bc8f984148f2079, type: 2}
-  - {fileID: 11400000, guid: ad7ed6a148fe079449b8f80942c2b7f2, type: 2}
-  - {fileID: 11400000, guid: 319e609909d58a44ebecf93e0b341fda, type: 2}
-  - {fileID: 11400000, guid: c8a29f15103fd1a4490f77bec7f900ec, type: 2}
-  - {fileID: 11400000, guid: 957403965b9208746a4504c891036eaf, type: 2}
-  - {fileID: 11400000, guid: 4d1584772bf749146b96590fb8624e01, type: 2}
-  - {fileID: 11400000, guid: e52575e9ebb3ac24aa60f12e462ae408, type: 2}
-  - {fileID: 11400000, guid: a8134baba2e76d140a7ba1155848fc11, type: 2}
-  - {fileID: 11400000, guid: eb076ce2bd71ed942b36fbbee8efa684, type: 2}
-  - {fileID: 11400000, guid: 413fb8ab72582e5499db2959bdbe59f0, type: 2}
-  - {fileID: 11400000, guid: 27e37de3e5c990f46a66f7aa056715e1, type: 2}
-  - {fileID: 11400000, guid: a04647f342131e246a411c4dd93ab9e3, type: 2}
-  - {fileID: 11400000, guid: 9b56a2d4685657240bf1451d372ebd5d, type: 2}
-  - {fileID: 11400000, guid: 91fad7393e267b047bd046da437818a0, type: 2}
-  - {fileID: 11400000, guid: 7db0bca94e3966a4fa3a0fe2382dbfe7, type: 2}
-  - {fileID: 11400000, guid: b4ec6f9516f09834fb5f461de531c794, type: 2}
-  - {fileID: 11400000, guid: 0f83bdcca1c61724c80ec4177e4c0b08, type: 2}
-  - {fileID: 11400000, guid: 450fc693f4fa6f949862528a66ce0cf0, type: 2}
+  auraVisualsInfoContainer: {fileID: 11400000, guid: c1560e200585b804db537bff9343feaa,
+    type: 2}
   classIconsByClassType:
     items:
     - classType: 1

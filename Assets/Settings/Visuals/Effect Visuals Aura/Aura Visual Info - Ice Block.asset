@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222690c9ad457d6438993820c9403bb6, type: 3}
+  m_Name: Aura Visual Info - Ice Block
+  m_EditorClassIdentifier: 
+  id: 5
+  container: {fileID: 11400000, guid: c1560e200585b804db537bff9343feaa, type: 2}
+  auraInfo: {fileID: -7965584379151155391, guid: 25bbb982c86480849ae1fecaf6f5651b,
+    type: 2}
+  auraIcon: {fileID: 21300000, guid: 44ac7e9cc2592e54a989d0ae203b29e0, type: 3}
+  tagType: 1
+  effectSettings: {fileID: 11400000, guid: 9edb113349044684e9ea90681d29a5ee, type: 2}
+  keepOriginalRotation: 1
+  preventAnimation: 1

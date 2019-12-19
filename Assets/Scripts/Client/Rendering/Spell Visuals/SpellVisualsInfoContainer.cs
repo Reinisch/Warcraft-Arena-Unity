@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Core
 {
-    [UsedImplicitly, CreateAssetMenu(fileName = "Spell Visuals Settings Container", menuName = "Game Data/Containers/Spell Visuals Info", order = 1)]
+    [UsedImplicitly, CreateAssetMenu(fileName = "Spell Visual Info Container", menuName = "Game Data/Containers/Spell Visual Info", order = 1)]
     public class SpellVisualsInfoContainer : ScriptableUniqueInfoContainer<SpellVisualsInfo>
     {
         [SerializeField, UsedImplicitly] private List<SpellVisualsInfo> visualsInfos;

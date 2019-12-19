@@ -125,7 +125,7 @@ namespace Client
             if (model != null && model.Settings.Id == modelId)
                 return;
 
-            if (rendering.ModelSettingsById.TryGetValue(modelId, out UnitModelSettings newModelSettings))
+            if (rendering.Models.TryGetValue(modelId, out UnitModelSettings newModelSettings))
             {
                 UnitModel newModel = GameObjectPool.Take(newModelSettings.Prototype);
                 var modelInitializer = new UnitModelInitializer

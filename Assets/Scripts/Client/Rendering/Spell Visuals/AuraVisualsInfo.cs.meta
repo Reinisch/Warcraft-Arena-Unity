@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 222690c9ad457d6438993820c9403bb6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - container: {fileID: 11400000, guid: c1560e200585b804db537bff9343feaa, type: 2}
+  - auraInfo: {instanceID: 0}
+  - auraIcon: {instanceID: 0}
+  - effectSettings: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

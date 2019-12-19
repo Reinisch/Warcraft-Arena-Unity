@@ -67,7 +67,7 @@ namespace Client
                 if (effectByAuraId.ContainsKey(visibleAura.AuraId))
                     return;
 
-                if (!unitRenderer.rendering.AuraVisualSettingsById.TryGetValue(visibleAura.AuraId, out AuraEffectSettings settings))
+                if (!unitRenderer.rendering.AuraVisuals.TryGetValue(visibleAura.AuraId, out AuraVisualsInfo settings))
                     return;
 
                 if (settings.PreventAnimation)

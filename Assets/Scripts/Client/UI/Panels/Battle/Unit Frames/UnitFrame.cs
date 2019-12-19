@@ -123,12 +123,12 @@ namespace Client
 
         private void OnUnitDisplayPowerChanged()
         {
-            mainResource.FillImage.color = rendering.ColorsBySpellPowerType.Value(unit.DisplayPowerType);
+            mainResource.FillImage.color = rendering.SpellPowerColors.Value(unit.DisplayPowerType);
         }
 
         private void OnUnitClassChanged()
         {
-            classIcon.sprite = rendering.ClassIconsByClassType.Value(unit.ClassType);
+            classIcon.sprite = rendering.ClassIconSprites.Value(unit.ClassType);
             if (comboFrame != null && balance.ClassesByType.TryGetValue(unit.ClassType, out ClassInfo classInfo))
                 comboFrame.Canvas.enabled = classInfo.HasPower(SpellPowerType.ComboPoints);
         }

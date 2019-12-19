@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222690c9ad457d6438993820c9403bb6, type: 3}
+  m_Name: Aura Visual Info - Thrash
+  m_EditorClassIdentifier: 
+  id: 36
+  container: {fileID: 11400000, guid: c1560e200585b804db537bff9343feaa, type: 2}
+  auraInfo: {fileID: 7433058726513906329, guid: f7af1f693b1cf2947a5ea24a7687c059,
+    type: 2}
+  auraIcon: {fileID: 21300000, guid: 7f40276bbae7bd74d9fc66da33c154e8, type: 3}
+  tagType: 0
+  effectSettings: {fileID: 0}
+  keepOriginalRotation: 0
+  preventAnimation: 0

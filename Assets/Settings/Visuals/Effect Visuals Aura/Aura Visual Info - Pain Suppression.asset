@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222690c9ad457d6438993820c9403bb6, type: 3}
+  m_Name: Aura Visual Info - Pain Suppression
+  m_EditorClassIdentifier: 
+  id: 4
+  container: {fileID: 11400000, guid: c1560e200585b804db537bff9343feaa, type: 2}
+  auraInfo: {fileID: 3934186437152147033, guid: 42c82965d1b8bf444be391adab420016,
+    type: 2}
+  auraIcon: {fileID: 21300000, guid: 6a0ae85df8fc7d545891e747e57984fe, type: 3}
+  tagType: 0
+  effectSettings: {fileID: 0}
+  keepOriginalRotation: 1
+  preventAnimation: 0

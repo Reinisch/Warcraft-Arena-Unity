@@ -24,22 +24,20 @@ namespace Client
         [SerializeField, UsedImplicitly] private UnitRendererController unitRendererController;
         [Header("Collections")]
         [SerializeField, UsedImplicitly] private SpellVisualsInfoContainer spellVisualsInfoContainer;
-        [SerializeField, UsedImplicitly] private List<AuraEffectSettings> auraEffectSettings;
+        [SerializeField, UsedImplicitly] private AuraVisualsInfoContainer auraVisualsInfoContainer;
         [SerializeField, UsedImplicitly] private ClassTypeSpriteDictionary classIconsByClassType;
         [SerializeField, UsedImplicitly] private SpellPowerTypeColorDictionary colorsBySpellPowerType;
         [SerializeField, UsedImplicitly] private List<Material> autoIncludedMaterials;
 
-        private readonly Dictionary<int, AuraEffectSettings> auraVisualSettingsById = new Dictionary<int, AuraEffectSettings>();
-        
         private Transform container;
 
         public Sprite DefaultSpellIcon => defaultSpellIcon;
         public UnitRendererSettings UnitRendererSettings => unitRendererSettings;
         public IReadOnlyDictionary<int, SpellVisualsInfo> SpellVisuals => spellVisualsInfoContainer.SpellVisualsInfosById;
-        public IReadOnlyDictionary<int, AuraEffectSettings> AuraVisualSettingsById => auraVisualSettingsById;
-        public IReadOnlyDictionary<int, UnitModelSettings> ModelSettingsById => modelSettingsContainer.ModelSettingsById;
-        public IReadOnlySerializedDictionary<ClassType, Sprite> ClassIconsByClassType => classIconsByClassType;
-        public IReadOnlySerializedDictionary<SpellPowerType, Color> ColorsBySpellPowerType => colorsBySpellPowerType;
+        public IReadOnlyDictionary<int, AuraVisualsInfo> AuraVisuals => auraVisualsInfoContainer.AuraVisualsInfosById;
+        public IReadOnlyDictionary<int, UnitModelSettings> Models => modelSettingsContainer.ModelSettingsById;
+        public IReadOnlySerializedDictionary<ClassType, Sprite> ClassIconSprites => classIconsByClassType;
+        public IReadOnlySerializedDictionary<SpellPowerType, Color> SpellPowerColors => colorsBySpellPowerType;
 
         protected override void OnRegistered()
         {
@@ -50,14 +48,14 @@ namespace Client
             classIconsByClassType.Register();
             colorsBySpellPowerType.Register();
             modelSettingsContainer.Register();
-            auraEffectSettings.ForEach(visual => auraVisualSettingsById.Add(visual.AuraInfo.Id, visual));
+            auraVisualsInfoContainer.Register();
             spellVisualsInfoContainer.Register();
         }
 
         protected override void OnUnregister()
         {
             spellVisualsInfoContainer.Unregister();
-            auraVisualSettingsById.Clear();
+            auraVisualsInfoContainer.Unregister();
             classIconsByClassType.Unregister();
             colorsBySpellPowerType.Unregister();
             modelSettingsContainer.Unregister();
@@ -211,22 +209,5 @@ namespace Client
         private void RegisterHandler(IUnitRendererHandler unitRendererHandler) => unitRendererController.RegisterHandler(unitRendererHandler);
 
         private void UnregisterHandler(IUnitRendererHandler unitRendererHandler) => unitRendererController.UnregisterHandler(unitRendererHandler);
-
-#if UNITY_EDITOR
-        [ContextMenu("Collect Aura Effects"), UsedImplicitly]
-        private void CollectAuraEffectSettings()
-        {
-            auraEffectSettings.Clear();
-
-            foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{nameof(AuraEffectSettings)}", null))
-                auraEffectSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<AuraEffectSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
-        }
-
-        [ContextMenu("Collect Everything"), UsedImplicitly]
-        private void CollectEverything()
-        {
-            CollectAuraEffectSettings();
-        }
-#endif
     }
 }
