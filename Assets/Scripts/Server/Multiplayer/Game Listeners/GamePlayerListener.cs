@@ -47,6 +47,7 @@ namespace Server
             {
                 PlayerMovementControlChanged movementControlEvent = PlayerMovementControlChanged.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
                 movementControlEvent.PlayerHasControl = hasControl;
+                movementControlEvent.LastServerPosition = player.Position;
                 movementControlEvent.Send();
             }
         }

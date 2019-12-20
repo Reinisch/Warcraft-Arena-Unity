@@ -13,6 +13,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private GroundChecker groundChecker;
 
         private const float IdleGroundDistance = 0.05f;
+        private const int IgnoredFramesAfterControlGained = 10;
 
         private float groundCheckDistance = 0.2f;
         private Vector3 groundNormal = Vector3.up;
@@ -23,6 +24,7 @@ namespace Core
         private IControllerInputProvider defaultInputProvider;
         private bool wasFlying;
         private bool hasGroundHit;
+        private int remoteControlGainFrame;
         private Unit unit;
 
         private bool OnEdge => unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && TouchingGround;
@@ -134,8 +136,12 @@ namespace Core
 
             if (unit.MovementInfo.HasMovementControl && unit.MovementInfo.MoveEntity != null)
             {
-                unit.Position = unit.MovementInfo.MoveEntity.transform.position;
-                unit.Rotation = unit.MovementInfo.MoveEntity.transform.rotation;
+                bool shouldIgnore = BoltNetwork.ServerFrame < remoteControlGainFrame + IgnoredFramesAfterControlGained;
+                if (!shouldIgnore)
+                {
+                    unit.Position = unit.MovementInfo.MoveEntity.transform.position;
+                    unit.Rotation = unit.MovementInfo.MoveEntity.transform.rotation;
+                }
             }
 
             if (unit.MovementInfo.IsMoving)
@@ -156,6 +162,9 @@ namespace Core
 
         internal void UpdateMovementControl(bool hasMovementControl)
         {
+            if (unit.IsOwner && hasMovementControl && !unit.MovementInfo.HasMovementControl)
+                remoteControlGainFrame = BoltNetwork.ServerFrame;
+
             unit.MovementInfo.HasMovementControl = hasMovementControl;
             unit.UpdateSyncTransform(unit.IsOwner || !hasMovementControl);
 

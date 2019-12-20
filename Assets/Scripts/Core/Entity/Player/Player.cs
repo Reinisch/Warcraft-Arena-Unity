@@ -179,6 +179,9 @@ namespace Core
 
         public void Handle(PlayerMovementControlChanged movementControlChangeEvent)
         {
+            if (movementControlChangeEvent.PlayerHasControl)
+                Position = movementControlChangeEvent.LastServerPosition;
+
             CharacterController.UpdateMovementControl(movementControlChangeEvent.PlayerHasControl);
         }
 
