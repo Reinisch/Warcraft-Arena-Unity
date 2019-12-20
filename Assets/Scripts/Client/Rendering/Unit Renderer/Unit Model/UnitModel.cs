@@ -234,9 +234,11 @@ namespace Client
                     Animator.SetFloat("Strafe", resultStrafe);
 
                 if (unitRenderer.Unit.HasMovementFlag(MovementFlags.Forward))
-                    Animator.SetFloat("Forward", 1.0f);
+                    Animator.SetFloat("Forward", Mathf.MoveTowards(Animator.GetFloat("Forward"), 1.0f, 10 * deltaTime));
+                else if (unitRenderer.Unit.HasMovementFlag(MovementFlags.Backward))
+                    Animator.SetFloat("Forward", Mathf.MoveTowards(Animator.GetFloat("Forward"), -1.0f, 10 * deltaTime));
                 else
-                    Animator.SetFloat("Forward", Mathf.Clamp(Animator.GetFloat("Forward") - 10 * deltaTime, 0.0f, 1.0f));
+                    Animator.SetFloat("Forward", Mathf.MoveTowards(Animator.GetFloat("Forward"), 0.0f, 10 * deltaTime));
 
                 if (unitRenderer.Unit.HasMovementFlag(MovementFlags.Forward | MovementFlags.Backward | MovementFlags.StrafeRight | MovementFlags.StrafeLeft))
                     Animator.SetFloat("Speed", 1);

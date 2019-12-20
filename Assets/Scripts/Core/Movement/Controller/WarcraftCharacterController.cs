@@ -52,7 +52,7 @@ namespace Core
 
                 // slow down when moving backward
                 if (inputVelocity.z < 0)
-                    inputVelocity.z *= 0.65f;
+                    inputVelocity *= 0.3f;
 
                 if (shouldJump && unit.IsMovementBlocked)
                     shouldJump = false;

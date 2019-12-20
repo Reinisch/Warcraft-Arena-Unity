@@ -229,6 +229,8 @@ MonoBehaviour:
   forwardParam: Forward
   strafeParam: Strafe
   overrideRotation: 1
+  shouldApplyEvenBackward: 1
+  revertWhenBackward: 1
 --- !u!1 &6148578231299482095
 GameObject:
   m_ObjectHideFlags: 0

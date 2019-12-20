@@ -13,6 +13,8 @@ namespace Client
         [SerializeField, UsedImplicitly] private string forwardParam;
         [SerializeField, UsedImplicitly] private string strafeParam;
         [SerializeField, UsedImplicitly] private bool overrideRotation;
+        [SerializeField, UsedImplicitly] private bool shouldApplyEvenBackward;
+        [SerializeField, UsedImplicitly] private bool revertWhenBackward;
 
         private int strafeHash;
         private int attackHash;
@@ -20,6 +22,7 @@ namespace Client
 
         private float attackValue;
         private float forwardValue;
+        private float rotationValue = 0.5f;
 
         [UsedImplicitly]
         private void Awake()
@@ -37,12 +40,18 @@ namespace Client
 
             float currentValue = targetAnimator.GetFloat(strafeHash);
             bool isAttacking = targetAnimator.GetBool(attackHash);
-            forwardValue = Mathf.MoveTowards(forwardValue, targetAnimator.GetFloat(forwardHash), 5 * Time.deltaTime);
+            forwardValue = targetAnimator.GetFloat(forwardHash);
             attackValue = Mathf.MoveTowards(attackValue, isAttacking ? 1.0f : 0.0f, 10 * Time.deltaTime);
 
-            float rotationValue = Mathf.InverseLerp(parameterRange.x, parameterRange.y, currentValue);
-            Vector3 finalEulerRotation = Vector3.Lerp(-maxRotation, maxRotation, rotationValue) * (1 - forwardValue / 2) * (1 - attackValue / 3);
+            float newRotationValue = forwardValue < 0.0f && !shouldApplyEvenBackward ? 0.5f :
+                Mathf.InverseLerp(parameterRange.x, parameterRange.y, currentValue);
 
+            if (forwardValue < 0.0f && revertWhenBackward)
+                newRotationValue = 1.0f - newRotationValue;
+
+            rotationValue = Mathf.MoveTowards(rotationValue, newRotationValue, 2 * Time.deltaTime);
+
+            Vector3 finalEulerRotation = Vector3.Lerp(-maxRotation, maxRotation, rotationValue) * (1 - Mathf.Abs(forwardValue) / 2) * (1 - attackValue / 3);
             targetBone.localRotation = overrideRotation ? Quaternion.Euler(finalEulerRotation)
                 : targetBone.localRotation * Quaternion.Euler(finalEulerRotation);
         }

@@ -164,11 +164,14 @@ MonoBehaviour:
   targetAnimator: {fileID: 4912303732082699722}
   targetBone: {fileID: 4912303732073137064}
   parameterRange: {x: 0, y: 1}
-  maxRotation: {x: 0, y: 60, z: 0}
+  maxRotation: {x: 0, y: 30, z: 0}
   attackParam: IsInstaCasting
   forwardParam: Forward
   strafeParam: Strafe
   overrideRotation: 0
+  shouldApplyEvenBackward: 0
+  revertWhenBackward: 0
+  debug: 0
 --- !u!114 &3885398980776572891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,11 +187,14 @@ MonoBehaviour:
   targetAnimator: {fileID: 4912303732082699722}
   targetBone: {fileID: 5085787027773180006}
   parameterRange: {x: 0, y: 1}
-  maxRotation: {x: 0, y: 20, z: 0}
+  maxRotation: {x: 0, y: 60, z: 0}
   attackParam: IsInstaCasting
   forwardParam: Forward
   strafeParam: Strafe
   overrideRotation: 1
+  shouldApplyEvenBackward: 1
+  revertWhenBackward: 1
+  debug: 0
 --- !u!1 &4997457317228204756
 GameObject:
   m_ObjectHideFlags: 0
