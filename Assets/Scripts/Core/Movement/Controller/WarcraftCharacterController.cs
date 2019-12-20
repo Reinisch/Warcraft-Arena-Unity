@@ -48,6 +48,8 @@ namespace Core
 
                 inputProvider.PollInput(unit, out inputVelocity, out var inputRotation, out var shouldJump);
 
+                inputVelocity.Normalize();
+
                 if (shouldJump && unit.IsMovementBlocked)
                     shouldJump = false;
 

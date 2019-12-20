@@ -54,16 +54,7 @@ namespace Client
                     expectedVelocity = new Vector3(Input.GetMouseButton(1) ? Input.GetAxis("Horizontal") : 0, 0, Input.GetAxis("Vertical"));
 
                     if (Input.GetMouseButton(0) && Input.GetMouseButton(1) && Mathf.Approximately(Input.GetAxis("Vertical"), 0))
-                        expectedVelocity = new Vector3(expectedVelocity.x, expectedVelocity.y, expectedVelocity.z + 1);
-
-                    if (expectedVelocity.z > 1)
                         expectedVelocity.z = 1;
-
-                    expectedVelocity = new Vector3(expectedVelocity.x - Input.GetAxis("Strafing"), expectedVelocity.y, expectedVelocity.z);
-
-                    // if moving forward and to the side at the same time, compensate for distance
-                    if (Input.GetMouseButton(1) && !Mathf.Approximately(Input.GetAxis("Horizontal"), 0) && !Mathf.Approximately(Input.GetAxis("Vertical"), 0))
-                        expectedVelocity *= 0.7f;
                 }
                 else
                     expectedVelocity = Vector3.zero;
