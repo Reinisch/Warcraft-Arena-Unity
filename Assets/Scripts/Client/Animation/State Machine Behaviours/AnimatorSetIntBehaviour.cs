@@ -29,7 +29,8 @@ namespace Client
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex, AnimatorControllerPlayable controller)
         {
             if (setOnExit)
-                animator.SetInteger(parameterHash, valueOnExit);
+                if (animator.GetCurrentAnimatorStateInfo(layerIndex).shortNameHash != stateInfo.shortNameHash)
+                    animator.SetInteger(parameterHash, valueOnExit);
         }
     }
 }

@@ -33,7 +33,8 @@ namespace Client
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex, AnimatorControllerPlayable controller)
         {
             if (setOnExit)
-                animator.SetBool(parameterHash, valueOnExit);
+                if (animator.GetCurrentAnimatorStateInfo(layerIndex).shortNameHash != stateInfo.shortNameHash)
+                    animator.SetBool(parameterHash, valueOnExit);
         }
 
         public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash, AnimatorControllerPlayable controller)
