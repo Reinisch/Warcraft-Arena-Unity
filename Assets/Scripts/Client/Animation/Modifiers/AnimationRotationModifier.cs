@@ -14,6 +14,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private string strafeParam;
         [SerializeField, UsedImplicitly] private bool overrideRotation;
         [SerializeField, UsedImplicitly] private bool shouldApplyEvenBackward;
+        [SerializeField, UsedImplicitly] private bool shouldApplyOnlyWhenAttacking;
         [SerializeField, UsedImplicitly] private bool revertWhenBackward;
 
         private int strafeHash;
@@ -43,8 +44,14 @@ namespace Client
             forwardValue = targetAnimator.GetFloat(forwardHash);
             attackValue = Mathf.MoveTowards(attackValue, isAttacking ? 1.0f : 0.0f, 10 * Time.deltaTime);
 
-            float newRotationValue = forwardValue < 0.0f && !shouldApplyEvenBackward ? 0.5f :
-                Mathf.InverseLerp(parameterRange.x, parameterRange.y, currentValue);
+            float newRotationValue;
+
+            if (forwardValue < 0.0f && !shouldApplyEvenBackward)
+                newRotationValue = 0.5f;
+            else if (attackValue <= 0.5f && shouldApplyOnlyWhenAttacking)
+                newRotationValue = 0.5f;
+            else
+                newRotationValue = Mathf.InverseLerp(parameterRange.x, parameterRange.y, currentValue);
 
             if (forwardValue < 0.0f && revertWhenBackward)
                 newRotationValue = 1.0f - newRotationValue;
