@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 469b5acc14f4849448e041a0e1209653, type: 3}
-  m_Name: Sound Settings - General UI Events
+  m_Name: Sound Group Settings - Character Sounds
   m_EditorClassIdentifier: 
+  id: 2
+  container: {fileID: 11400000, guid: 8433eabf01cde9547b99caeed3204db0, type: 2}
   volume: 1
-  spatialBlend: 0
+  spatialBlend: 1

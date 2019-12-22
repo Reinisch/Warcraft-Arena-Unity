@@ -7,7 +7,7 @@ namespace Client
     public class SoundEntry : ScriptableObject
     {
         [SerializeField, UsedImplicitly] private SoundReference soundReference;
-        [SerializeField, UsedImplicitly] private SoundSettings settings;
+        [SerializeField, UsedImplicitly] private SoundGroupSettings settings;
         [SerializeField, UsedImplicitly] private AudioClip audioClip;
         [SerializeField, UsedImplicitly, Range(0.0f, 1.0f)] private float volumeModifier = 1.0f;
 

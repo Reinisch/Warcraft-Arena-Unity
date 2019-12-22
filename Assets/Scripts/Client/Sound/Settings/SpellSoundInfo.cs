@@ -16,7 +16,6 @@ namespace Client
         protected override SpellSoundInfo Data => this;
         protected override ScriptableUniqueInfoContainer<SpellSoundInfo> Container => container;
 
-        public new int Id => base.Id;
         public SpellInfo SpellInfo => spellInfo;
 
         public void PlayAtPoint(Vector3 point, SpellSoundEntry.UsageType usageType)
