@@ -9,18 +9,16 @@ namespace Client
     [CreateAssetMenu(fileName = "Sound Reference", menuName = "Game Data/Scriptable/Sound", order = 4)]
     public class SoundReference : ScriptableReferenceClient
     {
-        [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private string soundContainerTag;
+        [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private UnitSoundKitContainer unitSoundKitContainer;
+        [SerializeField, UsedImplicitly] private SpellSoundInfoContainer spellSounds;
         [SerializeField, UsedImplicitly] private UnitSoundEmoteTypeDictionary unitSoundsByEmoteType;
         [SerializeField, UsedImplicitly] private List<SoundSettings> soundSettings;
-        [SerializeField, UsedImplicitly] private List<SpellSoundSettings> spellSettings;
 
         private readonly Dictionary<SoundSettings, AudioSource> sourcesBySettings = new Dictionary<SoundSettings, AudioSource>();
-        private readonly Dictionary<SpellInfo, SpellSoundSettings> spellSettingsByInfo = new Dictionary<SpellInfo, SpellSoundSettings>();
         private Transform soundContainer;
 
-        public IReadOnlyDictionary<int, UnitSoundKit> UnitSoundKitsById => unitSoundKitContainer.SoundKitsById;
         public IReadOnlyDictionary<EmoteType, UnitSounds> UnitSoundByEmoteType => unitSoundsByEmoteType.ValuesByKey;
 
         protected override void OnRegistered()
@@ -30,12 +28,10 @@ namespace Client
             soundContainer = GameObject.FindGameObjectWithTag(soundContainerTag).transform;
 
             unitSoundsByEmoteType.Register();
+            spellSounds.Register();
 
             foreach (var soundSetting in soundSettings)
                 sourcesBySettings[soundSetting] = ApplySettings(new GameObject(soundSetting.name).AddComponent<AudioSource>(), soundSetting);
-
-            foreach (var spellSetting in spellSettings)
-                spellSettingsByInfo[spellSetting.SpellInfo] = spellSetting;
 
             unitSoundKitContainer.Register();
         }
@@ -48,8 +44,9 @@ namespace Client
                 Destroy(soundSourceEntry.Value);
 
             unitSoundsByEmoteType.Unregister();
-            spellSettingsByInfo.Clear();
+            spellSounds.Unregister();
             sourcesBySettings.Clear();
+
             soundContainer = null;
 
             base.OnUnregister();
@@ -78,7 +75,7 @@ namespace Client
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
-            if (spellSettingsByInfo.TryGetValue(spellInfo, out SpellSoundSettings spellSoundSettings))
+            if (spellSounds.SoundInfos.TryGetValue(spellInfo, out SpellSoundInfo spellSoundSettings))
             {
                 if (spellInfo.ExplicitTargetType == SpellExplicitTargetType.Destination)
                     spellSoundSettings.PlayAtPoint(processingToken.Destination, SpellSoundEntry.UsageType.Destination);
@@ -94,7 +91,7 @@ namespace Client
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
-            if (spellSettingsByInfo.TryGetValue(spellInfo, out SpellSoundSettings spellSoundSettings))
+            if (spellSounds.SoundInfos.TryGetValue(spellInfo, out SpellSoundInfo spellSoundSettings))
                 spellSoundSettings.PlayAtPoint(target.Position, SpellSoundEntry.UsageType.Impact);
         }
 
@@ -131,13 +128,9 @@ namespace Client
         private void CollectSettings()
         {
             soundSettings.Clear();
-            spellSettings.Clear();
 
             foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{nameof(SoundSettings)}", null))
                 soundSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<SoundSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
-
-            foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{nameof(SpellSoundSettings)}", null))
-                spellSettings.Add(UnityEditor.AssetDatabase.LoadAssetAtPath<SpellSoundSettings>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid)));
         }
 #endif
     }

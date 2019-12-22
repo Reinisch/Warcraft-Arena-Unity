@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 318dfa57d1dd8824ba577616dcbe7fda, type: 3}
+  m_Name: Spell Sound Info - Maim
+  m_EditorClassIdentifier: 
+  id: 22
+  container: {fileID: 11400000, guid: e491015be414e64429ddcd3681c67c82, type: 2}
+  spellInfo: {fileID: 11400000, guid: ea57ad2ab9fe58b409276f3af38a7468, type: 2}
+  soundEntries:
+  - soundUsageType: 0
+    soundEntry: {fileID: 11400000, guid: ac9c14abf55366f4380da87cc47deaf1, type: 2}
+  - soundUsageType: 2
+    soundEntry: {fileID: 11400000, guid: e4071bac4a23b9349875f9f63f3bfcf3, type: 2}

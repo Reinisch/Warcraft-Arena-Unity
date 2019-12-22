@@ -4,7 +4,7 @@ using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Core
+namespace Client
 {
     [UsedImplicitly, CreateAssetMenu(fileName = "Aura Visual Info Container", menuName = "Game Data/Containers/Aura Visual Info", order = 1)]
     public class AuraVisualsInfoContainer : ScriptableUniqueInfoContainer<AuraVisualsInfo>

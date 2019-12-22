@@ -4,7 +4,7 @@ using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Core
+namespace Client
 {
     [UsedImplicitly, CreateAssetMenu(fileName = "Spell Visual Info Container", menuName = "Game Data/Containers/Spell Visual Info", order = 1)]
     public class SpellVisualsInfoContainer : ScriptableUniqueInfoContainer<SpellVisualsInfo>
