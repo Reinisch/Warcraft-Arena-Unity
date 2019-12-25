@@ -20,8 +20,9 @@ namespace Core
         Ascending = 1 << 9,
         Descending = 1 << 10,
         Flying = 1 << 11,
+        Charging = 1 << 12,
 
-        MaskMoving = Forward | Backward | StrafeLeft | StrafeRight | Falling | Ascending | Descending,
+        MaskMoving = Forward | Backward | StrafeLeft | StrafeRight | Falling | Ascending | Descending | Charging,
         MaskAir = Falling | Ascending | Descending | Flying,
         MaskTurning = TurnLeft | TurnRight,
     }

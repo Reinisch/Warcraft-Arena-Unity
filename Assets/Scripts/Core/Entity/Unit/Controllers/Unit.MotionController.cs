@@ -6,9 +6,6 @@ namespace Core
     {
         internal class MotionController : IUnitBehaviour
         {
-            public bool HasClientLogic => false;
-            public bool HasServerLogic => true;
-
             private Unit unit;
             private int currentMovementIndex;
             private readonly IdleMovement idleMovement = new IdleMovement();
@@ -17,6 +14,11 @@ namespace Core
 
             private MovementGenerator CurrentMovement => movementGenerators[currentMovementIndex];
             private bool CurrentAlreadyStarted => startedMovement[currentMovementIndex];
+
+            internal bool UsesKinematicMovement { get; set; }
+
+            public bool HasClientLogic => false;
+            public bool HasServerLogic => true;
 
             void IUnitBehaviour.DoUpdate(int deltaTime)
             {

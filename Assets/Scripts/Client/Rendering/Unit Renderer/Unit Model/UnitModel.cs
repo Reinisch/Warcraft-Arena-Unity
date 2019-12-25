@@ -219,9 +219,12 @@ namespace Client
                 return;
             }
 
-            if (!unitRenderer.Unit.HasMovementFlag(MovementFlags.Flying))
+            bool isFlying = unitRenderer.Unit.HasMovementFlag(MovementFlags.Flying);
+            bool isCharging = unitRenderer.Unit.HasMovementFlag(MovementFlags.Charging);
+
+            if (!isFlying || isCharging)
             {
-                Animator.SetBool("Grounded", true);
+                Animator.SetBool("Grounded", !isFlying);
 
                 float currentStrafe = Animator.GetFloat("Strafe");
                 float strafeTarget = unitRenderer.Unit.HasMovementFlag(MovementFlags.StrafeLeft) ? 0 :

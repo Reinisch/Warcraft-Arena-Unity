@@ -106,7 +106,7 @@ namespace Core
                 else
                     unit.MovementInfo.RemoveMovementFlag(MovementFlags.Forward);
 
-                if (unit.IsAlive)
+                if (unit.IsAlive && unit.MovementInfo.HasMovementControl)
                     transform.rotation = inputRotation;
             }
         }
@@ -182,7 +182,7 @@ namespace Core
         internal void UpdateRigidbody()
         {
             bool isMovingLocally = IsMovementController;
-            bool isKinematic = !isMovingLocally || unit.AI.NavMeshAgentEnabled;
+            bool isKinematic = !isMovingLocally || unit.AI.NavMeshAgentEnabled || unit.Motion.UsesKinematicMovement;
             unitRigidbody.isKinematic = isKinematic;
             unitRigidbody.useGravity = !isKinematic;
             unitRigidbody.interpolation = unit.IsOwner && unit is Player ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
