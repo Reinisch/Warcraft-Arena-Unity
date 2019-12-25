@@ -23,7 +23,6 @@ namespace Arena.Editor
                     if (asset is IScriptablePostProcess postProcessable)
                         hasChanged |= postProcessable.OnPostProcess(false);
             }
-                
 
             if (HasDeletedPostprocessableAssets)
             {
@@ -45,14 +44,21 @@ namespace Arena.Editor
             if (path.StartsWith("Assets/Scenes/"))
                 return AssetDeleteResult.DidNotDelete;
 
-            var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
-            if (asset is IScriptablePostProcess postProcessable)
-            {
-                ScriptableAssetPostProcessor.HasDeletedPostprocessableAssets = true;
-                postProcessable.OnPostProcess(true);
-            }
+            PostProcessDeletedAsset(AssetDatabase.LoadAssetAtPath<Object>(path));
+
+            foreach (Object subAsset in AssetDatabase.LoadAllAssetRepresentationsAtPath(path))
+                PostProcessDeletedAsset(subAsset);
 
             return AssetDeleteResult.DidNotDelete;
+
+            void PostProcessDeletedAsset(Object asset)
+            {
+                if (asset is IScriptablePostProcess postProcessable)
+                {
+                    ScriptableAssetPostProcessor.HasDeletedPostprocessableAssets = true;
+                    postProcessable.OnPostProcess(true);
+                }
+            }
         }
     }
 }
