@@ -43,6 +43,9 @@ namespace Client
         {
             base.OnRegistered();
 
+            if (!Application.isEditor)
+                autoIncludedMaterials.Clear();
+
             container = GameObject.FindGameObjectWithTag("Renderer Container").transform;
 
             classIconsByClassType.Register();
