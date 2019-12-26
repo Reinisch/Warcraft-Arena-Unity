@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2c4714ebf4c7948b39380ca36fbd21, type: 3}
+  m_Name: Spell Tooltip Info - Skull Bash
+  m_EditorClassIdentifier: 
+  id: 53
+  container: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9, type: 2}
+  spellInfo: {fileID: 11400000, guid: 488cb5803bb3c424db7a4b84d62f6b85, type: 2}
+  spellNameString: {fileID: 11400000, guid: 613cc2af4dda18749b0aad0284ace03e, type: 2}
+  spellDescriptionString: {fileID: 11400000, guid: 6a74594593e868a41885e89b22e810bb,
+    type: 2}
+  argumentSettings:
+  - argumentSource: {fileID: -6880589088688458120, guid: 488cb5803bb3c424db7a4b84d62f6b85,
+      type: 2}
+    argumentType: 0

@@ -555,3 +555,8 @@ MonoBehaviour:
 
 
       Dazed enemies have their speed reduced by {1}%.'
+  - StringReference: {fileID: 11400000, guid: 613cc2af4dda18749b0aad0284ace03e, type: 2}
+    Value: Skull Bash
+  - StringReference: {fileID: 11400000, guid: 6a74594593e868a41885e89b22e810bb, type: 2}
+    Value: You charge and bash the target's skull, interrupting spellcasting and preventing
+      any spell in that school from being cast for {0} sec.

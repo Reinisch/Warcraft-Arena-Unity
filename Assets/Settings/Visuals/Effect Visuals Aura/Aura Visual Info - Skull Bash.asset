@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222690c9ad457d6438993820c9403bb6, type: 3}
+  m_Name: Aura Visual Info - Skull Bash
+  m_EditorClassIdentifier: 
+  id: 46
+  container: {fileID: 11400000, guid: c1560e200585b804db537bff9343feaa, type: 2}
+  auraInfo: {fileID: -6880589088688458120, guid: 488cb5803bb3c424db7a4b84d62f6b85,
+    type: 2}
+  auraIcon: {fileID: 21300000, guid: 5c4f4131a078a6540925a1070f927e20, type: 3}
+  tagType: 0
+  effectSettings: {fileID: 0}
+  keepOriginalRotation: 1
+  preventAnimation: 0
