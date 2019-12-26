@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f2c4714ebf4c7948b39380ca36fbd21, type: 3}
-  m_Name: Spell Tooltip Info - Feral Charge
+  m_Name: Spell Tooltip Info - Wild Charge
   m_EditorClassIdentifier: 
   id: 51
   container: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9, type: 2}
@@ -19,9 +19,9 @@ MonoBehaviour:
   spellDescriptionString: {fileID: 11400000, guid: 740b248cca2a70449b4b65bb20fc7028,
     type: 2}
   argumentSettings:
-  - argumentSource: {fileID: -1726404489335154855, guid: 525d7f48cd85fa342bb7f79a958e6fbd,
+  - argumentSource: {fileID: -2534770172564568557, guid: 525d7f48cd85fa342bb7f79a958e6fbd,
       type: 2}
     argumentType: 0
-  - argumentSource: {fileID: -1783915425456934221, guid: 525d7f48cd85fa342bb7f79a958e6fbd,
+  - argumentSource: {fileID: -1467266495811864682, guid: 525d7f48cd85fa342bb7f79a958e6fbd,
       type: 2}
     argumentType: 1

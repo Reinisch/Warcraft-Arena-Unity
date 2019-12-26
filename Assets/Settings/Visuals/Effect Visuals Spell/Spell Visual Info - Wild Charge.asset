@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ec92025aeeeb7546979c3a55df94061, type: 3}
-  m_Name: Spell Visual Info - Feral Charge
+  m_Name: Spell Visual Info - Wild Charge
   m_EditorClassIdentifier: 
   id: 28
   container: {fileID: 11400000, guid: f9eef9e1a6ce9ac46a48fd5fbf0430a1, type: 2}
