@@ -70,6 +70,14 @@ namespace Arena.Editor
                     foreach ((LocalizedLanguage, LocalizedLanguage.LocalizationEntry) entry in languageEntries)
                         entry.Item2.Value = englishEntry.Item2.Value;
             }
+
+            if (GUILayout.Button("Save Changes"))
+            {
+                foreach (LocalizedLanguage language in Resources.LoadAll<LocalizedLanguage>("Languages/"))
+                    EditorUtility.SetDirty(language.gameObject);
+
+                AssetDatabase.SaveAssets();
+            }
         }
     }
 }
