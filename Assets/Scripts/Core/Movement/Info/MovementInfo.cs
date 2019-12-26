@@ -30,6 +30,13 @@
             UnitState = null;
         }
 
+        public void OverrideMovementFlags(MovementFlags flags)
+        {
+            Flags = flags;
+
+            UpdateMovementState();
+        }
+
         public void AddMovementFlag(MovementFlags flag)
         {
             Flags |= flag;

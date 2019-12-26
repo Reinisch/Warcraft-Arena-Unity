@@ -180,7 +180,10 @@ namespace Core
         public void Handle(PlayerMovementControlChanged movementControlChangeEvent)
         {
             if (movementControlChangeEvent.PlayerHasControl)
+            {
                 Position = movementControlChangeEvent.LastServerPosition;
+                MovementInfo.OverrideMovementFlags((MovementFlags)movementControlChangeEvent.LastServerMovementFlags);
+            }
 
             CharacterController.UpdateMovementControl(movementControlChangeEvent.PlayerHasControl);
         }
