@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System;
+using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -7,11 +8,20 @@ namespace Core
     [UsedImplicitly, CreateAssetMenu(fileName = "Effect Charge Target", menuName = "Game Data/Spells/Effects/Charge Target", order = 1)]
     public class EffectChargeTarget : SpellEffectInfo
     {
+        public enum Kind
+        {
+            Charge,
+            Pounce
+        }
+
         [Header("Charge Target")]
         [SerializeField, UsedImplicitly]
         private float chargeSpeed;
+        [SerializeField, UsedImplicitly]
+        private Kind kind = Kind.Charge;
 
         public float ChargeSpeed => chargeSpeed;
+        public Kind ChargeKind => kind;
 
         public override float Value => 1.0f;
         public override SpellEffectType EffectType => SpellEffectType.Charge;
@@ -43,7 +53,17 @@ namespace Core
                     return;
             }
 
-            Caster.Motion.StartChargingMovement(chargePoint, effect.ChargeSpeed);
+            switch (effect.ChargeKind)
+            {
+                case Core.EffectChargeTarget.Kind.Charge:
+                    Caster.Motion.StartChargingMovement(chargePoint, effect.ChargeSpeed);
+                    break;
+                case Core.EffectChargeTarget.Kind.Pounce:
+                    Caster.Motion.StartPounceMovement(chargePoint, effect.ChargeSpeed);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

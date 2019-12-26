@@ -548,3 +548,10 @@ MonoBehaviour:
 
 
       Encreases energy by {1}.'
+  - StringReference: {fileID: 11400000, guid: 3a8b9e4e870e99648a32a2e1c96a056a, type: 2}
+    Value: Feral Leap
+  - StringReference: {fileID: 11400000, guid: c18e51b0f1eccc24ca749dcc76da6e6a, type: 2}
+    Value: 'Causes you to leap behind an enemy, dazing them for {0} sec.
+
+
+      Dazed enemies have their speed reduced by {1}%.'

@@ -57,6 +57,11 @@ namespace Core
                 StartMovement(new ChargeMovement(chargePoint, chargeSpeed), MovementSlot.Controlled);
             }
 
+            public void StartPounceMovement(Vector3 pouncePoint, float pounceSpeed)
+            {
+                StartMovement(new PounceMovement(pouncePoint, pounceSpeed), MovementSlot.Controlled);
+            }
+
             private void StartMovement(MovementGenerator movement, MovementSlot newMovementSlot)
             {
                 int newMovementIndex = (int)newMovementSlot;
