@@ -13,7 +13,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private bool saveChanges;
         [SerializeField, UsedImplicitly] private int actionBarSlot;
         [SerializeField, UsedImplicitly] private ClassType classType;
-        [SerializeField, UsedImplicitly] private List<ActionButtonData> buttons = new List<ActionButtonData>();
+        [SerializeField, UsedImplicitly] private List<SpellInfo> defaultPresets = new List<SpellInfo>();
 
         private readonly ActionBarData activePreset = new ActionBarData();
         private string PlayerPrefsString => $"{nameof(ActionBarSettings)}#{Id}";
@@ -27,12 +27,25 @@ namespace Client
         {
             base.OnRegister();
 
+            bool loadedFromPrefs = false;
             if (saveChanges)
-                JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(PlayerPrefsString, string.Empty), activePreset);
+            {
+                string activePresetJson = PlayerPrefs.GetString(PlayerPrefsString, string.Empty);
+                if (activePresetJson != string.Empty)
+                {
+                    JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(PlayerPrefsString, string.Empty), activePreset);
+                    loadedFromPrefs = true;
+                }
+            }
 
             for (int i = 0; i < InputUtils.ActionBarSlotCount; i++)
                 if (i >= activePreset.Buttons.Count)
-                    activePreset.Buttons.Add(i < buttons.Count ? buttons[i] : new ActionButtonData());
+                    activePreset.Buttons.Add(new ActionButtonData());
+            
+            if (!loadedFromPrefs)
+                for (int i = 0; i < InputUtils.ActionBarSlotCount && i < defaultPresets.Count; i++)
+                    if (defaultPresets[i] != null)
+                        activePreset.Buttons[i].Modify(defaultPresets[i]);
         }
 
         protected override void OnUnregister()

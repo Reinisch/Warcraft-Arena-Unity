@@ -17,32 +17,18 @@ MonoBehaviour:
   saveChanges: 0
   actionBarSlot: 4
   classType: 8
-  buttons:
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
-  - actionId: 62
-    actionType: 0
+  defaultPresets:
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}
+  - {fileID: 11400000, guid: bbff32fcbcc7f1e49936fa0cc3459ed8, type: 2}

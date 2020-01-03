@@ -1,4 +1,5 @@
 ﻿using System;
+using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -22,6 +23,8 @@ namespace Client
         public void Reset() => Modify(0, ButtonContentType.Empty);
 
         public void Modify(ActionButtonData other) => Modify(other.ActionId, other.ActionType);
+
+        public void Modify(SpellInfo spellInfo) => Modify(spellInfo.Id, ButtonContentType.Spell);
 
         public void Modify(int actionId, ButtonContentType actionType)
         {

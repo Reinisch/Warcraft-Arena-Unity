@@ -17,32 +17,18 @@ MonoBehaviour:
   saveChanges: 0
   actionBarSlot: 1
   classType: 11
-  buttons:
-  - actionId: 37
-    actionType: 0
-  - actionId: 46
-    actionType: 0
-  - actionId: 39
-    actionType: 0
-  - actionId: 38
-    actionType: 0
-  - actionId: 47
-    actionType: 0
-  - actionId: 40
-    actionType: 0
-  - actionId: 42
-    actionType: 0
-  - actionId: 48
-    actionType: 0
-  - actionId: 65
-    actionType: 0
-  - actionId: 63
-    actionType: 0
-  - actionId: 55
-    actionType: 0
-  - actionId: 64
-    actionType: 0
-  - actionId: 36
-    actionType: 0
-  - actionId: 3
-    actionType: 0
+  defaultPresets:
+  - {fileID: 11400000, guid: 3c8635791c95b6b4d95cdb9b8384b4ee, type: 2}
+  - {fileID: 11400000, guid: 179db410e6fa528459c2522702494844, type: 2}
+  - {fileID: 11400000, guid: 9add088008795ad45bf49077c58002df, type: 2}
+  - {fileID: 11400000, guid: 0fcbec3231a266244bb039eaa2ac68cf, type: 2}
+  - {fileID: 11400000, guid: ea57ad2ab9fe58b409276f3af38a7468, type: 2}
+  - {fileID: 11400000, guid: c6dd6fcb1014f2f4287eb92fcb1f64b1, type: 2}
+  - {fileID: 11400000, guid: 2a8e172f376fd984ea1c705663775810, type: 2}
+  - {fileID: 11400000, guid: e4ffcafee0c31aa499c805b395c97da8, type: 2}
+  - {fileID: 11400000, guid: 488cb5803bb3c424db7a4b84d62f6b85, type: 2}
+  - {fileID: 11400000, guid: 525d7f48cd85fa342bb7f79a958e6fbd, type: 2}
+  - {fileID: 11400000, guid: f2ac1a8d65c07f340b746a08f42fe7c6, type: 2}
+  - {fileID: 11400000, guid: 840d9016ec276044b92cebc59468584c, type: 2}
+  - {fileID: 11400000, guid: 538f0ebabddb24e4b9d040eddae5d6d7, type: 2}
+  - {fileID: 11400000, guid: 1260b6b3e47f7ff4ead8ab59f5fdae56, type: 2}
