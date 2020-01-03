@@ -62,11 +62,11 @@ namespace Core
             else
                 targetPosition = targetPosition - Vector3.up * topCheck * 2f;
 
-            if (target is Player player && !player.IsController && player.MovementInfo.HasMovementControl)
+            if (target is Player player && !player.IsController && player.Motion.HasMovementControl)
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, player, targetPosition);
             else
             {
-                target.MovementInfo.RemoveMovementFlag(MovementFlags.Ascending);
+                target.SetMovementFlag(MovementFlags.Ascending, false);
                 target.transform.position = targetPosition;
             }
         }

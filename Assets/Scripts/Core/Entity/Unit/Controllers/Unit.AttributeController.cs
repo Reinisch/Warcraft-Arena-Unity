@@ -179,7 +179,7 @@ namespace Core
 
             void IUnitBehaviour.DoUpdate(int deltaTime)
             {
-                if (EmoteType != EmoteType.None && EmoteType.IsState() && unit.MovementInfo.IsMoving)
+                if (EmoteType != EmoteType.None && EmoteType.IsState() && unit.Motion.IsMoving)
                     if (BoltNetwork.ServerFrame - unit.entityState.EmoteFrame > UnitUtils.EmoteStateMovementFrameThreshold)
                         unit.ModifyEmoteState(EmoteType.None);
 

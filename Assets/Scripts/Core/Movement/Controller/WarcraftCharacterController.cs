@@ -13,7 +13,6 @@ namespace Core
         [SerializeField, UsedImplicitly] private GroundChecker groundChecker;
 
         private const float IdleGroundDistance = 0.05f;
-        private const int IgnoredFramesAfterControlGained = 10;
 
         private float groundCheckDistance = 0.2f;
         private Vector3 groundNormal = Vector3.up;
@@ -24,27 +23,25 @@ namespace Core
         private IControllerInputProvider defaultInputProvider;
         private bool wasFlying;
         private bool hasGroundHit;
-        private int remoteControlGainFrame;
         private Unit unit;
 
-        private bool OnEdge => unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && TouchingGround;
+        private bool OnEdge => unit.HasMovementFlag(MovementFlags.Flying) && TouchingGround;
         private bool TooSteep => groundNormal.y <= Mathf.Cos(45 * Mathf.Deg2Rad);
         private bool TouchingGround => groundChecker.GroundCollisions > 0;
-        private bool IsMovementController => unit.MovementInfo.HasMovementControl ? unit.IsController : unit.IsOwner;
+        private bool IsMovementController => unit.Motion.HasMovementControl ? unit.IsController : unit.IsOwner;
 
         internal IControllerInputProvider InputProvider { set => currentInputProvider = value; }
 
         internal PlayerControllerDefinition Definition => controllerDefinition;
 
         public bool HasClientLogic => true;
-
         public bool HasServerLogic => true;
 
         void IUnitBehaviour.DoUpdate(int deltaTime)
         {
             if (IsMovementController)
             {
-                IControllerInputProvider inputProvider = unit.MovementInfo.HasMovementControl
+                IControllerInputProvider inputProvider = unit.Motion.HasMovementControl
                     ? currentInputProvider ?? defaultInputProvider
                     : defaultInputProvider;
 
@@ -63,14 +60,14 @@ namespace Core
 
                 if (!unit.IsAlive)
                     inputVelocity = Vector3.zero;
-                else if (!unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
+                else if (!unit.HasMovementFlag(MovementFlags.Flying))
                 {
                     // check roots and apply final move speed
                     inputVelocity *= unit.IsMovementBlocked ? 0 : unit.RunSpeed;
 
                     if (shouldJump)
                     {
-                        unit.MovementInfo.Jumping = true;
+                        unit.Motion.Jumping = true;
                         inputVelocity = new Vector3(inputVelocity.x, controllerDefinition.JumpSpeed, inputVelocity.z);
                     }
 
@@ -85,28 +82,21 @@ namespace Core
 
                 if (movingRight)
                 {
-                    unit.MovementInfo.RemoveMovementFlag(MovementFlags.StrafeLeft);
-                    unit.MovementInfo.AddMovementFlag(MovementFlags.StrafeRight);
+                    unit.SetMovementFlag(MovementFlags.StrafeLeft, false);
+                    unit.SetMovementFlag(MovementFlags.StrafeRight, true);
                 }
                 else if (movingLeft)
                 {
-                    unit.MovementInfo.RemoveMovementFlag(MovementFlags.StrafeRight);
-                    unit.MovementInfo.AddMovementFlag(MovementFlags.StrafeLeft);
+                    unit.SetMovementFlag(MovementFlags.StrafeRight, false);
+                    unit.SetMovementFlag(MovementFlags.StrafeLeft, true);
                 }
                 else
-                    unit.MovementInfo.RemoveMovementFlag(MovementFlags.StrafeRight | MovementFlags.StrafeLeft);
+                    unit.SetMovementFlag(MovementFlags.StrafeRight | MovementFlags.StrafeLeft, false);
 
-                if (rawInputVelocity.z < 0)
-                    unit.MovementInfo.AddMovementFlag(MovementFlags.Backward);
-                else
-                    unit.MovementInfo.RemoveMovementFlag(MovementFlags.Backward);
+                unit.SetMovementFlag(MovementFlags.Backward, rawInputVelocity.z < 0);
+                unit.SetMovementFlag(MovementFlags.Forward, rawInputVelocity.z > 0);
 
-                if (rawInputVelocity.z > 0)
-                    unit.MovementInfo.AddMovementFlag(MovementFlags.Forward);
-                else
-                    unit.MovementInfo.RemoveMovementFlag(MovementFlags.Forward);
-
-                if (unit.IsAlive && unit.MovementInfo.HasMovementControl)
+                if (unit.IsAlive && unit.Motion.HasMovementControl)
                     transform.rotation = inputRotation;
             }
         }
@@ -131,41 +121,23 @@ namespace Core
 
         public override void SimulateOwner()
         {
-            if (!unit.IsController && !unit.MovementInfo.HasMovementControl || unit.IsController)
+            if (!unit.IsController && !unit.Motion.HasMovementControl || unit.IsController)
                 ProcessMovement();
 
-            if (unit.MovementInfo.HasMovementControl && unit.MovementInfo.MoveEntity != null)
-            {
-                bool shouldIgnore = BoltNetwork.ServerFrame < remoteControlGainFrame + IgnoredFramesAfterControlGained;
-                if (!shouldIgnore)
-                {
-                    unit.Position = unit.MovementInfo.MoveEntity.transform.position;
-                    unit.Rotation = unit.MovementInfo.MoveEntity.transform.rotation;
-                }
-            }
-
-            if (unit.MovementInfo.IsMoving)
-                unit.IsVisibilityChanged = true;
+            unit.Motion.SimulateOwner();
         }
 
         public override void SimulateController()
         {
-            if (!unit.IsOwner && unit.MovementInfo.MoveEntity != null)
-            {
-                unit.MovementInfo.MoveEntity.transform.position = unit.Position;
-                unit.MovementInfo.MoveEntity.transform.rotation = unit.Rotation;
-            }
+            unit.Motion.SimulateController();
 
-            if (!unit.IsOwner && unit.MovementInfo.HasMovementControl)
+            if (!unit.IsOwner && unit.Motion.HasMovementControl)
                 ProcessMovement();
         }
 
         internal void UpdateMovementControl(bool hasMovementControl)
         {
-            if (unit.IsOwner && hasMovementControl && !unit.MovementInfo.HasMovementControl)
-                remoteControlGainFrame = BoltNetwork.ServerFrame;
-
-            unit.MovementInfo.HasMovementControl = hasMovementControl;
+            unit.Motion.UpdateMovementControl(hasMovementControl);
             unit.UpdateSyncTransform(unit.IsOwner || !hasMovementControl);
 
             UpdateRigidbody();
@@ -193,21 +165,21 @@ namespace Core
             unit.UnitCollider.radius = 0.2f;
             hasGroundHit = IsTouchingGround(out lastGroundHitInfo);
 
-            if (unit.MovementInfo.HasMovementFlag(MovementFlags.Ascending) && unitRigidbody.velocity.y <= 0)
+            if (unit.HasMovementFlag(MovementFlags.Ascending) && unitRigidbody.velocity.y <= 0)
             {
-                unit.MovementInfo.RemoveMovementFlag(MovementFlags.Ascending);
-                unit.MovementInfo.AddMovementFlag(MovementFlags.Descending);
+                unit.SetMovementFlag(MovementFlags.Ascending, false);
+                unit.SetMovementFlag(MovementFlags.Descending, true);
             }
 
-            if (unit.MovementInfo.Jumping)
+            if (unit.Motion.Jumping)
             {
                 unitRigidbody.velocity = inputVelocity;
                 groundCheckDistance = 0.05f;
-                unit.MovementInfo.AddMovementFlag(MovementFlags.Ascending);
-                unit.MovementInfo.AddMovementFlag(MovementFlags.Flying);
-                unit.MovementInfo.Jumping = false;
+                unit.SetMovementFlag(MovementFlags.Ascending, true);
+                unit.SetMovementFlag(MovementFlags.Flying, true);
+                unit.Motion.Jumping = false;
             }
-            else if (!unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
+            else if (!unit.HasMovementFlag(MovementFlags.Flying))
             {
                 unitRigidbody.velocity = new Vector3(inputVelocity.x, unitRigidbody.velocity.y, inputVelocity.z);
 
@@ -222,20 +194,20 @@ namespace Core
 
             ProcessGroundState();
 
-            if (unit.SlowFallSpeed != 0 && unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && unitRigidbody.velocity.y < -unit.SlowFallSpeed)
+            if (unit.SlowFallSpeed != 0 && unit.HasMovementFlag(MovementFlags.Flying) && unitRigidbody.velocity.y < -unit.SlowFallSpeed)
                 unitRigidbody.velocity = new Vector3(unitRigidbody.velocity.x, -unit.SlowFallSpeed, unitRigidbody.velocity.z);
 
             void ProcessGroundState()
             {
-                wasFlying = unit.MovementInfo.HasMovementFlag(MovementFlags.Flying);
+                wasFlying = unit.HasMovementFlag(MovementFlags.Flying);
 
-                if (!unit.MovementInfo.HasMovementFlag(MovementFlags.Ascending) && hasGroundHit)
+                if (!unit.HasMovementFlag(MovementFlags.Ascending) && hasGroundHit)
                 {
                     var distanceToGround = lastGroundHitInfo.distance;
 
                     if (distanceToGround > unit.UnitCollider.bounds.extents.y + groundCheckDistance)
                     {
-                        if (!unit.MovementInfo.HasMovementFlag(MovementFlags.Flying) && inputVelocity.y <= 0)
+                        if (!unit.HasMovementFlag(MovementFlags.Flying) && inputVelocity.y <= 0)
                         {
                             unitRigidbody.AddForce(Vector3.down * unitRigidbody.velocity.magnitude, ForceMode.VelocityChange);
                             groundNormal = lastGroundHitInfo.normal;
@@ -243,26 +215,26 @@ namespace Core
                         else
                         {
                             groundNormal = Vector3.up;
-                            if (unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
+                            if (unit.HasMovementFlag(MovementFlags.Flying))
                             {
-                                unit.MovementInfo.RemoveMovementFlag(MovementFlags.Flying);
-                                unit.MovementInfo.RemoveMovementFlag(MovementFlags.Descending);
+                                unit.SetMovementFlag(MovementFlags.Flying, false);
+                                unit.SetMovementFlag(MovementFlags.Descending, false);
                             }
                         }
                     }
                     else
                     {
                         groundNormal = lastGroundHitInfo.normal;
-                        if (unit.MovementInfo.HasMovementFlag(MovementFlags.Flying))
+                        if (unit.HasMovementFlag(MovementFlags.Flying))
                         {
-                            unit.MovementInfo.RemoveMovementFlag(MovementFlags.Flying);
-                            unit.MovementInfo.RemoveMovementFlag(MovementFlags.Descending);
+                            unit.SetMovementFlag(MovementFlags.Flying, false);
+                            unit.SetMovementFlag(MovementFlags.Descending, false);
                         }
                     }
                 }
                 else
                 {
-                    unit.MovementInfo.AddMovementFlag(MovementFlags.Flying);
+                    unit.SetMovementFlag(MovementFlags.Flying, true);
                     groundNormal = Vector3.up;
                     Mathf.Asin(Vector3.up.y);
                 }
@@ -277,7 +249,7 @@ namespace Core
                     unit.UnitCollider.material = physics.GroundedMaterial;
 
                     bool farFromGround = !hasGroundHit || Mathf.Abs(unit.UnitCollider.bounds.center.y - lastGroundHitInfo.point.y - unit.UnitCollider.bounds.extents.y) > IdleGroundDistance;
-                    bool inNonGroundedState = !TouchingGround || unit.MovementInfo.HasMovementFlag(MovementFlags.MaskAir);
+                    bool inNonGroundedState = !TouchingGround || unit.HasMovementFlag(MovementFlags.MaskAir);
                     unitRigidbody.useGravity = farFromGround || inNonGroundedState;
                 }
             }

@@ -67,7 +67,7 @@ namespace Core
             if (unit.HasAnyState(UnitControlState.Root | UnitControlState.Stunned | UnitControlState.Distracted))
             {
                 unit.AI.NextPosition = unit.Position;
-                unit.MovementInfo.RemoveMovementFlag(MovementFlags.MaskMoving);
+                unit.SetMovementFlag(MovementFlags.MaskMoving, false);
                 return false;
             }
 
@@ -78,7 +78,7 @@ namespace Core
                 return false;
 
             unit.Position = unit.AI.NextPosition;
-            unit.MovementInfo.SetMovementFlag(MovementFlags.Forward, true);
+            unit.SetMovementFlag(MovementFlags.Forward, true);
 
             return unit.AI.RemainingDistance > MovementUtils.PointArrivalRange;
         }

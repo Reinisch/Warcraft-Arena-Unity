@@ -45,7 +45,7 @@ namespace Core
 
             spellManager = caster.World.SpellManager;
             spellValue.CastFlags = options.SpellFlags;
-            casterMovementFlags = options.MovementFlags ?? caster.MovementInfo.Flags;
+            casterMovementFlags = options.MovementFlags ?? caster.Motion.MovementFlags;
             SchoolMask = info.SchoolMask;
 
             CastTime = CastTimeLeft = EffectDamage = EffectHealing = 0;
@@ -119,7 +119,7 @@ namespace Core
                     }
 
                     bool mayBeInterruptedByMove = CastTime - CastTimeLeft > MovementUtils.SpellMovementInterruptThreshold;
-                    if (mayBeInterruptedByMove && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.MovementInfo.IsMoving)
+                    if (mayBeInterruptedByMove && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.Motion.IsMoving)
                     {
                         Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
                         Cancel();

@@ -63,7 +63,6 @@ namespace Core
         internal VisibilityController Visibility { get; } = new VisibilityController();
         internal SpellController PlayerSpells { get; } = new SpellController();
         internal ClassInfo CurrentClass { get; private set; }
-        internal new PlayerMovementInfo MovementInfo { get; private set; }
 
         internal bool IsLocalServerPlayer => IsOwner && IsController;
         internal PlayerAI PlayerAI => playerAI;
@@ -95,8 +94,6 @@ namespace Core
             createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
 
-            MovementInfo = (PlayerMovementInfo)base.MovementInfo;
-
             HandleClassChange(ClassType, false);
             HandleStateCallbacks(true);
         }
@@ -107,7 +104,6 @@ namespace Core
 
             createToken = null;
             playerState = null;
-            MovementInfo = null;
 
             base.HandleDetach();
         }
@@ -123,7 +119,7 @@ namespace Core
                 localClientMoveState.SetScope(BoltNetwork.Server, true);
                 localClientMoveState.AssignControl(BoltNetwork.Server);
 
-                MovementInfo.AttachMoveState(localClientMoveState);
+                Motion.AttachMoveState(localClientMoveState);
             }
 
             if (BoltEntity.ControlGainedToken is ControlGainToken controlGainToken)
@@ -132,12 +128,10 @@ namespace Core
 
         protected override void HandleControlLost()
         {
-            MovementInfo.DetachMoveState(true);
+            Motion.DetachMoveState(true);
 
             base.HandleControlLost();
         }
-
-        protected override MovementInfo CreateMovementInfo(IUnitState unitState) => new PlayerMovementInfo(this, unitState);
 
         protected override void AddBehaviours(BehaviourController unitBehaviourController)
         {
@@ -157,7 +151,7 @@ namespace Core
         public void Handle(SpellPlayerTeleportEvent teleportEvent)
         {
             Position = teleportEvent.TargetPosition;
-            MovementInfo.RemoveMovementFlag(MovementFlags.Ascending);
+            SetMovementFlag(MovementFlags.Ascending, false);
         }
 
         public void Handle(PlayerSpeedRateChangedEvent speedChangeEvent)
@@ -182,7 +176,7 @@ namespace Core
             if (movementControlChangeEvent.PlayerHasControl)
             {
                 Position = movementControlChangeEvent.LastServerPosition;
-                MovementInfo.OverrideMovementFlags((MovementFlags)movementControlChangeEvent.LastServerMovementFlags);
+                Motion.OverrideMovementFlags((MovementFlags)movementControlChangeEvent.LastServerMovementFlags);
             }
 
             CharacterController.UpdateMovementControl(movementControlChangeEvent.PlayerHasControl);
@@ -200,7 +194,7 @@ namespace Core
 
         internal void AssignControl(BoltConnection boltConnection = null)
         {
-            var controlToken = new ControlGainToken { HasMovementControl = MovementInfo.HasMovementControl };
+            var controlToken = new ControlGainToken { HasMovementControl = Motion.HasMovementControl };
             if (boltConnection == null)
                 BoltEntity.TakeControl(controlToken);
             else

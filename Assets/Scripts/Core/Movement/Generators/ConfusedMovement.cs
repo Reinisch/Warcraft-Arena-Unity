@@ -44,16 +44,16 @@ namespace Core
             if (cantMove)
             {
                 unit.AI.NextPosition = unit.Position;
-                unit.MovementInfo.RemoveMovementFlag(MovementFlags.MaskMoving);
+                unit.SetMovementFlag(MovementFlags.MaskMoving, false);
             }
             else if (unit.AI.HasPath)
             {
                 Vector3 localDirection = unit.transform.TransformDirection(unit.AI.NextPosition - unit.Position);
 
-                unit.MovementInfo.SetMovementFlag(MovementFlags.Forward, localDirection.z > MovementUtils.DirectionalMovementThreshold);
-                unit.MovementInfo.SetMovementFlag(MovementFlags.Backward, localDirection.z < -MovementUtils.DirectionalMovementThreshold);
-                unit.MovementInfo.SetMovementFlag(MovementFlags.StrafeLeft, localDirection.x < -MovementUtils.DirectionalMovementThreshold);
-                unit.MovementInfo.SetMovementFlag(MovementFlags.StrafeRight, localDirection.x > MovementUtils.DirectionalMovementThreshold);
+                unit.SetMovementFlag(MovementFlags.Forward, localDirection.z > MovementUtils.DirectionalMovementThreshold);
+                unit.SetMovementFlag(MovementFlags.Backward, localDirection.z < -MovementUtils.DirectionalMovementThreshold);
+                unit.SetMovementFlag(MovementFlags.StrafeLeft, localDirection.x < -MovementUtils.DirectionalMovementThreshold);
+                unit.SetMovementFlag(MovementFlags.StrafeRight, localDirection.x > MovementUtils.DirectionalMovementThreshold);
 
                 unit.Position = unit.AI.NextPosition;
             }

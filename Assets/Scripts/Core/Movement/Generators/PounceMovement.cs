@@ -33,16 +33,15 @@ namespace Core
 
             unit.Rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(targetPoint - unit.Position, Vector3.up));
 
-            unit.MovementInfo.SetMovementFlag(MovementFlags.StrafeLeft, false);
-            unit.MovementInfo.SetMovementFlag(MovementFlags.StrafeRight, false);
-            unit.MovementInfo.SetMovementFlag(MovementFlags.Flying, true);
-            unit.MovementInfo.SetMovementFlag(MovementFlags.Charging, true);
+            unit.SetMovementFlag(MovementFlags.StrafeLeft, false);
+            unit.SetMovementFlag(MovementFlags.StrafeRight, false);
+            unit.SetMovementFlag(MovementFlags.Flying, true);
+            unit.SetMovementFlag(MovementFlags.Charging, true);
         }
 
         public override void Finish(Unit unit)
         {
-            unit.MovementInfo.SetMovementFlag(MovementFlags.Charging, false);
-
+            unit.SetMovementFlag(MovementFlags.Charging, false);
             unit.UpdateControlState(UnitControlState.Charging, false);
             unit.Motion.UsesKinematicMovement = false;
 
@@ -58,7 +57,7 @@ namespace Core
         {
             if (unit.HasAnyState(UnitControlState.Root | UnitControlState.Stunned | UnitControlState.Distracted))
             {
-                unit.MovementInfo.RemoveMovementFlag(MovementFlags.MaskMoving);
+                unit.SetMovementFlag(MovementFlags.MaskMoving, false);
                 return false;
             }
 

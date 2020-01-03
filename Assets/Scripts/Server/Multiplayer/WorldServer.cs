@@ -75,7 +75,7 @@ namespace Server
                 if (player == null)
                     Object.Destroy(entity.gameObject);
                 else
-                    player.MovementInfo.AttachMoveState(entity);
+                    player.Motion.AttachMoveState(entity);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Server
                 if (player == null)
                     Object.Destroy(entity.gameObject);
                 else
-                    player.MovementInfo.DetachMoveState(false);
+                    player.Motion.DetachMoveState(false);
             }
 
             if (playerInfosByPlayerId.ContainsKey(entity.NetworkId.PackedValue))

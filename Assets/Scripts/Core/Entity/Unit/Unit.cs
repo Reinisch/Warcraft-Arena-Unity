@@ -36,7 +36,6 @@ namespace Core
         internal ShapeShiftForm ShapeShiftForm { get; private set; }
         internal SpellInfo ShapeShiftSpellInfo { get; private set; }
         internal SpellInfo TransformSpellInfo { get; private set; }
-        internal MovementInfo MovementInfo { get; private set; }
         internal CreateToken UnitCreateToken { get; private set; }
         internal abstract UnitAI AI { get; }
 
@@ -49,7 +48,7 @@ namespace Core
 
         public override float Size => base.Size * Scale;
 
-        public MovementFlags MovementFlags => MovementInfo.Flags;
+        public MovementFlags MovementFlags => Motion.MovementFlags;
         public IReadOnlyReference<Unit> SelfReference => selfReference;
         public Unit Target => Attributes.Target;
         public SpellCast SpellCast => Spells.Cast;
@@ -74,7 +73,6 @@ namespace Core
         public bool IsAlive => DeathState == DeathState.Alive;
         public bool IsDead => DeathState == DeathState.Dead;
         public bool IsControlledByPlayer => this is Player;
-        public bool IsStopped => !HasState(UnitControlState.Moving);
         public float Scale { get => Attributes.Scale; internal set => Attributes.Scale = value; }
         public UnitVisualEffectFlags VisualEffects => Attributes.VisualEffectFlags;
         public SpellPowerType DisplayPowerType { get => Attributes.DisplayPowerType; internal set => Attributes.DisplayPowerType = value; }
@@ -125,7 +123,6 @@ namespace Core
             UnitCreateToken = (CreateToken)entity.AttachToken;
             entityState = entity.GetState<IUnitState>();
 
-            MovementInfo = CreateMovementInfo(entityState);
             behaviourController.HandleUnitAttach(this);
 
             SetMap(World.FindMap(1));
@@ -137,7 +134,6 @@ namespace Core
             ResetTransformSpell();
 
             behaviourController.HandleUnitDetach();
-            MovementInfo.Dispose();
 
             ResetMap();
 
@@ -160,8 +156,6 @@ namespace Core
             UpdateSyncTransform(true);
             CharacterController.UpdateRigidbody();
         }
-
-        protected virtual MovementInfo CreateMovementInfo(IUnitState unitState) => new MovementInfo(this, unitState);
 
         protected virtual void AddBehaviours(BehaviourController unitBehaviourController)
         {
@@ -231,7 +225,7 @@ namespace Core
 
         public void RemoveCallback(string path, PropertyCallbackSimple propertyCallback) => entityState.RemoveCallback(path, propertyCallback);
 
-        public bool HasMovementFlag(MovementFlags flag) => MovementInfo.HasMovementFlag(flag);
+        public bool HasMovementFlag(MovementFlags flag) => Motion.HasMovementFlag(flag);
 
         public T FindBehaviour<T>() where T : UnitBehaviour => behaviourController.FindBehaviour<T>();
 
@@ -269,6 +263,8 @@ namespace Core
 
         internal void RemoveState(UnitControlState state) => controlState &= ~state;
 
+        internal void SetMovementFlag(MovementFlags flag, bool add) => Motion.SetMovementFlag(flag, add);
+
         internal void SetFlag(UnitFlags flag) => unitFlags |= flag;
 
         internal void RemoveFlag(UnitFlags flag) => unitFlags &= ~flag;
@@ -283,7 +279,7 @@ namespace Core
             if (!applied && !HasState(state))
                 return;
 
-            bool hadControl = MovementInfo.HasMovementControl;
+            bool hadControl = Motion.HasMovementControl;
 
             if (applied)
             {
@@ -449,7 +445,7 @@ namespace Core
 
         internal void StopMoving()
         {
-            MovementInfo.RemoveMovementFlag(MovementFlags.MaskMoving);
+            SetMovementFlag(MovementFlags.MaskMoving, false);
 
             CharacterController.StopMoving();
         }
@@ -483,12 +479,12 @@ namespace Core
                 StopMoving();
 
                 AddState(UnitControlState.Root);
-                MovementInfo.AddMovementFlag(MovementFlags.Root);
+                SetMovementFlag(MovementFlags.Root, true);
             }
             else
             {
                 RemoveState(UnitControlState.Root);
-                MovementInfo.RemoveMovementFlag(MovementFlags.Root);
+                SetMovementFlag(MovementFlags.Root, false);
             }
 
             if (IsOwner && this is Player rootedPlayer)
