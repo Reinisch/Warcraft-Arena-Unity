@@ -41,16 +41,17 @@ MonoBehaviour:
   schoolMask: 4
   preventionType: -1
   attributes: 4096
-  attributesExtra: 0
+  attributesExtra: 49160
   attributesCustom: 1024
   targetEntityTypeMask: 8
   rangedFlags: 1
   interruptFlags: 0
   castIgnoringMechanics: 0
-  cooldownTime: 4000
+  cooldownTime: 5000
   categoryCooldownTime: 0
-  globalCooldownTime: 500
+  globalCooldownTime: 0
   castTime: 0
+  charges: 3
   minCastTime: 0
   minRangeHostile: 0
   minRangeFriend: 0

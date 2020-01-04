@@ -64,5 +64,13 @@ namespace Client
             if (LocalPlayer.ExistsIn(World))
                 LocalPlayer.SpellHistory.Handle(cooldownEvent);
         }
+
+        public override void OnEvent(SpellChargeEvent chargeEvent)
+        {
+            base.OnEvent(chargeEvent);
+
+            if (LocalPlayer.ExistsIn(World))
+                LocalPlayer.SpellHistory.Handle(chargeEvent);
+        }
     }
 }

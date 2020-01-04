@@ -32,6 +32,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private int categoryCooldownTime;
         [SerializeField, UsedImplicitly] private int globalCooldownTime;
         [SerializeField, UsedImplicitly] private int castTime;
+        [SerializeField, UsedImplicitly] private int charges;
         [SerializeField, UsedImplicitly] private int minCastTime;
 
         [SerializeField, UsedImplicitly] private float minRangeHostile;
@@ -85,6 +86,7 @@ namespace Core
         public int GlobalCooldownTime => globalCooldownTime;
         public int CastTime => castTime;
         public int MinCastTime => minCastTime;
+        public int Charges => charges;
 
         public float MinRangeHostile => minRangeHostile;
         public float MinRangeFriend => minRangeFriend;
@@ -93,16 +95,12 @@ namespace Core
         public float MaxTargetingRadius => maxTargetingRadius;
         public float Speed => speed;
 
+        public bool IsUsingCharges => charges != 0;
         public bool IsPassive => HasAttribute(SpellAttributes.Passive);
-
         public bool IsDeathPersistent => HasAttribute(SpellAttributes.DeathPersistent);
-
         public bool IsPositive => !HasAttribute(SpellCustomAttributes.Negative);
-
         public bool IsSingleTarget => HasAttribute(SpellExtraAttributes.SingleTargetSpell);
-
         public bool IsAffectingArea => Effects.Exists(effect => effect.IsTargetingArea() && effect.IsEffect(SpellEffectType.PersistentAreaAura) || effect.IsAreaAuraEffect());
-
         public bool IsTargetingArea => Effects.Exists(effect => effect.IsTargetingArea());
 
         protected override void OnRegister()

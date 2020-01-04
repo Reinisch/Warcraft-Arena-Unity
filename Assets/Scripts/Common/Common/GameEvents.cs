@@ -23,6 +23,7 @@
         ServerSpellLaunch,
         ServerSpellHit,
         ServerSpellCooldown,
+        ServerSpellCharge,
         ServerPlayerTeleport,
         ServerDamageDone,
         ServerHealingDone,

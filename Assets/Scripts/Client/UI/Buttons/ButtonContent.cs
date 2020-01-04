@@ -18,6 +18,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private Image contentImage;
         [SerializeField, UsedImplicitly] private Image cooldownImage;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI cooldownText;
+        [SerializeField, UsedImplicitly] private TextMeshProUGUI chargeText;
         [SerializeField, UsedImplicitly] private Button button;
         [SerializeField, UsedImplicitly] private TooltipAlignment tooltipAlignment = TooltipAlignment.FromTop;
 
@@ -32,7 +33,8 @@ namespace Client
         private bool isPointerDown;
         private bool isHotkeyDown;
 
-        private readonly char[] timerText = { ' ', ' ', ' ' };
+        private readonly char[] timerText = new char[3];
+        private readonly char[] chargeCountText = new char[11];
         private bool showingTimer;
 
         public bool IsAlreadyPressed => isPointerDown || isHotkeyDown;
@@ -181,6 +183,7 @@ namespace Client
 
             int cooldownTimeLeft;
             int cooldownTime;
+            int availableCharges = 0;
             bool showTimer = showingTimer;
 
             if (!player.SpellHistory.HasGlobalCooldown || spellInfo.HasAttribute(SpellExtraAttributes.IgnoreGcd))
@@ -191,12 +194,33 @@ namespace Client
                 cooldownTime = player.SpellHistory.GlobalCooldown;
             }
 
-            if (player.SpellHistory.HasCooldown(spellInfo.Id, out SpellCooldown spellCooldown) && spellCooldown.CooldownLeft > cooldownTimeLeft)
+            if (spellInfo.IsUsingCharges)
+            {
+                bool hasCharge = player.SpellHistory.HasCharge(spellInfo, out SpellChargeCooldown chargeCooldown, out availableCharges);
+                if (!hasCharge && chargeCooldown.ChargeTimeLeft > cooldownTimeLeft)
+                {
+                    showTimer = true;
+                    cooldownTimeLeft = chargeCooldown.ChargeTimeLeft;
+                    cooldownTime = chargeCooldown.ChargeTime;
+                }
+                else if (hasCharge && chargeCooldown != null)
+                {
+                    showTimer = false;
+                    cooldownTimeLeft = chargeCooldown.ChargeTimeLeft;
+                    cooldownTime = chargeCooldown.ChargeTime;
+                }
+            }
+            else if (player.SpellHistory.HasCooldown(spellInfo.Id, out SpellCooldown spellCooldown) && spellCooldown.CooldownLeft > cooldownTimeLeft)
             {
                 showTimer = true;
                 cooldownTimeLeft = spellCooldown.CooldownLeft;
                 cooldownTime = spellCooldown.Cooldown;
             }
+
+            if (spellInfo.IsUsingCharges)
+                chargeText.SetCharArray(chargeCountText.SetIntNonAlloc(availableCharges, out int length), 0, length);
+            else
+                chargeText.SetCharArray(chargeCountText, 0, 0);
 
             if (cooldownTimeLeft == 0)
             {

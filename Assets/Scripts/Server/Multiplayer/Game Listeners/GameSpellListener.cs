@@ -15,6 +15,7 @@ namespace Server
             EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.RegisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
             EventHandler.RegisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
+            EventHandler.RegisterEvent<Player, SpellChargeCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCharge, OnServerSpellChargeCooldown);
         }
 
         internal void Dispose()
@@ -25,6 +26,7 @@ namespace Server
             EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
             EventHandler.UnregisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
             EventHandler.UnregisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
+            EventHandler.UnregisterEvent<Player, SpellChargeCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCharge, OnServerSpellChargeCooldown);
         }
 
         private void OnSpellDamageDone(SpellDamageInfo damageInfo)
@@ -121,6 +123,18 @@ namespace Server
                 spellCooldownEvent.CooldownTime = cooldown.Cooldown;
                 spellCooldownEvent.ServerFrame = BoltNetwork.ServerFrame;
                 spellCooldownEvent.Send();
+            }
+        }
+
+        private void OnServerSpellChargeCooldown(Player player, SpellChargeCooldown cooldown)
+        {
+            if (player.BoltEntity.Controller != null)
+            {
+                SpellChargeEvent spellChargeEvent = SpellChargeEvent.Create(player.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
+                spellChargeEvent.SpellId = cooldown.SpellId;
+                spellChargeEvent.CooldownTime = cooldown.ChargeTime;
+                spellChargeEvent.ServerFrame = BoltNetwork.ServerFrame;
+                spellChargeEvent.Send();
             }
         }
     }
