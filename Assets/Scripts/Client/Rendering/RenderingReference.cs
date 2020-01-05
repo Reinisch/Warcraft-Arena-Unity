@@ -25,6 +25,8 @@ namespace Client
         [Header("Collections")]
         [SerializeField, UsedImplicitly] private SpellVisualsInfoContainer spellVisualsInfoContainer;
         [SerializeField, UsedImplicitly] private AuraVisualsInfoContainer auraVisualsInfoContainer;
+        [SerializeField, UsedImplicitly] private AnimationInfoContainer animationInfoContainer;
+        [SerializeField, UsedImplicitly] private SpellAnimationInfoContainer spellAnimationInfoContainer;
         [SerializeField, UsedImplicitly] private ClassTypeSpriteDictionary classIconsByClassType;
         [SerializeField, UsedImplicitly] private SpellPowerTypeColorDictionary colorsBySpellPowerType;
         [SerializeField, UsedImplicitly] private List<Material> autoIncludedMaterials;
@@ -38,6 +40,8 @@ namespace Client
         public IReadOnlyDictionary<int, UnitModelSettings> Models => modelSettingsContainer.ModelSettingsById;
         public IReadOnlySerializedDictionary<ClassType, Sprite> ClassIconSprites => classIconsByClassType;
         public IReadOnlySerializedDictionary<SpellPowerType, Color> SpellPowerColors => colorsBySpellPowerType;
+
+        public AnimationInfo FindAnimation(SpellInfo spellInfo) => spellAnimationInfoContainer.FindAnimation(spellInfo);
 
         protected override void OnRegistered()
         {
@@ -53,10 +57,14 @@ namespace Client
             modelSettingsContainer.Register();
             auraVisualsInfoContainer.Register();
             spellVisualsInfoContainer.Register();
+            animationInfoContainer.Register();
+            spellAnimationInfoContainer.Register();
         }
 
         protected override void OnUnregister()
         {
+            spellAnimationInfoContainer.Unregister();
+            animationInfoContainer.Unregister();
             spellVisualsInfoContainer.Unregister();
             auraVisualsInfoContainer.Unregister();
             classIconsByClassType.Unregister();
@@ -172,7 +180,7 @@ namespace Client
                 return;
 
             if (!spellInfo.HasAttribute(SpellCustomAttributes.CastWithoutAnimation))
-                casterRenderer.TriggerInstantCast();
+                casterRenderer.TriggerInstantCast(spellInfo);
 
             if (!SpellVisuals.TryGetValue(spellId, out SpellVisualsInfo spellVisuals))
                 return;

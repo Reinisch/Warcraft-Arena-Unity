@@ -48,6 +48,10 @@ MonoBehaviour:
     type: 2}
   auraVisualsInfoContainer: {fileID: 11400000, guid: c1560e200585b804db537bff9343feaa,
     type: 2}
+  animationInfoContainer: {fileID: 11400000, guid: 465cb1362fa83ea43b981561e574517f,
+    type: 2}
+  spellAnimationInfoContainer: {fileID: 11400000, guid: ec96225f8169a324bb01212cab2b54c1,
+    type: 2}
   classIconsByClassType:
     items:
     - classType: 1

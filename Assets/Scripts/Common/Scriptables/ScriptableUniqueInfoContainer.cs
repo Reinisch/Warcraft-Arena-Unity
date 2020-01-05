@@ -25,6 +25,9 @@ namespace Common
 
         bool IScriptablePostProcess.OnPostProcess(bool isDeleted)
         {
+            if (Items == null)
+                return false;
+
             bool hasChanges = false;
 #if UNITY_EDITOR
             if (isDeleted)

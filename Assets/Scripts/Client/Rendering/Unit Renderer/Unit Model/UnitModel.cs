@@ -90,13 +90,17 @@ namespace Client
             UpdateTransparencyTransition(deltaTime);
         }
 
-        public void TriggerInstantCast()
+        public void TriggerInstantCast(SpellInfo spellInfo)
         {
             if (Animator.GetBool(AnimatorUtils.ResurrectingAnimationParam) || Animator.GetBool(AnimatorUtils.DyingAnimationParam))
                 return;
 
-            Animator.Play(AnimatorUtils.SpellCastAnimationState, 0, 0.1f);
-            Animator.ResetTrigger(AnimatorUtils.SpellCastAnimationTrigger);
+            AnimationInfo animationInfo = rendering.FindAnimation(spellInfo);
+            int animationHash = Animator.HasState(0, animationInfo.StateHash)
+                ? animationInfo.StateHash
+                : animationInfo.FallbackStateHash;
+
+            Animator.Play(animationHash, 0, 0.1f);
 
             // Switch leg animation for casting
             if (!animator.GetBool("Grounded"))
@@ -104,7 +108,7 @@ namespace Client
             else if (animator.GetFloat("Speed") > 0.1f)
                 animator.Play("Run", 1);
             else
-                animator.Play("Cast", 1, 0.1f);
+                animator.Play(animationHash, 1, 0.1f);
         }
 
         public void HandleVisualEffects(UnitRenderer unitRenderer, bool instantly, bool forced = false)

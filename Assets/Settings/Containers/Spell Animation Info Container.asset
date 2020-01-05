@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e28a551d5b4924197af93d30d01174, type: 3}
+  m_Name: Spell Animation Info Container
+  m_EditorClassIdentifier: 
+  spellContainer: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  defaultAnimation: {fileID: 11400000, guid: f277735a795dcbe4e91d1f99ac1ba91d, type: 2}
+  animationInfos:
+  - {fileID: 11400000, guid: 36be365cd6f294648b74eb222ef6a857, type: 2}
+  - {fileID: 11400000, guid: e1f4d6a9ebe5ae34e83cb7bf7ed9c534, type: 2}
+  - {fileID: 11400000, guid: 6536d43185dba034b8ee0582c4de7704, type: 2}
+  - {fileID: 11400000, guid: ebf380422cf597f48bb43476e232bc10, type: 2}

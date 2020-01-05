@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5acd574238e551941bafb01ef8c48914
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - container: {fileID: 11400000, guid: 465cb1362fa83ea43b981561e574517f, type: 2}
+  - fallbackAnimation: {fileID: 11400000, guid: f277735a795dcbe4e91d1f99ac1ba91d,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

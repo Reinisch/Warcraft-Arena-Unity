@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a45cff2e8537dc34f9e9d343371ab712, type: 3}
+  m_Name: Animation Info Container
+  m_EditorClassIdentifier: 
+  modelSettings:
+  - {fileID: 11400000, guid: f277735a795dcbe4e91d1f99ac1ba91d, type: 2}
+  - {fileID: 11400000, guid: 598af435992e33742b21a385954a8104, type: 2}
+  - {fileID: 11400000, guid: 190f40262b988d74b86d00aa3dfc4a41, type: 2}
+  - {fileID: 11400000, guid: a4fcce85b884e6b478c406ac8a66ba01, type: 2}
+  - {fileID: 11400000, guid: abf596ca541c70946b368da191cd75fb, type: 2}

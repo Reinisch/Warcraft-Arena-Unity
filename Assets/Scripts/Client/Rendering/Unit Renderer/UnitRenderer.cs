@@ -99,10 +99,10 @@ namespace Client
             EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHit, Unit, spellHitEvent.SpellId);
         }
 
-        public void TriggerInstantCast()
+        public void TriggerInstantCast(SpellInfo spellInfo)
         {
             if (canAnimate)
-                model?.TriggerInstantCast();
+                model?.TriggerInstantCast(spellInfo);
         } 
 
         private void UpdateAnimationState(bool enabled)
