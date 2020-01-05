@@ -219,7 +219,8 @@ MonoBehaviour:
   - StringReference: {fileID: 11400000, guid: cd5faf9b03574dd4a8ab36abfe9ad062, type: 2}
     Value: "Blasts the enemy for ({0}% of Spell power) Fire damage. \n\nAlways deals
       a critical strike and causes Hot Streak to trigger unless target is immune to
-      critical strikes."
+      critical strikes.\n\nCastable while another spell is in progress and unaffected
+      by global cooldown."
   - StringReference: {fileID: 11400000, guid: 613241cedfe2bc142ae4c9e73243516b, type: 2}
     Value: Fire Blast
   - StringReference: {fileID: 11400000, guid: 5fa0f2a46c82f0540aafa1212557ceac, type: 2}
