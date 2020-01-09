@@ -561,3 +561,8 @@ MonoBehaviour:
   - StringReference: {fileID: 11400000, guid: 6a74594593e868a41885e89b22e810bb, type: 2}
     Value: You charge and bash the target's skull, interrupting spellcasting and preventing
       any spell in that school from being cast for {0} sec.
+  - StringReference: {fileID: 11400000, guid: 5e150bc789f39e7468447df25298892d, type: 2}
+    Value: Cyclone
+  - StringReference: {fileID: 11400000, guid: 4d47dc30b6a07b64b9fa698c5e21808e, type: 2}
+    Value: 'Tosses the enemy target into the air, disorienting them but making them
+      invulnerable for up to {0} sec. '

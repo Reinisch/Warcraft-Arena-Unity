@@ -58,7 +58,7 @@ MonoBehaviour:
     nameplateTag: {fileID: 2396036922027929731}
   meshRenderer: {fileID: 2845081232405662429}
   animator: {fileID: 724169619782448581}
-  strafeSpeed: 1.5
+  strafeSpeed: 3
 --- !u!1 &2137874645987029631
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,6 +230,7 @@ MonoBehaviour:
   strafeParam: Strafe
   overrideRotation: 1
   shouldApplyEvenBackward: 1
+  shouldApplyOnlyWhenAttacking: 0
   revertWhenBackward: 1
 --- !u!1 &6148578231299482095
 GameObject:
