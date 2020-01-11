@@ -34,6 +34,21 @@ namespace Core
                 HitType |= HitType.CriticalHit;
         }
 
+        public SpellDamageInfo(Unit caster, Unit target, SpellInfo spellInfo, SpellDamageType spellDamageType, HitType hitType)
+        {
+            Caster = caster;
+            Target = target;
+            SpellInfo = spellInfo;
+
+            SpellDamageType = spellDamageType;
+            HitType = hitType;
+
+            Damage = 0;
+            Absorb = 0;
+            Resist = 0;
+            HasCrit = false;
+        }
+
         public void UpdateDamage(uint amount)
         {
             Damage = amount;

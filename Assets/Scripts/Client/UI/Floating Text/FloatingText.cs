@@ -36,7 +36,9 @@ namespace Client
 
         public void SetDamage(int damageAmount, HitType hitType)
         {
-            if (hitType.HasTargetFlag(HitType.FullAbsorb))
+            if (hitType == HitType.Immune)
+                SetText(missSettings, LocalizationReference.Localize(SpellMissType.Immune).Value);
+            else if (hitType.HasTargetFlag(HitType.FullAbsorb))
                 SetText(fullAbsorbSettings, fullAbsrobString.Value);
             else
                 SetText(hitType.HasTargetFlag(HitType.CriticalHit) ? damageCritSettings : damageSettings, damageAmount.ToString());
