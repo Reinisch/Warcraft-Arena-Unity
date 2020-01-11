@@ -15,7 +15,7 @@
             if (target.IsDead || caster == null)
                 return;
 
-            if (target.HasState(UnitControlState.Isolated) || target.IsImmunedToDamage(Aura.AuraInfo))
+            if (target.HasState(UnitControlState.Isolated) || target.IsImmunedToDamage(Aura.SpellInfo, EffectInfo.SpellSchoolMask, Aura.Caster))
                 return;
 
             int originalDamage = EffectInfo.CalculateSpellDamage(caster);

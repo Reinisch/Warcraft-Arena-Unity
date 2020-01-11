@@ -368,16 +368,22 @@ namespace Core
                     spellTriggers.Remove(spellTriggerAura);
             }
 
-            internal bool IsImmunedToDamage(SpellInfo spellInfo) { return false; }
-
-            internal bool IsImmunedToDamage(AuraInfo auraInfo) { return false; }
-
-            internal bool IsImmuneToSpell(SpellInfo spellInfo, Unit caster)
+            internal bool IsImmunedToDamage(SpellInfo spellInfo, SpellSchoolMask? schoolMaskOverride = null, Unit caster = null)
             {
-                if (spellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability))
+                SpellSchoolMask schoolMask = schoolMaskOverride ?? spellInfo.SchoolMask;
+
+                if (spellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && spellInfo.HasAttribute(SpellAttributes.IgnoreHitResult))
                     return false;
 
-                if (spellInfo.SchoolMask != 0)
+                if (spellInfo.HasAttribute(SpellAttributes.UnaffectedBySchoolImmune))
+                    return false;
+
+                return IsImmuneToSpellSchool(schoolMask, spellInfo, caster);
+            }
+
+            internal bool IsImmuneToSpellSchool(SpellSchoolMask schoolMask, SpellInfo spellInfo, Unit caster)
+            {
+                if (schoolMask != 0)
                 {
                     SpellSchoolMask immunedSchools = 0;
                     foreach (var schoolImmunityEntry in schoolImmunities)
@@ -386,7 +392,7 @@ namespace Core
                             continue;
 
                         foreach (SpellInfo immunitySpells in schoolImmunityEntry.Value)
-                            if (!immunitySpells.IsPositive || !spellInfo.IsPositive || !unit.IsFriendlyTo(caster))
+                            if (!immunitySpells.IsPositive || !spellInfo.IsPositive || caster != null && !unit.IsFriendlyTo(caster))
                                 if (!spellInfo.CanPierceImmuneAura(immunitySpells))
                                     immunedSchools |= schoolImmunityEntry.Key;
                     }
@@ -394,6 +400,17 @@ namespace Core
                     if (immunedSchools.HasTargetFlag(spellInfo.SchoolMask))
                         return true;
                 }
+
+                return false;
+            }
+
+            internal bool IsImmuneToSpell(SpellInfo spellInfo, Unit caster)
+            {
+                if (spellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability))
+                    return false;
+
+                if (IsImmuneToSpellSchool(spellInfo.SchoolMask, spellInfo, caster))
+                    return true;
 
                 bool isImmuneToAllEffects = true;
                 foreach (SpellEffectInfo spellEffectInfo in spellInfo.Effects)

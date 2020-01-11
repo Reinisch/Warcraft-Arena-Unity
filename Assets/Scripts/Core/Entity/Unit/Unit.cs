@@ -245,9 +245,10 @@ namespace Core
 
         internal float MaxNegativeAuraModifier(AuraEffectType auraType) => Auras.MaxNegativeAuraModifier(auraType);
 
-        internal bool IsImmunedToDamage(SpellInfo spellInfo) => Spells.IsImmunedToDamage(spellInfo);
-
-        internal bool IsImmunedToDamage(AuraInfo auraInfo) => Spells.IsImmunedToDamage(auraInfo);
+        internal bool IsImmunedToDamage(SpellInfo spellInfo, SpellSchoolMask? schoolMaskOverride = null, Unit caster = null)
+        {
+            return Spells.IsImmunedToDamage(spellInfo, schoolMaskOverride, caster);
+        }
 
         internal bool IsImmuneToSpell(SpellInfo spellInfo, Unit caster) => Spells.IsImmuneToSpell(spellInfo, caster);
 
