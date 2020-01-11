@@ -54,7 +54,7 @@ MonoBehaviour:
   attributesExtra: 2048
   attributesCustom: 1024
   targetEntityTypeMask: 8
-  rangedFlags: 4
+  rangedFlags: 1
   interruptFlags: 0
   castIgnoringMechanics: 0
   cooldownTime: 20000
