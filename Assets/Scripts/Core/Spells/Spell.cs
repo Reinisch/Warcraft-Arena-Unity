@@ -650,9 +650,17 @@ namespace Core
                 caster.Spells.DamageBySpell(new SpellDamageInfo(caster, targetEntry.Target, SpellInfo, (uint)EffectDamage, targetEntry.Crit, SpellDamageType.Direct), this);
 
             if (missType == SpellMissType.None)
+            {
                 for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
                     if (targetEntry.EffectMask.HasBit(effectIndex))
                         SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitFinal);
+            }
+            else if (missType == SpellMissType.Immune && SpellInfo.SomeEffectsIgnoreSpellImmunity)
+            {
+                for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
+                    if (targetEntry.EffectMask.HasBit(effectIndex) && SpellInfo.Effects[effectIndex].IgnoresSpellImmunity)
+                        SpellInfo.Effects[effectIndex].Handle(this, effectIndex, hitTarget, SpellEffectHandleMode.HitFinal);
+            }
 
             if (missType != SpellMissType.Evade && !caster.IsFriendlyTo(hitTarget) && !SpellInfo.IsPositive)
                 caster.Combat.StartCombatWith(hitTarget);

@@ -62,6 +62,7 @@ MonoBehaviour:
   categoryCooldownTime: 0
   globalCooldownTime: 500
   castTime: 0
+  charges: 0
   minCastTime: 0
   minRangeHostile: 0
   minRangeFriend: 0
@@ -69,8 +70,8 @@ MonoBehaviour:
   maxRangeFriend: 0
   speed: 0
   spellEffectInfos:
-  - {fileID: 7087883333479069533}
   - {fileID: 2927355642471704299}
+  - {fileID: 7087883333479069533}
   spellPowerCostInfos:
   - spellPowerType: 3
     powerCostPercentage: 0

@@ -51,6 +51,7 @@ namespace Core
         [UsedImplicitly] private HashSet<ShapeShiftForm> shapeShiftNeverCastableSet = new HashSet<ShapeShiftForm>();
         [UsedImplicitly] private SpellMechanicsFlags combinedEffectMechanics;
         [UsedImplicitly] private float maxTargetingRadius;
+        [UsedImplicitly] private bool someEffectsIgnoreSpellImmunity;
 
         protected override ScriptableUniqueInfoContainer<SpellInfo> Container => container;
         protected override SpellInfo Data => this;
@@ -102,6 +103,7 @@ namespace Core
         public bool IsSingleTarget => HasAttribute(SpellExtraAttributes.SingleTargetSpell);
         public bool IsAffectingArea => Effects.Exists(effect => effect.IsTargetingArea() && effect.IsEffect(SpellEffectType.PersistentAreaAura) || effect.IsAreaAuraEffect());
         public bool IsTargetingArea => Effects.Exists(effect => effect.IsTargetingArea());
+        public bool SomeEffectsIgnoreSpellImmunity => someEffectsIgnoreSpellImmunity;
 
         protected override void OnRegister()
         {
@@ -120,6 +122,9 @@ namespace Core
 
                 if (spellEffectInfo.Targeting is SpellTargetingArea areaTargeting)
                     maxTargetingRadius = Mathf.Max(areaTargeting.MaxRadius, maxTargetingRadius);
+
+                if (spellEffectInfo.IgnoresSpellImmunity)
+                    someEffectsIgnoreSpellImmunity = true;
             }
         }
 
@@ -129,6 +134,7 @@ namespace Core
             shapeShiftNeverCastableSet.Clear();
             combinedEffectMechanics = Mechanic.AsFlag();
             maxTargetingRadius = 0.0f;
+            someEffectsIgnoreSpellImmunity = false;
 
             base.OnUnregister();
         }

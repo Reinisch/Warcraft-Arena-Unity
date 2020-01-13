@@ -8,6 +8,7 @@ namespace Core
         [Header("Base Effect")]
         [SerializeField, UsedImplicitly] private SpellTargeting targeting;
 
+        public virtual bool IgnoresSpellImmunity => false;
         public abstract float Value { get; }
         public abstract SpellEffectType EffectType { get; }
         public SpellTargeting Targeting => targeting;

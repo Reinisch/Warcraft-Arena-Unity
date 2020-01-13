@@ -23,6 +23,7 @@ namespace Core
         public float ChargeSpeed => chargeSpeed;
         public Kind ChargeKind => kind;
 
+        public override bool IgnoresSpellImmunity => true;
         public override float Value => 1.0f;
         public override SpellEffectType EffectType => SpellEffectType.Charge;
 
