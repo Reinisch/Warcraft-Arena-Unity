@@ -27,7 +27,7 @@ MonoBehaviour:
   m_Name: Cyclone Aura School Immunity
   m_EditorClassIdentifier: 
   maxEffectiveCharges: 1
-  mechanics: 18
+  mechanics: 25
   schoolMask: -1
 --- !u!114 &11400000
 MonoBehaviour:
