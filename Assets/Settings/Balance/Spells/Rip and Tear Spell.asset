@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3219835400110037729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e90cf27351c0d794e99c156e43dc43a2, type: 3}
+  m_Name: Rip and Tear Effect Trigger Rip
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  triggerSpell: {fileID: 11400000, guid: 2a8e172f376fd984ea1c705663775810, type: 2}
+  extraCastFlags: 16452
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Rip and Tear Spell
+  m_EditorClassIdentifier: 
+  id: 67
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 1
+  damageClass: 2
+  spellDispel: 0
+  mechanic: 15
+  explicitCastTargets: 4
+  schoolMask: 1
+  preventionType: 2
+  attributes: 0
+  attributesExtra: 4096
+  attributesCustom: 1024
+  targetEntityTypeMask: 8
+  rangedFlags: 2
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 30000
+  categoryCooldownTime: 0
+  globalCooldownTime: 1000
+  castTime: 0
+  charges: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 0
+  maxRangeFriend: 0
+  speed: 0
+  spellEffectInfos:
+  - {fileID: 948557142348255619}
+  - {fileID: -3219835400110037729}
+  spellPowerCostInfos:
+  - spellPowerType: 3
+    powerCostPercentage: 0
+    powerCost: 60
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 01000000
+  shapeShiftNeverCastable: 
+--- !u!114 &948557142348255619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e90cf27351c0d794e99c156e43dc43a2, type: 3}
+  m_Name: Rip and Tear Effect Trigger Rake
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  triggerSpell: {fileID: 11400000, guid: 0fcbec3231a266244bb039eaa2ac68cf, type: 2}
+  extraCastFlags: 16388

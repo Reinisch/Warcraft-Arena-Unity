@@ -682,7 +682,9 @@ namespace Core
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, SpellInfo, processingToken);
 
             DropModifierCharges();
-            ConsumePowers();
+
+            if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnorePowerAndReagentCost))
+                ConsumePowers();
 
             Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellCast, Caster, this);
 

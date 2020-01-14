@@ -7,7 +7,7 @@ namespace Core
     [UsedImplicitly, CreateAssetMenu(fileName = "Effect Trigger Spell", menuName = "Game Data/Spells/Effects/Trigger Spell", order = 4)]
     public class EffectTriggerSpell : SpellEffectInfo
     {
-        [Header("School Damage")]
+        [Header("Trigger Spell")]
         [SerializeField, UsedImplicitly] 
         private SpellInfo triggerSpell;
         [SerializeField, UsedImplicitly, EnumFlag] 

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2c4714ebf4c7948b39380ca36fbd21, type: 3}
+  m_Name: Spell Tooltip Info - Rip and Tear
+  m_EditorClassIdentifier: 
+  id: 55
+  container: {fileID: 11400000, guid: fa1feeb7351f68c43ba44df41c2b5fe9, type: 2}
+  spellInfo: {fileID: 11400000, guid: 448cbf83ff22d644ea86e08967ca03b7, type: 2}
+  spellNameString: {fileID: 11400000, guid: d03fc419c583b1a4d86e3cf33a3c0d1c, type: 2}
+  spellDescriptionString: {fileID: 11400000, guid: 936efeeb3594e2f4497d03a42c44ad88,
+    type: 2}
+  argumentSettings: []

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dfa39609d8543e43aabe2bf209d52ca, type: 3}
+  m_Name: Rip and Tear - Spell Animation Info
+  m_EditorClassIdentifier: 
+  id: 5
+  container: {fileID: 11400000, guid: ec96225f8169a324bb01212cab2b54c1, type: 2}
+  spellInfo: {fileID: 11400000, guid: 448cbf83ff22d644ea86e08967ca03b7, type: 2}
+  animationInfo: {fileID: 11400000, guid: 598af435992e33742b21a385954a8104, type: 2}
