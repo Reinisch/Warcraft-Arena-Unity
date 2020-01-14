@@ -19,7 +19,7 @@ namespace Core
         IgnoreCasterState = 1 << 11,
         IgnoreCasterMountedOrOnVehicle = 1 << 12,
         IgnoreCasterAuras = 1 << 13,
-        DisallowProcEvents = 1 << 14,
+        DontReportCastSuccess = 1 << 14,
         DontReportCastError = 1 << 15,
         IgnoreRangeCheck = 1 << 16,
         IgnoreTargetCheck = 1 << 17,

@@ -79,9 +79,9 @@ namespace Core
                 return SpellCastResult.Success;
             }
 
-            internal void TriggerSpell(SpellInfo spellInfo, Unit target)
+            internal void TriggerSpell(SpellInfo spellInfo, Unit target, SpellCastFlags extraCastFlags = 0)
             {
-                CastSpell(spellInfo, new SpellCastingOptions(new SpellExplicitTargets { Target = target }, SpellCastFlags.TriggeredByAura));
+                CastSpell(spellInfo, new SpellCastingOptions(new SpellExplicitTargets { Target = target }, SpellCastFlags.TriggeredByAura | extraCastFlags));
             }
 
             internal void DamageBySpell(SpellDamageInfo damageInfo, Spell spell = null)
