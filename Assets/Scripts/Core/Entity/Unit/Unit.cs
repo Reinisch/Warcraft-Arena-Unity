@@ -61,6 +61,7 @@ namespace Core
         public int Power => Attributes.Power(DisplayPowerType);
         public int MaxPower => Attributes.MaxPower(DisplayPowerType);
         public int ComboPoints => Attributes.ComboPoints.Value;
+        public int MaxComboPoints => Attributes.ComboPoints.Max;
         public int SpellPower => Attributes.SpellPower.Value;
         public int EmoteFrame => entityState.EmoteFrame;
         public int VisibleAuraMaxCount => entityState.VisibleAuras.Length;

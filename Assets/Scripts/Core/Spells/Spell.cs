@@ -278,7 +278,7 @@ namespace Core
             if (Caster.SpellCast.IsCasting && !SpellInfo.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
                 return SpellCastResult.NotReady;
 
-            if (SpellInfo.HasAttribute(SpellAttributes.RequiresComboPoints) && Caster.ComboPoints < 1)
+            if (SpellInfo.HasAttribute(SpellAttributes.RequiresComboPoints) && !spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreComboPoints) && Caster.ComboPoints < 1)
                 return SpellCastResult.NoComboPoints;
 
             SpellCastResult castResult;
@@ -682,9 +682,7 @@ namespace Core
                 EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, SpellInfo, processingToken);
 
             DropModifierCharges();
-
-            if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnorePowerAndReagentCost))
-                ConsumePowers();
+            ConsumePowers();
 
             Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellCast, Caster, this);
 
@@ -710,9 +708,19 @@ namespace Core
         {
             if (SpellInfo.HasAttribute(SpellAttributes.RequiresComboPoints))
             {
-                ConsumedComboPoints = Caster.ComboPoints;
-                Caster.Attributes.SetComboPoints(0);
+                if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreComboPoints))
+                {
+                    ConsumedComboPoints = Caster.MaxComboPoints;
+                }
+                else
+                {
+                    ConsumedComboPoints = Caster.ComboPoints;
+                    Caster.Attributes.SetComboPoints(0);
+                }
             }
+
+            if (spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnorePowerAndReagentCost))
+                return;
 
             foreach ((SpellPowerType, int) powerCost in powerCosts)
             {
