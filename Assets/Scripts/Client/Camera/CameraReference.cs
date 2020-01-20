@@ -7,17 +7,20 @@ namespace Client
     public class CameraReference : ScriptableReferenceClient
     {
         public WarcraftCamera WarcraftCamera { get; private set; }
+        public MinimapCamera MinimapCamera { get; private set; }
 
         protected override void OnRegistered()
         {
             base.OnRegistered();
 
             WarcraftCamera = FindObjectOfType<WarcraftCamera>();
+            MinimapCamera = FindObjectOfType<MinimapCamera>();
         }
 
         protected override void OnUnregister()
         {
             WarcraftCamera = null;
+            MinimapCamera = null;
 
             base.OnUnregister();
         }
@@ -29,10 +32,12 @@ namespace Client
                 base.OnControlStateChanged(player, true);
 
                 WarcraftCamera.Target = player;
+                MinimapCamera.Target = player;
             }
             else
             {
                 WarcraftCamera.Target = null;
+                MinimapCamera.Target = null;
 
                 base.OnControlStateChanged(player, false);
             }
