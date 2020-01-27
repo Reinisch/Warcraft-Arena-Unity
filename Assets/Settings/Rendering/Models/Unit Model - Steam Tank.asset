@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c3e51c9894ebc4693e479cf783691d, type: 3}
+  m_Name: Unit Model - Steam Tank
+  m_EditorClassIdentifier: 
+  id: 7
+  container: {fileID: 11400000, guid: dfd880d432e89ef4194ba2772d0fd38a, type: 2}
+  prototype: {fileID: 1775351076623116817, guid: 041321bf0b65bbc4fbb492670b13dd2e,
+    type: 3}
+  soundKit: {fileID: 11400000, guid: 9f618c35f89d01640ab997fb4c25dbcd, type: 2}

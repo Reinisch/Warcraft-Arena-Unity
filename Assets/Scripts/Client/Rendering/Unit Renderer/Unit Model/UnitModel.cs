@@ -102,13 +102,16 @@ namespace Client
 
             Animator.Play(animationHash, 0, 0.1f);
 
-            // Switch leg animation for casting
-            if (!animator.GetBool("Grounded"))
-                animator.Play("Air", 1);
-            else if (animator.GetFloat("Speed") > 0.1f)
-                animator.Play("Run", 1);
-            else
-                animator.Play(animationHash, 1, 0.1f);
+            if (Animator.layerCount > 1)
+            {
+                // Switch leg animation for casting
+                if (!animator.GetBool("Grounded"))
+                    animator.Play("Air", 1);
+                else if (animator.GetFloat("Speed") > 0.1f)
+                    animator.Play("Run", 1);
+                else
+                    animator.Play(animationHash, 1, 0.1f);
+            }
         }
 
         public void HandleVisualEffects(UnitRenderer unitRenderer, bool instantly, bool forced = false)
