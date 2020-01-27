@@ -181,6 +181,55 @@ Transform:
   m_Father: {fileID: 1070282207}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 293.33, z: 0}
+--- !u!1 &208632944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 208632945}
+  - component: {fileID: 208632946}
+  m_Layer: 0
+  m_Name: Steam Tank (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &208632945
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208632944}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.06, y: -0.27, z: -21.99}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1044883048}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &208632946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208632944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 208632945}
+    unitInfoAI: {fileID: 11400000, guid: 15ae30b2fbd463f43abec53aa31f5823, type: 2}
+    customNameId: Steam Tank
+    customScale: 1
 --- !u!1 &285889212
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +513,9 @@ MonoBehaviour:
   - {fileID: 1614241951}
   - {fileID: 423294305}
   - {fileID: 1240936479}
+  - {fileID: 1179350405}
+  - {fileID: 208632946}
+  - {fileID: 1303105526}
   - {fileID: 2045112786}
   - {fileID: 2045112785}
   - {fileID: 2045112784}
@@ -1815,6 +1867,39 @@ Transform:
   m_Father: {fileID: 397531458}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1044883047
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1044883048}
+  m_Layer: 0
+  m_Name: Vehicles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1044883048
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044883047}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1179350404}
+  - {fileID: 208632945}
+  - {fileID: 1303105525}
+  m_Father: {fileID: 1115088532}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1053658178
 GameObject:
   m_ObjectHideFlags: 0
@@ -2068,6 +2153,7 @@ Transform:
   - {fileID: 1070282207}
   - {fileID: 1765204822}
   - {fileID: 1194628985}
+  - {fileID: 1044883048}
   m_Father: {fileID: 529942856}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2658,6 +2744,55 @@ MonoBehaviour:
     unitInfoAI: {fileID: 0}
     customNameId: Zombie
     customScale: 1.5
+--- !u!1 &1179350403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1179350404}
+  - component: {fileID: 1179350405}
+  m_Layer: 0
+  m_Name: Steam Tank (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1179350404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179350403}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.52, y: -0.27, z: -19.29}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1044883048}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1179350405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179350403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1179350404}
+    unitInfoAI: {fileID: 11400000, guid: 15ae30b2fbd463f43abec53aa31f5823, type: 2}
+    customNameId: Steam Tank
+    customScale: 1
 --- !u!1 &1187089012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2951,6 +3086,55 @@ Transform:
   m_Father: {fileID: 2045112781}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 194.01099, z: 0}
+--- !u!1 &1303105524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1303105525}
+  - component: {fileID: 1303105526}
+  m_Layer: 0
+  m_Name: Steam Tank (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1303105525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303105524}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.02, y: -0.27, z: -24.61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1044883048}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1303105526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303105524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureDefinition: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1303105525}
+    unitInfoAI: {fileID: 11400000, guid: 15ae30b2fbd463f43abec53aa31f5823, type: 2}
+    customNameId: Steam Tank
+    customScale: 1
 --- !u!1 &1316949213
 GameObject:
   m_ObjectHideFlags: 0
