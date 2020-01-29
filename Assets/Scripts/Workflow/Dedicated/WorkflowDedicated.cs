@@ -27,16 +27,16 @@ namespace Game.Workflow.Dedicated
             gameManager = FindObjectOfType<GameManager>();
             settings.Apply();
 
-            EventHandler.RegisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnMapLoaded);
-            EventHandler.RegisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
+            EventHandler.RegisterEvent<string, NetworkingMode>(GameEvents.GameMapLoaded, OnMapLoaded);
+            EventHandler.RegisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
             StartServer();
         }
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnMapLoaded);
-            EventHandler.UnregisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
+            EventHandler.UnregisterEvent<string, NetworkingMode>(GameEvents.GameMapLoaded, OnMapLoaded);
+            EventHandler.UnregisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
             restartCount = 0;
             tokenSource.Cancel();

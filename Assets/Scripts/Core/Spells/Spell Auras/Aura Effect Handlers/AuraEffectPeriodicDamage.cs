@@ -20,7 +20,7 @@ namespace Core.AuraEffects
             if (target.HasState(UnitControlState.Isolated) || target.IsImmunedToDamage(Aura.SpellInfo, EffectInfo.SpellSchoolMask, Aura.Caster))
             {
                 SpellDamageInfo damageInfo = new SpellDamageInfo(caster, target, Aura.SpellInfo, SpellDamageType.Dot, HitType.Immune);
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, damageInfo);
+                EventHandler.ExecuteEvent(GameEvents.ServerDamageDone, damageInfo);
             }
             else
             {

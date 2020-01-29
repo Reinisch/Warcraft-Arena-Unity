@@ -17,9 +17,9 @@ namespace Game.Workflow.Standard
 
         protected override void OnRegistered()
         {
-            EventHandler.RegisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
-            EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
-            EventHandler.RegisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
+            EventHandler.RegisterEvent<string, NetworkingMode>(GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
+            EventHandler.RegisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
             gameManager = FindObjectOfType<GameManager>();
             interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(true));
@@ -29,9 +29,9 @@ namespace Game.Workflow.Standard
         {
             gameManager = null;
 
-            EventHandler.UnregisterEvent<string, NetworkingMode>(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, OnGameMapLoaded);
-            EventHandler.UnregisterEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
-            EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
+            EventHandler.UnregisterEvent<string, NetworkingMode>(GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.UnregisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
+            EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
         }
 
         private void OnGameMapLoaded(string map, NetworkingMode mode)

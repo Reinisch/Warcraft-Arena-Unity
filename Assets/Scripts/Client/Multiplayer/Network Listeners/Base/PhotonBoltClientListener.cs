@@ -38,7 +38,7 @@ namespace Client
                 Assert.IsNull(LocalPlayer, "Gained control of another player while already controlling one!");
 
                 LocalPlayer = (Player)World.UnitManager.Find(entity.NetworkId.PackedValue);
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, LocalPlayer, true);
+                EventHandler.ExecuteEvent(GameEvents.ClientControlStateChanged, LocalPlayer, true);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Client
             {
                 Assert.IsTrue(LocalPlayer.BoltEntity == entity, "Lost control of non-local player!");
 
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, LocalPlayer, false);
+                EventHandler.ExecuteEvent(GameEvents.ClientControlStateChanged, LocalPlayer, false);
                 LocalPlayer = null;
             }
         }

@@ -10,14 +10,14 @@ namespace Client
 
         protected override void OnRegistered()
         {
-            EventHandler.RegisterEvent<World, bool>(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, OnWorldStateChanged);
-            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, OnControlStateChanged);
+            EventHandler.RegisterEvent<World, bool>(GameEvents.WorldStateChanged, OnWorldStateChanged);
+            EventHandler.RegisterEvent<Player, bool>(GameEvents.ClientControlStateChanged, OnControlStateChanged);
         }
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, OnControlStateChanged);
-            EventHandler.UnregisterEvent<World, bool>(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, OnWorldStateChanged);
+            EventHandler.UnregisterEvent<Player, bool>(GameEvents.ClientControlStateChanged, OnControlStateChanged);
+            EventHandler.UnregisterEvent<World, bool>(GameEvents.WorldStateChanged, OnWorldStateChanged);
         }
 
         protected virtual void OnWorldStateChanged(World world, bool created)

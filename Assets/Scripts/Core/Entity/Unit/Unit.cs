@@ -490,7 +490,7 @@ namespace Core
             }
 
             if (IsOwner && this is Player rootedPlayer)
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, rootedPlayer, applied);
+                EventHandler.ExecuteEvent(GameEvents.ServerPlayerRootChanged, rootedPlayer, applied);
         }
 
         private void UpdateConfusionState(bool applied)

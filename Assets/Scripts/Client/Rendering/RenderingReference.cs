@@ -90,11 +90,11 @@ namespace Client
             {
                 base.OnWorldStateChanged(world, true);
 
-                EventHandler.RegisterEvent<Unit, Unit, int, HitType>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
-                EventHandler.RegisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
-                EventHandler.RegisterEvent<Unit, Unit, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.SpellMissDone, OnSpellMiss);
-                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
-                EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
+                EventHandler.RegisterEvent<Unit, Unit, int, HitType>(GameEvents.SpellDamageDone, OnSpellDamageDone);
+                EventHandler.RegisterEvent<Unit, Unit, int, bool>(GameEvents.SpellHealingDone, OnSpellHealingDone);
+                EventHandler.RegisterEvent<Unit, Unit, SpellMissType>(GameEvents.SpellMissDone, OnSpellMiss);
+                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.RegisterEvent<Unit, int>(GameEvents.SpellHit, OnSpellHit);
 
                 nameplateController.Initialize();
                 floatingTextController.Initialize();
@@ -110,11 +110,11 @@ namespace Client
                 floatingTextController.Deinitialize();
                 spellVisualController.Deinitialize();
 
-                EventHandler.UnregisterEvent<Unit, Unit, int, HitType>(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, OnSpellDamageDone);
-                EventHandler.UnregisterEvent<Unit, Unit, int, bool>(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, OnSpellHealingDone);
-                EventHandler.UnregisterEvent<Unit, Unit, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.SpellMissDone, OnSpellMiss);
-                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
-                EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
+                EventHandler.UnregisterEvent<Unit, Unit, int, HitType>(GameEvents.SpellDamageDone, OnSpellDamageDone);
+                EventHandler.UnregisterEvent<Unit, Unit, int, bool>(GameEvents.SpellHealingDone, OnSpellHealingDone);
+                EventHandler.UnregisterEvent<Unit, Unit, SpellMissType>(GameEvents.SpellMissDone, OnSpellMiss);
+                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.UnregisterEvent<Unit, int>(GameEvents.SpellHit, OnSpellHit);
 
                 base.OnWorldStateChanged(world, false);
             }

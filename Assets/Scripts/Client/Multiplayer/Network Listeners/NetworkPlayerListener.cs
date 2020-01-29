@@ -32,7 +32,7 @@ namespace Client
 
             Unit who = World.UnitManager.Find(unitChatMessageEvent.SenderId.PackedValue);
             if (who != null)
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.UnitChat, who, unitChatMessageEvent.Message);
+                EventHandler.ExecuteEvent(GameEvents.UnitChat, who, unitChatMessageEvent.Message);
         }
     }
 }

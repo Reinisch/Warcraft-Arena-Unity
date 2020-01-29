@@ -50,13 +50,13 @@ namespace Client
             {
                 base.OnWorldStateChanged(world, true);
 
-                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
-                EventHandler.RegisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
+                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.RegisterEvent<Unit, int>(GameEvents.SpellHit, OnSpellHit);
             }
             else
             {
-                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, OnSpellLaunch);
-                EventHandler.UnregisterEvent<Unit, int>(EventHandler.GlobalDispatcher, GameEvents.SpellHit, OnSpellHit);
+                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(GameEvents.SpellLaunched, OnSpellLaunch);
+                EventHandler.UnregisterEvent<Unit, int>(GameEvents.SpellHit, OnSpellHit);
 
                 base.OnWorldStateChanged(world, false);
             }

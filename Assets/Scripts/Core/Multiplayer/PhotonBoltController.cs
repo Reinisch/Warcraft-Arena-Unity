@@ -43,12 +43,12 @@ namespace Core
 
             SetListeners(false, false, false);
 
-            EventHandler.RegisterEvent<World, bool>(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, OnWorldStateChanged);
+            EventHandler.RegisterEvent<World, bool>(GameEvents.WorldStateChanged, OnWorldStateChanged);
         }
 
         internal void Unregister()
         {
-            EventHandler.UnregisterEvent<World, bool>(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, OnWorldStateChanged);
+            EventHandler.UnregisterEvent<World, bool>(GameEvents.WorldStateChanged, OnWorldStateChanged);
 
             SetListeners(false, false, false);
         }
@@ -139,7 +139,7 @@ namespace Core
             base.BoltShutdownBegin(registerDoneCallback, disconnectReason);
 
             if (world != null && world.HasServerLogic)
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromMaster);
+                EventHandler.ExecuteEvent(GameEvents.DisconnectedFromMaster);
         }
 
         public override void SceneLoadLocalDone(string map)
@@ -147,7 +147,7 @@ namespace Core
             base.SceneLoadLocalDone(map);
 
             if (BoltNetwork.IsConnected)
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.GameMapLoaded, map, networkingMode);
+                EventHandler.ExecuteEvent(GameEvents.GameMapLoaded, map, networkingMode);
         }
 
         public override void Connected(BoltConnection connection)
@@ -170,7 +170,7 @@ namespace Core
                 StopAllCoroutines();
 
                 Debug.LogError("Disconnected: reason: " + connection.DisconnectReason);
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.DisconnectedFromHost, connection.DisconnectReason);
+                EventHandler.ExecuteEvent(GameEvents.DisconnectedFromHost, connection.DisconnectReason);
             }
         }
 

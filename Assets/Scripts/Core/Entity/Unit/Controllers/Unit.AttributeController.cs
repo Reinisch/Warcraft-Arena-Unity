@@ -389,7 +389,7 @@ namespace Core
                     speedRates[type] = rate;
 
                     if (unit.IsOwner && unit is Player player)
-                        EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, player, type, rate);
+                        EventHandler.ExecuteEvent(GameEvents.ServerPlayerSpeedChanged, player, type, rate);
                 }
             }
 

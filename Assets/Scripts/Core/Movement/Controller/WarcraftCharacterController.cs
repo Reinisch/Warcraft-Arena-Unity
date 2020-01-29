@@ -143,7 +143,7 @@ namespace Core
             UpdateRigidbody();
 
             if (unit.IsOwner && unit is Player player)
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerMovementControlChanged, player, hasMovementControl);
+                EventHandler.ExecuteEvent(GameEvents.ServerPlayerMovementControlChanged, player, hasMovementControl);
         }
 
         internal void StopMoving()

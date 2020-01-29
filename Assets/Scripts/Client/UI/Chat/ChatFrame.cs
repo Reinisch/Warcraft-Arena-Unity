@@ -27,7 +27,7 @@ public class ChatFrame : MonoBehaviour
     [UsedImplicitly]
     private void Awake()
     {
-        EventHandler.RegisterEvent<Unit, string>(EventHandler.GlobalDispatcher, GameEvents.UnitChat, OnUnitChat);
+        EventHandler.RegisterEvent<Unit, string>(GameEvents.UnitChat, OnUnitChat);
         EventHandler.RegisterEvent<HotkeyState>(chatFocusHotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
         inputField.onSubmit.AddListener(OnSubmit);
         inputField.onDeselect.AddListener(OnDeselect);
@@ -44,7 +44,7 @@ public class ChatFrame : MonoBehaviour
         chatMessages.Clear();
         inputField.onSubmit.RemoveListener(OnSubmit);
         inputField.onDeselect.RemoveListener(OnDeselect);
-        EventHandler.UnregisterEvent<Unit, string>(EventHandler.GlobalDispatcher, GameEvents.UnitChat, OnUnitChat);
+        EventHandler.UnregisterEvent<Unit, string>(GameEvents.UnitChat, OnUnitChat);
         EventHandler.UnregisterEvent<HotkeyState>(chatFocusHotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
     }
 

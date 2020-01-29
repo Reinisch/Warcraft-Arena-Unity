@@ -88,7 +88,7 @@ namespace Core
             {
                 unit.Spells.CalculateSpellDamageTaken(ref damageInfo, spell);
 
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, damageInfo);
+                EventHandler.ExecuteEvent(GameEvents.ServerDamageDone, damageInfo);
 
                 for (int i = unit.Auras.AuraApplications.Count - 1; i >= 0; i--)
                 {
@@ -109,7 +109,7 @@ namespace Core
             {
                 unit.Spells.CalculateSpellHealingTaken(ref healInfo);
 
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerHealingDone, healInfo);
+                EventHandler.ExecuteEvent(GameEvents.ServerHealingDone, healInfo);
 
                 unit.DealHeal(healInfo.Target, (int)healInfo.Heal);
             }

@@ -159,14 +159,14 @@ namespace Core
                 SpellChargeCooldown spellChargeCooldown = AddCharge(spellInfo.Id, cooldownLeft, cooldownLeft);
 
                 if (caster is Player player && player.BoltEntity.Controller != null)
-                    EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCharge, player, spellChargeCooldown);
+                    EventHandler.ExecuteEvent(GameEvents.ServerSpellCharge, player, spellChargeCooldown);
             }
             else
             {
                 SpellCooldown spellCooldown = AddCooldown(spellInfo.Id, cooldownLeft, cooldownLeft);
 
                 if (caster is Player player && player.BoltEntity.Controller != null)
-                    EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, player, spellCooldown);
+                    EventHandler.ExecuteEvent(GameEvents.ServerSpellCooldown, player, spellCooldown);
             }
         }
 

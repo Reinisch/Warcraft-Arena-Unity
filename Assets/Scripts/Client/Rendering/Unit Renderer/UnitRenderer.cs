@@ -76,7 +76,7 @@ namespace Client
             if (!Unit.IsController)
             {
                 var token = launchEvent.ProcessingEntries as SpellProcessingToken;
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, Unit, launchEvent.SpellId, token);
+                EventHandler.ExecuteEvent(GameEvents.SpellLaunched, Unit, launchEvent.SpellId, token);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Client
         {
             base.OnEvent(spellHitEvent);
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHit, Unit, spellHitEvent.SpellId);
+            EventHandler.ExecuteEvent(GameEvents.SpellHit, Unit, spellHitEvent.SpellId);
         }
 
         public void TriggerInstantCast(SpellInfo spellInfo)

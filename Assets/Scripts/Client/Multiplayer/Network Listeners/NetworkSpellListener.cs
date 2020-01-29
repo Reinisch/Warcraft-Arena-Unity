@@ -14,10 +14,10 @@ namespace Client
             if (answer.Result == (int) SpellCastResult.Success)
             {
                 var token = answer.ProcessingEntries as SpellProcessingToken;
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellLaunched, (Unit)LocalPlayer, answer.SpellId, token);
+                EventHandler.ExecuteEvent(GameEvents.SpellLaunched, (Unit)LocalPlayer, answer.SpellId, token);
             }
             else
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ClientSpellFailed, (SpellCastResult) answer.Result);
+                EventHandler.ExecuteEvent(GameEvents.ClientSpellFailed, (SpellCastResult) answer.Result);
         }
 
         public override void OnEvent(SpellDamageDoneEvent spellDamageEvent)
@@ -27,7 +27,7 @@ namespace Client
             if (LocalPlayer == null || !World.UnitManager.TryFind(spellDamageEvent.Target.PackedValue, out Unit target))
                 return;
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellDamageDone, (Unit)LocalPlayer, target, spellDamageEvent.DamageAmount, (HitType)spellDamageEvent.HitType);
+            EventHandler.ExecuteEvent(GameEvents.SpellDamageDone, (Unit)LocalPlayer, target, spellDamageEvent.DamageAmount, (HitType)spellDamageEvent.HitType);
         }
 
         public override void OnEvent(SpellMissDoneEvent spellMissEvent)
@@ -37,7 +37,7 @@ namespace Client
             if (LocalPlayer == null || !World.UnitManager.TryFind(spellMissEvent.TargetId.PackedValue, out Unit target))
                 return;
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellMissDone, (Unit)LocalPlayer, target, (SpellMissType)spellMissEvent.MissType);
+            EventHandler.ExecuteEvent(GameEvents.SpellMissDone, (Unit)LocalPlayer, target, (SpellMissType)spellMissEvent.MissType);
         }
 
         public override void OnEvent(SpellHealingDoneEvent spellHealingEvent)
@@ -47,7 +47,7 @@ namespace Client
             if (LocalPlayer == null || !World.UnitManager.TryFind(spellHealingEvent.Target.PackedValue, out Unit target))
                 return;
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.SpellHealingDone, (Unit)LocalPlayer, target, spellHealingEvent.HealAmount, spellHealingEvent.IsCrit);
+            EventHandler.ExecuteEvent(GameEvents.SpellHealingDone, (Unit)LocalPlayer, target, spellHealingEvent.HealAmount, spellHealingEvent.IsCrit);
         }
 
         public override void OnEvent(SpellPlayerTeleportEvent teleportEvent)

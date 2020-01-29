@@ -9,24 +9,24 @@ namespace Server
     {
         internal GameSpellListener(WorldServer world) : base(world)
         {
-            EventHandler.RegisterEvent<SpellDamageInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, OnSpellDamageDone);
-            EventHandler.RegisterEvent<SpellHealInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerHealingDone, OnSpellHealingDone);
-            EventHandler.RegisterEvent<Unit, SpellInfo, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
-            EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
-            EventHandler.RegisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
-            EventHandler.RegisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
-            EventHandler.RegisterEvent<Player, SpellChargeCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCharge, OnServerSpellChargeCooldown);
+            EventHandler.RegisterEvent<SpellDamageInfo>(GameEvents.ServerDamageDone, OnSpellDamageDone);
+            EventHandler.RegisterEvent<SpellHealInfo>(GameEvents.ServerHealingDone, OnSpellHealingDone);
+            EventHandler.RegisterEvent<Unit, SpellInfo, SpellProcessingToken>(GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
+            EventHandler.RegisterEvent<Unit, Unit, SpellInfo, SpellMissType>(GameEvents.ServerSpellHit, OnServerSpellHit);
+            EventHandler.RegisterEvent<Player, Vector3>(GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
+            EventHandler.RegisterEvent<Player, SpellCooldown>(GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
+            EventHandler.RegisterEvent<Player, SpellChargeCooldown>(GameEvents.ServerSpellCharge, OnServerSpellChargeCooldown);
         }
 
         internal void Dispose()
         {
-            EventHandler.UnregisterEvent<SpellDamageInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerDamageDone, OnSpellDamageDone);
-            EventHandler.UnregisterEvent<SpellHealInfo>(EventHandler.GlobalDispatcher, GameEvents.ServerHealingDone, OnSpellHealingDone);
-            EventHandler.UnregisterEvent<Unit, SpellInfo, SpellProcessingToken>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
-            EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, OnServerSpellHit);
-            EventHandler.UnregisterEvent<Player, Vector3>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
-            EventHandler.UnregisterEvent<Player, SpellCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
-            EventHandler.UnregisterEvent<Player, SpellChargeCooldown>(EventHandler.GlobalDispatcher, GameEvents.ServerSpellCharge, OnServerSpellChargeCooldown);
+            EventHandler.UnregisterEvent<SpellDamageInfo>(GameEvents.ServerDamageDone, OnSpellDamageDone);
+            EventHandler.UnregisterEvent<SpellHealInfo>(GameEvents.ServerHealingDone, OnSpellHealingDone);
+            EventHandler.UnregisterEvent<Unit, SpellInfo, SpellProcessingToken>(GameEvents.ServerSpellLaunch, OnServerSpellLaunch);
+            EventHandler.UnregisterEvent<Unit, Unit, SpellInfo, SpellMissType>(GameEvents.ServerSpellHit, OnServerSpellHit);
+            EventHandler.UnregisterEvent<Player, Vector3>(GameEvents.ServerPlayerTeleport, OnServerPlayerTeleport);
+            EventHandler.UnregisterEvent<Player, SpellCooldown>(GameEvents.ServerSpellCooldown, OnServerSpellCooldown);
+            EventHandler.UnregisterEvent<Player, SpellChargeCooldown>(GameEvents.ServerSpellCharge, OnServerSpellChargeCooldown);
         }
 
         private void OnSpellDamageDone(SpellDamageInfo damageInfo)

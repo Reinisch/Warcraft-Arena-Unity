@@ -82,7 +82,7 @@ namespace Game
         {
             world = newWorld;
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, world, true);
+            EventHandler.ExecuteEvent(GameEvents.WorldStateChanged, world, true);
         }
 
         public void DestroyWorld()
@@ -90,7 +90,7 @@ namespace Game
             if (world == null)
                 return;
 
-            EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.WorldStateChanged, world, false);
+            EventHandler.ExecuteEvent(GameEvents.WorldStateChanged, world, false);
 
             world.Dispose();
             world = null;

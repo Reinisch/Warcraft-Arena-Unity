@@ -20,12 +20,12 @@ namespace Client
         {
             GameObjectPool.PreInstantiate(errorItemPrototype.gameObject, preinstantiatedCount);
 
-            EventHandler.RegisterEvent<SpellCastResult>(EventHandler.GlobalDispatcher, GameEvents.ClientSpellFailed, OnClientSpellFailed);
+            EventHandler.RegisterEvent<SpellCastResult>(GameEvents.ClientSpellFailed, OnClientSpellFailed);
         }
 
         public void Deinitialize()
         {
-            EventHandler.UnregisterEvent<SpellCastResult>(EventHandler.GlobalDispatcher, GameEvents.ClientSpellFailed, OnClientSpellFailed);
+            EventHandler.UnregisterEvent<SpellCastResult>(GameEvents.ClientSpellFailed, OnClientSpellFailed);
 
             for (int i = activeErrors.Count - 1; i >= 0; i--)
             {

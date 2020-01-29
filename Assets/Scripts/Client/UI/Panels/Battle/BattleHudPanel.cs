@@ -45,7 +45,7 @@ namespace Client
             actionBars.ForEach(actionBar => actionBar.Initialize());
             actionErrorDisplay.Initialize();
 
-            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, OnControlStateChanged);
+            EventHandler.RegisterEvent<Player, bool>(GameEvents.ClientControlStateChanged, OnControlStateChanged);
 
             playerCastFrame.UpdateCaster(localPlayer);
             playerUnitFrame.UpdateUnit(localPlayer);
@@ -57,7 +57,7 @@ namespace Client
 
         protected override void PanelDeinitialized()
         {
-            EventHandler.UnregisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ClientControlStateChanged, OnControlStateChanged);
+            EventHandler.UnregisterEvent<Player, bool>(GameEvents.ClientControlStateChanged, OnControlStateChanged);
 
             actionErrorDisplay.Deinitialize();
             actionBars.ForEach(actionBar => actionBar.Denitialize());

@@ -641,7 +641,7 @@ namespace Core
                 EffectDamage = 0;
 
             if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.DontReportCastSuccess))
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missType);
+                EventHandler.ExecuteEvent(GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missType);
 
             Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellHit, hitTarget, this);
 
@@ -679,7 +679,7 @@ namespace Core
             ImplicitTargets.HandleLaunch(out bool isDelayed, out SpellProcessingToken processingToken);
 
             if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.DontReportCastSuccess))
-                EventHandler.ExecuteEvent(EventHandler.GlobalDispatcher, GameEvents.ServerSpellLaunch, Caster, SpellInfo, processingToken);
+                EventHandler.ExecuteEvent(GameEvents.ServerSpellLaunch, Caster, SpellInfo, processingToken);
 
             DropModifierCharges();
             ConsumePowers();

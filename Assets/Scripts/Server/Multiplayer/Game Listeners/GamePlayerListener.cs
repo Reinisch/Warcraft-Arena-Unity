@@ -8,16 +8,16 @@ namespace Server
     {
         internal GamePlayerListener(WorldServer world) : base(world)
         {
-            EventHandler.RegisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
-            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);
-            EventHandler.RegisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerMovementControlChanged, OnPlayerMovementControlChanged);
+            EventHandler.RegisterEvent<Player, UnitMoveType, float>(GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
+            EventHandler.RegisterEvent<Player, bool>(GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);
+            EventHandler.RegisterEvent<Player, bool>(GameEvents.ServerPlayerMovementControlChanged, OnPlayerMovementControlChanged);
         }
 
         internal void Dispose()
         {
-            EventHandler.UnregisterEvent<Player, UnitMoveType, float>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
-            EventHandler.UnregisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);
-            EventHandler.UnregisterEvent<Player, bool>(EventHandler.GlobalDispatcher, GameEvents.ServerPlayerMovementControlChanged, OnPlayerMovementControlChanged);
+            EventHandler.UnregisterEvent<Player, UnitMoveType, float>(GameEvents.ServerPlayerSpeedChanged, OnPlayerSpeedChanged);
+            EventHandler.UnregisterEvent<Player, bool>(GameEvents.ServerPlayerRootChanged, OnPlayerRootChanged);
+            EventHandler.UnregisterEvent<Player, bool>(GameEvents.ServerPlayerMovementControlChanged, OnPlayerMovementControlChanged);
         }
 
         private void OnPlayerSpeedChanged(Player player, UnitMoveType moveType, float rate)
