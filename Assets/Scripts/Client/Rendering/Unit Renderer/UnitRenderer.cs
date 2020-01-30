@@ -146,12 +146,18 @@ namespace Client
         private UnitModel ReplaceModel(UnitModel newModel = null, UnitModelReplacementMode mode = UnitModelReplacementMode.ScopeIn)
         {
             UnitModel oldModel = model;
-            if (oldModel != null && newModel != null)
+            if (model != null && newModel != null)
                 model.TagContainer.TransferChildren(newModel.TagContainer);
 
             model = newModel;
             UpdateAnimationState(canAnimate);
             soundController.HandleModelChange(model);
+
+            if (oldModel != null)
+                EventHandler.ExecuteEvent(rendering, GameEvents.UnitModelAttached, oldModel, this, false);
+
+            if (newModel != null)
+                EventHandler.ExecuteEvent(rendering, GameEvents.UnitModelAttached, newModel, this, true);
 
             if (oldModel != null && mode != UnitModelReplacementMode.ScopeOut)
             {

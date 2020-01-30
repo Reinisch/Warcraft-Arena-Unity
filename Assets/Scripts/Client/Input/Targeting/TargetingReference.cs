@@ -13,6 +13,7 @@ namespace Client
     public partial class TargetingReference : ScriptableReferenceClient
     {
         [SerializeField, UsedImplicitly] private InputReference input;
+        [SerializeField, UsedImplicitly] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private TargetingSettings targetingSettings;
 
@@ -46,9 +47,9 @@ namespace Client
             if (Input.GetMouseButtonDown(0) && !Input.GetMouseButton(1) && !InterfaceUtils.IsPointerOverUI)
             {
                 Ray ray = cameraReference.WarcraftCamera.Camera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out var hit, float.MaxValue, PhysicsReference.Mask.Characters | PhysicsReference.Mask.Ground))
-                    if (World.UnitManager.TryFind(hit.collider, out Unit target) && Player.HasClientVisiblityOf(target))
-                        input.SelectTarget(target);
+                if (Physics.Raycast(ray, out var hit, float.MaxValue, PhysicsReference.Mask.Interactable | PhysicsReference.Mask.Ground))
+                    if (rendering.TryFindRenderer(hit.collider, out UnitRenderer unitRenderer) && Player.HasClientVisiblityOf(unitRenderer.Unit))
+                        input.SelectTarget(unitRenderer.Unit);
             }
         }
 

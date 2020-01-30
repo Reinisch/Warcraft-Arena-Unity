@@ -14,7 +14,9 @@ namespace Client
         [SerializeField, UsedImplicitly] private SkinnedMeshRenderer meshRenderer;
         [SerializeField, UsedImplicitly] private Animator animator;
         [SerializeField, UsedImplicitly] private float strafeSpeed = 1.0f;
+        [SerializeField, UsedImplicitly] private List<Collider> hitBoxes;
 
+        public IReadOnlyList<Collider> HitBoxes => hitBoxes;
         public TagContainer TagContainer => tagContainer;
         public Animator Animator => animator;
         public float TargetAlpha { get; private set; } = 1.0f;

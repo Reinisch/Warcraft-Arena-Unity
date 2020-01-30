@@ -32,6 +32,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private List<Material> autoIncludedMaterials;
 
         private Transform container;
+        private readonly Dictionary<Collider, UnitRenderer> unitRenderersByHitBoxes = new Dictionary<Collider, UnitRenderer>();
 
         public Sprite DefaultSpellIcon => defaultSpellIcon;
         public UnitRendererSettings UnitRendererSettings => unitRendererSettings;
@@ -40,8 +41,6 @@ namespace Client
         public IReadOnlyDictionary<int, UnitModelSettings> Models => modelSettingsContainer.ModelSettingsById;
         public IReadOnlySerializedDictionary<ClassType, Sprite> ClassIconSprites => classIconsByClassType;
         public IReadOnlySerializedDictionary<SpellPowerType, Color> SpellPowerColors => colorsBySpellPowerType;
-
-        public AnimationInfo FindAnimation(SpellInfo spellInfo) => spellAnimationInfoContainer.FindAnimation(spellInfo);
 
         protected override void OnRegistered()
         {
@@ -59,10 +58,14 @@ namespace Client
             spellVisualsInfoContainer.Register();
             animationInfoContainer.Register();
             spellAnimationInfoContainer.Register();
+
+            EventHandler.RegisterEvent<UnitModel, UnitRenderer, bool>(this, GameEvents.UnitModelAttached, OnUnitModelAttached);
         }
 
         protected override void OnUnregister()
         {
+            EventHandler.UnregisterEvent<UnitModel, UnitRenderer, bool>(this, GameEvents.UnitModelAttached, OnUnitModelAttached);
+
             spellAnimationInfoContainer.Unregister();
             animationInfoContainer.Unregister();
             spellVisualsInfoContainer.Unregister();
@@ -71,6 +74,9 @@ namespace Client
             colorsBySpellPowerType.Unregister();
             modelSettingsContainer.Unregister();
 
+            Assert.IsTrue(unitRenderersByHitBoxes.Count == 0);
+
+            unitRenderersByHitBoxes.Clear();
             container = null;
 
             base.OnUnregister();
@@ -217,8 +223,23 @@ namespace Client
             }
         }
 
+        private void OnUnitModelAttached(UnitModel unitModel, UnitRenderer unitRenderer, bool isAttached)
+        {
+            for (int i = 0; i < unitModel.HitBoxes.Count; i++)
+            {
+                if (isAttached)
+                    unitRenderersByHitBoxes.Add(unitModel.HitBoxes[i], unitRenderer);
+                else
+                    unitRenderersByHitBoxes.Remove(unitModel.HitBoxes[i]);
+            }
+        }
+
         private void RegisterHandler(IUnitRendererHandler unitRendererHandler) => unitRendererController.RegisterHandler(unitRendererHandler);
 
         private void UnregisterHandler(IUnitRendererHandler unitRendererHandler) => unitRendererController.UnregisterHandler(unitRendererHandler);
+
+        public AnimationInfo FindAnimation(SpellInfo spellInfo) => spellAnimationInfoContainer.FindAnimation(spellInfo);
+
+        public bool TryFindRenderer(Collider hitBox, out UnitRenderer unitRenderer) => unitRenderersByHitBoxes.TryGetValue(hitBox, out unitRenderer);
     }
 }

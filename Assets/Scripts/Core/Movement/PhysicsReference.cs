@@ -11,12 +11,14 @@ namespace Core
         {
             public static int Characters { get; internal set; }
             public static int Ground { get; internal set; }
+            public static int Interactable { get; internal set; }
         }
 
         public static class Layer
         {
             public static int Characters { get; internal set; }
             public static int Ground { get; internal set; }
+            public static int Interactable { get; internal set; }
         }
 
         [SerializeField, UsedImplicitly]
@@ -33,9 +35,11 @@ namespace Core
 
             Layer.Characters = LayerMask.NameToLayer("Characters");
             Layer.Ground = LayerMask.NameToLayer("Ground");
+            Layer.Interactable = LayerMask.NameToLayer("Interactable");
 
             Mask.Characters = 1 << Layer.Characters;
             Mask.Ground = 1 << Layer.Ground;
+            Mask.Interactable = 1 << Layer.Interactable;
         }
 
         protected override void OnUnregister()

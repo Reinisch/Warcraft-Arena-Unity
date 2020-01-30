@@ -38,6 +38,7 @@
         UnitClassChanged,
         UnitVisualsChanged,
         UnitModelChanged,
+        UnitModelAttached,
         UnitScaleChanged,
         UnitDisplayPowerChanged,
 

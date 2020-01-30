@@ -9,7 +9,6 @@ namespace Client
     [CreateAssetMenu(fileName = "Input Reference", menuName = "Game Data/Scriptable/Input", order = 1)]
     public class InputReference : ScriptableReferenceClient
     {
-        [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private TargetingSpellReference spellTargeting;
         [SerializeField, UsedImplicitly] private UnitControllerInputMouseKeyboard unitMouseKeyboardInput;
