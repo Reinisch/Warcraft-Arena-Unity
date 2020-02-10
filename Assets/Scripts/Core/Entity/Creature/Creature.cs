@@ -8,7 +8,7 @@ namespace Core
     {
         public new class CreateToken : Unit.CreateToken
         {
-            public string CustomNameId = string.Empty;
+            public string CustomNameId { get; set; } = string.Empty;
 
             public override void Read(UdpPacket packet)
             {
@@ -33,18 +33,16 @@ namespace Core
         }
 
         [SerializeField, UsedImplicitly, Header(nameof(Creature)), Space(10)]
-        private CreatureInfo creatureDefinition;
-        [SerializeField, UsedImplicitly]
         private CreatureAI creatureAI;
 
         private CreateToken createToken;
-        private string customNameId;
+        private string creatureName;
 
         internal CreatureAI CreatureAI => creatureAI;
         internal override UnitAI AI => creatureAI;
         internal override bool AutoScoped => false;
 
-        public override string Name { get => string.IsNullOrEmpty(customNameId) ? creatureDefinition.CreatureNameId : customNameId; internal set => customNameId = value; }
+        public override string Name { get => creatureName; internal set => creatureName = value; }
 
         protected override void HandleAttach()
         {
