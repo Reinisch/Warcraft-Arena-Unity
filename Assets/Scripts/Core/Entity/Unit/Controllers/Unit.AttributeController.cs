@@ -467,12 +467,9 @@ namespace Core
 
             internal void UpdateDisplayPower()
             {
-                SpellPowerType newPowerType;
-                // TEMP untill shapeshifting implemented: Cat Form
-                if (unit.Auras.HasAuraWithSpell(36))
-                    newPowerType = SpellPowerType.Energy;
-                else
-                    newPowerType = unit.Balance.ClassesByType[unit.ClassType].MainPowerType;
+                SpellPowerType newPowerType = unit.ShapeShiftForm == ShapeShiftForm.CatForm
+                    ? SpellPowerType.Energy
+                    : unit.Balance.ClassesByType[unit.ClassType].MainPowerType;
 
                 DisplayPowerType = newPowerType;
 
