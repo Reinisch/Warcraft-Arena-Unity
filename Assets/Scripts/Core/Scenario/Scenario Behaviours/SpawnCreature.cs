@@ -6,7 +6,7 @@ namespace Core.Scenario
 {
     public class SpawnCreature : ScenarioAction
     {
-        [SerializeField, UsedImplicitly] private CreatureDefinition creatureDefinition;
+        [SerializeField, UsedImplicitly] private CreatureInfo creatureInfo;
         [SerializeField, UsedImplicitly] private CustomSpawnSettings customSpawnSettings;
 
         internal override void Initialize(Map map)
@@ -33,8 +33,8 @@ namespace Core.Scenario
                 DeathState = DeathState.Alive,
                 FreeForAll = true,
                 ClassType = ClassType.Warrior,
-                ModelId = creatureDefinition.ModelId,
-                OriginalModelId = creatureDefinition.ModelId,
+                ModelId = creatureInfo.ModelId,
+                OriginalModelId = creatureInfo.ModelId,
                 FactionId = Balance.DefaultFaction.FactionId,
                 CustomNameId = customSpawnSettings.CustomNameId,
                 Scale = customSpawnSettings.CustomScale

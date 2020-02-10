@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 208632945}
     unitInfoAI: {fileID: 11400000, guid: 15ae30b2fbd463f43abec53aa31f5823, type: 2}
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 285889213}
     unitInfoAI: {fileID: 0}
@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 341639894}
     unitInfoAI: {fileID: 0}
@@ -401,7 +401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 369186453}
     unitInfoAI: {fileID: 0}
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 423294304}
     unitInfoAI: {fileID: 0}
@@ -1631,7 +1631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 882047744}
     unitInfoAI: {fileID: 0}
@@ -1770,7 +1770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 986889926}
     unitInfoAI: {fileID: 0}
@@ -1943,7 +1943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1053658179}
     unitInfoAI: {fileID: 0}
@@ -2169,7 +2169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1528644669}
     unitInfoAI: {fileID: 0}
@@ -2187,7 +2187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 538277480}
     unitInfoAI: {fileID: 0}
@@ -2205,7 +2205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 807606279}
     unitInfoAI: {fileID: 0}
@@ -2223,7 +2223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1516511730}
     unitInfoAI: {fileID: 0}
@@ -2241,7 +2241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 124852104}
     unitInfoAI: {fileID: 0}
@@ -2259,7 +2259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1663585053}
     unitInfoAI: {fileID: 0}
@@ -2277,7 +2277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 367259507}
     unitInfoAI: {fileID: 0}
@@ -2295,7 +2295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1745147651}
     unitInfoAI: {fileID: 0}
@@ -2313,7 +2313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1892784424}
     unitInfoAI: {fileID: 0}
@@ -2331,7 +2331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1597766180}
     unitInfoAI: {fileID: 0}
@@ -2349,7 +2349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1316949214}
     unitInfoAI: {fileID: 0}
@@ -2367,7 +2367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 762751006}
     unitInfoAI: {fileID: 0}
@@ -2385,7 +2385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1376170248}
     unitInfoAI: {fileID: 0}
@@ -2403,7 +2403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 2123078853}
     unitInfoAI: {fileID: 0}
@@ -2421,7 +2421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 937470650}
     unitInfoAI: {fileID: 0}
@@ -2439,7 +2439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1559358378}
     unitInfoAI: {fileID: 0}
@@ -2457,7 +2457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1943771239}
     unitInfoAI: {fileID: 0}
@@ -2475,7 +2475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 800920973}
     unitInfoAI: {fileID: 0}
@@ -2493,7 +2493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 600385116}
     unitInfoAI: {fileID: 0}
@@ -2511,7 +2511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 144293978}
     unitInfoAI: {fileID: 0}
@@ -2560,7 +2560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1122683016}
     unitInfoAI: {fileID: 0}
@@ -2609,7 +2609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1123436616}
     unitInfoAI: {fileID: 0}
@@ -2689,7 +2689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1147489547}
     unitInfoAI: {fileID: 0}
@@ -2738,7 +2738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1175766289}
     unitInfoAI: {fileID: 0}
@@ -2787,7 +2787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1179350404}
     unitInfoAI: {fileID: 11400000, guid: 15ae30b2fbd463f43abec53aa31f5823, type: 2}
@@ -2970,7 +2970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: f923dcbdd8a452740a64b724a04e4c59, type: 2}
+  creatureInfo: {fileID: 11400000, guid: f923dcbdd8a452740a64b724a04e4c59, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1240936478}
     unitInfoAI: {fileID: 0}
@@ -3050,7 +3050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1291554097}
     unitInfoAI: {fileID: 0}
@@ -3129,7 +3129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1303105525}
     unitInfoAI: {fileID: 11400000, guid: 15ae30b2fbd463f43abec53aa31f5823, type: 2}
@@ -3208,7 +3208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1327414464}
     unitInfoAI: {fileID: 0}
@@ -3287,7 +3287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1345223062}
     unitInfoAI: {fileID: 0}
@@ -3396,7 +3396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1386678620}
     unitInfoAI: {fileID: 0}
@@ -3445,7 +3445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1397558646}
     unitInfoAI: {fileID: 0}
@@ -3838,7 +3838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1517310478}
     unitInfoAI: {fileID: 0}
@@ -4296,7 +4296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1614241950}
     unitInfoAI: {fileID: 0}
@@ -4345,7 +4345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1618946596}
     unitInfoAI: {fileID: 0}
@@ -4977,7 +4977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDefinition: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 1938576711}
     unitInfoAI: {fileID: 0}

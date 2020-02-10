@@ -33,7 +33,7 @@ namespace Core
         }
 
         [SerializeField, UsedImplicitly, Header(nameof(Creature)), Space(10)]
-        private CreatureDefinition creatureDefinition;
+        private CreatureInfo creatureDefinition;
         [SerializeField, UsedImplicitly]
         private CreatureAI creatureAI;
 

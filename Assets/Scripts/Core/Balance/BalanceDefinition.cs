@@ -20,7 +20,7 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private UnitInfoAIContainer unitAIContainer;
         [SerializeField, UsedImplicitly]
-        private CreatureDefinitionContainer creatureContainer;
+        private CreatureInfoContainer creatureContainer;
         [SerializeField, UsedImplicitly]
         private List<MapDefinition> mapEntries;
         [SerializeField, UsedImplicitly]
