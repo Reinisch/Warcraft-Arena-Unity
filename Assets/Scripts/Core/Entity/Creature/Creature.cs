@@ -8,27 +8,31 @@ namespace Core
     {
         public new class CreateToken : Unit.CreateToken
         {
-            public string CustomNameId { get; set; } = string.Empty;
+            public string CustomName { get; set; } = string.Empty;
+            public int CreatureInfoId { get; set; }
 
             public override void Read(UdpPacket packet)
             {
                 base.Read(packet);
 
-                CustomNameId = packet.ReadString();
+                CustomName = packet.ReadString();
+                CreatureInfoId = packet.ReadInt();
             }
 
             public override void Write(UdpPacket packet)
             {
                 base.Write(packet);
 
-                packet.WriteString(CustomNameId);
+                packet.WriteString(CustomName);
+                packet.WriteInt(CreatureInfoId);
             }
 
             public void Attached(Creature creature)
             {
                 base.Attached(creature);
 
-                creature.Name = CustomNameId;
+                creature.Name = CustomName;
+                creature.creatureInfo = creature.Balance.CreatureInfoById[CreatureInfoId];
             }
         }
 
@@ -36,6 +40,7 @@ namespace Core
         private CreatureAI creatureAI;
 
         private CreateToken createToken;
+        private CreatureInfo creatureInfo;
         private string creatureName;
 
         internal CreatureAI CreatureAI => creatureAI;
@@ -51,12 +56,16 @@ namespace Core
             createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
 
+            if (creatureInfo.VehicleInfo != null)
+                CreateVehicle(creatureInfo.VehicleInfo, creatureInfo);
+
             Attributes.UpdateAvailablePowers();
         }
 
         protected override void HandleDetach()
         {
             createToken = null;
+            creatureInfo = null;
 
             base.HandleDetach();
         }

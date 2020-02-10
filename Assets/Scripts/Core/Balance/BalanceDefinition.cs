@@ -22,9 +22,14 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private CreatureInfoContainer creatureContainer;
         [SerializeField, UsedImplicitly]
+        private VehicleInfoContainer vehicleContainer;
+        [SerializeField, UsedImplicitly]
         private List<MapDefinition> mapEntries;
         [SerializeField, UsedImplicitly]
         private List<FactionDefinition> factionEntries;
+
+        internal IReadOnlyDictionary<int, CreatureInfo> CreatureInfoById => creatureContainer.CreatureInfoById;
+        internal IReadOnlyDictionary<int, VehicleInfo> VehicleInfoById => vehicleContainer.VehicleInfoById;
 
         public IReadOnlyList<SpellInfo> SpellInfos => spellContainer.ItemList;
         public IReadOnlyList<AuraInfo> AuraInfos => auraContainer.ItemList;
@@ -40,6 +45,7 @@ namespace Core
             auraContainer.Register();
             classContainer.Register();
             creatureContainer.Register();
+            vehicleContainer.Register();
             spellContainer.Register();
             unitAIContainer.Register();
         }
@@ -48,6 +54,7 @@ namespace Core
         {
             unitAIContainer.Unregister();
             spellContainer.Unregister();
+            vehicleContainer.Unregister();
             creatureContainer.Unregister();
             classContainer.Unregister();
             auraContainer.Unregister();

@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   container: {fileID: 11400000, guid: 61ac6d0da2734be42886059862d4f25e, type: 2}
-  creatureNameId: Steam Tank
+  vehicleInfo: {fileID: 11400000, guid: 74eeb7f9a9efa2a4b917615c144fbc71, type: 2}
+  creatureName: Steam Tank
   modelId: 7

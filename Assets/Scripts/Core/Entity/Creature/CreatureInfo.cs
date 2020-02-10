@@ -8,16 +8,16 @@ namespace Core
     internal sealed class CreatureInfo : ScriptableUniqueInfo<CreatureInfo>
     {
         [SerializeField, UsedImplicitly] private CreatureInfoContainer container;
-
-        [UsedImplicitly, SerializeField] private string creatureNameId;
+        [SerializeField, UsedImplicitly] private VehicleInfo vehicleInfo;
+        [UsedImplicitly, SerializeField] private string creatureName;
         [UsedImplicitly, SerializeField] private int modelId;
 
         protected override ScriptableUniqueInfoContainer<CreatureInfo> Container => container;
         protected override CreatureInfo Data => this;
 
         public new int Id => base.Id;
-
-        public string CreatureNameId => creatureNameId;
         public int ModelId => modelId;
+        public string CreatureName => creatureName;
+        public VehicleInfo VehicleInfo => vehicleInfo;
     }
 }

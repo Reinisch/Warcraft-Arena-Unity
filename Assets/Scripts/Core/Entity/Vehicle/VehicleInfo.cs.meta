@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 6184b49527407f745a611a7b5fc3a3a3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - container: {fileID: 11400000, guid: 59f4d4f9f522e344a9e6bdf781d3bc3a, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

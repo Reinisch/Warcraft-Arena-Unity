@@ -36,7 +36,8 @@ namespace Core.Scenario
                 ModelId = creatureInfo.ModelId,
                 OriginalModelId = creatureInfo.ModelId,
                 FactionId = Balance.DefaultFaction.FactionId,
-                CustomNameId = customSpawnSettings.CustomNameId,
+                CreatureInfoId = creatureInfo.Id,
+                CustomName = string.IsNullOrEmpty(customSpawnSettings.CustomNameId) ? creatureInfo.CreatureName : customSpawnSettings.CustomNameId,
                 Scale = customSpawnSettings.CustomScale
             });
 

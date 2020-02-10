@@ -37,6 +37,8 @@ namespace Core
         internal SpellInfo ShapeShiftSpellInfo { get; private set; }
         internal SpellInfo TransformSpellInfo { get; private set; }
         internal CreateToken UnitCreateToken { get; private set; }
+        internal Vehicle Vehicle { get; private set; }
+
         internal abstract UnitAI AI { get; }
 
         internal bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
@@ -131,6 +133,8 @@ namespace Core
 
         protected virtual void HandleDetach()
         {
+            DestroyVehicle();
+
             ResetShapeShiftForm();
             ResetTransformSpell();
 
@@ -194,6 +198,17 @@ namespace Core
             base.DoUpdate(deltaTime);
 
             behaviourController.DoUpdate(deltaTime);
+        }
+
+        internal void CreateVehicle(VehicleInfo vehicleInfo, CreatureInfo vehicleCreature)
+        {
+            Vehicle = new Vehicle(this, vehicleInfo, vehicleCreature);
+        }
+
+        internal void DestroyVehicle()
+        {
+            Vehicle?.Dispose();
+            Vehicle = null;
         }
 
         public bool IsHostileTo(Unit unit)

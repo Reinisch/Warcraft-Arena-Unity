@@ -18,6 +18,9 @@ namespace Core
         private readonly Dictionary<int, UnitInfoAI> unitInfoAIById = new Dictionary<int, UnitInfoAI>();
         private readonly Dictionary<ClassType, ClassInfo> classesByType = new Dictionary<ClassType, ClassInfo>();
 
+        internal IReadOnlyDictionary<int, CreatureInfo> CreatureInfoById => definition.CreatureInfoById;
+        internal IReadOnlyDictionary<int, VehicleInfo> VehicleInfoById => definition.VehicleInfoById;
+
         public FactionDefinition DefaultFaction => definition.DefaultFaction;
         public UnitMovementDefinition UnitMovementDefinition => definition.UnitMovementDefinition;
         public IReadOnlyList<MapDefinition> Maps => maps;

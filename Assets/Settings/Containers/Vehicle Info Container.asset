@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cd745d171b3d9c4f836cdcda0652c82, type: 3}
+  m_Name: Vehicle Info Container
+  m_EditorClassIdentifier: 
+  vehicleInfos:
+  - {fileID: 11400000, guid: 74eeb7f9a9efa2a4b917615c144fbc71, type: 2}
