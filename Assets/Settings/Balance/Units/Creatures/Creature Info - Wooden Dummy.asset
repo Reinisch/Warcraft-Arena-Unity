@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   container: {fileID: 11400000, guid: 61ac6d0da2734be42886059862d4f25e, type: 2}
-  creatureNameId: Wooden Dummy
+  vehicleInfo: {fileID: 0}
+  creatureName: Wooden Dummy
   modelId: 2

@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   container: {fileID: 11400000, guid: 61ac6d0da2734be42886059862d4f25e, type: 2}
-  creatureNameId: Ragnaros
+  vehicleInfo: {fileID: 0}
+  creatureName: Ragnaros
   modelId: 5
