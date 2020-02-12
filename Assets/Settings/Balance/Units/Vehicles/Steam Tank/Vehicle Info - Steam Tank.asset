@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6184b49527407f745a611a7b5fc3a3a3, type: 3}
+  m_Name: Vehicle Info - Steam Tank
+  m_EditorClassIdentifier: 
+  id: 1
+  container: {fileID: 11400000, guid: 59f4d4f9f522e344a9e6bdf781d3bc3a, type: 2}
+  vehicleSeats:
+  - {fileID: 11400000, guid: e05a9b433d0086c4bac2cb0d11231c10, type: 2}
+  - {fileID: 11400000, guid: cf05837f54a27cd46b2fe045b18b2ae4, type: 2}
+  - {fileID: 11400000, guid: ce7a9468936a55c448eef683fe43c21e, type: 2}
+  - {fileID: 11400000, guid: fd4104743e2a9734ea32c6ba462ecd60, type: 2}

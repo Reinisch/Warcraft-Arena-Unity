@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.Collections.Generic;
+using Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -8,12 +9,12 @@ namespace Core
     public sealed class VehicleInfo : ScriptableUniqueInfo<VehicleInfo>
     {
         [SerializeField, UsedImplicitly] private VehicleInfoContainer container;
-        [SerializeField, UsedImplicitly] private int availableSeats;
+        [SerializeField, UsedImplicitly] private List<VehicleSeatInfo> vehicleSeats;
 
         protected override VehicleInfo Data => this;
         protected override ScriptableUniqueInfoContainer<VehicleInfo> Container => container;
 
         public new int Id => base.Id;
-        public int AvailableSeats => availableSeats;
+        public IReadOnlyList<VehicleSeatInfo> Seats => vehicleSeats;
     }
 }

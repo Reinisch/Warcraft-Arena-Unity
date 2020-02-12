@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6184b49527407f745a611a7b5fc3a3a3, type: 3}
-  m_Name: Vehicle Info - Steam Tank
+  m_Script: {fileID: 11500000, guid: a0657b9cff8c16a4d9e71af416f42419, type: 3}
+  m_Name: Vehicle Seat Info - Steam Tank - Gunner
   m_EditorClassIdentifier: 
-  id: 1
-  container: {fileID: 11400000, guid: 59f4d4f9f522e344a9e6bdf781d3bc3a, type: 2}
-  availableSeats: 1
+  id: 4
+  container: {fileID: 11400000, guid: 001a93c4fcddd764098ccda0dbd81167, type: 2}
+  flags: 28

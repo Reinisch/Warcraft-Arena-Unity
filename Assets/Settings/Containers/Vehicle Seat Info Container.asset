@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2765be7d80dff9418de36150c0fe056, type: 3}
+  m_Name: Vehicle Seat Info Container
+  m_EditorClassIdentifier: 
+  vehicleSeatInfos:
+  - {fileID: 11400000, guid: e05a9b433d0086c4bac2cb0d11231c10, type: 2}
+  - {fileID: 11400000, guid: ce7a9468936a55c448eef683fe43c21e, type: 2}
+  - {fileID: 11400000, guid: fd4104743e2a9734ea32c6ba462ecd60, type: 2}
+  - {fileID: 11400000, guid: cf05837f54a27cd46b2fe045b18b2ae4, type: 2}
