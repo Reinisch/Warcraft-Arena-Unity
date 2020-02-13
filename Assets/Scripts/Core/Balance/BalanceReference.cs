@@ -29,6 +29,7 @@ namespace Core
         public IReadOnlyDictionary<int, FactionDefinition> FactionsById => factionsById;
         public IReadOnlyDictionary<int, UnitInfoAI> UnitInfoAIById => unitInfoAIById;
         public IReadOnlyDictionary<ClassType, ClassInfo> ClassesByType => classesByType;
+        public SpellInfoContainer Spells => definition.Spells;
 
         protected override void OnRegistered()
         {

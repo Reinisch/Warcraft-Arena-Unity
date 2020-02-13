@@ -278,15 +278,26 @@ namespace Core
                 tempAuraApplications.Clear();
             }
 
-            internal void RemoveAurasWithEffect(AuraEffectType auraEffectType, AuraEffect except = null)
+            internal void RemoveAurasWithEffect(AuraEffectType auraEffectType, AuraEffect exceptEffect = null, Aura exceptAura = null, Unit onlyWithCaster = null)
             {
                 IReadOnlyList<AuraEffect> auraEffects = GetAuraEffects(auraEffectType);
                 if (auraEffects == null)
                     return;
 
                 var auraEffectsToRemove = ListPoolContainer<AuraEffect>.Take();
-                auraEffectsToRemove.AddRange(auraEffects);
-                auraEffectsToRemove.Remove(except);
+                for (int i = 0; i < auraEffects.Count; i++)
+                {
+                    if (onlyWithCaster != null && auraEffects[i].Aura.Caster != onlyWithCaster)
+                        continue;
+
+                    if (exceptEffect == auraEffects[i])
+                        continue;
+
+                    if (exceptAura == auraEffects[i].Aura)
+                        continue;
+
+                    auraEffectsToRemove.Add(auraEffects[i]);
+                }
 
                 foreach (AuraEffect auraEffectToRemove in auraEffectsToRemove)
                     if (!auraEffectToRemove.Aura.IsRemoved)

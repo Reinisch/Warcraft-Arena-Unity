@@ -10,6 +10,11 @@ namespace Core
     {
         [SerializeField, UsedImplicitly] private List<SpellInfo> spellInfo;
 
+        [Header("Unique Spells")]
+        [SerializeField, UsedImplicitly] private SpellInfo controlVehicle;
+
         protected override List<SpellInfo> Items => spellInfo;
+
+        public SpellInfo ControlVehicle => controlVehicle;
     }
 }

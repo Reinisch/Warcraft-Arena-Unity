@@ -211,6 +211,80 @@ namespace Core
             Vehicle = null;
         }
 
+        internal void HandleVehicleApplicationEnter(Vehicle vehicle, int seatIndex, Aura vehicleAura)
+        {
+            Vehicle?.Unit.Auras.RemoveAurasWithEffect(AuraEffectType.ControlVehicle, exceptAura: vehicleAura, onlyWithCaster: this);
+
+            if (this is Player passengerPlayer && vehicle.Unit is Player && passengerPlayer.Combat.InCombat)
+                HanderEnteringCancellation();
+
+            if (vehicleAura.IsRemoved)
+                return;
+
+            if (vehicle.AddPassenger(this, seatIndex))
+                Vehicle = vehicle;
+            else
+                HanderEnteringCancellation();
+
+            void HanderEnteringCancellation()
+            {
+                vehicle.Unit.Auras.RemoveOwnedAura(vehicleAura, AuraRemoveMode.Cancel);
+            }
+        }
+
+        internal void HandleVehicleApplicationExit()
+        {
+            Vehicle.RemovePassenger(this);
+            Vehicle = null;
+
+            // calculate jump target position
+            float topCheck = Mathf.Abs(UnitCollider.bounds.max.y) / 2;
+            float safeExtentsY = Mathf.Abs(UnitCollider.bounds.extents.y);
+            float safeExtentsX = Mathf.Abs(UnitCollider.bounds.extents.x);
+            float distance = UnitCollider.height;
+
+            Vector3 targetTop = UnitCollider.bounds.center + Vector3.up * topCheck;
+            Vector3 targetPosition;
+
+            Drawing.DrawLine(UnitCollider.bounds.center, UnitCollider.bounds.center + Vector3.up * topCheck, Color.red, 3f);
+
+            if (Physics.Raycast(UnitCollider.bounds.center, Vector3.up, out RaycastHit hitInfo, topCheck, PhysicsReference.Mask.Ground))
+                targetPosition = hitInfo.point - Vector3.up * safeExtentsY;
+            else
+                targetPosition = targetTop;
+
+            Drawing.DrawLine(targetPosition, targetPosition + transform.forward * distance, Color.red, 3f);
+
+            if (Physics.Raycast(targetPosition, -transform.forward, out hitInfo, distance, PhysicsReference.Mask.Ground))
+                targetPosition = hitInfo.point + transform.forward * safeExtentsX;
+            else
+                targetPosition = targetPosition - transform.forward * distance;
+
+            Drawing.DrawLine(targetPosition, targetPosition - Vector3.up * topCheck * 1.5f, Color.red, 3f);
+
+            if (Physics.Raycast(targetPosition, -Vector3.up, out hitInfo, topCheck * 2f, PhysicsReference.Mask.Ground))
+                targetPosition = hitInfo.point;
+            else
+                targetPosition = targetPosition - Vector3.up * topCheck * 2f;
+
+            Motion.StartPounceMovement(targetPosition, Attributes.Speed(UnitMoveType.Run));
+        }
+
+        internal void EnterVehicle(Vehicle vehicle, int seatIndex)
+        {
+            Spells.TriggerSpell(Balance.Spells.ControlVehicle, vehicle.Unit, SpellCastFlags.IgnoreCasterMountedOrOnVehicle);
+        }
+
+        internal void ExitVehicle()
+        {
+            Vehicle?.Unit.Auras.RemoveAurasWithEffect(AuraEffectType.ControlVehicle, onlyWithCaster: this);
+        }
+
+        internal bool IsOnVehicle(Unit unit)
+        {
+            return Vehicle != null && Vehicle == unit.Vehicle;
+        }
+
         public bool IsHostileTo(Unit unit)
         {
             if (unit == this)

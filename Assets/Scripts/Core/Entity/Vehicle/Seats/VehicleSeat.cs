@@ -2,6 +2,7 @@
 {
     internal sealed class VehicleSeat
     {
+        internal Unit Passenger { get; set; }
         internal Vehicle Vehicle { get; set; }
         internal VehicleSeatInfo VehicleSeatInfo { get; set; }
 
@@ -15,6 +16,7 @@
         {
             Vehicle = null;
             VehicleSeatInfo = null;
+            Passenger = null;
         }
     }
 }

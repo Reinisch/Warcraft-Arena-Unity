@@ -39,6 +39,7 @@ namespace Core
         public IReadOnlyList<FactionDefinition> FactionEntries => factionEntries;
         public FactionDefinition DefaultFaction => defaultFaction;
         public UnitMovementDefinition UnitMovementDefinition => unitMovementDefinition;
+        public SpellInfoContainer Spells => spellContainer;
 
         public void Register()
         {
