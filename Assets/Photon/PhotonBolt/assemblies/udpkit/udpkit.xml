@@ -1,0 +1,1709 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>udpkit</name>
+    </assembly>
+    <members>
+        <member name="T:UdpKit.Security.HMACPacketValidator">
+            <summary>
+            Responsible to create and validate Hashs
+            </summary>
+        </member>
+        <member name="P:UdpKit.Security.HMACPacketValidator.Sha256ByteSize">
+            <summary>
+            Size of SHA256 Key in bytes
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.HMACPacketValidator._hasher">
+            <summary>
+            Hasher reference
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.HMACPacketValidator._tempArray">
+            <summary>
+            Temporary array used to check the hash
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.HMACPacketValidator._secret">
+            <summary>
+            Hash Secret
+            </summary>
+        </member>
+        <member name="P:UdpKit.Security.HMACPacketValidator.Hasher">
+            <summary>
+            Return the hasher reference or create one if not created yet
+            </summary>
+        </member>
+        <member name="M:UdpKit.Security.HMACPacketValidator.#ctor(System.String)">
+            <summary>
+            Create a new Hash Packet Validator based on a Secret string
+            </summary>
+            <param name="secret">Base64 encoded secret</param>
+        </member>
+        <member name="M:UdpKit.Security.HMACPacketValidator.AppendHashToData(System.Byte[],System.Int32)">
+            <summary>
+            Create and append a Hash based on the data passed as argument
+            </summary>
+            <param name="buffer">Data array to create the hash</param>
+            <param name="length">Length of the data array</param>
+            <returns>Length of data array after append hash</returns>
+        </member>
+        <member name="M:UdpKit.Security.HMACPacketValidator.ValidatePacket(System.Byte[],System.Int32)">
+            <summary>
+            Validate the included hash on the data array passed as argument
+            </summary>
+            <param name="buffer">Data array to verify hash</param>
+            <param name="length">Length of the data array</param>
+            <returns>True if the data was not tempered and the hash match, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.Security.HMACPacketValidator.GetLengthWithoutHash(System.Byte[],System.Int32)">
+            <summary>
+            Get the length of the data without the hash data
+            </summary>
+            <param name="buffer">Data array to check</param>
+            <param name="length">Length of the data array</param>
+            <returns>Length of data array without the hash part</returns>
+        </member>
+        <member name="M:UdpKit.Security.HMACPacketValidator.TestHashes(System.Byte[],System.Byte[])">
+            <summary>
+            Check if the buffer contains the same verified hash
+            </summary>
+            <param name="buffer">Data array to test the hash</param>
+            <param name="hash">Verified hash used to check</param>
+            <returns>True if the buffer contains the same hash and is valid, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.Security.HMACPacketValidator.GenerateSecret">
+            <summary>
+            Generates a 32 bytes random key that can be used as Hash secret
+            </summary>
+            <returns>Byte Array with 32 random bytes</returns>
+        </member>
+        <member name="T:UdpKit.Security.PacketIdValidator">
+            <summary>
+            Responsible for keep track of unique IDs for each UdpEndPoint connection
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.PacketIdValidator._packetIdsConnectionReceive">
+            <summary>
+            Registry of UdpEndPoint and ID of received data
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.PacketIdValidator._packetIdsConnectionSend">
+            <summary>
+            Registry of UdpEndPoint and ID of sent data
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.PacketIdValidator._byteConverter">
+            <summary>
+            Byte Converter reference
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.PacketIdValidator.IdSize">
+            <summary>
+            Size in Bytes of the Unique ID
+            </summary>
+        </member>
+        <member name="M:UdpKit.Security.PacketIdValidator.#ctor">
+            <summary>
+            Construct a new PacketIdValidator
+            </summary>
+        </member>
+        <member name="M:UdpKit.Security.PacketIdValidator.PrefixPacketId(UdpKit.UdpEndPoint,System.Byte[],System.Int32)">
+            <summary>
+            Prefix an unique ID based on the <see cref="T:UdpKit.UdpEndPoint"/> into a data array
+            </summary>
+            <param name="endPoint">UdpEndPoint used to keep the unique ID</param>
+            <param name="buffer">Data array to include the ID</param>
+            <param name="length">Length of the data array</param>
+            <returns>Length of data array after include the unique ID</returns>
+        </member>
+        <member name="M:UdpKit.Security.PacketIdValidator.ValidatePacketId(UdpKit.UdpEndPoint,System.Byte[],System.Int32)">
+            <summary>
+            Validate an packet based on the included unique ID and <see cref="T:UdpKit.UdpEndPoint"/>
+            </summary>
+            <param name="endPoint">UdpEndPoint used to check the unique ID</param>
+            <param name="buffer">Data array to check ID</param>
+            <param name="length">Length of data array with ID</param>
+            <returns>Length of data array without the unique ID</returns>
+        </member>
+        <member name="M:UdpKit.Security.PacketIdValidator.PrefixIdToBuffer(System.UInt32,System.Byte[],System.Int32)">
+            <summary>
+            Prefix the passed ID into the buffer
+            </summary>
+            <param name="id">ID to be prefixed</param>
+            <param name="buffer">Buffer array to prefix the array</param>
+            <param name="length">Length of the buffer data array</param>
+        </member>
+        <member name="M:UdpKit.Security.PacketIdValidator.Clear">
+            <summary>
+            Clear all registered IDs
+            </summary>
+        </member>
+        <member name="M:UdpKit.Security.PacketIdValidator.RemoveEndPointReference(UdpKit.UdpEndPoint)">
+            <summary>
+            Remove the registry from one specific UdpEndPoint
+            </summary>
+            <param name="endPoint">EndPoint to remove the info</param>
+        </member>
+        <member name="T:UdpKit.Security.DataEncryptor">
+            <summary>
+            Responsible for encrypting and decrypting data buffers
+            </summary>
+            TODO Implement the usage of a new IV and Salt for each encrypted package
+        </member>
+        <member name="P:UdpKit.Security.DataEncryptor.Decryptor">
+            <summary>
+            Internal decryptor created based on the Key and IV received as argument
+            </summary>
+        </member>
+        <member name="P:UdpKit.Security.DataEncryptor.Encryptor">
+            <summary>
+            Internal encryptor created based on the Key and IV received as argument
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.DataEncryptor._cryptoProvider">
+            <summary>
+            Internal AES Implementation reference
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.DataEncryptor._encryptor">
+            <summary>
+            Internal encryptor reference
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.DataEncryptor._decryptor">
+            <summary>
+            Internal decryptor reference
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.DataEncryptor._aesKey">
+            <summary>
+            AES Key
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.DataEncryptor._aesIV">
+            <summary>
+            AES Initialization Vector (IV)
+            </summary>
+        </member>
+        <member name="M:UdpKit.Security.DataEncryptor.#ctor(System.String,System.String)">
+            <summary>
+            Builds the SocketDataEncryption instance
+            </summary>
+            <param name="aesIV">Initialization Vector</param>
+            <param name="aesKey">AES Key</param>
+        </member>
+        <member name="M:UdpKit.Security.DataEncryptor.EncryptData(System.Byte[],System.Int32)">
+            <summary>
+            Encrypt data in place and return it's length. Doing this to avoid allocating unnecessary data.
+            </summary>
+            <param name="buffer">The data to encrypt</param>
+            <param name="length">Length of the data to encrypt</param>
+            <returns>Length after encryption</returns>
+        </member>
+        <member name="M:UdpKit.Security.DataEncryptor.EncryptDataAlloc(System.Byte[],System.Int32)">
+            <summary>
+            Encrypt data and return a new byte array.
+            </summary>
+            <param name="buffer">The data to encrypt</param>
+            <param name="length">Length of the data to encrypt</param>
+            <returns>Byte array with data encrypted</returns>
+        </member>
+        <member name="M:UdpKit.Security.DataEncryptor.DecryptData(System.Byte[],System.Int32)">
+            <summary>
+            Decrypt the data and copy it in the data array passed.
+            </summary>
+            <param name="buffer">Data to decrypt</param>
+            <param name="length">Length of the data to decrypt</param>
+            <returns>Length of the data decrypted</returns>
+        </member>
+        <member name="M:UdpKit.Security.DataEncryptor.DecryptDataAlloc(System.Byte[],System.Int32)">
+            <summary>
+            Decrypt the data and return a new buffer array.
+            </summary>
+            <param name="buffer">Data to decrypt</param>
+            <param name="length">Length of the data to decrypt</param>
+            <returns>Byte array with data decrypted</returns>
+        </member>
+        <member name="M:UdpKit.Security.DataEncryptor.CypherData(System.Byte[],System.Int32,System.Security.Cryptography.ICryptoTransform,System.Byte[])">
+            <summary>
+            Transform the data array based on the <see cref="T:System.Security.Cryptography.ICryptoTransform"/> received
+            as argument. The resulting data is set on the same received buffer.
+            </summary>
+            <param name="buffer">Data array to be processed</param>
+            <param name="length">Data array length</param>
+            <param name="cryptoTransform">Crypto transform reference</param>
+            <returns>Length of data array after the transformation</returns>
+        </member>
+        <member name="M:UdpKit.Security.DataEncryptor.CypherDataAlloc(System.Byte[],System.Int32,System.Security.Cryptography.ICryptoTransform)">
+            <summary>
+            Transform the data array based on the <see cref="T:System.Security.Cryptography.ICryptoTransform"/> received
+            as argument. The resulting data is returned as a new buffer.
+            </summary>
+            <param name="buffer">Data array to be processed</param>
+            <param name="length">Data array length</param>
+            <param name="cryptoTransform">Crypto transform reference</param>
+            <returns>New buffer with the result of the transformation</returns>
+        </member>
+        <member name="M:UdpKit.Security.DataEncryptor.BuildAesProvider">
+            <summary>
+            Build a new AES Implementation
+            </summary>
+            <returns>Concrete implementation of an AES Algorithm</returns>
+        </member>
+        <member name="M:UdpKit.Security.DataEncryptor.GenerateKey">
+            <summary>
+            Generate a Random KEY to be used with an AES Algorithm
+            </summary>
+            <returns>Byte array with a Random Key</returns>
+        </member>
+        <member name="M:UdpKit.Security.DataEncryptor.GenerateIV">
+            <summary>
+            Generate a Random IV to be used with an AES Algorithm
+            </summary>
+            <returns>Byte array with a Random IV</returns>
+        </member>
+        <member name="T:UdpKit.Security.IDataEncryption">
+            <summary>
+            Interface for classes that manage the encryption/decryption of byte arrays
+            </summary>
+        </member>
+        <member name="M:UdpKit.Security.IDataEncryption.DecryptData(System.Byte[],System.Int32)">
+            <summary>
+            Decrypt the data and copy it in the data array passed.
+            </summary>
+            <param name="buffer">Data to decrypt</param>
+            <param name="length">Length of the data to decrypt</param>
+            <returns>Length of the data decrypted</returns>
+        </member>
+        <member name="M:UdpKit.Security.IDataEncryption.DecryptDataAlloc(System.Byte[],System.Int32)">
+            <summary>
+            Decrypt the data and return a new buffer array.
+            </summary>
+            <param name="buffer">Data to decrypt</param>
+            <param name="length">Length of the data to decrypt</param>
+            <returns>Byte array with data decrypted</returns>
+        </member>
+        <member name="M:UdpKit.Security.IDataEncryption.EncryptData(System.Byte[],System.Int32)">
+            <summary>
+            Encrypt data in place and return it's length. Doing this to avoid allocating unnecessary data.
+            </summary>
+            <param name="buffer">The data to encrypt</param>
+            <param name="length">Length of the data to encrypt</param>
+            <returns>Length after encryption</returns>
+        </member>
+        <member name="M:UdpKit.Security.IDataEncryption.EncryptDataAlloc(System.Byte[],System.Int32)">
+            <summary>
+            Encrypt data and return a new byte array.
+            </summary>
+            <param name="buffer">The data to encrypt</param>
+            <param name="length">Length of the data to encrypt</param>
+            <returns>Byte array with data encrypted</returns>
+        </member>
+        <member name="T:UdpKit.Security.IPacketHashValidator">
+            <summary>
+            Interface for classes that manage the hashing of byte arrays
+            </summary>
+        </member>
+        <member name="M:UdpKit.Security.IPacketHashValidator.AppendHashToData(System.Byte[],System.Int32)">
+            <summary>
+            Create and append a Hash based on the data passed as argument
+            </summary>
+            <param name="buffer">Data array to create the hash</param>
+            <param name="length">Length of the data array</param>
+            <returns>Length of data array after append hash</returns>
+        </member>
+        <member name="M:UdpKit.Security.IPacketHashValidator.ValidatePacket(System.Byte[],System.Int32)">
+            <summary>
+            Validate the included hash on the data array passed as argument
+            </summary>
+            <param name="buffer">Data array to verify hash</param>
+            <param name="length">Length of the data array</param>
+            <returns>True if the data was not tempered and the hash match, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.Security.IPacketHashValidator.GetLengthWithoutHash(System.Byte[],System.Int32)">
+            <summary>
+            Get the length of the data without the hash data
+            </summary>
+            <param name="buffer">Data array to check</param>
+            <param name="length">Length of the data array</param>
+            <returns>Length of data array without the hash part</returns>
+        </member>
+        <member name="T:UdpKit.Security.IPacketIdValidator">
+            <summary>
+            Interface for classes to validate a package via an unique ID
+            </summary>
+        </member>
+        <member name="M:UdpKit.Security.IPacketIdValidator.PrefixPacketId(UdpKit.UdpEndPoint,System.Byte[],System.Int32)">
+            <summary>
+            Prefix an unique ID based on the <see cref="T:UdpKit.UdpEndPoint"/> into a data array
+            </summary>
+            <param name="endPoint">UdpEndPoint used to keep the unique ID</param>
+            <param name="buffer">Data array to include the ID</param>
+            <param name="length">Length of the data array</param>
+            <returns>Length of data array after include the unique ID</returns>
+        </member>
+        <member name="M:UdpKit.Security.IPacketIdValidator.ValidatePacketId(UdpKit.UdpEndPoint,System.Byte[],System.Int32)">
+            <summary>
+            Validate an packet based on the included unique ID and <see cref="T:UdpKit.UdpEndPoint"/>
+            </summary>
+            <param name="endPoint">UdpEndPoint used to check the unique ID</param>
+            <param name="buffer">Data array to check ID</param>
+            <param name="length">Length of data array with ID</param>
+            <returns>Length of data array without the unique ID</returns>
+        </member>
+        <member name="M:UdpKit.Security.IPacketIdValidator.RemoveEndPointReference(UdpKit.UdpEndPoint)">
+            <summary>
+            Removes any reference of a particular UdpEndPoint
+            This can be useful when the remote endpoint disconnects
+            </summary>
+            <param name="endPoint">UdpEndPoint to remove the internal references</param>
+        </member>
+        <member name="T:UdpKit.Security.EncryptionManager">
+            <summary>
+            Responsible for managing all Encryption steps used on UdpKit
+            </summary>
+        </member>
+        <member name="P:UdpKit.Security.EncryptionManager.Ready">
+            <summary>
+            Signals that the Encryption system was properly setup
+            </summary>
+        </member>
+        <member name="P:UdpKit.Security.EncryptionManager.AesIV">
+            <summary>
+            AES IV
+            </summary>
+        </member>
+        <member name="P:UdpKit.Security.EncryptionManager.AesKey">
+            <summary>
+            AES Key
+            </summary>
+        </member>
+        <member name="P:UdpKit.Security.EncryptionManager.HashSecret">
+            <summary>
+            Hash Secret
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.EncryptionManager._encryptor">
+            <summary>
+            Buffer encryption reference
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.EncryptionManager._packetValidator">
+            <summary>
+            Hasher reference
+            </summary>
+        </member>
+        <member name="F:UdpKit.Security.EncryptionManager._idValidator">
+            <summary>
+            ID Validator reference
+            </summary>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.InitializeEncryption">
+             <summary>
+             Initialize the Encryption system generating all necessary keys
+            
+             You can later access the keys, in order to exchange with a remote connection, by looking at the right members:
+             <see cref="P:UdpKit.Security.EncryptionManager.HashSecret"/>, <see cref="P:UdpKit.Security.EncryptionManager.AesIV"/> and <see cref="P:UdpKit.Security.EncryptionManager.AesKey"/>
+             </summary>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.InitializeEncryption(System.String,System.String,System.String)">
+            <summary>
+            Initialize the Encryption system with all necessary keys
+            </summary>
+            <param name="aesIV">AES Initilization Vector</param>
+            <param name="aesKey">AES Key</param>
+            <param name="hashSecret">Hash Key</param>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.DeinitializeEncryption">
+            <summary>
+            Reset all encryption variables
+            </summary>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.Encrypt(UdpKit.UdpEndPoint,System.Byte[],System.Int32)">
+            <summary>
+            Encrypt a packet for a specific EndPoint
+            </summary>
+            <param name="endPoint">Target EndPoint for this packet</param>
+            <param name="buffer">Data buffer array</param>
+            <param name="length">Length of the buffer array</param>
+            <returns>Total length of byte array after encryption</returns>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.Decrypt(UdpKit.UdpEndPoint,System.Byte[],System.Int32)">
+            <summary>
+            Decrypt a packet from an specific EndPoint
+            </summary>
+            <param name="endPoint">Remote EndPoint</param>
+            <param name="buffer">Data buffer array</param>
+            <param name="length">Length of the buffer array</param>
+            <returns>Total length of byte array after decryption</returns>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.RemoveEndPointReference(UdpKit.UdpEndPoint)">
+            <summary>
+            Clears any references for a particular UdpEndPoint
+            </summary>
+            <param name="udpEndPoint">Target UdpEndPoint to</param>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.Base64Encode(System.String,System.Text.Encoding)">
+            <summary>
+            Convert Plain String into a Base64 encoded string
+            </summary>
+            <param name="plainText">Plain Text to encode</param>
+            <param name="encoding">Custom Encoding</param>
+            <returns>Base64 encoded string</returns>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.Base64Decode(System.String,System.Text.Encoding)">
+            <summary>
+            Convert a Base64 encoded string into a Plain String
+            </summary>
+            <param name="base64EncodedData">Base64 string to decode</param>
+            <param name="encoding">Custom Encoding</param>
+            <returns>Plain String</returns>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.GenerateAesKey">
+            <summary>
+            Generates a new Random AES Key
+            </summary>
+            <returns>Random AES Key</returns>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.GenerateAesIV">
+            <summary>
+            Generates a new Random AES Initialization Vector
+            </summary>
+            <returns>Random AES Initialization Vector</returns>
+        </member>
+        <member name="M:UdpKit.Security.EncryptionManager.GenerateHashSecret">
+            <summary>
+            Generates a new Random Hash Secret key
+            </summary>
+            <returns>Random Hash Secret key</returns>
+        </member>
+        <member name="P:UdpKit.UdpSocket.LanEndPoint">
+            <summary>
+            LAN endpoint of this socket
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpSocket.WanEndPoint">
+            <summary>
+            WAN endpoint of this socket
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpSocket.State">
+            <summary>
+            The current state of the socket
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpSocket.Mode">
+            <summary>
+            The current mode of the socket
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpSocket.SocketPeerId">
+            <summary>
+            PeerId of this socket
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpSocket.PrecisionTime">
+            <summary>
+            The precision time (in ms) of the underlying socket platform
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpSocket.PacketPool">
+            <summary>
+            Current packet pool for this socket
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpSocket.UserToken">
+            <summary>
+            A user-assignable object
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpSocket.Start(UdpKit.UdpEndPoint,System.Threading.ManualResetEvent,UdpKit.UdpSocketMode)">
+            <summary>
+            Start this socket
+            </summary>
+            <param name="endpoint">The endpoint to bind to</param>
+            <param name="resetEvent"></param>
+            <param name="mode"></param>
+        </member>
+        <member name="M:UdpKit.UdpSocket.Close(System.Threading.ManualResetEvent)">
+            <summary>
+            Close this socket
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpSocket.Quit">
+            <summary>
+            Invoked when the application is about the Quit
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpSocket.Connect(UdpKit.UdpEndPoint,System.Byte[])">
+            <summary>
+            Connect to remote endpoint
+            </summary>
+            <param name="endpoint">The endpoint to connect to</param>
+            <param name="token"></param>
+        </member>
+        <member name="M:UdpKit.UdpSocket.CancelConnect(UdpKit.UdpEndPoint)">
+            <summary>
+            Cancel ongoing attempt to connect to endpoint
+            </summary>
+            <param name="endpoint">The endpoint to cancel connect attempt to</param>
+        </member>
+        <member name="M:UdpKit.UdpSocket.Accept(UdpKit.UdpEndPoint,System.Object,System.Byte[])">
+            <summary>
+            Accept a connection
+            </summary>
+            <param name="endpoint">Accept the connection signaled by this UdpEndPoint</param>
+            <param name="userObject">Arbitrary object that can store data on the Connection</param>
+            <param name="token">Accept Token</param>
+        </member>
+        <member name="M:UdpKit.UdpSocket.Refuse(UdpKit.UdpEndPoint,System.Byte[])">
+            <summary>
+            Refuse a connection request from a remote endpoint
+            </summary>
+            <param name="endpoint">Refuse the connection signaled by this UdpEndPoint</param>
+            <param name="token">Refuse Token</param>
+        </member>
+        <member name="M:UdpKit.UdpSocket.GetSessions">
+            <summary>
+            A list of all currently available sessions
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpSocket.Poll(UdpKit.UdpEvent@)">
+            <summary>
+            Poll socket for any events
+            </summary>
+            <param name="ev">The current event on this socket</param>
+            <returns>True if a new event is available, False otherwise</returns>
+        </member>
+        <member name="M:UdpKit.UdpSocket.NetworkLoop">
+            <summary>
+            This method runs asynchonously in order to update the network state.
+            It process any pending data on the internal socket and build the event streams
+            </summary>
+        </member>
+        <member name="T:UdpKit.UdpStreamData">
+            <summary>
+            Represents the block of data received from a StreamChannel
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpStreamData.Data">
+            <summary>
+            Data received
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpStreamData.Channel">
+            <summary>
+            Channel from where the peer received the data
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.#ctor(UdpKit.UdpConnection,UdpKit.UdpStreamChannel)">
+            <summary>
+            Creates a new UdpChannelStreammer
+            </summary>
+            <param name="connection">Connection to where this streammer will send data</param>
+            <param name="channel">Stream Channel used to send data to the connection</param>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.Queue(System.Byte[])">
+            <summary>
+            Enqueue a new block of data to be sent on the Reliable Stream Pipe
+            </summary>
+            <param name="data">Byte array to be sent</param>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.Clear">
+            <summary>
+            Remove incomming and outgoing streams
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.OnBlockLost(UdpKit.UdpStreamOp,System.Int32)">
+            <summary>
+            Mark a block of data as lost on the Stream Operation
+            </summary>
+            <param name="op">Stream Operation to perform the change</param>
+            <param name="block">Block ID to mark as lost</param>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.OnBlockDelivered(UdpKit.UdpStreamOp,System.Int32)">
+            <summary>
+            Mark a block of data as delivered on the Stream Operation
+            </summary>
+            <param name="op">Stream Operation to perform the change</param>
+            <param name="block">Block ID to mark as delivered</param>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.TrySend">
+            <summary>
+            Try to send data from any pending Stream Channel
+            </summary>
+            <returns>True if it was able to send ONE block of data, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.OnBlockReceived(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Treats a data buffer array with content for a Stream Operation
+            </summary>
+            <param name="buffer">Data buffer</param>
+            <param name="bytes">Number of bytes received</param>
+            <param name="o">Offset from where to start the data</param>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.InitOp(UdpKit.UdpStreamOp,System.UInt32)">
+            <summary>
+            Initialize the Stream Operation with the CRC value
+            </summary>
+            <param name="op">Stream Operation to be initialized</param>
+            <param name="crc">CRC value</param>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.SendBlock(UdpKit.UdpStreamOp,System.Int32)">
+            <summary>
+            Sends a block of data from the Stream Operation to the target Connection
+            </summary>
+            <param name="op">Stream Operation to get the block of data</param>
+            <param name="block">Block identification to be sent</param>
+            <returns>True if the block was sent, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.RecvBlock(UdpKit.UdpStreamOp,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Treats an incomming buffer in order to be aggregated into the local Stream Operation
+            </summary>
+            <param name="op">Stream Operation to where the data should be inserted</param>
+            <param name="buffer">Data received</param>
+            <param name="bytes">Number of bytes received</param>
+            <param name="o">Current offset from where to start to read the data</param>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.RaiseStreamStarted(UdpKit.UdpStreamOp)">
+            <summary>
+            Signal that a new Stream has started
+            </summary>
+            <param name="op">Stream Operation used to extract data</param>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.RaiseStreamReceived(UdpKit.UdpStreamOp)">
+            <summary>
+            Signal that a Stream has been received
+            </summary>
+            <param name="op">Stream Operation used to extract data</param>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.RaiseStreamAborted(UdpKit.UdpStreamOp)">
+            <summary>
+            Signal that a Stream has been aborted
+            </summary>
+            <param name="op">Stream Operation used to extract data</param>
+        </member>
+        <member name="M:UdpKit.UdpChannelStreamer.RaiseStreamProgress(UdpKit.UdpStreamOp)">
+            <summary>
+            Signal that a Stream had some progress
+            </summary>
+            <param name="op">Stream Operation used to extract data</param>
+        </member>
+        <member name="P:UdpKit.UdpConnection.UserToken">
+            <summary>
+            A user-assignable object
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpConnection.NetworkPing">
+            <summary>
+            The round-trip time of the network layer, excluding processing delays and ack time
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpConnection.AliasedPing">
+            <summary>
+            The total round-trip time, including processing delays and ack
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpConnection.IsClient">
+            <summary>
+            If this connection is a client
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpConnection.IsServer">
+            <summary>
+            IF this connections a server
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpConnection.IsConnected">
+            <summary>
+            If we are connected
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpConnection.RemoteEndPoint">
+            <summary>
+            The remote end point
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpConnection.WindowFillRatio">
+            <summary>
+            How much of the current outgoing packet window is waiting for acks
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpConnection.Send(UdpKit.UdpPacket)">
+            <summary>
+            Send an object on this connection
+            </summary>
+            <param name="packet">The object to send</param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.Disconnect(System.Byte[],UdpKit.UdpConnectionDisconnectReason)">
+            <summary>
+            Disconnect this connection forcefully with the specified token and disconnectReason.
+            </summary>
+            <param name="token">Arbitrary Token sent within the disconnect event.</param>
+            <param name="disconnectReason">Disconnect reason. By default it just points to <see cref="F:UdpKit.UdpConnectionDisconnectReason.Disconnected"/></param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.StreamSetBandwidth(System.Int32)">
+            <summary>
+            Event to change the Stream Bandwidth
+            </summary>
+            <param name="bytesPerSecond">Byte rate to send data</param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.StreamBytes(UdpKit.UdpChannelName,System.Byte[])">
+            <summary>
+            Enqueue a new block of data to be sent on the desired streaming channel
+            </summary>
+            <param name="channel">Channel identifier to where send the data</param>
+            <param name="data">Data array to send</param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.OnStreamSetBandwidth(System.Int32)">
+             <summary>
+             Changes the Stream Bandwidth
+            
+             Calculates the interval in which data will be sent:
+             
+             The interval is calculated into interval of milliseconds
+             1000ms = 1s
+             byteRate is the desired bandwidth, 20kbp/s (1024 * 20) for example
+             The max package size from the configs, 4096 for example
+            
+             ex: 20 kb/s
+             1000 / ((1024 * 20) / 4096) = 200ms 
+             send data every 200ms
+             </summary>
+             <param name="byteRate">Byte rate to send data. The rate in bytes / sec</param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.OnStreamDisconnected">
+            <summary>
+            Clear all existent streams
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpConnection.ProcessStream(System.UInt32)">
+            <summary>
+            Progress any pending outgoing data stream based on the the Data Rate previously configured
+            </summary>
+            <param name="now">Current timestamp</param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.OnStreamQueue(UdpKit.UdpStreamChannel,UdpKit.UdpStreamOp)">
+            <summary>
+            Enqueue a new Stream Operation for transmission.
+            How the data will be sent depends on which channel it is been sent.
+            If it's on an Unreliable channel, this will be a one-try send, if it's on a Reliable stream, the operation will
+            be queued on a Channel Streamer to be sent properly.
+            </summary>
+            <param name="channel">Channel identifier to where send the data</param>
+            <param name="op">Stream Operation that contains the data to be sent</param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.OnStreamReceived_Unreliable(System.Byte[],System.Int32)">
+            <summary>
+            Treats a new block of data that was received on the Unreliable Stream Pipe
+            </summary>
+            <param name="buffer">Data buffer received</param>
+            <param name="size">Total number of bytes received</param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.OnStreamReceived(System.Byte[],System.Int32)">
+            <summary>
+            Treats a new block of data that was received on the Reliable Stream Pipe
+            The byte array will be processed to find the responsible channel to receive and store the data
+            </summary>
+            <param name="buffer">Data buffer received on the stream pipe</param>
+            <param name="bytes">Total number of bytes received</param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.OnStreamLost(UdpKit.UdpStreamOpBlock)">
+            <summary>
+            Signal to a Stream Channel that a block was lost
+            </summary>
+            <param name="block">Data block that was lost</param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.OnStreamDelivered(UdpKit.UdpStreamOpBlock)">
+            <summary>
+            Signal to a Stream Channel that a block was delivered
+            </summary>
+            <param name="block">Data block delivered</param>
+        </member>
+        <member name="M:UdpKit.UdpConnection.SendStream(System.UInt32)">
+            <summary>
+            Try to send any pending outgoing stream of data
+            The streams are sorted by priority before being sent
+            </summary>
+        </member>
+        <member name="T:UdpKit.UdpStreamChannel">
+            <summary>
+            Describes Stream channel
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpStreamChannel.Name">
+            <summary>
+            Channel Name
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpStreamChannel.Config">
+            <summary>
+            Stream channel configuration
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpStreamChannel.IsUnreliable">
+            <summary>
+            Signal if this Channel is Unreliable
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpStreamChannel.IsReliable">
+            <summary>
+            Singal if this Channel is Reliable
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.IPv6">
+            <summary>
+            Enable IPv6 Support, default: false
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.DefaultNetworkPing">
+            <summary>
+            The default network ping for new connections, default: 0.1f (seconds)
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.DefaultAliasedPing">
+            <summary>
+            The default aliased ping for new connections, default: 0.15f (seconds)
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.AllowPacketOverflow">
+            <summary>
+            If we allow serialization to overflow MTU of the connection, default: false
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.ConnectRequestTimeout">
+            <summary>
+            The timeout until we should make a new connect request, default: 1000 (milliseconds)
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.ConnectRequestAttempts">
+            <summary>
+            How many attempts we should make to connect before failing, default: 5
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.ConnectionTimeout">
+            <summary>
+            How long before we time-out a connection we have not heard anything from, default: 5000 (ms)
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.PingTimeout">
+            <summary>
+            How long we should wait to send a ping packet to the remote end if we 
+            have not sent anything recently, default: 100 (ms)
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.RecvWithoutAckLimit">
+            <summary>
+            How many packets we can receive before we force an ack packet to be sent, default: 8
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.SimulatedLoss">
+            <summary>
+            How many % of the packets we should drop to simulate packet loss, default: 0. Only used in DEBUG builds.
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.SimulatedPingMin">
+            <summary>
+            Min ping we should simulate, default: 0 (ms). Only used in DEBUG builds.
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.SimulatedPingMax">
+            <summary>
+            Max ping we should simulate, default: 0 (ms). Only used in DEBUG builds.
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.ConnectionLimit">
+            <summary>
+            How many connections we allow, default: 64
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.AllowIncommingConnections">
+            <summary>
+            If we allow incomming connections, default: true
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.AutoAcceptIncommingConnections">
+            <summary>
+            IF we automatically accept incomming connections if we have slots free, default: true
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.AllowImplicitAccept">
+            <summary>
+            If we allow clients which are connecting to a server to implicitly accept the connection
+            if we get a non-rejected and non-accepted packet from the server, meaning the accept packet
+            was lost, default: true
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConfig.NoiseFunction">
+            <summary>
+            Custom noise function for use in packet loss simulation, default: null
+            </summary>
+        </member>
+        <member name="T:UdpKit.UdpConnectionDisconnectReason">
+            <summary>
+            Reason why a connection got disconnected
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConnectionDisconnectReason.Unknown">
+            <summary>
+            Unknown reason (should never happen)
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConnectionDisconnectReason.Timeout">
+            <summary>
+            Remote end timed out (connection was lost)
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConnectionDisconnectReason.Error">
+            <summary>
+            Internal socket error (corrupted sequence numbers, send window overflowed, etc.)
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConnectionDisconnectReason.Disconnected">
+            <summary>
+            Normal disconnect triggered by user code
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConnectionDisconnectReason.Authentication">
+            <summary>
+            The peer failed to authenticate on any step
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConnectionDisconnectReason.MaxCCUReached">
+            <summary>
+            The max connection limit with the cloud service was reached
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConnectionType.Unknown">
+            <summary>
+            Unkown connection type, represents an invalid connection (should never happen)
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConnectionType.Direct">
+            <summary>
+            Represents a connection that has direct connectivity with the other end
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpConnectionType.Relayed">
+            <summary>
+            Represents a connection that makes use of a relay to maintain the connectivity with the other end
+            </summary>
+        </member>
+        <member name="T:UdpKit.Async.ThreadManager">
+            <summary>
+            TheadManager class acts as a Thread Pool implementation.
+            It manages an internal list of Workers responsible for running of the main thread any Action passed to them
+            The threads are created at request and only when necessary.
+            </summary>
+        </member>
+        <member name="F:UdpKit.Async.ThreadManager._threads">
+            <summary>
+            Collection of available Workers of the ThreadManager.
+            All Tasks are created at runtime and reused if possible
+            </summary>
+        </member>
+        <member name="M:UdpKit.Async.ThreadManager.#ctor">
+             <summary>
+             ThreadManager constructor.
+            
+             Initializes the private list of Workers (Threads)
+             </summary>
+        </member>
+        <member name="M:UdpKit.Async.ThreadManager.Clear">
+            <summary>
+            Invoke the Abort method on all registered Tasks and clear them from the internal list.
+            </summary>
+        </member>
+        <member name="M:UdpKit.Async.ThreadManager.GetInfo">
+            <summary>
+            Return a summary of the current state of the internal Tasks, how many were created and the total number of running tasks.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UdpKit.Async.ThreadManager.Start(System.Action)">
+            <summary>
+            Runs the Action on an available Task.
+            </summary>
+            <param name="run">The action that should run on a separate Thread</param>
+        </member>
+        <member name="M:UdpKit.Async.ThreadManager.FindTask">
+            <summary>
+            Searches in the internal Task list for an available worker that was initialized but it is not running any action
+            at the moment. If the list is empty or all Tasks are busy, a new Task is created and added to the list of workers.
+            </summary>
+            <returns>An initialized and free Task that can be used to run an Action</returns>
+        </member>
+        <member name="T:UdpKit.Async.Task">
+            <summary>
+            Task is a wrapper class around a Thread and acts as a Worker manager.
+            It's possible to initialize the Task and give works (Action) using the run method to be executed
+            by the internal Thread.
+            This wrapper will keep the Thread running until aborted (gracefully using Abort, or abruptly using ForceAbort)
+            </summary>
+        </member>
+        <member name="P:UdpKit.Async.Task.IsRunning">
+            <summary>
+            Returns if there is an action being executed by the Task
+            </summary>
+        </member>
+        <member name="P:UdpKit.Async.Task.Name">
+            <summary>
+            Unique identifier of this Task
+            </summary>
+        </member>
+        <member name="F:UdpKit.Async.Task._thread">
+            <summary>
+            Private managed Thread
+            </summary>
+        </member>
+        <member name="F:UdpKit.Async.Task._event">
+            <summary>
+            Private semaphore to coordinate the execution of the internal Thread
+            </summary>
+        </member>
+        <member name="F:UdpKit.Async.Task._action">
+            <summary>
+            Action being executed by the Thread
+            </summary>
+        </member>
+        <member name="F:UdpKit.Async.Task._locker">
+            <summary>
+            Thread locker used to sync the access to the internal Action
+            </summary>
+        </member>
+        <member name="F:UdpKit.Async.Task._abort">
+            <summary>
+            Flag to signal to the Thread if it should continue to work or should Abort gracefully.
+            </summary>
+        </member>
+        <member name="M:UdpKit.Async.Task.#ctor">
+             <summary>
+             Task constructor.
+            
+             Initializes all main fields, including the managed Thread as a background thread.
+             This implies that the Task will not block the main thread of exiting the application.
+             </summary>
+        </member>
+        <member name="M:UdpKit.Async.Task.Run(System.Action)">
+            <summary>
+            Updates the action the must be executed by the Thread.
+            </summary>
+            <param name="callback">Action to be executed</param>
+        </member>
+        <member name="M:UdpKit.Async.Task.Abort">
+            <summary>
+            Aborts gracefully the internal Thread.
+            This signals the thread that it should stop working, but the shutdown is not immediate.
+            </summary>
+        </member>
+        <member name="M:UdpKit.Async.Task.ForceAbort">
+            <summary>
+            Force Abort the internal Thread.
+            This causes the Thread to be aborted using <see cref="M:System.Threading.Thread.Abort(System.Object)"/>
+            </summary>
+        </member>
+        <member name="M:UdpKit.Async.Task.Runner">
+            <summary>
+            Private action manager.
+            This is the main body of the internal Thread, and it waits until an action need to be executed.
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPacket.Write">
+            <summary>
+            Signal if this package is writable
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpPacket.UserToken">
+            <summary>
+            A user-assignable object
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpPacket.Size">
+            <summary>
+            Total length in bits of the internal buffer
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpPacket.Position">
+            <summary>
+            Current position within the internal buffer
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpPacket.Done">
+            <summary>
+            Signal if this Packet is full. If its current <see cref="P:UdpKit.UdpPacket.Position"/> is equals
+            to its total <see cref="P:UdpKit.UdpPacket.Size"/>
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpPacket.Overflowing">
+            <summary>
+            Signal if the packet is overflowing. If its current <see cref="P:UdpKit.UdpPacket.Position"/> is greater than
+            its total <see cref="P:UdpKit.UdpPacket.Size"/>
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpPacket.ByteBuffer">
+            <summary>
+            Buffer that will contain all Packet data
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPacket.IsPooled">
+            <summary>
+            Signal if this Packet is Pooled or not
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPacket.Data">
+            <summary>
+            Buffer that will contain all Packet data
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPacket.Pool">
+            <summary>
+            UdpPacket Pool reference, used when disposing of it's usage, returning it to the pool
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPacket.Ptr">
+            <summary>
+            Current position within the internal buffer
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPacket.Length">
+            <summary>
+            Total length in bits of the internal buffer
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpPacket.CanWrite">
+            <summary>
+            Check if the Packet has 1 bit available for write
+            </summary>
+            <returns>True if you can write 1 bit, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.CanRead">
+            <summary>
+            Check if the Packet has 1 bit available for read
+            </summary>
+            <returns>True if you can read 1 bit, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.CanWrite(System.Int32)">
+            <summary>
+            Check if the Packet has N bit available for write
+            </summary>
+            <param name="bits">Number of bits available to write</param>
+            <returns>True if you can write N bit, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.CanRead(System.Int32)">
+            <summary>
+            Check if the Packet has N bit available for read
+            </summary>
+            <param name="bits">Number of bits available to read</param>
+            <returns>True if you can read N bit, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.DuplicateData">
+            <summary>
+            Get a copy of the internal buffer
+            </summary>
+            <returns>Copy of data buffer</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteBool(System.Boolean)">
+            <summary>
+            Write a bool to the buffer
+            </summary>
+            <param name="value">Bool to be written</param>
+            <returns>The bool value written</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadBool">
+            <summary>
+            Read a bool from the buffer
+            </summary>
+            <returns>Bool value from the buffer</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteByte(System.Byte,System.Int32)">
+            <summary>
+            Write a byte into the buffer
+            </summary>
+            <param name="value">Byte value to write</param>
+            <param name="bits">Number of bits to use when writing</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadByte(System.Int32)">
+            <summary>
+            Read a byte from the buffer
+            </summary>
+            <param name="bits">Number of bits to use when reading</param>
+            <returns>Byte value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteByte(System.Byte)">
+            <summary>
+            Write a byte into the buffer
+            </summary>
+            <param name="value">Byte to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadByte">
+            <summary>
+            Read a byte from the buffer
+            </summary>
+            <returns>Byte read</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteUShort(System.UInt16,System.Int32)">
+            <summary>
+            Write a ushort into the buffer
+            </summary>
+            <param name="value">UShort to be written</param>
+            <param name="bits">Number of bits to use when writing</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadUShort(System.Int32)">
+            <summary>
+            Read a ushort from the buffer
+            </summary>
+            <param name="bits">Number of bits to use when reading</param>
+            <returns>UShort value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteUShort(System.UInt16)">
+            <summary>
+            Write a ushort into the buffer
+            </summary>
+            <param name="value">UShort to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadUShort">
+            <summary>
+            Read a ushort from the buffer
+            </summary>
+            <returns>UShort value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteShort(System.Int16,System.Int32)">
+            <summary>
+            Write a short into the buffer
+            </summary>
+            <param name="value">Short value to be written</param>
+            <param name="bits">Number of bits to use when writing</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadShort(System.Int32)">
+            <summary>
+            Read a short from the buffer
+            </summary>
+            <param name="bits">Number of bits to use when reading</param>
+            <returns>Short value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteShort(System.Int16)">
+            <summary>
+            Write a short into the buffer
+            </summary>
+            <param name="value">Short value to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadShort">
+            <summary>
+            Read a short from the buffer
+            </summary>
+            <returns>Short value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.Serialize(System.UInt32@,System.Int32)">
+            <summary>
+            Serialize a uint into the buffer if the Packet is in Write mode, or read from the buffer otherwise
+            </summary>
+            <param name="value">UInt value to be written or read</param>
+            <param name="bits">Number of bits to use when writing or reading</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.Serialize(System.Int32@,System.Int32)">
+            <summary>
+            Serialize a int into the buffer if the Packet is in Write mode, or read from the buffer otherwise
+            </summary>
+            <param name="value">Int value to be written or read</param>
+            <param name="bits">Number of bits to use when writing or reading</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteUInt(System.UInt32,System.Int32)">
+            <summary>
+            Write a uint into the buffer
+            </summary>
+            <param name="value">UInt value to be written</param>
+            <param name="bits">Number of bits to use when writing</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadUInt(System.Int32)">
+            <summary>
+            Read a uint from the buffer
+            </summary>
+            <param name="bits">Number of bits to use when reading</param>
+            <returns>UInt value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteUInt(System.UInt32)">
+            <summary>
+            Write a uint into the buffer
+            </summary>
+            <param name="value">UInt value to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadUInt">
+            <summary>
+            Read a uint from the buffer
+            </summary>
+            <returns>UInt value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteInt_Shifted(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Write an int value
+            </summary>
+            <param name="value">Value to be written</param>
+            <param name="bits">Number of bits to write</param>
+            <param name="shift">Number of bits to shift</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadInt_Shifted(System.Int32,System.Int32)">
+            <summary>
+            Read an int value
+            </summary>
+            <param name="bits">Number of bits to read</param>
+            <param name="shift">Number of bits to shift</param>
+            <returns>Int value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteInt(System.Int32,System.Int32)">
+            <summary>
+            Write a int into the buffer
+            </summary>
+            <param name="value">Int value to be written</param>
+            <param name="bits">Number of bits to use when writing</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadInt(System.Int32)">
+            <summary>
+            Read a int from the buffer
+            </summary>
+            <param name="bits">Number of bits to use when reading</param>
+            <returns>Int value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteInt(System.Int32)">
+            <summary>
+            Write a int into the buffer
+            </summary>
+            <param name="value">UInt value to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadInt">
+            <summary>
+            Read a int from the buffer
+            </summary>
+            <returns>Int value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteULong(System.UInt64,System.Int32)">
+            <summary>
+            Write a ulong into the buffer
+            </summary>
+            <param name="value">ULong value to be written</param>
+            <param name="bits">Number of bits to use when writing</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadULong(System.Int32)">
+            <summary>
+            Read a ulong from the buffer
+            </summary>
+            <param name="bits">Number of bits to use when reading</param>
+            <returns>ULong value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteULong(System.UInt64)">
+            <summary>
+            Write a ulong into the buffer
+            </summary>
+            <param name="value">ULong value to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadULong">
+            <summary>
+            Read a ulong from the buffer
+            </summary>
+            <returns>ULong value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteLong(System.Int64,System.Int32)">
+            <summary>
+            Write a long into the buffer
+            </summary>
+            <param name="value">Long value to be written</param>
+            <param name="bits">Number of bits to use when writing</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadLong(System.Int32)">
+            <summary>
+            Read a long from the buffer
+            </summary>
+            <param name="bits">Number of bits to use when reading</param>
+            <returns>Long value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteLong(System.Int64)">
+            <summary>
+            Write a long into the buffer
+            </summary>
+            <param name="value">Long value to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadLong">
+            <summary>
+            Read a long from the buffer
+            </summary>
+            <returns>Long value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteFloat(System.Single)">
+            <summary>
+            Write a float into the buffer
+            </summary>
+            <param name="value">Float value to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadFloat">
+            <summary>
+            Read a float from the buffer
+            </summary>
+            <returns>Float value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteDouble(System.Double)">
+            <summary>
+            Write a double into the buffer
+            </summary>
+            <param name="value">Double value to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadDouble">
+            <summary>
+            Read a double from the buffer
+            </summary>
+            <returns>Double value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteByteArray(System.Byte[])">
+            <summary>
+            Write a byte array into the buffer
+            </summary>
+            <param name="from">Byte array to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteByteArray(System.Byte[],System.Int32)">
+            <summary>
+            Write a byte array into the buffer
+            </summary>
+            <param name="from">Byte array to be written</param>
+            <param name="count">Number of elements to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteByteArray(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Write a byte array into the buffer
+            </summary>
+            <param name="from">Byte array to be written</param>
+            <param name="offset">Offset from the beginning of the array</param>
+            <param name="count">Number of elements to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadByteArray(System.Int32)">
+            <summary>
+            Read byte array from the buffer
+            </summary>
+            <param name="size">Number of elements to read</param>
+            <returns>Byte array extracted from the buffer</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadByteArray(System.Byte[])">
+            <summary>
+            Populate byte array with data from the internal buffer
+            </summary>
+            <param name="to">Byte array to be filled with data</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadByteArray(System.Byte[],System.Int32)">
+            <summary>
+            Populate byte array with data from the internal buffer
+            </summary>
+            <param name="to">Byte array to be filled with data</param>
+            <param name="count">Number of element to be read</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadByteArray(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Populate byte array with data from the internal buffer
+            </summary>
+            <param name="to">Byte array to be filled with data</param>
+            <param name="offset">Offset from the beginning of the array</param>
+            <param name="count">Number of element to be read</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteByteArrayWithPrefix(System.Byte[])">
+            <summary>
+            Write a byte array into the buffer with a prefix to delimit its size
+            </summary>
+            <param name="array">Byte array to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteByteArrayLengthPrefixed(System.Byte[],System.Int32)">
+            <summary>
+            Write a byte array into the buffer with a prefix to delimit its size
+            </summary>
+            <param name="array">Byte array to be written</param>
+            <param name="maxLength">Max length of the array</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadByteArrayWithPrefix">
+            <summary>
+            Read a byte array with prefix
+            </summary>
+            <returns>Byte array extracted from the buffer</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteString(System.String,System.Text.Encoding)">
+            <summary>
+            Write a string into the buffer
+            </summary>
+            <param name="value">String value to be written</param>
+            <param name="encoding">String encoding</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteString(System.String,System.Text.Encoding,System.Int32)">
+            <summary>
+            Write a string into the buffer
+            </summary>
+            <param name="value">String value to be written</param>
+            <param name="encoding">String encoding</param>
+            <param name="length">Max length of the string to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteString(System.String)">
+            <summary>
+            Write a string into the buffer using UTF8 as Encoding
+            </summary>
+            <param name="value">String value to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadString(System.Text.Encoding)">
+            <summary>
+            Read string from the buffer
+            </summary>
+            <param name="encoding">String encoding</param>
+            <returns>String value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadString">
+            <summary>
+            Read string from the buffer
+            </summary>
+            <returns>String value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteGuid(System.Guid)">
+            <summary>
+            Write a GUID into the buffer
+            </summary>
+            <param name="guid">GUID to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadGuid">
+            <summary>
+            Read a GUID from the buffer
+            </summary>
+            <returns>GUID value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteEndPoint(UdpKit.UdpEndPoint)">
+            <summary>
+            Serialize an UdpEndPoint into the buffer
+            </summary>
+            <param name="endpoint">EndPoint to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ReadEndPoint">
+            <summary>
+            Read an UdpEndPoint from the buffer
+            </summary>
+            <returns>UdpEndPoint value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.WriteByteAt(System.Byte[],System.Int32,System.Int32,System.Byte)">
+            <summary>
+            Write value into the buffer using the position and number of bits to be written
+            </summary>
+            <param name="data">Buffer where the value will be written</param>
+            <param name="ptr">Position where to write the byte value</param>
+            <param name="bits">Number of bits used to write the byte</param>
+            <param name="value">Byte value to be written</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.Dispose">
+            <summary>
+            Dispose this UdpPacket and return it to the Pool
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpPacket.ToString">
+            <summary>
+            String version of UdpPacket
+            </summary>
+            <returns>String value</returns>
+        </member>
+        <member name="M:UdpKit.UdpPacket.InternalWriteByte(System.Byte,System.Int32)">
+            <summary>
+            Write a byte value into internal buffer
+            </summary>
+            <param name="value">Byte value to be written</param>
+            <param name="bits">Number of bits used to write the byte</param>
+        </member>
+        <member name="M:UdpKit.UdpPacket.InternalReadByte(System.Int32)">
+            <summary>
+            Read a byte value from the internal buffer
+            </summary>
+            <param name="bits">Number of bits used to read the byte</param>
+            <returns>Byte value</returns>
+        </member>
+        <member name="F:UdpKit.UdpPipeConfig.TYPE_BYTES">
+            <summary>
+            Number of Bytes to define the Message type
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPipeConfig.PING_BYTES">
+            <summary>
+            Number of Bytes to define the Ping value on the Messages
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPipeConfig.PipeId">
+            <summary>
+            ID of the UdpPipe
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPipeConfig.UpdatePing">
+            <summary>
+            Signal if the Pipe should update the calculated Ping of the connection
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPipeConfig.Timeout">
+            <summary>
+            Timeout of the Pipe
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPipeConfig.WindowSize">
+            <summary>
+            Size of the buffer for sending and receiving data on the Pipe
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPipeConfig.DatagramSize">
+            <summary>
+            Max size of the packet sent by the Pipe
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPipeConfig.AckBytes">
+            <summary>
+            Number of bytes used to acknowledge packet
+            </summary>
+        </member>
+        <member name="F:UdpKit.UdpPipeConfig.SequenceBytes">
+            <summary>
+            Number of bytes used to store the sequence number
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpPipeConfig.SequenceBits">
+            <summary>
+            Number of bits to store the sequence number
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpPipeConfig.AckBits">
+            <summary>
+            Number of bits to store the acknowledge number
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpPipeConfig.HeaderSize">
+            <summary>
+            Total number of bytes of the Packet header
+            </summary>
+        </member>
+        <member name="P:UdpKit.UdpPipeConfig.HeaderSizeBits">
+            <summary>
+            Total number of bits of the Packet header
+            </summary>
+        </member>
+        <member name="M:UdpKit.UdpPipeConfig.NextSequence(System.UInt32)">
+            <summary>
+            Calculates the next sequence number based on the previous one
+            </summary>
+            <param name="seq">Base sequence number</param>
+            <returns>Next valid sequence number</returns>
+        </member>
+        <member name="M:UdpKit.UdpPipeConfig.Distance(System.UInt32,System.UInt32)">
+            <summary>
+            Calculates the distance between two sequence numbers
+            </summary>
+            <param name="from">Starting sequence number</param>
+            <param name="to">Ending sequence number</param>
+            <returns>Distance between sequence numbers</returns>
+        </member>
+        <member name="T:DamienG.Security.Cryptography.Crc32">
+            <summary>
+            Implements a 32-bit CRC hash algorithm compatible with Zip etc.
+            </summary>
+            <remarks>
+            Crc32 should only be used for backward compatibility with older file formats
+            and algorithms. It is not secure enough for new applications.
+            If you need to call multiple times for the same data either use the HashAlgorithm
+            interface or remember that the result of one Compute call needs to be ~ (XOR) before
+            being passed in as the seed for the next Compute call.
+            </remarks>
+        </member>
+    </members>
+</doc>

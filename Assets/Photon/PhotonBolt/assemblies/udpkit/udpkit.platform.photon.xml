@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>udpkit.platform.photon</name>
+    </assembly>
+    <members>
+        <member name="F:UdpKit.Platform.Photon.Puncher.PunchInfo.internalAddress">
+            <summary>
+            Internal/Local address
+            </summary>
+        </member>
+        <member name="F:UdpKit.Platform.Photon.Puncher.PunchInfo.externalAddress">
+            <summary>
+            External/Public address
+            </summary>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.Puncher.PunchInfo.IsInternalEqualsExternal">
+            <summary>
+            Check if the internal and external address are the same
+            </summary>
+            <returns>True if both addresses are equals, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.Puncher.PunchInfo.IsExternalInvalid">
+            <summary>
+            Check if external address is invalid, in other words, it is equal to 0.0.0.0
+            </summary>
+            <returns>True if external addess is equals to <see cref="F:System.Net.IPAddress.Any"/>, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.Puncher.PunchInfo.IsSameNetwork(UdpKit.Platform.Photon.Puncher.PunchInfo)">
+            <summary>
+            Check if the internal address from both Punch Info are appears to be on the same network subnet
+            </summary>
+            <param name="info">External Punch information to test with</param>
+            <returns>True with both internal address appears to be on the same subnet, false otherwise</returns>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.Puncher.PuncherManager.SendRoutine(System.Byte[],System.Int32,System.Net.EndPoint,System.Int32)">
+            <summary>
+            Send data to EndPoint. This method will send the same message 3 times by default,
+            with an interval of 100ms.
+            </summary>
+            <param name="data">Data array to be sent.</param>
+            <param name="bytesToSend">Total of bytes to send.</param>
+            <param name="target">Target EndPoint.</param>
+            <param name="tries">Number of tries</param>
+        </member>
+        <member name="T:UdpKit.Platform.Photon.PhotonPoller">
+            <summary>
+            This class will act as a controller and bridge to the underlayng layer of Photon Realtime,
+            receiving/sending/treating messages using the Photon services.
+            </summary>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.PhotonPoller.CreatePoller(UdpKit.Platform.PhotonPlatformConfig,System.Boolean)">
+            <summary>
+            Creates the Photon Poller instance. This will populate the internal instance with one of:
+            (i) If there is no instances of PhotonPoller in the scene, it will create a new one.
+            (ii) If there is only 1 instance of PhotonPoller in the scene, it will use this as the main instance.
+            (iii) If there is more then 1 instance in the scene, it will destroy copies but one, and use it as the main instance.
+            </summary>
+            <example>
+            <code>
+            void CreatePollerExample()
+            {
+                PhotonPoller.CreatePoller(new PhotonPlatformConfig().InitDefaults(), true);
+            }
+            </code>
+            </example>
+            <param name="config">Configuration used to setup the PhotonPoller instance.</param>
+            <param name="force">If set to <c>true</c> will destroy the current main instance, in order to create a new one.</param>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.PhotonPoller.StartPhotonClient(UdpKit.UdpEndPoint,System.Action{System.Boolean,UdpKit.UdpConnectionDisconnectReason})">
+            <summary>
+            Starts the LoadBalancingClient.
+            </summary>
+            <param name="localEndPoint">End point.</param>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.PhotonPoller.RegisterInstance``1">
+            <summary>
+            Register a Type that fully implements PhotonPoller to be used as the main instance.
+            </summary>
+            <typeparam name="T">An External Type that extends PhotonPoller.</typeparam>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.PhotonPoller.InstatiatePoller(UdpKit.Platform.Photon.PhotonPoller@)">
+            <summary>
+            Creates a new PhotonPoller instance based on the External Type.
+            </summary>
+            <param name="photonPoller">Photon poller variable to be populated.</param>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.PhotonPoller.PollOut">
+            <summary>
+            Pushes out all queued messages on the <see cref="F:UdpKit.Platform.Photon.PhotonPoller._packetSend"/> list and send through Photon services
+            using <see cref="F:UdpKit.Platform.Photon.PhotonPoller.DATA_EVENT_CODE"/> as Event code.
+            </summary>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.PhotonPoller.SetHostInfo(UdpKit.UdpSession,System.Action{System.Boolean,UdpKit.UdpSessionError})">
+            <summary>
+            Setup host info based on a <see cref="T:UdpKit.UdpSession"/>
+            </summary>
+            <returns><c>true</c>, if host info was set, <c>false</c> otherwise.</returns>
+            <param name="session">Session information.</param>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.PhotonSession.Build(System.String)">
+            <summary>
+            Builds a Photon Session with only it's identifier name. This can be useful if you want to connect
+            to a specific session using the name of the room.
+            </summary>
+            <returns>An session with only it's name.</returns>
+            <param name="roomName">Room name.</param>
+        </member>
+        <member name="T:UdpKit.Platform.Photon.ConnectState">
+            <summary>
+            The current connection status
+            </summary>
+        </member>
+        <member name="T:UdpKit.Platform.Photon.Coroutine.RoutineManager">
+            <summary>
+            This class will act as the Corroutine manager from Unity and will run and control corroutines.
+            </summary>
+        </member>
+        <member name="P:UdpKit.Platform.Photon.Realtime.PhotonClient.CurrentMasterId">
+            <summary>
+            Gets the current Master client of the current Room.
+            </summary>
+            <returns>The master client ID if the client in inside a Room, -1 otherwise.</returns>
+        </member>
+        <member name="F:UdpKit.Platform.Photon.Realtime.PhotonClient.retryJoinLobby">
+            <summary>
+            Retry Join lobby ?
+            true = yes
+            false = no
+            null = wait to leave the room
+            </summary>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.Realtime.PhotonClient.RealtimeFallbackThread">
+            <summary>
+            A thread which runs independent from the Update() calls.
+            Keeps connections online while loading or in background.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UdpKit.Platform.Photon.Realtime.SocketUdpPool">
+            <summary>Encapsulates the network i/o functionality for the realtime library.</summary>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.Realtime.SocketUdpPool.Send(System.Byte[],System.Int32)">
+            <summary>used by PhotonPeer*</summary>
+        </member>
+        <member name="M:UdpKit.Platform.Photon.Realtime.SocketUdpPool.ReceiveLoop">
+            <summary>Endless loop, run in Receive Thread.</summary>
+        </member>
+        <member name="P:UdpKit.Platform.PhotonPlatformConfig.AuthenticationValues">
+            <summary>
+            Custom Authentication Credentials
+            </summary>
+        </member>
+        <member name="F:UdpKit.Platform.PhotonPlatformConfig.Region">
+            <summary>
+            Region to Connect to. See <see cref="T:UdpKit.Platform.Photon.PhotonRegion"/>
+            </summary>
+        </member>
+        <member name="F:UdpKit.Platform.PhotonPlatformConfig.UsePunchThrough">
+            <summary>
+            Set to <code>true</code>, to enable the Punch Through behavior.
+            </summary>
+        </member>
+        <member name="P:UdpKit.Platform.PhotonPlatformConfig.ConnectionProtocol">
+            <summary>
+            Selects the Connection Protocol used by the internal LoadBalancingClient when exchanging data with Photon Cloud
+            </summary>
+        </member>
+        <member name="P:UdpKit.Platform.PhotonPlatformConfig.SerializationProtocol">
+            <summary>
+            Selects the Serializaion Protocol used by the internal LoadBalancingClient when exchanging data with Photon Cloud
+            </summary>
+        </member>
+        <member name="P:UdpKit.Platform.PhotonPlatformConfig.NetworkLogging">
+            <summary>
+            Photon Cloud Connection Network Log Level
+            </summary>
+        </member>
+        <member name="P:UdpKit.Platform.PhotonPlatformConfig.ForceExternalEndPoint">
+            <summary>
+            This suppresses the STUN process and forces the usage of the configured IPEndPoint as the external endpoint
+            used to punch to this peer. This is mainly focused when you are running a GameServer on a dedicated cloud service
+            </summary>
+        </member>
+        <member name="P:UdpKit.Platform.PhotonPlatformConfig.RoomCreateTimeout">
+            <summary>
+            Gets or sets the room creation timeout in seconds.
+            Min 10 sec, max 60 sec.
+            </summary>
+            <value>The room creation timeout.</value>
+        </member>
+        <member name="P:UdpKit.Platform.PhotonPlatformConfig.RoomJoinTimeout">
+            <summary>
+            Gets or sets the room join timeout in seconds.
+            Min 10 sec, max 60 sec.
+            </summary>
+            <value>The room join timeout.</value>
+        </member>
+        <member name="P:UdpKit.Platform.PhotonPlatformConfig.MaxConnections">
+            <summary>
+            Gets the max number of connections acceptable in the room.
+            </summary>
+        </member>
+        <member name="P:UdpKit.Platform.PhotonPlatformConfig.CustomSTUNServer">
+            <summary>
+            Set a custom STUN Server to be used on the punch process
+            </summary>
+        </member>
+        <member name="F:UdpKit.Platform.PhotonPlatformConfig.BackgroundConnectionTimeout">
+            <summary>
+            Amount of time the background connection with the Photon Servers will be maintained until
+            timeout and stop sending acknowledge messages.
+            </summary>
+        </member>
+        <member name="F:UdpKit.Platform.PhotonPlatformConfig.CurrentPlatform">
+            <summary>
+            Current Running platform
+            </summary>
+        </member>
+        <member name="M:UdpKit.Platform.PhotonPlatformConfig.InitDefaults">
+            <summary>
+            Initialize the Photon Configuration with the values from Bolt Settings
+            </summary>
+            <returns>The defaults.</returns>
+        </member>
+        <member name="M:UdpKit.Platform.PhotonPlatformConfig.UpdateBestRegion(UdpKit.Platform.Photon.PhotonRegion)">
+            <summary>
+            Save a Region as the Best Region on the Bolt Settings
+            </summary>
+            <param name="region">Region to save.</param>
+        </member>
+        <member name="M:UdpKit.Platform.PhotonPlatformConfig.IsAppId(System.String)">
+            <summary>
+            Valids an String as containing a AppID
+            </summary>
+            <returns><c>true</c>, if app identifier was valid, <c>false</c> otherwise.</returns>
+            <param name="val">Value.</param>
+        </member>
+    </members>
+</doc>

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Diagnostics;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -7,87 +6,131 @@ using UnityEditor;
 
 namespace BoltInternal
 {
-    public class UnityDebugDrawer : IDebugDrawer
-    {
-        bool isEditor;
+	public class UnityDebugDrawer : IDebugDrawer
+	{
+		bool isEditor;
 
-        void IDebugDrawer.IsEditor(bool isEditor)
-        {
-            this.isEditor = isEditor;
-        }
+		void IDebugDrawer.IsEditor(bool isEditor)
+		{
+			this.isEditor = isEditor;
+		}
 
-        void IDebugDrawer.SelectGameObject(GameObject gameObject)
-        {
+		void IDebugDrawer.SelectGameObject(GameObject gameObject)
+		{
 #if UNITY_EDITOR
-            if (!isEditor)
-            {
-                Selection.activeGameObject = gameObject;
-            }
+			if (!isEditor)
+			{
+				Selection.activeGameObject = gameObject;
+			}
 #endif
-        }
+		}
 
-        void IDebugDrawer.Indent(int level)
-        {
+		void IDebugDrawer.Indent(int level)
+		{
 #if UNITY_EDITOR
-            if (isEditor)
-            {
-                EditorGUI.indentLevel = level;
-                return;
-            }
+			if (isEditor)
+			{
+				EditorGUI.indentLevel = level;
+				return;
+			}
 #endif
-        }
+		}
 
-        void IDebugDrawer.Label(string text)
-        {
+		void IDebugDrawer.Label(string text)
+		{
 #if UNITY_EDITOR
-            if (isEditor)
-            {
-                GUILayout.Label(text);
-                return;
-            }
-#endif
-
-            Bolt.DebugInfo.Label(text);
-        }
-
-        void IDebugDrawer.LabelBold(string text)
-        {
-#if UNITY_EDITOR
-            if (isEditor)
-            {
-                GUILayout.Label(text, EditorStyles.boldLabel);
-                return;
-            }
+			if (isEditor)
+			{
+				GUILayout.Label(text);
+				return;
+			}
 #endif
 
-            Bolt.DebugInfo.LabelBold(text);
-        }
+			Bolt.DebugInfo.Label(text);
+		}
 
-        void IDebugDrawer.LabelField(string text, object value)
-        {
+		void IDebugDrawer.LabelBold(string text)
+		{
 #if UNITY_EDITOR
-            if (isEditor)
-            {
-                EditorGUILayout.LabelField(text, value.ToString());
-                return;
-            }
+			if (isEditor)
+			{
+				GUILayout.Label(text, EditorStyles.boldLabel);
+				return;
+			}
 #endif
 
-            Bolt.DebugInfo.LabelField(text, value);
-        }
+			Bolt.DebugInfo.LabelBold(text);
+		}
 
-        void IDebugDrawer.Separator()
-        {
+		void IDebugDrawer.LabelField(string text, object value)
+		{
 #if UNITY_EDITOR
-            if (isEditor)
-            {
-                EditorGUILayout.Separator();
-                return;
-            }
+			if (isEditor)
+			{
+				EditorGUILayout.LabelField(text, value.ToString());
+				return;
+			}
 #endif
 
-            GUILayout.Space(2);
-        }
+			Bolt.DebugInfo.LabelField(text, value);
+		}
 
-    }
+		void IDebugDrawer.Separator()
+		{
+#if UNITY_EDITOR
+			if (isEditor)
+			{
+				EditorGUILayout.Separator();
+				return;
+			}
+#endif
+
+			GUILayout.Space(2);
+		}
+
+		void IDebugDrawer.DrawObjectArray(IDebugDrawerObjectArray root)
+		{
+#if UNITY_EDITOR
+			if (isEditor)
+			{
+				var fields = root.GetChildren();
+
+				for (int i = 0; i < fields.Length; i++)
+				{
+					DrawObjectArrayItem(fields[i]);
+				}
+
+				return;
+			}
+#endif
+		}
+
+		private void DrawObjectArrayItem(IDebugDrawerObjectArray item)
+		{
+#if UNITY_EDITOR
+			var fields = item.GetChildren();
+
+			if (fields.Length > 0)
+			{
+				item.IsVisible = EditorGUILayout.Foldout(item.IsVisible, item.GetName(), true);
+
+				if (item.IsVisible)
+				{
+					EditorGUI.indentLevel++;
+
+					for (int i = 0; i < fields.Length; i++)
+					{
+						DrawObjectArrayItem(fields[i]);
+					}
+
+					EditorGUI.indentLevel--;
+				}
+			}
+			else
+			{
+				(this as IDebugDrawer).LabelField(item.GetName(), item.GetValue());
+			}
+#endif
+		}
+	}
 }

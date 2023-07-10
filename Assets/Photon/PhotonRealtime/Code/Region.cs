@@ -32,7 +32,12 @@ namespace Photon.Realtime
 
         public string HostAndPort { get; protected internal set; }
 
-        public int Ping { get; protected internal set; }
+        /// <summary>Weighted ping time.</summary>
+        /// <remarks>
+        /// Regions gets pinged 5 times (RegionPinger.Attempts).
+        /// Out of those, the worst rtt is discarded and the best will be counted two times for a weighted average.
+        /// </remarks>
+        public int Ping { get; set; }
 
         public bool WasPinged { get { return this.Ping != int.MaxValue; } }
 
@@ -61,7 +66,7 @@ namespace Photon.Realtime
             codeAsString = codeAsString.ToLower();
             int slash = codeAsString.IndexOf('/');
             this.Code = slash <= 0 ? codeAsString : codeAsString.Substring(0, slash);
-            this.Cluster = slash <= 0 ? "" : codeAsString.Substring(1, slash);
+            this.Cluster = slash <= 0 ? "" : codeAsString.Substring(slash+1, codeAsString.Length-slash-1);
         }
 
         public override string ToString()
@@ -83,7 +88,7 @@ namespace Photon.Realtime
             }
             else
             {
-                return string.Format("{0}[{2}]: {1}ms ", regionCluster, this.Ping, this.HostAndPort);
+                return string.Format("{0}[{2}]: {1}ms", regionCluster, this.Ping, this.HostAndPort);
             }
         }
     }
