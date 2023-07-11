@@ -58,7 +58,7 @@ namespace Photon.Realtime
         /// <remarks>
         /// Does not remove keys from target (so non-string keys CAN be in target if they were before).
         /// </remarks>
-        /// <param name="target">The target IDicitionary passed in plus all string-typed keys from the addHash.</param>
+        /// <param name="target">The target IDictionary passed in plus all string-typed keys from the addHash.</param>
         /// <param name="addHash">A IDictionary that should be merged partly into target to update it.</param>
         public static void MergeStringKeys(this IDictionary target, IDictionary addHash)
         {
@@ -77,7 +77,7 @@ namespace Photon.Realtime
             }
         }
 
-        /// <summary>Helper method for debugging of IDictionary content, inlcuding type-information. Using this is not performant.</summary>
+        /// <summary>Helper method for debugging of IDictionary content, including type-information. Using this is not performant.</summary>
         /// <remarks>Should only be used for debugging as necessary.</remarks>
         /// <param name="origin">Some Dictionary or Hashtable.</param>
         /// <returns>String of the content of the IDictionary.</returns>
@@ -150,25 +150,95 @@ namespace Photon.Realtime
         }
 
         /// <summary>
-        /// This removes all key-value pairs that have a null-reference as value.
-        /// Photon properties are removed by setting their value to null.
-        /// Changes the original passed IDictionary!
+        /// This method copies all string-typed keys of the original into a new Hashtable.
         /// </summary>
-        /// <param name="original">The IDictionary to strip of keys with null-values.</param>
+        /// <remarks>
+        /// Does not recurse (!) into hashes that might be values in the root-hash.
+        /// This does not modify the original.
+        /// </remarks>
+        /// <param name="original">The original IDictonary to get string-typed keys from.</param>
+        /// <returns>New Hashtable containing only string-typed keys of the original.</returns>
+        public static Hashtable StripToStringKeys(this Hashtable original)
+        {
+            Hashtable target = new Hashtable();
+            if (original != null)
+            {
+                foreach (DictionaryEntry entry in original)
+                {
+                    if (entry.Key is string)
+                    {
+                        target[entry.Key] = original[entry.Key];
+                    }
+                }
+            }
+
+            return target;
+        }
+
+
+        /// <summary>Used by StripKeysWithNullValues.</summary>
+        /// <remarks>
+        /// By making keysWithNullValue a static variable to clear before using, allocations only happen during the warm-up phase
+        /// as the list needs to grow. Once it hit the high water mark for keys you need to remove.
+        /// </remarks>
+        private static readonly List<object> keysWithNullValue = new List<object>();
+
+        /// <summary>Removes all keys with null values.</summary>
+        /// <remarks>
+        /// Photon properties are removed by setting their value to null. Changes the original IDictionary!
+        /// Uses lock(keysWithNullValue), which should be no problem in expected use cases.
+        /// </remarks>
+        /// <param name="original">The IDictionary to strip of keys with null value.</param>
         public static void StripKeysWithNullValues(this IDictionary original)
         {
-            object[] keys = new object[original.Count];
-            original.Keys.CopyTo(keys, 0);
-
-            for (int index = 0; index < keys.Length; index++)
+            lock (keysWithNullValue)
             {
-                var key = keys[index];
-                if (original[key] == null)
+                keysWithNullValue.Clear();
+
+                foreach (DictionaryEntry entry in original)
                 {
+                    if (entry.Value == null)
+                    {
+                        keysWithNullValue.Add(entry.Key);
+                    }
+                }
+
+                for (int i = 0; i < keysWithNullValue.Count; i++)
+                {
+                    var key = keysWithNullValue[i];
                     original.Remove(key);
                 }
             }
         }
+
+        /// <summary>Removes all keys with null values.</summary>
+        /// <remarks>
+        /// Photon properties are removed by setting their value to null. Changes the original IDictionary!
+        /// Uses lock(keysWithNullValue), which should be no problem in expected use cases.
+        /// </remarks>
+        /// <param name="original">The IDictionary to strip of keys with null value.</param>
+        public static void StripKeysWithNullValues(this Hashtable original)
+        {
+            lock (keysWithNullValue)
+            {
+                keysWithNullValue.Clear();
+
+                foreach (DictionaryEntry entry in original)
+                {
+                    if (entry.Value == null)
+                    {
+                        keysWithNullValue.Add(entry.Key);
+                    }
+                }
+
+                for (int i = 0; i < keysWithNullValue.Count; i++)
+                {
+                    var key = keysWithNullValue[i];
+                    original.Remove(key);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Checks if a particular integer value is in an int-array.

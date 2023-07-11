@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using udpkit.platform.photon;
+using UdpKit.Platform.Photon;
 using UdpKit;
 
 namespace Core

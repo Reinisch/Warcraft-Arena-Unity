@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UdpKit;
+using BoltInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Scripting;
@@ -28,24 +28,50 @@ namespace Bolt
 			BoltNetworkInternal.GetGlobalBehaviourTypes = GetGlobalBehaviourTypes;
 			BoltNetworkInternal.EnvironmentSetup = BoltInternal.BoltNetworkInternal_User.EnvironmentSetup;
 			BoltNetworkInternal.EnvironmentReset = BoltInternal.BoltNetworkInternal_User.EnvironmentReset;
+
+			// Setup Unity Config
+
+#if ENABLE_IL2CPP
+			UnitySettings.IsBuildIL2CPP = true;
+#elif ENABLE_MONO
+			UnitySettings.IsBuildMono = true;
+#elif ENABLE_DOTNET
+			UnitySettings.IsBuildDotNet = true;
+#endif
+
+			UnitySettings.CurrentPlatform = Application.platform;
 		}
 
-		static int GetActiveSceneIndex()
+		private static int GetActiveSceneIndex()
 		{
-			return SceneManager.GetActiveScene().buildIndex;
+			return GetSceneIndex(SceneManager.GetActiveScene().name);
 		}
 
-		static int GetSceneIndex(string name)
+		private static int GetSceneIndex(string name)
 		{
-			return BoltInternal.BoltScenes_Internal.GetSceneIndex(name);
+			try
+			{
+				return BoltScenes_Internal.GetSceneIndex(name);
+			}
+			catch
+			{
+				return -1;
+			}
 		}
 
-		static string GetSceneName(int index)
+		private static string GetSceneName(int index)
 		{
-			return BoltInternal.BoltScenes_Internal.GetSceneName(index);
+			try
+			{
+				return BoltScenes_Internal.GetSceneName(index);
+			}
+			catch
+			{
+				return null;
+			}
 		}
 
-		static public List<STuple<BoltGlobalBehaviourAttribute, Type>> GetGlobalBehaviourTypes()
+		private static List<STuple<BoltGlobalBehaviourAttribute, Type>> GetGlobalBehaviourTypes()
 		{
 			List<STuple<BoltGlobalBehaviourAttribute, Type>> result = new List<STuple<BoltGlobalBehaviourAttribute, Type>>();
 
@@ -61,7 +87,7 @@ namespace Bolt
 					{
 						if (typeof(MonoBehaviour).IsAssignableFrom(type))
 						{
-							var attrs = (BoltGlobalBehaviourAttribute[]) type.GetCustomAttributes(typeof(BoltGlobalBehaviourAttribute), false);
+							var attrs = (BoltGlobalBehaviourAttribute[])type.GetCustomAttributes(typeof(BoltGlobalBehaviourAttribute), false);
 
 							if (attrs.Length == 1)
 							{
@@ -79,7 +105,7 @@ namespace Bolt
 			return result;
 		}
 
-		static Assembly GetAssemblyByName(string name)
+		private static Assembly GetAssemblyByName(string name)
 		{
 			return AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == name);
 		}

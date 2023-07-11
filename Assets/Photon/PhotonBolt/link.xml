@@ -11,4 +11,5 @@
         <namespace fullname="System.Net.Configuration" preserve="all" />
     </assembly>
     <assembly fullname="udpkit.platform.dotnet" preserve="all"/>
+    <assembly fullname="udpkit.platform.photon" preserve="all"/>
 </linker>

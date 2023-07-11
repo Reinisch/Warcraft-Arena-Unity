@@ -12,11 +12,20 @@ PluginImporter:
   validateReferences: 1
   platformData:
   - first:
-      '': Linux
+      '': Any
     second:
       enabled: 0
       settings:
-        CPU: x86
+        Exclude Android: 0
+        Exclude Editor: 0
+        Exclude Linux: 0
+        Exclude Linux64: 0
+        Exclude LinuxUniversal: 0
+        Exclude OSXUniversal: 0
+        Exclude WebGL: 1
+        Exclude Win: 0
+        Exclude Win64: 0
+        Exclude WindowsStoreApps: 1
   - first:
       '': OSXIntel
     second:
@@ -40,13 +49,13 @@ PluginImporter:
   - first:
       Android: Android
     second:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: AnyCPU
+        CPU: ARMv7
   - first:
       Any: 
     second:
-      enabled: 0
+      enabled: 1
       settings: {}
   - first:
       Editor: Editor
@@ -69,21 +78,39 @@ PluginImporter:
       settings:
         CPU: AnyCPU
   - first:
+      Standalone: Linux
+    second:
+      enabled: 1
+      settings:
+        CPU: x86
+  - first:
       Standalone: Linux64
     second:
-      enabled: 0
+      enabled: 1
+      settings:
+        CPU: AnyCPU
+  - first:
+      Standalone: LinuxUniversal
+    second:
+      enabled: 1
+      settings:
+        CPU: AnyCPU
+  - first:
+      Standalone: OSXUniversal
+    second:
+      enabled: 1
       settings:
         CPU: AnyCPU
   - first:
       Standalone: Win
     second:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
   - first:
       Standalone: Win64
     second:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
   - first:
@@ -95,10 +122,11 @@ PluginImporter:
         DontProcess: False
         PlaceholderPath: 
         SDK: AnySDK
+        ScriptingBackend: AnyScriptingBackend
   - first:
       XboxOne: XboxOne
     second:
-      enabled: 1
+      enabled: 0
       settings: {}
   - first:
       iPhone: iOS
