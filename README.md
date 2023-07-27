@@ -92,5 +92,3 @@ Central Bottom Action Bar - **No Modifiers**, Central Top Action Bar - **Left Sh
 
 ## License
 All character models, textures and sound are copyrighted by ©2004 Blizzard Entertainment, Inc. All rights reserved. World of Warcraft, Warcraft and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc. in the U.S. and/or other countries.
-
-The project itself is [GPL-3](LICENSE).
