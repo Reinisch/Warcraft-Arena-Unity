@@ -586,7 +586,7 @@ namespace Core
 
             private void OnHealthStateChanged()
             {
-                SetHealth(unitState.Health);
+                Health.Set(unitState.Health);
             }
 
             private void OnComboPointsChanged()
