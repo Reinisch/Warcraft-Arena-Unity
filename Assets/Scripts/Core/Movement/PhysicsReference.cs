@@ -22,12 +22,12 @@ namespace Core
         }
 
         [SerializeField, UsedImplicitly]
-        private PhysicMaterial groundedUnitMaterial;
+        private PhysicsMaterial groundedUnitMaterial;
         [SerializeField, UsedImplicitly]
-        private PhysicMaterial slidingUnitMaterial;
+        private PhysicsMaterial slidingUnitMaterial;
 
-        public PhysicMaterial GroundedMaterial => groundedUnitMaterial;
-        public PhysicMaterial SlidingMaterial => slidingUnitMaterial;
+        public PhysicsMaterial GroundedMaterial => groundedUnitMaterial;
+        public PhysicsMaterial SlidingMaterial => slidingUnitMaterial;
 
         protected override void OnRegistered()
         {
