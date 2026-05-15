@@ -14,22 +14,22 @@ namespace Client
 
         public event Action<LobbyMapSlot> EventLobbyMapSlotSelected;
 
-        public MapDefinition MapDefinition { get; private set; }
+        public ScenarioDefinition ScenarioDefiniton { get; private set; }
 
-        public void Initialize(MapDefinition mapDefiniton)
+        public void Initialize(ScenarioDefinition scenarioDefiniton)
         {
             gameObject.SetActive(true);
 
-            MapDefinition = mapDefiniton;
-            mapFrame.sprite = mapDefiniton.SlotBackground;
-            slotButton.interactable = MapDefinition.IsAvailable;
+            ScenarioDefiniton = scenarioDefiniton;
+            mapFrame.sprite = scenarioDefiniton.Map.SlotBackground;
+            slotButton.interactable = scenarioDefiniton.Map.IsAvailable;
 
             slotButton.onClick.AddListener(OnMapSlotClicked);
         }
 
         public void Deinitialize()
         {
-            MapDefinition = null;
+            ScenarioDefiniton = null;
 
             slotButton.onClick.RemoveListener(OnMapSlotClicked);
         }

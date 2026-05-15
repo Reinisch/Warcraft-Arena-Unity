@@ -1,0 +1,4101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3112244943104746
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8852895569528307234}
+  m_Layer: 0
+  m_Name: Player AI Spawn (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8852895569528307234
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3112244943104746}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7460347, z: -0, w: 0.66590714}
+  m_LocalPosition: {x: 0.8599998, y: -0.15, z: 17.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 85758310475882123}
+  m_LocalEulerAnglesHint: {x: 0, y: -96.496, z: 0}
+--- !u!1 &54455971030334950
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4048423844395687571}
+  - component: {fileID: 8258560425144670475}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4048423844395687571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54455971030334950}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.15126085, z: 0, w: 0.9884939}
+  m_LocalPosition: {x: 1.3199997, y: -0.395, z: 5.55}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -17.4, z: 0}
+--- !u!114 &8258560425144670475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54455971030334950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 4048423844395687571}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &105211546512727706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 638884680685795628}
+  - component: {fileID: 4874868330313947595}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &638884680685795628
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105211546512727706}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.27311984, z: 0, w: 0.96198004}
+  m_LocalPosition: {x: 6.88, y: -0.395, z: 6.44}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -31.7, z: 0}
+--- !u!114 &4874868330313947595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105211546512727706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 638884680685795628}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &172505026559017701
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3119654221471225870}
+  m_Layer: 0
+  m_Name: Player AI Spawn (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3119654221471225870
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172505026559017701}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7460347, z: -0, w: 0.66590714}
+  m_LocalPosition: {x: -0.11, y: -0.15, z: 15.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8753101338709674926}
+  m_LocalEulerAnglesHint: {x: 0, y: -96.496, z: 0}
+--- !u!1 &979283245531927980
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2971016169690875119}
+  m_Layer: 0
+  m_Name: Dummies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2971016169690875119
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979283245531927980}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6722058199081767339}
+  - {fileID: 3979014111604316933}
+  - {fileID: 6771013796327647396}
+  - {fileID: 9208214451336762580}
+  - {fileID: 5722756953856479596}
+  - {fileID: 6613099771254800721}
+  - {fileID: 8196178477192441097}
+  - {fileID: 8499971286318703819}
+  - {fileID: 3258971271599924682}
+  - {fileID: 2192640795019633117}
+  - {fileID: 8299544566973055614}
+  - {fileID: 2581822758646561832}
+  - {fileID: 5587430919348792244}
+  - {fileID: 2280192020355439300}
+  - {fileID: 2504014225519363149}
+  - {fileID: 3396680214713527853}
+  - {fileID: 1831983252973289353}
+  - {fileID: 4557395650544712939}
+  - {fileID: 316564879694956951}
+  - {fileID: 4770461793245423065}
+  m_Father: {fileID: 1169687253471852498}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1114181569127462851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4770461793245423065}
+  m_Layer: 0
+  m_Name: Dummy Spawn (20)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4770461793245423065
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114181569127462851}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.07845921, z: -0, w: -0.99691737}
+  m_LocalPosition: {x: 29.93, y: 1.67, z: -0.02}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 351, z: 0}
+--- !u!1 &1116106474668661904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2192640795019633117}
+  m_Layer: 0
+  m_Name: Dummy Spawn (10)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2192640795019633117
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116106474668661904}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.6279631, z: -0, w: -0.7782431}
+  m_LocalPosition: {x: -25.99, y: 1.83, z: 6.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 282.2, z: 0}
+--- !u!1 &1133738696843682048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 85758310475882123}
+  - component: {fileID: 8166102248602918641}
+  - component: {fileID: 3147984082249901728}
+  - component: {fileID: 8844824177009487946}
+  - component: {fileID: 8611568436038050923}
+  - component: {fileID: 6213547470975906732}
+  m_Layer: 0
+  m_Name: Initial Player AI Spawns (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &85758310475882123
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133738696843682048}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2874543753935564755}
+  - {fileID: 8852895569528307234}
+  - {fileID: 7549355703633587223}
+  - {fileID: 4006410069083710667}
+  - {fileID: 3898600657058777232}
+  m_Father: {fileID: 4572475517438008893}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8166102248602918641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133738696843682048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 2874543753935564755}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI  - 1
+    customScale: 1
+--- !u!114 &3147984082249901728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133738696843682048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 8852895569528307234}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 2
+    customScale: 1
+--- !u!114 &8844824177009487946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133738696843682048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 7549355703633587223}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 3
+    customScale: 1
+--- !u!114 &8611568436038050923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133738696843682048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 4006410069083710667}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 4
+    customScale: 1
+--- !u!114 &6213547470975906732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133738696843682048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 3898600657058777232}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 5
+    customScale: 1
+--- !u!1 &1147150367688513618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4006410069083710667}
+  m_Layer: 0
+  m_Name: Player AI Spawn (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4006410069083710667
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147150367688513618}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.96279854, z: -0, w: 0.27022037}
+  m_LocalPosition: {x: -5.98, y: -0.24, z: 29.69}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 85758310475882123}
+  m_LocalEulerAnglesHint: {x: 0, y: -148.645, z: 0}
+--- !u!1 &1531955940208275191
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2504014225519363149}
+  m_Layer: 0
+  m_Name: Dummy Spawn (15)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2504014225519363149
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531955940208275191}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.3469358, z: -0, w: -0.9378889}
+  m_LocalPosition: {x: 22.45, y: -0.17, z: 14.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 319.4, z: 0}
+--- !u!1 &1698016604637314227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5074561394661244062}
+  - component: {fileID: 6105470643883981235}
+  m_Layer: 0
+  m_Name: Steam Tank (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5074561394661244062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698016604637314227}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.02, y: -0.27, z: -24.61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5058592246150396323}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6105470643883981235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698016604637314227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 5074561394661244062}
+    unitInfoAI: {fileID: 11400000, guid: 15ae30b2fbd463f43abec53aa31f5823, type: 2}
+    customNameId: Steam Tank
+    customScale: 1
+--- !u!1 &1754814291614885247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5437330975731423576}
+  - component: {fileID: 2049623751275636509}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (13)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5437330975731423576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754814291614885247}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.5150381, z: 0, w: 0.85716736}
+  m_LocalPosition: {x: 12.099999, y: -0.395, z: 15.77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -62, z: 0}
+--- !u!114 &2049623751275636509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754814291614885247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 5437330975731423576}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &1770999342224017552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4557395650544712939}
+  m_Layer: 0
+  m_Name: Dummy Spawn (18)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4557395650544712939
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770999342224017552}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.24784473, z: -0, w: -0.96879977}
+  m_LocalPosition: {x: 29.64, y: -0.17, z: 6.13}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 331.3, z: 0}
+--- !u!1 &1798015495284841589
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2607769703299813691}
+  - component: {fileID: 283448951679126829}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (9)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2607769703299813691
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798015495284841589}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.5828324, z: 0, w: 0.81259245}
+  m_LocalPosition: {x: 7.62, y: 0.73, z: 21.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -71.3, z: 0}
+--- !u!114 &283448951679126829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798015495284841589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 2607769703299813691}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &1922345098702165144
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 25847919932199376}
+  - component: {fileID: 2536592239714596377}
+  m_Layer: 0
+  m_Name: Spell Selection Circle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &25847919932199376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922345098702165144}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.70710677}
+  m_LocalPosition: {x: -24.31, y: 5.94, z: -8.11}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9207069150235262517}
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 0}
+--- !u!119 &2536592239714596377
+Projector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922345098702165144}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_NearClipPlane: -2
+  m_FarClipPlane: 6
+  m_FieldOfView: 60
+  m_AspectRatio: 1
+  m_Orthographic: 1
+  m_OrthographicSize: 3
+  m_Material: {fileID: 2100000, guid: 9fec3b96891b3394a9534449491e4d2c, type: 2}
+  m_IgnoreLayers:
+    serializedVersion: 2
+    m_Bits: 4294967039
+--- !u!1 &1999358433345079288
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4948868613694228976}
+  - component: {fileID: 5557892641619664754}
+  m_Layer: 0
+  m_Name: Ragnaros Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4948868613694228976
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999358433345079288}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.36909795, z: 0, w: 0.92939055}
+  m_LocalPosition: {x: 24.6, y: -0.395, z: -23}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7019259369896246608}
+  m_LocalEulerAnglesHint: {x: 0, y: -43.32, z: 0}
+--- !u!114 &5557892641619664754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999358433345079288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: f923dcbdd8a452740a64b724a04e4c59, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 4948868613694228976}
+    unitInfoAI: {fileID: 0}
+    customNameId: Ragnaros
+    customScale: 20
+--- !u!1 &2024532047888103919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3056026764506184025}
+  m_Layer: 0
+  m_Name: Player AI Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3056026764506184025
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024532047888103919}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.90715003, z: -0, w: -0.42080733}
+  m_LocalPosition: {x: -2.75, y: -0.22, z: 21.43}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2247527244451334688}
+  m_LocalEulerAnglesHint: {x: 0, y: 229.771, z: 0}
+--- !u!1 &2112639141653539387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6771013796327647396}
+  m_Layer: 0
+  m_Name: Dummy Spawn (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6771013796327647396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112639141653539387}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.060177516, z: -0, w: 0.9981877}
+  m_LocalPosition: {x: -12.64, y: 0.95, z: -0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 6.9, z: 0}
+--- !u!1 &2329856772365542632
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9209147536171835919}
+  - component: {fileID: 6013210476489464883}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (14)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9209147536171835919
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2329856772365542632}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.5380354, z: 0, w: 0.8429223}
+  m_LocalPosition: {x: 7.34, y: -0.395, z: 20.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -65.1, z: 0}
+--- !u!114 &6013210476489464883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2329856772365542632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 9209147536171835919}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &2443214037528915334
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8499971286318703819}
+  m_Layer: 0
+  m_Name: Dummy Spawn (8)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8499971286318703819
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2443214037528915334}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7247734, z: -0, w: -0.6889873}
+  m_LocalPosition: {x: -29.14, y: 1.61, z: 6.58}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 267.1, z: 0}
+--- !u!1 &2598387388986079814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3440514014665088794}
+  m_Layer: 0
+  m_Name: Player AI Spawn (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3440514014665088794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598387388986079814}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7460347, z: -0, w: 0.66590714}
+  m_LocalPosition: {x: 2.6, y: -0.15, z: 17.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 70367361949037100}
+  m_LocalEulerAnglesHint: {x: 0, y: -96.496, z: 0}
+--- !u!1 &3249570830993685006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6722058199081767339}
+  m_Layer: 0
+  m_Name: Dummy Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6722058199081767339
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3249570830993685006}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 11.234, y: -0.395, z: -1.665}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &3258521111726267892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5587430919348792244}
+  m_Layer: 0
+  m_Name: Dummy Spawn (13)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5587430919348792244
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3258521111726267892}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.41786712, z: -0, w: -0.9085082}
+  m_LocalPosition: {x: 16.88, y: -0.17, z: 20.29}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 310.6, z: 0}
+--- !u!1 &3337505297978394187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1671241522606181707}
+  - component: {fileID: 5746286431952560242}
+  - component: {fileID: 1011691924639428014}
+  - component: {fileID: 5083769166534437836}
+  - component: {fileID: 7425218757238608524}
+  - component: {fileID: 3138009341991615592}
+  m_Layer: 0
+  m_Name: Initial Player AI Spawns (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1671241522606181707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337505297978394187}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2858572443303030748}
+  - {fileID: 591093880062443733}
+  - {fileID: 4025745489561222455}
+  - {fileID: 7776584718862104086}
+  - {fileID: 5288500538132769028}
+  m_Father: {fileID: 4572475517438008893}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5746286431952560242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337505297978394187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 2858572443303030748}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI  - 1
+    customScale: 1
+--- !u!114 &1011691924639428014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337505297978394187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 591093880062443733}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 2
+    customScale: 1
+--- !u!114 &5083769166534437836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337505297978394187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 4025745489561222455}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 3
+    customScale: 1
+--- !u!114 &7425218757238608524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337505297978394187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 7776584718862104086}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 4
+    customScale: 1
+--- !u!114 &3138009341991615592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337505297978394187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 5288500538132769028}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 5
+    customScale: 1
+--- !u!1 &3448103390516458294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1707766979415788977}
+  - component: {fileID: 8710927679107786427}
+  m_Layer: 0
+  m_Name: Steam Tank (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1707766979415788977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3448103390516458294}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.52, y: -0.27, z: -19.29}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5058592246150396323}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8710927679107786427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3448103390516458294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1707766979415788977}
+    unitInfoAI: {fileID: 11400000, guid: 15ae30b2fbd463f43abec53aa31f5823, type: 2}
+    customNameId: Steam Tank
+    customScale: 1
+--- !u!1 &3510299156518044947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5058592246150396323}
+  m_Layer: 0
+  m_Name: Vehicles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5058592246150396323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3510299156518044947}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1707766979415788977}
+  - {fileID: 8153637533770467586}
+  - {fileID: 5074561394661244062}
+  m_Father: {fileID: 1169687253471852498}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3848752339021504347
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5087217685147841262}
+  - component: {fileID: 8312632380238921836}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5087217685147841262
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3848752339021504347}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.2932061, z: 0, w: 0.95604926}
+  m_LocalPosition: {x: 6.24, y: -0.395, z: 10.22}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -34.1, z: 0}
+--- !u!114 &8312632380238921836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3848752339021504347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 5087217685147841262}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &3882410612183399365
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 316564879694956951}
+  m_Layer: 0
+  m_Name: Dummy Spawn (19)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &316564879694956951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3882410612183399365}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.07845921, z: -0, w: -0.99691737}
+  m_LocalPosition: {x: 31.46, y: -0.17, z: 3.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 351, z: 0}
+--- !u!1 &4198963427742011268
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5776592486314094231}
+  - component: {fileID: 2383693837489338403}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (11)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5776592486314094231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4198963427742011268}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.44775915, z: 0, w: 0.8941542}
+  m_LocalPosition: {x: 8.45, y: -0.395, z: 11.59}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -53.2, z: 0}
+--- !u!114 &2383693837489338403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4198963427742011268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 5776592486314094231}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &4268791972264743040
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2280192020355439300}
+  m_Layer: 0
+  m_Name: Dummy Spawn (14)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2280192020355439300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4268791972264743040}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.3915343, z: -0, w: -0.9201636}
+  m_LocalPosition: {x: 19.92, y: -0.17, z: 17.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 313.9, z: 0}
+--- !u!1 &4268914256739130467
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3307513701028408819}
+  - component: {fileID: 3254645604635371884}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3307513701028408819
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4268914256739130467}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.45632148, z: 0, w: 0.889815}
+  m_LocalPosition: {x: 9.520001, y: -0.395, z: 11.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -54.3, z: 0}
+--- !u!114 &3254645604635371884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4268914256739130467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 3307513701028408819}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &4372666708172605460
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8153813440119834080}
+  - component: {fileID: 3885331345046521924}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (18)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8153813440119834080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4372666708172605460}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.47408816, z: 0, w: 0.88047737}
+  m_LocalPosition: {x: 6.57, y: -0.395, z: 15.74}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -56.6, z: 0}
+--- !u!114 &3885331345046521924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4372666708172605460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 8153813440119834080}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &4451475870222971957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7019259369896246608}
+  m_Layer: 0
+  m_Name: Bosses
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7019259369896246608
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4451475870222971957}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4948868613694228976}
+  m_Father: {fileID: 1169687253471852498}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4477112220907112393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5817507432699625552}
+  - component: {fileID: 3854986886157559692}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (15)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5817507432699625552
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4477112220907112393}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.48709774, z: 0, w: 0.8733475}
+  m_LocalPosition: {x: 12.49, y: -0.395, z: 13.52}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -58.3, z: 0}
+--- !u!114 &3854986886157559692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4477112220907112393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 5817507432699625552}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &4582823516848614739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4538018423826600419}
+  - component: {fileID: 8979097390447503541}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4538018423826600419
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4582823516848614739}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.060177423, z: 0, w: 0.9981877}
+  m_LocalPosition: {x: 1.5, y: -0.395, z: 8.77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -6.9, z: 0}
+--- !u!114 &8979097390447503541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4582823516848614739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 4538018423826600419}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &4604966094764622441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6664838957463104257}
+  m_Layer: 0
+  m_Name: Player AI Spawn (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6664838957463104257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4604966094764622441}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9925345, z: -0, w: -0.12196442}
+  m_LocalPosition: {x: -15.43, y: -0.18, z: 22.45}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2247527244451334688}
+  m_LocalEulerAnglesHint: {x: 0, y: 194.01099, z: 0}
+--- !u!1 &4634787665293660239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4720532980290497902}
+  m_Layer: 0
+  m_Name: Player AI Spawn (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4720532980290497902
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4634787665293660239}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.96279854, z: -0, w: 0.27022037}
+  m_LocalPosition: {x: -6.95, y: -0.24, z: 26.96}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8753101338709674926}
+  m_LocalEulerAnglesHint: {x: 0, y: -148.645, z: 0}
+--- !u!1 &4642504007150102469
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3979014111604316933}
+  m_Layer: 0
+  m_Name: Dummy Spawn (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3979014111604316933
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4642504007150102469}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.3293611, z: -0, w: 0.94420403}
+  m_LocalPosition: {x: -6.18, y: -0.39, z: -10.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: -38.46, z: 0}
+--- !u!1 &4797273617162077068
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8234666458147993187}
+  m_Layer: 0
+  m_Name: Player AI Spawn (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8234666458147993187
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4797273617162077068}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7460347, z: -0, w: 0.66590714}
+  m_LocalPosition: {x: -1.4399999, y: -0.15, z: 13.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2247527244451334688}
+  m_LocalEulerAnglesHint: {x: 0, y: -96.496, z: 0}
+--- !u!1 &4853328282196758938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6613099771254800721}
+  m_Layer: 0
+  m_Name: Dummy Spawn (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6613099771254800721
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853328282196758938}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9354441, z: -0, w: -0.35347468}
+  m_LocalPosition: {x: -33.09, y: 1.58, z: 4.510001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 221.4, z: 0}
+--- !u!1 &4887394574045233689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3258971271599924682}
+  m_Layer: 0
+  m_Name: Dummy Spawn (9)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3258971271599924682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887394574045233689}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9992291, z: -0, w: -0.03925978}
+  m_LocalPosition: {x: -36.19, y: 1.05, z: -1.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 184.5, z: 0}
+--- !u!1 &5005131257165577784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1831983252973289353}
+  m_Layer: 0
+  m_Name: Dummy Spawn (17)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1831983252973289353
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5005131257165577784}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.3007059, z: -0, w: -0.953717}
+  m_LocalPosition: {x: 27.19, y: -0.17, z: 8.78}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 325, z: 0}
+--- !u!1 &5232807775398945378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1169687253471852498}
+  - component: {fileID: 2596614587081161892}
+  - component: {fileID: 7918491130186008755}
+  - component: {fileID: 8578517621238375114}
+  - component: {fileID: 1581521767198963638}
+  - component: {fileID: 2108111476536652967}
+  - component: {fileID: 8726777446732200395}
+  - component: {fileID: 7146574390383405637}
+  - component: {fileID: 2298363716831431945}
+  - component: {fileID: 296479108213729833}
+  - component: {fileID: 3195978141143691176}
+  - component: {fileID: 6506068940083375224}
+  - component: {fileID: 455810731251713852}
+  - component: {fileID: 8847859988055827978}
+  - component: {fileID: 7372908123939854129}
+  - component: {fileID: 3185313807247746173}
+  - component: {fileID: 1384884567498357540}
+  - component: {fileID: 3784257394843561261}
+  - component: {fileID: 3272202371566116330}
+  - component: {fileID: 4746795282356891388}
+  - component: {fileID: 502710987527269634}
+  m_Layer: 0
+  m_Name: Creature Spawns
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1169687253471852498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2971016169690875119}
+  - {fileID: 7873302310170525536}
+  - {fileID: 7019259369896246608}
+  - {fileID: 5058592246150396323}
+  m_Father: {fileID: 1129611586858267299}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2596614587081161892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 6722058199081767339}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy One
+    customScale: 2
+--- !u!114 &7918491130186008755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 3979014111604316933}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Two
+    customScale: 2
+--- !u!114 &8578517621238375114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 6771013796327647396}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Three
+    customScale: 2
+--- !u!114 &1581521767198963638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 9208214451336762580}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Four
+    customScale: 1
+--- !u!114 &2108111476536652967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 5722756953856479596}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Five
+    customScale: 2
+--- !u!114 &8726777446732200395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 6613099771254800721}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Six
+    customScale: 2
+--- !u!114 &7146574390383405637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 8196178477192441097}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Seven
+    customScale: 3
+--- !u!114 &2298363716831431945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 8499971286318703819}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Eight
+    customScale: 2
+--- !u!114 &296479108213729833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 3258971271599924682}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Nine
+    customScale: 2
+--- !u!114 &3195978141143691176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 2192640795019633117}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Ten
+    customScale: 2
+--- !u!114 &6506068940083375224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 8299544566973055614}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Eleven
+    customScale: 1
+--- !u!114 &455810731251713852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 2581822758646561832}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Twelve
+    customScale: 1.5
+--- !u!114 &8847859988055827978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 5587430919348792244}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Thirteen
+    customScale: 2
+--- !u!114 &7372908123939854129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 2280192020355439300}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Fourteen
+    customScale: 2.5
+--- !u!114 &3185313807247746173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 2504014225519363149}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Fifteen
+    customScale: 3
+--- !u!114 &1384884567498357540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 3396680214713527853}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Sixteen
+    customScale: 4
+--- !u!114 &3784257394843561261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1831983252973289353}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Seventeen
+    customScale: 3
+--- !u!114 &3272202371566116330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 4557395650544712939}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Eighteen
+    customScale: 2.5
+--- !u!114 &4746795282356891388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 316564879694956951}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Nineteen
+    customScale: 2
+--- !u!114 &502710987527269634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232807775398945378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 94f2583e8b796ce47802582992f4ac65, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 4770461793245423065}
+    unitInfoAI: {fileID: 0}
+    customNameId: Dummy Twenty
+    customScale: 1.5
+--- !u!1 &5278123933443805792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9207069150235262517}
+  - component: {fileID: 6809208560145139302}
+  m_Layer: 0
+  m_Name: Spell Selection Circle Movement Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9207069150235262517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5278123933443805792}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 25847919932199376}
+  m_Father: {fileID: 5327867674331444429}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &6809208560145139302
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5278123933443805792}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 40f1b8b9bc249ae4085114049debf32c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &5660369181859794625
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5327867674331444429}
+  m_Layer: 0
+  m_Name: Testing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5327867674331444429
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5660369181859794625}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9207069150235262517}
+  m_Father: {fileID: 1129611586858267299}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5684546783206715194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5660062101267371142}
+  - component: {fileID: 8793799851410940891}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5660062101267371142
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5684546783206715194}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.32556805, z: 0, w: 0.9455186}
+  m_LocalPosition: {x: 9.340001, y: -0.395, z: 8.530001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -38, z: 0}
+--- !u!114 &8793799851410940891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5684546783206715194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 5660062101267371142}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &5834693207924865141
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8176710185992685204}
+  - component: {fileID: 356381340622861131}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (19)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8176710185992685204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5834693207924865141}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.54463905, z: 0, w: 0.8386706}
+  m_LocalPosition: {x: 11.5, y: -0.395, z: 18.21}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -66, z: 0}
+--- !u!114 &356381340622861131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5834693207924865141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 8176710185992685204}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &5852279737211492606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1883773782633219874}
+  - component: {fileID: 2709719470822016293}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (20)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1883773782633219874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5852279737211492606}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.2948743, z: 0, w: 0.9555361}
+  m_LocalPosition: {x: 4.36, y: -0.395, z: 9.27}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -34.3, z: 0}
+--- !u!114 &2709719470822016293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5852279737211492606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 1883773782633219874}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &5976635923653037731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2247527244451334688}
+  - component: {fileID: 3212463892217019716}
+  - component: {fileID: 2622406509745651637}
+  - component: {fileID: 2136782622247143828}
+  - component: {fileID: 5217370001538694897}
+  - component: {fileID: 431261789001045773}
+  m_Layer: 0
+  m_Name: Initial Player AI Spawns (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2247527244451334688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976635923653037731}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3056026764506184025}
+  - {fileID: 8234666458147993187}
+  - {fileID: 6712356082065358498}
+  - {fileID: 4077913516178539554}
+  - {fileID: 6664838957463104257}
+  m_Father: {fileID: 4572475517438008893}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3212463892217019716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976635923653037731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 3056026764506184025}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI  - 1
+    customScale: 1
+--- !u!114 &2622406509745651637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976635923653037731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 8234666458147993187}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 2
+    customScale: 1
+--- !u!114 &2136782622247143828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976635923653037731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 6712356082065358498}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 3
+    customScale: 1
+--- !u!114 &5217370001538694897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976635923653037731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 4077913516178539554}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 4
+    customScale: 1
+--- !u!114 &431261789001045773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976635923653037731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 6664838957463104257}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 5
+    customScale: 1
+--- !u!1 &6057510962961941161
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 591093880062443733}
+  m_Layer: 0
+  m_Name: Player AI Spawn (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &591093880062443733
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6057510962961941161}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7460347, z: -0, w: 0.66590714}
+  m_LocalPosition: {x: 2.3699994, y: -0.15, z: 14.23}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1671241522606181707}
+  m_LocalEulerAnglesHint: {x: 0, y: -96.496, z: 0}
+--- !u!1 &6201683470261211724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5257721440630099584}
+  m_Layer: 0
+  m_Name: Player AI Spawn (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5257721440630099584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6201683470261211724}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.9264877, z: -0, w: 0.3763251}
+  m_LocalPosition: {x: -5.3199997, y: -0.13, z: 23.04}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 70367361949037100}
+  m_LocalEulerAnglesHint: {x: 0, y: -135.78801, z: 0}
+--- !u!1 &6324016538220486917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8153637533770467586}
+  - component: {fileID: 6340495280968531694}
+  m_Layer: 0
+  m_Name: Steam Tank (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8153637533770467586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6324016538220486917}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.06, y: -0.27, z: -21.99}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5058592246150396323}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6340495280968531694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6324016538220486917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 2f2b12f9b53189b49b820429269761db, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 8153637533770467586}
+    unitInfoAI: {fileID: 11400000, guid: 15ae30b2fbd463f43abec53aa31f5823, type: 2}
+    customNameId: Steam Tank
+    customScale: 1
+--- !u!1 &6376710069990430014
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5288500538132769028}
+  m_Layer: 0
+  m_Name: Player AI Spawn (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5288500538132769028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6376710069990430014}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9925345, z: -0, w: -0.12196442}
+  m_LocalPosition: {x: -11.620001, y: -0.18, z: 22.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1671241522606181707}
+  m_LocalEulerAnglesHint: {x: 0, y: 194.01099, z: 0}
+--- !u!1 &6419373775700926963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3396680214713527853}
+  m_Layer: 0
+  m_Name: Dummy Spawn (16)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3396680214713527853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6419373775700926963}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.31067672, z: -0, w: -0.9505157}
+  m_LocalPosition: {x: 24.74, y: -0.17, z: 11.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 323.8, z: 0}
+--- !u!1 &6421392287434614238
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2858572443303030748}
+  m_Layer: 0
+  m_Name: Player AI Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2858572443303030748
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6421392287434614238}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.90715003, z: -0, w: -0.42080733}
+  m_LocalPosition: {x: 1.0599996, y: -0.22, z: 21.91}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1671241522606181707}
+  m_LocalEulerAnglesHint: {x: 0, y: 229.771, z: 0}
+--- !u!1 &6481828396451574576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8196178477192441097}
+  m_Layer: 0
+  m_Name: Dummy Spawn (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8196178477192441097
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6481828396451574576}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.8750425, z: -0, w: -0.4840461}
+  m_LocalPosition: {x: -31.51, y: 1.62, z: 5.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 237.9, z: 0}
+--- !u!1 &6758875478899504626
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6830156673759813199}
+  m_Layer: 0
+  m_Name: Player AI Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6830156673759813199
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6758875478899504626}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.90715003, z: -0, w: -0.42080733}
+  m_LocalPosition: {x: 1.29, y: -0.22, z: 25.03}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 70367361949037100}
+  m_LocalEulerAnglesHint: {x: 0, y: 229.771, z: 0}
+--- !u!1 &6815857941734518558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4025745489561222455}
+  m_Layer: 0
+  m_Name: Player AI Spawn (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4025745489561222455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815857941734518558}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.9264877, z: -0, w: 0.3763251}
+  m_LocalPosition: {x: -5.55, y: -0.13, z: 19.92}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1671241522606181707}
+  m_LocalEulerAnglesHint: {x: 0, y: -135.78801, z: 0}
+--- !u!1 &6930869542500725698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9051999988085074055}
+  m_Layer: 0
+  m_Name: Player AI Spawn (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9051999988085074055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6930869542500725698}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9925345, z: -0, w: -0.12196442}
+  m_LocalPosition: {x: -14.1, y: -0.18, z: 23.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8753101338709674926}
+  m_LocalEulerAnglesHint: {x: 0, y: 194.01099, z: 0}
+--- !u!1 &7043862306285255717
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6712356082065358498}
+  m_Layer: 0
+  m_Name: Player AI Spawn (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6712356082065358498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7043862306285255717}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.9264877, z: -0, w: 0.3763251}
+  m_LocalPosition: {x: -9.36, y: -0.13, z: 19.44}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2247527244451334688}
+  m_LocalEulerAnglesHint: {x: 0, y: -135.78801, z: 0}
+--- !u!1 &7119107155968879125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4077913516178539554}
+  m_Layer: 0
+  m_Name: Player AI Spawn (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4077913516178539554
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7119107155968879125}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.96279854, z: -0, w: 0.27022037}
+  m_LocalPosition: {x: -8.28, y: -0.24, z: 25.51}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2247527244451334688}
+  m_LocalEulerAnglesHint: {x: 0, y: -148.645, z: 0}
+--- !u!1 &7335659532430394159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7873302310170525536}
+  m_Layer: 0
+  m_Name: Zombies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7873302310170525536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7335659532430394159}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4048423844395687571}
+  - {fileID: 4538018423826600419}
+  - {fileID: 5087217685147841262}
+  - {fileID: 638884680685795628}
+  - {fileID: 6611353498999554056}
+  - {fileID: 5660062101267371142}
+  - {fileID: 3307513701028408819}
+  - {fileID: 3698201434352480531}
+  - {fileID: 2607769703299813691}
+  - {fileID: 3718449297078994260}
+  - {fileID: 5776592486314094231}
+  - {fileID: 5356637751649396526}
+  - {fileID: 5437330975731423576}
+  - {fileID: 9209147536171835919}
+  - {fileID: 5817507432699625552}
+  - {fileID: 3795791578416600266}
+  - {fileID: 4502032036011508614}
+  - {fileID: 8153813440119834080}
+  - {fileID: 8176710185992685204}
+  - {fileID: 1883773782633219874}
+  m_Father: {fileID: 1169687253471852498}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7376051076569800914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3698201434352480531}
+  - component: {fileID: 6002412125873758861}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (8)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3698201434352480531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7376051076569800914}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.53729963, z: 0, w: 0.8433914}
+  m_LocalPosition: {x: 14.3, y: -0.395, z: 14.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -65, z: 0}
+--- !u!114 &6002412125873758861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7376051076569800914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 3698201434352480531}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &7538712542032753442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4326048664859267777}
+  m_Layer: 0
+  m_Name: Player AI Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4326048664859267777
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7538712542032753442}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.90715003, z: -0, w: -0.42080733}
+  m_LocalPosition: {x: -1.42, y: -0.22, z: 22.88}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8753101338709674926}
+  m_LocalEulerAnglesHint: {x: 0, y: 229.771, z: 0}
+--- !u!1 &7544695525522377577
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5722756953856479596}
+  m_Layer: 0
+  m_Name: Dummy Spawn (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5722756953856479596
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7544695525522377577}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.97222716, z: -0, w: -0.23403937}
+  m_LocalPosition: {x: -35.06, y: 1.15, z: 2.210001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 207.07, z: 0}
+--- !u!1 &7786257229619521896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 70367361949037100}
+  - component: {fileID: 3669734138758119005}
+  - component: {fileID: 6885492509912659643}
+  - component: {fileID: 3087657829497011391}
+  - component: {fileID: 9027484858504081818}
+  - component: {fileID: 5253104641561108977}
+  m_Layer: 0
+  m_Name: Initial Player AI Spawns (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &70367361949037100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786257229619521896}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6830156673759813199}
+  - {fileID: 3440514014665088794}
+  - {fileID: 5257721440630099584}
+  - {fileID: 3860280620996293305}
+  - {fileID: 5103228333505980024}
+  m_Father: {fileID: 4572475517438008893}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3669734138758119005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786257229619521896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 6830156673759813199}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI  - 1
+    customScale: 1
+--- !u!114 &6885492509912659643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786257229619521896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 3440514014665088794}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 2
+    customScale: 1
+--- !u!114 &3087657829497011391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786257229619521896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 5257721440630099584}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 3
+    customScale: 1
+--- !u!114 &9027484858504081818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786257229619521896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 3860280620996293305}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 4
+    customScale: 1
+--- !u!114 &5253104641561108977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786257229619521896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 5103228333505980024}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 5
+    customScale: 1
+--- !u!1 &7788420317376338127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4502032036011508614}
+  - component: {fileID: 7860791973501462891}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (17)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4502032036011508614
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7788420317376338127}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.29570797, z: 0, w: 0.9552784}
+  m_LocalPosition: {x: 8.79, y: -0.395, z: 5.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -34.4, z: 0}
+--- !u!114 &7860791973501462891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7788420317376338127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 4502032036011508614}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &7910041164594641598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7776584718862104086}
+  m_Layer: 0
+  m_Name: Player AI Spawn (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7776584718862104086
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7910041164594641598}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.96279854, z: -0, w: 0.27022037}
+  m_LocalPosition: {x: -4.4700003, y: -0.24, z: 25.99}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1671241522606181707}
+  m_LocalEulerAnglesHint: {x: 0, y: -148.645, z: 0}
+--- !u!1 &7931905090627770610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2874543753935564755}
+  m_Layer: 0
+  m_Name: Player AI Spawn (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2874543753935564755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7931905090627770610}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.90715003, z: -0, w: -0.42080733}
+  m_LocalPosition: {x: -0.45000017, y: -0.22, z: 25.61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 85758310475882123}
+  m_LocalEulerAnglesHint: {x: 0, y: 229.771, z: 0}
+--- !u!1 &8096058704859817845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5356637751649396526}
+  - component: {fileID: 3363341625097940108}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (12)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5356637751649396526
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8096058704859817845}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.4702418, z: 0, w: 0.88253766}
+  m_LocalPosition: {x: 8.73, y: -0.395, z: 15.59}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -56.1, z: 0}
+--- !u!114 &3363341625097940108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8096058704859817845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 5356637751649396526}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &8119278666281670576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5103228333505980024}
+  m_Layer: 0
+  m_Name: Player AI Spawn (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5103228333505980024
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8119278666281670576}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9925345, z: -0, w: -0.12196442}
+  m_LocalPosition: {x: -11.39, y: -0.18, z: 26.050001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 70367361949037100}
+  m_LocalEulerAnglesHint: {x: 0, y: 194.01099, z: 0}
+--- !u!1 &8213967572037263797
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2581822758646561832}
+  m_Layer: 0
+  m_Name: Dummy Spawn (12)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2581822758646561832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8213967572037263797}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.49394217, z: -0, w: -0.8694948}
+  m_LocalPosition: {x: 14.07, y: -0.17, z: 23.13}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 300.8, z: 0}
+--- !u!1 &8246134421859730006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9208214451336762580}
+  m_Layer: 0
+  m_Name: Dummy Spawn (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9208214451336762580
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8246134421859730006}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.17888804, z: -0, w: 0.98386943}
+  m_LocalPosition: {x: -11.56, y: 0.178, z: 5.87}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 20.61, z: 0}
+--- !u!1 &8358877355846659962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3795791578416600266}
+  - component: {fileID: 1266830480587076331}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (16)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3795791578416600266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8358877355846659962}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.5642468, z: 0, w: 0.82560617}
+  m_LocalPosition: {x: 10.16, y: -0.395, z: 20.88}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -68.7, z: 0}
+--- !u!114 &1266830480587076331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8358877355846659962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 3795791578416600266}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &8362759973276250616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3898600657058777232}
+  m_Layer: 0
+  m_Name: Player AI Spawn (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3898600657058777232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8362759973276250616}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9925345, z: -0, w: -0.12196442}
+  m_LocalPosition: {x: -13.130001, y: -0.18, z: 26.630001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 85758310475882123}
+  m_LocalEulerAnglesHint: {x: 0, y: 194.01099, z: 0}
+--- !u!1 &8443333535142874988
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1129611586858267299}
+  - component: {fileID: 3934486760263150795}
+  m_Layer: 0
+  m_Name: Scenario - Sandbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1129611586858267299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8443333535142874988}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1169687253471852498}
+  - {fileID: 4572475517438008893}
+  - {fileID: 5327867674331444429}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3934486760263150795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8443333535142874988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca10f4b0f75fa784183c5208a902393c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialActions:
+  - {fileID: 2596614587081161892}
+  - {fileID: 7918491130186008755}
+  - {fileID: 8578517621238375114}
+  - {fileID: 1581521767198963638}
+  - {fileID: 2108111476536652967}
+  - {fileID: 8726777446732200395}
+  - {fileID: 7146574390383405637}
+  - {fileID: 2298363716831431945}
+  - {fileID: 296479108213729833}
+  - {fileID: 3195978141143691176}
+  - {fileID: 6506068940083375224}
+  - {fileID: 455810731251713852}
+  - {fileID: 8847859988055827978}
+  - {fileID: 7372908123939854129}
+  - {fileID: 3185313807247746173}
+  - {fileID: 1384884567498357540}
+  - {fileID: 3784257394843561261}
+  - {fileID: 3272202371566116330}
+  - {fileID: 4746795282356891388}
+  - {fileID: 502710987527269634}
+  - {fileID: 8258560425144670475}
+  - {fileID: 8979097390447503541}
+  - {fileID: 8312632380238921836}
+  - {fileID: 4874868330313947595}
+  - {fileID: 7708419003241089723}
+  - {fileID: 8793799851410940891}
+  - {fileID: 3254645604635371884}
+  - {fileID: 6002412125873758861}
+  - {fileID: 283448951679126829}
+  - {fileID: 3674282534026831197}
+  - {fileID: 2383693837489338403}
+  - {fileID: 3363341625097940108}
+  - {fileID: 2049623751275636509}
+  - {fileID: 6013210476489464883}
+  - {fileID: 3854986886157559692}
+  - {fileID: 1266830480587076331}
+  - {fileID: 7860791973501462891}
+  - {fileID: 3885331345046521924}
+  - {fileID: 356381340622861131}
+  - {fileID: 2709719470822016293}
+  - {fileID: 5557892641619664754}
+  - {fileID: 8710927679107786427}
+  - {fileID: 6340495280968531694}
+  - {fileID: 6105470643883981235}
+  - {fileID: 8811105056873466463}
+  - {fileID: 200177311913448441}
+  - {fileID: 2349980771786337521}
+  - {fileID: 1175319810537284744}
+  - {fileID: 4192755189765418545}
+  - {fileID: 8166102248602918641}
+  - {fileID: 3147984082249901728}
+  - {fileID: 8844824177009487946}
+  - {fileID: 8611568436038050923}
+  - {fileID: 6213547470975906732}
+  - {fileID: 3212463892217019716}
+  - {fileID: 2622406509745651637}
+  - {fileID: 2136782622247143828}
+  - {fileID: 5217370001538694897}
+  - {fileID: 431261789001045773}
+  - {fileID: 5746286431952560242}
+  - {fileID: 1011691924639428014}
+  - {fileID: 5083769166534437836}
+  - {fileID: 7425218757238608524}
+  - {fileID: 3138009341991615592}
+  - {fileID: 3669734138758119005}
+  - {fileID: 6885492509912659643}
+  - {fileID: 3087657829497011391}
+  - {fileID: 9027484858504081818}
+  - {fileID: 5253104641561108977}
+--- !u!1 &8476031284606124106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6611353498999554056}
+  - component: {fileID: 7708419003241089723}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6611353498999554056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8476031284606124106}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.18395141, z: 0, w: 0.9829353}
+  m_LocalPosition: {x: 4.46, y: -0.395, z: 5.82}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -21.2, z: 0}
+--- !u!114 &7708419003241089723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8476031284606124106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 6611353498999554056}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &8519566424356979603
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4572475517438008893}
+  m_Layer: 0
+  m_Name: Player AI Spawns
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4572475517438008893
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8519566424356979603}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8753101338709674926}
+  - {fileID: 85758310475882123}
+  - {fileID: 2247527244451334688}
+  - {fileID: 1671241522606181707}
+  - {fileID: 70367361949037100}
+  m_Father: {fileID: 1129611586858267299}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8679571590495616929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8957182758971322028}
+  m_Layer: 0
+  m_Name: Player AI Spawn (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8957182758971322028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8679571590495616929}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.9264877, z: -0, w: 0.3763251}
+  m_LocalPosition: {x: -8.03, y: -0.13, z: 20.89}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8753101338709674926}
+  m_LocalEulerAnglesHint: {x: 0, y: -135.78801, z: 0}
+--- !u!1 &8873568173690262481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8753101338709674926}
+  - component: {fileID: 8811105056873466463}
+  - component: {fileID: 200177311913448441}
+  - component: {fileID: 2349980771786337521}
+  - component: {fileID: 1175319810537284744}
+  - component: {fileID: 4192755189765418545}
+  m_Layer: 0
+  m_Name: Initial Player AI Spawns (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8753101338709674926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8873568173690262481}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4326048664859267777}
+  - {fileID: 3119654221471225870}
+  - {fileID: 8957182758971322028}
+  - {fileID: 4720532980290497902}
+  - {fileID: 9051999988085074055}
+  m_Father: {fileID: 4572475517438008893}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8811105056873466463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8873568173690262481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 4326048664859267777}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI  - 1
+    customScale: 1
+--- !u!114 &200177311913448441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8873568173690262481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 3119654221471225870}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 2
+    customScale: 1
+--- !u!114 &2349980771786337521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8873568173690262481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 8957182758971322028}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 3
+    customScale: 1
+--- !u!114 &1175319810537284744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8873568173690262481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 4720532980290497902}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 4
+    customScale: 1
+--- !u!114 &4192755189765418545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8873568173690262481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58fffd0eea4f994b9e3d0172691d1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSpawnSettings:
+    spawnPoint: {fileID: 9051999988085074055}
+    unitInfoAI: {fileID: 11400000, guid: 50c5ea7ce64295f459d60fbc53f9eb14, type: 2}
+    customNameId: Player AI - 5
+    customScale: 1
+--- !u!1 &8972568533011172580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3860280620996293305}
+  m_Layer: 0
+  m_Name: Player AI Spawn (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3860280620996293305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8972568533011172580}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.96279854, z: -0, w: 0.27022037}
+  m_LocalPosition: {x: -4.24, y: -0.24, z: 29.11}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 70367361949037100}
+  m_LocalEulerAnglesHint: {x: 0, y: -148.645, z: 0}
+--- !u!1 &9047867990890625086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8299544566973055614}
+  m_Layer: 0
+  m_Name: Dummy Spawn (11)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8299544566973055614
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9047867990890625086}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.54953337, z: -0, w: -0.83547175}
+  m_LocalPosition: {x: 10.54, y: -0.17, z: 26.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2971016169690875119}
+  m_LocalEulerAnglesHint: {x: 0, y: 293.33, z: 0}
+--- !u!1 &9051843235526537783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3718449297078994260}
+  - component: {fileID: 3674282534026831197}
+  m_Layer: 0
+  m_Name: Super Zombie Spawn (10)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3718449297078994260
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9051843235526537783}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.44307122, z: 0, w: 0.8964864}
+  m_LocalPosition: {x: 11.7, y: -0.395, z: 8.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873302310170525536}
+  m_LocalEulerAnglesHint: {x: 0, y: -52.6, z: 0}
+--- !u!114 &3674282534026831197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9051843235526537783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4e6970525cc14c8b4ba309b535b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureInfo: {fileID: 11400000, guid: 91256185ea36e674187aaaa008e303d6, type: 2}
+  customSpawnSettings:
+    spawnPoint: {fileID: 3718449297078994260}
+    unitInfoAI: {fileID: 0}
+    customNameId: Zombie
+    customScale: 1.5
+--- !u!1 &9221916140858980401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7549355703633587223}
+  m_Layer: 0
+  m_Name: Player AI Spawn (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7549355703633587223
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221916140858980401}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.9264877, z: -0, w: 0.3763251}
+  m_LocalPosition: {x: -7.06, y: -0.13, z: 23.62}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 85758310475882123}
+  m_LocalEulerAnglesHint: {x: 0, y: -135.78801, z: 0}

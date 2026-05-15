@@ -26,6 +26,8 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private List<MapDefinition> mapEntries;
         [SerializeField, UsedImplicitly]
+        private List<ScenarioDefinition> scenarioEntries;
+        [SerializeField, UsedImplicitly]
         private List<FactionDefinition> factionEntries;
 
         internal IReadOnlyDictionary<int, CreatureInfo> CreatureInfoById => creatureContainer.CreatureInfoById;
@@ -36,6 +38,7 @@ namespace Core
         public IReadOnlyList<ClassInfo> ClassInfos => classContainer.ItemList;
         public IReadOnlyList<UnitInfoAI> UnitAIEntries => unitAIContainer.ItemList;
         public IReadOnlyList<MapDefinition> MapEntries => mapEntries;
+        public IReadOnlyList<ScenarioDefinition> ScenarioEntries => scenarioEntries;
         public IReadOnlyList<FactionDefinition> FactionEntries => factionEntries;
         public FactionDefinition DefaultFaction => defaultFaction;
         public UnitMovementDefinition UnitMovementDefinition => unitMovementDefinition;

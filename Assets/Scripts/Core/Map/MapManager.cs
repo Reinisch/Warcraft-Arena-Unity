@@ -49,7 +49,7 @@ namespace Core
                 mapUpdater.Wait();
         }
 
-        internal void InitializeLoadedMap(int mapId)
+        internal void InitializeLoadedMap(int mapId, int scenarioId)
         {
             Map map = baseMaps.LookupEntry(mapId);
 
@@ -57,7 +57,7 @@ namespace Core
             {
                 mapsLock.WaitOne();
 
-                baseMaps[mapId] = map = new Map(world, SceneManager.GetActiveScene());
+                baseMaps[mapId] = map = new Map(world, scenarioId, SceneManager.GetActiveScene());
 
                 mapsLock.ReleaseMutex();
             }

@@ -20,3 +20,6 @@ MonoBehaviour:
   mapType: 4
   expansion: 1
   slotBackground: {fileID: 21300000, guid: 3bfdf0f51f1919947aec29c8791e915f, type: 3}
+  scenarioPrefabs:
+  - {fileID: 3934486760263150795, guid: 15e241244d9ae01448a3eaf5016eec1f, type: 3}
+  - {fileID: 3934486760263150795, guid: b6881fe428023dc4491aab3d7ca786ff, type: 3}

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Common;
+using Object = UnityEngine.Object;
+using Core.Scenario;
 
 namespace Core
 {
@@ -12,12 +14,14 @@ namespace Core
         private readonly Dictionary<ulong, WorldEntity> worldEntitiesById = new Dictionary<ulong, WorldEntity>();
         private readonly Collider[] raycastResults = new Collider[300];
 
+        private MapScenario scenario;
+
         internal World World { get; }
 
         public MapSettings Settings { get; }
         public float VisibilityRange => Settings.Definition.MaxVisibilityRange;
 
-        internal Map(World world, Scene mapScene)
+        internal Map(World world, int scenarioId, Scene mapScene)
         {
             World = world;
 
@@ -32,16 +36,21 @@ namespace Core
             Assert.IsNotNull(Settings, $"Map settings are missing in map: {mapScene.name}");
             mapGrid = new MapGrid(this);
 
-            if (world.HasServerLogic)
-                foreach (var scenarioAction in Settings.ScenarioActions)
-                    scenarioAction.Initialize(this);
+            if (World.HasServerLogic)
+            {
+                scenario = Settings.CreateScenario(scenarioId, Settings.transform);
+                scenario.Initialize(this);
+            }
         }
 
         internal void Dispose()
         {
             if (World.HasServerLogic)
-                foreach (var scenarioAction in Settings.ScenarioActions)
-                    scenarioAction.DeInitialize();
+            {
+                scenario.DeInitialize();
+                Object.Destroy(scenario);
+                scenario = null;
+            }
 
             mapGrid.Dispose();
         }
@@ -51,8 +60,9 @@ namespace Core
             mapGrid.DoUpdate(deltaTime);
 
             if (World.HasServerLogic)
-                foreach (var scenarioAction in Settings.ScenarioActions)
-                    scenarioAction.DoUpdate(deltaTime);
+            {
+                scenario.DoUpdate(deltaTime);
+            }
         }
 
         internal void AddWorldEntity(WorldEntity entity)

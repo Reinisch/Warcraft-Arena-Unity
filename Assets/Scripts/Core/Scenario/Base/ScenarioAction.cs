@@ -2,20 +2,22 @@
 
 namespace Core.Scenario
 {
-    public abstract class ScenarioAction : MonoBehaviour
+    public abstract class ScenarioAction: MonoBehaviour
     {
-        protected Map Map { get; private set; }
+        private MapScenario mapScenario;
+
+        protected Map Map => mapScenario.Map;
         protected World World => Map.World;
         protected BalanceReference Balance => Map.Settings.Balance;
 
-        internal virtual void Initialize(Map map)
+        internal virtual void Initialize(MapScenario scenario)
         {
-            Map = map;
+            mapScenario = scenario;
         }
 
         internal virtual void DeInitialize()
         {
-            Map = null;
+            mapScenario = null;
         }
 
         internal virtual void DoUpdate(int deltaTime)

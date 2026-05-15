@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be5204883596a8a4bae98f7c9fa36a2f, type: 3}
+  m_Name: Scenario Definition - Lordaeron - TestDummy 6
+  m_EditorClassIdentifier: 
+  map: {fileID: 11400000, guid: 3a4fcded24da5e44eb1d37691486b3da, type: 2}
+  scenario: 0
+  scenarioName: Sandbox

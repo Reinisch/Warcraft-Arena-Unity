@@ -54,7 +54,8 @@ namespace Server
 
             if (BoltNetwork.IsConnected)
             {
-                World.MapManager.InitializeLoadedMap(1);
+                var serverToken = (ServerRoomToken)token;
+                World.MapManager.InitializeLoadedMap(1, serverToken.Scenario);
 
                 EventHandler.ExecuteEvent(photon, GameEvents.ServerMapLoaded, (ServerRoomToken)token);
             }

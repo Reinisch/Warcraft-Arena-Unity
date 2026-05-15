@@ -12,6 +12,7 @@ namespace Core
         private BalanceDefinition definition;
 
         private readonly List<MapDefinition> maps = new List<MapDefinition>();
+        private readonly List<ScenarioDefinition> scenarios = new List<ScenarioDefinition>();
         private readonly Dictionary<int, SpellInfo> spellInfosById = new Dictionary<int, SpellInfo>();
         private readonly Dictionary<int, AuraInfo> auraInfosById = new Dictionary<int, AuraInfo>();
         private readonly Dictionary<int, FactionDefinition> factionsById = new Dictionary<int, FactionDefinition>();
@@ -24,6 +25,7 @@ namespace Core
         public FactionDefinition DefaultFaction => definition.DefaultFaction;
         public UnitMovementDefinition UnitMovementDefinition => definition.UnitMovementDefinition;
         public IReadOnlyList<MapDefinition> Maps => maps;
+        public IReadOnlyList<ScenarioDefinition> Scenarios => scenarios;
         public IReadOnlyDictionary<int, SpellInfo> SpellInfosById => spellInfosById;
         public IReadOnlyDictionary<int, AuraInfo> AuraInfosById => auraInfosById;
         public IReadOnlyDictionary<int, FactionDefinition> FactionsById => factionsById;
@@ -36,8 +38,9 @@ namespace Core
             definition.Register();
 
             maps.AddRange(definition.MapEntries);
+            scenarios.AddRange(definition.ScenarioEntries);
 
-            for(int i = 0; i < definition.SpellInfos.Count; i++)
+            for (int i = 0; i < definition.SpellInfos.Count; i++)
                 spellInfosById.Add(definition.SpellInfos[i].Id, definition.SpellInfos[i]);
 
             for (int i = 0; i < definition.AuraInfos.Count; i++)
@@ -61,6 +64,7 @@ namespace Core
             unitInfoAIById.Clear();
             classesByType.Clear();
             maps.Clear();
+            scenarios.Clear();
 
             definition.Unregister();
         }

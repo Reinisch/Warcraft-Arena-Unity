@@ -9,6 +9,7 @@ namespace Core
         public string Name { get; private set; }
         public string Map { get; private set; }
         public string Version { get; set; }
+        public int Scenario { get; set; }
 
         public ServerRoomToken()
         {
@@ -17,11 +18,12 @@ namespace Core
             Map = "Lordaeron";
         }
 
-        public ServerRoomToken(string name, string localPlayerName, string map)
+        public ServerRoomToken(string name, string localPlayerName, string map, int scenario)
         {
             LocalPlayerName = localPlayerName;
             Name = name;
             Map = map;
+            Scenario = scenario;
         }
 
         public void Read(UdpPacket packet)
@@ -30,6 +32,7 @@ namespace Core
             Name = packet.ReadString();
             Map = packet.ReadString();
             Version = packet.ReadString();
+            Scenario = packet.ReadInt();
         }
 
         public void Write(UdpPacket packet)
@@ -38,6 +41,7 @@ namespace Core
             packet.WriteString(Name);
             packet.WriteString(Map);
             packet.WriteString(Version);
+            packet.WriteInt(Scenario);
         }
     }
 }

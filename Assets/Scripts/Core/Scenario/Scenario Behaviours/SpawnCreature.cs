@@ -9,9 +9,9 @@ namespace Core.Scenario
         [SerializeField, UsedImplicitly] private CreatureInfo creatureInfo;
         [SerializeField, UsedImplicitly] private CustomSpawnSettings customSpawnSettings;
 
-        internal override void Initialize(Map map)
+        internal override void Initialize(MapScenario scenario)
         {
-            base.Initialize(map);
+            base.Initialize(scenario);
 
             EventHandler.RegisterEvent(World, GameEvents.ServerLaunched, OnServerLaunched);
         }

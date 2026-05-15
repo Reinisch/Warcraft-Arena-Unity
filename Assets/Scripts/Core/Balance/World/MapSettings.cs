@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core.Scenario;
 using JetBrains.Annotations;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Core
 {
@@ -24,7 +25,6 @@ namespace Core
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private MapDefinition mapDefinition;
         [SerializeField, UsedImplicitly] private List<ArenaSpawnInfo> spawnInfos;
-        [SerializeField, UsedImplicitly] private List<ScenarioAction> scenarioActions;
 
         internal float GridCellSize => gridCellSize;
         internal BoxCollider BoundingBox => boundingBox;
@@ -32,19 +32,19 @@ namespace Core
         internal BalanceReference Balance => balance;
         internal MapDefinition Definition => mapDefinition;
 
-        internal List<ScenarioAction> ScenarioActions => scenarioActions;
-
         public List<Transform> FindSpawnPoints(Team team)
         {
             return spawnInfos.Find(spawnInfo => spawnInfo.Team == team).SpawnPoints;
         }
 
-#if UNITY_EDITOR
-        [UsedImplicitly, ContextMenu("Collect scenario actions")]
-        private void CollectScenario()
+        public MapScenario CreateScenario(int scenarioId, Transform parent)
         {
-            scenarioActions = new List<ScenarioAction>(GetComponentsInChildren<ScenarioAction>());
+            if (scenarioId < 0 || scenarioId >= mapDefinition.ScenarioPrefabs.Count)
+            {
+                return null;
+            }
+
+            return Instantiate(mapDefinition.ScenarioPrefabs[scenarioId], parent);
         }
-#endif
     }
 }

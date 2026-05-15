@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using Client.Localization;
+﻿using Client.Localization;
 using Client.UI;
 using Common;
 using Core;
 using JetBrains.Annotations;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using WebSocketSharp;
 
 namespace Client
 {
@@ -104,11 +105,11 @@ namespace Client
             playerNameInput.onValueChanged.AddListener(OnPlayerNameChanged);
             serverNameInput.onValueChanged.AddListener(OnServerNameChanged);
 
-            for (int i = 0; i < balance.Maps.Count; i++)
+            for (int i = 0; i < balance.Scenarios.Count; i++)
             {
                 mapSlots.Add(Instantiate(mapSlotPrototype, mapsContentHolder));
                 mapSlots[i].EventLobbyMapSlotSelected += OnLobbyMapSlotSelected;
-                mapSlots[i].Initialize(balance.Maps[i]);
+                mapSlots[i].Initialize(balance.Scenarios[i]);
                 mapSlots[i].SetSelectState(i == 0);
             }
 
@@ -214,7 +215,12 @@ namespace Client
         private void OnLobbyMapSlotSelected(LobbyMapSlot lobbyMapSlot)
         {
             selectedMapSlot = lobbyMapSlot;
-            selectedMapLabel.text = selectedMapSlot.MapDefinition.MapName;
+            selectedMapLabel.text = selectedMapSlot.ScenarioDefiniton.Map.MapName;
+
+            if(!string.IsNullOrEmpty(selectedMapSlot.ScenarioDefiniton.ScenarioName))
+            {
+                selectedMapLabel.text += $" {selectedMapSlot.ScenarioDefiniton.ScenarioName}";
+            }
 
             foreach (var mapSlot in mapSlots)
                 mapSlot.SetSelectState(mapSlot == selectedMapSlot);
@@ -270,7 +276,15 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonReference.StartServer(new ServerRoomToken(serverNameInput.text, playerNameInput.text, selectedMapSlot.MapDefinition.MapName), true, OnServerStartSuccess, OnServerStartFail);
+            photonReference.StartServer(
+                new ServerRoomToken(
+                    serverNameInput.text,
+                    playerNameInput.text,
+                    selectedMapSlot.ScenarioDefiniton.Map.MapName,
+                    selectedMapSlot.ScenarioDefiniton.Scenario),
+                true,
+                OnServerStartSuccess,
+                OnServerStartFail);
 
             void OnServerStartFail()
             {
@@ -295,7 +309,14 @@ namespace Client
 
             UpdateInputState(false);
 
-            photonReference.StartSinglePlayer(new ServerRoomToken(serverNameInput.text, playerNameInput.text, selectedMapSlot.MapDefinition.MapName), OnServerStartSuccess, OnServerStartFail);
+            photonReference.StartSinglePlayer(
+                new ServerRoomToken(
+                    serverNameInput.text,
+                    playerNameInput.text,
+                    selectedMapSlot.ScenarioDefiniton.Map.MapName,
+                    selectedMapSlot.ScenarioDefiniton.Scenario),
+                OnServerStartSuccess,
+                OnServerStartFail);
 
             void OnServerStartFail()
             {

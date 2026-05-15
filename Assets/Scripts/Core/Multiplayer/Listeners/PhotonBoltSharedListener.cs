@@ -13,7 +13,7 @@ namespace Core
             base.SceneLoadLocalDone(map);
 
             if (BoltNetwork.IsConnected && BoltNetwork.IsClient)
-                World.MapManager.InitializeLoadedMap(1);
+                World.MapManager.InitializeLoadedMap(1, -1);
         }
     }
 }
