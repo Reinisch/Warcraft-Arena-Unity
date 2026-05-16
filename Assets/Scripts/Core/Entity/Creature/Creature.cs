@@ -32,7 +32,6 @@ namespace Core
                 base.Attached(creature);
 
                 creature.Name = CustomName;
-                creature.creatureInfo = creature.Balance.CreatureInfoById[CreatureInfoId];
             }
         }
 
@@ -46,14 +45,17 @@ namespace Core
         internal CreatureAI CreatureAI => creatureAI;
         internal override UnitAI AI => creatureAI;
         internal override bool AutoScoped => false;
+        internal override UnitAttributeDefinition AttributeDefinition => creatureInfo.Attributes;
 
         public override string Name { get => creatureName; internal set => creatureName = value; }
 
         protected override void HandleAttach()
         {
+            createToken = (CreateToken)entity.AttachToken;
+            creatureInfo = Balance.CreatureInfoById[createToken.CreatureInfoId];
+
             base.HandleAttach();
 
-            createToken = (CreateToken)entity.AttachToken;
             createToken.Attached(this);
 
             if (creatureInfo.VehicleInfo != null)

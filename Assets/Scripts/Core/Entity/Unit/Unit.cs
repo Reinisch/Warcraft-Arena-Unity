@@ -14,8 +14,6 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private WarcraftCharacterController characterController;
         [SerializeField, UsedImplicitly]
-        private UnitAttributeDefinition unitAttributeDefinition;  
-        [SerializeField, UsedImplicitly]
         private List<UnitBehaviour> unitBehaviours;
 
         private SingleReference<Unit> selfReference;
@@ -24,6 +22,7 @@ namespace Core
         private UnitFlags unitFlags;
 
         private readonly BehaviourController behaviourController = new BehaviourController();
+
 
         internal AuraVisibleController VisibleAuras { get; } = new AuraVisibleController();
         internal AuraApplicationController Auras { get; } = new AuraApplicationController();
@@ -40,6 +39,7 @@ namespace Core
         internal Vehicle Vehicle { get; private set; }
 
         internal abstract UnitAI AI { get; }
+        internal abstract UnitAttributeDefinition AttributeDefinition { get; }
 
         internal bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
         internal int ModelId { get => Attributes.ModelId; set => Attributes.ModelId = value; }

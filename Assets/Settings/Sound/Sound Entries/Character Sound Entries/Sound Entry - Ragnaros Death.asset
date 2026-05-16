@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Sound Entry - Ragnaros Death
   m_EditorClassIdentifier: 
   soundReference: {fileID: 11400000, guid: 9c01542db10d5bc46819a6f11752769e, type: 2}
-  settings: {fileID: 11400000, guid: ee786aa39eb585e4484003f75910c3e9, type: 2}
-  audioClip: {fileID: 8300000, guid: a269e3b5990ae784e8bebb0d735d6128, type: 3}
+  settings: {fileID: 11400000, guid: 7c43a76809fd8da4aa0f2a111e0935b4, type: 2}
+  audioClip: {fileID: 8300000, guid: 88721f3d892019e4882f3bf7a642f7f3, type: 3}
   volumeModifier: 1

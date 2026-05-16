@@ -56,6 +56,9 @@ namespace Core
         [SerializeField, UsedImplicitly, Header(nameof(Player)), Space(10)]
         private PlayerAI playerAI;
 
+        [SerializeField, UsedImplicitly]
+        private UnitAttributeDefinition playerAttributeDefinition;
+
         private CreateToken createToken;
         private IPlayerState playerState;
         private string playerName;
@@ -68,6 +71,7 @@ namespace Core
         internal PlayerAI PlayerAI => playerAI;
         internal override UnitAI AI => playerAI;
         internal override bool AutoScoped => false;
+        internal override UnitAttributeDefinition AttributeDefinition => playerAttributeDefinition;
 
         public override string Name
         {

@@ -8,6 +8,7 @@ namespace Core
     internal sealed class CreatureInfo : ScriptableUniqueInfo<CreatureInfo>
     {
         [SerializeField, UsedImplicitly] private CreatureInfoContainer container;
+        [UsedImplicitly, SerializeField] private UnitAttributeDefinition attributes;
         [SerializeField, UsedImplicitly] private VehicleInfo vehicleInfo;
         [UsedImplicitly, SerializeField] private string creatureName;
         [UsedImplicitly, SerializeField] private int modelId;
@@ -19,5 +20,6 @@ namespace Core
         public int ModelId => modelId;
         public string CreatureName => creatureName;
         public VehicleInfo VehicleInfo => vehicleInfo;
+        public UnitAttributeDefinition Attributes => attributes;
     }
 }

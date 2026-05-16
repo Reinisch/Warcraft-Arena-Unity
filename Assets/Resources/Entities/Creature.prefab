@@ -151,8 +151,6 @@ MonoBehaviour:
   balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   unitCollider: {fileID: 845485024815860285}
   characterController: {fileID: 845485024815860170}
-  unitAttributeDefinition: {fileID: 11400000, guid: 5c5fe56853d9edf4685a254e64abe120,
-    type: 2}
   unitBehaviours:
   - {fileID: -8026284028472188865}
   - {fileID: 2598279064012491936}

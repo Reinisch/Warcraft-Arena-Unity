@@ -283,16 +283,16 @@ namespace Core
                     {
                         initialized = true;
 
-                        Health = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseHealth, int.MaxValue, EntityAttributes.Health);
-                        MaxHealth = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
+                        Health = new EntityAttributeInt(unit, unit.AttributeDefinition.BaseHealth, int.MaxValue, EntityAttributes.Health);
+                        MaxHealth = new EntityAttributeInt(unit, unit.AttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
                         
                         ComboPoints = new EntityAttributeInt(unit, 0, 5, EntityAttributes.ComboPoints);
                         Level = new EntityAttributeInt(unit, 1, int.MaxValue, EntityAttributes.Level);
-                        SpellPower = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
-                        Intellect = new EntityAttributeInt(unit, unit.unitAttributeDefinition.BaseIntellect, int.MaxValue, EntityAttributes.Intellect);
+                        SpellPower = new EntityAttributeInt(unit, unit.AttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
+                        Intellect = new EntityAttributeInt(unit, unit.AttributeDefinition.BaseIntellect, int.MaxValue, EntityAttributes.Intellect);
                         ModHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModHaste);
                         ModRegenHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModRegenHaste);
-                        CritPercentage = new EntityAttributeFloat(unit, unit.unitAttributeDefinition.CritPercentage, float.MaxValue, EntityAttributes.CritPercentage);
+                        CritPercentage = new EntityAttributeFloat(unit, unit.AttributeDefinition.CritPercentage, float.MaxValue, EntityAttributes.CritPercentage);
 
                         for (int i = 0; i < powers.GetLength(0); i++)
                         {

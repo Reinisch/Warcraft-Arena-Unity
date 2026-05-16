@@ -55,12 +55,12 @@ MonoBehaviour:
   balance: {fileID: 11400000, guid: af7ebcbf2f879134a86ae4caefafc1f9, type: 2}
   unitCollider: {fileID: 1533}
   characterController: {fileID: 1546}
-  unitAttributeDefinition: {fileID: 11400000, guid: c4a3cdd51711fac4e94fa02540884084,
-    type: 2}
   unitBehaviours:
   - {fileID: 505164749765730728}
   - {fileID: 8755899033012528706}
   playerAI: {fileID: 8755899033012528706}
+  playerAttributeDefinition: {fileID: 11400000, guid: c4a3cdd51711fac4e94fa02540884084,
+    type: 2}
 --- !u!114 &8755899033012528706
 MonoBehaviour:
   m_ObjectHideFlags: 0

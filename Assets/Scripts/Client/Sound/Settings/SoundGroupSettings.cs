@@ -10,6 +10,8 @@ namespace Client
         [SerializeField, UsedImplicitly] private SoundGroupSettingsContainer container;
         [SerializeField, UsedImplicitly] private float volume;
         [SerializeField, UsedImplicitly] private float spatialBlend;
+        [SerializeField, UsedImplicitly] private AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic;
+        [SerializeField, UsedImplicitly] private float maxDistance = 60.0f;
 
         protected override SoundGroupSettings Data => this;
         protected override ScriptableUniqueInfoContainer<SoundGroupSettings> Container => container;
@@ -18,6 +20,8 @@ namespace Client
         {
             source.volume = volume;
             source.spatialBlend = spatialBlend;
+            source.rolloffMode = rolloffMode;
+            source.maxDistance = maxDistance;
             return source;
         }
     }
