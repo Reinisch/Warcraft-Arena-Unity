@@ -47,7 +47,7 @@ MonoBehaviour:
   creatureInfo: {fileID: 11400000, guid: f923dcbdd8a452740a64b724a04e4c59, type: 2}
   customSpawnSettings:
     spawnPoint: {fileID: 4948868613694228976}
-    unitInfoAI: {fileID: 0}
+    unitInfoAI: {fileID: 11400000, guid: 666200b94f1068e4da0fc28c683f491c, type: 2}
     customNameId: Ragnaros
     customScale: 20
 --- !u!1 &4451475870222971957
