@@ -18,6 +18,7 @@ namespace Core
             private UnitVisualEffectFlags visualEffectFlags;
             private SpellPowerType displayPowerType;
             private DeathState deathState;
+            private MovementMode movementMode;
             private EmoteType emoteType;
             private ClassType classType;
             private IUnitState unitState;
@@ -99,6 +100,20 @@ namespace Core
                     {
                         unitState.EmoteType = (int)value;
                         unitState.EmoteFrame = BoltNetwork.ServerFrame;
+                    }
+                }
+            }
+
+            internal MovementMode MovementMode
+            {
+                get => movementMode;
+                set
+                {
+                    movementMode = value;
+
+                    if (unit.IsOwner)
+                    {
+                        unitState.MovementMode = (int)value;
                     }
                 }
             }

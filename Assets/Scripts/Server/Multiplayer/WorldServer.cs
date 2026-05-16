@@ -159,6 +159,7 @@ namespace Server
             };
 
             Player newPlayer = UnitManager.Create<Player>(BoltPrefabs.Player, playerCreateToken);
+            newPlayer.MovementMode = DefaultMovementMode;
             newPlayer.AssignControl(boltConnection);
             newPlayer.UpdateVisibility(true);
 

@@ -64,9 +64,7 @@ namespace Game
             }
 
             scriptableCoreContainer.DoUpdate(gameTimeDiff);
-
-            if (world != null && world.HasClientLogic)
-                scriptableClientContainer.DoUpdate(gameTimeFloatDiff);
+            scriptableClientContainer.DoUpdate(gameTimeFloatDiff);
         }
 
         [UsedImplicitly]

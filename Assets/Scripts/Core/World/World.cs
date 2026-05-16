@@ -14,6 +14,7 @@ namespace Core
 
         public bool HasServerLogic { get; protected set; }
         public bool HasClientLogic { get; protected set; }
+        public MovementMode DefaultMovementMode { get; set; } = MovementMode.Rpg;
 
         protected World()
         {

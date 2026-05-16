@@ -8,8 +8,9 @@ namespace Core
     public abstract class EntityManager<T> where T : Entity
     {
         private readonly Dictionary<ulong, T> entitiesById = new Dictionary<ulong, T>();
-        protected readonly List<T> Entities = new List<T>();
         private Transform container;
+
+        public readonly List<T> Entities = new List<T>();
 
         public event Action<T> EventEntityAttached;
         public event Action<T> EventEntityDetach;

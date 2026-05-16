@@ -45,7 +45,7 @@ namespace Client
             foreach (HotkeyInputItem hotkey in hotkeys)
                 hotkey.DoUpdate();
 
-            bool showCursor = Player is { MovementMode: MovementMode.Rpg } || IsAlternativeModeActive;
+            bool showCursor = Player is null or { MovementMode: MovementMode.Rpg } || IsAlternativeModeActive;
             Cursor.visible = showCursor;
             Cursor.lockState = showCursor ? CursorLockMode.None : CursorLockMode.Locked;
         }
