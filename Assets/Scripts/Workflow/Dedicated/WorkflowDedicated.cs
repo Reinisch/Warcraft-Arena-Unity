@@ -27,7 +27,7 @@ namespace Game.Workflow.Dedicated
             gameManager = FindAnyObjectByType<GameManager>();
             settings.Apply();
 
-            EventHandler.RegisterEvent<IProtocolToken, NetworkingMode>(GameEvents.GameMapLoaded, OnMapLoaded);
+            EventHandler.RegisterEvent<ServerRoomToken, NetworkingMode>(GameEvents.GameMapLoaded, OnMapLoaded);
             EventHandler.RegisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
             StartServer();
@@ -35,7 +35,7 @@ namespace Game.Workflow.Dedicated
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<IProtocolToken, NetworkingMode>(GameEvents.GameMapLoaded, OnMapLoaded);
+            EventHandler.UnregisterEvent<ServerRoomToken, NetworkingMode>(GameEvents.GameMapLoaded, OnMapLoaded);
             EventHandler.UnregisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
             restartCount = 0;
@@ -61,7 +61,7 @@ namespace Game.Workflow.Dedicated
             }
         }
 
-        private void OnMapLoaded(IProtocolToken map, NetworkingMode mode)
+        private void OnMapLoaded(ServerRoomToken token, NetworkingMode mode)
         {
             Assert.AreEqual(mode, NetworkingMode.Server);
 

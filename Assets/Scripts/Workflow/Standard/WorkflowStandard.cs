@@ -18,7 +18,7 @@ namespace Game.Workflow.Standard
 
         protected override void OnRegistered()
         {
-            EventHandler.RegisterEvent<IProtocolToken, NetworkingMode>(GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.RegisterEvent<ServerRoomToken, NetworkingMode>(GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
             EventHandler.RegisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
@@ -30,12 +30,12 @@ namespace Game.Workflow.Standard
         {
             gameManager = null;
 
-            EventHandler.UnregisterEvent<IProtocolToken, NetworkingMode>(GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.UnregisterEvent<ServerRoomToken, NetworkingMode>(GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.UnregisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
             EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
         }
 
-        private void OnGameMapLoaded(IProtocolToken token, NetworkingMode mode)
+        private void OnGameMapLoaded(ServerRoomToken token, NetworkingMode mode)
         {
             bool hasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
             bool hasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;

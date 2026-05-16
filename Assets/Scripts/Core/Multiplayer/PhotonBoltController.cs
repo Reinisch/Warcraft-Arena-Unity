@@ -151,13 +151,13 @@ namespace Core
             // what exactly has changed in Bolt to cause this. I'm sure this can be fixed properly, and not with a hack
             // like this, but I'm not going to investigate that at the moment. In another project I've upgraded Bolt to
             // 1.3.2 and the problem is there as well, so I assume this is due to some change in Bolt itself.
-            if (scene == "Launcher")
+            if (scene == "Launcher" || token is not ServerRoomToken serverToken)
             {
                 return;
             }
 
             if (BoltNetwork.IsConnected)
-                EventHandler.ExecuteEvent(GameEvents.GameMapLoaded, token, networkingMode);
+                EventHandler.ExecuteEvent(GameEvents.GameMapLoaded, serverToken, networkingMode);
         }
 
         public override void Connected(BoltConnection connection)
