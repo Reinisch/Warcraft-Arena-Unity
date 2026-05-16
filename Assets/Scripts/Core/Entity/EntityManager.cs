@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
-using Common;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Core
 {
@@ -67,6 +68,44 @@ namespace Core
         public bool TryFind(ulong networkId, out T entity)
         {
             return entitiesById.TryGetValue(networkId, out entity);
+        }
+
+        public TEntity FindNearby<TEntity>(Vector3 position, Predicate<TEntity> predicate = null) where TEntity : WorldEntity
+        {
+            float minDistanceSqr = float.MaxValue;
+            TEntity nearbyEntity = null;
+
+            foreach(T enity in Entities)
+            {
+                if (enity is not TEntity targetEntity || (predicate != null && !predicate(targetEntity)))
+                    continue;
+
+                float distanceSqr = (position - targetEntity.Position).sqrMagnitude;
+                if (distanceSqr < minDistanceSqr)
+                {
+                    minDistanceSqr = distanceSqr;
+                    nearbyEntity = targetEntity;
+                }
+            }
+
+            return nearbyEntity;
+        }
+
+        public TEntity FindRandom<TEntity>(Predicate<TEntity> predicate = null)
+        {
+            List<TEntity> targets = new();
+            foreach (T enity in Entities)
+            {
+                if (enity is not TEntity targetEntity || (predicate != null && !predicate(targetEntity)))
+                    continue;
+
+                targets.Add(targetEntity);
+            }
+
+            if (targets.Count > 0)
+                return RandomUtils.GetRandomElement(targets);
+
+            return default;
         }
 
         internal virtual void SetDefaultScope(BoltConnection connection)

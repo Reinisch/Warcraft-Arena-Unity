@@ -17,6 +17,7 @@ namespace Server
         private ServerRoomToken serverRoomToken;
 
         private const int DisconnectedPlayerDestroyTime = 10000;
+        public Player ServerPlayer => serverPlayerInfo?.Player;
 
         public WorldServer(bool hasClientLogic)
         {

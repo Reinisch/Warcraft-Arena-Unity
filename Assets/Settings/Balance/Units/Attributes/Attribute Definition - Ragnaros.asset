@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseHealth: 100000
   baseMaxHealth: 100000
-  baseSpellPower: 100
+  baseSpellPower: 3000
   baseIntellect: 0
   critPercentage: 5

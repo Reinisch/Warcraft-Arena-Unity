@@ -14,6 +14,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private SkinnedMeshRenderer meshRenderer;
         [SerializeField, UsedImplicitly] private Animator animator;
         [SerializeField, UsedImplicitly] private float strafeSpeed = 1.0f;
+        [SerializeField, UsedImplicitly] private bool hasLegs = true;
         [SerializeField, UsedImplicitly] private List<Collider> hitBoxes;
 
         public IReadOnlyList<Collider> HitBoxes => hitBoxes;
@@ -104,7 +105,7 @@ namespace Client
 
             Animator.Play(animationHash, 0, 0.1f);
 
-            if (Animator.layerCount > 1)
+            if (Animator.layerCount > 1 && hasLegs)
             {
                 // Switch leg animation for casting
                 if (!animator.GetBool("Grounded"))

@@ -60,6 +60,7 @@ MonoBehaviour:
   meshRenderer: {fileID: 1276448438989682207}
   animator: {fileID: 7038267946948209366}
   strafeSpeed: 1
+  hasLegs: 0
   hitBoxes:
   - {fileID: 256987390228818798}
   - {fileID: 4808663674746745855}

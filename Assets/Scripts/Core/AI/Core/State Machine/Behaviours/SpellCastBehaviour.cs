@@ -10,6 +10,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private SpellInfo spellInfo;
         [SerializeField, UsedImplicitly] private int castIntervalMin;
         [SerializeField, UsedImplicitly] private int castIntervalMax;
+        [SerializeField, UsedImplicitly] private bool once;
 
         private TimeTracker castTimeTracker = new TimeTracker();
 
@@ -17,12 +18,18 @@ namespace Core
         {
             base.OnStart();
 
-            castTimeTracker.Reset(RandomUtils.Next(castIntervalMin, castIntervalMax));
+            if (once)
+                Unit.Spells.CastSpell(spellInfo, new SpellCastingOptions());
+            else
+                castTimeTracker.Reset(RandomUtils.Next(castIntervalMin, castIntervalMax));
         }
 
         protected override void OnActiveUpdate(int deltaTime)
         {
             base.OnActiveUpdate(deltaTime);
+
+            if (once)
+                return;
 
             castTimeTracker.Update(deltaTime);
             if (castTimeTracker.Passed)

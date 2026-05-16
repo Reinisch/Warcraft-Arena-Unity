@@ -1,6 +1,5 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace Core
 {
@@ -9,12 +8,15 @@ namespace Core
     {
         protected UnitStateMachine StateMachine { get; private set; }
         protected Unit Unit => StateMachine.Unit;
+        protected Animator StateAnimator => StateMachine.StateMachineAnimator;
 
         private bool active;
 
         void IUnitStateMachineBehaviour.Register(UnitStateMachine stateMachine)
         {
             StateMachine = stateMachine;
+
+            OnRegister();
         }
 
         void IUnitStateMachineBehaviour.Unregister()
@@ -30,6 +32,10 @@ namespace Core
                 OnActiveUpdate(deltaTime);
             else
                 OnDisabledUpdate(deltaTime);
+        }
+
+        protected virtual void OnRegister()
+        {
         }
 
         protected virtual void OnStart()
@@ -50,12 +56,12 @@ namespace Core
         {
         }
 
-        public sealed override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex, AnimatorControllerPlayable controller)
+        public sealed override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             OnStart();
         }
 
-        public sealed override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex, AnimatorControllerPlayable controller)
+        public sealed override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             OnExit();
         }

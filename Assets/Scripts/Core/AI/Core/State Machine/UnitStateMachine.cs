@@ -9,7 +9,7 @@ namespace Core
         private readonly List<IUnitStateMachineBehaviour> behaviours = new List<IUnitStateMachineBehaviour>();
 
         private UnitInfoAIStateMachine StateMachineInfo { get; }
-        private Animator StateMachineAnimator { get; set; }
+        internal Animator StateMachineAnimator { get; set; }
 
         public Unit Unit { get; private set; }
 
