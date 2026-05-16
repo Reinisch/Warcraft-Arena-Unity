@@ -69,19 +69,41 @@ namespace Server
 
         private void OnServerSpellLaunch(Unit caster, SpellInfo spellInfo, SpellProcessingToken processingToken)
         {
-            UnitSpellLaunchEvent unitCastEvent = UnitSpellLaunchEvent.Create(caster.BoltEntity, EntityTargets.Everyone);
-            unitCastEvent.SpellId = spellInfo.Id;
-            unitCastEvent.ProcessingEntries = processingToken;
-            unitCastEvent.Send();
+            if (caster.BoltEntity.Controller != null)
+            {
+                SpellCastRequestAnswerEvent spellCastAnswer = SpellCastRequestAnswerEvent.Create(caster.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
 
-            SpellCastRequestAnswerEvent spellCastAnswer = caster.IsController
-                ? SpellCastRequestAnswerEvent.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered)
-                : SpellCastRequestAnswerEvent.Create(caster.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
+                spellCastAnswer.SpellId = spellInfo.Id;
+                spellCastAnswer.Result = (int)SpellCastResult.Success;
+                spellCastAnswer.ProcessingEntries = processingToken;
+                spellCastAnswer.Send();
 
-            spellCastAnswer.SpellId = spellInfo.Id;
-            spellCastAnswer.Result = (int) SpellCastResult.Success;
-            spellCastAnswer.ProcessingEntries = processingToken;
-            spellCastAnswer.Send();
+                UnitSpellLaunchEvent unitCastEvent = UnitSpellLaunchEvent.Create(caster.BoltEntity, EntityTargets.EveryoneExceptController);
+                unitCastEvent.SpellId = spellInfo.Id;
+                unitCastEvent.ProcessingEntries = processingToken;
+                unitCastEvent.Send();
+            }
+            else if (caster == World.ServerPlayer)
+            {
+                SpellCastRequestAnswerEvent spellCastAnswer = SpellCastRequestAnswerEvent.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered);
+
+                spellCastAnswer.SpellId = spellInfo.Id;
+                spellCastAnswer.Result = (int)SpellCastResult.Success;
+                spellCastAnswer.ProcessingEntries = processingToken;
+                spellCastAnswer.Send();
+
+                UnitSpellLaunchEvent unitCastEvent = UnitSpellLaunchEvent.Create(caster.BoltEntity, EntityTargets.EveryoneExceptOwner);
+                unitCastEvent.SpellId = spellInfo.Id;
+                unitCastEvent.ProcessingEntries = processingToken;
+                unitCastEvent.Send();
+            }
+            else
+            {
+                UnitSpellLaunchEvent unitCastEvent = UnitSpellLaunchEvent.Create(caster.BoltEntity, EntityTargets.Everyone);
+                unitCastEvent.SpellId = spellInfo.Id;
+                unitCastEvent.ProcessingEntries = processingToken;
+                unitCastEvent.Send();
+            }
         }
 
         private void OnServerSpellHit(Unit caster, Unit target, SpellInfo spellInfo, SpellMissType missType)

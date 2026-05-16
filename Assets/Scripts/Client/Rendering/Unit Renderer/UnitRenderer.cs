@@ -73,11 +73,8 @@ namespace Client
         {
             base.OnEvent(launchEvent);
 
-            if (!Unit.IsController)
-            {
-                var token = launchEvent.ProcessingEntries as SpellProcessingToken;
-                EventHandler.ExecuteEvent(GameEvents.SpellLaunched, Unit, launchEvent.SpellId, token);
-            }
+            var token = launchEvent.ProcessingEntries as SpellProcessingToken;
+            EventHandler.ExecuteEvent(GameEvents.SpellLaunched, Unit, launchEvent.SpellId, token);
         }
 
         public override void OnEvent(UnitSpellDamageEvent spellDamageEvent)
