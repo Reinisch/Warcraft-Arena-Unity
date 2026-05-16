@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Bolt;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core
@@ -8,12 +9,12 @@ namespace Core
     {
         [SerializeField, UsedImplicitly] PhotonBoltReference photon;
 
-        public override void SceneLoadLocalDone(string map)
+        public override void SceneLoadLocalDone(string scene, IProtocolToken token)
         {
-            base.SceneLoadLocalDone(map);
+            base.SceneLoadLocalDone(scene, token);
 
-            if (BoltNetwork.IsConnected && BoltNetwork.IsClient)
-                World.MapManager.InitializeLoadedMap(1, -1);
+            if (BoltNetwork.IsConnected && BoltNetwork.IsClient && token is ServerRoomToken roomToken)
+                World.MapManager.InitializeLoadedMap(1, roomToken.Scenario);
         }
     }
 }

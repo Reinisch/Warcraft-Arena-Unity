@@ -1,5 +1,7 @@
-﻿using Core;
+﻿using System;
+using Core;
 using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Client
@@ -7,8 +9,21 @@ namespace Client
     [RequireComponent(typeof(Camera))]
     public class WarcraftCamera : MonoBehaviour
     {
+        [Serializable]
+        private class WarcraftCameraMovementModeType
+        {
+            [field:SerializeField]
+            public WarcraftCameraMovementMode Mode { get; private set; }
+
+            [field: SerializeField]
+            public MovementMode Type { get; private set; }
+        }
+
         [SerializeField, UsedImplicitly]
         private InputReference input;
+
+        [SerializeField, UsedImplicitly]
+        private List<WarcraftCameraMovementModeType> movementModes = new();
 
         [SerializeField, UsedImplicitly]
         private float targetHeight = 1.7f;
@@ -23,8 +38,6 @@ namespace Client
         private float maxDistance = 20;
         [SerializeField, UsedImplicitly]
         private float minDistance = 0.6f;
-        [SerializeField, UsedImplicitly]
-        private float speedDistance = 5;
 
         [SerializeField, UsedImplicitly]
         private float xSpeed = 200.0f;
@@ -50,6 +63,8 @@ namespace Client
         [SerializeField, UsedImplicitly, HideInInspector]
         private Camera targetCamera;
 
+        private readonly Dictionary<MovementMode, WarcraftCameraMovementMode> movementModesByType = new();
+
         private Unit target;
         private Vector3 targetPosition;
         private Vector3 targetPositionVelocity;
@@ -61,10 +76,17 @@ namespace Client
         private float correctedDistance;
         private float currentActualHeight;
 
+        public float RotationDampening => rotationDampening;
+        public float MaxDistance => maxDistance;
+        public float MinDistance => minDistance;
+        public float SpeedX => xSpeed;
+        public float SpeedY => ySpeed;
+        public int ZoomRate => zoomRate;
         public Camera Camera => targetCamera;
 
         public Unit Target
         {
+            get => target;
             set
             {
                 target = value;
@@ -79,6 +101,12 @@ namespace Client
         private void OnValidate()
         {
             targetCamera = GetComponent<Camera>();
+        }
+
+        [UsedImplicitly]
+        private void Awake()
+        {
+            movementModes.ForEach(item => movementModesByType.Add(item.Type, item.Mode));
         }
 
         [UsedImplicitly]
@@ -100,31 +128,8 @@ namespace Client
                 return;
 
             UpdateTargetPosition(false);
-            currentActualHeight = Mathf.MoveTowards(currentActualHeight, target.IsAlive ? targetHeight : deadTargetHeight, targetHeightDampening * Time.deltaTime);
 
-            // If either mouse buttons are down, let the mouse govern camera position
-            if (GUIUtility.hotControl == 0)
-            {
-                if (Input.GetMouseButton(0) && !InterfaceUtils.IsPointerOverUI || Input.GetMouseButton(1))
-                {
-                    xDeg += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
-                    yDeg -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
-                }
-                // otherwise, ease behind the target if any of the directional keys are pressed
-                else if (!Mathf.Approximately(Input.GetAxis("Vertical"), 0) || !Mathf.Approximately(Input.GetAxis("Horizontal"), 0))
-                {
-                    if (target.IsAlive && input.IsPlayerInputAllowed)
-                    {
-                        float targetRotationAngle = target.transform.eulerAngles.y;
-                        float currentRotationAngle = transform.eulerAngles.y;
-                        xDeg = Mathf.LerpAngle(currentRotationAngle, targetRotationAngle, rotationDampening * Time.deltaTime);
-                    }
-                }
-            }
-
-            // calculate the desired distance
-            if (!InterfaceUtils.IsPointerOverUI)
-                desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance) * speedDistance;
+            movementModesByType[target.MovementMode].PollInput(this, Time.deltaTime, ref desiredDistance, ref xDeg, ref yDeg);
 
             desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
 
@@ -135,6 +140,7 @@ namespace Client
             correctedDistance = desiredDistance;
 
             // calculate desired camera position
+            currentActualHeight = Mathf.MoveTowards(currentActualHeight, target.IsAlive ? targetHeight : deadTargetHeight, targetHeightDampening * Time.deltaTime);
             var vTargetOffset = new Vector3(0, -currentActualHeight, 0);
             Vector3 position = targetPosition - (rotation * Vector3.forward * desiredDistance + vTargetOffset);
 

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Bolt;
 using Common;
 using Core;
 using JetBrains.Annotations;
 using Server;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
-
 using EventHandler = Common.EventHandler;
 
 namespace Game.Workflow.Dedicated
@@ -24,10 +24,10 @@ namespace Game.Workflow.Dedicated
 
         protected override void OnRegistered()
         {
-            gameManager = FindObjectOfType<GameManager>();
+            gameManager = FindAnyObjectByType<GameManager>();
             settings.Apply();
 
-            EventHandler.RegisterEvent<string, NetworkingMode>(GameEvents.GameMapLoaded, OnMapLoaded);
+            EventHandler.RegisterEvent<IProtocolToken, NetworkingMode>(GameEvents.GameMapLoaded, OnMapLoaded);
             EventHandler.RegisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
             StartServer();
@@ -35,7 +35,7 @@ namespace Game.Workflow.Dedicated
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<string, NetworkingMode>(GameEvents.GameMapLoaded, OnMapLoaded);
+            EventHandler.UnregisterEvent<IProtocolToken, NetworkingMode>(GameEvents.GameMapLoaded, OnMapLoaded);
             EventHandler.UnregisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
             restartCount = 0;
@@ -61,7 +61,7 @@ namespace Game.Workflow.Dedicated
             }
         }
 
-        private void OnMapLoaded(string map, NetworkingMode mode)
+        private void OnMapLoaded(IProtocolToken map, NetworkingMode mode)
         {
             Assert.AreEqual(mode, NetworkingMode.Server);
 

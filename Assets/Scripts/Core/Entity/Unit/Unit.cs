@@ -50,6 +50,7 @@ namespace Core
 
         public override float Size => base.Size * Scale;
 
+        public MovementMode MovementMode => MovementMode.Rpg;
         public MovementFlags MovementFlags => Motion.MovementFlags;
         public IReadOnlyReference<Unit> SelfReference => selfReference;
         public Unit Target => Attributes.Target;

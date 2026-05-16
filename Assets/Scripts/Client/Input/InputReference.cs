@@ -18,6 +18,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private List<Condition> inputDisabledWhen;
 
         public bool IsPlayerInputAllowed { get; private set; }
+        public bool IsAlternativeModeActive => Input.GetKey(KeyCode.LeftAlt);
 
         protected override void OnRegistered()
         {
@@ -43,6 +44,10 @@ namespace Client
 
             foreach (HotkeyInputItem hotkey in hotkeys)
                 hotkey.DoUpdate();
+
+            bool showCursor = Player is { MovementMode: MovementMode.Rpg } || IsAlternativeModeActive;
+            Cursor.visible = showCursor;
+            Cursor.lockState = showCursor ? CursorLockMode.None : CursorLockMode.Locked;
         }
 
         protected override void OnControlStateChanged(Player player, bool underControl)

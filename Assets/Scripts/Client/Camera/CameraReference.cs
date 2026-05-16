@@ -13,8 +13,8 @@ namespace Client
         {
             base.OnRegistered();
 
-            WarcraftCamera = FindObjectOfType<WarcraftCamera>();
-            MinimapCamera = FindObjectOfType<MinimapCamera>();
+            WarcraftCamera = FindAnyObjectByType<WarcraftCamera>();
+            MinimapCamera = FindAnyObjectByType<MinimapCamera>();
         }
 
         protected override void OnUnregister()

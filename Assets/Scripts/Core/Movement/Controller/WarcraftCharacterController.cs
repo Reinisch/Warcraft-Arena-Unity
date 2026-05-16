@@ -148,7 +148,7 @@ namespace Core
 
         internal void StopMoving()
         {
-            unitRigidbody.velocity = Vector3.zero;
+            unitRigidbody.linearVelocity = Vector3.zero;
         }
 
         internal void UpdateRigidbody()
@@ -165,7 +165,7 @@ namespace Core
             unit.UnitCollider.radius = 0.2f;
             hasGroundHit = IsTouchingGround(out lastGroundHitInfo);
 
-            if (unit.HasMovementFlag(MovementFlags.Ascending) && unitRigidbody.velocity.y <= 0)
+            if (unit.HasMovementFlag(MovementFlags.Ascending) && unitRigidbody.linearVelocity.y <= 0)
             {
                 unit.SetMovementFlag(MovementFlags.Ascending, false);
                 unit.SetMovementFlag(MovementFlags.Descending, true);
@@ -173,7 +173,7 @@ namespace Core
 
             if (unit.Motion.Jumping)
             {
-                unitRigidbody.velocity = inputVelocity;
+                unitRigidbody.linearVelocity = inputVelocity;
                 groundCheckDistance = 0.05f;
                 unit.SetMovementFlag(MovementFlags.Ascending, true);
                 unit.SetMovementFlag(MovementFlags.Flying, true);
@@ -181,21 +181,21 @@ namespace Core
             }
             else if (!unit.HasMovementFlag(MovementFlags.Flying))
             {
-                unitRigidbody.velocity = new Vector3(inputVelocity.x, unitRigidbody.velocity.y, inputVelocity.z);
+                unitRigidbody.linearVelocity = new Vector3(inputVelocity.x, unitRigidbody.linearVelocity.y, inputVelocity.z);
 
                 if (!wasFlying)
                     groundCheckDistance = controllerDefinition.BaseGroundCheckDistance;
             }
             else if (groundCheckDistance < controllerDefinition.BaseGroundCheckDistance)
-                groundCheckDistance = unitRigidbody.velocity.y < 0 ? controllerDefinition.BaseGroundCheckDistance : groundCheckDistance + 0.01f;
+                groundCheckDistance = unitRigidbody.linearVelocity.y < 0 ? controllerDefinition.BaseGroundCheckDistance : groundCheckDistance + 0.01f;
 
-            if (unitRigidbody.velocity.y > controllerDefinition.JumpSpeed)
-                unitRigidbody.velocity = new Vector3(unitRigidbody.velocity.x, controllerDefinition.JumpSpeed, unitRigidbody.velocity.z);
+            if (unitRigidbody.linearVelocity.y > controllerDefinition.JumpSpeed)
+                unitRigidbody.linearVelocity = new Vector3(unitRigidbody.linearVelocity.x, controllerDefinition.JumpSpeed, unitRigidbody.linearVelocity.z);
 
             ProcessGroundState();
 
-            if (unit.SlowFallSpeed != 0 && unit.HasMovementFlag(MovementFlags.Flying) && unitRigidbody.velocity.y < -unit.SlowFallSpeed)
-                unitRigidbody.velocity = new Vector3(unitRigidbody.velocity.x, -unit.SlowFallSpeed, unitRigidbody.velocity.z);
+            if (unit.SlowFallSpeed != 0 && unit.HasMovementFlag(MovementFlags.Flying) && unitRigidbody.linearVelocity.y < -unit.SlowFallSpeed)
+                unitRigidbody.linearVelocity = new Vector3(unitRigidbody.linearVelocity.x, -unit.SlowFallSpeed, unitRigidbody.linearVelocity.z);
 
             void ProcessGroundState()
             {
@@ -209,7 +209,7 @@ namespace Core
                     {
                         if (!unit.HasMovementFlag(MovementFlags.Flying) && inputVelocity.y <= 0)
                         {
-                            unitRigidbody.AddForce(Vector3.down * unitRigidbody.velocity.magnitude, ForceMode.VelocityChange);
+                            unitRigidbody.AddForce(Vector3.down * unitRigidbody.linearVelocity.magnitude, ForceMode.VelocityChange);
                             groundNormal = lastGroundHitInfo.normal;
                         }
                         else

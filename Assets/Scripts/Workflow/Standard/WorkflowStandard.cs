@@ -1,6 +1,7 @@
-﻿using Common;
-using Core;
+﻿using Bolt;
 using Client;
+using Common;
+using Core;
 using JetBrains.Annotations;
 using Server;
 using UdpKit;
@@ -17,11 +18,11 @@ namespace Game.Workflow.Standard
 
         protected override void OnRegistered()
         {
-            EventHandler.RegisterEvent<string, NetworkingMode>(GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.RegisterEvent<IProtocolToken, NetworkingMode>(GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.RegisterEvent<UdpConnectionDisconnectReason>(GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
             EventHandler.RegisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
 
-            gameManager = FindObjectOfType<GameManager>();
+            gameManager = FindAnyObjectByType<GameManager>();
             interfaceReference.ShowScreen<LobbyScreen, LobbyPanel, LobbyPanel.ShowToken>(new LobbyPanel.ShowToken(true));
         }
 
@@ -29,17 +30,17 @@ namespace Game.Workflow.Standard
         {
             gameManager = null;
 
-            EventHandler.UnregisterEvent<string, NetworkingMode>(GameEvents.GameMapLoaded, OnGameMapLoaded);
+            EventHandler.UnregisterEvent<IProtocolToken, NetworkingMode>(GameEvents.GameMapLoaded, OnGameMapLoaded);
             EventHandler.UnregisterEvent(GameEvents.DisconnectedFromMaster, OnDisconnectedFromMaster);
             EventHandler.UnregisterEvent<UdpConnectionDisconnectReason>(GameEvents.DisconnectedFromHost, OnDisconnectedFromHost);
         }
 
-        private void OnGameMapLoaded(string map, NetworkingMode mode)
+        private void OnGameMapLoaded(IProtocolToken token, NetworkingMode mode)
         {
             bool hasServerLogic = mode == NetworkingMode.Server || mode == NetworkingMode.Both;
             bool hasClientLogic = mode == NetworkingMode.Client || mode == NetworkingMode.Both;
 
-            gameManager.CreateWorld(hasServerLogic ? (World)new WorldServer(hasClientLogic) : new WorldClient(false));
+            gameManager.CreateWorld(hasServerLogic ? new WorldServer(hasClientLogic) : new WorldClient(false));
 
             interfaceReference.HideScreen<LobbyScreen>();
             interfaceReference.ShowScreen<BattleScreen, BattleHudPanel>();
