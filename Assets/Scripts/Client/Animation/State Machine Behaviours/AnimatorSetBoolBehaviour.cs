@@ -1,6 +1,5 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace Client
 {
@@ -24,26 +23,26 @@ namespace Client
             parameterHash = Animator.StringToHash(parameterName);
         }
 
-        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex, AnimatorControllerPlayable controller)
+        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if (setOnEnter)
                 animator.SetBool(parameterHash, valueOnEnter);
         }
 
-        public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex, AnimatorControllerPlayable controller)
+        public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if (setOnExit)
                 if (animator.GetCurrentAnimatorStateInfo(layerIndex).shortNameHash != stateInfo.shortNameHash)
                     animator.SetBool(parameterHash, valueOnExit);
         }
 
-        public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash, AnimatorControllerPlayable controller)
+        public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
         {
             if (setOnMachineEnter)
                 animator.SetBool(parameterHash, valueOnMachineEnter);
         }
 
-        public override void OnStateMachineExit(Animator animator, int stateMachinePathHash, AnimatorControllerPlayable controller)
+        public override void OnStateMachineExit(Animator animator, int stateMachinePathHash)
         {
             if (setOnMachineExit)
                 animator.SetBool(parameterHash, valueOnMachineExit);

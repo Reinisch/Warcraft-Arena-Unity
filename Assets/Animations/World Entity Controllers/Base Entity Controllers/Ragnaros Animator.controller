@@ -21,6 +21,21 @@ MonoBehaviour:
   setOnExit: 1
   setOnMachineEnter: 0
   setOnMachineExit: 0
+--- !u!114 &-8700293881709540370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4c4952edc38ee0478ed865a7013e334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameterName: Emote Trigger
+  resetOnEnter: 1
+  resetOnExit: 0
 --- !u!1101 &-8079962071077224673
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -214,6 +229,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: Dying
     m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: Emote
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8834332549697759007}
   m_Solo: 0
@@ -301,9 +319,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Casting
-    m_EventTreshold: 0
+  - m_ConditionMode: 7
+    m_ConditionEvent: Emote
+    m_EventTreshold: 7
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 0}
   m_Solo: 0
@@ -412,7 +430,8 @@ AnimatorState:
   m_Transitions:
   - {fileID: 8704162144913212563}
   - {fileID: -4461384704715724308}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -8700293881709540370}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -574,6 +593,21 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-1792401806284963552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4c4952edc38ee0478ed865a7013e334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameterName: Emote Trigger
+  resetOnEnter: 1
+  resetOnExit: 0
 --- !u!1101 &-1630776111666158719
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -630,7 +664,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1419497986083669269}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -1792401806284963552}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -2113,6 +2148,9 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: Dying
+    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: Emote
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8834332549697759007}

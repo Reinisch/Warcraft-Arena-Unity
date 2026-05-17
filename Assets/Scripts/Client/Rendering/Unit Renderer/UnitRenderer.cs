@@ -176,20 +176,11 @@ namespace Client
                 DoEmote();
         }
 
-        private void DoEmote(float cancellationDelay = 0.2f)
+        private void DoEmote()
         {
-            CancelInvoke(nameof(ResetEmoteTrigger));
-
             soundController.HandleEmote(Unit.EmoteType);
             model?.Animator.SetTrigger("Emote Trigger");
             model?.Animator.SetInteger("Emote", (int)Unit.EmoteType);
-
-            Invoke(nameof(ResetEmoteTrigger), cancellationDelay);
-        }
-
-        private void ResetEmoteTrigger()
-        {
-            model?.Animator.ResetTrigger("Emote Trigger");
         }
 
         private void OnDeathStateChanged()

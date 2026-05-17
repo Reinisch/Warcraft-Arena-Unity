@@ -1,6 +1,5 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace Client
 {
@@ -18,7 +17,7 @@ namespace Client
             parameterHash = Animator.StringToHash(parameterName);
         }
 
-        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex, AnimatorControllerPlayable controller)
+        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             animator.SetInteger(parameterHash, Random.Range(minInclusive, maxExclusive));
         }
