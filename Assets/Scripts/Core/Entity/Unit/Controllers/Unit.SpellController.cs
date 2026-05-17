@@ -75,7 +75,9 @@ namespace Core
                         return castResult;
                 }
 
-                unit.ModifyEmoteState(EmoteType.None);
+                if (!spellInfo.HasAttribute(SpellCustomAttributes.DontCancelEmotes))
+                    unit.ModifyEmoteState(EmoteType.None);
+
                 return SpellCastResult.Success;
             }
 

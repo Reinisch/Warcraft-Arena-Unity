@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec92025aeeeb7546979c3a55df94061, type: 3}
+  m_Name: Spell Visual Info - Ragnaros Flame Strike T2
+  m_EditorClassIdentifier: 
+  id: 60
+  container: {fileID: 11400000, guid: f9eef9e1a6ce9ac46a48fd5fbf0430a1, type: 2}
+  spellInfo: {fileID: 11400000, guid: 9c355ae45352f5f409fd1d0f4df2745b, type: 2}
+  spellIcon: {fileID: 21300000, guid: f77d581e0c0692b47ae5be1a20c55deb, type: 3}
+  visualEffects:
+  - attachToTag: 0
+    visualUsageType: 2
+    tagType: 0
+    effectSettings: {fileID: 11400000, guid: 602aeca5bda292e47ad3bda79e25dea5, type: 2}
+  - attachToTag: 0
+    visualUsageType: 1
+    tagType: 5
+    effectSettings: {fileID: 11400000, guid: 334f0c7b92d6bdc47921e91b7ba68ca8, type: 2}
+  - attachToTag: 0
+    visualUsageType: 3
+    tagType: 1
+    effectSettings: {fileID: 11400000, guid: 9c300363154d2054fa4a1e479f576e28, type: 2}

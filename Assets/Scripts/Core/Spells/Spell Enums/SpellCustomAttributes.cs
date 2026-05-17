@@ -21,5 +21,6 @@ namespace Core
         ReqCasterBehindTarget = 1 << 13,
         AllowInFlightTarget = 1 << 14,
         LaunchSourceIsExplicit = 1 << 15,
+        DontCancelEmotes = 1 << 16,
     }
 }

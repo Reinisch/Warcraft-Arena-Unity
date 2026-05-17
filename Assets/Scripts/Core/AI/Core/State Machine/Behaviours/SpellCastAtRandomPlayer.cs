@@ -14,6 +14,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private bool once;
         [SerializeField, UsedImplicitly] private bool aliveTargets;
         [SerializeField, UsedImplicitly] private bool nearbyTargets;
+        [SerializeField, UsedImplicitly] private bool trigger;
 
         private TimeTracker castTimeTracker;
 
@@ -50,13 +51,22 @@ namespace Core
             if (player == null)
                 return;
 
-            Unit.Spells.CastSpell(
-                spellInfo,
-                new SpellCastingOptions(
-                    new SpellExplicitTargets 
-                    { 
-                        Target = player
-                    }));
+            if (trigger)
+            {
+                Unit.Spells.TriggerSpell(
+                    spellInfo,
+                    player);
+            }
+            else
+            {
+                Unit.Spells.CastSpell(
+                    spellInfo,
+                    new SpellCastingOptions(
+                        new SpellExplicitTargets
+                        {
+                            Target = player
+                        }));
+            }
         }
 
         private bool TargetPredicate(Player player)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ragnaros Pyroblast Effect Damage
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  baseValue: 300
+  baseValue: 100
   baseVariance: 20
   additionalValue: 0
   usesComboPoints: 0

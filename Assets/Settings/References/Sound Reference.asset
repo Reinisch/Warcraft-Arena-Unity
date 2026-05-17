@@ -37,4 +37,6 @@ MonoBehaviour:
       soundType: 8
     - emoteType: 6
       soundType: 9
+    - emoteType: 7
+      soundType: 11
     defaultValue: 1

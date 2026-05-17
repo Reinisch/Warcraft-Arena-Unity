@@ -46,7 +46,7 @@ Projector:
   m_FieldOfView: 60
   m_AspectRatio: 1
   m_Orthographic: 1
-  m_OrthographicSize: 5
+  m_OrthographicSize: 7
   m_Material: {fileID: 2100000, guid: 2e027a14cb2f81d4d9c9f182bab0fdb7, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 6026163739109382664}
   - component: {fileID: 7422911211544689925}
   m_Layer: 0
-  m_Name: Ragnaros Flame Strike Targeting
+  m_Name: Ragnaros Flame Strike T2 Targeting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

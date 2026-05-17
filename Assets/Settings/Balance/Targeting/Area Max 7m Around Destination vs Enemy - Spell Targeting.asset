@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9456453256890234a8dca6c3d14350e3, type: 3}
-  m_Name: Area Max 10m Around Destination vs Enemy - Spell Targeting
+  m_Name: Area Max 7m Around Destination vs Enemy - Spell Targeting
   m_EditorClassIdentifier: 
   referenceType: 5
   targetChecks: 2
   minRadius: 0
-  maxRadius: 10
+  maxRadius: 7

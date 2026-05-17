@@ -11,6 +11,7 @@
         Yes = 7,
         Kiss = 8,
         Cry = 9,
-        Roar = 10
+        Roar = 10,
+        Dance = 11,
     }
 }
