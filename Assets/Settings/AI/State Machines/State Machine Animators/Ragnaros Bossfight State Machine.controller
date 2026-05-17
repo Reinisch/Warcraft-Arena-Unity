@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a9274bc312795244a5bd42f0eeebb8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellInfo: {fileID: 11400000, guid: 9f1abb6f8f5d45044bebb6287120da06, type: 2}
+  spellInfo: {fileID: 11400000, guid: 4285c998f5c63f549ab08a5e7de700d3, type: 2}
   castIntervalMin: 1000
   castIntervalMax: 2000
   once: 0
@@ -145,7 +145,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HP 90%
+  m_Name: HP 99_9%
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -384,7 +384,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: HealthRatio
-    m_EventTreshold: 0.9
+    m_EventTreshold: 0.999
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4581619968651278495}
   m_Solo: 0

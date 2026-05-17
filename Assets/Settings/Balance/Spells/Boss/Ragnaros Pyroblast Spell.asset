@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Ragnaros Pyroblast Spell
+  m_EditorClassIdentifier: 
+  id: 69
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 1
+  damageClass: 1
+  spellDispel: 1
+  mechanic: 0
+  explicitCastTargets: 4
+  schoolMask: 4
+  preventionType: -1
+  attributes: 0
+  attributesExtra: 0
+  attributesCustom: 1024
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 1
+  castIgnoringMechanics: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 1000
+  castTime: 6000
+  charges: 0
+  minCastTime: 1000
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 40
+  maxRangeFriend: 0
+  speed: 30
+  spellEffectInfos:
+  - {fileID: 11400000, guid: f32369eaed382174a99d8799d78b242b, type: 2}
+  - {fileID: 11400000, guid: 2ae7c52e29967af4d82eb8c710c89f8e, type: 2}
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 2
+    powerCost: 0
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
