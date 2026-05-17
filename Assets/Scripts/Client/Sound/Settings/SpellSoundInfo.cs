@@ -20,7 +20,9 @@ namespace Client
 
         public void PlayAtPoint(Vector3 point, SpellSoundEntry.UsageType usageType)
         {
-            soundEntries.Find(entry => entry.SoundUsageType == usageType)?.PlayAtPoint(point);
+            foreach (SpellSoundEntry entry in soundEntries)
+                if (entry.SoundUsageType == usageType)
+                    entry.PlayAtPoint(point);
         }
     }
 }

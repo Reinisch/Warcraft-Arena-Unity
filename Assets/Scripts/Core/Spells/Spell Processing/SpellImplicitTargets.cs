@@ -10,6 +10,7 @@ namespace Core
         private readonly Dictionary<Unit, SpellTargetEntry> targetEntryByTarget = new Dictionary<Unit, SpellTargetEntry>();
 
         internal List<SpellTargetEntry> Entries { get; } = new List<SpellTargetEntry>();
+        internal SpellDestinationEntry DestinationEntry { get; set; }
 
         internal SpellImplicitTargets(Spell spell)
         {
@@ -20,6 +21,16 @@ namespace Core
         {
             Entries.Clear();
             targetEntryByTarget.Clear();
+        }
+
+        internal void AddDestination(Vector3 destination, int effectMask)
+        {
+            DestinationEntry ??= new SpellDestinationEntry
+            {
+                Destination = destination
+            };
+
+            DestinationEntry.EffectMask |= effectMask;
         }
 
         internal void AddTargetIfNotExists(Unit target, int effectMask)
@@ -63,6 +74,13 @@ namespace Core
                 Destination = spell.ExplicitTargets.Destination ?? Vector3.zero,
             };
 
+            if (DestinationEntry != null)
+            {
+                float distance = Mathf.Clamp(Vector3.Distance(spell.Caster.Position, DestinationEntry.Destination), StatUtils.DefaultCombatReach, float.MaxValue);
+                DestinationEntry.Delay = Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
+                isDelayed |= DestinationEntry.Delay > 0;
+            }
+
             foreach (SpellTargetEntry targetEntry in Entries)
             {
                 // calculate hit result
@@ -80,7 +98,9 @@ namespace Core
                 {
                     float distance = Mathf.Clamp(Vector3.Distance(spell.Caster.Position, targetEntry.Target.Position), StatUtils.DefaultCombatReach, float.MaxValue);
                     targetEntry.Delay = Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
-                    processingToken.ProcessingEntries.Add((targetEntry.Target.Id, targetEntry.Delay));
+
+                    if (spell.SpellInfo.ExplicitTargetType == SpellExplicitTargetType.Target)
+                        processingToken.ProcessingEntries.Add((targetEntry.Target.Id, targetEntry.Delay));
                 }
                 else
                     targetEntry.Delay = 0;

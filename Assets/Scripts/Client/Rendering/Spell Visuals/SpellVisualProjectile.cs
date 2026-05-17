@@ -10,7 +10,6 @@ namespace Client
             private class SpellVisualProjectile
             {
                 private Vector3 casterLaunchPosition;
-                private Vector3 lastKnownTargetPosition;
 
                 private int Delay { get; }
                 private int ServerLaunchFrame { get; }
@@ -18,15 +17,28 @@ namespace Client
 
                 private EffectSpellSettings Settings { get; set; }
                 private UnitRenderer TargetRenderer { get; set; }
-
+                private Vector3? Destination { get; set; }
                 private IEffectEntity projectile;
                 private long playId;
 
+                public SpellVisualProjectile(Vector3 destination, EffectSpellSettings settings, int serverLaunchFrame, int delay)
+                    : this(settings, serverLaunchFrame, delay)
+                {
+                    TargetRenderer = null;
+                    Destination = destination;
+                }
+
                 public SpellVisualProjectile(UnitRenderer target, EffectSpellSettings settings, int serverLaunchFrame, int delay)
+                    :this(settings, serverLaunchFrame, delay)
+                {
+                    TargetRenderer = target;
+                    Destination = null;
+                }
+
+                private SpellVisualProjectile(EffectSpellSettings settings, int serverLaunchFrame, int delay)
                 {
                     Delay = delay;
                     ServerLaunchFrame = serverLaunchFrame;
-                    TargetRenderer = target;
                     Settings = settings;
 
                     ExpectedDelayFrames = (int)(Delay / BoltNetwork.FrameDeltaTime / 1000.0f);
@@ -34,7 +46,12 @@ namespace Client
 
                 public bool HandleLaunch(UnitRenderer caster)
                 {
-                    Vector3 forward = TargetRenderer.transform.position - caster.transform.position;
+                    UpdateDestination();
+
+                    if (!Destination.HasValue)
+                        return false;
+
+                    Vector3 forward = Destination.Value - caster.transform.position;
                     projectile = Settings.EffectSettings.PlayEffect(Vector3.zero, Quaternion.LookRotation(forward), out long newPlayId);
 
                     if (projectile != null)
@@ -63,7 +80,7 @@ namespace Client
                 {
                     if (TargetRenderer == targetRenderer)
                     {
-                        lastKnownTargetPosition = TargetRenderer.TagContainer.FindTag(DefaultTargetTag);
+                        UpdateDestination();
                         TargetRenderer = null;
                     }
                 }
@@ -73,16 +90,24 @@ namespace Client
                     if (!projectile.IsPlaying(playId))
                         return true;
 
-                    if (TargetRenderer != null)
-                        lastKnownTargetPosition = TargetRenderer.TagContainer.FindTag(DefaultTargetTag);
+                    UpdateDestination();
 
                     float ratio = (float)(BoltNetwork.ServerFrame - ServerLaunchFrame) / ExpectedDelayFrames;
-                    projectile.Transform.position = Vector3.Lerp(casterLaunchPosition, lastKnownTargetPosition, ratio);
+                    if (Destination.HasValue)
+                    {
+                        projectile.Transform.position = Vector3.Lerp(casterLaunchPosition, Destination.Value, ratio);
 
-                    if (lastKnownTargetPosition != projectile.Transform.position)
-                        projectile.Transform.rotation = Quaternion.LookRotation(lastKnownTargetPosition - projectile.Transform.position);
+                        if (Destination != projectile.Transform.position)
+                            projectile.Transform.rotation = Quaternion.LookRotation(Destination.Value - projectile.Transform.position);
+                    }
 
                     return ratio >= 1.0f;
+                }
+
+                private void UpdateDestination()
+                {
+                    if (TargetRenderer != null)
+                        Destination = TargetRenderer.TagContainer.FindTag(DefaultTargetTag);
                 }
             }
         }

@@ -128,19 +128,12 @@ namespace Core
                 case SpellExecutionState.Processing:
                     bool hasUnprocessed = false;
                     foreach (SpellTargetEntry targetInfo in ImplicitTargets.Entries)
-                    {
-                        if (targetInfo.Processed)
-                            continue;
+                        hasUnprocessed |= !ProcessTarget(targetInfo, deltaTime);
 
-                        targetInfo.Delay -= deltaTime;
+                    if (ImplicitTargets.DestinationEntry != null)
+                        hasUnprocessed |= !ProcessDestination(ImplicitTargets.DestinationEntry, deltaTime);
 
-                        if (targetInfo.Delay <= 0)
-                            ProcessTarget(targetInfo);
-                        else
-                            hasUnprocessed = true;
-                    }
-                    
-                    if(!hasUnprocessed)
+                    if (!hasUnprocessed)
                         Finish();
                     break;
                 case SpellExecutionState.Completed:
@@ -613,18 +606,26 @@ namespace Core
             return SpellMissType.None;
         }
 
-        private void ProcessTarget(SpellTargetEntry targetEntry)
+        private bool ProcessTarget(SpellTargetEntry targetEntry, int deltaTime = -1)
         {
             if (targetEntry.Processed)
-                return;
+                return true;
+
+            if (deltaTime < 0)
+                targetEntry.Delay = 0;
+            else
+                targetEntry.Delay -= deltaTime;
+
+            if (targetEntry.Delay > 0)
+                return false;
 
             targetEntry.Processed = true;
             if (targetEntry.Target.IsAlive != targetEntry.Alive)
-                return;
+                return true;
 
             Unit caster = OriginalCaster ?? Caster;
             if (caster == null)
-                return;
+                return true;
 
             SpellMissType missType = targetEntry.MissCondition;
 
@@ -665,6 +666,36 @@ namespace Core
 
             if (missType != SpellMissType.Evade && !caster.IsFriendlyTo(hitTarget) && !SpellInfo.IsPositive)
                 caster.Combat.StartCombatWith(hitTarget);
+
+            return true;
+        }
+
+        private bool ProcessDestination(SpellDestinationEntry destinationEntry, int deltaTime = -1)
+        {
+            if (destinationEntry.Processed)
+                return true;
+
+            if (deltaTime < 0)
+                destinationEntry.Delay = 0;
+            else
+                destinationEntry.Delay -= deltaTime;
+
+            if (destinationEntry.Delay > 0)
+                return false;
+
+            destinationEntry.Processed = true;
+            Unit caster = OriginalCaster ?? Caster;
+            if (caster == null)
+                return true;
+
+            EffectDamage = 0;
+            EffectHealing = 0;
+
+            for (int effectIndex = 0; effectIndex < SpellInfo.Effects.Count; effectIndex++)
+                if (destinationEntry.EffectMask.HasBit(effectIndex))
+                    SpellInfo.Effects[effectIndex].Handle(this, effectIndex, null, SpellEffectHandleMode.DestinationReached);
+
+            return true;
         }
 
         private void Launch()
@@ -751,9 +782,19 @@ namespace Core
         private void PrepareExplicitTarget()
         {
             ExplicitTargets.Source = Caster.Position;
+            bool mayTargetAllies = SpellInfo.ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitAlly);
+            bool targetsUnits = SpellInfo.ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask);
 
             // initializes client-provided targets, corrects and automatically attempts to set required target.
-            bool targetsUnits = SpellInfo.ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask);
+            if (SpellInfo.ExplicitTargetType == SpellExplicitTargetType.Destination && ExplicitTargets.Destination == null)
+            {
+                if (ExplicitTargets.Target != null)
+                    ExplicitTargets.Destination = ExplicitTargets.Target.Position;
+                else if (Caster.Target != null)
+                    ExplicitTargets.Destination = Caster.Target.Position;
+                else if (mayTargetAllies)
+                    ExplicitTargets.Destination = Caster.Position;
+            }
 
             if (ExplicitTargets.Target != null && !targetsUnits)
                 ExplicitTargets.Target = null;
@@ -770,9 +811,11 @@ namespace Core
                         ExplicitTargets.Target = playerCaster.Target;
 
                 // didn't find anything, try to use self as target
-                if (ExplicitTargets.Target == null && SpellInfo.ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitAlly))
+                if (ExplicitTargets.Target == null && mayTargetAllies)
                     ExplicitTargets.Target = Caster;
             }
+
+           
 
             if (ExplicitTargets.Target != null && SpellInfo.HasAttribute(SpellCustomAttributes.LaunchSourceIsExplicit))
                 ExplicitTargets.Source = ExplicitTargets.Target.Position;

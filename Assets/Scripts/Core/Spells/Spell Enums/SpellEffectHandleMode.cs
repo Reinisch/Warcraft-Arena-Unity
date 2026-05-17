@@ -6,5 +6,6 @@
         LaunchTarget,
         HitStart,
         HitFinal,
+        DestinationReached
     }
 }

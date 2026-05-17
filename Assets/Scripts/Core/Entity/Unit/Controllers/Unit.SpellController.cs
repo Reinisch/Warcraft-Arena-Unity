@@ -84,6 +84,11 @@ namespace Core
                 CastSpell(spellInfo, new SpellCastingOptions(new SpellExplicitTargets { Target = target }, SpellCastFlags.TriggeredByAura | extraCastFlags));
             }
 
+            internal void TriggerSpell(SpellInfo spellInfo, Vector3 destination, SpellCastFlags extraCastFlags = 0)
+            {
+                CastSpell(spellInfo, new SpellCastingOptions(new SpellExplicitTargets { Destination = destination }, SpellCastFlags.TriggeredByAura | extraCastFlags));
+            }
+
             internal void DamageBySpell(SpellDamageInfo damageInfo, Spell spell = null)
             {
                 unit.Spells.CalculateSpellDamageTaken(ref damageInfo, spell);

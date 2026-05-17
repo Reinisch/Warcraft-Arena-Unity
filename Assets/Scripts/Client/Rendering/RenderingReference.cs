@@ -204,8 +204,17 @@ namespace Client
             }
 
             if (spellInfo.ExplicitTargetType == SpellExplicitTargetType.Destination)
+            {
+                float distance = Mathf.Clamp(Vector3.Distance(caster.Position, processingToken.Destination), StatUtils.DefaultCombatReach, float.MaxValue);
+                int delay = Mathf.FloorToInt(distance / spellInfo.Speed * 1000.0f);
+
+                if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Projectile, out EffectSpellSettings destinationSettings))
+                    spellVisualController.SpawnVisual(casterRenderer, processingToken.Destination, destinationSettings, processingToken.ServerFrame, delay);
+
                 if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Destination, out EffectSpellSettings destinationEffect))
                     destinationEffect.EffectSettings.PlayEffect(processingToken.Destination + Vector3.up, caster.Rotation);
+            }
+                
         }
 
         private void OnSpellHit(Unit target, int spellId)

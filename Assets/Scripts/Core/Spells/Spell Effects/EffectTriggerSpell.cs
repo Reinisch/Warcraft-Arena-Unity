@@ -12,9 +12,12 @@ namespace Core
         private SpellInfo triggerSpell;
         [SerializeField, UsedImplicitly, EnumFlag] 
         private SpellCastFlags extraCastFlags;
+        [SerializeField, UsedImplicitly, EnumFlag]
+        private bool destinationTrigger;
 
         public SpellInfo TriggerSpell => triggerSpell;
         public SpellCastFlags ExtraCastFlags => extraCastFlags;
+        public bool DestinationTrigger => destinationTrigger;
 
         public override float Value => 1.0f;
         public override SpellEffectType EffectType => SpellEffectType.TriggerSpell;
@@ -29,6 +32,14 @@ namespace Core
     {
         internal void EffectTriggerSpell(EffectTriggerSpell effect, Unit target, SpellEffectHandleMode mode)
         {
+            if (effect.DestinationTrigger)
+            {
+                if (ImplicitTargets.DestinationEntry != null && mode == SpellEffectHandleMode.DestinationReached)
+                    Caster.Spells.TriggerSpell(effect.TriggerSpell, ImplicitTargets.DestinationEntry.Destination, effect.ExtraCastFlags);
+
+                return;
+            }
+
             if (mode != SpellEffectHandleMode.HitFinal || target == null)
                 return;
 

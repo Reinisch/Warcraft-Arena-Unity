@@ -44,6 +44,13 @@ namespace Client
                     activeProjectiles.Add(visualEntry);
             }
 
+            public void SpawnVisual(UnitRenderer casterRenderer, Vector3 destination, EffectSpellSettings settings, int serverLaunchFrame, int delay)
+            {
+                var visualEntry = new SpellVisualProjectile(destination, settings, serverLaunchFrame, delay);
+                if (visualEntry.HandleLaunch(casterRenderer))
+                    activeProjectiles.Add(visualEntry);
+            }
+
             public void HandleRendererDetach(UnitRenderer unitRenderer)
             {
                 foreach (var projectile in activeProjectiles)
