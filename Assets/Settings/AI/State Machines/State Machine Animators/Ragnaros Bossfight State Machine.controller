@@ -841,7 +841,7 @@ MonoBehaviour:
   firstPhaseName: Phase 1
   secondPhaseName: Phase 2
   firstPhaseHp: 0.999
-  secondPhaseHp: 0.4
+  secondPhaseHp: 0.55
   deadName: IsDead
 --- !u!1102 &2057986460114753133
 AnimatorState:
