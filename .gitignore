@@ -34,3 +34,4 @@ sysinfo.txt
 # Logs
 UpgradeLog.htm
 *.log
+*.slnx

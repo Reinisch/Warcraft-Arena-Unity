@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 49
   container: {fileID: 11400000, guid: c1560e200585b804db537bff9343feaa, type: 2}
-  auraInfo: {fileID: 11400000, guid: fd14f0d6df30cdb488ee85e6aef32999, type: 2}
+  auraInfo: {fileID: 8621405356891154266, guid: bb60bfdfe1262da4792b27b81f8b65a9,
+    type: 2}
   auraIcon: {fileID: 21300000, guid: f77d581e0c0692b47ae5be1a20c55deb, type: 3}
   tagType: 0
   effectSettings: {fileID: 0}
