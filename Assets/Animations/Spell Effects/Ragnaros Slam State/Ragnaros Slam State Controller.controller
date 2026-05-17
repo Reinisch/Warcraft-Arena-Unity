@@ -21,7 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: a61c9d21c7228a641b480c229535d3c4, type: 2}
+  m_Motion: {fileID: 7400000, guid: 1d557e8bbb5d5894ea2bd9fb955b6ea9, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -48,7 +48,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b6a1d3a663fbca14c86c94788c5e0c3d, type: 2}
+  m_Motion: {fileID: 7400000, guid: 97890c0ba38bc5a44894bfadaf485d31, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -104,7 +104,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ragnaros Flame Strike Targeting State Controller
+  m_Name: Ragnaros Slam State Controller
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
@@ -171,7 +171,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e1ecffe5896f2994cb5c217caa8057f5, type: 2}
+  m_Motion: {fileID: 7400000, guid: 42392a615a6434d4aae198b5b8227ff7, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -198,7 +198,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d80aee4226a0ac74eb044347500f48ae, type: 2}
+  m_Motion: {fileID: 7400000, guid: 244a8473b1de5a140afa10258fadb2d0, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

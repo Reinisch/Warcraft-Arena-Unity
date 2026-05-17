@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
-  m_Name: Ragnaros Pyroblast Effect Apply Aura
+  m_Script: {fileID: 11500000, guid: 9456453256890234a8dca6c3d14350e3, type: 3}
+  m_Name: Area Max 200m Around Destination vs Enemy - Spell Targeting
   m_EditorClassIdentifier: 
-  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
-  auraInfo: {fileID: 11400000, guid: c3235ff59a6b1c947a73d97acf30b43a, type: 2}
+  referenceType: 5
+  targetChecks: 2
+  minRadius: 0
+  maxRadius: 200

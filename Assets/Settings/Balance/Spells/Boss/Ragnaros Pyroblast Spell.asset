@@ -40,8 +40,8 @@ MonoBehaviour:
   maxRangeFriend: 0
   speed: 30
   spellEffectInfos:
-  - {fileID: 11400000, guid: f32369eaed382174a99d8799d78b242b, type: 2}
-  - {fileID: 11400000, guid: 2ae7c52e29967af4d82eb8c710c89f8e, type: 2}
+  - {fileID: 3407126787801251040}
+  - {fileID: 4822803747535650109}
   spellPowerCostInfos:
   - spellPowerType: 0
     powerCostPercentage: 2
@@ -49,3 +49,87 @@ MonoBehaviour:
   targetingConditions: []
   shapeShiftAlwaysCastable: 
   shapeShiftNeverCastable: 
+--- !u!114 &1175485197706717725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d045db0cacab33d4799982e5c41253f8, type: 3}
+  m_Name: Ragnaros Pyroblast Aura Periodic Damage
+  m_EditorClassIdentifier: 
+  maxEffectiveCharges: 1
+  mechanics: 0
+  period: 3000
+  startPeriodicOnApply: 0
+  baseValue: 30
+  additionalValue: 0
+  schoolMask: 4
+  calculationType: 1
+  conditionalModifiers: []
+--- !u!114 &3407126787801251040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Ragnaros Pyroblast Effect Damage
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  baseValue: 100
+  baseVariance: 20
+  additionalValue: 0
+  usesComboPoints: 0
+  calculationType: 1
+  conditionalModifiers: []
+--- !u!114 &4822803747535650109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0bf63d34d5824ea86faa4d6a9f6b5, type: 3}
+  m_Name: Ragnaros Pyroblast Effect Apply Aura
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
+  auraInfo: {fileID: 7974099136924846141}
+--- !u!114 &7974099136924846141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349a507b55e4f5240bf3cb0eb77a1047, type: 3}
+  m_Name: Ragnaros Pyroblast Aura
+  m_EditorClassIdentifier: 
+  id: 52
+  container: {fileID: 11400000, guid: 7483e333aff12234bb21f5b47ebc6254, type: 2}
+  duration: 12000
+  maxDuration: 12000
+  maxStack: 1
+  stateType: 0
+  targetingMode: 1
+  interruptFlags: 0
+  attributes: 2
+  auraEffects:
+  - {fileID: 1175485197706717725}
+  auraScriptables: []
+  usesCharges: 0
+  maxCharges: 1
+  baseCharges: 1
+  damageInterruptValue: 0
+  damageInterruptDelay: 0
+  interruptValueType: 0

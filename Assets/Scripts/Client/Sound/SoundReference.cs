@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
-using Common;
+﻿using Common;
 using Core;
+using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Client
 {
@@ -87,15 +88,24 @@ namespace Client
                 spellSoundSettings.PlayAtPoint(target.Position, SpellSoundEntry.UsageType.Impact);
         }
 
-        public void Play(AudioClip clip, SoundGroupSettings settings, float volumeModifier = 1.0f)
+        public void Play(AudioClip clip, SoundGroupSettings settings, float volumeModifier = 1.0f, float delay = 0.0f)
         {
             if (soundGroups.TryGetSource(settings, out AudioSource source))
-                source.PlayOneShot(clip, volumeModifier);
+            {
+                if (delay > 0)
+                {
+                    source.volume = volumeModifier;
+                    source.clip = clip;
+                    source.PlayDelayed(delay);
+                }
+                else
+                    source.PlayOneShot(clip, volumeModifier);
+            }
             else
                 Assert.Fail($"Sound settings {settings.name} are not initialized and clip: {clip.name} won't play!");
         }
 
-        public void PlayAtPoint(AudioClip clip, SoundGroupSettings settings, Vector3 position, float volumeModifier = 1.0f)
+        public void PlayAtPoint(AudioClip clip, SoundGroupSettings settings, Vector3 position, float volumeModifier = 1.0f, float delay = 0.0f)
         {
             if (soundGroups.TryGetSource(settings, out AudioSource source))
             {
@@ -103,7 +113,11 @@ namespace Client
                 pointSource.transform.position = position;
                 pointSource.volume = volumeModifier;
                 pointSource.clip = clip;
-                pointSource.Play();
+
+                if (delay > 0)
+                    pointSource.PlayDelayed(delay);
+                else
+                    pointSource.Play();
 
                 Destroy(pointSource.gameObject, clip.length * (Time.timeScale >= 0.01f ? Time.timeScale : 0.01f));
             }

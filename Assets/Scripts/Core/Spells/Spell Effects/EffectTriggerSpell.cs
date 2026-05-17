@@ -1,6 +1,7 @@
 ﻿using Common;
 using JetBrains.Annotations;
 using UnityEngine;
+using static Core.SpellCast;
 
 namespace Core
 {
@@ -14,9 +15,12 @@ namespace Core
         private SpellCastFlags extraCastFlags;
         [SerializeField, UsedImplicitly, EnumFlag]
         private bool destinationTrigger;
+        [SerializeField, UsedImplicitly]
+        private SpellEffectHandleMode handleMode = SpellEffectHandleMode.HitFinal;
 
         public SpellInfo TriggerSpell => triggerSpell;
         public SpellCastFlags ExtraCastFlags => extraCastFlags;
+        public SpellEffectHandleMode HandleMode => handleMode;
         public bool DestinationTrigger => destinationTrigger;
 
         public override float Value => 1.0f;
@@ -34,13 +38,13 @@ namespace Core
         {
             if (effect.DestinationTrigger)
             {
-                if (ImplicitTargets.DestinationEntry != null && mode == SpellEffectHandleMode.DestinationReached)
+                if (ImplicitTargets.DestinationEntry != null && mode == effect.HandleMode)
                     Caster.Spells.TriggerSpell(effect.TriggerSpell, ImplicitTargets.DestinationEntry.Destination, effect.ExtraCastFlags);
 
                 return;
             }
 
-            if (mode != SpellEffectHandleMode.HitFinal || target == null)
+            if (mode != effect.HandleMode || target == null)
                 return;
 
             Caster.Spells.TriggerSpell(effect.TriggerSpell, target, effect.ExtraCastFlags);

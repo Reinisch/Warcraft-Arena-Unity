@@ -77,7 +77,7 @@ namespace Core
             if (DestinationEntry != null)
             {
                 float distance = Mathf.Clamp(Vector3.Distance(spell.Caster.Position, DestinationEntry.Destination), StatUtils.DefaultCombatReach, float.MaxValue);
-                DestinationEntry.Delay = Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
+                DestinationEntry.Delay = spell.SpellInfo.Delay > 0 ? spell.SpellInfo.Delay : Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
                 isDelayed |= DestinationEntry.Delay > 0;
             }
 
@@ -97,7 +97,7 @@ namespace Core
                 if (spell.SpellInfo.Speed > 0.0f && spell.Caster != targetEntry.Target)
                 {
                     float distance = Mathf.Clamp(Vector3.Distance(spell.Caster.Position, targetEntry.Target.Position), StatUtils.DefaultCombatReach, float.MaxValue);
-                    targetEntry.Delay = Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
+                    targetEntry.Delay = spell.SpellInfo.Delay > 0 ? spell.SpellInfo.Delay : Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
 
                     if (spell.SpellInfo.ExplicitTargetType == SpellExplicitTargetType.Target)
                         processingToken.ProcessingEntries.Add((targetEntry.Target.Id, targetEntry.Delay));

@@ -28,4 +28,6 @@ MonoBehaviour:
       soundEntry: {fileID: 11400000, guid: a350f6e617f32ce43a351ed20e93a17a, type: 2}
     - soundType: 4
       soundEntry: {fileID: 11400000, guid: 8b8aaa1c47e90fc4bbc7747732933e4b, type: 2}
+    - soundType: 9
+      soundEntry: {fileID: 11400000, guid: a5e3eb05465696e46bd752f5f2a24077, type: 2}
     defaultValue: {fileID: 11400000, guid: 2cc01aad372b31341959e89e2de784d1, type: 2}

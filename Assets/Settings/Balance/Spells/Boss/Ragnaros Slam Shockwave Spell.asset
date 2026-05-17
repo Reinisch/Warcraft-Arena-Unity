@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2247479043734125500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e90cf27351c0d794e99c156e43dc43a2, type: 3}
+  m_Name: Ragnaros Slam Shockwave Effect Trigger Arrival
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 02d94abef0121b54392ef0bf3aa5358b, type: 2}
+  triggerSpell: {fileID: 11400000, guid: 930698b920afee04f8d813ee58a5a0e8, type: 2}
+  extraCastFlags: 458752
+  destinationTrigger: 0
+  handleMode: 3
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Ragnaros Slam Shockwave Spell
+  m_EditorClassIdentifier: 
+  id: 74
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 3
+  damageClass: 1
+  spellDispel: 0
+  mechanic: 0
+  explicitCastTargets: 4
+  schoolMask: 4
+  preventionType: 0
+  attributes: 0
+  attributesExtra: 0
+  attributesCustom: 67584
+  targetEntityTypeMask: 8
+  rangedFlags: 0
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 0
+  castTime: 0
+  charges: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 300
+  maxRangeFriend: 300
+  speed: 30
+  delay: 1500
+  spellEffectInfos:
+  - {fileID: -2247479043734125500}
+  spellPowerCostInfos: []
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 

@@ -6,7 +6,7 @@ namespace Common
 {
     public abstract class ScriptableUniqueInfo<TUnique> : ScriptableObject, IScriptablePostProcess where TUnique : ScriptableUniqueInfo<TUnique>
     {
-        [SerializeField, UsedImplicitly, HideInInspector] private int id;
+        [SerializeField, UsedImplicitly] private int id;
 
         protected int Id => id;
         protected abstract TUnique Data { get; }

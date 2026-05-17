@@ -28,6 +28,34 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1101 &-8225854904139579386
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Continue
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Cooldown
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 7946188141978175029}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &-8176069810059535314
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -53,6 +81,24 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-8009644627261149495
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 932f603c8cd46f24e927825945eca0c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellInfo: {fileID: 11400000, guid: fb16007c637890749bec9f0e2a9c82fe, type: 2}
+  castIntervalMin: 200
+  castIntervalMax: 200
+  once: 1
+  range: 5
+  trigger: 1
 --- !u!1102 &-7840499522274486925
 AnimatorState:
   serializedVersion: 6
@@ -60,7 +106,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dance
+  m_Name: Omni Cast Emote
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -122,10 +168,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomEmotes: 10000000
+  emoteCooldownState: Cooldown
+  continueName: Continue
+  emoteCooldown: 0
   emoteIntervalMin: 0
   emoteIntervalMax: 0
   oneTime: 1
   dontRepeat: 0
+--- !u!1101 &-7357173488249598881
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Continue
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 2586148178912534765}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1102 &-7160164797809481946
 AnimatorState:
   serializedVersion: 6
@@ -186,7 +260,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Trigger in Circle
+  m_Name: Omni Cast Trigger in Circle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -243,6 +317,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Phase 2
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Slam Test
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1993126687217744005}
   m_Solo: 0
@@ -257,6 +334,21 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-5396549420394364025
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efadd35afe44ab54b801aa59b68a6f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  continueName: Continue
+  min: 3000
+  max: 3000
 --- !u!114 &-5160057616292892629
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -329,6 +421,34 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 630, y: 130, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 2057986460114753133}
+--- !u!1101 &-3184390332633199681
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Phase 2
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: Slam Test
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 7946188141978175029}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!114 &-3063113975370707330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -348,6 +468,26 @@ MonoBehaviour:
   aliveTargets: 1
   nearbyTargets: 1
   trigger: 0
+--- !u!114 &-2681041798950473640
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4e652092f6295647898573983c2cacf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomEmotes: 06000000
+  emoteCooldownState: Cooldown
+  continueName: Continue
+  emoteCooldown: 0
+  emoteIntervalMin: 0
+  emoteIntervalMax: 0
+  oneTime: 1
+  dontRepeat: 0
 --- !u!1101 &-2181034607119904542
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -401,6 +541,21 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-1616917930565177830
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efadd35afe44ab54b801aa59b68a6f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  continueName: Continue
+  min: 15000
+  max: 25000
 --- !u!1102 &-976276649719509993
 AnimatorState:
   serializedVersion: 6
@@ -557,6 +712,18 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: Cooldown
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: Slam Test
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -674,7 +841,7 @@ MonoBehaviour:
   firstPhaseName: Phase 1
   secondPhaseName: Phase 2
   firstPhaseHp: 0.999
-  secondPhaseHp: 0.66
+  secondPhaseHp: 0.4
   deadName: IsDead
 --- !u!1102 &2057986460114753133
 AnimatorState:
@@ -739,12 +906,14 @@ AnimatorState:
   m_Name: Fight - Strike And Pyro Spam
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions: []
+  m_Transitions:
+  - {fileID: -8225854904139579386}
   m_StateMachineBehaviours:
   - {fileID: 5546253002326443519}
   - {fileID: 3756774760218719327}
   - {fileID: -3063113975370707330}
   - {fileID: 3287484920907840993}
+  - {fileID: -1616917930565177830}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -787,7 +956,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomEmotes: 0c0000000500000017000000
-  emoteIntervalMin: 6000
+  emoteCooldownState: Cooldown
+  continueName: Continue
+  emoteCooldown: 5000
+  emoteIntervalMin: 7000
   emoteIntervalMax: 12000
   oneTime: 0
   dontRepeat: 1
@@ -900,6 +1072,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -5512462195792316865}
+  - {fileID: -3184390332633199681}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -981,7 +1154,10 @@ AnimatorStateMachine:
     m_Position: {x: 280, y: 270, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2586148178912534765}
-    m_Position: {x: 280, y: 330, z: 0}
+    m_Position: {x: 390, y: 340, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 7946188141978175029}
+    m_Position: {x: 150, y: 340, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 7341886364371423209}
@@ -1028,6 +1204,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomEmotes: 07000000
+  emoteCooldownState: Cooldown
+  continueName: Continue
+  emoteCooldown: 0
   emoteIntervalMin: 0
   emoteIntervalMax: 0
   oneTime: 1
@@ -1057,3 +1236,33 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &7946188141978175029
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Mapwide Slam
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions:
+  - {fileID: -7357173488249598881}
+  m_StateMachineBehaviours:
+  - {fileID: -2681041798950473640}
+  - {fileID: -5396549420394364025}
+  - {fileID: -8009644627261149495}
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 0}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 

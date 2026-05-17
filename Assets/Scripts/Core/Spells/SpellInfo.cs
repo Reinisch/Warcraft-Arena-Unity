@@ -40,6 +40,7 @@ namespace Core
         [SerializeField, UsedImplicitly] private float maxRangeHostile;
         [SerializeField, UsedImplicitly] private float maxRangeFriend;
         [SerializeField, UsedImplicitly] private float speed;
+        [SerializeField, UsedImplicitly] private int delay;
 
         [SerializeField, UsedImplicitly] private List<SpellEffectInfo> spellEffectInfos;
         [SerializeField, UsedImplicitly] private List<SpellPowerCostInfo> spellPowerCostInfos;
@@ -95,6 +96,7 @@ namespace Core
         public float MaxRangeFriend => maxRangeFriend;
         public float MaxTargetingRadius => maxTargetingRadius;
         public float Speed => speed;
+        public int Delay => delay;
 
         public bool IsUsingCharges => charges != 0;
         public bool IsPassive => HasAttribute(SpellAttributes.Passive);

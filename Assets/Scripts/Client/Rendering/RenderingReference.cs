@@ -206,7 +206,7 @@ namespace Client
             if (spellInfo.ExplicitTargetType == SpellExplicitTargetType.Destination)
             {
                 float distance = Mathf.Clamp(Vector3.Distance(caster.Position, processingToken.Destination), StatUtils.DefaultCombatReach, float.MaxValue);
-                int delay = Mathf.FloorToInt(distance / spellInfo.Speed * 1000.0f);
+                int delay = spellInfo.Delay > 0 ? spellInfo.Delay : Mathf.FloorToInt(distance / spellInfo.Speed * 1000.0f);
 
                 if (spellVisuals.VisualsByUsage.TryGetValue(EffectSpellSettings.UsageType.Projectile, out EffectSpellSettings destinationSettings))
                     spellVisualController.SpawnVisual(casterRenderer, processingToken.Destination, destinationSettings, processingToken.ServerFrame, delay);

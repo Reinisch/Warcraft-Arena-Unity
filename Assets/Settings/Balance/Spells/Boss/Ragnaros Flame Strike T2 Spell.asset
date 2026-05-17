@@ -64,3 +64,4 @@ MonoBehaviour:
   triggerSpell: {fileID: 11400000, guid: f5e8a36a2b71d314d882d658ab46ca4b, type: 2}
   extraCastFlags: 491647
   destinationTrigger: 1
+  handleMode: 4
