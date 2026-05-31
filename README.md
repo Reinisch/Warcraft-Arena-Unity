@@ -1,7 +1,7 @@
 # Warcraft Arena
 World of Warcraft combat system implementation in Unity with Photon Bolt.
 
-Added combat system example for bossfight shooter in Path of Exile setting: [Sirus Bossfight](https://github.com/Reinisch/Warcraft-Arena-Unity/releases/tag/1.0.94/PathOfExile_Sirus_Bossfight.zip)
+Added combat system example for bossfight shooter in Path of Exile setting: [Sirus Bossfight](https://github.com/Reinisch/Warcraft-Arena-Unity/releases/download/1.0.94/PathOfExile_Sirus_Bossfight.zip)
 
 Feel free to ask anything about this project in [Discord](https://discord.gg/d62a5zG).
 
