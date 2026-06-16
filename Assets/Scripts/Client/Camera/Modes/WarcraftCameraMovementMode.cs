@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+using Common;
+using UnityEngine;
 
 namespace Client
 {
-    public abstract class WarcraftCameraMovementMode: ScriptableObject
+    public abstract class WarcraftCameraMovementMode : ScriptableUniqueInfo<WarcraftCameraMovementMode>
     {
         public abstract void PollInput(
             WarcraftCamera camera,

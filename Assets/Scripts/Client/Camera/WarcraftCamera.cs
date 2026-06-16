@@ -1,8 +1,9 @@
-﻿using System;
-using Core;
+﻿using Core;
 using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Client
 {
@@ -19,7 +20,7 @@ namespace Client
             public MovementMode Type { get; private set; }
         }
 
-        [SerializeField, UsedImplicitly]
+        [Inject]
         private InputReference input;
 
         [SerializeField, UsedImplicitly]
@@ -38,6 +39,8 @@ namespace Client
         private float maxDistance = 20;
         [SerializeField, UsedImplicitly]
         private float minDistance = 0.6f;
+        [SerializeField, UsedImplicitly]
+        private float minDistanceDead = 0.6f;
 
         [SerializeField, UsedImplicitly]
         private float xSpeed = 200.0f;
@@ -77,8 +80,7 @@ namespace Client
         private float currentActualHeight;
 
         public float RotationDampening => rotationDampening;
-        public float MaxDistance => maxDistance;
-        public float MinDistance => minDistance;
+        public float MinDistanceActive => target != null && target.IsDead ? minDistanceDead : minDistance;
         public float SpeedX => xSpeed;
         public float SpeedY => ySpeed;
         public int ZoomRate => zoomRate;
@@ -113,8 +115,8 @@ namespace Client
         private void Start()
         {
             Vector3 angles = transform.eulerAngles;
-            xDeg = angles.x;
-            yDeg = angles.y;
+            xDeg = angles.y;
+            yDeg = angles.x;
 
             currentDistance = distance;
             desiredDistance = distance;
@@ -131,7 +133,7 @@ namespace Client
 
             movementModesByType[target.MovementMode].PollInput(this, Time.deltaTime, ref desiredDistance, ref xDeg, ref yDeg);
 
-            desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
+            desiredDistance = Mathf.Clamp(desiredDistance, MinDistanceActive, maxDistance);
 
             yDeg = ClampAngle(yDeg, yMinLimit, yMaxLimit);
 
@@ -165,7 +167,7 @@ namespace Client
                 correctedDistance;
 
             // keep within legal limits
-            currentDistance = Mathf.Clamp(currentDistance, minDistance, maxDistance);
+            currentDistance = Mathf.Clamp(currentDistance, MinDistanceActive, maxDistance);
 
             // recalculate position based on the new currentDistance
             position = targetPosition - (rotation * Vector3.forward * currentDistance + vTargetOffset);
@@ -174,7 +176,15 @@ namespace Client
             transform.position = position;
         }
 
-        private void UpdateTargetPosition(bool instantly)
+        public void LookAt(Vector3 expectedTargetPosition)
+        {
+            Vector3 expectedSource = target.Position + new Vector3(0, currentActualHeight, 0);
+            Quaternion expectedRotation = Quaternion.LookRotation(expectedTargetPosition - expectedSource);
+            xDeg = expectedRotation.eulerAngles.y;
+            yDeg = expectedRotation.eulerAngles.x;
+        }
+
+        public void UpdateTargetPosition(bool instantly)
         {
             targetPosition = instantly ? target.Position : Vector3.SmoothDamp(targetPosition, target.Position, ref targetPositionVelocity, targetSmoothTime);
         }

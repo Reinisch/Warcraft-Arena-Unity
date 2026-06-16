@@ -1,10 +1,10 @@
-﻿using System.IO;
+using System.IO;
 using Core;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
-namespace Arena.Editor
+namespace Game.Editor
 {
     [CustomEditor(typeof(AuraInfo), true), CanEditMultipleObjects, UsedImplicitly]
     internal class AuraInfoEditor : ScriptableObjectEditor { }

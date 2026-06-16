@@ -1,0 +1,915 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: GameStrings_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 25cb21a9bd13eb74db55cff06d15721b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 26482757632
+    m_Localized: Spieler existiert nicht
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26516312064
+    m_Localized: "Ung\xFCltiges Ziel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26520506368
+    m_Localized: "Kann nicht wirken, w\xE4hrend man tot ist"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26520506369
+    m_Localized: "Au\xDFer Reichweite"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700672
+    m_Localized: Ziel ist bereits tot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700673
+    m_Localized: "Kann Spieler nicht als Ziel w\xE4hlen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700674
+    m_Localized: Zauber ist noch nicht bereit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700675
+    m_Localized: "Kann nur tote Ziele w\xE4hlen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700676
+    m_Localized: "Verbindung fehlgeschlagen, Zeit\xFCberschreitung!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700677
+    m_Localized: Verbindung zum Master fehlgeschlagen!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700678
+    m_Localized: Verbindung zur Sitzung fehlgeschlagen!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700679
+    m_Localized: "Verbindung fehlgeschlagen, ung\xFCltiges Client-Token!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700680
+    m_Localized: "Verbindung fehlgeschlagen, ung\xFCltige Version!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700681
+    m_Localized: Verbindung fehlgeschlagen!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700682
+    m_Localized: Verbindung fehlgeschlagen, Server hat abgelehnt!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700683
+    m_Localized: "Verbindung fehlgeschlagen, nicht unterst\xFCtztes Ger\xE4t!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700684
+    m_Localized: Verbunden!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700685
+    m_Localized: Client wird gestartet...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700686
+    m_Localized: Client-Start fehlgeschlagen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700687
+    m_Localized: Client gestartet!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700688
+    m_Localized: Verbinden...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700689
+    m_Localized: 'Sitzung beendet! Grund: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700690
+    m_Localized: Server wird gestartet...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700691
+    m_Localized: Server-Start fehlgeschlagen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700692
+    m_Localized: Server gestartet!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700693
+    m_Localized: Fehlende Lokalisierung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700694
+    m_Localized: "Kann nicht w\xE4hrend der Bewegung wirken"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700695
+    m_Localized: Ziel ist nicht eingefroren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700696
+    m_Localized: Stummgeschaltet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700697
+    m_Localized: Befriedet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700698
+    m_Localized: "Kann das nicht tun, w\xE4hrend man verwirrt ist"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700699
+    m_Localized: "Kann das nicht tun, w\xE4hrend man flieht"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700700
+    m_Localized: "Kann das nicht tun, w\xE4hrend man bet\xE4ubt ist"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700701
+    m_Localized: Absorbieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700702
+    m_Localized: Immun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700703
+    m_Localized: Ausgewichen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700704
+    m_Localized: Entkommen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700705
+    m_Localized: Verfehlt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700706
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700707
+    m_Localized: Flexen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700708
+    m_Localized: Betteln
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700709
+    m_Localized: Verbeugen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700710
+    m_Localized: Huhn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700711
+    m_Localized: Weinen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700712
+    m_Localized: Tanzen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700713
+    m_Localized: Kuss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700714
+    m_Localized: Lachen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700715
+    m_Localized: Nein
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700716
+    m_Localized: Zeigen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700717
+    m_Localized: Lesen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700718
+    m_Localized: "Br\xFCllen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700719
+    m_Localized: "Unh\xF6flich"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700720
+    m_Localized: Schreien
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700721
+    m_Localized: "Sch\xFCchtern"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700722
+    m_Localized: Sprechen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700723
+    m_Localized: Ausruf
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700724
+    m_Localized: Frage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700725
+    m_Localized: Zug
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700726
+    m_Localized: Winken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700727
+    m_Localized: Ja
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700728
+    m_Localized: "Beschleunigt Euer Zauberwirken {0} Sek. lang, gew\xE4hrt {1}% Tempo,
+      {2}% Bonus auf kritischen Schaden und verhindert, dass Schaden Eure Zauber
+      verz\xF6gert."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700729
+    m_Localized: Eisige Adern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700730
+    m_Localized: "Bet\xE4ubt das Ziel {0} Sek. lang und l\xE4sst das Ziel f\xFCr
+      die Dauer der Bet\xE4ubung als eingefroren gelten.\n\nNur gegen eingefrorene
+      Ziele oder w\xE4hrend der Zauberer von 'Fingern des Frosts' betroffen ist."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700731
+    m_Localized: Tieffrieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700732
+    m_Localized: "Erf\xFCllt das Ziel mit Brillanz und erh\xF6ht seine Intelligenz
+      {1} Sekunden lang um {0}%.\n\nWenn sich das Ziel in Eurer Gruppe oder Eurem
+      Schlachtzug befindet, sind alle Gruppen- und Schlachtzugsmitglieder betroffen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700733
+    m_Localized: Arkane Intelligenz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700734
+    m_Localized: "Unterdr\xFCckt bewegungseinschr\xE4nkende Effekte und erh\xF6ht
+      Eure Bewegungsgeschwindigkeit {1} Sek. lang um {0}%.\n\nWirkt, w\xE4hrend ein
+      anderer Zauber gewirkt wird, und ist nicht von der globalen Abklingzeit betroffen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700735
+    m_Localized: Lodernde Geschwindigkeit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700736
+    m_Localized: "Teleportiert Euch {0} Meter vorw\xE4rts oder bis zum Erreichen
+      eines Hindernisses und befreit Euch von allen Bet\xE4ubungen und Fesseln.\n\nWirkt
+      w\xE4hrend Bet\xE4ubung."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894976
+    m_Localized: Blinzeln
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894977
+    m_Localized: "Ziele in einem Kegel vor Euch erleiden ({0}% der Zaubermacht) Frostschaden
+      und ihre Bewegungsgeschwindigkeit wird {2} Sek. lang um {1}% verringert.\n\nHat
+      eine Chance von {3:P0}, 'Finger des Frosts' auszul\xF6sen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894978
+    m_Localized: "K\xE4ltekegel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894979
+    m_Localized: "Unterbricht das Zauberwirken des Gegners und verhindert {0} Sek.
+      lang, dass Zauber dieser Magieschule gewirkt werden.\n\nWirkt, w\xE4hrend ein
+      anderer Zauber gewirkt wird, und ist nicht von der globalen Abklingzeit betroffen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894980
+    m_Localized: Gegenzauber
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894981
+    m_Localized: "Trifft den Gegner f\xFCr ({0}% der Zaubermacht) Feuerschaden.\n\nVerursacht
+      immer einen kritischen Treffer und l\xF6st 'Aufw\xE4rmen' aus, sofern das Ziel
+      nicht gegen kritische Treffer immun ist.\n\nWirkt, w\xE4hrend ein anderer Zauber
+      gewirkt wird, und ist nicht von der globalen Abklingzeit betroffen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894982
+    m_Localized: Feuerschlag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894983
+    m_Localized: "Beschw\xF6rt eine Feuers\xE4ule herauf, die allen Gegnern im Bereich
+      ({0}% der Zaubermacht) Feuerschaden und zus\xE4tzlich alle {2} Sek. ({1}% der
+      Zaubermacht) Feuerschaden \xFCber {3} Sek. zuf\xFCgt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894984
+    m_Localized: "Flammensto\xDF"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894985
+    m_Localized: "Ein schneller Zauber, der einen Verb\xFCndeten um ({0}% der Zaubermacht)
+      heilt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894986
+    m_Localized: Blitzheilung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894987
+    m_Localized: "Schie\xDFt einen Frostblitz auf den Gegner, der ({0}% der Zaubermacht)
+      Frostschaden verursacht und die Bewegungsgeschwindigkeit {2} Sek. lang um {1}%
+      verringert.\n\nHat eine Chance von {3:P0}, 'Finger des Frosts' auszul\xF6sen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894988
+    m_Localized: Frostblitz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894989
+    m_Localized: "Trifft Gegner innerhalb von {0} Metern f\xFCr ({1}% der Zaubermacht)
+      Frostschaden und friert sie {2} Sek. lang ein.\n\nSchaden kann den Einfriereffekt
+      unterbrechen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894990
+    m_Localized: Frostnova
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894991
+    m_Localized: "Vollbringt ein Wunder und heilt einen Verb\xFCndeten um ({0}% der
+      Zaubermacht)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894992
+    m_Localized: 'Segenswort: Epiphanie'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894993
+    m_Localized: "Entfernt alle bewegungseinschr\xE4nkenden Effekte und alle Effekte,
+      die zum Kontrollverlust \xFCber Euren Charakter f\xFChren, w\xE4hrend Ihr Euch
+      im PvP-Kampf befindet."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894994
+    m_Localized: Ehrenhaftes Medaillon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894995
+    m_Localized: "Sch\xFCtzt Euch mit Eis und absorbiert ({0}% der Gesamtheit) Schaden.
+      H\xE4lt {1} Sek. lang.\n\nSolange der Schild h\xE4lt, werden Zauber nicht unterbrochen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894996
+    m_Localized: Eisbarriere
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894997
+    m_Localized: "H\xFCllt Euch in einen Eisblock ein, der Euch {0} Sek. lang vor
+      allen Angriffen und Schaden sch\xFCtzt, aber w\xE4hrend dieser Zeit k\xF6nnt
+      Ihr weder angreifen, Euch bewegen noch Zauber wirken."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894998
+    m_Localized: Eisblock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894999
+    m_Localized: "Schleudert schnell einen Eissplitter auf das Ziel, der ({0}% der
+      Zaubermacht) Frostschaden verursacht.\n\nEislanzenschaden wird gegen eingefrorene
+      Ziele vervierfacht. Ziele gelten auch als eingefroren, wenn der Zauberer von
+      'Fingern des Frosts' betroffen ist.\n\nSchaden wird um {1}% erh\xF6ht, wenn
+      eine Aufladung von 'Fingern des Frosts' verbraucht wird."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895000
+    m_Localized: Eislanze
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895001
+    m_Localized: "Verursacht einen Wirbel aus eisigem Wind um den Gegner, der dem
+      Ziel und allen anderen Gegnern innerhalb von {1} Metern ({0}% der Zaubermacht)
+      Frostschaden zuf\xFCgt und sie {2} Sek. lang einfriert.\n\nSchaden kann den
+      Einfriereffekt unterbrechen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895002
+    m_Localized: Eisnova
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895003
+    m_Localized: "T\xF6tet das aktuelle Ziel sofort.\n\nTempor\xE4rer Debug-Zauber,
+      nur gegen Kreaturen einsetzbar."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895004
+    m_Localized: "Kreatur t\xF6ten"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895005
+    m_Localized: "T\xF6tet den Zauberer sofort.\n\nTempor\xE4rer Debug-Zauber."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895006
+    m_Localized: "Selbstt\xF6tung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895007
+    m_Localized: "Das Ziel wird zu einer lebenden Bombe, erleidet alle {4} Sek. ({0}%
+      der Zaubermacht) Feuerschaden \xFCber {1} Sek. und explodiert dann, um dem
+      Ziel und allen anderen Gegnern innerhalb von {3} Metern zus\xE4tzlich ({2}%
+      der Zaubermacht) Feuerschaden zuzuf\xFCgen.\n\nBeim ersten Auftragen wird sofort
+      Schaden verursacht. Der Explosions-Timer wird beim Auffrischen zur\xFCckgesetzt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895008
+    m_Localized: Lebende Bombe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895009
+    m_Localized: "Verringert allen erlittenen Schaden eines freundlichen Ziels {1}
+      Sek. lang um {0}%.\n\nWirkt w\xE4hrend Bet\xE4ubung."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895010
+    m_Localized: "Schmerzunterdr\xFCckung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895011
+    m_Localized: "Verwandelt den Gegner in ein Schaf, das {0} Sek. lang kampfunf\xE4hig
+      umherwandert. W\xE4hrend dieser Zeit kann das Opfer keine Aktionen ausf\xFChren.\n\nSchaden
+      bricht den Effekt ab."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895012
+    m_Localized: Verwandlung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895013
+    m_Localized: "Wenn aktiviert, wird Euer n\xE4chster Magierzauber mit einer Zauberzeit
+      von weniger als 10 Sek. zu einem Spontanzauber."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895014
+    m_Localized: Geistesgegenwart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895015
+    m_Localized: "Schleudert einen gewaltigen Feuerball, der ({0}% der Zaubermacht)
+      Feuerschaden und danach alle {2} Sek. zus\xE4tzlich ({1}% der Zaubermacht)
+      verursacht.\n\nZwei direkte kritische Treffer in Folge machen Euren n\xE4chsten
+      Pyroblast zu einem Spontanzauber."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895016
+    m_Localized: Pyroschlag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895017
+    m_Localized: "Erf\xFCllt das Ziel mit Glauben an das Licht und heilt es sofort
+      um ({0}% der Zaubermacht) und dann alle {2} Sek. ({1}% der Zaubermacht) \xFCber
+      {3} Sek."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895018
+    m_Localized: Erneuerung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895019
+    m_Localized: 'Zauberer wird mit 50% Gesundheit wiederbelebt.
+
+
+      Nur im Tod
+      einsetzbar.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895020
+    m_Localized: Selbstwiederbelebung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895021
+    m_Localized: "Sengt einen Gegner f\xFCr ({0}% der Zaubermacht) Feuerschaden an.\n\nWirkt
+      w\xE4hrend der Bewegung.\n\nKann nach 2 kritischen Treffern in Folge 'Kampfeshitze'
+      ausl\xF6sen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895022
+    m_Localized: Sengen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895023
+    m_Localized: '{0} m Reichweite'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895024
+    m_Localized: '{0} Sek. Abklingzeit'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895025
+    m_Localized: Sofort
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895026
+    m_Localized: '{0} Sek. Zauberzeit'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895027
+    m_Localized: Allgemein
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895028
+    m_Localized: Zauber nicht bekannt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895029
+    m_Localized: "Verwandelt Euch in Katzengestalt, erh\xF6ht die Bewegungsgeschwindigkeit
+      um {0}%, gew\xE4hrt Schutz vor Verwandlungseffekten und verringert Sturzschaden.\n\nDas
+      Gestaltwandeln befreit Euch von bewegungseinschr\xE4nkenden Effekten."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895030
+    m_Localized: Katzengestalt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895031
+    m_Localized: Druide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895032
+    m_Localized: Magier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895033
+    m_Localized: "Krallt das Ziel f\xFCr ({0}% der Angriffskraft) Blutungsschaden
+      und zus\xE4tzlich alle {2} Sek. ({1}% der Angriffskraft) Blutungsschaden \xFCber
+      {3} Sek.\n\nVerringert die Bewegungsgeschwindigkeit des Ziels um {4}%.\n\nGew\xE4hrt
+      1 Kombopunkt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895034
+    m_Localized: Krallenhibieb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895035
+    m_Localized: "Zerfetzt das Ziel und f\xFCgt ihm ({0}% der Angriffskraft + 20)
+      k\xF6rperlichen Schaden zu.\n\nVerursacht 50% mehr Schaden bei blutenden Zielen.\n\nGew\xE4hrt
+      2 Kombopunkte."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895036
+    m_Localized: Schreddern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895037
+    m_Localized: "Trifft nahe Gegner f\xFCr ({0}% der Angriffskraft) k\xF6rperlichen
+      Schaden.\n\nVerursacht 33% mehr Schaden bei blutenden Zielen.\n\nGew\xE4hrt
+      1 Kombopunkt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895038
+    m_Localized: Prankenhieb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895039
+    m_Localized: Keine Kombopunkte
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895040
+    m_Localized: "Finishing-Move, der pro Kombopunkt Schaden verursacht und bis zu
+      25 zus\xE4tzliche Energie verbraucht, um den Schaden um bis zu 100% zu erh\xF6hen.\n\nBei
+      Zielen unter 25% Gesundheit erneuert Wilder Biss zudem die Dauer von 'Zerfetzen'
+      auf Eurem Ziel.\n\nKritische Trefferchance bei blutenden Zielen verdoppelt.\n\n 
+      1 Punkt: [({0}% der AK) * 1] Schaden\n  2 Punkte: [({0}% der AK) * 2] Schaden\n 
+      3 Punkte: [({0}% der AK) * 3] Schaden\n  4 Punkte: [({0}% der AK) * 4] Schaden\n 
+      5 Punkte: [({0}% der AK) * 5] Schaden"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895041
+    m_Localized: Wilder Biss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089280
+    m_Localized: "Finishing-Move, der alle {1} Sek. Blutungsschaden verursacht. H\xE4lt
+      je nach Kombopunkten l\xE4nger.\n\n  1 Punkt: ({0}% der AK) f\xFCr 8 Sek.\n 
+      2 Punkte: ({0}% der AK) f\xFCr 12 Sek.\n  3 Punkte: ({0}% der AK) f\xFCr 16
+      Sek.\n  4 Punkte: ({0}% der AK) f\xFCr 20 Sek.\n  5 Punkte: ({0}% der AK) f\xFCr
+      24 Sek."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089281
+    m_Localized: Zerfetzen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089282
+    m_Localized: Verringert allen erlittenen Schaden {1} Sek. lang um {0}%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089283
+    m_Localized: "\xDCberlebensinstinkte"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089284
+    m_Localized: Nicht genug Energie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089285
+    m_Localized: Nicht genug Gesundheit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089286
+    m_Localized: Nicht genug Mana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089287
+    m_Localized: Nicht genug Wut
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089288
+    m_Localized: "Erh\xF6ht die Bewegungsgeschwindigkeit {1} Sek. lang um {0}%.\n\nBricht
+      nicht das Schleichen ab."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089289
+    m_Localized: Spurt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089290
+    m_Localized: "Stellt sofort {0} Energie wieder her und erh\xF6ht den Schaden
+      aller Eurer Angriffe f\xFCr deren gesamte Dauer um {1}%. H\xE4lt {2} Sek. lang."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089291
+    m_Localized: Tigerfuror
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089292
+    m_Localized: "Zerfleischt das Ziel f\xFCr ({0}% der Angriffskraft) k\xF6rperlichen
+      Schaden.\n\nVerursacht 20% zus\xE4tzlichen Schaden bei blutenden Zielen.\n\nErzeugt
+      {1} Energie."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089293
+    m_Localized: Zerfleischen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089294
+    m_Localized: "Finishing-Move, der k\xF6rperlichen Schaden verursacht und das
+      Ziel bet\xE4ubt. Schaden und Dauer pro Kombopunkt erh\xF6ht:\n\n  1 Punkt:
+      {0}%*1 AK Schaden, 1 Sek.\n  2 Punkte: {0}%*2 AK Schaden, 2 Sek.\n  3 Punkte:
+      {0}%*3 AK Schaden, 3 Sek.\n  4 Punkte: {0}%*4 AK Schaden, 4 Sek.\n  5 Punkte:
+      {0}%*5 AK Schaden, 5 Sek."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089295
+    m_Localized: "Zerfetzen (Bet\xE4ubung)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089296
+    m_Localized: 1 bis 5 Kombopunkte
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089297
+    m_Localized: '{0} Energie'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089298
+    m_Localized: '{0}% der max. Energie'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089299
+    m_Localized: '{0} Mana'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089300
+    m_Localized: '{0}% des Basismanas'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089301
+    m_Localized: '{0} Wut'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089302
+    m_Localized: '{0}% der max. Wut'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089303
+    m_Localized: "Finishing-Move, der sofortigen Schaden verursacht und 'Zerfetzen'
+      auf alle Gegner innerhalb von {0} Metern anwendet. H\xE4lt je nach Kombopunkten
+      l\xE4nger.\n\n  1 Punkt: ({1}% der AK) * 1 plus Zerfetzen f\xFCr 4 Sek.\n 
+      2 Punkte: ({1}% der AK) * 2 plus Zerfetzen f\xFCr 6 Sek.\n  3 Punkte: ({1}%
+      der AK) * 3 plus Zerfetzen f\xFCr 8 Sek.\n  4 Punkte: ({1}% der AK) * 4 plus
+      Zerfetzen f\xFCr 10 Sek.\n  5 Punkte: ({1}% der AK) * 5 plus Zerfetzen f\xFCr
+      12 Sek."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089304
+    m_Localized: Urzeitlicher Zorn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089305
+    m_Localized: "Trifft alle nahen Gegner f\xFCr ({0}% der Angriffskraft) Blutungsschaden
+      und zus\xE4tzlich alle {2} Sek. ({1}% der Angriffskraft) Blutungsschaden \xFCber
+      {3} Sek.\n\nGew\xE4hrt 1 Kombopunkt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089306
+    m_Localized: Hauen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089307
+    m_Localized: Wurzelt das Ziel {0} Sek. lang am Boden fest. Schaden kann den Effekt
+      abbrechen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089308
+    m_Localized: Wucherwurzeln
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089309
+    m_Localized: "Finishing-Move, der den Schaden um {0}% und die Energieregenerationsrate
+      um {1}% erh\xF6ht, w\xE4hrend Ihr Euch in Katzengestalt befindet. H\xE4lt je
+      nach Kombopunkten l\xE4nger:\n\n  1 Punkt: 12 Sekunden\n  2 Punkte: 18 Sekunden\n 
+      3 Punkte: 24 Sekunden\n  4 Punkte: 30 Sekunden\n  5 Punkte: 36 Sekunden"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089310
+    m_Localized: "Wildes Br\xFCllen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089311
+    m_Localized: "Verringert die Energiekosten aller F\xE4higkeiten in Katzengestalt
+      um {0}% und erh\xF6ht die maximale Energie {2} Sek. lang um {1}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089312
+    m_Localized: Berserker
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089313
+    m_Localized: "Heilt das Ziel alle {1} Sek. um ({0}% der Zaubermacht) \xFCber
+      {2} Sek."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089314
+    m_Localized: "Verj\xFCngung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089315
+    m_Localized: "Heilt ein freundliches Ziel um ({0}% der Zaubermacht) und danach
+      alle {2} Sek. um ({1}% der Zaubermacht) \xFCber {3} Sek."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089316
+    m_Localized: Nachwachsen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089317
+    m_Localized: "Kann nicht w\xE4hrend des Gestaltwandelns verwendet werden"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089318
+    m_Localized: Kann nicht verwendet werden, wenn man nicht verwandelt ist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089319
+    m_Localized: Kann in dieser Form nicht verwendet werden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089320
+    m_Localized: "L\xE4sst ein wildes Br\xFCllen ert\xF6nen, das die Bewegungsgeschwindigkeit
+      aller freundlichen Spieler innerhalb von {2} Metern {1} Sek. lang um {0}% erh\xF6ht."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089321
+    m_Localized: "Anstachelndes Br\xFCllen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089322
+    m_Localized: Schleichen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089323
+    m_Localized: Aktiviert die Katzengestalt und versetzt Euch in den Schleichmodus,
+      bis er abgebrochen wird.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089324
+    m_Localized: Kann nicht im Kampf verwendet werden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089325
+    m_Localized: Langsamer Fall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089326
+    m_Localized: Verringert die Fallgeschwindigkeit eines Gruppenmitglieds {0} Sek.
+      lang.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089327
+    m_Localized: "Gro\xDFe Unsichtbarkeit"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089328
+    m_Localized: 'Macht Euch {0} Sek. lang unsichtbar und nicht anvisierbar, wodurch
+      jegliche Bedrohung aufgehoben wird. Jede Aktion bricht diesen Effekt ab.
+
+
+      Ihr
+      erleidet {1}% weniger Schaden, solange Ihr unsichtbar seid.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089329
+    m_Localized: Wilder Ansturm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089330
+    m_Localized: "St\xFCrmt auf einen Gegner zu und macht ihn {0} Sek. lang bewegungsunf\xE4hig.\n\nErh\xF6ht
+      die Energie um {1}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089331
+    m_Localized: Wilder Sprung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089332
+    m_Localized: "L\xE4sst Euch hinter einen Gegner springen und ihn {0} Sek. lang
+      benommen machen.\n\nBenommene Gegner haben eine um {1}% verringerte Geschwindigkeit."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089333
+    m_Localized: "Sch\xE4delsto\xDF"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089334
+    m_Localized: "Ihr st\xFCrmt an und schmettert dem Ziel den Sch\xE4del ein, was
+      das Zauberwirken unterbricht und {0} Sek. lang verhindert, dass Zauber dieser
+      Magieschule gewirkt werden."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089335
+    m_Localized: Wirbelsturm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089336
+    m_Localized: Wirbelt den gegnerischen Zielcharakter in die Luft, was ihn desorientiert,
+      aber bis zu {0} Sek. lang unverwundbar macht.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089337
+    m_Localized: "Rei\xDFen und Zerfetzen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089338
+    m_Localized: Wendet sofort 'Krallenhieb' und 'Zerfetzen' auf das Ziel an.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2083855354814464
+    m_Localized: Lobby
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

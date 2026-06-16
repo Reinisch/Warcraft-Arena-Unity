@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Common;
 using Core.AuraEffects;
 using Core.Conditions;
@@ -10,7 +10,6 @@ namespace Core
     [UsedImplicitly, CreateAssetMenu(fileName = "Spell Info", menuName = "Game Data/Spells/Spell Info", order = 1)]
     public sealed class SpellInfo : ScriptableUniqueInfo<SpellInfo>
     {
-        [SerializeField, UsedImplicitly] private SpellInfoContainer container;
         [SerializeField, UsedImplicitly] private SpellExplicitTargetType explicitTargetType;
         [SerializeField, UsedImplicitly] private SpellDamageClass damageClass;
         [SerializeField, UsedImplicitly] private SpellDispelType spellDispel;
@@ -54,12 +53,6 @@ namespace Core
         [UsedImplicitly] private float maxTargetingRadius;
         [UsedImplicitly] private bool someEffectsIgnoreSpellImmunity;
 
-        protected override ScriptableUniqueInfoContainer<SpellInfo> Container => container;
-        protected override SpellInfo Data => this;
-
-        /// <summary>
-        /// Compressed to 8 bits in <seealso cref="SpellCastRequestEvent"/> and other spell events.
-        /// </summary>
         public new int Id => base.Id;
 
         public SpellExplicitTargetType ExplicitTargetType => explicitTargetType;
@@ -292,14 +285,11 @@ namespace Core
 
             if (ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask))
             {
-                if(target == null)
+                if (target == null)
                     return SpellCastResult.BadTargets;
 
                 if (target.IsDead && !HasAttribute(SpellAttributes.CanTargetDead))
                     return SpellCastResult.TargetDead;
-
-                if (!HasAttribute(SpellExtraAttributes.CanTargetInvisible) && !caster.CanSeeOrDetect(target))
-                    return SpellCastResult.BadTargets;
 
                 if (ExplicitCastTargets.HasTargetFlag(SpellCastTargetFlags.UnitEnemy) && caster.IsHostileTo(target))
                     return SpellCastResult.Success;

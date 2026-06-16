@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace Core
 {
@@ -35,9 +35,6 @@ namespace Core
             Entities.Add(entity);
             entitiesById.Add(entity.Id, entity);
 
-            if(entity.AutoScoped)
-                entity.BoltEntity.SetScopeAll(true);
-
             EntityAttached(entity);
 
             EventEntityAttached?.Invoke(entity);
@@ -57,7 +54,7 @@ namespace Core
         {
             entity.Detached();
 
-            BoltNetwork.Destroy(entity.gameObject);
+            Object.Destroy(entity.gameObject);
         }
 
         public T Find(ulong networkId)
@@ -106,12 +103,6 @@ namespace Core
                 return RandomUtils.GetRandomElement(targets);
 
             return default;
-        }
-
-        internal virtual void SetDefaultScope(BoltConnection connection)
-        {
-            foreach (T entity in Entities)
-                entity.BoltEntity.SetScope(connection, entity.AutoScoped);
         }
 
         internal virtual void DoUpdate(int deltaTime)

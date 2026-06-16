@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 53
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6118340bc55d5fc4b88ef6970b16d122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Behavior.Authoring::Unity.Behavior.BehaviorProjectSettings
+  m_GraphOwnerName: Self
+  m_AutoSaveLastSaveLocation: 1
+  m_SaveFolder: Scripts/Core/AI/Core/Behaviour Graph/Setup
+  m_UseSeparateSaveFolders: 0
+  m_SaveFolderAction: 
+  m_SaveFolderModifier: 
+  m_SaveFolderFlow: 
+  m_SaveFolderCondition: 
+  m_SaveFolderEventChannels: 
+  m_SaveFolderEnum: 
+  m_AutoOpenNodeScriptsInExternalEditor: 1
+  m_Namespace: 
+  m_AllowDisabledAgentDebugging: 0
+  m_IgnoreMissingManagedReferencesInBuild: 0

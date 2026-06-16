@@ -1,4 +1,3 @@
-﻿using System.Collections.Generic;
 using Common;
 using Core;
 using JetBrains.Annotations;
@@ -11,33 +10,11 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private SpellInfoContainer spellContainer;
         [SerializeField, UsedImplicitly] private AnimationInfo defaultAnimation;
-        [SerializeField, UsedImplicitly] private List<SpellAnimationInfo> animationInfos;
 
-        private readonly Dictionary<int, AnimationInfo> animationInfoBySpellId = new Dictionary<int, AnimationInfo>();
+        public AnimationInfo DefaultAnimation => defaultAnimation;
 
-        protected override List<SpellAnimationInfo> Items => animationInfos;
-
-        public override void Register()
-        {
-            base.Register();
-
-            foreach (var spellAnimation in animationInfos)
-                animationInfoBySpellId.Add(spellAnimation.Spell.Id, spellAnimation.Animation);
-        }
-
-        public override void Unregister()
-        {
-            animationInfoBySpellId.Clear();
-
-            base.Unregister();
-        }
-
-        public AnimationInfo FindAnimation(SpellInfo spellInfo)
-        {
-            if (animationInfoBySpellId.TryGetValue(spellInfo.Id, out AnimationInfo animationInfo))
-                return animationInfo;
-
-            return defaultAnimation;
-        }
+        // The spellId→animation lookup lives on RenderingReference (a MonoBehaviour whose state resets each
+        // play session). A ScriptableObject must not retain runtime lookup state between editor/MPPM
+        // sessions; the serialized config (default animation) stays here.
     }
 }

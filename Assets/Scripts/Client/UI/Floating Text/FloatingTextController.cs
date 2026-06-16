@@ -14,6 +14,7 @@ namespace Client
     {
         [SerializeField, UsedImplicitly] private FloatingText floatingTextPrototype;
         [SerializeField, UsedImplicitly] private int preinstantiatedCount = 20;
+        [SerializeField, UsedImplicitly] private float hitPositionSizeMultiplier = 0.5f;
 
         private readonly List<FloatingText> activeTexts = new List<FloatingText>();
 
@@ -41,11 +42,19 @@ namespace Client
             activeTexts.Add(damageText);
         }
 
-        public void SpawnDamageText(UnitRenderer targetRenderer, int damageAmount, HitType hitType)
+        public void SpawnDamageText(UnitRenderer targetRenderer, int damageAmount, HitType hitType, Vector3? hitPosition)
         {
             FloatingText damageText = GameObjectPool.Take(floatingTextPrototype, targetRenderer.transform.position, targetRenderer.transform.rotation);
             targetRenderer.TagContainer.ApplyPositioning(damageText);
-            damageText.SetDamage(damageAmount, hitType);
+            float sizeMultiplier = 1;
+            if (hitPosition.HasValue)
+                sizeMultiplier *= hitPositionSizeMultiplier;
+
+            if (hitPosition.HasValue)
+                damageText.transform.position = hitPosition.Value;
+
+            damageText.SetDamage(damageAmount, hitType, sizeMultiplier);
+
             activeTexts.Add(damageText);
         }
 

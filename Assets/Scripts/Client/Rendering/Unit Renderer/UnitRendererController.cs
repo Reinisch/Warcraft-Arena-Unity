@@ -5,39 +5,41 @@ using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 
-using EventHandler = Common.EventHandler;
-
 namespace Client
 {
     public partial class RenderingReference
     {
         [Serializable]
-        private class UnitRendererController
+        public class UnitRendererController
         {
-            [SerializeField, UsedImplicitly] private RenderingReference rendering;
             [SerializeField, UsedImplicitly] private UnitRenderer unitRendererPrototype;
 
-            private readonly Dictionary<ulong, UnitRenderer> unitRenderersById = new Dictionary<ulong, UnitRenderer>();
-            private readonly List<UnitRenderer> unitRenderers = new List<UnitRenderer>();
-            private readonly List<UnitModel> fadingModels = new List<UnitModel>();
-            private readonly HashSet<Unit> detachedUnits = new HashSet<Unit>();
-            private readonly List<IUnitRendererHandler> unitRendererHandlers = new List<IUnitRendererHandler>();
+            private readonly Dictionary<ulong, UnitRenderer> unitRenderersById = new();
+            private readonly List<UnitRenderer> unitRenderers = new();
+            private readonly List<UnitModel> fadingModels = new();
+            private readonly List<IUnitRendererHandler> unitRendererHandlers = new();
 
-            public void Initialize()
+            private RenderingReference rendering;
+
+            public void Initialize(RenderingReference rendering)
             {
+                this.rendering = rendering;
                 Assert.IsTrue(unitRendererHandlers.Count == 0);
                 Assert.IsTrue(unitRenderers.Count == 0);
                 Assert.IsTrue(unitRenderersById.Count == 0);
-                Assert.IsTrue(detachedUnits.Count == 0);
 
                 rendering.World.UnitManager.EventEntityAttached += OnEventEntityAttached;
                 rendering.World.UnitManager.EventEntityDetach += OnEventEntityDetach;
-                EventHandler.RegisterEvent<WorldEntity, bool>(rendering.World, GameEvents.ServerVisibilityChanged, OnServerVisibilityChanged);
+                rendering.eventBus.RegisterEvent<WorldEntity, bool>(rendering.World, GameEvents.ServerVisibilityChanged, OnServerVisibilityChanged);
             }
 
             public void Deinitialize()
             {
-                EventHandler.UnregisterEvent<WorldEntity, bool>(rendering.World, GameEvents.ServerVisibilityChanged, OnServerVisibilityChanged);
+                // Deinitialize can be called (on quit) without a prior Initialize if startup aborted early.
+                if (rendering == null)
+                    return;
+
+                rendering.eventBus.UnregisterEvent<WorldEntity, bool>(rendering.World, GameEvents.ServerVisibilityChanged, OnServerVisibilityChanged);
                 rendering.World.UnitManager.EventEntityAttached -= OnEventEntityAttached;
                 rendering.World.UnitManager.EventEntityDetach -= OnEventEntityDetach;
 
@@ -49,7 +51,6 @@ namespace Client
 
                 unitRenderersById.Clear();
                 unitRenderers.Clear();
-                detachedUnits.Clear();
                 fadingModels.Clear();
             }
 
@@ -95,25 +96,6 @@ namespace Client
                 return unitRenderersById.TryGetValue(unitId, out unitRenderer);
             }
 
-            public void UpdateClientsideVisibility()
-            {
-                for (int i = unitRenderers.Count - 1; i >= 0; i--)
-                    if (!IsVisibleForPlayer(unitRenderers[i].Unit))
-                        DetachRenderer(unitRenderers[i].Unit);
-
-                List<Unit> newVisibleUnits = ListPoolContainer<Unit>.Take();
-                foreach(Unit detachedUnit in detachedUnits)
-                    if (IsVisibleForPlayer(detachedUnit))
-                        newVisibleUnits.Add(detachedUnit);
-
-                foreach (Unit newVisibleUnit in newVisibleUnits)
-                    AttachRenderer(newVisibleUnit);
-
-                ListPoolContainer<Unit>.Return(newVisibleUnits);
-            }
-
-            private bool IsVisibleForPlayer(WorldEntity target) => rendering.Player != null && rendering.Player.HasClientVisiblityOf(target);
-
             private void AttachRenderer(Unit unit)
             {
                 var unitRenderer = GameObjectPool.Take(unitRendererPrototype);
@@ -121,7 +103,6 @@ namespace Client
                 unitRenderer.Attach(unit);
                 unitRenderersById.Add(unit.Id, unitRenderer);
                 unitRenderers.Add(unitRenderer);
-                detachedUnits.Remove(unit);
 
                 rendering.selectionCircleController.HandleRendererAttach(unitRenderer);
 
@@ -131,8 +112,6 @@ namespace Client
 
             private void DetachRenderer(Unit unit)
             {
-                detachedUnits.Remove(unit);
-
                 if (unitRenderersById.TryGetValue(unit.Id, out UnitRenderer unitRenderer))
                 {
                     rendering.spellVisualController.HandleRendererDetach(unitRenderer);
@@ -173,10 +152,7 @@ namespace Client
             {
                 if (worldEntity is Unit unit)
                 {
-                    if (IsVisibleForPlayer(unit))
-                        AttachRenderer(unit);
-                    else
-                        detachedUnits.Add(unit);
+                    AttachRenderer(unit);
                 }
             }
 

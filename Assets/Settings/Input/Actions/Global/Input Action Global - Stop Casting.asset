@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d738595b20e964785aa582a9648a67, type: 3}
   m_Name: Input Action Global - Stop Casting
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  id: 7
+  container: {fileID: 11400000, guid: 49d5c139756bedf4a94d6ca317bc2b58, type: 2}
   action: {fileID: 11400000, guid: 9515b9e511b36164da18b9a571bc514d, type: 2}
   hotkey: {fileID: 11400000, guid: 7d8c9c48c2a72d541aa40a0bbe6e7349, type: 2}
   blockedByActions:

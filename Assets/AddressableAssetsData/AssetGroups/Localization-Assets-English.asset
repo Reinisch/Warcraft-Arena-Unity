@@ -1,0 +1,186 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Assets-English
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Localization-Assets-English
+  m_GUID: aee7d5a4aad7aa24391f6a790ca1127c
+  m_SerializeEntries:
+  - m_GUID: 1ae13a469838f2e4fa9990d85f6f4d75
+    m_Address: Sirus_Die
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e25dc97ee123f545be86dfeffaea096
+    m_Address: Sirus_CreationItself
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 263965ce13e8b004ea2643d83490a70d
+    m_Address: Sirus_WhyResist
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d3ff96fa65798b49a40f77b63180957
+    m_Address: Sirus_WhyRun
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 301a31343026c904faf62d6f5868f13c
+    m_Address: Sirus_Phase3
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a209ae44ae39ba459c4e163f501f640
+    m_Address: Sirus_BeutyCrumble
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c5a93f3a4141624a9a6772be657a9ab
+    m_Address: Sirus_BeSilent
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d3cad2d7d75eef44a3d96deddcb5ca4
+    m_Address: Sirus_YouAreNothing
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44c944b89bdd1d14e836a5542671b8b6
+    m_Address: Sirus_EverlastingFire
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ce16b2f3dfbf894dbc7c3b976bdf95c
+    m_Address: Sirus_GiveIn
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52c9ff8a08982ea40a50c5e7528216e0
+    m_Address: Sirus_RainOfStars
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f2bbf21708738c4b8fe04ae27b46a26
+    m_Address: Path of Exile (Original Game Soundtrack) - Orion (Conquerors of the
+      Atlas)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 615eacc2addc0004591eef8292ea5a57
+    m_Address: Sirus_Phase1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62c2362d13659614b9c0b84f0f0687e1
+    m_Address: Sirus_Phase2
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70f710b50662bdc4c93bc7043280c244
+    m_Address: Sirus_EmbraceNothingness
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77ec2bdd47bdaac4492aba9b77183352
+    m_Address: Sirus_Annigilated
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7e2ffa0e620ae054a88b51109d9381be
+    m_Address: Sirus_Congratulations02
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 812b555253bc1c740afbc45dd7f61d97
+    m_Address: Sirus_Congratulations
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b86fb075c2fbaf945b44999da9597bac
+    m_Address: Sirus_Obliteration
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb02af6a99058904db793fb5a22fc121
+    m_Address: Sirus_TimingSpeech_01
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c6a738c6435577842bdaaefd9a71f6dd
+    m_Address: Sirus_FuryOfTheCosmos
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cced1c4c8d80aca41bc4c900a012ca6c
+    m_Address: Sirus_Pointless
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0cd85b13a26b2e44b618d9bd00bfb2b
+    m_Address: Sirus_LivesAreMeaningless
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4605a8ae936dda45bd9578da49bfb36
+    m_Address: Sirus_TimingSpeech_03
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e722499f50d2db049a7d5e1c4e32f941
+    m_Address: Sirus_TimingSpeech_02
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8094d34f36ccfd47b14bab4d10b8796
+    m_Address: Sirus_CityNothing
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f81b953334ebdc145bc7f79defc688f0
+    m_Address: Sirus_GloriousFlames
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 05c958a9b55fe7c41b609b8ddd360a19, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: acda82ae144d43b46b086b1c98778348, type: 2}
+    - {fileID: 11400000, guid: 3a1fabad5babf784b885e8feb2c789ba, type: 2}

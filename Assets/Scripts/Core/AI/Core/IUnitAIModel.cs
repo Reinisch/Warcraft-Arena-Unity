@@ -2,7 +2,7 @@
 {
     public interface IUnitAIModel
     {
-        void Register(Unit unit);
+        void Register(UnitAI unitAi);
 
         void Unregister();
 

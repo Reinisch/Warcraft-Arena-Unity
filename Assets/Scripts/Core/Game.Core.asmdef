@@ -1,0 +1,24 @@
+{
+    "name": "Game.Core",
+    "rootNamespace": "",
+    "references": [
+        "Game.Common",
+        "Game.Core.CharacterController",
+        "Zenject",
+        "UniTask",
+        "Unity.Behavior",
+        "Unity.Behavior.SerializableGUID",
+        "BehaviorDesign",
+        "Unity.AI.Navigation",
+        "Unity.Netcode.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

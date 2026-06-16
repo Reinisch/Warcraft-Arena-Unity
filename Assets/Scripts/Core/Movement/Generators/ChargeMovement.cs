@@ -21,7 +21,7 @@ namespace Core
         {
             unit.AI.NavMeshAgentEnabled = true;
             unit.AI.UpdatePosition = false;
-            unit.AI.UpdateRotation = true;
+            unit.AI.UpdateRotation = false; // KCC owns rotation (it faces AI steering in UpdateRotation)
             unit.AI.Speed = chargeSpeed;
             unit.AI.AngularSpeed = MovementUtils.ChargeRotationSpeed;
 
@@ -56,7 +56,7 @@ namespace Core
                     return false;
 
                 startPosition = hit.position;
-                unit.Position = startPosition;
+                unit.Teleport(startPosition);
 
                 if (NavMesh.CalculatePath(startPosition, targetPoint, MovementUtils.WalkableAreaMask, chargePath))
                     return unit.AI.SetPath(chargePath);
@@ -77,7 +77,7 @@ namespace Core
             if (!unit.AI.HasPath)
                 return false;
 
-            unit.Position = unit.AI.NextPosition;
+            unit.Teleport(unit.AI.NextPosition, notify: false);
             unit.SetMovementFlag(MovementFlags.Forward, true);
 
             return unit.AI.RemainingDistance > MovementUtils.PointArrivalRange;

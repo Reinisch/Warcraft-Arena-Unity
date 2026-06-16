@@ -18,3 +18,4 @@ MonoBehaviour:
   vehicleInfo: {fileID: 0}
   creatureName: Super Zombie
   modelId: 4
+  nameplateSizeModifier: 1

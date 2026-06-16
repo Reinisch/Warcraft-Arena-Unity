@@ -4,8 +4,7 @@ using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
-
-using EventHandler = Common.EventHandler;
+using Zenject;
 
 namespace Client
 {
@@ -14,7 +13,6 @@ namespace Client
         [Serializable]
         private class NameplateController : IUnitRendererHandler
         {
-            [SerializeField, UsedImplicitly] private RenderingReference rendering;
             [SerializeField, UsedImplicitly] private Nameplate nameplatePrototype;
             [SerializeField, UsedImplicitly] private NameplateSettings settings;
             [SerializeField, UsedImplicitly] private GameOptionBool showDeselectedHealthOption;
@@ -23,17 +21,19 @@ namespace Client
             private readonly List<Nameplate> activeNameplates = new List<Nameplate>();
             private readonly List<UnitRenderer> unplatedRenderers = new List<UnitRenderer>();
             private readonly Dictionary<UnitRenderer, Nameplate> activeNameplateByRenderers = new Dictionary<UnitRenderer, Nameplate>();
+            private RenderingReference rendering;
 
-            public void Initialize()
+            public void Initialize(RenderingReference rendering)
             {
+                this.rendering = rendering;
                 GameObjectPool.PreInstantiate(nameplatePrototype.gameObject, preinstantiatedCount);
 
-                EventHandler.RegisterEvent(showDeselectedHealthOption, GameEvents.GameOptionChanged, OnHealthOptionChanged);
+                rendering.eventBus.RegisterEvent(showDeselectedHealthOption, GameEvents.GameOptionChanged, OnHealthOptionChanged);
             }
 
             public void Deinitialize()
             {
-                EventHandler.UnregisterEvent(showDeselectedHealthOption, GameEvents.GameOptionChanged, OnHealthOptionChanged);
+                rendering.eventBus.UnregisterEvent(showDeselectedHealthOption, GameEvents.GameOptionChanged, OnHealthOptionChanged);
 
                 for (int i = activeNameplates.Count - 1; i >= 0; i--)
                 {
@@ -64,7 +64,7 @@ namespace Client
 
             public void HandlePlayerControlGained()
             {
-                EventHandler.RegisterEvent(rendering.Player, GameEvents.UnitTargetChanged, OnPlayerTargetChanged);
+                rendering.eventBus.RegisterEvent(rendering.Player, GameEvents.UnitTargetChanged, OnPlayerTargetChanged);
 
                 rendering.RegisterHandler(this);
             }
@@ -73,7 +73,7 @@ namespace Client
             {
                 rendering.UnregisterHandler(this);
 
-                EventHandler.UnregisterEvent(rendering.Player, GameEvents.UnitTargetChanged, OnPlayerTargetChanged);
+                rendering.eventBus.UnregisterEvent(rendering.Player, GameEvents.UnitTargetChanged, OnPlayerTargetChanged);
             }
 
             public void DoUpdate(float deltaTime)

@@ -7,10 +7,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.UI;
+using Zenject;
 
 public class ChatFrame : MonoBehaviour
 {
-    [SerializeField, UsedImplicitly] private InputReference input;
+    [Inject] private InputReference input;
+    [Inject] private EventBus eventBus;
+
     [SerializeField, UsedImplicitly] private ScrollRect scrollRect;
     [SerializeField, UsedImplicitly] private ChatFrameMessage messagePrototype;
     [SerializeField, UsedImplicitly] private TMP_InputField inputField;
@@ -18,7 +21,7 @@ public class ChatFrame : MonoBehaviour
     [SerializeField, UsedImplicitly] private HotkeyInputItem chatFocusHotkey;
     [SerializeField, UsedImplicitly] private int maxMessageCount = 100;
 
-    private readonly List<ChatFrameMessage> chatMessages = new List<ChatFrameMessage>();
+    private readonly List<ChatFrameMessage> chatMessages = new();
     private const float BottomSnapThreshold = 0.001f;
 
     [UsedImplicitly]
@@ -27,8 +30,8 @@ public class ChatFrame : MonoBehaviour
     [UsedImplicitly]
     private void Awake()
     {
-        EventHandler.RegisterEvent<Unit, string>(GameEvents.UnitChat, OnUnitChat);
-        EventHandler.RegisterEvent<HotkeyState>(chatFocusHotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
+        eventBus.RegisterEvent<Unit, string>(GameEvents.UnitChat, OnUnitChat);
+        eventBus.RegisterEvent<HotkeyState>(chatFocusHotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
         inputField.onSubmit.AddListener(OnSubmit);
         inputField.onDeselect.AddListener(OnDeselect);
 
@@ -44,8 +47,8 @@ public class ChatFrame : MonoBehaviour
         chatMessages.Clear();
         inputField.onSubmit.RemoveListener(OnSubmit);
         inputField.onDeselect.RemoveListener(OnDeselect);
-        EventHandler.UnregisterEvent<Unit, string>(GameEvents.UnitChat, OnUnitChat);
-        EventHandler.UnregisterEvent<HotkeyState>(chatFocusHotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
+        eventBus.UnregisterEvent<Unit, string>(GameEvents.UnitChat, OnUnitChat);
+        eventBus.UnregisterEvent<HotkeyState>(chatFocusHotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
     }
 
     [UsedImplicitly]

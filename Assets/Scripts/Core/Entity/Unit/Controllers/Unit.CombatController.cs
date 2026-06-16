@@ -4,7 +4,7 @@ namespace Core
 {
     public abstract partial class Unit
     {
-        internal class CombatController : IUnitBehaviour
+        internal class CombatController : IUnitBehaviour, ILogicBehaviour
         {
             public bool HasClientLogic => false;
             public bool HasServerLogic => true;

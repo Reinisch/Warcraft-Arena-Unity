@@ -1,5 +1,4 @@
 ﻿using JetBrains.Annotations;
-using UdpKit;
 using UnityEngine;
 
 namespace Core
@@ -10,22 +9,6 @@ namespace Core
         {
             public string CustomName { get; set; } = string.Empty;
             public int CreatureInfoId { get; set; }
-
-            public override void Read(UdpPacket packet)
-            {
-                base.Read(packet);
-
-                CustomName = packet.ReadString();
-                CreatureInfoId = packet.ReadInt();
-            }
-
-            public override void Write(UdpPacket packet)
-            {
-                base.Write(packet);
-
-                packet.WriteString(CustomName);
-                packet.WriteInt(CreatureInfoId);
-            }
 
             public void Attached(Creature creature)
             {
@@ -38,36 +21,36 @@ namespace Core
         [SerializeField, UsedImplicitly, Header(nameof(Creature)), Space(10)]
         private CreatureAI creatureAI;
 
-        private CreateToken createToken;
-        private CreatureInfo creatureInfo;
         private string creatureName;
 
-        internal CreatureAI CreatureAI => creatureAI;
+        internal new CreateToken CreationToken { get; private set; }
+        public CreatureInfo CreatureInfo { get; private set; }
+
         internal override UnitAI AI => creatureAI;
-        internal override bool AutoScoped => false;
-        internal override UnitAttributeDefinition AttributeDefinition => creatureInfo.Attributes;
+        internal override UnitAttributeDefinition AttributeDefinition => CreatureInfo.Attributes;
 
         public override string Name { get => creatureName; internal set => creatureName = value; }
 
+        public override void Attached(Entity.CreateToken createToken)
+        {
+            CreationToken = (CreateToken)createToken;
+            CreatureInfo = Balance.CreatureInfoById[CreationToken.CreatureInfoId];
+
+            base.Attached(createToken);
+        }
+
         protected override void HandleAttach()
         {
-            createToken = (CreateToken)entity.AttachToken;
-            creatureInfo = Balance.CreatureInfoById[createToken.CreatureInfoId];
-
             base.HandleAttach();
 
-            createToken.Attached(this);
-
-            if (creatureInfo.VehicleInfo != null)
-                CreateVehicle(creatureInfo.VehicleInfo, creatureInfo);
+            CreationToken.Attached(this);
 
             Attributes.UpdateAvailablePowers();
         }
 
         protected override void HandleDetach()
         {
-            createToken = null;
-            creatureInfo = null;
+            CreatureInfo = null;
 
             base.HandleDetach();
         }
@@ -75,6 +58,14 @@ namespace Core
         public void Accept(IUnitVisitor unitVisitor)
         {
             unitVisitor.Visit(this);
+        }
+
+        public override UnitSnapshot CaptureState()
+        {
+            UnitSnapshot snapshot = base.CaptureState();
+            snapshot.Kind = UnitSnapshotKind.Creature;
+            snapshot.CreatureInfoId = CreatureInfo.Id;
+            return snapshot;
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Client
 {
@@ -11,18 +12,16 @@ namespace Client
         private bool isDragging;
         private bool dragReplaced;
 
-        public bool IsDragging => isDragging;
-        public bool DragReplaced => dragReplaced;
-
         [UsedImplicitly]
         private void Update()
         {
             if (isDragging)
             {
-                Vector3 pos = (Input.mousePosition - new Vector3((float)Screen.width / 2, (float)Screen.height / 2, 0));
+                Vector3 mousePosition = Mouse.current != null ? Mouse.current.position.ReadValue() : Vector3.zero;
+                Vector3 pos = mousePosition - new Vector3((float)Screen.width / 2, (float)Screen.height / 2, 0);
                 draggingItem.GetComponent<RectTransform>().localPosition = pos;
 
-                if (Input.GetMouseButtonUp(0))
+                if (Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame)
                 {
                     if (dragReplaced)
                     {

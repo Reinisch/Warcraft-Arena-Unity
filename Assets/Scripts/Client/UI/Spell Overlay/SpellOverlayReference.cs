@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
-using Core;
-using JetBrains.Annotations;
 using UnityEngine;
 using Common;
+using Zenject;
 
 namespace Client
 {
-    [CreateAssetMenu(fileName = "Spell Overlay Reference", menuName = "Game Data/Scriptable/Spell Overlay", order = 10)]
     public class SpellOverlayReference : ScriptableReferenceClient, IScreenHandler<BattleScreen>, IVisibleAuraHandler
     {
-        [SerializeField, UsedImplicitly] private InterfaceReference reference;
-        [SerializeField, UsedImplicitly] private SpellOverlaySettingsContainer spellOverlaySettingsContainer;
+        [Inject]
+        private InterfaceReference reference;
 
-        private readonly Dictionary<int, SpellOverlaySettings> overlaySettingsByAuraId = new Dictionary<int, SpellOverlaySettings>();
-        private readonly Dictionary<int, List<IVisibleAura>> activeAurasById = new Dictionary<int, List<IVisibleAura>>();
-        private readonly Dictionary<int, SpellOverlay> activeSpellOverlaysByAuraId = new Dictionary<int, SpellOverlay>();
+        [SerializeField]
+        private SpellOverlaySettingsContainer spellOverlaySettingsContainer;
+
+        private readonly Dictionary<int, SpellOverlaySettings> overlaySettingsByAuraId = new();
+        private readonly Dictionary<int, List<IVisibleAura>> activeAurasById = new();
+        private readonly Dictionary<int, SpellOverlay> activeSpellOverlaysByAuraId = new();
 
         private BattleScreen battleScreen;
 
@@ -43,19 +44,26 @@ namespace Client
             base.OnUnregister();
         }
 
-        protected override void OnControlStateChanged(Player player, bool underControl)
+        protected override void QueueForInject(DiContainer container)
+        {
+            base.QueueForInject(container);
+
+            spellOverlaySettingsContainer.QueueForInject(container);
+        }
+
+        public override void OnControlStateChanged(bool underControl)
         {
             if (underControl)
             {
-                base.OnControlStateChanged(player, true);
+                base.OnControlStateChanged(true);
 
-                player.FindBehaviour<AuraControllerClient>().AddHandler(this);
+                Player.FindBehaviour<AuraControllerClient>().AddHandler(this);
             }
             else
             {
-                player.FindBehaviour<AuraControllerClient>().RemoveHandler(this);
+                Player.FindBehaviour<AuraControllerClient>().RemoveHandler(this);
 
-                base.OnControlStateChanged(player, false);
+                base.OnControlStateChanged(false);
             }
         }
 
@@ -69,7 +77,7 @@ namespace Client
                 if (!activeSpellOverlaysByAuraId.ContainsKey(auraId))
                 {
                     activeSpellOverlaysByAuraId[auraId] = GameObjectPool.Take(overlaySettingsByAuraId[auraId].Prototype);
-                    activeSpellOverlaysByAuraId[auraId].RectTransform.SetParentAndReset(battleScreen.FindTag(BattleHudTagType.SpellOverlay));
+                    activeSpellOverlaysByAuraId[auraId].RectTransform.SetParentAndReset(battleScreen.SpellOverlayRoot);
                     activeSpellOverlaysByAuraId[auraId].ModifyState(SpellOverlay.State.Active);
                     activeSpellOverlaysByAuraId[auraId].HandleAuraCharges(CalculateTotalCharges(auraId));
                 }

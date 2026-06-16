@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037c7ffb4e3d9284f859f274cd4ff0a7, type: 3}
+  m_Name: Input Action Global Container
+  m_EditorClassIdentifier: Game.Client::Client.InputActionGlobalContainer
+  items:
+  - {fileID: 11400000, guid: 55c705b65548d6f4fb837e1dfc4e4a76, type: 2}
+  - {fileID: 11400000, guid: d57feb530d9a77e42b950d678e561df8, type: 2}
+  - {fileID: 11400000, guid: 6924b0c5b103ca741a269b14fc41b812, type: 2}
+  - {fileID: 11400000, guid: 77a1ffee748e6014bb5d69b05a3eec1d, type: 2}
+  - {fileID: 11400000, guid: bb0c0d02a25b74f45b631e11d9be9ad9, type: 2}
+  - {fileID: 11400000, guid: f16f9947db57e834eb6ebca1d3ef6b4d, type: 2}
+  - {fileID: 11400000, guid: 6c11ac7bc2ab40f42a2b7f0d228b5355, type: 2}

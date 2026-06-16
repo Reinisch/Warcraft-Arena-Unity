@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Common
 {
     public abstract class ScriptableUniqueInfo<TUnique> : ScriptableObject, IScriptablePostProcess where TUnique : ScriptableUniqueInfo<TUnique>
     {
-        [SerializeField, UsedImplicitly] private int id;
+        [SerializeField, HideInInspector]
+        private int id;
+
+        [SerializeField]
+        private ScriptableUniqueInfoContainer<TUnique> container;
 
         protected int Id => id;
-        protected abstract TUnique Data { get; }
-        protected abstract ScriptableUniqueInfoContainer<TUnique> Container { get; }
+        protected TUnique Data => this as TUnique;
+        protected ScriptableUniqueInfoContainer<TUnique> Container => container;
 
         internal void Register() => OnRegister();
 
@@ -79,6 +82,7 @@ namespace Common
                     if (!takenIds.Contains(i))
                     {
                         id = i;
+                        Data.id = i;
                         Debug.Log($"Assigned id:{i} to {GetType().Name}: {name}");
 
                         if (Container != null && !Container.EditorList.Contains(Data))
@@ -89,6 +93,7 @@ namespace Common
                         }
 
                         UnityEditor.EditorUtility.SetDirty(this);
+                        UnityEditor.EditorUtility.SetDirty(Data);
                         hasChanges = true;
                         break;
                     }

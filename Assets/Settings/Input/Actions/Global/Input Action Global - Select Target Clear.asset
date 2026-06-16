@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d738595b20e964785aa582a9648a67, type: 3}
   m_Name: Input Action Global - Select Target Clear
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  id: 5
+  container: {fileID: 11400000, guid: 49d5c139756bedf4a94d6ca317bc2b58, type: 2}
   action: {fileID: 11400000, guid: 997d70001d8682e4ebc6e56c31b7bb57, type: 2}
   hotkey: {fileID: 11400000, guid: 9039a6be9ba381c4b90e3d0f02624b6a, type: 2}
   blockedByActions:

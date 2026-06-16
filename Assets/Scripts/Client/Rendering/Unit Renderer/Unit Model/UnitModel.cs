@@ -1,23 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using Common;
+﻿using Common;
 using Core;
 using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Client
 {
     public sealed class UnitModel : MonoBehaviour
     {
-        [SerializeField, UsedImplicitly] private RenderingReference rendering;
+        [Inject] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private TagContainer tagContainer;
         [SerializeField, UsedImplicitly] private SkinnedMeshRenderer meshRenderer;
         [SerializeField, UsedImplicitly] private Animator animator;
         [SerializeField, UsedImplicitly] private float strafeSpeed = 1.0f;
         [SerializeField, UsedImplicitly] private bool hasLegs = true;
         [SerializeField, UsedImplicitly] private List<Collider> hitBoxes;
+        [SerializeField, UsedImplicitly] private List<UnitProjectileHitBox> projectileHitBoxes;
+        [SerializeField, UsedImplicitly] private List<UnitWeakPointHitBox> weakPoints;
 
         public IReadOnlyList<Collider> HitBoxes => hitBoxes;
+        public IReadOnlyList<UnitProjectileHitBox> ProjectileHitBoxes => projectileHitBoxes;
+        public IReadOnlyList<UnitWeakPointHitBox> WeakPoints => weakPoints;
         public TagContainer TagContainer => tagContainer;
         public Animator Animator => animator;
         public float TargetAlpha { get; private set; } = 1.0f;
@@ -32,7 +37,11 @@ namespace Client
         private bool transparentMaterialsUsed;
 
         [UsedImplicitly]
-        private void Awake() => originalMaterials = meshRenderer.sharedMaterials;
+        private void Awake()
+        {
+            originalMaterials = meshRenderer.sharedMaterials;
+            tagContainer.OnAwake();
+        }
 
         [UsedImplicitly]
         private void OnDestroy() => DestroyTransparentMaterials();
@@ -169,7 +178,7 @@ namespace Client
             {
                 Color newColor = materialEntry.Value.color;
                 newColor.a = CurrentAlpha;
-                materialEntry.Value.SetColor("_Color", newColor);
+                materialEntry.Value.color = newColor;
             }
         }
 
@@ -192,13 +201,15 @@ namespace Client
                 if (!sharedMaterialsByInstancedTransparentMaterials.TryGetValue(sharedMaterial, out Material instancedMaterial))
                 {
                     instancedMaterial = new Material(sharedMaterial);
-                    instancedMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    instancedMaterial.SetFloat("_Surface", 1.0f);
+                    instancedMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                     instancedMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    instancedMaterial.SetInt("_ZWrite", 1);
+                    instancedMaterial.SetInt("_ZWrite", 0);
+
                     instancedMaterial.DisableKeyword("_ALPHATEST_ON");
-                    instancedMaterial.DisableKeyword("_ALPHABLEND_ON");
-                    instancedMaterial.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-                    instancedMaterial.renderQueue = 3000;
+                    instancedMaterial.EnableKeyword("_ALPHABLEND_ON");
+                    instancedMaterial.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                    instancedMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
 
                     sharedMaterialsByInstancedTransparentMaterials.Add(sharedMaterial, instancedMaterial);
                 }

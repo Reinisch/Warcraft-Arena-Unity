@@ -299,7 +299,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 60
@@ -500,7 +500,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c5f975624e42547915d9df07c2d75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rendering: {fileID: 11400000, guid: 472a4f1189dc9f841aa39487fc78e7ec, type: 2}
   dummyTagContainer:
     defaultLaunchTag: 2
     defaultTag: {fileID: 2968045187551779246}
@@ -512,6 +511,7 @@ MonoBehaviour:
     leftHandTag: {fileID: 8407597544129656327}
     damageTag: {fileID: 3677482243864547320}
     nameplateTag: {fileID: 8894277606485288769}
+    tagSetups: []
   soundController: {fileID: 2519661404870090023}
 --- !u!114 &2519661404870090023
 MonoBehaviour:
@@ -525,8 +525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029afc969748b8c4bbb6e174d323d742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound: {fileID: 11400000, guid: 9c01542db10d5bc46819a6f11752769e, type: 2}
-  source: {fileID: 1467244629936719571}
 --- !u!1 &8821695619958591009
 GameObject:
   m_ObjectHideFlags: 0

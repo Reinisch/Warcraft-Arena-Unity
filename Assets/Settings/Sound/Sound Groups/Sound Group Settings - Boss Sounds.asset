@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   container: {fileID: 11400000, guid: 8433eabf01cde9547b99caeed3204db0, type: 2}
-  volume: 1
+  mixerGroup: {fileID: 0}
   spatialBlend: 1
   rolloffMode: 1
   maxDistance: 100
+  looping: 0

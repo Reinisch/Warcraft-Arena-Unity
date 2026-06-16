@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea7f28073034bf7b080659998048fca, type: 3}
   m_Name: Player - Controller Definition
   m_EditorClassIdentifier: 
-  jumpSpeed: 5
+  jumpSpeed: 12
   rotateSpeed: 250
-  baseGroundCheckDistance: 0.2

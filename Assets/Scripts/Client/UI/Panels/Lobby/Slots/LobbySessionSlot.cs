@@ -1,55 +1,50 @@
-﻿using System;
-using Bolt.Utils;
-using Core;
+using System;
 using JetBrains.Annotations;
+using Net;
 using TMPro;
-using UdpKit;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Client
 {
+    /// <summary>
+    /// One discoverable session row in the lobby's session list — display + a select/Join button. Mirrors
+    /// <see cref="LobbyMapSlot"/>: instantiated from a disabled prototype and bound to a <see cref="SessionInfo"/>.
+    /// Labels are null-guarded so the prefab can show as much or as little of the session as it likes.
+    /// </summary>
     public class LobbySessionSlot : MonoBehaviour
     {
         [SerializeField, UsedImplicitly] private Button slotButton;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI mapNameLabel;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI serverNameLabel;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI versionNameLabel;
+        [SerializeField, UsedImplicitly] private TextMeshProUGUI playerCountLabel;
 
         public event Action<LobbySessionSlot> EventLobbySessionSlotSelected;
 
-        public UdpSession UdpSession { get; private set; }
+        public SessionInfo Session { get; private set; }
 
-        public void Initialize()
+        public void Initialize(SessionInfo session)
         {
-            slotButton.onClick.AddListener(OnSessionSlotClicked);
+            gameObject.SetActive(true);
 
-            SetSession(null);
+            Session = session;
+            // Tag the name with its source so a single list distinguishes LAN hosts from Unity Lobby hosts.
+            string sourceTag = session.Source == SessionSource.UnityServices ? "Online" : "LAN";
+            if (serverNameLabel != null) serverNameLabel.text = $"{session.HostName} [{sourceTag}]";
+            if (mapNameLabel != null) mapNameLabel.text = session.Map;
+            if (versionNameLabel != null) versionNameLabel.text = session.Version;
+            if (playerCountLabel != null) playerCountLabel.text = $"{session.PlayerCount}/{session.MaxPlayers}";
+
+            slotButton.onClick.AddListener(OnSessionSlotClicked);
         }
 
         public void Deinitialize()
         {
+            Session = default;
             slotButton.onClick.RemoveListener(OnSessionSlotClicked);
         }
 
-        public void SetSession(UdpSession updSession)
-        {
-            UdpSession = updSession;
-
-            if (UdpSession?.GetProtocolToken() is ServerRoomToken serverRoomToken)
-            {
-                mapNameLabel.text = serverRoomToken.Map;
-                serverNameLabel.text = serverRoomToken.Name;
-                versionNameLabel.text = serverRoomToken.Version;
-                gameObject.SetActive(true);
-            }
-            else
-                gameObject.SetActive(false);
-        }
-
-        private void OnSessionSlotClicked()
-        {
-            EventLobbySessionSlotSelected?.Invoke(this);
-        }
+        private void OnSessionSlotClicked() => EventLobbySessionSlotSelected?.Invoke(this);
     }
 }

@@ -1,0 +1,944 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: GameStrings_it
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: it
+  m_SharedData: {fileID: 11400000, guid: 25cb21a9bd13eb74db55cff06d15721b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 26482757632
+    m_Localized: Il giocatore non esiste!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26516312064
+    m_Localized: Bersaglio non valido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26520506368
+    m_Localized: Non puoi lanciare quando sei morto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26520506369
+    m_Localized: Fuori portata
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700672
+    m_Localized: "Il bersaglio \xE8 gi\xE0 morto"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700673
+    m_Localized: Non puoi mirare al giocatore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700674
+    m_Localized: "L'incantesimo non \xE8 ancora pronto"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700675
+    m_Localized: Puoi mirare solo a bersagli morti
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700676
+    m_Localized: Connessione fallita, tempo scaduto!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700677
+    m_Localized: Impossibile connettersi al Master!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700678
+    m_Localized: Impossibile connettersi alla sessione!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700679
+    m_Localized: Connessione fallita, token client non valido!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700680
+    m_Localized: Connessione fallita, versione non valida!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700681
+    m_Localized: Connessione fallita!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700682
+    m_Localized: Connessione fallita, il server ha rifiutato!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700683
+    m_Localized: Connessione fallita, dispositivo non supportato!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700684
+    m_Localized: Connesso!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700685
+    m_Localized: Avvio client...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700686
+    m_Localized: Avvio client fallito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700687
+    m_Localized: Client avviato!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700688
+    m_Localized: Connessione in corso...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700689
+    m_Localized: 'Sessione terminata! Motivo: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700690
+    m_Localized: Avvio server...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700691
+    m_Localized: Avvio server fallito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700692
+    m_Localized: Server avviato!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700693
+    m_Localized: Localizzazione mancante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700694
+    m_Localized: Non puoi lanciare in movimento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700695
+    m_Localized: "Il bersaglio non \xE8 congelato"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700696
+    m_Localized: Silenziato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700697
+    m_Localized: Pacificato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700698
+    m_Localized: Non puoi farlo mentre sei confuso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700699
+    m_Localized: Non puoi farlo mentre stai fuggendo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700700
+    m_Localized: Non puoi farlo mentre sei stordito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700701
+    m_Localized: Assorbito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700702
+    m_Localized: Immune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700703
+    m_Localized: Schivato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700704
+    m_Localized: Eluso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700705
+    m_Localized: Mancato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700706
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700707
+    m_Localized: Flessione
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700708
+    m_Localized: Implora
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700709
+    m_Localized: Inchino
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700710
+    m_Localized: Pollo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700711
+    m_Localized: Piangi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700712
+    m_Localized: Balla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700713
+    m_Localized: Bacio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700714
+    m_Localized: Ridi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700715
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700716
+    m_Localized: Indica
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700717
+    m_Localized: Leggi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700718
+    m_Localized: Ruggito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700719
+    m_Localized: Maleducato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700720
+    m_Localized: Grida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700721
+    m_Localized: Timido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700722
+    m_Localized: Parla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700723
+    m_Localized: Esclamazione
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700724
+    m_Localized: Domanda
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700725
+    m_Localized: Treno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700726
+    m_Localized: Saluta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700727
+    m_Localized: "S\xEC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700728
+    m_Localized: "Accelera il lancio degli incantesimi per {0} sec, aumentando la
+      celerit\xE0 del {1}%, il bonus ai danni critici del {2}% e impedendo che i
+      danni ritardino i tuoi lanci."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700729
+    m_Localized: Vene di Ghiaccio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700730
+    m_Localized: "Stordisce il bersaglio per {0} sec e fa s\xEC che venga considerato
+      congelato per la durata dello stordimento.\n\nUtilizzabile solo su bersagli
+      congelati o mentre l'incantatore \xE8 sotto l'effetto di Dita di Gelo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700731
+    m_Localized: Congelamento Profondo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700732
+    m_Localized: "Infonde brillantezza nel bersaglio, aumentandone l'Intelletto del
+      {0}% per {1} secondi.\n\nSe il bersaglio \xE8 nel tuo gruppo o incursione,
+      tutti i membri saranno influenzati."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700733
+    m_Localized: Intelletto Arcano
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700734
+    m_Localized: "Sopprime gli effetti di rallentamento del movimento e aumenta la
+      velocit\xE0 di movimento del {0}% per {1} sec.\n\nLanciabile mentre un altro
+      incantesimo \xE8 in corso e non influenzato dal tempo di recupero globale."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700735
+    m_Localized: "Velocit\xE0 Fiammeggiante"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700736
+    m_Localized: 'Ti teletrasporta in avanti di {0} metri o fino a un ostacolo, liberandoti
+      da stordimenti e vincoli.
+
+
+      Utilizzabile durante lo stordimento.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894976
+    m_Localized: Traslazione
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894977
+    m_Localized: "I bersagli in un cono davanti a te subiscono ({0}% del Potere Magico)
+      danni da gelo e vengono rallentati del {1}% per {2} sec.\n\nHa una probabilit\xE0
+      del {3:P0} di attivare Dita di Gelo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894978
+    m_Localized: Cono di Freddo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894979
+    m_Localized: "Contrasta l'incantesimo nemico, impedendo il lancio di qualsiasi
+      magia di quella scuola per {0} sec.\n\nLanciabile mentre un altro incantesimo
+      \xE8 in corso e non influenzato dal tempo di recupero globale."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894980
+    m_Localized: Controincantesimo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894981
+    m_Localized: "Colpisce il nemico per ({0}% del Potere Magico) danni da fuoco.\n\nInfigge
+      sempre un colpo critico e attiva Riscaldamento a meno che il bersaglio non
+      sia immune ai colpi critici.\n\nLanciabile mentre un altro incantesimo \xE8
+      in corso e non influenzato dal tempo di recupero globale."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894982
+    m_Localized: Colpo di Fuoco
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894983
+    m_Localized: Evoca una colonna di fuoco che brucia tutti i nemici nell'area per
+      ({0}% del Potere Magico) danni da fuoco e altri ({1}% del Potere Magico) ogni
+      {2} sec per {3} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894984
+    m_Localized: Colonna di Fuoco
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894985
+    m_Localized: Un incantesimo veloce che cura un alleato di ({0}% del Potere Magico).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894986
+    m_Localized: Cura Rapida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894987
+    m_Localized: "Lancia un dardo di gelo al nemico, infliggendo ({0}% del Potere
+      Magico) danni da gelo e rallentando la velocit\xE0 di movimento del {1}% per
+      {2} sec.\n\nHa una probabilit\xE0 del {3:P0} di attivare Dita di Gelo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894988
+    m_Localized: Dardo di Gelo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894989
+    m_Localized: 'Colpisce i nemici entro {0} metri per ({1}% del Potere Magico)
+      danni da gelo e li congela sul posto per {2} sec.
+
+
+      I danni possono interrompere
+      l''effetto di congelamento.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894990
+    m_Localized: Nova del Gelo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894991
+    m_Localized: Compie un miracolo, curando un alleato di ({0}% del Potere Magico).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894992
+    m_Localized: "Parola Sacra: Serenit\xE0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894993
+    m_Localized: Rimuove tutti gli effetti di rallentamento del movimento e tutti
+      gli effetti che causano la perdita di controllo del personaggio durante il
+      combattimento PvP.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894994
+    m_Localized: Medaglione d'Onore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894995
+    m_Localized: "Ti protegge con il ghiaccio, assorbendo il ({0}% della salute totale)
+      dei danni. Dura {1} sec.\n\nFinch\xE9 lo scudo regge, i lanci non saranno interrotti."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894996
+    m_Localized: Barriera di Ghiaccio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894997
+    m_Localized: Ti racchiude in un blocco di ghiaccio, proteggendoti da tutti gli
+      attacchi e danni per {0} sec, ma in quel periodo non puoi attaccare, muoverti
+      o lanciare incantesimi.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894998
+    m_Localized: Blocco di Ghiaccio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894999
+    m_Localized: "Lancia rapidamente un frammento di ghiaccio al bersaglio, infliggendo
+      ({0}% del Potere Magico) danni da gelo.\n\nI danni di Lancia di Ghiaccio sono
+      quadruplicati contro i bersagli congelati. I bersagli sono considerati congelati
+      anche se l'incantatore \xE8 sotto l'effetto di Dita di Gelo.\n\nI danni aumentano
+      del {1}% quando si consuma una carica di Dita di Gelo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895000
+    m_Localized: Lancia di Ghiaccio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895001
+    m_Localized: 'Crea un turbine di vento gelido attorno al nemico, infliggendo
+      ({0}% del Potere Magico) danni da gelo al bersaglio e a tutti gli altri nemici
+      entro {1} metri, congelandoli sul posto per {2} sec.
+
+
+      I danni possono
+      interrompere l''effetto di congelamento.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895002
+    m_Localized: Nova di Ghiaccio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895003
+    m_Localized: 'Uccide istantaneamente il bersaglio attuale.
+
+
+      Incantesimo
+      temporaneo di debug, utilizzabile solo contro le creature.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895004
+    m_Localized: Uccidi Creatura
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895005
+    m_Localized: 'Uccide istantaneamente l''incantatore.
+
+
+      Incantesimo temporaneo
+      di debug.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895006
+    m_Localized: Suicidio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895007
+    m_Localized: 'Il bersaglio diventa una bomba vivente, subendo ({0}% del Potere
+      Magico) danni da fuoco ogni {4} sec per {1} sec, per poi esplodere infliggendo
+      altri ({2}% del Potere Magico) danni da fuoco al bersaglio e a tutti i nemici
+      entro {3} metri.
+
+
+      L''applicazione iniziale infligge danni immediati.
+      Il timer dell''esplosione viene resettato al rinnovo.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895008
+    m_Localized: Bomba Vivente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895009
+    m_Localized: 'Riduce tutti i danni subiti da un bersaglio amichevole del {0}%
+      per {1} sec.
+
+
+      Lanciabile durante lo stordimento.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895010
+    m_Localized: Soppressione del Dolore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895011
+    m_Localized: "Trasforma il nemico in una pecora, facendolo vagare incapace di
+      agire per {0} sec. Durante questo tempo, la vittima non pu\xF2 agire.\n\nI
+      danni interrompono l'effetto."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895012
+    m_Localized: Polimorfismo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895013
+    m_Localized: All'attivazione, il tuo prossimo incantesimo da mago con un tempo
+      di lancio inferiore a 10 sec diventa istantaneo.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895014
+    m_Localized: Presenza di Spirito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895015
+    m_Localized: 'Lancia un immenso masso infuocato che infligge ({0}% del Potere
+      Magico) danni da fuoco e altri ({1}% del Potere Magico) ogni {2} sec per {3}
+      sec.
+
+
+      Ottenere due colpi critici diretti di fila rende istantaneo il
+      prossimo Piroscoppio.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895016
+    m_Localized: Piroscoppio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895017
+    m_Localized: Infonde fede nella Luce nel bersaglio, curandolo istantaneamente
+      di ({0}% del Potere Magico) e poi di altri ({1}% del Potere Magico) ogni {2}
+      sec per {3} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895018
+    m_Localized: Rinnovamento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895019
+    m_Localized: 'L''incantatore risorge con il 50% della salute.
+
+
+      Utilizzabile
+      solo da morto.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895020
+    m_Localized: Auto-Resurrezione
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895021
+    m_Localized: "Brucia un nemico per ({0}% del Potere Magico) danni da fuoco.\n\nLanciabile
+      in movimento.\n\nPu\xF2 attivare Riscaldamento dopo 2 colpi critici di fila."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895022
+    m_Localized: Bruciatura
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895023
+    m_Localized: '{0} m di portata'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895024
+    m_Localized: '{0} sec di recupero'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895025
+    m_Localized: Istantaneo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895026
+    m_Localized: 'Lancio: {0} sec'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895027
+    m_Localized: Generale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895028
+    m_Localized: Incantesimo non conosciuto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895029
+    m_Localized: "Ti trasforma in forma felina, aumentando la velocit\xE0 di movimento
+      del {0}%, garantendo protezione dagli effetti di Polimorfismo e riducendo i
+      danni da caduta.\n\nLa mutazione ti libera dagli effetti di rallentamento del
+      movimento."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895030
+    m_Localized: Forma Felina
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895031
+    m_Localized: Druido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895032
+    m_Localized: Mago
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895033
+    m_Localized: "Graffia il bersaglio infliggendo ({0}% del Potere d'Attacco) danni
+      da sanguinamento e altri ({1}% del Potere d'Attacco) ogni {2} sec per {3} sec.\n\nRiduce
+      la velocit\xE0 di movimento del bersaglio del {4}%.\n\nFornisce 1 punto combo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895034
+    m_Localized: Graffio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895035
+    m_Localized: "Sbrana il bersaglio, infliggendo ({0}% del Potere d'Attacco + 20)
+      danni fisici.\n\nInfigge il 50% di danni in pi\xF9 contro i bersagli sanguinanti.\n\nFornisce
+      2 punti combo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895036
+    m_Localized: Sbranamento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895037
+    m_Localized: "Colpisce i nemici vicini, infliggendo ({0}% del Potere d'Attacco)
+      danni fisici.\n\nInfigge il 33% di danni in pi\xF9 contro i bersagli sanguinanti.\n\nFornisce
+      1 punto combo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895038
+    m_Localized: Spazzata
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895039
+    m_Localized: Nessun punto combo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895040
+    m_Localized: "Mossa finale che infligge danni per ogni punto combo e consuma
+      fino a 25 energia extra per aumentare i danni fino al 100%.\n\nSui bersagli
+      con meno del 25% di salute, Morso Feroce rinfresca la durata di Squarcio.\n\nProbabilit\xE0
+      di colpo critico raddoppiata contro i bersagli sanguinanti.\n\n  1 punto: [({0}%
+      del PA) * 1] danni\n  2 punti: [({0}% del PA) * 2] danni\n  3 punti: [({0}%
+      del PA) * 3] danni\n  4 punti: [({0}% del PA) * 4] danni\n  5 punti: [({0}%
+      del PA) * 5] danni"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895041
+    m_Localized: Morso Feroce
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089280
+    m_Localized: "Mossa finale che infligge danni da sanguinamento ogni {1} sec.
+      Dura di pi\xF9 per ogni punto combo.\n\n  1 punto: ({0}% del PA) per 8 sec\n 
+      2 punti: ({0}% del PA) per 12 sec\n  3 punti: ({0}% del PA) per 16 sec\n  4
+      punti: ({0}% del PA) per 20 sec\n  5 punti: ({0}% del PA) per 24 sec"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089281
+    m_Localized: Squarcio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089282
+    m_Localized: Riduce tutti i danni subiti del {0}% per {1} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089283
+    m_Localized: Istinto di Sopravvivenza
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089284
+    m_Localized: Energia insufficiente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089285
+    m_Localized: Salute insufficiente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089286
+    m_Localized: Mana insufficiente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089287
+    m_Localized: Rabbia insufficiente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089288
+    m_Localized: "Aumenta la velocit\xE0 di movimento del {0}% per {1} sec.\n\nNon
+      interrompe il camuffamento."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089289
+    m_Localized: Scatto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089290
+    m_Localized: Ripristina istantaneamente {0} energia e aumenta i danni di tutti
+      i tuoi attacchi del {1}% per la loro intera durata. Dura {2} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089291
+    m_Localized: Furia della Tigre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089292
+    m_Localized: 'Dilania il bersaglio infliggendo ({0}% del Potere d''Attacco) danni
+      fisici.
+
+
+      Infigge il 20% di danni extra contro i bersagli sanguinanti.
+
+
+      Genera
+      {1} energia.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089293
+    m_Localized: Dilaniamento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089294
+    m_Localized: "Mossa finale che infligge danni fisici e stordisce il bersaglio.
+      Danni e durata aumentano per punto combo:\n\n  1 punto: {0}%*1 PA danni, 1
+      sec\n  2 punti: {0}%*2 PA danni, 2 sec\n  3 punti: {0}%*3 PA danni, 3 sec\n 
+      4 punti: {0}%*4 PA danni, 4 sec\n  5 punti: {0}%*5 PA danni, 5 sec"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089295
+    m_Localized: Mutilazione
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089296
+    m_Localized: Da 1 a 5 punti combo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089297
+    m_Localized: '{0} Energia'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089298
+    m_Localized: '{0}% dell''energia massima'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089299
+    m_Localized: '{0} Mana'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089300
+    m_Localized: '{0}% del mana base'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089301
+    m_Localized: '{0} Rabbia'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089302
+    m_Localized: '{0}% della rabbia massima'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089303
+    m_Localized: "Mossa finale che infigge danni immediati e applica Squarcio a tutti
+      i nemici entro {0} metri. Dura di pi\xF9 per ogni punto combo.\n\n  1 punto:
+      ({1}% del PA) * 1 pi\xF9 Squarcio per 4 sec\n  2 punti: ({1}% del PA) * 2 pi\xF9
+      Squarcio per 6 sec\n  3 punti: ({1}% del PA) * 3 pi\xF9 Squarcio per 8 sec\n 
+      4 punti: ({1}% del PA) * 4 pi\xF9 Squarcio per 10 sec\n  5 punti: ({1}% del
+      PA) * 5 pi\xF9 Squarcio per 12 sec"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089304
+    m_Localized: Ira Primordiale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089305
+    m_Localized: 'Colpisce i nemici vicini infliggendo ({0}% del Potere d''Attacco)
+      danni da sanguinamento e altri ({1}% del Potere d''Attacco) ogni {2} sec per
+      {3} sec.
+
+
+      Fornisce 1 punto combo.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089306
+    m_Localized: Presa Ferale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089307
+    m_Localized: Blocca il bersaglio sul posto per {0} sec. I danni possono interrompere
+      l'effetto.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089308
+    m_Localized: Radici Intrecciate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089309
+    m_Localized: "Mossa finale che aumenta i danni del {0}% e il tasso di rigenerazione
+      dell'energia del {1}% mentre sei in forma felina. Dura di pi\xF9 per ogni punto
+      combo:\n\n  1 punto: 12 secondi\n  2 punti: 18 secondi\n  3 punti: 24 secondi\n 
+      4 punti: 30 secondi\n  5 punti: 36 secondi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089310
+    m_Localized: Ruggito Selvaggio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089311
+    m_Localized: "Riduce il costo in energia di tutte le abilit\xE0 in forma felina
+      del {0}% e aumenta l'energia massima di {1} per {2} sec."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089312
+    m_Localized: Berserk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089313
+    m_Localized: Cura il bersaglio di ({0}% del Potere Magico) ogni {1} sec per {2}
+      sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089314
+    m_Localized: Rinvigorimento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089315
+    m_Localized: Cura un bersaglio amichevole di ({0}% del Potere Magico) e poi di
+      altri ({1}% del Potere Magico) ogni {2} sec per {3} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089316
+    m_Localized: Ricrescita
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089317
+    m_Localized: Non utilizzabile durante la mutazione
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089318
+    m_Localized: Utilizzabile solo se mutato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089319
+    m_Localized: Non utilizzabile in questa forma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089320
+    m_Localized: "Emette un ruggito selvaggio che aumenta la velocit\xE0 di movimento
+      di tutti i giocatori amichevoli entro {2} metri del {0}% per {1} sec."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089321
+    m_Localized: Ruggito Impetuoso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089322
+    m_Localized: Camuffamento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089323
+    m_Localized: Attiva la forma felina e ti camuffa fino all'annullamento.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089324
+    m_Localized: Non utilizzabile in combattimento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089325
+    m_Localized: Caduta Lenta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089326
+    m_Localized: "Rallenta la velocit\xE0 di caduta di un membro del gruppo per {0}
+      sec."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089327
+    m_Localized: "Invisibilit\xE0 Superiore"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089328
+    m_Localized: 'Ti rende invisibile e non bersagliabile per {0} sec, rimuovendo
+      tutta la minaccia. Qualsiasi azione annulla l''effetto.
+
+
+      Subisci il
+      {1}% di danni in meno mentre sei invisibile.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089329
+    m_Localized: Carica Selvatica
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089330
+    m_Localized: 'Carica un nemico, immobilizzandolo per {0} sec.
+
+
+      Aumenta
+      l''energia di {1}.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089331
+    m_Localized: Balzo Ferale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089332
+    m_Localized: "Ti fa balzare dietro un nemico, stordendolo per {0} sec.\n\nI nemici
+      storditi hanno la velocit\xE0 ridotta del {1}%."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089333
+    m_Localized: Craniata
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089334
+    m_Localized: Ti lanci contro il bersaglio colpendolo al cranio, interrompendo
+      il lancio di incantesimi e impedendo il lancio di qualsiasi magia di quella
+      scuola per {0} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089335
+    m_Localized: Ciclone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089336
+    m_Localized: Lancia in aria il bersaglio nemico, disorientandolo ma rendendolo
+      invulnerabile per un massimo di {0} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089337
+    m_Localized: Squarcia e Laceria
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089338
+    m_Localized: Applica istantaneamente Graffio e Squarcio al bersaglio.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2083855354814464
+    m_Localized: Lobby
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

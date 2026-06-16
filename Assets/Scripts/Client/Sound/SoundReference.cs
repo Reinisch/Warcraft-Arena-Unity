@@ -1,66 +1,69 @@
-﻿using Common;
+using Common;
 using Core;
 using JetBrains.Annotations;
 using System.Collections.Generic;
+using Client.Sound;
 using UnityEngine;
-using UnityEngine.Audio;
+using Zenject;
 
 namespace Client
 {
-    [CreateAssetMenu(fileName = "Sound Reference", menuName = "Game Data/Scriptable/Sound", order = 4)]
-    public class SoundReference : ScriptableReferenceClient
+    public class SoundReference : SoundModule
     {
-        [SerializeField, UsedImplicitly] private string soundContainerTag;
-        [SerializeField, UsedImplicitly] private BalanceReference balance;
+        [Inject] private BalanceReference balance;
+        [Inject] private EventBus eventBus;
+
         [SerializeField, UsedImplicitly] private UnitSoundKitContainer unitSoundKits;
         [SerializeField, UsedImplicitly] private SpellSoundInfoContainer spellSounds;
-        [SerializeField, UsedImplicitly] private SoundGroupSettingsContainer soundGroups;
         [SerializeField, UsedImplicitly] private UnitSoundEmoteTypeDictionary unitSoundsByEmoteType;
 
-        public Transform Container { get; private set; }
+        private readonly Dictionary<SpellInfo, SpellSoundInfo> spellSoundInfos = new();
+
         public IReadOnlyDictionary<EmoteType, UnitSounds> UnitSoundByEmoteType => unitSoundsByEmoteType.ValuesByKey;
 
         protected override void OnRegistered()
         {
             base.OnRegistered();
 
-            Container = GameObject.FindGameObjectWithTag(soundContainerTag).transform;
-
-            soundGroups.Register();
             spellSounds.Register();
+            foreach (SpellSoundInfo spellSetting in spellSounds.ItemList)
+                spellSoundInfos[spellSetting.SpellInfo] = spellSetting;
+
             unitSoundsByEmoteType.Register();
             unitSoundKits.Register();
+
+            eventBus.RegisterEvent<Unit, int, SpellProcessingToken>(GameEvents.SpellLaunched, OnSpellLaunch);
+            eventBus.RegisterEvent<Unit, int>(GameEvents.SpellHit, OnSpellHit);
         }
 
         protected override void OnUnregister()
         {
+            eventBus.UnregisterEvent<Unit, int, SpellProcessingToken>(GameEvents.SpellLaunched, OnSpellLaunch);
+            eventBus.UnregisterEvent<Unit, int>(GameEvents.SpellHit, OnSpellHit);
+
             unitSoundKits.Unregister();
             unitSoundsByEmoteType.Unregister();
-
+            spellSoundInfos.Clear();
             spellSounds.Unregister();
-            soundGroups.Unregister();
-
-            Container = null;
 
             base.OnUnregister();
         }
-
-        protected override void OnWorldStateChanged(World world, bool created)
+        
+        protected override void QueueForInject(DiContainer container)
         {
-            if (created)
-            {
-                base.OnWorldStateChanged(world, true);
+            base.QueueForInject(container);
 
-                EventHandler.RegisterEvent<Unit, int, SpellProcessingToken>(GameEvents.SpellLaunched, OnSpellLaunch);
-                EventHandler.RegisterEvent<Unit, int>(GameEvents.SpellHit, OnSpellHit);
-            }
-            else
-            {
-                EventHandler.UnregisterEvent<Unit, int, SpellProcessingToken>(GameEvents.SpellLaunched, OnSpellLaunch);
-                EventHandler.UnregisterEvent<Unit, int>(GameEvents.SpellHit, OnSpellHit);
+            unitSoundKits.QueueForInject(container);
+            spellSounds.QueueForInject(container);
+        }
 
-                base.OnWorldStateChanged(world, false);
-            }
+        public void OnProjectileImpact(Projectile projectile)
+        {
+            if (!balance.SpellInfosById.TryGetValue(projectile.HitSpell.Id, out SpellInfo spellInfo))
+                return;
+
+            if (spellSoundInfos.TryGetValue(spellInfo, out SpellSoundInfo spellSoundSettings))
+                spellSoundSettings.PlayAtPoint(projectile.Transform.position, SpellSoundEntry.UsageType.Impact);
         }
 
         private void OnSpellLaunch(Unit caster, int spellId, SpellProcessingToken processingToken)
@@ -68,7 +71,7 @@ namespace Client
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
-            if (spellSounds.SoundInfos.TryGetValue(spellInfo, out SpellSoundInfo spellSoundSettings))
+            if (spellSoundInfos.TryGetValue(spellInfo, out SpellSoundInfo spellSoundSettings))
             {
                 if (spellInfo.ExplicitTargetType == SpellExplicitTargetType.Destination)
                     spellSoundSettings.PlayAtPoint(processingToken.Destination, SpellSoundEntry.UsageType.Destination);
@@ -78,51 +81,14 @@ namespace Client
                         : caster.Position, SpellSoundEntry.UsageType.Cast);
             }
         }
-
+        
         private void OnSpellHit(Unit target, int spellId)
         {
             if (!balance.SpellInfosById.TryGetValue(spellId, out SpellInfo spellInfo))
                 return;
 
-            if (spellSounds.SoundInfos.TryGetValue(spellInfo, out SpellSoundInfo spellSoundSettings))
+            if (spellSoundInfos.TryGetValue(spellInfo, out SpellSoundInfo spellSoundSettings))
                 spellSoundSettings.PlayAtPoint(target.Position, SpellSoundEntry.UsageType.Impact);
-        }
-
-        public void Play(AudioClip clip, SoundGroupSettings settings, float volumeModifier = 1.0f, float delay = 0.0f)
-        {
-            if (soundGroups.TryGetSource(settings, out AudioSource source))
-            {
-                if (delay > 0)
-                {
-                    source.volume = volumeModifier;
-                    source.clip = clip;
-                    source.PlayDelayed(delay);
-                }
-                else
-                    source.PlayOneShot(clip, volumeModifier);
-            }
-            else
-                Assert.Fail($"Sound settings {settings.name} are not initialized and clip: {clip.name} won't play!");
-        }
-
-        public void PlayAtPoint(AudioClip clip, SoundGroupSettings settings, Vector3 position, float volumeModifier = 1.0f, float delay = 0.0f)
-        {
-            if (soundGroups.TryGetSource(settings, out AudioSource source))
-            {
-                AudioSource pointSource = Instantiate(source, Container);
-                pointSource.transform.position = position;
-                pointSource.volume = volumeModifier;
-                pointSource.clip = clip;
-
-                if (delay > 0)
-                    pointSource.PlayDelayed(delay);
-                else
-                    pointSource.Play();
-
-                Destroy(pointSource.gameObject, clip.length * (Time.timeScale >= 0.01f ? Time.timeScale : 0.01f));
-            }
-            else
-                Assert.Fail($"Sound settings {settings.name} are not initialized and clip: {clip.name} won't play!");
         }
     }
 }

@@ -1,26 +1,29 @@
 ﻿using System.Collections.Generic;
+using Zenject;
 
 namespace Core
 {
-    internal class SpellManager
+    public class SpellManager
     {
-        private readonly World world;
-        private readonly List<Spell> activeSpells = new List<Spell>();
-        private readonly List<Spell> spellsToRemove = new List<Spell>();
-        private readonly List<Spell> spellsToAdd = new List<Spell>();
+        [Inject]
+        private UnitManager unitManager;
+
+        private readonly List<Spell> activeSpells = new();
+        private readonly List<Spell> spellsToRemove = new();
+        private readonly List<Spell> spellsToAdd = new();
 
         private bool IsProcessing { get; set; }
 
-        internal SpellManager(World world)
+        [Inject]
+        private void Setup()
         {
-            this.world = world;
+            unitManager.EventEntityDetach += OnEntityDetach;
 
-            world.UnitManager.EventEntityDetach += OnEntityDetach;
         }
 
         internal void Dispose()
         {
-            world.UnitManager.EventEntityDetach -= OnEntityDetach;
+            unitManager.EventEntityDetach -= OnEntityDetach;
 
             activeSpells.ForEach(spell => spell.Dispose());
             spellsToRemove.ForEach(spell => spell.Dispose());

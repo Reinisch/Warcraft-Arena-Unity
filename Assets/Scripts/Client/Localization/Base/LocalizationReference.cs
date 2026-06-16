@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Common;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 namespace Client.Localization
 {
@@ -35,8 +37,20 @@ namespace Client.Localization
 
         private void LoadLanguage(LocalizedLanguageType languageType)
         {
-            Resources.Load<LocalizedLanguage>($"Languages/{languageType}").Localize();
-            Resources.UnloadUnusedAssets();
+            string localeCode = languageType switch
+            {
+                LocalizedLanguageType.English => "en",
+                LocalizedLanguageType.Spanish => "es",
+                LocalizedLanguageType.German => "de",
+                LocalizedLanguageType.Italian => "it",
+                _ => "en"
+            };
+
+            var locale = LocalizationSettings.AvailableLocales.GetLocale(localeCode);
+            if (locale != null)
+            {
+                LocalizationSettings.SelectedLocale = locale;
+            }
 
             foreach (var behaviour in UsedBehaviours)
                 behaviour.Localize();

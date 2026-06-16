@@ -1,36 +1,23 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Client.UI
 {
-    public abstract class UIPanel : MonoBehaviour
+    public abstract class UIPanel: MonoBehaviour
     {
-        [SerializeField, UsedImplicitly] private CanvasGroup panelCanvasGroup;
+        [SerializeField, UsedImplicitly]
+        private CanvasGroup panelCanvasGroup;
 
-        protected UIPanelController PanelController { get; private set; }
+        public bool IsShown => gameObject.activeSelf;
 
-        internal void Initialize(UIPanelController panelController)
-        {
-            PanelController = panelController;
-
-            PanelInitialized();
-        }
-
-        internal void Deinitialize()
-        {
-            PanelDeinitialized();
-
-            PanelController = null;
-        }
-
-        internal void Show()
+        public void Show()
         {
             gameObject.SetActive(true);
 
             PanelShown();
         }
 
-        internal void Hide()
+        public void Hide()
         {
             gameObject.SetActive(false);
 
@@ -42,17 +29,19 @@ namespace Client.UI
             PanelUpdated(deltaTime);
         }
 
-        protected void UpdateInputState(bool interactable)
+        protected void ModifyInteractable(bool interactable)
         {
             panelCanvasGroup.interactable = interactable;
         }
 
         protected virtual void PanelInitialized()
         {
+            gameObject.SetActive(false);
         }
 
         protected virtual void PanelDeinitialized()
         {
+            gameObject.SetActive(false);
         }
 
         protected virtual void PanelShown()
@@ -65,6 +54,23 @@ namespace Client.UI
 
         protected virtual void PanelUpdated(float deltaTime)
         {
+        }
+    }
+
+    public abstract class UIPanel<T> : UIPanel where T : UIScreen<T>
+    {
+        protected T Screen { get; private set; }
+
+        internal void Register(T screen)
+        {
+            Screen = screen;
+
+            PanelInitialized();
+        }
+
+        internal void Unregister()
+        {
+            PanelDeinitialized();
         }
     }
 }

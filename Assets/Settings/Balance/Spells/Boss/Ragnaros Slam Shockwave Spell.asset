@@ -56,7 +56,7 @@ MonoBehaviour:
   maxRangeHostile: 300
   maxRangeFriend: 300
   speed: 30
-  delay: 1500
+  delay: 900
   spellEffectInfos:
   - {fileID: -2247479043734125500}
   spellPowerCostInfos: []

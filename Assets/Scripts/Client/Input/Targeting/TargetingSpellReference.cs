@@ -1,23 +1,23 @@
-﻿using Common;
+using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using Zenject;
 
 namespace Client
 {
-    /// <summary>
-    /// Handles client-side target selection for destination spells.
-    /// </summary>
-    [CreateAssetMenu(fileName = "Targeting Spell Reference", menuName = "Game Data/Scriptable/Spell Targeting", order = 11)]
     public class TargetingSpellReference : ScriptableReferenceClient
     {
-        [SerializeField, UsedImplicitly] private InputReference input;
-        [SerializeField, UsedImplicitly] private CameraReference cameraReference;
-        [SerializeField, UsedImplicitly] private Projector selectionCirclePrototype;
+        [Inject] private InputReference input;
+        [Inject] private CameraReference cameraReference;
+        [SerializeField, UsedImplicitly] private SpellInfo shootingSpellInfo;
+        [SerializeField, UsedImplicitly] private DecalProjector selectionCirclePrototype;
         [SerializeField, UsedImplicitly] private Color validColor;
         [SerializeField, UsedImplicitly] private Color invalidColor;
 
-        private Projector selectionCircle;
+        private DecalProjector selectionCircle;
+        private Material selectionCircleMaterial;
         private SpellInfo targetingSpellInfo;
 
         public bool IsTargeting => targetingSpellInfo != null;
@@ -32,18 +32,20 @@ namespace Client
         protected override void OnUnregister()
         {
             selectionCircle = null;
+            selectionCircleMaterial = null;
             targetingSpellInfo = null;
 
             base.OnUnregister();
         }
 
-        protected override void OnControlStateChanged(Player player, bool underControl)
+        public override void OnControlStateChanged(bool underControl)
         {
             if (underControl)
             {
-                base.OnControlStateChanged(player, true);
+                base.OnControlStateChanged(true);
 
                 selectionCircle = GameObjectPool.Take(selectionCirclePrototype);
+                selectionCircleMaterial = selectionCircle.material;
                 StopTargeting();
             }
             else
@@ -51,8 +53,9 @@ namespace Client
                 StopTargeting();
                 GameObjectPool.Return(selectionCircle, false);
                 selectionCircle = null;
+                selectionCircleMaterial = null;
 
-                base.OnControlStateChanged(player, false);
+                base.OnControlStateChanged(false);
             }
         }
 
@@ -60,29 +63,52 @@ namespace Client
         {
             base.OnUpdate(deltaTime);
 
-            if (targetingSpellInfo == null)
-                return;
+            bool usingDestination = HandleDestinationSpells();
 
-            if (Input.GetMouseButton(1))
-                StopTargeting();
-            else if (Input.GetMouseButton(0))
+            if (!usingDestination)
             {
-                input.CastSpellWithDestination(targetingSpellInfo.Id, selectionCircle.transform.position);
-
-                StopTargeting();
+                HandleShootingSpells();
             }
-            else
-                UpdateCircle();
+
+            bool HandleDestinationSpells()
+            {
+                if (targetingSpellInfo == null)
+                    return false;
+
+                if (input.RightClickPressed)
+                    StopTargeting();
+                else if (input.LeftClickPressed)
+                {
+                    input.CastSpellWithDestination(targetingSpellInfo.Id, selectionCircle.transform.position);
+
+                    StopTargeting();
+                }
+                else
+                    UpdateCircle();
+
+                return true;
+            }
+
+            void HandleShootingSpells()
+            {
+                if (shootingSpellInfo == null || Player is not { MovementMode: MovementMode.Shooter } || input.IsAlternativeMode)
+                    return;
+
+                if (input.LeftClickPressed)
+                {
+                    input.CastSpellWithTargetingOptions(shootingSpellInfo.Id);
+                }
+            }
         }
 
         private void UpdateCircle()
         {
-            Ray ray = cameraReference.WarcraftCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cameraReference.WarcraftCamera.Camera.ScreenPointToRay(input.MousePosition);
             if (Physics.Raycast(ray, out var hit, float.MaxValue, PhysicsReference.Mask.Ground))
             {
                 selectionCircle.enabled = true;
                 selectionCircle.transform.position = hit.point;
-                selectionCircle.material.color = Vector3.Distance(Player.Position, hit.point) < targetingSpellInfo.GetMaxRange(false) ? validColor : invalidColor;
+                selectionCircleMaterial.color = Vector3.Distance(Player.Position, hit.point) < targetingSpellInfo.GetMaxRange(false) ? validColor : invalidColor;
             }
             else
                 selectionCircle.enabled = false;
@@ -98,7 +124,7 @@ namespace Client
         {
             Assert.AreEqual(spellInfo.ExplicitTargetType, SpellExplicitTargetType.Destination);
 
-            selectionCircle.orthographicSize = spellInfo.MaxTargetingRadius;
+            selectionCircle.size = new Vector3(spellInfo.MaxTargetingRadius * 2, selectionCircle.size.y, spellInfo.MaxTargetingRadius * 2);
             targetingSpellInfo = spellInfo;
             UpdateCircle();
         }

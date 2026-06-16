@@ -1,8 +1,11 @@
-﻿namespace Core
+using Common;
+
+namespace Core
 {
     internal abstract class EntityAttribute<TValueType>
     {
         protected readonly Entity Entity;
+        protected readonly EventBus EventBus;
 
         protected EntityAttributes AttributeType;
         protected TValueType BaseValue;
@@ -15,9 +18,10 @@
         public TValueType Max => MaxValue;
         public TValueType Min => MinValue;
 
-        protected EntityAttribute(Entity entity, TValueType baseValue, TValueType maxValue, EntityAttributes attributeType)
+        protected EntityAttribute(Entity entity, EventBus eventBus, TValueType baseValue, TValueType maxValue, EntityAttributes attributeType)
         {
             Entity = entity;
+            EventBus = eventBus;
             BaseValue = baseValue;
             MaxValue = maxValue;
             AttributeType = attributeType;

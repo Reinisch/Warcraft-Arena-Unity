@@ -1,13 +1,17 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
+using Zenject;
 
 namespace Core
 {
     public abstract class UnitAI : UnitBehaviour
     {
-        [SerializeField, UsedImplicitly] private NavMeshAgent navmeshAgent;
-        [SerializeField, UsedImplicitly] private BalanceReference balance;
+        [SerializeField, UsedImplicitly]
+        private NavMeshAgent navmeshAgent;
+
+        [Inject]
+        private DiContainer diContainer;
 
         private IUnitAIModel unitAIModel;
 
@@ -15,6 +19,9 @@ namespace Core
         public override bool HasServerLogic => true;
 
         public Vector3 NextPosition { get => navmeshAgent.nextPosition; set => navmeshAgent.nextPosition = value; }
+        // Steering direction toward the current path target (independent of updatePosition) — used by the
+        // character controller to face AI-driven movement, since the KCC owns transform rotation.
+        public Vector3 DesiredVelocity => navmeshAgent.desiredVelocity;
         public float Speed { get => navmeshAgent.speed; set => navmeshAgent.speed = value; }
         public float AngularSpeed { get => navmeshAgent.angularSpeed; set => navmeshAgent.angularSpeed = value; }
         public bool UpdateRotation { get => navmeshAgent.updateRotation; set => navmeshAgent.updateRotation = value; }
@@ -23,6 +30,7 @@ namespace Core
         public bool HasPendingPath => navmeshAgent.pathPending;
         public bool HasPath => navmeshAgent.hasPath;
         public float RemainingDistance => navmeshAgent.remainingDistance;
+        public DiContainer DiContainer => diContainer;
 
         protected override void OnAttach()
         {
@@ -30,10 +38,10 @@ namespace Core
 
             navmeshAgent.enabled = false;
 
-            if (balance.UnitInfoAIById.TryGetValue(Unit.UnitCreateToken.OriginalAIInfoId, out UnitInfoAI unitInfoAI))
+            if (Unit.Balance.UnitInfoAIById.TryGetValue(Unit.CreationToken.OriginalAIInfoId, out UnitInfoAI unitInfoAI))
             {
                 unitAIModel = unitInfoAI.CreateAI();
-                unitAIModel.Register(Unit);
+                unitAIModel.Register(this);
             }
         }
 

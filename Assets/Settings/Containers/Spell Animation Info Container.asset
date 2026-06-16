@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7e28a551d5b4924197af93d30d01174, type: 3}
   m_Name: Spell Animation Info Container
   m_EditorClassIdentifier: 
-  spellContainer: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
-  defaultAnimation: {fileID: 11400000, guid: f277735a795dcbe4e91d1f99ac1ba91d, type: 2}
-  animationInfos:
+  items:
   - {fileID: 11400000, guid: 36be365cd6f294648b74eb222ef6a857, type: 2}
   - {fileID: 11400000, guid: e1f4d6a9ebe5ae34e83cb7bf7ed9c534, type: 2}
   - {fileID: 11400000, guid: 6536d43185dba034b8ee0582c4de7704, type: 2}
   - {fileID: 11400000, guid: ebf380422cf597f48bb43476e232bc10, type: 2}
   - {fileID: 11400000, guid: 519d73b29f6e93746913efd5beaf03ab, type: 2}
+  spellContainer: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  defaultAnimation: {fileID: 11400000, guid: f277735a795dcbe4e91d1f99ac1ba91d, type: 2}

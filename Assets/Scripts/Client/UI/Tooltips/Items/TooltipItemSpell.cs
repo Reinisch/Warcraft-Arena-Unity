@@ -5,13 +5,14 @@ using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Client
 {
     public sealed class TooltipItemSpell : TooltipItem<SpellInfo>
     {
-        [SerializeField, UsedImplicitly] private RenderingReference rendering;
-        [SerializeField, UsedImplicitly] private LocalizationReference localization;
+        [Inject] private RenderingReference rendering;
+        [Inject] private LocalizationReference localization;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellDescription;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellName;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellRange;

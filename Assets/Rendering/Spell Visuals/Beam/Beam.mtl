@@ -1,0 +1,52 @@
+#
+# mtl file for Beam.obj obj file
+#
+
+newmtl world_azeroth_zulgurub_passivedoodads_cauldrons_cauldronbeam_fire_base.m2_Geoset_000_Lum_Dbl
+illum 2
+Kd 0.000000 0.000000 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.796079 0.129412 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd Beam_t_star2_bw.png
+newmtl world_azeroth_zulgurub_passivedoodads_cauldrons_cauldronbeam_fire_base.m2_Geoset_001_Lum_Dbl
+illum 2
+Kd 0.000000 0.000000 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.796079 0.129412 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd Beam_t_star2_bw.png
+newmtl world_azeroth_zulgurub_passivedoodads_cauldrons_cauldronbeam_fire_base.m2_Geoset_002_Lum_Dbl
+illum 2
+Kd 0.000000 0.000000 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 0.478431 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd Beam_grad2d.png
+newmtl world_azeroth_zulgurub_passivedoodads_cauldrons_cauldronbeam_fire_base.m2_Geoset_003_Lum
+illum 2
+Kd 0.000000 0.000000 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 0.211765 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd Beam_grad2c2.png
+newmtl world_azeroth_zulgurub_passivedoodads_cauldrons_cauldronbeam_fire_base.m2_Geoset_004_Lum
+illum 2
+Kd 0.000000 0.000000 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.984314 0.392157 0.156863
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd Beam_t_vfx_gradient.png
+newmtl world_azeroth_zulgurub_passivedoodads_cauldrons_cauldronbeam_fire_base.m2_Geoset_005_Lum_Dbl
+illum 2
+Kd 0.000000 0.000000 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.937255 0.474510 0.098039
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd Beam_t_vfx_fire_anim02_128_full_desat.png

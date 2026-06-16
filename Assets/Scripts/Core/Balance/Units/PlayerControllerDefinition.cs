@@ -10,11 +10,8 @@ namespace Core
         private float jumpSpeed = 4.0f;
         [SerializeField, UsedImplicitly]
         private float rotateSpeed = 250.0f;
-        [SerializeField, UsedImplicitly]
-        private float baseGroundCheckDistance = 0.2f;
 
         public float JumpSpeed => jumpSpeed;
         public float RotateSpeed => rotateSpeed;
-        public float BaseGroundCheckDistance => baseGroundCheckDistance;
     }
 }

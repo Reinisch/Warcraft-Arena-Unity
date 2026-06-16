@@ -1,32 +1,19 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Client.UI;
-using Common;
-using Core;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.UI;
+using Zenject;
 
 namespace Client
 {
-    public class BattleHudPanel : UIWindow<BattleScreen>
+    public class BattleHudPanel : UIPanel<BattleScreen>
     {
-        public struct RegisterToken : IPanelRegisterToken<BattleHudPanel>
-        {
-            public void Initialize(BattleHudPanel panel)
-            {
-                panel.gameObject.SetActive(false);
-            }
-        }
-
-        public struct UnregisterToken : IPanelUnregisterToken<BattleHudPanel>
-        {
-            public void Deinitialize(BattleHudPanel panel)
-            {
-                panel.gameObject.SetActive(false);
-            }
-        }
+        [Inject] private BattleHudPresenter presenter;
 
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private UnitFrame playerUnitFrame;
+        [SerializeField, UsedImplicitly] private Crosshair crosshairFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetUnitFrame;
         [SerializeField, UsedImplicitly] private UnitFrame playerTargetTargetUnitFrame;
         [SerializeField, UsedImplicitly] private BuffDisplayFrame playerBuffDisplayFrame;
@@ -34,42 +21,39 @@ namespace Client
         [SerializeField, UsedImplicitly] private CastFrame playerCastFrame;
         [SerializeField, UsedImplicitly] private ActionErrorDisplay actionErrorDisplay;
         [SerializeField, UsedImplicitly] private List<ActionBar> actionBars;
+        [SerializeField, UsedImplicitly] private Button openLobbyButton;
 
-        private Player localPlayer;
+        public Button OpenLobbyButton => openLobbyButton;
+
+        public void SetAlpha(float alpha)
+        {
+            canvasGroup.alpha = alpha;
+        }
+
+        public void SetCrosshairActive(bool active)
+        {
+            crosshairFrame.SetActive(active);
+        }
 
         protected override void PanelInitialized()
         {
             base.PanelInitialized();
 
-            canvasGroup.alpha = 0.0f;
-            actionBars.ForEach(actionBar => actionBar.Initialize());
-            actionErrorDisplay.Initialize();
-
-            EventHandler.RegisterEvent<Player, bool>(GameEvents.ClientControlStateChanged, OnControlStateChanged);
-
-            playerCastFrame.UpdateCaster(localPlayer);
-            playerUnitFrame.UpdateUnit(localPlayer);
-            playerUnitFrame.SetTargetUnitFrame(playerTargetUnitFrame);
-            playerUnitFrame.SetBuffDisplayFrame(playerBuffDisplayFrame);
-            playerTargetUnitFrame.SetTargetUnitFrame(playerTargetTargetUnitFrame);
-            playerTargetUnitFrame.SetBuffDisplayFrame(targetBuffDisplayFrame);
+            presenter.Initialize(
+                this,
+                playerUnitFrame.Presenter,
+                playerTargetUnitFrame.Presenter,
+                playerTargetTargetUnitFrame.Presenter,
+                playerBuffDisplayFrame.Presenter,
+                targetBuffDisplayFrame.Presenter,
+                playerCastFrame.Presenter,
+                actionErrorDisplay.Presenter,
+                actionBars);
         }
 
         protected override void PanelDeinitialized()
         {
-            EventHandler.UnregisterEvent<Player, bool>(GameEvents.ClientControlStateChanged, OnControlStateChanged);
-
-            actionErrorDisplay.Deinitialize();
-            actionBars.ForEach(actionBar => actionBar.Denitialize());
-
-            playerUnitFrame.UpdateUnit(null);
-            playerTargetUnitFrame.UpdateUnit(null);
-            playerBuffDisplayFrame.UpdateUnit(null);
-            playerTargetTargetUnitFrame.UpdateUnit(null);
-            targetBuffDisplayFrame.UpdateUnit(null);
-            playerCastFrame.UpdateCaster(null);
-
-            localPlayer = null;
+            presenter.Deinitialize();
 
             base.PanelDeinitialized();
         }
@@ -78,46 +62,7 @@ namespace Client
         {
             base.PanelUpdated(deltaTime);
 
-            playerCastFrame.DoUpdate();
-            actionErrorDisplay.DoUpdate(deltaTime);
-            playerBuffDisplayFrame.DoUpdate();
-            targetBuffDisplayFrame.DoUpdate();
-
-            if (localPlayer != null)
-                foreach (var actionBar in actionBars)
-                    actionBar.DoUpdate(deltaTime);
-        }
-
-        private void OnControlStateChanged(Player player, bool underControl)
-        {
-            if (underControl)
-            {
-                localPlayer = player;
-                canvasGroup.alpha = 1.0f;
-
-                OnPlayerClassChanged();
-
-                playerUnitFrame.UpdateUnit(localPlayer);
-                playerCastFrame.UpdateCaster(localPlayer);
-
-                EventHandler.RegisterEvent(localPlayer, GameEvents.UnitClassChanged, OnPlayerClassChanged);
-            }
-            else
-            {
-                EventHandler.UnregisterEvent(localPlayer, GameEvents.UnitClassChanged, OnPlayerClassChanged);
-
-                playerUnitFrame.UpdateUnit(null);
-                playerCastFrame.UpdateCaster(null);
-
-                canvasGroup.alpha = 0.0f;
-                localPlayer = null;
-            }
-        }
-
-        private void OnPlayerClassChanged()
-        {
-            foreach (var actionBar in actionBars)
-                actionBar.ModifyContent(localPlayer.ClassType);
+            presenter.Tick(deltaTime);
         }
     }
 }

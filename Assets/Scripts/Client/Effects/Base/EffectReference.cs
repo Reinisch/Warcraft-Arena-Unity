@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using Common;
+using Zenject;
 
 namespace Client
 {
-    [CreateAssetMenu(fileName = "Effect Reference", menuName = "Game Data/Scriptable/Effects", order = 1)]
     public class EffectReference : ScriptableReference
     {
         internal class EffectContainer
         {
-            private readonly List<EffectEntity> activeEffects = new List<EffectEntity>();
-            private readonly List<EffectEntity> idleEffects = new List<EffectEntity>();
+            private readonly List<EffectEntity> activeEffects = new();
+            private readonly List<EffectEntity> idleEffects = new();
             private readonly EffectSettings effectSettings;
             private readonly EffectReference reference;
 
@@ -41,10 +41,10 @@ namespace Client
                 activeEffects.Clear();
             }
 
-            internal void DoUpdate()
+            internal void DoUpdate(float deltaTime)
             {
                 for(int i = activeEffects.Count - 1; i >= 0; i--)
-                    activeEffects[i].DoUpdate();
+                    activeEffects[i].DoUpdate(deltaTime);
             }
 
             internal EffectEntity Play(Vector3 position, Quaternion rotation, Transform parent)
@@ -58,7 +58,9 @@ namespace Client
                 var effectToPlay = idleEffects[0];
                 effectToPlay.transform.position = position;
                 effectToPlay.transform.rotation = rotation;
-                effectToPlay.transform.SetParent(parent ?? reference.containerTransform);
+                effectToPlay.transform.SetParent(parent ?? reference.EffectsRoot);
+                effectToPlay.transform.localScale = Vector3.one;
+
                 idleEffects.RemoveAt(0);
 
                 activeEffects.Add(effectToPlay);
@@ -70,7 +72,7 @@ namespace Client
 
             internal void HandleFade(EffectEntity effectEntity)
             {
-                effectEntity.transform.parent = reference.containerTransform;
+                effectEntity.transform.parent = reference.EffectsRoot;
             }
 
             internal void HandleStop(EffectEntity effectEntity, bool isDestroyed)
@@ -95,13 +97,13 @@ namespace Client
                     }
 
                     effectEntity.gameObject.SetActive(false);
-                    effectEntity.transform.parent = reference.containerTransform;
+                    effectEntity.transform.parent = reference.EffectsRoot;
                 }
             }
             
             private void AddEffect()
             {
-                EffectEntity newEffect = GameObjectPool.Take(effectSettings.Prototype, Vector3.zero, Quaternion.identity, reference.containerTransform);
+                EffectEntity newEffect = GameObjectPool.Take(effectSettings.Prototype, Vector3.zero, Quaternion.identity, reference.EffectsRoot);
                 newEffect.Initialize(effectSettings);
                 idleEffects.Add(newEffect);
 
@@ -115,32 +117,38 @@ namespace Client
             }
         }
 
-        [SerializeField, UsedImplicitly] private List<EffectSettings> effectSettings;
-        [SerializeField, UsedImplicitly] private string containerTag;
+        [SerializeField, UsedImplicitly]
+        private EffectSettingsContainer effectsContainer;
 
         private long nextPlayId = -1;
-        private Transform containerTransform;
+        internal Transform EffectsRoot => transform;
 
         protected override void OnRegistered()
         {
-            containerTransform = GameObject.FindGameObjectWithTag(containerTag).transform;
+            base.OnRegistered();
 
-            foreach (EffectSettings effectSetting in effectSettings)
-                effectSetting.Initialize();
+            effectsContainer.Register();
         }
 
         protected override void OnUnregister()
         {
-            foreach (EffectSettings effectSetting in effectSettings)
-                effectSetting.Deinitialize();
+            effectsContainer.Unregister();
 
-            containerTransform = null;
+            base.OnUnregister();
+        }
+
+        protected override void QueueForInject(DiContainer container)
+        {
+            base.QueueForInject(container);
+
+            effectsContainer.QueueForInject(container);
         }
 
         protected override void OnUpdate(float deltaTime)
         {
-            foreach (EffectSettings effectSetting in effectSettings)
-                effectSetting.EffectContainer.DoUpdate();
+            IReadOnlyList<EffectSettings> items = effectsContainer.ItemList;
+            for (int i = 0; i < items.Count; i++)
+                items[i].EffectContainer.DoUpdate(deltaTime);
         }
     }
 }

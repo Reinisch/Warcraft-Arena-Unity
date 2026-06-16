@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 496c2a810048b7b4bae7cca511a438a5, type: 3}
+  m_Name: Effect Settings - Weak Point State
+  m_EditorClassIdentifier: 
+  id: 21
+  container: {fileID: 11400000, guid: 16c1272b10d779f43b32faf5db747300, type: 2}
+  prototype: {fileID: 2181488694587037855, guid: 32edb2cd1eb1b534da6b440465f570c6,
+    type: 3}
+  maxAmount: 22

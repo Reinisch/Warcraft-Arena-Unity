@@ -1,17 +1,18 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
+using Zenject;
 
 namespace Client
 {
     public class EffectBehaviourFaceCamera : EffectBehaviour
     {
-        [SerializeField, UsedImplicitly] private CameraReference cameraReference;
+        [Inject] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private Transform transformToRotate;
         [SerializeField, UsedImplicitly] private Vector3 rotationOffset;
 
-        protected override void OnUpdate(IEffectEntity effectEntity, ref bool keepAlive)
+        protected override void OnUpdate(IEffectEntity effectEntity, float deltaTime, ref bool keepAlive)
         {
-            base.OnUpdate(effectEntity, ref keepAlive);
+            base.OnUpdate(effectEntity, deltaTime,ref keepAlive);
 
             if (cameraReference.WarcraftCamera != null)
             {

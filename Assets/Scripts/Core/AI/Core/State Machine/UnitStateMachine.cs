@@ -11,24 +11,24 @@ namespace Core
         private UnitInfoAIStateMachine StateMachineInfo { get; }
         internal Animator StateMachineAnimator { get; set; }
 
-        public Unit Unit { get; private set; }
+        public Unit Unit => UnitAI.Unit;
+        public UnitAI UnitAI { get; private set; }
 
         public UnitStateMachine(UnitInfoAIStateMachine stateMachineInfo)
         {
             StateMachineInfo = stateMachineInfo;
         }
 
-        void IUnitAIModel.Register(Unit unit)
+        void IUnitAIModel.Register(UnitAI unitAI)
         {
+            UnitAI = unitAI;
             StateMachineAnimator = GameObjectPool.Take(StateMachineInfo.Prototype);
-            StateMachineAnimator.transform.SetParent(unit.transform, false);
+            StateMachineAnimator.transform.SetParent(Unit.transform, false);
             StateMachineAnimator.transform.localPosition = Vector3.zero;
 
             behaviours.AddRange(StateMachineAnimator.GetBehaviours<UnitStateMachineBehaviour>());
             foreach (IUnitStateMachineBehaviour behaviour in behaviours)
                 behaviour.Register(this);
-
-            Unit = unit;
         }
 
         void IUnitAIModel.Unregister()
@@ -40,7 +40,7 @@ namespace Core
 
             GameObjectPool.Return(StateMachineAnimator, false);
             StateMachineAnimator = null;
-            Unit = null;
+            UnitAI = null;
         }
 
         void IUnitAIModel.DoUpdate(int deltaTime)

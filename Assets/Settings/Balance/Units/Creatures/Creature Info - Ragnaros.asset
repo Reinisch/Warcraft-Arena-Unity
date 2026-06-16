@@ -18,3 +18,4 @@ MonoBehaviour:
   vehicleInfo: {fileID: 0}
   creatureName: Ragnaros
   modelId: 5
+  nameplateSizeModifier: 3

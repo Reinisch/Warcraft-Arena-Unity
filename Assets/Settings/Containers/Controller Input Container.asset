@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d982b113a25fff48a1b66574e0e56bf, type: 3}
+  m_Name: Controller Input Container
+  m_EditorClassIdentifier: Game.Core::Core.ControllerInputContainer
+  items:
+  - {fileID: 11400000, guid: a94dedf02ac82fd4193e59af5b16d0fc, type: 2}
+  - {fileID: 11400000, guid: 39dc819d48ec5444cb73a2ebf55c2fe8, type: 2}
+  - {fileID: 11400000, guid: fbc1d35ebe4168d4da9f1e99643c8ff5, type: 2}
+  - {fileID: 11400000, guid: d49355466cded9942a9c1724d6eef16e, type: 2}
+  <Idle>k__BackingField: {fileID: 11400000, guid: a94dedf02ac82fd4193e59af5b16d0fc,
+    type: 2}
+  <Player>k__BackingField: {fileID: 11400000, guid: d49355466cded9942a9c1724d6eef16e,
+    type: 2}

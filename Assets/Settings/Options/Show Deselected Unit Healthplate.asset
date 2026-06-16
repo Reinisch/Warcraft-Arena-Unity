@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b1c417d37c19e64c88b9ace3c554831, type: 3}
   m_Name: Show Deselected Unit Healthplate
   m_EditorClassIdentifier: 
+  id: 1
+  container: {fileID: 11400000, guid: 209ec1a243d6c8541883e161f582eddb, type: 2}
   defaultValue: 0
   currentValue: 1

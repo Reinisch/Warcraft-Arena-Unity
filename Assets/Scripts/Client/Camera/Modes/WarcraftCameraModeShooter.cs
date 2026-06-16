@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
+using Zenject;
 
 namespace Client
 {
     [CreateAssetMenu(fileName = "Camera Mode", menuName = "Player Data/Camera/Modes/Shooter", order = 2)]
     public class WarcraftCameraModeShooter: WarcraftCameraMovementMode
     {
-        [SerializeField]
+        [Inject]
         private InputReference input;
 
         public override void PollInput(
@@ -15,14 +16,14 @@ namespace Client
             ref float yaw,
             ref float pitch)
         {
-            if (input.IsAlternativeModeActive)
+            if (input.IsAlternativeMode)
                 return;
 
-            yaw += Input.GetAxis("Mouse X") * camera.SpeedX;
-            pitch -= Input.GetAxis("Mouse Y") * camera.SpeedY;
+            yaw += input.LookInput.x * camera.SpeedX;
+            pitch -= input.LookInput.y * camera.SpeedY;
 
             if (!InterfaceUtils.IsPointerOverUI)
-                zoom -= Input.GetAxis("Mouse ScrollWheel") * deltaTime * camera.ZoomRate * Mathf.Abs(zoom);
+                zoom -= input.ZoomInput * deltaTime * camera.ZoomRate * Mathf.Abs(zoom);
         }
     }
 }

@@ -1,0 +1,31 @@
+{
+    "name": "Game.Workflow",
+    "rootNamespace": "",
+    "references": [
+        "Game.Common",
+        "Game.Core",
+        "Game.Core.CharacterController",
+        "Game.Net.Abstraction",
+        "Game.Net.Local",
+        "Game.Server",
+        "Game.Client",
+        "Game.Client.UI",
+        "Game.Client.Localization",
+        "Game.Client.Sound",
+        "Game.Client.Effects",
+        "Zenject",
+        "UniTask",
+        "Unity.Behavior",
+        "Unity.Netcode.Runtime",
+        "Game.Net.Ngo"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

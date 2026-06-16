@@ -16,7 +16,7 @@ MonoBehaviour:
   mechanics: 0
   period: 2000
   startPeriodicOnApply: 0
-  baseValue: 20
+  baseValue: 10
   additionalValue: 0
   schoolMask: 4
   calculationType: 1
@@ -74,6 +74,7 @@ MonoBehaviour:
   maxRangeHostile: 100
   maxRangeFriend: 0
   speed: 0
+  delay: 0
   spellEffectInfos:
   - {fileID: 1799840302265422610}
   - {fileID: -2742242415029923128}

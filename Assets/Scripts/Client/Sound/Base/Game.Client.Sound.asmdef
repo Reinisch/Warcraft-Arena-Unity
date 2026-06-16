@@ -1,0 +1,23 @@
+{
+    "name": "Game.Client.Sound",
+    "rootNamespace": "",
+    "references": [
+        "Game.Common",
+        "Game.Core",
+        "Unity.Localization",
+        "UniTask",
+        "Zenject",
+        "Unity.Addressables",
+        "Game.Core.CharacterController",
+        "Unity.ResourceManager"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

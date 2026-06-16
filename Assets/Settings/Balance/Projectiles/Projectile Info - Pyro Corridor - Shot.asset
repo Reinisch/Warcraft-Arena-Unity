@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1424b7cfaad84404199b0015c35eaf1e, type: 3}
+  m_Name: Projectile Info - Pyro Corridor - Shot
+  m_EditorClassIdentifier: 
+  <OnHitInfo>k__BackingField: {fileID: 11400000, guid: 4a175db72eca14b4c83264a20beeca90,
+    type: 2}
+  <Projectile>k__BackingField: {fileID: 1249, guid: fcffbf372a4a4aa4f8ffbe2128f5e468,
+    type: 3}
+  <StopOnHit>k__BackingField: 1
+  <HitsGround>k__BackingField: 1
+  <MaxTotalEntityHits>k__BackingField: 1
+  <MaxScanEntityHits>k__BackingField: 1
+  <HitScanDelay>k__BackingField: 0
+  <LifeTimeLimit>k__BackingField: 3
+  <Speed>k__BackingField: 20
+  <HitScanDistance>k__BackingField: 0.1

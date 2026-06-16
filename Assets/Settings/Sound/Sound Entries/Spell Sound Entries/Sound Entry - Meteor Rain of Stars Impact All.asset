@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a9f92409454067439c2e802923148cf, type: 3}
+  m_Name: Sound Entry - Meteor Rain of Stars Impact All
+  m_EditorClassIdentifier: 
+  id: 14
+  container: {fileID: 11400000, guid: f063bb6364b62024b8629f3065363123, type: 2}
+  settings: {fileID: 11400000, guid: 91e6d172dc3d88e48a3caab327f5f5e8, type: 2}
+  audioClip: {fileID: 0}
+  localizedAudioClip:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  delay: 0
+  speed: 1
+  startTime: 0
+  volumeModifier: 0.6
+  extraEntries: []
+  alternativeEntries:
+  - {fileID: 11400000, guid: 1c62a409ec9595d4295076c4b7ba7ef5, type: 2}
+  - {fileID: 11400000, guid: 68c12c6c352137243b3d9476b3b275c9, type: 2}
+  - {fileID: 11400000, guid: 3790e0bc3f5ac6542b06b7dc83331e92, type: 2}
+  - {fileID: 11400000, guid: d8931bbca34345e4286d4f856b1392b5, type: 2}
+  - {fileID: 11400000, guid: fb12d7d8e1faf284f8b151c6297c2cc1, type: 2}
+  - {fileID: 11400000, guid: 7aa720de60e32b14ca0b4d8e287afb12, type: 2}
+  - {fileID: 11400000, guid: 8bc2d1476f0372e43906345a47ea7f7d, type: 2}
+  - {fileID: 11400000, guid: 62973e0b979fe7348b2c7bc9d097fb30, type: 2}
+  - {fileID: 11400000, guid: 9cc9c317960030244bce2ed9c4ebdf9d, type: 2}
+  - {fileID: 11400000, guid: 7577ea6fe94b1d540a13dab641365bc4, type: 2}
+  alternativeClips: []

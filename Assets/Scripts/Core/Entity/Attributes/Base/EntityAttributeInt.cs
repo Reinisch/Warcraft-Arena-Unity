@@ -1,13 +1,11 @@
-﻿using UnityEngine;
 using Common;
-
-using EventHandler = Common.EventHandler;
+using UnityEngine;
 
 namespace Core
 {
     internal class EntityAttributeInt : EntityAttribute<int>
     {
-        public EntityAttributeInt(Entity entity, int baseValue, int maxValue, EntityAttributes attributeType) : base(entity, baseValue, maxValue, attributeType)
+        public EntityAttributeInt(Entity entity, EventBus eventBus, int baseValue, int maxValue, EntityAttributes attributeType) : base(entity, eventBus, baseValue, maxValue, attributeType)
         {
             CurrentValue = BaseValue;
         }
@@ -24,7 +22,7 @@ namespace Core
             CurrentValue = newValue;
 
             if (oldValue != newValue)
-                EventHandler.ExecuteEvent(Entity, GameEvents.UnitAttributeChanged, AttributeType);
+                EventBus.ExecuteEvent(Entity, GameEvents.UnitAttributeChanged, AttributeType);
 
             return newValue - oldValue;
         }

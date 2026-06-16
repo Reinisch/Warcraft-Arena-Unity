@@ -1,6 +1,6 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Common
@@ -11,7 +11,7 @@ namespace Common
         [SerializeField, UsedImplicitly] private List<TItem> items;
         [SerializeField, UsedImplicitly] private TValue defaultValue;
 
-        private readonly Dictionary<TKey, TValue> valuesByKey = new Dictionary<TKey, TValue>();
+        private readonly Dictionary<TKey, TValue> valuesByKey = new();
 
         public TValue DefaultValue => defaultValue;
         public IReadOnlyDictionary<TKey, TValue> ValuesByKey => valuesByKey;
@@ -29,6 +29,6 @@ namespace Common
             valuesByKey.Clear();
         }
 
-        public TValue Value(TKey key) => valuesByKey.TryGetValue(key, out TValue value) ? value : defaultValue;
+        public TValue Value(TKey key) => valuesByKey.GetValueOrDefault(key, defaultValue);
     }
 }

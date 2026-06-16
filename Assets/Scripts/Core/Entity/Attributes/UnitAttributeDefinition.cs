@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Core
 {
     [CreateAssetMenu(fileName = "Unit Attribute Definition", menuName = "Game Data/Entities/Unit Attribute Definition", order = 1)]
-    internal class UnitAttributeDefinition : ScriptableObject
+    public class UnitAttributeDefinition : ScriptableObject
     {
         [UsedImplicitly, SerializeField] private int baseHealth;
         [UsedImplicitly, SerializeField] private int baseMaxHealth;

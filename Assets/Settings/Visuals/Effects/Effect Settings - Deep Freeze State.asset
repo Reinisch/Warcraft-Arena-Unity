@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 496c2a810048b7b4bae7cca511a438a5, type: 3}
   m_Name: Effect Settings - Deep Freeze State
   m_EditorClassIdentifier: 
-  reference: {fileID: 11400000, guid: 51440bf8a2e490643b370222e6272106, type: 2}
+  id: 6
+  container: {fileID: 11400000, guid: 16c1272b10d779f43b32faf5db747300, type: 2}
   prototype: {fileID: 2181488694587037855, guid: c07eedc7ecde4b24e96984a1a7a874ab,
     type: 3}
   maxAmount: 10

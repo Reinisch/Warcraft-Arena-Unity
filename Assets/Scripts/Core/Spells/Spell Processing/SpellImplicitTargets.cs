@@ -21,6 +21,8 @@ namespace Core
         {
             Entries.Clear();
             targetEntryByTarget.Clear();
+
+            DestinationEntry = null;
         }
 
         internal void AddDestination(Vector3 destination, int effectMask)
@@ -69,15 +71,14 @@ namespace Core
             isDelayed = false;
             processingToken = new SpellProcessingToken
             {
-                ServerFrame = BoltNetwork.ServerFrame,
-                Source = spell.ExplicitTargets.Source,
+                Source = spell.ExplicitTargets.Source ?? spell.Caster.Position,
                 Destination = spell.ExplicitTargets.Destination ?? Vector3.zero,
             };
 
             if (DestinationEntry != null)
             {
                 float distance = Mathf.Clamp(Vector3.Distance(spell.Caster.Position, DestinationEntry.Destination), StatUtils.DefaultCombatReach, float.MaxValue);
-                DestinationEntry.Delay = spell.SpellInfo.Delay > 0 ? spell.SpellInfo.Delay : Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
+                DestinationEntry.Delay = spell.SpellInfo.Delay > 0 ? spell.SpellInfo.Delay / 1000.0f : distance / spell.SpellInfo.Speed;
                 isDelayed |= DestinationEntry.Delay > 0;
             }
 
@@ -97,7 +98,7 @@ namespace Core
                 if (spell.SpellInfo.Speed > 0.0f && spell.Caster != targetEntry.Target)
                 {
                     float distance = Mathf.Clamp(Vector3.Distance(spell.Caster.Position, targetEntry.Target.Position), StatUtils.DefaultCombatReach, float.MaxValue);
-                    targetEntry.Delay = spell.SpellInfo.Delay > 0 ? spell.SpellInfo.Delay : Mathf.FloorToInt(distance / spell.SpellInfo.Speed * 1000.0f);
+                    targetEntry.Delay = spell.SpellInfo.Delay > 0 ? spell.SpellInfo.Delay / 1000.0f : distance / spell.SpellInfo.Speed;
 
                     if (spell.SpellInfo.ExplicitTargetType == SpellExplicitTargetType.Target)
                         processingToken.ProcessingEntries.Add((targetEntry.Target.Id, targetEntry.Delay));

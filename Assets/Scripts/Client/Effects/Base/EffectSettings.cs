@@ -1,13 +1,16 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using UnityEngine;
 using Common;
+using Zenject;
 
 namespace Client
 {
     [UsedImplicitly, CreateAssetMenu(fileName = "Effect Settings", menuName = "Game Data/Visuals/Effect Settings", order = 1)]
-    public class EffectSettings : ScriptableObject
+    public class EffectSettings : ScriptableUniqueInfo<EffectSettings>
     {
-        [SerializeField, UsedImplicitly] private EffectReference reference;
+        [Inject]
+        private EffectReference effectModule;
+
         [SerializeField, UsedImplicitly] private EffectEntity prototype;
         [SerializeField, UsedImplicitly] private int maxAmount;
 
@@ -15,15 +18,19 @@ namespace Client
         internal EffectEntity Prototype => prototype;
         internal int MaxAmount => maxAmount;
 
-        internal void Initialize()
+        protected override void OnRegister()
         {
-            EffectContainer = new EffectReference.EffectContainer(this, reference);
+            base.OnRegister();
+
+            EffectContainer = new EffectReference.EffectContainer(this, effectModule);
         }
 
-        internal void Deinitialize()
+        protected override void OnUnregister()
         {
             EffectContainer.Dispose();
             EffectContainer = null;
+
+            base.OnUnregister();
         }
 
         internal void HandleStop(EffectEntity effectEntity, bool isDestroyed)
@@ -36,24 +43,15 @@ namespace Client
             EffectContainer.HandleFade(effectEntity);
         }
 
-        public IEffectEntity PlayEffect(Vector3 position, Quaternion rotation, Transform parent = null)
-        {
-            return PlayEffect(position, rotation, out _, parent);
-        }
-
-        public IEffectEntity PlayEffect(Vector3 position, Quaternion rotation, out long playId, Transform parent = null)
+        public EffectHandle PlayEffect(Vector3 position, Quaternion rotation, Transform parent = null)
         {
             Assert.IsNotNull(EffectContainer, $"Effect {name} is not initialized and won't play!");
-
             if (EffectContainer != null)
             {
                 EffectEntity newEffect = EffectContainer.Play(position, rotation, parent);
-                playId = newEffect?.PlayId ?? -1;
-                return newEffect;
+                return new EffectHandle(newEffect, newEffect?.PlayId ?? -1);
             }
-
-            playId = -1;
-            return null;
+            return default;
         }
     }
 }

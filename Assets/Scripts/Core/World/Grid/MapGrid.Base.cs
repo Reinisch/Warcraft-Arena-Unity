@@ -9,8 +9,8 @@ namespace Core
         private const int GridRelocatorTime = 500;
         private const int GridRelocatorOutOfRangeTimer = 2000;
 
-        private readonly List<WorldEntity> relocatableEntities = new List<WorldEntity>();
-        private readonly HashSet<WorldEntity> visibilityChangedEntities = new HashSet<WorldEntity>();
+        private readonly List<WorldEntity> relocatableEntities = new();
+        private readonly HashSet<WorldEntity> visibilityChangedEntities = new();
         private readonly PlayerVisibilityNotifier playerVisibilityNotifier;
         private readonly CreatureVisibilityNotifier creatureVisibilityNotifier;
         private readonly CellRelocator gridCellRelocator;
@@ -21,8 +21,8 @@ namespace Core
         private readonly int cellCountZ;
         private readonly float gridCellSize;
 
-        private TimeTracker gridCellRelocatorTimer = new TimeTracker(GridRelocatorTime);
-        private TimeTracker gridCellOutOfRangeTimer = new TimeTracker(GridRelocatorOutOfRangeTimer);
+        private TimeTracker gridCellRelocatorTimer = new(GridRelocatorTime);
+        private TimeTracker gridCellOutOfRangeTimer = new(GridRelocatorOutOfRangeTimer);
 
         internal MapGrid(Map map)
         {
@@ -33,13 +33,18 @@ namespace Core
             creatureVisibilityNotifier = new CreatureVisibilityNotifier(this);
             gridCellSize = map.Settings.GridCellSize;
 
-            cellCountX = Mathf.CeilToInt(map.Settings.BoundingBox.bounds.size.x / gridCellSize);
-            cellCountZ = Mathf.CeilToInt(map.Settings.BoundingBox.bounds.size.z / gridCellSize);
+            BoxCollider boundingBox = map.Settings.BoundingBox;
+            Transform boundsTransform = boundingBox.transform;
+            Vector3 worldCenter = boundsTransform.TransformPoint(boundingBox.center);
+            Vector3 worldSize = Vector3.Scale(boundingBox.size, boundsTransform.lossyScale);
+
+            cellCountX = Mathf.CeilToInt(worldSize.x / gridCellSize);
+            cellCountZ = Mathf.CeilToInt(worldSize.z / gridCellSize);
 
             cells = new Cell[cellCountX, cellCountZ];
-            Vector3 minBounds = map.Settings.BoundingBox.bounds.min;
-            Vector3 origin = new Vector3(minBounds.x, map.Settings.BoundingBox.center.y, minBounds.z);
-            Vector3 cellSize = new Vector3(gridCellSize, 1.0f, gridCellSize);
+
+            Vector3 origin = new(worldCenter.x - worldSize.x * 0.5f, worldCenter.y, worldCenter.z - worldSize.z * 0.5f);
+            Vector3 cellSize = new(gridCellSize, 1.0f, gridCellSize);
             for (int i = 0; i < cellCountX; i++)
             {
                 float xOffset = (i + 0.5f) * gridCellSize;
@@ -83,7 +88,7 @@ namespace Core
                     Cell nextCell = FindCell(relocatableEntity.Position);
                     if (nextCell == null)
                     {
-                        relocatableEntity.Position = map.Settings.DefaultSpawnPoint.position;
+                        relocatableEntity.Teleport(map.Settings.DefaultSpawnPoint.position);
                         nextCell = FindCell(relocatableEntity.Position);
                     }
 
@@ -106,14 +111,14 @@ namespace Core
         internal void AddEntity(WorldEntity entity)
         {
             Cell startingCell = FindCell(entity.Position);
+            Assert.IsNotNull(startingCell, $"Starting cell is not found for {entity.GetType()} at {entity.Position}");
 
             if (startingCell == null)
             {
-                entity.Position = map.Settings.DefaultSpawnPoint.position;
+                entity.Teleport(map.Settings.DefaultSpawnPoint.position);
                 startingCell = FindCell(entity.Position);
             }
 
-            Assert.IsNotNull(startingCell, $"Starting cell is not found for {entity.GetType()} at {entity.Position}");
             startingCell.AddWorldEntity(entity);
         }
 

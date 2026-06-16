@@ -1,19 +1,16 @@
-﻿using System;
-using Core;
+using Client.Sound;
 using JetBrains.Annotations;
 using UnityEngine;
 using TMPro;
-using Common;
 using UnityEngine.UI;
-
-using EventHandler = Common.EventHandler;
+using Zenject;
 
 namespace Client
 {
     public class UnitFrame : MonoBehaviour
     {
-        [SerializeField, UsedImplicitly] private BalanceReference balance;
-        [SerializeField, UsedImplicitly] private RenderingReference rendering;
+        [Inject] private UnitFramePresenter presenter;
+
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private Image classIcon;
         [SerializeField, UsedImplicitly] private AttributeBar health;
@@ -23,114 +20,61 @@ namespace Client
         [SerializeField, UsedImplicitly] private SoundEntry setSound;
         [SerializeField, UsedImplicitly] private SoundEntry lostSound;
 
-        private readonly Action<EntityAttributes> onAttributeChangedAction;
-        private readonly Action onUnitTargetChanged;
-        private readonly Action onUnitDisplayPowerChanged;
-        private readonly Action onUnitClassChanged;
+        internal UnitFramePresenter Presenter => presenter;
 
-        private UnitFrame targetUnitFrame;
-        private BuffDisplayFrame unitBuffDisplayFrame;
-        private Unit unit;
-
-        private UnitFrame()
+        [UsedImplicitly]
+        private void Awake()
         {
-            onAttributeChangedAction = OnAttributeChanged;
-            onUnitTargetChanged = OnUnitTargetChanged;
-            onUnitDisplayPowerChanged = OnUnitDisplayPowerChanged;
-            onUnitClassChanged = OnUnitClassChanged;
+            presenter.Initialize(this);
+            presenter.SetComboFrame(comboFrame?.Presenter);
         }
 
-        public void SetTargetUnitFrame(UnitFrame unitFrame)
+        public void SetVisible(bool visible)
         {
-            targetUnitFrame = unitFrame;
-
-            targetUnitFrame.UpdateUnit(unit?.Target);
+            canvasGroup.blocksRaycasts = visible;
+            canvasGroup.interactable = visible;
+            canvasGroup.alpha = visible ? 1.0f : 0.0f;
         }
 
-        public void SetBuffDisplayFrame(BuffDisplayFrame buffDisplayFrame)
+        public void SetUnitName(string name)
         {
-            unitBuffDisplayFrame = buffDisplayFrame;
-
-            unitBuffDisplayFrame.UpdateUnit(unit);
+            unitName.text = name;
         }
 
-        public void UpdateUnit(Unit newUnit)
+        public void SetHealthRatio(float ratio)
         {
-            bool wasSet = unit != null;
-
-            if (unit != null)
-                DeinitializeUnit();
-
-            if (newUnit != null)
-                InitializeUnit(newUnit);
-
-            if (unit != null)
-                setSound?.Play();
-            else if (wasSet)
-                lostSound?.Play();
-
-            canvasGroup.blocksRaycasts = unit != null;
-            canvasGroup.interactable = unit != null;
-            canvasGroup.alpha = unit != null ? 1.0f : 0.0f;
+            health.Ratio = ratio;
         }
 
-        private void InitializeUnit(Unit unit)
+        public void SetResourceRatio(float ratio)
         {
-            this.unit = unit;
-            unitName.text = unit.Name;
-
-            comboFrame?.UpdateUnit(unit);
-            targetUnitFrame?.UpdateUnit(unit.Target);
-            unitBuffDisplayFrame?.UpdateUnit(unit);
-
-            OnAttributeChanged(EntityAttributes.Health);
-            OnAttributeChanged(EntityAttributes.Power);
-            OnUnitClassChanged();
-            OnUnitDisplayPowerChanged();
-
-            EventHandler.RegisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
-            EventHandler.RegisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
-            EventHandler.RegisterEvent(unit, GameEvents.UnitClassChanged, onUnitClassChanged);
-            EventHandler.RegisterEvent(unit, GameEvents.UnitDisplayPowerChanged, onUnitDisplayPowerChanged);
+            mainResource.Ratio = ratio;
         }
 
-        private void DeinitializeUnit()
+        public void SetResourceColor(Color color)
         {
-            EventHandler.UnregisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
-            EventHandler.UnregisterEvent(unit, GameEvents.UnitTargetChanged, onUnitTargetChanged);
-            EventHandler.UnregisterEvent(unit, GameEvents.UnitClassChanged, onUnitClassChanged);
-            EventHandler.UnregisterEvent(unit, GameEvents.UnitDisplayPowerChanged, onUnitDisplayPowerChanged);
-
-            comboFrame?.UpdateUnit(null);
-            targetUnitFrame?.UpdateUnit(null);
-            unitBuffDisplayFrame?.UpdateUnit(null);
-
-            unit = null;
+            mainResource.FillImage.color = color;
         }
 
-        private void OnAttributeChanged(EntityAttributes attributeType)
+        public void SetClassIcon(Sprite sprite)
         {
-            if (attributeType == EntityAttributes.Health || attributeType == EntityAttributes.MaxHealth)
-                health.Ratio = unit.HealthRatio;
-            else if (attributeType == EntityAttributes.Power || attributeType == EntityAttributes.MaxPower)
-                mainResource.Ratio = Mathf.Clamp01((float)unit.Power / unit.MaxPower);
+            classIcon.sprite = sprite;
         }
 
-        private void OnUnitTargetChanged()
+        public void SetComboFrameEnabled(bool enabled)
         {
-            targetUnitFrame?.UpdateUnit(unit.Target);
+            if (comboFrame != null)
+                comboFrame.Canvas.enabled = enabled;
         }
 
-        private void OnUnitDisplayPowerChanged()
+        public void PlaySetSound(Vector3 position)
         {
-            mainResource.FillImage.color = rendering.SpellPowerColors.Value(unit.DisplayPowerType);
+            setSound?.Play(position);
         }
 
-        private void OnUnitClassChanged()
+        public void PlayLostSound(Vector3 position)
         {
-            classIcon.sprite = rendering.ClassIconSprites.Value(unit.ClassType);
-            if (comboFrame != null && balance.ClassesByType.TryGetValue(unit.ClassType, out ClassInfo classInfo))
-                comboFrame.Canvas.enabled = classInfo.HasPower(SpellPowerType.ComboPoints);
+            lostSound?.Play(position);
         }
     }
 }

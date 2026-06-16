@@ -1,0 +1,17 @@
+{
+    "name": "Game.Net.Local",
+    "rootNamespace": "",
+    "references": [
+        "Game.Net.Abstraction",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

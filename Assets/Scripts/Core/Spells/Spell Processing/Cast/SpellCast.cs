@@ -1,4 +1,6 @@
-﻿namespace Core
+﻿using System;
+
+namespace Core
 {
     public class SpellCast
     {
@@ -9,27 +11,28 @@
         }
 
         private readonly Unit caster;
-        private readonly IUnitState casterState;
 
-        internal Spell Spell { get; private set; }
+        // Display-only cast driven by replication (client): the client doesn't run the cast machine, so a
+        // remote unit's cast bar comes from these fields instead of a real Spell.
+        private SpellInfo networkCastSpellInfo;
+        private int networkCastTime;
+        private int networkCastTimeLeft;
 
-        internal bool IsCasting
-        {
-            get
-            {
-                if (caster.IsOwner)
-                    return Spell != null && Spell.ExecutionState == SpellExecutionState.Casting;
+        private bool HasRealCast => Spell is { ExecutionState: SpellExecutionState.Casting };
 
-                return casterState.SpellCast.Id != 0;
-            }
-        }
+        public bool IsCasting => HasRealCast || networkCastSpellInfo != null;
 
-        public SpellCastState State => casterState.SpellCast;
+        public Spell Spell { get; private set; }
+        /// <summary>The spell being cast — from the real cast machine (authority) or the replicated display cast.</summary>
+        public SpellInfo CastingSpellInfo => HasRealCast ? Spell.SpellInfo : networkCastSpellInfo;
+        public int CastTime => HasRealCast ? Spell.CastTime : networkCastTime;
+        public int CastTimeLeft => HasRealCast ? Spell.CastTimeLeft : networkCastTimeLeft;
 
-        internal SpellCast(Unit caster, IUnitState casterState)
+        public event Action EventSpellCastChanged;
+
+        internal SpellCast(Unit caster)
         {
             this.caster = caster;
-            this.casterState = casterState;
         }
 
         internal void Detached()
@@ -43,18 +46,16 @@
             {
                 case HandleMode.Started:
                     Spell = spell;
-                    casterState.SpellCast.Id = spell.SpellInfo.Id;
-                    casterState.SpellCast.ServerFrame = BoltNetwork.ServerFrame;
-                    casterState.SpellCast.CastTime = spell.CastTime;
                     break;
                 case HandleMode.Finished:
-                    casterState.SpellCast.Id = 0;
                     Spell = null;
                     break;
             }
+
+            EventSpellCastChanged?.Invoke();
         }
 
-        internal void Cancel()
+        public void Cancel()
         {
             if (Spell != null)
             {
@@ -62,6 +63,38 @@
 
                 HandleSpellCast(Spell, HandleMode.Finished);
             }
+        }
+
+        /// <summary>Client: begin/replace the replicated display cast (the cast bar). Ticks down locally.</summary>
+        internal void SetNetworkCast(SpellInfo spellInfo, int castTime)
+        {
+            networkCastSpellInfo = spellInfo;
+            networkCastTime = castTime;
+            networkCastTimeLeft = castTime;
+            EventSpellCastChanged?.Invoke();
+        }
+
+        /// <summary>Client: end the replicated display cast (completed/interrupted server-side).</summary>
+        internal void ClearNetworkCast()
+        {
+            if (networkCastSpellInfo == null)
+                return;
+
+            networkCastSpellInfo = null;
+            networkCastTime = 0;
+            networkCastTimeLeft = 0;
+            EventSpellCastChanged?.Invoke();
+        }
+
+        /// <summary>Client: tick the display cast bar down between replicated updates.</summary>
+        internal void DoNetworkUpdate(int deltaTime)
+        {
+            if (networkCastSpellInfo == null)
+                return;
+
+            networkCastTimeLeft -= deltaTime;
+            if (networkCastTimeLeft <= 0)
+                ClearNetworkCast();
         }
     }
 }

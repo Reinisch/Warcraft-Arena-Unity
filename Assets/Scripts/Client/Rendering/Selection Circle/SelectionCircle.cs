@@ -1,20 +1,23 @@
 ﻿using Common;
 using Core;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace Client
 {
     public partial class RenderingReference
     {
+        private static readonly int TintId = Shader.PropertyToID("_Tint");
+
         private partial class SelectionCircleController
         {
             private class SelectionCircle
             {
-                private const string MaterialColorProperty = "_Color";
+                private const string MaterialColorProperty = "_Tint";
 
                 private Unit circledUnit;
                 private UnitRenderer circledRenderer;
-                private Projector circleProjector;
+                private DecalProjector circleProjector;
 
                 private readonly SelectionCircleController controller;
                 private readonly SelectionCircleSettings settings;
@@ -68,11 +71,11 @@ namespace Client
                     circleProjector.gameObject.SetActive(true);
 
                     if (circledUnit.IsHostileTo(controller.rendering.Player))
-                        circleProjector.material.SetColor(MaterialColorProperty, settings.EnemyColor);
+                        circleProjector.material.SetColor(TintId, settings.EnemyColor);
                     else if (circledUnit.IsFriendlyTo(controller.rendering.Player))
-                        circleProjector.material.SetColor(MaterialColorProperty, settings.FriendlyColor);
+                        circleProjector.material.SetColor(TintId, settings.FriendlyColor);
                     else
-                        circleProjector.material.SetColor(MaterialColorProperty, settings.NeutralColor);
+                        circleProjector.material.SetColor(TintId, settings.NeutralColor);
                 }
 
                 private void Detach()

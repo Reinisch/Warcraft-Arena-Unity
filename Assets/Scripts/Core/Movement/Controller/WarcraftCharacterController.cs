@@ -1,114 +1,75 @@
-﻿using Bolt;
-using Common;
+using Game.Core.CharacterController;
 using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Core
 {
-    internal class WarcraftCharacterController : EntityBehaviour<IUnitState>, IUnitBehaviour
+    public class WarcraftCharacterController : MonoBehaviour, IUnitBehaviour, ICharacterController
     {
-        [SerializeField, UsedImplicitly] private PhysicsReference physics;
-        [SerializeField, UsedImplicitly] private PlayerControllerDefinition controllerDefinition;
-        [SerializeField, UsedImplicitly] private Rigidbody unitRigidbody;
-        [SerializeField, UsedImplicitly] private GroundChecker groundChecker;
+        [Inject]
+        private PhysicsReference physics;
 
-        private const float IdleGroundDistance = 0.05f;
+        [Inject]
+        private ControllerInputContainer controllerInputs;
 
-        private float groundCheckDistance = 0.2f;
-        private Vector3 groundNormal = Vector3.up;
+        [SerializeField, UsedImplicitly] 
+        private PlayerControllerDefinition controllerDefinition;
+
+        [SerializeField, UsedImplicitly]
+        private Rigidbody unitRigidbody;
+
+        [SerializeField, UsedImplicitly]
+        private KinematicCharacterMotor motor;
+
+        [Header("Movement")]
+        public float StableMovementSharpness = 15f;
+        public float Gravity = -30f;
+        public float MaxGravity = -300f;
+        public List<Collider> IgnoredColliders = new();
+
+        [Header("Jumping")]
+        public bool AllowJumpingWhenSliding;
+        public float AirMovementSharpness = 5f;
+        public float JumpPreGroundingGraceTime;
+        public float JumpPostGroundingGraceTime;
+
+        private bool jumpConsumed;
+        private bool jumpedThisFrame;
+        private bool jumpRequested;
+        private float timeSinceJumpRequested = Mathf.Infinity;
+        private float timeSinceLastAbleToJump;
+        private Vector3 internalVelocityAdd = Vector3.zero;
         private Vector3 inputVelocity = Vector3.zero;
-        private RaycastHit lastGroundHitInfo;
-
-        private IControllerInputProvider currentInputProvider;
-        private IControllerInputProvider defaultInputProvider;
-        private bool wasFlying;
-        private bool hasGroundHit;
+        private Vector3 rawInputVelocity = Vector3.zero;
+        private Quaternion inputRotation = Quaternion.identity;
+        private ControllerInputSettings currentInputProvider;
+        private ControllerInputSettings activeInputProvider;
         private Unit unit;
 
-        private bool OnEdge => unit.HasMovementFlag(MovementFlags.Flying) && TouchingGround;
-        private bool TooSteep => groundNormal.y <= Mathf.Cos(45 * Mathf.Deg2Rad);
-        private bool TouchingGround => groundChecker.GroundCollisions > 0;
-        private bool IsMovementController => unit.Motion.HasMovementControl ? unit.IsController : unit.IsOwner;
+        public KinematicCharacterMotor Motor => motor;
+        public ControllerInputSettings InputProvider { set => currentInputProvider = value; }
+        public PlayerControllerDefinition Definition => controllerDefinition;
+        public Vector3 Velocity => motor.Velocity;
 
-        internal IControllerInputProvider InputProvider { set => currentInputProvider = value; }
-
-        internal PlayerControllerDefinition Definition => controllerDefinition;
-
-        public bool HasClientLogic => true;
-        public bool HasServerLogic => true;
+        private void Awake()
+        {
+            Motor.CharacterController = this;
+        }
 
         void IUnitBehaviour.DoUpdate(int deltaTime)
         {
-            if (IsMovementController)
-            {
-                IControllerInputProvider inputProvider = unit.Motion.HasMovementControl
-                    ? currentInputProvider ?? defaultInputProvider
-                    : defaultInputProvider;
-
-                inputProvider.PollInput(unit, out inputVelocity, out var inputRotation, out var shouldJump);
-
-                inputVelocity.Normalize();
-
-                // slow down when moving backward
-                if (inputVelocity.z < 0)
-                    inputVelocity *= 0.3f;
-
-                if (shouldJump && unit.IsMovementBlocked)
-                    shouldJump = false;
-
-                Vector3 rawInputVelocity = Vector3.zero;
-
-                if (!unit.IsAlive)
-                    inputVelocity = Vector3.zero;
-                else if (!unit.HasMovementFlag(MovementFlags.Flying))
-                {
-                    // check roots and apply final move speed
-                    inputVelocity *= unit.IsMovementBlocked ? 0 : unit.RunSpeed;
-
-                    if (shouldJump)
-                    {
-                        unit.Motion.Jumping = true;
-                        inputVelocity = new Vector3(inputVelocity.x, controllerDefinition.JumpSpeed, inputVelocity.z);
-                    }
-
-                    rawInputVelocity = inputVelocity;
-                    inputVelocity = transform.TransformDirection(inputVelocity);
-                }
-                else
-                    inputVelocity = Vector3.zero;
-
-                bool movingRight = rawInputVelocity.x > 0;
-                bool movingLeft = rawInputVelocity.x < 0;
-
-                if (movingRight)
-                {
-                    unit.SetMovementFlag(MovementFlags.StrafeLeft, false);
-                    unit.SetMovementFlag(MovementFlags.StrafeRight, true);
-                }
-                else if (movingLeft)
-                {
-                    unit.SetMovementFlag(MovementFlags.StrafeRight, false);
-                    unit.SetMovementFlag(MovementFlags.StrafeLeft, true);
-                }
-                else
-                    unit.SetMovementFlag(MovementFlags.StrafeRight | MovementFlags.StrafeLeft, false);
-
-                unit.SetMovementFlag(MovementFlags.Backward, rawInputVelocity.z < 0);
-                unit.SetMovementFlag(MovementFlags.Forward, rawInputVelocity.z > 0);
-
-                if (unit.IsAlive && unit.Motion.HasMovementControl)
-                    transform.rotation = inputRotation;
-            }
+            UpdateInputMode();
         }
 
         void IUnitBehaviour.HandleUnitAttach(Unit unit)
         {
             this.unit = unit;
 
-            groundCheckDistance = controllerDefinition.BaseGroundCheckDistance;
-            defaultInputProvider = new IdleControllerInputProvider();
+            Motor.SetPositionAndRotation(transform.position, transform.rotation);
 
-            UpdateRigidbody();
+            UpdateInputMode();
         }
 
         void IUnitBehaviour.HandleUnitDetach()
@@ -119,146 +80,242 @@ namespace Core
             unit = null;
         }
 
-        public override void SimulateOwner()
+        /// <summary>
+        /// Toggle local physics simulation. Disabled on remote/puppet units (driven purely by replicated
+        /// transform): the motor unregisters from the simulation system in OnDisable, so it stops moving and
+        /// no longer overwrites the transform we set from the network.
+        /// </summary>
+        public void SetSimulated(bool simulated)
         {
-            if (!unit.IsController && !unit.Motion.HasMovementControl || unit.IsController)
-                ProcessMovement();
+            if (motor == null)
+                return;
+
+            motor.enabled = simulated;
+
+            // Re-enabling: the motor's internal position is stale (puppets set transform.position directly),
+            // so sync it to the current transform to avoid snapping back to the pre-puppet position.
+            if (simulated)
+                motor.SetPositionAndRotation(transform.position, transform.rotation);
+        }
+
+        void ICharacterController.BeforeCharacterUpdate(float deltaTime)
+        {
+            rawInputVelocity = Vector3.zero;
+            bool hasControl = unit.Motion.HasMovementControl;
+
+            activeInputProvider.PollInput(unit, out inputVelocity, out inputRotation, out jumpRequested);
+            inputVelocity.Normalize();
+
+            if (hasControl)
+            {
+                if (inputVelocity.z < 0)
+                    inputVelocity *= 0.3f;
+
+                if (jumpRequested && unit.IsMovementBlocked)
+                    jumpRequested = false;
+
+                if (!unit.IsAlive)
+                    inputVelocity = Vector3.zero;
+                else
+                {
+                    if (unit.IsMovementBlocked)
+                        inputVelocity = Vector3.zero;
+
+                    if (jumpRequested && !unit.HasMovementFlag(MovementFlags.Flying))
+                    {
+                        timeSinceJumpRequested = 0f;
+
+                        unit.Motion.Jumping = true;
+                    }
+
+                    rawInputVelocity = inputVelocity;
+                    inputVelocity = transform.TransformDirection(inputVelocity);
+                }
+            }
+            else
+            {
+                inputVelocity = Vector3.zero;
+            }
+        }
+
+        void ICharacterController.UpdateRotation(ref Quaternion currentRotation, float deltaTime)
+        {
+            if (!unit.IsAlive)
+                return;
+
+            if (unit.Motion.HasMovementControl)
+            {
+                currentRotation = inputRotation;
+            }
+            else if (unit.AI.NavMeshAgentEnabled)
+            {
+                // AI-driven movement (confusion/polymorph, charge): the KCC owns transform rotation, so face
+                // the steering direction here. NavMeshAgent.updateRotation can't do it — the motor reapplies
+                // its own rotation every step and overwrites the agent's.
+                Vector3 direction = unit.AI.DesiredVelocity;
+                direction.y = 0f;
+                if (direction.sqrMagnitude > 0.0001f)
+                    currentRotation = Quaternion.RotateTowards(currentRotation,
+                        Quaternion.LookRotation(direction, Motor.CharacterUp), unit.AI.AngularSpeed * deltaTime);
+            }
+        }
+
+        void ICharacterController.UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
+        {
+            if (Motor.GroundingStatus.IsStableOnGround)
+                HandleGroundMovement(deltaTime, ref currentVelocity);
+            else
+                HandleAirMovement(deltaTime, ref currentVelocity);
+
+            HandleJumping(deltaTime, ref currentVelocity);
+            HandleMovementEffects(ref currentVelocity);
+        }
+
+        void ICharacterController.AfterCharacterUpdate(float deltaTime)
+        {
+            bool movingRight = rawInputVelocity.x > 0;
+            bool movingLeft = rawInputVelocity.x < 0;
+
+            if (movingRight)
+            {
+                unit.SetMovementFlag(MovementFlags.StrafeLeft, false);
+                unit.SetMovementFlag(MovementFlags.StrafeRight, true);
+            }
+            else if (movingLeft)
+            {
+                unit.SetMovementFlag(MovementFlags.StrafeRight, false);
+                unit.SetMovementFlag(MovementFlags.StrafeLeft, true);
+            }
+            else
+                unit.SetMovementFlag(MovementFlags.StrafeRight | MovementFlags.StrafeLeft, false);
+
+            unit.SetMovementFlag(MovementFlags.Backward, rawInputVelocity.z < 0);
+            unit.SetMovementFlag(MovementFlags.Forward, rawInputVelocity.z > 0);
+
+            if (unit.Motion.Jumping && timeSinceJumpRequested > JumpPreGroundingGraceTime)
+                unit.Motion.Jumping = false;
+
+            if (AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
+            {
+                if (!jumpedThisFrame)
+                    jumpConsumed = false;
+
+                timeSinceLastAbleToJump = 0f;
+            }
+            else
+                timeSinceLastAbleToJump += deltaTime;
 
             unit.Motion.SimulateOwner();
         }
 
-        public override void SimulateController()
+        void ICharacterController.PostGroundingUpdate(float deltaTime)
         {
-            unit.Motion.SimulateController();
-
-            if (!unit.IsOwner && unit.Motion.HasMovementControl)
-                ProcessMovement();
+            if (Motor.GroundingStatus.IsStableOnGround && !Motor.LastGroundingStatus.IsStableOnGround)
+                unit.UnitCollider.material = physics.GroundedMaterial;
+            else if (!Motor.GroundingStatus.IsStableOnGround && Motor.LastGroundingStatus.IsStableOnGround)
+                unit.UnitCollider.material = physics.SlidingMaterial;
         }
 
-        internal void UpdateMovementControl(bool hasMovementControl)
+        bool ICharacterController.IsColliderValidForCollisions(Collider coll)
         {
-            unit.Motion.UpdateMovementControl(hasMovementControl);
-            unit.UpdateSyncTransform(unit.IsOwner || !hasMovementControl);
+            if (IgnoredColliders.Count == 0)
+                return true;
 
-            UpdateRigidbody();
+            if (IgnoredColliders.Contains(coll))
+                return false;
 
-            if (unit.IsOwner && unit is Player player)
-                EventHandler.ExecuteEvent(GameEvents.ServerPlayerMovementControlChanged, player, hasMovementControl);
+            return true;
         }
 
-        internal void StopMoving()
+        private void UpdateInputMode()
         {
-            unitRigidbody.linearVelocity = Vector3.zero;
+            activeInputProvider = unit.Motion.HasMovementControl
+                ? currentInputProvider ?? controllerInputs.Idle
+                : controllerInputs.Idle;
         }
 
-        internal void UpdateRigidbody()
+        private void HandleGroundMovement(float deltaTime, ref Vector3 currentVelocity)
         {
-            bool isMovingLocally = IsMovementController;
-            bool isKinematic = !isMovingLocally || unit.AI.NavMeshAgentEnabled || unit.Motion.UsesKinematicMovement;
-            unitRigidbody.isKinematic = isKinematic;
-            unitRigidbody.useGravity = !isKinematic;
-            unitRigidbody.interpolation = unit.IsOwner && unit is Player ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
+            float currentVelocityMagnitude = currentVelocity.magnitude;
+
+            Vector3 effectiveGroundNormal = Motor.GroundingStatus.GroundNormal;
+
+            // Reorient velocity on slope
+            currentVelocity = Motor.GetDirectionTangentToSurface(currentVelocity, effectiveGroundNormal) * currentVelocityMagnitude;
+
+            // Calculate target velocity
+            Vector3 inputRight = Vector3.Cross(inputVelocity, Motor.CharacterUp);
+            Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * inputVelocity.magnitude;
+            Vector3 targetMovementVelocity = reorientedInput * unit.RunSpeed;
+
+            // Smooth movement Velocity
+            currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
+
+            unit.SetMovementFlag(MovementFlags.Ascending, false);
+            unit.SetMovementFlag(MovementFlags.Descending, false);
+            unit.SetMovementFlag(MovementFlags.Flying, false);
         }
 
-        private void ProcessMovement()
+        private void HandleAirMovement(float deltaTime, ref Vector3 currentVelocity)
         {
-            unit.UnitCollider.radius = 0.2f;
-            hasGroundHit = IsTouchingGround(out lastGroundHitInfo);
-
-            if (unit.HasMovementFlag(MovementFlags.Ascending) && unitRigidbody.linearVelocity.y <= 0)
+            if (inputVelocity.sqrMagnitude > 0f)
             {
-                unit.SetMovementFlag(MovementFlags.Ascending, false);
-                unit.SetMovementFlag(MovementFlags.Descending, true);
+                Vector3 targetMovementVelocity = inputVelocity * unit.RunSpeed;
+                targetMovementVelocity.y = currentVelocity.y;
+                currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-AirMovementSharpness * deltaTime));
             }
 
+            currentVelocity.y += Gravity * deltaTime;
+
+            if (currentVelocity.y < MaxGravity)
+                currentVelocity.y = MaxGravity;
+
+            unit.SetMovementFlag(MovementFlags.Ascending, currentVelocity.y > 0);
+            unit.SetMovementFlag(MovementFlags.Descending, currentVelocity.y < 0);
+        }
+
+        private void HandleJumping(float deltaTime, ref Vector3 currentVelocity)
+        {
+            jumpedThisFrame = false;
+            timeSinceJumpRequested += deltaTime;
             if (unit.Motion.Jumping)
             {
-                unitRigidbody.linearVelocity = inputVelocity;
-                groundCheckDistance = 0.05f;
-                unit.SetMovementFlag(MovementFlags.Ascending, true);
-                unit.SetMovementFlag(MovementFlags.Flying, true);
-                unit.Motion.Jumping = false;
-            }
-            else if (!unit.HasMovementFlag(MovementFlags.Flying))
-            {
-                unitRigidbody.linearVelocity = new Vector3(inputVelocity.x, unitRigidbody.linearVelocity.y, inputVelocity.z);
-
-                if (!wasFlying)
-                    groundCheckDistance = controllerDefinition.BaseGroundCheckDistance;
-            }
-            else if (groundCheckDistance < controllerDefinition.BaseGroundCheckDistance)
-                groundCheckDistance = unitRigidbody.linearVelocity.y < 0 ? controllerDefinition.BaseGroundCheckDistance : groundCheckDistance + 0.01f;
-
-            if (unitRigidbody.linearVelocity.y > controllerDefinition.JumpSpeed)
-                unitRigidbody.linearVelocity = new Vector3(unitRigidbody.linearVelocity.x, controllerDefinition.JumpSpeed, unitRigidbody.linearVelocity.z);
-
-            ProcessGroundState();
-
-            if (unit.SlowFallSpeed != 0 && unit.HasMovementFlag(MovementFlags.Flying) && unitRigidbody.linearVelocity.y < -unit.SlowFallSpeed)
-                unitRigidbody.linearVelocity = new Vector3(unitRigidbody.linearVelocity.x, -unit.SlowFallSpeed, unitRigidbody.linearVelocity.z);
-
-            void ProcessGroundState()
-            {
-                wasFlying = unit.HasMovementFlag(MovementFlags.Flying);
-
-                if (!unit.HasMovementFlag(MovementFlags.Ascending) && hasGroundHit)
+                // See if we actually are allowed to jump
+                if (!jumpConsumed && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround) || timeSinceLastAbleToJump <= JumpPostGroundingGraceTime))
                 {
-                    var distanceToGround = lastGroundHitInfo.distance;
+                    // Calculate jump direction before ungrounding
+                    Vector3 jumpDirection = Motor.CharacterUp;
+                    if (Motor.GroundingStatus is { FoundAnyGround: true, IsStableOnGround: false })
+                        jumpDirection = Motor.GroundingStatus.GroundNormal;
 
-                    if (distanceToGround > unit.UnitCollider.bounds.extents.y + groundCheckDistance)
-                    {
-                        if (!unit.HasMovementFlag(MovementFlags.Flying) && inputVelocity.y <= 0)
-                        {
-                            unitRigidbody.AddForce(Vector3.down * unitRigidbody.linearVelocity.magnitude, ForceMode.VelocityChange);
-                            groundNormal = lastGroundHitInfo.normal;
-                        }
-                        else
-                        {
-                            groundNormal = Vector3.up;
-                            if (unit.HasMovementFlag(MovementFlags.Flying))
-                            {
-                                unit.SetMovementFlag(MovementFlags.Flying, false);
-                                unit.SetMovementFlag(MovementFlags.Descending, false);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        groundNormal = lastGroundHitInfo.normal;
-                        if (unit.HasMovementFlag(MovementFlags.Flying))
-                        {
-                            unit.SetMovementFlag(MovementFlags.Flying, false);
-                            unit.SetMovementFlag(MovementFlags.Descending, false);
-                        }
-                    }
-                }
-                else
-                {
+                    unit.Motion.Jumping = false;
+
+                    // Makes the character skip ground probing/snapping on its next update. 
+                    // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                    Motor.ForceUnground();
+
+                    unit.SetMovementFlag(MovementFlags.Ascending, true);
+                    unit.SetMovementFlag(MovementFlags.Descending, false);
                     unit.SetMovementFlag(MovementFlags.Flying, true);
-                    groundNormal = Vector3.up;
-                    Mathf.Asin(Vector3.up.y);
-                }
 
-                if (TooSteep || OnEdge)
-                {
-                    unit.UnitCollider.material = physics.SlidingMaterial;
-                    unitRigidbody.useGravity = true;
-                }
-                else
-                {
-                    unit.UnitCollider.material = physics.GroundedMaterial;
-
-                    bool farFromGround = !hasGroundHit || Mathf.Abs(unit.UnitCollider.bounds.center.y - lastGroundHitInfo.point.y - unit.UnitCollider.bounds.extents.y) > IdleGroundDistance;
-                    bool inNonGroundedState = !TouchingGround || unit.HasMovementFlag(MovementFlags.MaskAir);
-                    unitRigidbody.useGravity = farFromGround || inNonGroundedState;
+                    // Add to the return velocity and reset jump state
+                    currentVelocity += (jumpDirection * controllerDefinition.JumpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                    jumpConsumed = true;
+                    jumpedThisFrame = true;
                 }
             }
         }
 
-        private bool IsTouchingGround(out RaycastHit groundHitInfo)
+        private void HandleMovementEffects(ref Vector3 currentVelocity)
         {
-            return Physics.Raycast(unit.UnitCollider.bounds.center, Vector3.down, out groundHitInfo, unit.UnitCollider.bounds.extents.y +
-                controllerDefinition.BaseGroundCheckDistance * 2, PhysicsReference.Mask.Ground);
+            if (unit.SlowFallSpeed != 0 && unit.HasMovementFlag(MovementFlags.Flying) && currentVelocity.y < -unit.SlowFallSpeed)
+                currentVelocity = new Vector3(currentVelocity.x, -unit.SlowFallSpeed, currentVelocity.z);
+
+            if (internalVelocityAdd.sqrMagnitude > 0f)
+            {
+                currentVelocity += internalVelocityAdd;
+                internalVelocityAdd = Vector3.zero;
+            }
         }
     }
 }

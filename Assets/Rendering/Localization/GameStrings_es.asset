@@ -1,0 +1,917 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: GameStrings_es
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: es
+  m_SharedData: {fileID: 11400000, guid: 25cb21a9bd13eb74db55cff06d15721b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 26482757632
+    m_Localized: El jugador no existe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26516312064
+    m_Localized: "Objetivo no v\xE1lido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26520506368
+    m_Localized: No se puede lanzar estando muerto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26520506369
+    m_Localized: Fuera de alcance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700672
+    m_Localized: "El objetivo ya est\xE1 muerto"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700673
+    m_Localized: No se puede marcar al jugador como objetivo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700674
+    m_Localized: "El hechizo a\xFAn no est\xE1 listo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700675
+    m_Localized: Solo se pueden marcar objetivos muertos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700676
+    m_Localized: "\xA1Error de conexi\xF3n, tiempo agotado!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700677
+    m_Localized: "\xA1Error al conectar con el maestro!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700678
+    m_Localized: "\xA1Error al conectar con la sesi\xF3n!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700679
+    m_Localized: "\xA1Error de conexi\xF3n, token de cliente no v\xE1lido!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700680
+    m_Localized: "\xA1Error de conexi\xF3n, versi\xF3n no v\xE1lida!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700681
+    m_Localized: "\xA1Error de conexi\xF3n!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700682
+    m_Localized: "\xA1Error de conexi\xF3n, el servidor rechaz\xF3 la conexi\xF3n!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700683
+    m_Localized: "\xA1Error de conexi\xF3n, dispositivo no compatible!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700684
+    m_Localized: "\xA1Conectado!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700685
+    m_Localized: Iniciando cliente...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700686
+    m_Localized: Error al iniciar el cliente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700687
+    m_Localized: "\xA1Cliente iniciado!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700688
+    m_Localized: Conectando...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700689
+    m_Localized: "\xA1Sesi\xF3n finalizada! Motivo: {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700690
+    m_Localized: Iniciando servidor...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700691
+    m_Localized: Error al iniciar el servidor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700692
+    m_Localized: "\xA1Servidor iniciado!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700693
+    m_Localized: "Falta localizaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700694
+    m_Localized: No se puede lanzar en movimiento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700695
+    m_Localized: "El objetivo no est\xE1 congelado"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700696
+    m_Localized: Silenciado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700697
+    m_Localized: Pacificado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700698
+    m_Localized: "No puedes hacer eso mientras est\xE1s confundido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700699
+    m_Localized: No puedes hacer eso mientras huyes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700700
+    m_Localized: "No puedes hacer eso mientras est\xE1s aturdido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700701
+    m_Localized: "Absorci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700702
+    m_Localized: Inmune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700703
+    m_Localized: Esquivado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700704
+    m_Localized: Evadido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700705
+    m_Localized: Fallo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700706
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700707
+    m_Localized: "Flexi\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700708
+    m_Localized: Suplicar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700709
+    m_Localized: "Inclinaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700710
+    m_Localized: Pollo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700711
+    m_Localized: Llorar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700712
+    m_Localized: Bailar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700713
+    m_Localized: Beso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700714
+    m_Localized: "Re\xEDr"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700715
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700716
+    m_Localized: "Se\xF1alar"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700717
+    m_Localized: Leer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700718
+    m_Localized: Rugir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700719
+    m_Localized: Grosero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700720
+    m_Localized: Gritar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700721
+    m_Localized: "T\xEDmido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700722
+    m_Localized: Hablar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700723
+    m_Localized: "Exclamaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700724
+    m_Localized: Pregunta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700725
+    m_Localized: Tren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700726
+    m_Localized: Saludar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700727
+    m_Localized: "S\xED"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700728
+    m_Localized: "Acelera tus lanzamientos de hechizos durante {0} s, otorgando un
+      {1}% de celeridad, un {2}% de bonificaci\xF3n de da\xF1o cr\xEDtico y evitando
+      que el da\xF1o retrase tus lanzamientos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700729
+    m_Localized: "Venas g\xE9lidas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700730
+    m_Localized: "Aturde al objetivo durante {0} s y hace que se lo considere congelado
+      mientras dure el aturdimiento.\n\nSolo se puede usar con objetivos congelados
+      o mientras el lanzador est\xE9 afectado por Dedos de Escarcha."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700731
+    m_Localized: "Congelaci\xF3n profunda"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700732
+    m_Localized: "Infuya brillantez al objetivo, aumentando su Intelecto un {0}%
+      durante {1} segundos.\n\nSi el objetivo est\xE1 en tu grupo o banda, todos
+      los miembros se ver\xE1n afectados."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700733
+    m_Localized: Intelecto arcano
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700734
+    m_Localized: "Suprime los efectos que ralentizan el movimiento y aumenta tu velocidad
+      de movimiento un {0}% durante {1} s.\n\nSe puede lanzar mientras otro hechizo
+      est\xE1 en curso y no se ve afectado por el tiempo de reutilizaci\xF3n global."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700735
+    m_Localized: Velocidad abrasadora
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700736
+    m_Localized: "Te teletransporta {0} m hacia adelante o hasta alcanzar un obst\xE1culo,
+      y te libera de todos los aturdimientos y v\xEDnculos.\n\nSe puede usar mientras
+      est\xE1s aturdido."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894976
+    m_Localized: "Traslaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894977
+    m_Localized: "Los objetivos en un cono frente a ti reciben ({0}% del poder con
+      hechizos) de da\xF1o de Escarcha y su movimiento se ralentiza un {1}% durante
+      {2} s.\n\nTiene un {3:P0} de probabilidad de activar Dedos de Escarcha."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894978
+    m_Localized: "Cono de fr\xEDo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894979
+    m_Localized: "Contrarresta el lanzamiento de hechizos del enemigo, evitando que
+      se lance cualquier hechizo de esa escuela de magia durante {0} s.\n\nSe puede
+      lanzar mientras otro hechizo est\xE1 en curso y no se ve afectado por el tiempo
+      de reutilizaci\xF3n global."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894980
+    m_Localized: Contihechizo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894981
+    m_Localized: "Golpea al enemigo por ({0}% del poder con hechizos) de da\xF1o
+      de Fuego.\n\nSiempre inflige un golpe cr\xEDtico y hace que se active Calentamiento,
+      a menos que el objetivo sea inmune a los golpes cr\xEDticos.\n\nSe puede lanzar
+      mientras otro hechizo est\xE1 en curso y no se ve afectado por el tiempo de
+      reutilizaci\xF3n global."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894982
+    m_Localized: "Explosi\xF3n de Fuego"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894983
+    m_Localized: "Invoca un pilar de fuego que quema a todos los enemigos en el \xE1rea
+      por ({0}% del poder con hechizos) de da\xF1o de Fuego y ({1}% adicionales del
+      poder con hechizos) cada {2} s durante {3} s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894984
+    m_Localized: Fogonazo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894985
+    m_Localized: "Un hechizo r\xE1pido que sana a un aliado ({0}% del poder con hechizos)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894986
+    m_Localized: "Sanaci\xF3n rel\xE1mpago"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894987
+    m_Localized: "Lanza una descarga de escarcha al enemigo, infligiendo ({0}% del
+      poder con hechizos) de da\xF1o de Escarcha y ralentizando la velocidad de movimiento
+      un {1}% durante {2} s.\n\nTiene un {3:P0} de probabilidad de activar Dedos
+      de Escarcha."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894988
+    m_Localized: Descarga de Escarcha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894989
+    m_Localized: "Golpea a los enemigos en un radio de {0} m por ({1}% del poder
+      con hechizos) de da\xF1o de Escarcha y los congela en el sitio durante {2}
+      s.\n\nEl da\xF1o puede interrumpir el efecto de congelaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894990
+    m_Localized: Nueva de Escarcha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894991
+    m_Localized: Realiza un milagro, sanando a un aliado ({0}% del poder con hechizos).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894992
+    m_Localized: 'Palabra Sagrada: Serenidad'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894993
+    m_Localized: "Elimina todos los efectos de reducci\xF3n de movimiento y todos
+      los efectos que provocan la p\xE9rdida de control de tu personaje mientras
+      est\xE1s en combate JcJ."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894994
+    m_Localized: "Medall\xF3n honorable"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894995
+    m_Localized: "Te protege con hielo, absorbiendo un ({0}% de la salud total) de
+      da\xF1o. Dura {1} s.\n\nMientras el escudo resista, los hechizos no se interrumpir\xE1n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894996
+    m_Localized: Barrera de hielo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894997
+    m_Localized: "Te envuelve en un bloque de hielo, protegi\xE9ndote de todos los
+      ataques y da\xF1os durante {0} s, pero durante ese tiempo no puedes atacar,
+      moverte ni lanzar hechizos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894998
+    m_Localized: Bloque de hielo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894999
+    m_Localized: "Lanza r\xE1pidamente un fragmento de hielo al objetivo, infligiendo
+      ({0}% del poder con hechizos) de da\xF1o de Escarcha.\n\nEl da\xF1o de Lanza
+      de hielo se cuadruplica contra objetivos congelados. Tambi\xE9n se considera
+      que los objetivos est\xE1n congelados si el lanzador est\xE1 bajo el efecto
+      de Dedos de Escarcha.\n\nEl da\xF1o aumenta un {1}% al consumir una carga de
+      Dedos de Escarcha."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895000
+    m_Localized: Lanza de hielo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895001
+    m_Localized: "Provoca un torbellino de viento g\xE9lido alrededor del enemigo,
+      infligiendo ({0}% del poder con hechizos) de da\xF1o de Escarcha al objetivo
+      y a todos los dem\xE1s enemigos en un radio de {1} m, y congel\xE1ndolos en
+      el sitio durante {2} s.\n\nEl da\xF1o puede interrumpir el efecto de congelaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895002
+    m_Localized: Nueva de hielo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895003
+    m_Localized: "Mata instant\xE1neamente al objetivo actual.\n\nHechizo de depuraci\xF3n
+      temporal, solo se puede usar contra criaturas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895004
+    m_Localized: Matar criatura
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895005
+    m_Localized: "Mata instant\xE1neamente al lanzador.\n\nHechizo de depuraci\xF3n
+      temporal."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895006
+    m_Localized: Suicidarse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895007
+    m_Localized: "El objetivo se convierte en una bomba viva, recibiendo ({0}% del
+      poder con hechizos) de da\xF1o de Fuego cada {4} s durante {1} s, y luego explota
+      para infligir ({2}% adicionales del poder con hechizos) de da\xF1o de Fuego
+      al objetivo y a todos los dem\xE1s enemigos en un radio de {3} m.\n\nCuando
+      se aplica por primera vez, inflige da\xF1o de pulso inmediato. El temporizador
+      de explosi\xF3n se reinicia al renovar la duraci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895008
+    m_Localized: Bomba viva
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895009
+    m_Localized: "Reduce todo el da\xF1o recibido por un objetivo amistoso un {0}%
+      durante {1} s.\n\nSe puede lanzar mientras est\xE1s aturdido."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895010
+    m_Localized: "Supresi\xF3n de dolor"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895011
+    m_Localized: "Transforma al enemigo en una oveja, haci\xE9ndolo deambular incapacitado
+      durante {0} s. Mientras est\xE9 afectado, la v\xEDctima no puede realizar acciones.\n\nCualquier
+      da\xF1o cancelar\xE1 el efecto."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895012
+    m_Localized: Polimorfia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895013
+    m_Localized: "Cuando se activa, tu pr\xF3ximo hechizo de mago con un tiempo de
+      lanzamiento inferior a 10 s se vuelve instant\xE1neo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895014
+    m_Localized: Presencia mental
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895015
+    m_Localized: "Lanza una inmensa roca de fuego que causa ({0}% del poder con hechizos)
+      de da\xF1o de Fuego y ({1}% adicionales) cada {2} s durante {3} s.\n\nObtener
+      dos golpes cr\xEDticos directos seguidos har\xE1 que tu siguiente Piroexplosi\xF3n
+      sea instant\xE1nea."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895016
+    m_Localized: "Piroexplosi\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895017
+    m_Localized: "Infundir fe en la luz al objetivo, san\xE1ndolo instant\xE1neamente
+      ({0}% del poder con hechizos) y luego ({1}% del poder con hechizos) cada {2}
+      s durante {3} s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895018
+    m_Localized: Renovar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895019
+    m_Localized: 'El lanzador resucita con un 50% de salud.
+
+
+      Solo se puede
+      usar estando muerto.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895020
+    m_Localized: Resucitarse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895021
+    m_Localized: "Agosta a un enemigo por ({0}% del poder con hechizos) de da\xF1o
+      de Fuego.\n\nSe puede lanzar en movimiento.\n\nPuede activar Calentamiento
+      tras obtener 2 golpes cr\xEDticos seguidos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895022
+    m_Localized: Agostar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895023
+    m_Localized: '{0} m de alcance'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895024
+    m_Localized: "{0} s de tiempo de reutilizaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895025
+    m_Localized: "Instant\xE1neo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895026
+    m_Localized: 'Lanzamiento: {0} s'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895027
+    m_Localized: General
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895028
+    m_Localized: Hechizo desconocido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895029
+    m_Localized: "Cambia a forma felina, lo que aumenta la velocidad de movimiento
+      un {0}%, otorga protecci\xF3n contra efectos de Polimorfia y reduce el da\xF1o
+      por ca\xEDda.\n\nEl acto de cambiar de forma te libera de los efectos de reducci\xF3n
+      de movimiento."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895030
+    m_Localized: Forma felina
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895031
+    m_Localized: Druida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895032
+    m_Localized: Mago
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895033
+    m_Localized: "Ara\xF1a al objetivo infligiendo ({0}% del poder de ataque) de
+      da\xF1o de Sangrado y ({1}% adicionales) cada {2} s durante {3} s.\n\nReduce
+      la velocidad de movimiento del objetivo un {4}%.\n\nOtorga 1 punto de combo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895034
+    m_Localized: "Ara\xF1azo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895035
+    m_Localized: "Tritura al objetivo, infligiendo ({0}% del poder de ataque + 20)
+      de da\xF1o f\xEDsico.\n\nInflige un 50% m\xE1s de da\xF1o contra objetivos
+      que sangran.\n\nOtorga 2 puntos de combo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895036
+    m_Localized: Triturar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895037
+    m_Localized: "Golpea a los enemigos cercanos, infligiendo ({0}% del poder de
+      ataque) de da\xF1o f\xEDsico.\n\nInflige un 33% m\xE1s de da\xF1o contra objetivos
+      que sangran.\n\nOtorga 1 punto de combo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895038
+    m_Localized: Flagelo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895039
+    m_Localized: Sin puntos de combo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895040
+    m_Localized: "Remate que inflige da\xF1o por punto de combo y consume hasta 25
+      p. de energ\xEDa adicionales para aumentar el da\xF1o hasta un 100%.\n\nCuando
+      se usa en objetivos con menos del 25% de salud, Mordedura feroz tambi\xE9n
+      reinicia la duraci\xF3n de Destripar.\n\nProbabilidad de golpe cr\xEDtico duplicada
+      contra objetivos que sangran.\n\n  1 punto: [({0}% del PA) * 1] de da\xF1o\n 
+      2 puntos: [({0}% del PA) * 2] de da\xF1o\n  3 puntos: [({0}% del PA) * 3] de
+      da\xF1o\n  4 puntos: [({0}% del PA) * 4] de da\xF1o\n  5 puntos: [({0}% del
+      PA) * 5] de da\xF1o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895041
+    m_Localized: Mordedura feroz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089280
+    m_Localized: "Remate que inflige da\xF1o de Sangrado cada {1} s. Dura m\xE1s
+      por punto de combo.\n\n  1 punto: ({0}% del PA) durante 8 s\n  2 puntos: ({0}%
+      del PA) durante 12 s\n  3 puntos: ({0}% del PA) durante 16 s\n  4 puntos: ({0}%
+      del PA) durante 20 s\n  5 puntos: ({0}% del PA) durante 24 s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089281
+    m_Localized: Destripar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089282
+    m_Localized: "Reduce todo el da\xF1o que recibes un {0}% durante {1} s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089283
+    m_Localized: Instintos de supervivencia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089284
+    m_Localized: "No hay suficiente energ\xEDa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089285
+    m_Localized: No hay suficiente salud
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089286
+    m_Localized: "No hay suficiente man\xE1"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089287
+    m_Localized: No hay suficiente ira
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089288
+    m_Localized: 'Aumenta la velocidad de movimiento un {0}% durante {1} s.
+
+
+      No
+      interrumpe el acecho.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089289
+    m_Localized: Carrera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089290
+    m_Localized: "Restaura instant\xE1neamente {0} p. de energ\xEDa y aumenta el
+      da\xF1o de todos tus ataques un {1}% durante toda su duraci\xF3n. Dura {2}
+      s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089291
+    m_Localized: Furia del tigre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089292
+    m_Localized: "Mutila al objetivo infligiendo ({0}% del poder de ataque) de da\xF1o
+      f\xEDsico.\n\nInflige un 20% de da\xF1o adicional contra objetivos que sangran.\n\nGenera
+      {1} p. de energ\xEDa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089293
+    m_Localized: Destrozar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089294
+    m_Localized: "Remate que inflige da\xF1o f\xEDsico y aturde al objetivo. El da\xF1o
+      y la duraci\xF3n aumentan por punto de combo:\n\n  1 punto: {0}%*1 PA da\xF1o,
+      1 s\n  2 puntos: {0}%*2 PA da\xF1o, 2 s\n  3 puntos: {0}%*3 PA da\xF1o, 3 s\n 
+      4 puntos: {0}%*4 PA da\xF1o, 4 s\n  5 puntos: {0}%*5 PA da\xF1o, 5 s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089295
+    m_Localized: Mutilar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089296
+    m_Localized: De 1 a 5 puntos de combo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089297
+    m_Localized: "{0} de Energ\xEDa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089298
+    m_Localized: "{0}% de la energ\xEDa m\xE1xima"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089299
+    m_Localized: "{0} de Man\xE1"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089300
+    m_Localized: "{0}% del man\xE1 base"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089301
+    m_Localized: '{0} de Ira'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089302
+    m_Localized: "{0}% de la ira m\xE1xima"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089303
+    m_Localized: "Remate que inflige da\xF1o instant\xE1neo y aplica Destripar a
+      todos los enemigos en un radio de {0} m. Dura m\xE1s por punto de combo.\n\n 
+      1 punto: ({1}% del PA) * 1 m\xE1s Destripar durante 4 s\n  2 puntos: ({1}%
+      del PA) * 2 m\xE1s Destripar durante 6 s\n  3 puntos: ({1}% del PA) * 3 m\xE1s
+      Destripar durante 8 s\n  4 puntos: ({1}% del PA) * 4 m\xE1s Destripar durante
+      10 s\n  5 puntos: ({1}% del PA) * 5 m\xE1s Destripar durante 12 s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089304
+    m_Localized: "C\xF3lera primigenia"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089305
+    m_Localized: "Golpea a todos los enemigos cercanos, infligiendo ({0}% del poder
+      de ataque) de da\xF1o de Sangrado y ({1}% adicionales) cada {2} s durante {3}
+      s.\n\nOtorga 1 punto de combo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089306
+    m_Localized: Vapulear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089307
+    m_Localized: "Enra\xEDza al objetivo en el sitio durante {0} s. El da\xF1o puede
+      cancelar el efecto."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089308
+    m_Localized: "Ra\xEDces enredadoras"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089309
+    m_Localized: "Remate que aumenta el da\xF1o un {0}% y la tasa de regeneraci\xF3n
+      de energ\xEDa un {1}% mientras est\xE1s en forma felina. Dura m\xE1s por punto
+      de combo:\n\n  1 punto: 12 segundos\n  2 puntos: 18 segundos\n  3 puntos: 24
+      segundos\n  4 puntos: 30 segundos\n  5 puntos: 36 segundos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089310
+    m_Localized: Rugido salvaje
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089311
+    m_Localized: "Reduce el coste de energ\xEDa de todas las facultades de forma
+      felina un {0}% y aumenta la energ\xEDa m\xE1xima {1} p. durante {2} s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089312
+    m_Localized: Rabia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089313
+    m_Localized: Sana al objetivo ({0}% del poder con hechizos) cada {1} s durante
+      {2} s.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089314
+    m_Localized: Rejuvenecimiento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089315
+    m_Localized: Sana a un objetivo amistoso ({0}% del poder con hechizos) y otros
+      ({1}% del poder con hechizos) cada {2} s durante {3} s.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089316
+    m_Localized: Recrecimiento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089317
+    m_Localized: No se puede usar mientras se cambia de forma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089318
+    m_Localized: No se puede usar si no se ha cambiado de forma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089319
+    m_Localized: No se puede usar en esta forma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089320
+    m_Localized: Lanza un rugido salvaje que aumenta la velocidad de movimiento de
+      todos los jugadores amistosos en un radio de {2} m un {0}% durante {1} s.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089321
+    m_Localized: Rugido de estampida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089322
+    m_Localized: Acecho
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089323
+    m_Localized: Activa la forma felina y te pone en sigilo hasta que se cancela.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089324
+    m_Localized: No se puede usar en combate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089325
+    m_Localized: "Ca\xEDda lenta"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089326
+    m_Localized: "Ralentiza la velocidad de ca\xEDda de un miembro del grupo durante
+      {0} s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089327
+    m_Localized: Invisibilidad superior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089328
+    m_Localized: "Te vuelve invisible e inalcanzable durante {0} s, eliminando toda
+      la amenaza. Cualquier acci\xF3n cancela este efecto.\n\nRecibes un {1}% menos
+      de da\xF1o mientras eres invisible."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089329
+    m_Localized: Carga salvaje
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089330
+    m_Localized: "Carga contra un enemigo, inmoviliz\xE1ndolo durante {0} s.\n\nAumenta
+      la energ\xEDa {1} p."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089331
+    m_Localized: Salto feral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089332
+    m_Localized: "Te hace saltar detr\xE1s de un enemigo, aturdi\xE9ndolo durante
+      {0} s.\n\nLos enemigos aturdidos tienen su velocidad reducida un {1}%."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089333
+    m_Localized: Testarazo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089334
+    m_Localized: "Cargas y golpeas el cr\xE1neo del objetivo, interrumpiendo el lanzamiento
+      de hechizos y evitando que se lance cualquier hechizo de esa escuela durante
+      {0} s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089335
+    m_Localized: "Cicl\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089336
+    m_Localized: "Lanza al objetivo enemigo al aire, desorient\xE1ndolo pero volvi\xE9ndolo
+      invulnerable hasta {0} s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089337
+    m_Localized: Arrasar y Destripar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089338
+    m_Localized: "Aplica instant\xE1neamente Ara\xF1azo y Destripar al objetivo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2083855354814464
+    m_Localized: Sala
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

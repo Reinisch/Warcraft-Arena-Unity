@@ -84,6 +84,7 @@ MonoBehaviour:
   maxRangeHostile: 0
   maxRangeFriend: 0
   speed: 0
+  delay: 0
   spellEffectInfos:
   - {fileID: 8099043429160440376}
   spellPowerCostInfos: []

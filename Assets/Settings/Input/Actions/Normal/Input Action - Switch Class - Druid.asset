@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ff31a9339e1fb4baf8d8935bdba1b0, type: 3}
   m_Name: Input Action - Switch Class - Druid
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  id: 26
+  container: {fileID: 11400000, guid: b7896a9ba72daf148b50f37e8843b69e, type: 2}
   classType: 11

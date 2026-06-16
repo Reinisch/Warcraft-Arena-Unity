@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77b6e398a2a53954ea7178023736abcb, type: 3}
   m_Name: Input Action - Do Emote - Kiss
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  id: 3
+  container: {fileID: 11400000, guid: b7896a9ba72daf148b50f37e8843b69e, type: 2}
   emoteType: 10

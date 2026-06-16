@@ -30,14 +30,14 @@ namespace Client
             effectSettings = null;
         }
 
-        internal void DoUpdate()
+        internal void DoUpdate(float deltaTime)
         {
             if (!State.IsPlaying())
                 return;
 
             bool keepAlive = false;
             foreach (EffectBehaviour effectBehaviour in behaviours)
-                effectBehaviour.DoUpdate(this, ref keepAlive);
+                effectBehaviour.DoUpdate(this, deltaTime, ref keepAlive);
 
             if (KeepOriginalRotation)
                 transform.rotation = originalRotation;
@@ -96,10 +96,29 @@ namespace Client
                 behaviours.ForEach(behaviour => behaviour.Replay());
         }
 
+        public void ResetLocally(long playId)
+        {
+            if (PlayId == playId)
+            {
+                transform.localScale = Vector3.one;
+                transform.localPosition = Vector3.zero;
+                transform.localRotation = Quaternion.identity;
+            }
+        }
+
         [UsedImplicitly]
         private void OnDestroy()
         {
             Stop(PlayId, true);
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Collect"), UsedImplicitly]
+        private void Collect()
+        {
+            behaviours = new List<EffectBehaviour>(GetComponentsInChildren<EffectBehaviour>());
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+#endif
     }
 }

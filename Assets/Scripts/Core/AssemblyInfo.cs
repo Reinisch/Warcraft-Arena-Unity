@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Arena.Server")]
-[assembly: InternalsVisibleTo("Arena.Editor")]
+[assembly: InternalsVisibleTo("Game.Server")]
+[assembly: InternalsVisibleTo("Game.Editor")]

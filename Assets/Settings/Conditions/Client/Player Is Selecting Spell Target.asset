@@ -12,4 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df09bbeeb256a8346a58286394342663, type: 3}
   m_Name: Player Is Selecting Spell Target
   m_EditorClassIdentifier: 
-  spellTargeting: {fileID: 11400000, guid: 1d2c1b73490f6af4594f17bc5017efc1, type: 2}

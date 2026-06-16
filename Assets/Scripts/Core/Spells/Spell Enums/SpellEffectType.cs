@@ -59,7 +59,7 @@
         LearnPetSpell = 57,
         WeaponDamage = 58,
         CreateRandomItem = 59,
-        Proficiency = 60,
+        Projectile = 60,
         SendEvent = 61,
         PowerBurn = 62,
         Threat = 63,

@@ -3,13 +3,13 @@ using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
-
-using EventHandler = Common.EventHandler;
+using Zenject;
 
 namespace Client
 {
     public class HealthFrame : MonoBehaviour
     {
+        [Inject] private EventBus eventBus;
         [SerializeField, UsedImplicitly] private CanvasGroup frameCanvasGroup;
         [SerializeField, UsedImplicitly] private AttributeBar healthBar;
 
@@ -54,12 +54,12 @@ namespace Client
 
             OnAttributeChanged(EntityAttributes.Health);
 
-            EventHandler.RegisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
+            eventBus.RegisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
         }
 
         private void DeinitializeUnit()
         {
-            EventHandler.UnregisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
+            eventBus.UnregisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
 
             unit = null;
         }

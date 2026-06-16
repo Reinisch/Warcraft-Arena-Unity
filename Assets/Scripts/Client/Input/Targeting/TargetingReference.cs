@@ -1,23 +1,22 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
+using Zenject;
 
 namespace Client
 {
-    /// <summary>
-    /// Handles client-side targeting for local player.
-    /// </summary>
-    [CreateAssetMenu(fileName = "Targeting Reference", menuName = "Game Data/Scriptable/Targeting", order = 11)]
     public partial class TargetingReference : ScriptableReferenceClient
     {
-        [SerializeField, UsedImplicitly] private InputReference input;
-        [SerializeField, UsedImplicitly] private RenderingReference rendering;
-        [SerializeField, UsedImplicitly] private CameraReference cameraReference;
-        [SerializeField, UsedImplicitly] private TargetingSettings targetingSettings;
+        [Inject] private InputReference input;
+        [Inject] private RenderingReference rendering;
+        [Inject] private CameraReference cameraReference;
 
-        private readonly List<Unit> previousTargets = new List<Unit>();
+        [SerializeField, UsedImplicitly] 
+        private TargetingSettings targetingSettings;
+
+        private readonly List<Unit> previousTargets = new();
 
         protected override void OnRegistered()
         {
@@ -37,39 +36,35 @@ namespace Client
         {
             base.OnUpdate(deltaTime);
 
-            if (!Player.ExistsIn(World))
+            if (!Player.ExistsIn(World) || Player.MovementMode != MovementMode.Rpg)
                 return;
 
-            // case when server is also a client
-            if (Player.Target != null && !Player.HasClientVisiblityOf(Player.Target))
-                input.SelectTarget(null);
-
-            if (Input.GetMouseButtonDown(0) && !Input.GetMouseButton(1) && !InterfaceUtils.IsPointerOverUI)
+            if (input.LeftClickDown && !input.RightClickPressed && !InterfaceUtils.IsPointerOverUI)
             {
-                Ray ray = cameraReference.WarcraftCamera.Camera.ScreenPointToRay(Input.mousePosition);
+                Ray ray = cameraReference.WarcraftCamera.Camera.ScreenPointToRay(input.MousePosition);
                 if (Physics.Raycast(ray, out var hit, float.MaxValue, PhysicsReference.Mask.Interactable | PhysicsReference.Mask.Ground))
-                    if (rendering.TryFindRenderer(hit.collider, out UnitRenderer unitRenderer) && Player.HasClientVisiblityOf(unitRenderer.Unit))
+                    if (rendering.TryFindRendererByHitBox(hit.collider, out UnitRenderer unitRenderer))
                         input.SelectTarget(unitRenderer.Unit);
             }
         }
 
-        protected override void OnWorldStateChanged(World world, bool created)
+        public override void OnWorldStateChanged(bool created)
         {
             if (created)
             {
-                base.OnWorldStateChanged(world, true);
+                base.OnWorldStateChanged(true);
 
                 previousTargets.Clear();
 
-                world.UnitManager.EventEntityDetach += OnEntityDetach;
+                World.UnitManager.EventEntityDetach += OnEntityDetach;
             }
             else
             {
-                world.UnitManager.EventEntityDetach -= OnEntityDetach;
+                World.UnitManager.EventEntityDetach -= OnEntityDetach;
 
                 previousTargets.Clear();
 
-                base.OnWorldStateChanged(world, false);
+                base.OnWorldStateChanged(false);
             }
         }
 
@@ -80,7 +75,7 @@ namespace Client
 
         public void SelectTarget(TargetingOptions options)
         {
-            if (!Player.ExistsIn(World))
+            if (!Player.ExistsIn(World) || Player.MovementMode != MovementMode.Rpg)
                 return;
 
             switch (options.Mode)

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
-using Bolt;
 using Common;
 using Core.AuraEffects;
+using Zenject;
 
 namespace Core
 {
@@ -16,40 +16,39 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private List<UnitBehaviour> unitBehaviours;
 
+        [Inject] internal EventBus EventBus { get; private set; }
+
         private SingleReference<Unit> selfReference;
         private UnitControlState controlState;
-        private IUnitState entityState;
         private UnitFlags unitFlags;
 
         private readonly BehaviourController behaviourController = new BehaviourController();
+        private CreateToken createToken;
 
-
-        internal AuraVisibleController VisibleAuras { get; } = new AuraVisibleController();
         internal AuraApplicationController Auras { get; } = new AuraApplicationController();
-        internal AttributeController Attributes { get; } = new AttributeController();
         internal CombatController Combat { get; } = new CombatController();
         internal MotionController Motion { get; } = new MotionController();
-        internal SpellController Spells { get; } = new SpellController();
-        internal WarcraftCharacterController CharacterController => characterController;
+        public SpellController Spells { get; } = new SpellController();
+        public WarcraftCharacterController CharacterController => characterController;
 
         internal ShapeShiftForm ShapeShiftForm { get; private set; }
         internal SpellInfo ShapeShiftSpellInfo { get; private set; }
         internal SpellInfo TransformSpellInfo { get; private set; }
-        internal CreateToken UnitCreateToken { get; private set; }
-        internal Vehicle Vehicle { get; private set; }
 
         internal abstract UnitAI AI { get; }
         internal abstract UnitAttributeDefinition AttributeDefinition { get; }
 
-        internal bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
-        internal int ModelId { get => Attributes.ModelId; set => Attributes.ModelId = value; }
-        internal int OriginalModelId { get => Attributes.OriginalModelId; set => Attributes.OriginalModelId = value; }
-        internal FactionDefinition Faction { get => Attributes.Faction; set => Attributes.Faction = value; }
-        internal DeathState DeathState { get => Attributes.DeathState; set => Attributes.DeathState = value; }
-        internal IReadOnlyList<AuraApplication> AuraApplications => Auras.AuraApplications;
-
+        public bool FreeForAll { get => Attributes.FreeForAll; set => Attributes.FreeForAll = value; }
+        public int ModelId { get => Attributes.ModelId; set => Attributes.ModelId = value; }
+        public int OriginalModelId { get => Attributes.OriginalModelId; set => Attributes.OriginalModelId = value; }
+        public FactionDefinition Faction { get => Attributes.Faction; set => Attributes.Faction = value; }
+        public DeathState DeathState { get => Attributes.DeathState; set => Attributes.DeathState = value; }
+        public IReadOnlyList<AuraApplication> AuraApplications => Auras.AuraApplications;
+        public CreateToken CreationToken { get; private set; }
+        public AttributeController Attributes { get; } = new AttributeController();
+        public AuraVisibleController VisibleAuras { get; } = new AuraVisibleController();
         public override float Size => base.Size * Scale;
-
+        public Vector3 Velocity => CharacterController.Velocity;
         public MovementFlags MovementFlags => Motion.MovementFlags;
         public IReadOnlyReference<Unit> SelfReference => selfReference;
         public Unit Target => Attributes.Target;
@@ -65,8 +64,7 @@ namespace Core
         public int ComboPoints => Attributes.ComboPoints.Value;
         public int MaxComboPoints => Attributes.ComboPoints.Max;
         public int SpellPower => Attributes.SpellPower.Value;
-        public int EmoteFrame => entityState.EmoteFrame;
-        public int VisibleAuraMaxCount => entityState.VisibleAuras.Length;
+        public float EmoteFrame => Attributes.EmoteTime;
         public float RotationSpeed => CharacterController.Definition.RotateSpeed;
         public float RunSpeed => Attributes.Speed(UnitMoveType.Run);
         public float ModHaste => Attributes.ModHaste.Value;
@@ -82,60 +80,40 @@ namespace Core
         public ClassType ClassType { get => Attributes.ClassType; internal set => Attributes.ClassType = value; }
         public EmoteType EmoteType { get => Attributes.EmoteType; internal set => Attributes.EmoteType = value; }
         public MovementMode MovementMode { get => Attributes.MovementMode; internal set => Attributes.MovementMode = value; }
-        public int SlowFallSpeed { get => entityState.SlowFallSpeed; internal set => entityState.SlowFallSpeed = value; }
+        public int SlowFallSpeed { get => Attributes.SlowFallSpeed; internal set => Attributes.SlowFallSpeed = value; }
 
-        public sealed override void Attached()
+        public override void Attached(Entity.CreateToken createToken)
         {
-            base.Attached();
+            CreationToken = (CreateToken)createToken;
+
+            base.Attached(createToken);
 
             HandleAttach();
-            
+
             World.UnitManager.Attach(this);
         }
 
         public sealed override void Detached()
         {
-            // called twice on client (from Detached Photon callback and manual in UnitManager.Dispose)
-            // if he needs to instantly destroy current world and avoid any events
-            if (IsValid)
-            {
-                World.UnitManager.Detach(this);
+            World.UnitManager.Detach(this);
 
-                HandleDetach();
+            HandleDetach();
 
-                base.Detached();
-            }
-        }
-
-        public sealed override void ControlGained()
-        {
-            base.ControlGained();
-
-            HandleControlGained();
-        }
-
-        public sealed override void ControlLost()
-        {
-            base.ControlLost();
-
-            HandleControlLost();
+            base.Detached();
         }
 
         protected virtual void HandleAttach()
         {
             selfReference = new SingleReference<Unit>(this);
-            UnitCreateToken = (CreateToken)entity.AttachToken;
-            entityState = entity.GetState<IUnitState>();
 
             behaviourController.HandleUnitAttach(this);
 
-            SetMap(World.FindMap(1));
+            Assert.IsNotNull(CreationToken.Map, $"{name}) created without a map!");
+            SetMap(CreationToken.Map ?? World.MapController.PrimaryMap);
         }
 
         protected virtual void HandleDetach()
         {
-            DestroyVehicle();
-
             ResetShapeShiftForm();
             ResetTransformSpell();
 
@@ -151,18 +129,6 @@ namespace Core
             unitFlags = 0;
         }
 
-        protected virtual void HandleControlGained()
-        {
-            UpdateSyncTransform(IsOwner);
-            CharacterController.UpdateRigidbody();
-        }
-
-        protected virtual void HandleControlLost()
-        {
-            UpdateSyncTransform(true);
-            CharacterController.UpdateRigidbody();
-        }
-
         protected virtual void AddBehaviours(BehaviourController unitBehaviourController)
         {
             unitBehaviourController.TryAddBehaviour(Attributes);
@@ -174,117 +140,32 @@ namespace Core
             unitBehaviourController.TryAddBehaviour(VisibleAuras);
         }
 
-        internal override void PrepareForScoping()
-        {
-            base.PrepareForScoping();
-
-            if (IsOwner)
-            {
-                UnitCreateToken.VisualEffectFlags = Attributes.VisualEffectFlags;
-                UnitCreateToken.FactionId = Faction.FactionId;
-                UnitCreateToken.DeathState = Attributes.DeathState;
-                UnitCreateToken.ClassType = Attributes.ClassType;
-                UnitCreateToken.EmoteType = Attributes.EmoteType;
-                UnitCreateToken.DisplayPowerType = Attributes.DisplayPowerType;
-                UnitCreateToken.Scale = Attributes.Scale;
-                UnitCreateToken.ModelId = Attributes.ModelId;
-                UnitCreateToken.FreeForAll = Attributes.FreeForAll;
-                UnitCreateToken.DisplayPower = Power;
-                UnitCreateToken.DisplayPowerMax = MaxPower;
-            }
-        }
-
         internal override void DoUpdate(int deltaTime)
         {
-            base.DoUpdate(deltaTime);
-
             behaviourController.DoUpdate(deltaTime);
         }
 
-        internal void CreateVehicle(VehicleInfo vehicleInfo, CreatureInfo vehicleCreature)
+        /// <summary>Sets the unit's facing through the character motor. The KCC owns rotation (it reapplies its
+        /// own <c>TransientRotation</c> each step), so a plain <see cref="WorldEntity.Rotation"/> set is
+        /// overwritten — kinematic movement (e.g. pounce) must route the facing through the motor to take effect.</summary>
+        public void SetFacing(Quaternion rotation)
         {
-            Vehicle = new Vehicle(this, vehicleInfo, vehicleCreature);
+            characterController.Motor.SetRotation(rotation);
         }
 
-        internal void DestroyVehicle()
+        public override void Teleport(Vector3 position, bool notify = true)
         {
-            Vehicle?.Dispose();
-            Vehicle = null;
+            characterController.Motor.SetPosition(position);
+
+            base.Teleport(position, notify);
+
+            // Server-authoritative: notify so the net layer relays the teleport to the owning client, whose
+            // movement is client-authoritative and otherwise wouldn't follow a server-side position change.
+            if (notify && World.HasServerLogic)
+                EventBus.ExecuteEvent(Common.GameEvents.ServerUnitTeleported, this, position);
         }
 
-        internal void HandleVehicleApplicationEnter(Vehicle vehicle, int seatIndex, Aura vehicleAura)
-        {
-            Vehicle?.Unit.Auras.RemoveAurasWithEffect(AuraEffectType.ControlVehicle, exceptAura: vehicleAura, onlyWithCaster: this);
-
-            if (this is Player passengerPlayer && vehicle.Unit is Player && passengerPlayer.Combat.InCombat)
-                HanderEnteringCancellation();
-
-            if (vehicleAura.IsRemoved)
-                return;
-
-            if (vehicle.AddPassenger(this, seatIndex))
-                Vehicle = vehicle;
-            else
-                HanderEnteringCancellation();
-
-            void HanderEnteringCancellation()
-            {
-                vehicle.Unit.Auras.RemoveOwnedAura(vehicleAura, AuraRemoveMode.Cancel);
-            }
-        }
-
-        internal void HandleVehicleApplicationExit()
-        {
-            Vehicle.RemovePassenger(this);
-            Vehicle = null;
-
-            // calculate jump target position
-            float topCheck = Mathf.Abs(UnitCollider.bounds.max.y) / 2;
-            float safeExtentsY = Mathf.Abs(UnitCollider.bounds.extents.y);
-            float safeExtentsX = Mathf.Abs(UnitCollider.bounds.extents.x);
-            float distance = UnitCollider.height;
-
-            Vector3 targetTop = UnitCollider.bounds.center + Vector3.up * topCheck;
-            Vector3 targetPosition;
-
-            Drawing.DrawLine(UnitCollider.bounds.center, UnitCollider.bounds.center + Vector3.up * topCheck, Color.red, 3f);
-
-            if (Physics.Raycast(UnitCollider.bounds.center, Vector3.up, out RaycastHit hitInfo, topCheck, PhysicsReference.Mask.Ground))
-                targetPosition = hitInfo.point - Vector3.up * safeExtentsY;
-            else
-                targetPosition = targetTop;
-
-            Drawing.DrawLine(targetPosition, targetPosition + transform.forward * distance, Color.red, 3f);
-
-            if (Physics.Raycast(targetPosition, -transform.forward, out hitInfo, distance, PhysicsReference.Mask.Ground))
-                targetPosition = hitInfo.point + transform.forward * safeExtentsX;
-            else
-                targetPosition = targetPosition - transform.forward * distance;
-
-            Drawing.DrawLine(targetPosition, targetPosition - Vector3.up * topCheck * 1.5f, Color.red, 3f);
-
-            if (Physics.Raycast(targetPosition, -Vector3.up, out hitInfo, topCheck * 2f, PhysicsReference.Mask.Ground))
-                targetPosition = hitInfo.point;
-            else
-                targetPosition = targetPosition - Vector3.up * topCheck * 2f;
-
-            Motion.StartPounceMovement(targetPosition, Attributes.Speed(UnitMoveType.Run));
-        }
-
-        internal void EnterVehicle(Vehicle vehicle, int seatIndex)
-        {
-            Spells.TriggerSpell(Balance.Spells.ControlVehicle, vehicle.Unit, SpellCastFlags.IgnoreCasterMountedOrOnVehicle);
-        }
-
-        internal void ExitVehicle()
-        {
-            Vehicle?.Unit.Auras.RemoveAurasWithEffect(AuraEffectType.ControlVehicle, onlyWithCaster: this);
-        }
-
-        internal bool IsOnVehicle(Unit unit)
-        {
-            return Vehicle != null && Vehicle == unit.Vehicle;
-        }
+        public bool IsOnSameMap(Unit unit) => Map == unit.Map;
 
         public bool IsHostileTo(Unit unit)
         {
@@ -308,19 +189,11 @@ namespace Core
             return Faction.FriendlyFactions.Contains(unit.Faction);
         }
 
-        public void AddCallback(string path, PropertyCallback propertyCallback) => entityState.AddCallback(path, propertyCallback);
-
-        public void AddCallback(string path, PropertyCallbackSimple propertyCallback) => entityState.AddCallback(path, propertyCallback);
-
-        public void RemoveCallback(string path, PropertyCallback propertyCallback) => entityState.RemoveCallback(path, propertyCallback);
-
-        public void RemoveCallback(string path, PropertyCallbackSimple propertyCallback) => entityState.RemoveCallback(path, propertyCallback);
-
         public bool HasMovementFlag(MovementFlags flag) => Motion.HasMovementFlag(flag);
 
         public T FindBehaviour<T>() where T : UnitBehaviour => behaviourController.FindBehaviour<T>();
 
-        public VisibleAuraState VisibleAura(int index) => entityState.VisibleAuras[index];
+        public AuraApplication VisibleAura(int index) => VisibleAuras.ApplicationSlots[index];
 
         internal bool HasAuraType(AuraEffectType auraEffectType) => Auras.HasAuraType(auraEffectType);
 
@@ -372,6 +245,7 @@ namespace Core
                 return;
 
             bool hadControl = Motion.HasMovementControl;
+            bool hadFreeMovement = HasFreeMovement;
 
             if (applied)
             {
@@ -435,8 +309,17 @@ namespace Core
 
             bool hasControl = !HasAnyState(UnitControlState.LostControl);
             if (hasControl != hadControl)
-                CharacterController.UpdateMovementControl(hasControl);
+                Motion.UpdateMovementControl(hasControl);
+
+            // Net authority: when the player can no longer move itself (root/stun/polymorph/fear), the server
+            // takes movement authority (re-owns its shadow); restored when it can move again. Server-only.
+            if (HasFreeMovement != hadFreeMovement && World.HasServerLogic)
+                EventBus.ExecuteEvent(Common.GameEvents.ServerPlayerMovementControlChanged, this, HasFreeMovement);
         }
+
+        /// <summary>True when this unit can freely control its own movement (no root/stun/loss-of-control) —
+        /// i.e. its movement stays client-authoritative; false means the server drives it.</summary>
+        public bool HasFreeMovement => !IsMovementBlocked && !HasAnyState(UnitControlState.LostControl);
 
         internal void UpdateShapeShiftForm(AuraEffectShapeShift shapeShiftEffect)
         {
@@ -462,13 +345,13 @@ namespace Core
             ModelId = OriginalModelId;
         }
 
-        internal void ModifyEmoteState(EmoteType emoteType)
+        public void ModifyEmoteState(EmoteType emoteType)
         {
             if (!IsDead && !HasFlag(UnitFlags.Stunned))
                 EmoteType = emoteType;
         }
 
-        internal void ModifyDeathState(DeathState newState)
+        public void ModifyDeathState(DeathState newState)
         {
             DeathState = newState;
 
@@ -539,7 +422,7 @@ namespace Core
         {
             SetMovementFlag(MovementFlags.MaskMoving, false);
 
-            CharacterController.StopMoving();
+            CharacterController.Motor.ResetVelocity();
         }
 
         private void UpdateStunState(bool applied)
@@ -578,9 +461,6 @@ namespace Core
                 RemoveState(UnitControlState.Root);
                 SetMovementFlag(MovementFlags.Root, false);
             }
-
-            if (IsOwner && this is Player rootedPlayer)
-                EventHandler.ExecuteEvent(GameEvents.ServerPlayerRootChanged, rootedPlayer, applied);
         }
 
         private void UpdateConfusionState(bool applied)

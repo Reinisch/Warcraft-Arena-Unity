@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Client
@@ -19,5 +19,14 @@ namespace Client
         {
             OnPlay();
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Collect"), UsedImplicitly]
+        private void Collect()
+        {
+            replayableSystems = new List<ParticleSystem>(GetComponentsInChildren<ParticleSystem>());
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+#endif
     }
 }

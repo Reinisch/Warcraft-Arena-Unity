@@ -1,19 +1,22 @@
-﻿using System;
+using System;
+using Client.Spells;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Core;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace Client
 {
     public class ButtonContent : UIBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IPointerDownHandler, IPointerUpHandler
     {
-        [SerializeField, UsedImplicitly] private TooltipReference tooltips;
-        [SerializeField, UsedImplicitly] private BalanceReference balance;
-        [SerializeField, UsedImplicitly] private RenderingReference rendering;
-        [SerializeField, UsedImplicitly] private InputReference input;
+        [Inject] private RenderingReference rendering;
+        [Inject] private TooltipReference tooltips;
+        [Inject] private BalanceReference balance;
+        [Inject] private InputReference input;
+
         [SerializeField, UsedImplicitly] private RectTransform rectTransform;
         [SerializeField, UsedImplicitly] private Image contentImage;
         [SerializeField, UsedImplicitly] private Image cooldownImage;
@@ -26,7 +29,7 @@ namespace Client
         public ButtonContentType ContentType => data.ActionType;
         public Image ContentImage => contentImage;
 
-        private readonly ActionButtonData data = new ActionButtonData(0, ButtonContentType.Empty);
+        private readonly ActionButtonData data = new(0, ButtonContentType.Empty);
         private PointerEventData manualPointerData;
         private SpellInfo spellInfo;
 
@@ -37,12 +40,19 @@ namespace Client
         private readonly char[] chargeCountText = new char[11];
         private bool showingTimer;
 
+        private int lastAvailableCharges = -1;
+        private int lastCooldownTimeLeft = -1;
+        private bool lastShowTimer;
+
         public bool IsAlreadyPressed => isPointerDown || isHotkeyDown;
 
         public void Initialize(ButtonSlot buttonSlot)
         {
             manualPointerData = new PointerEventData(EventSystem.current);
             ButtonSlot = buttonSlot;
+
+            lastAvailableCharges = -1;
+            lastCooldownTimeLeft = -1;
 
             UpdateContent();
         }
@@ -52,6 +62,8 @@ namespace Client
             ButtonSlot = null;
             isHotkeyDown = false;
             isPointerDown = false;
+            lastAvailableCharges = -1;
+            lastCooldownTimeLeft = -1;
         }
 
         public void DoUpdate()
@@ -159,8 +171,8 @@ namespace Client
             {
                 case ButtonContentType.Spell when balance.SpellInfosById.ContainsKey(data.ActionId):
                     spellInfo = balance.SpellInfosById[data.ActionId];
-                    ContentImage.sprite = rendering.SpellVisuals.ContainsKey(data.ActionId)
-                        ? rendering.SpellVisuals[data.ActionId].SpellIcon
+                    ContentImage.sprite = rendering.SpellVisuals.TryGetValue(data.ActionId, out SpellVisualsInfo visual)
+                        ? visual.SpellIcon
                         : rendering.DefaultSpellIcon;
 
                     ContentImage.enabled = true;
@@ -217,25 +229,40 @@ namespace Client
                 cooldownTime = spellCooldown.Cooldown;
             }
 
-            if (spellInfo.IsUsingCharges)
-                chargeText.SetCharArray(chargeCountText.SetIntNonAlloc(availableCharges, out int length), 0, length);
-            else
-                chargeText.SetCharArray(chargeCountText, 0, 0);
+            if (availableCharges != lastAvailableCharges)
+            {
+                if (spellInfo.IsUsingCharges)
+                    chargeText.SetCharArray(chargeCountText.SetIntNonAlloc(availableCharges, out int length), 0, length);
+                else
+                    chargeText.SetCharArray(chargeCountText, 0, 0);
+
+                lastAvailableCharges = availableCharges;
+            }
 
             if (cooldownTimeLeft == 0)
             {
-                cooldownText.SetCharArray(timerText, 0, 0);
-                cooldownImage.fillAmount = 0;
-                showingTimer = false;
+                if (lastCooldownTimeLeft != 0)
+                {
+                    cooldownText.SetCharArray(timerText, 0, 0);
+                    cooldownImage.fillAmount = 0;
+                    showingTimer = false;
+                    lastCooldownTimeLeft = 0;
+                }
             }
             else
             {
-                if (showTimer)
-                    cooldownText.SetCharArray(timerText.SetSpellTimerNonAlloc(cooldownTimeLeft, out int length), 0, length);
-                else
-                    cooldownText.SetCharArray(timerText, 0, 0);
+                if (cooldownTimeLeft != lastCooldownTimeLeft || showTimer != lastShowTimer)
+                {
+                    if (showTimer)
+                        cooldownText.SetCharArray(timerText.SetSpellTimerNonAlloc(cooldownTimeLeft, out int length), 0, length);
+                    else
+                        cooldownText.SetCharArray(timerText, 0, 0);
 
-                cooldownImage.fillAmount = (float) cooldownTimeLeft / cooldownTime;
+                    lastCooldownTimeLeft = cooldownTimeLeft;
+                    lastShowTimer = showTimer;
+                }
+
+                cooldownImage.fillAmount = (float)cooldownTimeLeft / cooldownTime;
                 showingTimer = showTimer;
             }
         }

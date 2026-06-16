@@ -6,13 +6,10 @@ namespace Core
     {
         internal new class SpellController : IUnitBehaviour
         {
-            private readonly HashSet<SpellInfo> knownSpells = new HashSet<SpellInfo>();
+            private readonly HashSet<SpellInfo> knownSpells = new();
 
             private ClassInfo appliedClass;
             private Player player;
-
-            public bool HasClientLogic => false;
-            public bool HasServerLogic => true;
 
             void IUnitBehaviour.DoUpdate(int deltaTime)
             {
@@ -52,10 +49,6 @@ namespace Core
                     for (int i = 0; i < appliedClass.ClassSpells.Count; i++)
                     {
                         SpellInfo appliedSpell = appliedClass.ClassSpells[i];
-
-                        if (updatedClass.HasSpell(appliedSpell))
-                            continue;
-
                         player.Auras.RemoveAuraWithSpellInfo(appliedSpell, AuraRemoveMode.Cancel);
                         knownSpells.Remove(appliedSpell);
                     }

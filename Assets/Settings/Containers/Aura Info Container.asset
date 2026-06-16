@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12424b172f9b7e64bb002e0565240fe6, type: 3}
   m_Name: Aura Info Container
   m_EditorClassIdentifier: 
-  auraInfos:
+  items:
   - {fileID: 7241448207376936393, guid: d48ac7529195b144fb2ecfd0f17a74fc, type: 2}
   - {fileID: 4779809168516676778, guid: d76f3f10631a0334795fa104d4bbcd41, type: 2}
   - {fileID: 4307487000678494919, guid: ec9e3f15c8fb97a4ea496361fb5f703d, type: 2}
@@ -66,5 +66,5 @@ MonoBehaviour:
   - {fileID: 4616151593143777643, guid: 5d39da6fec9fc5849a7cb2e9cce76daf, type: 2}
   - {fileID: 7974099136924846141, guid: dd4efbc62372e3346a50dc70d323ecd1, type: 2}
   - {fileID: 8621405356891154266, guid: bb60bfdfe1262da4792b27b81f8b65a9, type: 2}
-  - {fileID: 8621405356891154266, guid: f5e8a36a2b71d314d882d658ab46ca4b, type: 2}
   - {fileID: 5400838338259874997, guid: fb16007c637890749bec9f0e2a9c82fe, type: 2}
+  - {fileID: -6372156195522885322, guid: 3bceed7e0fd5e874296bda96c181da11, type: 2}

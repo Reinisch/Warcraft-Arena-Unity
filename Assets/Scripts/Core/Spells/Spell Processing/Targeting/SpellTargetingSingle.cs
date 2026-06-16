@@ -14,10 +14,11 @@ namespace Core
             // select implicit target from explicit effect target type
             switch (singleTargetType)
             {
-                case SpellSingleTargetType.Target when spell.ExplicitTargets.Target != null:
-                    spell.ImplicitTargets.AddTargetIfNotExists(spell.ExplicitTargets.Target, effectMask);
+                case SpellSingleTargetType.Target:
+                    if (spell.ExplicitTargets.Target != null && spell.Caster.IsOnSameMap(spell.ExplicitTargets.Target))
+                        spell.ImplicitTargets.AddTargetIfNotExists(spell.ExplicitTargets.Target, effectMask);
                     break;
-                case SpellSingleTargetType.Caster when spell.Caster != null:
+                case SpellSingleTargetType.Caster:
                     spell.ImplicitTargets.AddTargetIfNotExists(spell.Caster, effectMask);
                     break;
                 default:

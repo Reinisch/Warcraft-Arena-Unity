@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb231a3d33b08f40a969c730c8a5989, type: 3}
   m_Name: Class Info Container
   m_EditorClassIdentifier: 
-  classes:
+  items:
   - {fileID: 11400000, guid: 9629521e615a9f84b92934bdb4984e46, type: 2}
   - {fileID: 11400000, guid: 0aef1c8e0d1990644bab3aef06538b98, type: 2}
   - {fileID: 11400000, guid: 55fed82ccfc5c9742bd1d7f6acf3d101, type: 2}

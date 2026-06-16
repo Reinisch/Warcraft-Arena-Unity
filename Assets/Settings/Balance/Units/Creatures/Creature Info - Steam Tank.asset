@@ -18,3 +18,4 @@ MonoBehaviour:
   vehicleInfo: {fileID: 11400000, guid: 74eeb7f9a9efa2a4b917615c144fbc71, type: 2}
   creatureName: Steam Tank
   modelId: 7
+  nameplateSizeModifier: 1

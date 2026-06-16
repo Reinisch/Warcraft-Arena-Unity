@@ -15,6 +15,8 @@ MonoBehaviour:
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
   triggerSpell: {fileID: 11400000, guid: 2a8e172f376fd984ea1c705663775810, type: 2}
   extraCastFlags: 16452
+  destinationTrigger: 0
+  handleMode: 3
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54,6 +56,7 @@ MonoBehaviour:
   maxRangeHostile: 0
   maxRangeFriend: 0
   speed: 0
+  delay: 0
   spellEffectInfos:
   - {fileID: 948557142348255619}
   - {fileID: -3219835400110037729}
@@ -79,3 +82,5 @@ MonoBehaviour:
   targeting: {fileID: 11400000, guid: 8770472ffcee43f4498239c9c005bf98, type: 2}
   triggerSpell: {fileID: 11400000, guid: 0fcbec3231a266244bb039eaa2ac68cf, type: 2}
   extraCastFlags: 16388
+  destinationTrigger: 0
+  handleMode: 3

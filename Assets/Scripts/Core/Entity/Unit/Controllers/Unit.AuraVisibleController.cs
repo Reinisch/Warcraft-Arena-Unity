@@ -1,22 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Core
 {
     public abstract partial class Unit
     {
-        internal class AuraVisibleController : IUnitBehaviour
-        {
-            private IUnitState unitState;
+        public const int MaxVisibleAuraSlots = 30;
 
-            private readonly Dictionary<AuraApplication, int> visibleSlotsByApplication = new Dictionary<AuraApplication, int>();
-            private readonly List<AuraApplication> unslottedApplications = new List<AuraApplication>();
-            private readonly List<int> availableSlots = new List<int>();
+        public class AuraVisibleController : IUnitBehaviour, ILogicBehaviour
+        {
+            private readonly Dictionary<AuraApplication, int> visibleSlotsByApplication = new();
+            private readonly List<AuraApplication> unslottedApplications = new();
+            private readonly List<int> availableSlots = new();
             private AuraApplication[] applicationSlots;
 
             internal bool NeedUpdate { private get; set; }
 
-            public bool HasClientLogic => false;
+            public AuraApplication[] ApplicationSlots => applicationSlots;
+            // Client too: it is the visible-aura slot model the client's AuraControllerClient renders from.
+            // Without it the client behaviour reads null slots (NPE); on a pure client it stays empty until
+            // aura state is replicated.
+            public bool HasClientLogic => true;
             public bool HasServerLogic => true;
+
+            public event Action EventVisibleAurasChanged;
 
             internal void HandleAuraApplication(AuraApplication auraApplication, bool applied)
             {
@@ -36,10 +43,8 @@ namespace Core
                 }
                 else
                 {
-                    if (visibleSlotsByApplication.TryGetValue(auraApplication, out int occupiedSlotIndex))
+                    if (visibleSlotsByApplication.Remove(auraApplication, out int occupiedSlotIndex))
                     {
-                        visibleSlotsByApplication.Remove(auraApplication);
-
                         if (unslottedApplications.Count == 0)
                         {
                             availableSlots.Add(occupiedSlotIndex);
@@ -61,33 +66,20 @@ namespace Core
 
             void IUnitBehaviour.DoUpdate(int deltaTime)
             {
-                if (!NeedUpdate)
-                    return;
-
-                NeedUpdate = false;
-
-                for (int i = 0; i < applicationSlots.Length; i++)
+                if (NeedUpdate)
                 {
-                    AuraApplication applicationInSlot = applicationSlots[i];
-                    if (applicationInSlot == null)
-                        unitState.VisibleAuras[i].AuraId = 0;
-                    else
-                    {
-                        unitState.VisibleAuras[i].AuraId = applicationInSlot.Aura.AuraInfo.Id;
-                        unitState.VisibleAuras[i].RefreshFrame = applicationInSlot.Aura.RefreshServerFrame;
-                        unitState.VisibleAuras[i].Duration = applicationInSlot.Aura.RefreshDuration;
-                        unitState.VisibleAuras[i].MaxDuration = applicationInSlot.Aura.MaxDuration;
-                        unitState.VisibleAuras[i].Charges = applicationInSlot.Aura.Charges;
-                    }
+                    NeedUpdate = false;
+                    EventVisibleAurasChanged?.Invoke();
                 }
             }
 
+            /// <summary>Client-side: replicated auras changed — re-raise so the client aura visuals refresh.</summary>
+            internal void NotifyChanged() => EventVisibleAurasChanged?.Invoke();
+
             void IUnitBehaviour.HandleUnitAttach(Unit unit)
             {
-                unitState = unit.entityState;
-
-                applicationSlots = new AuraApplication[unitState.VisibleAuras.Length];
-                for (int i = 0; i < unitState.VisibleAuras.Length; i++)
+                applicationSlots = new AuraApplication[MaxVisibleAuraSlots];
+                for (int i = 0; i < MaxVisibleAuraSlots; i++)
                     availableSlots.Add(i);
             }
 
@@ -98,7 +90,6 @@ namespace Core
                 visibleSlotsByApplication.Clear();
 
                 applicationSlots = null;
-                unitState = null;
             }
         }
     }

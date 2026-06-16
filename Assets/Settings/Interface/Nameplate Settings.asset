@@ -86,7 +86,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxDistance: 60
-  detailedDistance: 30
+  detailedDistance: 40
   distanceThreshold: 5
   healthAlphaTrasitionSpeed: 2.5
   maxDistanceSqr: 60

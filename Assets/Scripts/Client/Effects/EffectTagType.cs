@@ -7,6 +7,7 @@
         Impact,
         ImpactStatic,
         RightHand,
-        LeftHand
+        LeftHand,
+        Custom
     }
 }

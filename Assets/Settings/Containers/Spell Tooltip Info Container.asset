@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9def3bca64af1e740aefad67ef44b64f, type: 3}
   m_Name: Spell Tooltip Info Container
   m_EditorClassIdentifier: 
-  tooltipInfos:
+  items:
   - {fileID: 11400000, guid: c90994085d3547d47827f41191d514b9, type: 2}
   - {fileID: 11400000, guid: f0f0dc9b40672924f9447d89fdf80128, type: 2}
   - {fileID: 11400000, guid: ebe976954b781974fb03f0a5d4da8e2f, type: 2}

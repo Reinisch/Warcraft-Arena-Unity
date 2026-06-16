@@ -1,33 +1,32 @@
 ﻿using Common;
 using Core;
+using Zenject;
 
 namespace Client
 {
     public abstract class ScriptableReferenceClient : ScriptableReference
     {
+        [Inject]
         protected World World { get; private set; }
-        public Player Player { get; private set; }
+
+        public Player Player => World.PlayerManager.Player;
 
         protected override void OnRegistered()
         {
-            EventHandler.RegisterEvent<World, bool>(GameEvents.WorldStateChanged, OnWorldStateChanged);
-            EventHandler.RegisterEvent<Player, bool>(GameEvents.ClientControlStateChanged, OnControlStateChanged);
+            World.PlayerManager.EventPlayerChanged += OnControlStateChanged;
         }
 
         protected override void OnUnregister()
         {
-            EventHandler.UnregisterEvent<Player, bool>(GameEvents.ClientControlStateChanged, OnControlStateChanged);
-            EventHandler.UnregisterEvent<World, bool>(GameEvents.WorldStateChanged, OnWorldStateChanged);
+            World.PlayerManager.EventPlayerChanged -= OnControlStateChanged;
         }
 
-        protected virtual void OnWorldStateChanged(World world, bool created)
+        public virtual void OnWorldStateChanged(bool created)
         {
-            World = created ? world : null;
         }
 
-        protected virtual void OnControlStateChanged(Player player, bool underControl)
+        public virtual void OnControlStateChanged(bool underControl)
         {
-            Player = underControl ? player : null;
         }
     }
 }

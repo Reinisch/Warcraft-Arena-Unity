@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d738595b20e964785aa582a9648a67, type: 3}
   m_Name: Input Action Global - Stop Spell Targeting
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  id: 1
+  container: {fileID: 11400000, guid: 49d5c139756bedf4a94d6ca317bc2b58, type: 2}
   action: {fileID: 11400000, guid: a7324a604acf3864ab6dae7a5203f89c, type: 2}
   hotkey: {fileID: 11400000, guid: 3cf5188b1e7c6ad498f424c4e92cbdae, type: 2}
   blockedByActions: []

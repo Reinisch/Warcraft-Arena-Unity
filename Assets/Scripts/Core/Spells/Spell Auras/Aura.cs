@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Common;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Core
 {
@@ -42,7 +43,7 @@ namespace Core
         public int MaxDuration { get; private set; }
 
         public int RefreshDuration { get; private set; }
-        public int RefreshServerFrame { get; private set; }
+        public float RefreshServerTime { get; private set; }
         public bool IsRemoved { get; private set; }
         public bool IsExpired => Duration == 0;
 
@@ -164,7 +165,7 @@ namespace Core
             Duration = duration;
             MaxDuration = maxDuration;
 
-            RefreshServerFrame = BoltNetwork.ServerFrame;
+            RefreshServerTime = Time.time;
             RefreshDuration = Duration;
 
             Owner.VisibleAuras.NeedUpdate = true;

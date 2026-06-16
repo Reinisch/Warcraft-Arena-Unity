@@ -1,0 +1,809 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: GameStrings Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: GameStrings
+  m_TableCollectionNameGuidString: 25cb21a9bd13eb74db55cff06d15721b
+  m_Entries:
+  - m_Id: 26482757632
+    m_Key: Caster Not Exists - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26516312064
+    m_Key: Bad Targets - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26520506368
+    m_Key: Caster Dead - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26520506369
+    m_Key: Out Of Range - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700672
+    m_Key: Target Dead - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700673
+    m_Key: Target Is Player - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700674
+    m_Key: Not Ready - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700675
+    m_Key: Target Not Dead - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700676
+    m_Key: Connect Fail Reasons Connection Timeout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700677
+    m_Key: Connect Fail Reasons Failed To Connect To Master
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700678
+    m_Key: Connect Fail Reasons Failed To Connect To Session
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700679
+    m_Key: Connect Fail Reasons Invalid Token
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700680
+    m_Key: Connect Fail Reasons Invalid Version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700681
+    m_Key: Connect Fail Reasons None
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700682
+    m_Key: Connect Fail Reasons Server Refused Connection
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700683
+    m_Key: Connect Fail Reasons Unsupported Device
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700684
+    m_Key: Lobby Client Connect Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700685
+    m_Key: Lobby Client Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700686
+    m_Key: Lobby Client Start Failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700687
+    m_Key: Lobby Client Start Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700688
+    m_Key: Lobby Connection Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700689
+    m_Key: Lobby Disconnected Reason
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700690
+    m_Key: Lobby Server Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700691
+    m_Key: Lobby Server Start Failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700692
+    m_Key: Lobby Server Start Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700693
+    m_Key: Missing Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700694
+    m_Key: Caster Is Moving - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700695
+    m_Key: Target Not Frozen - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700696
+    m_Key: Caster Is Silenced - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700697
+    m_Key: Caster Is Pacified - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700698
+    m_Key: Caster Is Confused - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700699
+    m_Key: Caster Is Fleeing - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700700
+    m_Key: Caster Is Stunned - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700701
+    m_Key: Damage Absorbed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700702
+    m_Key: Spell Immuned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700703
+    m_Key: Spell Dodged
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700704
+    m_Key: Spell Evaded
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700705
+    m_Key: Spell Missed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700706
+    m_Key: Empty Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700707
+    m_Key: Flex - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700708
+    m_Key: Beg - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700709
+    m_Key: Bow - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700710
+    m_Key: Chicken - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700711
+    m_Key: Cry - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700712
+    m_Key: Dance - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700713
+    m_Key: Kiss - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700714
+    m_Key: Laugh - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700715
+    m_Key: No - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700716
+    m_Key: Point - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700717
+    m_Key: Read - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700718
+    m_Key: Roar - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700719
+    m_Key: Rude - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700720
+    m_Key: Shout - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700721
+    m_Key: Shy - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700722
+    m_Key: Talk - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700723
+    m_Key: Talk Exclamation - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700724
+    m_Key: Talk Question - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700725
+    m_Key: Train - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700726
+    m_Key: Wave - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700727
+    m_Key: Yes - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700728
+    m_Key: Icy Veins - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700729
+    m_Key: Icy Veins - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700730
+    m_Key: Deep Freeze - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700731
+    m_Key: Deep Freeze - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700732
+    m_Key: Arcane Intellect - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700733
+    m_Key: Arcane Intellect - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700734
+    m_Key: Blazing Speed - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700735
+    m_Key: Blazing Speed - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700736
+    m_Key: Blink - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894976
+    m_Key: Blink - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894977
+    m_Key: Cone of Cold - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894978
+    m_Key: Cone of Cold - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894979
+    m_Key: Counterspell - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894980
+    m_Key: Counterspell - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894981
+    m_Key: Fire Blast - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894982
+    m_Key: Fire Blast - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894983
+    m_Key: Flame Strike - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894984
+    m_Key: Flame Strike - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894985
+    m_Key: Flash Heal - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894986
+    m_Key: Flash Heal - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894987
+    m_Key: Frost Bolt - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894988
+    m_Key: Frost Bolt - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894989
+    m_Key: Frost Nova - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894990
+    m_Key: Frost Nova - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894991
+    m_Key: Holy Word Serenity - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894992
+    m_Key: Holy Word Serenity - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894993
+    m_Key: Honorable Medallion - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894994
+    m_Key: Honorable Medallion - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894995
+    m_Key: Ice Barrier - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894996
+    m_Key: Ice Barrier - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894997
+    m_Key: Ice Block - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894998
+    m_Key: Ice Block - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894999
+    m_Key: Ice Lance - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895000
+    m_Key: Ice Lance - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895001
+    m_Key: Ice Nova - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895002
+    m_Key: Ice Nova - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895003
+    m_Key: Kill Creature - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895004
+    m_Key: Kill Creature - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895005
+    m_Key: Kill Self - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895006
+    m_Key: Kill Self - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895007
+    m_Key: Living Bomb - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895008
+    m_Key: Living Bomb - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895009
+    m_Key: Pain Suppression - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895010
+    m_Key: Pain Suppression - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895011
+    m_Key: Polymorph - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895012
+    m_Key: Polymorph - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895013
+    m_Key: Presence of Mind - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895014
+    m_Key: Presence of Mind - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895015
+    m_Key: Pyroblast - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895016
+    m_Key: Pyroblast - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895017
+    m_Key: Renew - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895018
+    m_Key: Renew - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895019
+    m_Key: Resurrect Self - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895020
+    m_Key: Resurrect Self - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895021
+    m_Key: Scorch - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895022
+    m_Key: Scorch - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895023
+    m_Key: Spell Range Format
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895024
+    m_Key: Spell Cooldown Seconds Format
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895025
+    m_Key: Spell Cast Time Instant Format
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895026
+    m_Key: Spell Cast Time Seconds Format
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895027
+    m_Key: Chat General Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895028
+    m_Key: Spell Not Known - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895029
+    m_Key: Cat Form - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895030
+    m_Key: Cat Form - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895031
+    m_Key: Druid - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895032
+    m_Key: Mage - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895033
+    m_Key: Rake - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895034
+    m_Key: Rake - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895035
+    m_Key: Shred - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895036
+    m_Key: Shred - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895037
+    m_Key: Swipe - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895038
+    m_Key: Swipe - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895039
+    m_Key: Caster Has No Combo - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895040
+    m_Key: Ferocious Bite - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895041
+    m_Key: Ferocious Bite - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089280
+    m_Key: Rip - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089281
+    m_Key: Rip - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089282
+    m_Key: Survival Instincts - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089283
+    m_Key: Survival Instincts - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089284
+    m_Key: No Energy - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089285
+    m_Key: No Health - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089286
+    m_Key: No Mana - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089287
+    m_Key: No Rage - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089288
+    m_Key: Dash - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089289
+    m_Key: Dash - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089290
+    m_Key: Tiger's Fury - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089291
+    m_Key: Tiger's Fury - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089292
+    m_Key: Mangle - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089293
+    m_Key: Mangle - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089294
+    m_Key: Maim - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089295
+    m_Key: Maim - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089296
+    m_Key: Combo Point Cost - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089297
+    m_Key: Energy Cost - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089298
+    m_Key: Energy Cost Percent - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089299
+    m_Key: Mana Cost - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089300
+    m_Key: Mana Cost Percent - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089301
+    m_Key: Rage Cost - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089302
+    m_Key: Rage Cost Percent - Localized String
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089303
+    m_Key: Primal Wrath - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089304
+    m_Key: Primal Wrath - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089305
+    m_Key: Thrash - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089306
+    m_Key: Thrash - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089307
+    m_Key: Entangling Roots - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089308
+    m_Key: Entangling Roots - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089309
+    m_Key: Savage Roar - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089310
+    m_Key: Savage Roar - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089311
+    m_Key: Berserk - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089312
+    m_Key: Berserk - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089313
+    m_Key: Rejuvenation - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089314
+    m_Key: Rejuvenation - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089315
+    m_Key: Regrowth - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089316
+    m_Key: Regrowth - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089317
+    m_Key: Not Out Of Shape Shift - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089318
+    m_Key: Not Shape Shifted - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089319
+    m_Key: Not This Shape Shift - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089320
+    m_Key: Stampeding Roar - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089321
+    m_Key: Stampeding Roar - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089322
+    m_Key: Prowl - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089323
+    m_Key: Prowl - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089324
+    m_Key: Cant Be Used In Combat - Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089325
+    m_Key: Slow Fall - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089326
+    m_Key: Slow Fall - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089327
+    m_Key: Greater Invisibility - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089328
+    m_Key: Greater Invisibility - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089329
+    m_Key: Wild Charge - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089330
+    m_Key: Wild Charge - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089331
+    m_Key: Feral Leap - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089332
+    m_Key: Feral Leap - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089333
+    m_Key: Skull Bash - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089334
+    m_Key: Skull Bash - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089335
+    m_Key: Cyclone - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089336
+    m_Key: Cyclone - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089337
+    m_Key: Rip and Tear - Spell Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089338
+    m_Key: Rip and Tear - Spell Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2083855354814464
+    m_Key: Lobby Name
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6102424952043733102
+  references:
+    version: 2
+    RefIds:
+    - rid: 6102424952043733102
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1780864556229

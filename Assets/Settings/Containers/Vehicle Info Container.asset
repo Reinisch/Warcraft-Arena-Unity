@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd745d171b3d9c4f836cdcda0652c82, type: 3}
   m_Name: Vehicle Info Container
   m_EditorClassIdentifier: 
-  vehicleInfos:
+  items:
   - {fileID: 11400000, guid: 74eeb7f9a9efa2a4b917615c144fbc71, type: 2}

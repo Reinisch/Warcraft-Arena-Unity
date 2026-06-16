@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
+using Zenject;
 
 namespace Client
 {
     [CreateAssetMenu(fileName = "Camera Mode", menuName = "Player Data/Camera/Modes/Rpg", order = 1)]
     public class WarcraftCameraModeRpg: WarcraftCameraMovementMode
     {
-        [SerializeField]
+        [Inject]
         private InputReference input;
 
         public override void PollInput(
@@ -18,13 +19,13 @@ namespace Client
             // If either mouse buttons are down, let the mouse govern camera position
             if (GUIUtility.hotControl == 0)
             {
-                if (Input.GetMouseButton(0) && !InterfaceUtils.IsPointerOverUI || Input.GetMouseButton(1))
+                if ((input.LeftClickPressed && !InterfaceUtils.IsPointerOverUI) || input.RightClickPressed)
                 {
-                    yaw += Input.GetAxis("Mouse X") * camera.SpeedX;
-                    pitch -= Input.GetAxis("Mouse Y") * camera.SpeedY;
+                    yaw += input.LookInput.x * camera.SpeedX;
+                    pitch -= input.LookInput.y * camera.SpeedY;
                 }
                 // otherwise, ease behind the target if any of the directional keys are pressed
-                else if (!Mathf.Approximately(Input.GetAxis("Vertical"), 0) || !Mathf.Approximately(Input.GetAxis("Horizontal"), 0))
+                else if (!Mathf.Approximately(input.MoveInput.y, 0) || !Mathf.Approximately(input.MoveInput.x, 0))
                 {
                     if (camera.Target.IsAlive && input.IsPlayerInputAllowed)
                     {
@@ -36,7 +37,7 @@ namespace Client
             }
 
             if (!InterfaceUtils.IsPointerOverUI)
-                zoom -= Input.GetAxis("Mouse ScrollWheel") * deltaTime * camera.ZoomRate * Mathf.Abs(zoom);
+                zoom -= input.ZoomInput * deltaTime * camera.ZoomRate * Mathf.Abs(zoom);
         }
     }
 }

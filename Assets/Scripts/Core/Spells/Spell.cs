@@ -1,48 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using Common;
+﻿using Common;
 using Core.AuraEffects;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
-
-using EventHandler = Common.EventHandler;
 
 namespace Core
 {
     public partial class Spell
     {
+        public static readonly ObjectPool<Spell> SpellPool = new();
+
         private static int SpellAliveCount;
 
-        private List<(SpellPowerType, int)> powerCosts = ListPoolContainer<(SpellPowerType, int)>.Take();
-
+        private bool isActive;
         private SpellValue spellValue;
-        private readonly SpellManager spellManager;
-        private readonly MovementFlags casterMovementFlags;
-        private readonly HashSet<Aura> appliedModifierAuras = new HashSet<Aura>();
-        private readonly HashSet<Aura> chargeDroppedModifierAuras = new HashSet<Aura>();
-        private readonly HashSet<SpellModifier> appliedModifiers = new HashSet<SpellModifier>();
-        private readonly List<SpellModifier> unappliedModifiers = new List<SpellModifier>();
+        private SpellManager spellManager;
+        private MovementFlags casterMovementFlags;
+        private readonly HashSet<Aura> appliedModifierAuras = new();
+        private readonly HashSet<Aura> chargeDroppedModifierAuras = new();
+        private readonly HashSet<SpellModifier> appliedModifiers = new();
+        private readonly List<SpellModifier> unappliedModifiers = new();
+        private readonly List<(SpellPowerType, int)> powerCosts = new();
 
-        private int CastTimeLeft { get; set; }
-        private int EffectDamage { get; set; }
-        private int EffectHealing { get; set; }
-
-        internal bool IsTriggered { get; }
-        internal bool CanReflect { get; }
+        internal bool IsTriggered { get; private set; }
+        internal bool CanReflect { get; private set; }
         internal int ConsumedComboPoints { get; set; }
-        internal SpellSchoolMask SchoolMask { get; }
+        internal SpellSchoolMask SchoolMask { get; private set; }
+        internal int CastTimeLeft { get; set; }
         internal int CastTime { get; private set; }
         internal Unit Caster { get; private set; }
-        internal Unit OriginalCaster { get; private set; }
-        internal SpellExplicitTargets ExplicitTargets { get; }
         internal SpellImplicitTargets ImplicitTargets { get; }
-        internal SpellInfo SpellInfo { get; private set; }
         internal SpellState SpellState { get; set; }
         internal SpellExecutionState ExecutionState { get; private set; }
+        internal float EffectDamageMultiplier { get; set; }
 
-        internal Spell(Unit caster, SpellInfo info, SpellCastingOptions options)
+        public SpellInfo SpellInfo { get; private set; }
+        public SpellExplicitTargets ExplicitTargets { get; private set; }
+        public Unit OriginalCaster { get; private set; }
+        public int EffectDamage { get; private set; }
+        public int EffectHealing { get; private set; }
+        public int TotalDamage { get; internal set; }
+
+        public Spell()
+        {
+            ImplicitTargets = new SpellImplicitTargets(this);
+        }
+
+        internal Spell Create(Unit caster, SpellInfo info, SpellCastingOptions options)
         {
             Logging.LogSpell($"Created new spell, current count: {++SpellAliveCount}");
 
+            isActive = true;
             spellManager = caster.World.SpellManager;
             spellValue.CastFlags = options.SpellFlags;
             casterMovementFlags = options.MovementFlags ?? caster.Motion.MovementFlags;
@@ -71,9 +79,13 @@ namespace Core
                 !SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability) && !SpellInfo.IsPassive && !SpellInfo.IsPositive;
 
             ExplicitTargets = options.Targets ?? new SpellExplicitTargets();
-            ImplicitTargets = new SpellImplicitTargets(this);
+            ExplicitTargets.HitPosition = options.HitPosition;
+            ExplicitTargets.TargetingSource = options.TargetingSource;
+            ExplicitTargets.TargetingRotation = options.TargetingRotation;
+            EffectDamageMultiplier = options.HitBoxMultiplier;
 
             spellManager.Add(this);
+            return this;
         }
 
         ~Spell()
@@ -87,16 +99,19 @@ namespace Core
 
             SpellInfo = null;
             Caster = OriginalCaster = null;
+            powerCosts.Clear();
             appliedModifierAuras.Clear();
             chargeDroppedModifierAuras.Clear();
             appliedModifiers.Clear();
             unappliedModifiers.Clear();
-
-            ListPoolContainer<(SpellPowerType, int)>.Return(powerCosts);
-            powerCosts = null;
-
             ImplicitTargets.Dispose();
             ExplicitTargets.Dispose();
+
+            if (isActive)
+            {
+                isActive = false;
+                SpellPool.Return(this);
+            }
         }
 
         internal void Cancel()
@@ -119,7 +134,7 @@ namespace Core
                     }
 
                     bool mayBeInterruptedByMove = CastTime - CastTimeLeft > MovementUtils.SpellMovementInterruptThreshold;
-                    if (mayBeInterruptedByMove && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.Motion.IsMoving)
+                    if (mayBeInterruptedByMove && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving) && Caster.Motion.MovementFlags.InterruptsCast())
                     {
                         Caster.SpellCast.HandleSpellCast(this, SpellCast.HandleMode.Finished);
                         Cancel();
@@ -577,7 +592,7 @@ namespace Core
 
             // cast if needed, if already casting launch instead, should only be possible with CanCastWhileCasting
             bool instantCast = CastTime <= 0.0f || Caster.SpellCast.IsCasting || spellValue.CastFlags.HasTargetFlag(SpellCastFlags.CastDirectly);
-            if (casterMovementFlags.IsMoving() && !instantCast && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving))
+            if (casterMovementFlags.InterruptsCast() && !instantCast && !SpellInfo.HasAttribute(SpellAttributes.CastableWhileMoving))
                 return SpellCastResult.Moving;
 
             if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.IgnoreShapeShift) && SpellInfo.CanCancelForm(this))
@@ -614,7 +629,7 @@ namespace Core
             if (deltaTime < 0)
                 targetEntry.Delay = 0;
             else
-                targetEntry.Delay -= deltaTime;
+                targetEntry.Delay -= deltaTime / 1000.0f;
 
             if (targetEntry.Delay > 0)
                 return false;
@@ -642,7 +657,14 @@ namespace Core
                 EffectDamage = 0;
 
             if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.DontReportCastSuccess))
-                EventHandler.ExecuteEvent(GameEvents.ServerSpellHit, Caster, hitTarget, SpellInfo, missType);
+            {
+                if (missType != SpellMissType.None && caster is Player)
+                {
+                    Caster.EventBus.ExecuteEvent(GameEvents.SpellMissDone, Caster, hitTarget, missType);
+                }
+
+                Caster.EventBus.ExecuteEvent(GameEvents.SpellHit, hitTarget, SpellInfo.Id);
+            }
 
             Caster.Spells.ApplySpellTriggers(SpellTriggerFlags.DoneSpellHit, hitTarget, this);
 
@@ -678,7 +700,7 @@ namespace Core
             if (deltaTime < 0)
                 destinationEntry.Delay = 0;
             else
-                destinationEntry.Delay -= deltaTime;
+                destinationEntry.Delay -= deltaTime / 1000.0f;
 
             if (destinationEntry.Delay > 0)
                 return false;
@@ -710,7 +732,7 @@ namespace Core
             ImplicitTargets.HandleLaunch(out bool isDelayed, out SpellProcessingToken processingToken);
 
             if (!spellValue.CastFlags.HasTargetFlag(SpellCastFlags.DontReportCastSuccess))
-                EventHandler.ExecuteEvent(GameEvents.ServerSpellLaunch, Caster, SpellInfo, processingToken);
+                Caster.EventBus.ExecuteEvent(GameEvents.SpellLaunched, Caster, SpellInfo.Id, processingToken);
 
             DropModifierCharges();
             ConsumePowers();
@@ -781,7 +803,14 @@ namespace Core
 
         private void PrepareExplicitTarget()
         {
-            ExplicitTargets.Source = Caster.Position;
+            if (!ExplicitTargets.Source.HasValue)
+            {
+                if (ExplicitTargets.Target != null && SpellInfo.HasAttribute(SpellCustomAttributes.LaunchSourceIsExplicit))
+                    ExplicitTargets.Source = ExplicitTargets.Target.Position;
+                else
+                    ExplicitTargets.Source = Caster.Position;
+            }
+
             bool mayTargetAllies = SpellInfo.ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitAlly);
             bool targetsUnits = SpellInfo.ExplicitCastTargets.HasAnyFlag(SpellCastTargetFlags.UnitMask);
 
@@ -814,11 +843,6 @@ namespace Core
                 if (ExplicitTargets.Target == null && mayTargetAllies)
                     ExplicitTargets.Target = Caster;
             }
-
-           
-
-            if (ExplicitTargets.Target != null && SpellInfo.HasAttribute(SpellCustomAttributes.LaunchSourceIsExplicit))
-                ExplicitTargets.Source = ExplicitTargets.Target.Position;
         }
 
         private void SelectImplicitTargets()

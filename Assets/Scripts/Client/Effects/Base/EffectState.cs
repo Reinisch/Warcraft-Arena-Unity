@@ -10,7 +10,7 @@
 
     internal static class EffectStateUtils
     {
-        public static bool IsPlaying(this EffectState state) => state == EffectState.Active || state == EffectState.Fading;
+        public static bool IsPlaying(this EffectState state) => state is EffectState.Active or EffectState.Fading;
         public static bool IsIdle(this EffectState state) => state == EffectState.Idle;
     }
 }

@@ -12,6 +12,20 @@ EditorBuildSettings:
     path: Assets/Scenes/Launcher Dedicated.unity
     guid: afb5ed561d6c6474aa545d351397083d
   - enabled: 1
+    path: Assets/Scenes/World.unity
+    guid: 459f3fa7bda7f054db9b64145e1e9ffa
+  - enabled: 1
+    path: Assets/Scenes/World Unity Multiplayer.unity
+    guid: dbf6f6b663a046a4fa752a27235c3084
+  - enabled: 1
     path: Assets/Scenes/Lordaeron.unity
     guid: 2cf2bf6529546cb4197d067294adc7f0
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 34df84103497e67429eb5f9fc57c425f,
+      type: 2}
+    com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f,
+      type: 2}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: b7c45ccb421503e47b69d5eedd71c82f,
+      type: 3}
+    com.unity.localization.settings: {fileID: 11400000, guid: 83f4cc00a93d08746a5b4b0e0f79a2b3,
+      type: 2}

@@ -1,82 +1,59 @@
-﻿using Client.Spells;
 using Core;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Client
 {
     public class CastFrame : MonoBehaviour
     {
-        [SerializeField, UsedImplicitly] private RenderingReference rendering;
-        [SerializeField, UsedImplicitly] private LocalizationReference localization;
+        [Inject] private CastFramePresenter presenter;
+
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI spellLabel;
         [SerializeField, UsedImplicitly] private Image spellIcon;
         [SerializeField, UsedImplicitly] private Slider castSlider;
 
-        private Unit caster;
-        private bool isCasting;
+        internal CastFramePresenter Presenter => presenter;
 
-        public void DoUpdate()
+        [UsedImplicitly]
+        private void Awake()
         {
-            UpdateState();
-
-            if (!isCasting)
-                return;
-
-            int expectedCastFrames = (int) (caster.SpellCast.State.CastTime / BoltNetwork.FrameDeltaTime / 1000.0f);
-            castSlider.value = (float) (BoltNetwork.ServerFrame - caster.SpellCast.State.ServerFrame) / expectedCastFrames;
+            presenter.Initialize(this);
         }
 
         public void UpdateCaster(Unit newCaster)
         {
-            if (caster != null)
-                DeinitializeCaster();
-
-            if (newCaster != null)
-                InitializeCaster(newCaster);
-
-            isCasting = false;
-
-            UpdateState();
+            presenter.SetCaster(newCaster);
         }
 
-        private void InitializeCaster(Unit caster)
+        public void DoUpdate()
         {
-            this.caster = caster;
-
-            caster.AddCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
+            presenter.Tick();
         }
 
-        private void DeinitializeCaster()
+        public void SetVisible(bool visible)
         {
-            caster.RemoveCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
-
-            isCasting = false;
-            caster = null;
+            canvasGroup.blocksRaycasts = visible;
+            canvasGroup.interactable = visible;
+            canvasGroup.alpha = visible ? 1.0f : 0.0f;
         }
 
-        private void UpdateState()
+        public void SetSpellLabel(string text)
         {
-            canvasGroup.blocksRaycasts = isCasting;
-            canvasGroup.interactable = isCasting;
-            canvasGroup.alpha = isCasting ? 1.0f : 0.0f;
+            spellLabel.text = text;
         }
 
-        private void OnSpellCastChanged()
+        public void SetSpellIcon(Sprite sprite)
         {
-            isCasting = caster.SpellCast.State.Id != 0;
-            if (isCasting && localization.TooltipInfoBySpellId.TryGetValue(caster.SpellCast.State.Id, out SpellTooltipInfo tooltipInfo))
-                spellLabel.text = tooltipInfo.SpellNameString.Value;
-            else
-                spellLabel.text = string.Empty;
+            spellIcon.sprite = sprite;
+        }
 
-            if (isCasting && rendering.SpellVisuals.TryGetValue(caster.SpellCast.State.Id, out SpellVisualsInfo settings))
-                spellIcon.sprite = settings.SpellIcon;
-            else
-                spellIcon.sprite = rendering.DefaultSpellIcon;
+        public void SetCastProgress(float progress)
+        {
+            castSlider.value = progress;
         }
     }
 }

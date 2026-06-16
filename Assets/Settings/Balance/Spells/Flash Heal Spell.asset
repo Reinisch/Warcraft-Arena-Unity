@@ -32,12 +32,14 @@ MonoBehaviour:
   categoryCooldownTime: 0
   globalCooldownTime: 500
   castTime: 1500
+  charges: 0
   minCastTime: 750
   minRangeHostile: 0
   minRangeFriend: 0
   maxRangeHostile: 0
   maxRangeFriend: 40
   speed: 0
+  delay: 0
   spellEffectInfos:
   - {fileID: 6366165914403853611}
   spellPowerCostInfos:

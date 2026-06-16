@@ -30,23 +30,23 @@ namespace Client
             public void DoUpdate(float deltaTime)
             {
                 for (int i = activeProjectiles.Count - 1; i >= 0; i--)
-                    if (activeProjectiles[i].DoUpdate())
+                    if (activeProjectiles[i].DoUpdate(deltaTime))
                     {
                         activeProjectiles[i].HandleFinish(false);
                         activeProjectiles.RemoveAt(i);
                     }
             }
 
-            public void SpawnVisual(UnitRenderer casterRenderer, UnitRenderer targetRenderer, EffectSpellSettings settings, int serverLaunchFrame, int delay)
+            public void SpawnVisual(UnitRenderer casterRenderer, Vector3 source, UnitRenderer targetRenderer, EffectSpellSettings settings, float duration, bool sourceIsExplicit)
             {
-                var visualEntry = new SpellVisualProjectile(targetRenderer, settings, serverLaunchFrame, delay);
+                var visualEntry = new SpellVisualProjectile(source, targetRenderer, settings, duration, sourceIsExplicit);
                 if (visualEntry.HandleLaunch(casterRenderer))
                     activeProjectiles.Add(visualEntry);
             }
 
-            public void SpawnVisual(UnitRenderer casterRenderer, Vector3 destination, EffectSpellSettings settings, int serverLaunchFrame, int delay)
+            public void SpawnVisual(UnitRenderer casterRenderer, Vector3 source, Vector3 destination, EffectSpellSettings settings, float duration, bool sourceIsExplicit)
             {
-                var visualEntry = new SpellVisualProjectile(destination, settings, serverLaunchFrame, delay);
+                var visualEntry = new SpellVisualProjectile(source, destination, settings, duration, sourceIsExplicit);
                 if (visualEntry.HandleLaunch(casterRenderer))
                     activeProjectiles.Add(visualEntry);
             }

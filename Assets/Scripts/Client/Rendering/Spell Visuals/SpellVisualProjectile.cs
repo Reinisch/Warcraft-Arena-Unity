@@ -1,4 +1,4 @@
-﻿using Client.Spells;
+using Client.Spells;
 using UnityEngine;
 
 namespace Client
@@ -9,39 +9,38 @@ namespace Client
         {
             private class SpellVisualProjectile
             {
-                private Vector3 casterLaunchPosition;
+                private Vector3 launchSource;
 
-                private int Delay { get; }
-                private int ServerLaunchFrame { get; }
-                private int ExpectedDelayFrames { get; }
+                private float Duration { get; }
+                private float DurationLeft { get; set; }
 
                 private EffectSpellSettings Settings { get; set; }
                 private UnitRenderer TargetRenderer { get; set; }
                 private Vector3? Destination { get; set; }
-                private IEffectEntity projectile;
-                private long playId;
+                private EffectHandle handle;
+                private bool explicitSource;
 
-                public SpellVisualProjectile(Vector3 destination, EffectSpellSettings settings, int serverLaunchFrame, int delay)
-                    : this(settings, serverLaunchFrame, delay)
+                public SpellVisualProjectile(Vector3 source, Vector3 destination, EffectSpellSettings settings, float duration, bool sourceIsExplicit)
+                    : this(settings, source, duration, sourceIsExplicit)
                 {
                     TargetRenderer = null;
                     Destination = destination;
                 }
 
-                public SpellVisualProjectile(UnitRenderer target, EffectSpellSettings settings, int serverLaunchFrame, int delay)
-                    :this(settings, serverLaunchFrame, delay)
+                public SpellVisualProjectile(Vector3 source, UnitRenderer target, EffectSpellSettings settings, float duration, bool sourceIsExplicit)
+                    : this(settings, source, duration, sourceIsExplicit)
                 {
                     TargetRenderer = target;
                     Destination = null;
                 }
 
-                private SpellVisualProjectile(EffectSpellSettings settings, int serverLaunchFrame, int delay)
+                private SpellVisualProjectile(EffectSpellSettings settings, Vector3 source, float duration, bool sourceIsExplicit)
                 {
-                    Delay = delay;
-                    ServerLaunchFrame = serverLaunchFrame;
+                    Duration = DurationLeft = duration;
                     Settings = settings;
 
-                    ExpectedDelayFrames = (int)(Delay / BoltNetwork.FrameDeltaTime / 1000.0f);
+                    launchSource = source;
+                    explicitSource = sourceIsExplicit;
                 }
 
                 public bool HandleLaunch(UnitRenderer caster)
@@ -52,13 +51,17 @@ namespace Client
                         return false;
 
                     Vector3 forward = Destination.Value - caster.transform.position;
-                    projectile = Settings.EffectSettings.PlayEffect(Vector3.zero, Quaternion.LookRotation(forward), out long newPlayId);
+                    handle = Settings.EffectSettings.PlayEffect(Vector3.zero, Quaternion.LookRotation(forward));
 
-                    if (projectile != null)
+                    if (handle.IsValid)
                     {
-                        casterLaunchPosition = caster.TagContainer.FindDefaultLaunchTag();
-                        caster.TagContainer.ApplyPositioning(projectile, Settings);
-                        playId = newPlayId;
+                        caster.TagContainer.ApplyPositioning(handle.Entity, Settings);
+
+                        if (!explicitSource)
+                            launchSource = caster.TagContainer.FindDefaultLaunchTag();
+
+                        handle.Entity.Transform.position = launchSource;
+
                         return true;
                     }
 
@@ -68,9 +71,9 @@ namespace Client
                 public void HandleFinish(bool instant)
                 {
                     if(instant)
-                        projectile?.Stop(playId);
+                        handle.Stop();
                     else
-                        projectile?.Fade(playId);
+                        handle.Fade();
 
                     TargetRenderer = null;
                     Settings = null;
@@ -85,20 +88,21 @@ namespace Client
                     }
                 }
 
-                public bool DoUpdate()
+                public bool DoUpdate(float deltaTime)
                 {
-                    if (!projectile.IsPlaying(playId))
+                    if (!handle.IsValid)
                         return true;
 
                     UpdateDestination();
 
-                    float ratio = (float)(BoltNetwork.ServerFrame - ServerLaunchFrame) / ExpectedDelayFrames;
+                    DurationLeft = Mathf.MoveTowards(DurationLeft, 0.0f, deltaTime);
+                    float ratio = 1 - DurationLeft / Duration;
                     if (Destination.HasValue)
                     {
-                        projectile.Transform.position = Vector3.Lerp(casterLaunchPosition, Destination.Value, ratio);
+                        handle.Entity.Transform.position = Vector3.Lerp(launchSource, Destination.Value, ratio);
 
-                        if (Destination != projectile.Transform.position)
-                            projectile.Transform.rotation = Quaternion.LookRotation(Destination.Value - projectile.Transform.position);
+                        if (Destination != handle.Entity.Transform.position)
+                            handle.Entity.Transform.rotation = Quaternion.LookRotation(Destination.Value - handle.Entity.Transform.position);
                     }
 
                     return ratio >= 1.0f;

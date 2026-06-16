@@ -1,0 +1,18 @@
+{
+    "name": "Game.Server",
+    "rootNamespace": "",
+    "references": [
+        "Game.Common",
+        "Game.Core",
+        "Game.Net.Abstraction"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

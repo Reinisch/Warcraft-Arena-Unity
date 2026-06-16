@@ -33,7 +33,7 @@ namespace Core
             private void HandleRelocation(Unit unit)
             {
                 if (unit.Position.y > MovementUtils.MaxHeight || unit.Position.y < MovementUtils.MinHeight)
-                    unit.Position = mapGrid.map.Settings.DefaultSpawnPoint.position;
+                    unit.Teleport(mapGrid.map.Settings.DefaultSpawnPoint.position);
 
                 if (IsOutOfCellBounds(unit.Position, unit.CurrentCell))
                     mapGrid.relocatableEntities.Add(unit);
@@ -41,7 +41,7 @@ namespace Core
 
             void IUnitVisitor.Visit(Player player)
             {
-                if (player.World.HasServerLogic && (player.IsVisibilityChanged || mapGrid.gridCellOutOfRangeTimer.Passed))
+                if (player.IsVisibilityChanged || mapGrid.gridCellOutOfRangeTimer.Passed)
                 {
                     mapGrid.UpdateVisibility(player, false);
                     mapGrid.visibilityChangedEntities.Add(player);
@@ -52,7 +52,7 @@ namespace Core
 
             void IUnitVisitor.Visit(Creature creature)
             {
-                if (creature.World.HasServerLogic && creature.IsVisibilityChanged)
+                if (creature.IsVisibilityChanged)
                 {
                     mapGrid.UpdateVisibility(creature);
                     mapGrid.visibilityChangedEntities.Add(creature);

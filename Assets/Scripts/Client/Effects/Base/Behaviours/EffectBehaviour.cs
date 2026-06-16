@@ -17,7 +17,7 @@ namespace Client
 
         internal void Fade() => OnFade();
 
-        internal void DoUpdate(IEffectEntity effectEntity, ref bool keepAlive) => OnUpdate(effectEntity, ref keepAlive);
+        internal void DoUpdate(IEffectEntity effectEntity, float deltaTime, ref bool keepAlive) => OnUpdate(effectEntity, deltaTime, ref keepAlive);
 
         protected virtual void OnPlay()
         {
@@ -31,7 +31,7 @@ namespace Client
         {
         }
 
-        protected virtual void OnUpdate(IEffectEntity effectEntity, ref bool keepAlive)
+        protected virtual void OnUpdate(IEffectEntity effectEntity, float deltaTime, ref bool keepAlive)
         {
         }
     }

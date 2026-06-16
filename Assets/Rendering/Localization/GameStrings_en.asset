@@ -1,0 +1,993 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: GameStrings_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 25cb21a9bd13eb74db55cff06d15721b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 26482757632
+    m_Localized: Player does not exist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26516312064
+    m_Localized: Invalid target
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26520506368
+    m_Localized: Can't cast while dead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26520506369
+    m_Localized: Out of range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700672
+    m_Localized: Target is already dead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700673
+    m_Localized: Can't target player
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700674
+    m_Localized: Spell is not ready yet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700675
+    m_Localized: Can only target dead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700676
+    m_Localized: Failed to connect, connection timeout!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700677
+    m_Localized: Failed to connect to master!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700678
+    m_Localized: Failed to connect to session!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700679
+    m_Localized: Failed to connect, invalid client token!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700680
+    m_Localized: Failed to connect, invalid version!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700681
+    m_Localized: Failed to connect!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700682
+    m_Localized: Failed to connect, server refused!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700683
+    m_Localized: Failed to connect, unsupported device!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700684
+    m_Localized: Connected!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700685
+    m_Localized: Starting client...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700686
+    m_Localized: Client failed to start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700687
+    m_Localized: Client started!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700688
+    m_Localized: Connecting...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700689
+    m_Localized: 'Session ended! Reason: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700690
+    m_Localized: Starting server...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700691
+    m_Localized: Server failed to start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700692
+    m_Localized: Server started!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700693
+    m_Localized: Missing Localization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700694
+    m_Localized: Can't cast while moving
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700695
+    m_Localized: Target is not frozen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700696
+    m_Localized: Silenced
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700697
+    m_Localized: Pacified
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700698
+    m_Localized: Can't do that while confused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700699
+    m_Localized: Can't do that while fleeing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700700
+    m_Localized: Can't do that while stunned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700701
+    m_Localized: Absorb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700702
+    m_Localized: Immune
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700703
+    m_Localized: Dodge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700704
+    m_Localized: Evade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700705
+    m_Localized: Miss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700706
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700707
+    m_Localized: Flex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700708
+    m_Localized: Beg
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700709
+    m_Localized: Bow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700710
+    m_Localized: Chicken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700711
+    m_Localized: Cry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700712
+    m_Localized: Dance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700713
+    m_Localized: Kiss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700714
+    m_Localized: Laugh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700715
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700716
+    m_Localized: Point
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700717
+    m_Localized: Read
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700718
+    m_Localized: Roar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700719
+    m_Localized: Rude
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700720
+    m_Localized: Shout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700721
+    m_Localized: Shy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700722
+    m_Localized: Talk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700723
+    m_Localized: Exclamation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700724
+    m_Localized: Question
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700725
+    m_Localized: Train
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700726
+    m_Localized: Wave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700727
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700728
+    m_Localized: Accelerates your spellcasting for {0} sec, granting {1}% haste,
+      {2}% critical damage bonus and preventing damage from delaying your spellcasts.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700729
+    m_Localized: Icy Veins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700730
+    m_Localized: 'Stuns the target for {0} sec and causes the target to be considered
+      Frozen for the duration of its stun.
+
+
+      Only usable on Frozen targets
+      or while caster is affected by Fingers of Frost.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700731
+    m_Localized: Deep Freeze
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700732
+    m_Localized: "Infuses the target with brilliance, increasing their Intellect
+      by {0}% for {1} seconds.  \r\n\r\nIf target is in your party or raid, all party
+      and raid members will be affected."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700733
+    m_Localized: Arcane Intellect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700734
+    m_Localized: 'Suppresses movement slowing effects and increases your movement
+      speed by {0}% for {1} sec.
+
+
+      Castable while another spell is in progress
+      and unaffected by global cooldown.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700735
+    m_Localized: Blazing Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524700736
+    m_Localized: 'Teleports you forward {0} yds or until reaching an obstacle, and
+      frees you from all stuns and bonds.
+
+
+      Usable while stunned.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894976
+    m_Localized: Blink
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894977
+    m_Localized: 'Targets in a cone in front of you take ({0}% of Spell power) Frost
+      damage and have movement slowed by {1}% for {2} sec.
+
+
+      Has {3:P0} chance
+      to trigger Fingers of Frost.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894978
+    m_Localized: Cone of Cold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894979
+    m_Localized: 'Counters the enemy''s spellcast, preventing any spell from that
+      school of magic from being cast for {0} sec.
+
+
+      Castable while another
+      spell is in progress and unaffected by global cooldown.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894980
+    m_Localized: Counterspell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894981
+    m_Localized: "Blasts the enemy for ({0}% of Spell power) Fire damage. \n\nAlways
+      deals a critical strike and causes Hot Streak to trigger unless target is immune
+      to critical strikes.\n\nCastable while another spell is in progress and unaffected
+      by global cooldown."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894982
+    m_Localized: Fire Blast
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894983
+    m_Localized: "\rCalls down a pillar of fire, burning all enemies within the area
+      for ({0}% of Spell power) Fire damage and an additional ({1}% of Spell power)
+      Fire damage every {2} sec for {3} sec."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894984
+    m_Localized: Flame Strike
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894985
+    m_Localized: A fast spell that heals an ally for ({0}% of Spell power).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894986
+    m_Localized: Flash Heal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894987
+    m_Localized: 'Launches a bolt of frost at the enemy, causing ({0}% of Spell power)
+      Frost damage and slowing movement speed by {1}% for {2} sec.
+
+
+      Has {3:P0}
+      chance to trigger Fingers of Frost.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894988
+    m_Localized: Frost Bolt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894989
+    m_Localized: 'Blasts enemies within {0} yds of you for ({1}% of Spell power)
+      Frost damage and freezes them in place for {2} sec.
+
+
+      Damage may interrupt
+      the freeze effect.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894990
+    m_Localized: Frost Nova
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894991
+    m_Localized: Perform a miracle, healing an ally for ({0}% of Spell power).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894992
+    m_Localized: 'Holy Word: Serenity'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894993
+    m_Localized: Removes all movement impairing effects and all effects which cause
+      loss of control of your character while in PvP combat.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894994
+    m_Localized: Honorable Medallion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894995
+    m_Localized: 'Shields you with ice, absorbing ({0}% of total health) damage.
+      Lasts {1} sec.
+
+
+      While the shield holds, spells will not be interrupted.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894996
+    m_Localized: Ice Barrier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894997
+    m_Localized: "\rEncases you in a block of ice, protecting you from all attacks
+      and damage for {0} sec, but during that time you cannot attack, move, or cast
+      spells.  "
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894998
+    m_Localized: Ice Block
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528894999
+    m_Localized: "Quickly fling a shard of ice at the target, dealing ({0}% of Spell
+      power) Frost damage\r.\n\r\nIce Lance damage is quadrupled against frozen targets.
+      Targets also confidered being frozen if caster is affected by Fingers of Frost.\n\nDamage
+      is increased by {1}% when consuming Fingers of Frost charge."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895000
+    m_Localized: Ice Lance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895001
+    m_Localized: 'Causes a whirl of icy wind around the enemy, dealing ({0}% of Spell
+      power) Frost damage to the target and to all other enemies within {1} yards,
+      and freezing them in place for {2} sec.
+
+
+      Damage may interrupt the freeze
+      effect.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895002
+    m_Localized: Ice Nova
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895003
+    m_Localized: 'Instantly kills current target.
+
+
+      Temporary debug spell,
+      only usable against creatures.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895004
+    m_Localized: Kill Creature
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895005
+    m_Localized: 'Instantly kills caster.
+
+
+      Temporary debug spell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895006
+    m_Localized: Kill Self
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895007
+    m_Localized: 'The target becomes a Living Bomb, taking ({0}% of Spell power)
+      Fire damage every {4} sec for {1} sec, and then exploding to deal an additional
+      ({2}% of Spell power) Fire damage to the target and all other enemies within
+      {3} yards.
+
+
+      When applied first time instantly deals single tick damage.
+      Explosion timer is reset with duration on refresh.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895008
+    m_Localized: Living Bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895009
+    m_Localized: 'Reduces all damage taken by a friendly target by {0}% for {1} sec.
+
+
+      Castable
+      while stunned.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895010
+    m_Localized: Pain Suppression
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895011
+    m_Localized: "\rTransforms the enemy into a sheep, wandering around incapacitated
+      for {0} sec. While affected, the victim cannot take actions.\n\nDamage will
+      cancel the effect."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895012
+    m_Localized: Polymorph
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895013
+    m_Localized: When activated, your next Mage spell with a casting time less than
+      10 sec becomes an instant cast spell.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895014
+    m_Localized: Presence of Mind
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895015
+    m_Localized: 'Hurls an immense fiery boulder that causes ({0}% of Spell power)
+      Fire damage and additional ({1}% of Spell power) every {2} sec for {3} sec
+      after.
+
+
+      Getting two direct-damage critical strikes with Fire Blast or
+      Scorch in a row will make your next Pyroblast instant cast.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895016
+    m_Localized: Pyroblast
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895017
+    m_Localized: Fill the target with faith in the light, healing them instantly
+      for ({0}% of Spell power) and then ({1}% of Spell power) every {2} sec for
+      {3} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895018
+    m_Localized: Renew
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895019
+    m_Localized: 'Caster resurrects with 50% health.
+
+
+      Only usable while dead.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895020
+    m_Localized: Resurrect Self
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895021
+    m_Localized: "\rScorches an enemy for ({0}% of Spell power) Fire damage.\n\nCastable
+      while moving.\n\nMay trigger Hot Streak after getting 2 critical strikes in
+      a row."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895022
+    m_Localized: Scorch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895023
+    m_Localized: '{0} yd range'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895024
+    m_Localized: '{0} sec cooldown'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895025
+    m_Localized: Instant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895026
+    m_Localized: '{0} sec cast'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895027
+    m_Localized: General
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895028
+    m_Localized: Spell is Not Known
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895029
+    m_Localized: 'Shapeshift into Cat Form increasing movement speed by {0}%, granting
+      protection from Polymorph effects, and reducing falling damage.
+
+
+
+      The
+      act of shapeshifting frees you from movement impairing effects.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895030
+    m_Localized: Cat Form
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895031
+    m_Localized: Druid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895032
+    m_Localized: Mage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895033
+    m_Localized: 'Rake the target for ({0}% of Attack power) Bleed damage and an
+      additional ({1}% of Attack power) Bleed damage every {2} sec over {3} sec.
+
+
+      Reduces
+      the target''s movement speed by {4}%
+
+
+      Awards 1 combo point.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895034
+    m_Localized: Rake
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895035
+    m_Localized: 'Shred the target, causing ({0}% of Attack power + 20) Physical
+      damage to the target.
+
+
+      Deals 50% increased damage against bleeding targets.
+
+
+      Awards
+      2 combo points.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895036
+    m_Localized: Shred
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895037
+    m_Localized: 'Swipe nearby enemies, inflicting ({0}% of Attack power) Physical
+      damage.
+
+
+      Deals 33% increased damage against bleeding targets
+
+
+
+      Awards
+      1 combo point.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895038
+    m_Localized: Swipe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895039
+    m_Localized: No Combo Points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895040
+    m_Localized: "Finishing move that causes damage per combo point and consumes
+      up to 25 additional Energy to increase damage by up to 100%.\r\n\r\nWhen used
+      on targets below 25% health, Ferocious Bite will also refresh the duration
+      of your Rip on your target\r\n\r\nCritical strike chance doubled against bleeding
+      targets.\r\n\r\n  1 point  : [({0}% of Attack power) * 1] damage\r\n  2 points:
+      [({0}% of Attack power) * 2] damage\r\n  3 points: [({0}% of Attack power)
+      * 3] damage\r\n  4 points: [({0}% of Attack power) * 4] damage\r\n  5 points:
+      [({0}% of Attack power) * 5] damage"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26528895041
+    m_Localized: Ferocious Bite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089280
+    m_Localized: "Finishing move that causes Bleed damage over time every {1} sec.
+      Lasts longer per combo point.\r\n\r\n  1 point  : ({0}% of Attack power) for
+      8 sec\r\n  2 points: ({0}% of Attack power) for 12 sec\r\n  3 points: ({0}%
+      of Attack power) for 16 sec\r\n  4 points: ({0}% of Attack power) for 20 sec\r\n 
+      5 points: ({0}% of Attack power) for 24 sec"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089281
+    m_Localized: Rip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089282
+    m_Localized: Reduces all damage you take by {0}% for {1} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089283
+    m_Localized: Survival Instincts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089284
+    m_Localized: Not Enough Energy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089285
+    m_Localized: Not Enough Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089286
+    m_Localized: Not Enough Mana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089287
+    m_Localized: Not Enough Rage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089288
+    m_Localized: 'Increases movement speed by {0}% for {1} sec.
+
+
+      Does not
+      break prowling.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089289
+    m_Localized: Dash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089290
+    m_Localized: Instantly restores {0} Energy, and increases the damage of all your
+      attacks by {1}% for their full duration. Lasts {2} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089291
+    m_Localized: Tiger's Fury
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089292
+    m_Localized: 'Mangle the target for ({0}% of Attack power) Physical damage.
+
+
+
+      Deals
+      20% additional damage against bleeding targets
+
+
+
+      Generates {1} Energy.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089293
+    m_Localized: Mangle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089294
+    m_Localized: "Finishing move that causes Physical damage and stuns the target.
+      Damage and duration increased per combo point:\r\n\r\n  1 point  : {0}%*1 Attack
+      power damage, 1 sec\r\n  2 points: {0}%*2 Attack power damage, 2 sec\r\n  3
+      points: {0}%*3 Attack power damage, 3 sec\r\n  4 points: {0}%*4 Attack power
+      damage, 4 sec\r\n  5 points: {0}%*5 Attack power damage, 5 sec"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089295
+    m_Localized: Maim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089296
+    m_Localized: 1 to 5 Combo Points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089297
+    m_Localized: '{0} Energy'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089298
+    m_Localized: '{0}% of Max Energy'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089299
+    m_Localized: '{0} Mana'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089300
+    m_Localized: '{0}% of Base Mana'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089301
+    m_Localized: '{0} Rage'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089302
+    m_Localized: '{0}% of Max Rage'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089303
+    m_Localized: "Finishing move that deals instant damage and applies Rip to all
+      enemies within {0} yards. Lasts longer per combo point.\r\n\r\n  1 point  :
+      ({1}% of Attack power) * 1 plus Rip for 4 sec\r\n  2 points: ({1}% of Attack
+      power) * 2 plus Rip for 6 sec\r\n  3 points: ({1}% of Attack power) * 3 plus
+      Rip for 8 sec\r\n  4 points: ({1}% of Attack power) * 4 plus Rip for 10 sec\r\n 
+      5 points: ({1}% of Attack power) * 5 plus Rip for 12 sec"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089304
+    m_Localized: Primal Wrath
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089305
+    m_Localized: 'Strikes all nearby enemies, dealing ({0}% of Attack power) Bleed
+      damage and an additional ({1}% of Attack power) Bleed damage every {2} sec
+      for {3} sec.
+
+
+
+      Awards 1 combo point.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089306
+    m_Localized: Thrash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089307
+    m_Localized: Roots the target in place for {0} sec. Damage may cancel the effect.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089308
+    m_Localized: Entangling Roots
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089309
+    m_Localized: "Finishing move that increases damage by {0}% and energy regeneration
+      rate by {1}% while in Cat Form. Lasts longer per combo point:\r\n\r\n  1 point 
+      : 12 seconds\r\n  2 points: 18 seconds\r\n  3 points: 24 seconds\r\n  4 points:
+      30 seconds\r\n  5 points: 36 seconds"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089310
+    m_Localized: Savage Roar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089311
+    m_Localized: "\rReduces the energy cost of all Cat Form abilities by {0}% and
+      increases maximum Energy by {1} for {2} sec."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089312
+    m_Localized: Berserk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089313
+    m_Localized: Heals the target for ({0}% of Spell power) every {1} sec for {2}
+      sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089314
+    m_Localized: Rejuvenation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089315
+    m_Localized: Heals a friendly target for ({0}% of Spell power) and another ({1}%
+      of Spell power) every {2} sec for {3} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089316
+    m_Localized: Regrowth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089317
+    m_Localized: Can't Use While Shapeshifted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089318
+    m_Localized: Can't Use When Not Shapeshifted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089319
+    m_Localized: Can't Use In This Form
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089320
+    m_Localized: "\rLets loose a wild roar, increasing the movement speed of all
+      friendly players within {2} yards by {0}% for {1} sec."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089321
+    m_Localized: Stampeding Roar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089322
+    m_Localized: Prowl
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089323
+    m_Localized: Activates Cat Form and places you into stealth until cancelled.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089324
+    m_Localized: Can't Be Used In Combat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089325
+    m_Localized: Slow Fall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089326
+    m_Localized: "\rSlows a group member's falling speed for {0} sec."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089327
+    m_Localized: Greater Invisibility
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089328
+    m_Localized: 'Makes you invisible and untargetable for {0} sec, removing all
+      threat. Any action taken cancels this effect.
+
+
+
+      You take {1}% reduced
+      damage while invisible.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089329
+    m_Localized: Wild Charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089330
+    m_Localized: 'Charge to an enemy, immobilizing them for {0} sec.
+
+
+      Encreases
+      energy by {1}.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089331
+    m_Localized: Feral Leap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089332
+    m_Localized: 'Causes you to leap behind an enemy, dazing them for {0} sec.
+
+
+      Dazed
+      enemies have their speed reduced by {1}%.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089333
+    m_Localized: Skull Bash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089334
+    m_Localized: You charge and bash the target's skull, interrupting spellcasting
+      and preventing any spell in that school from being cast for {0} sec.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089335
+    m_Localized: Cyclone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089336
+    m_Localized: 'Tosses the enemy target into the air, disorienting them but making
+      them invulnerable for up to {0} sec. '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089337
+    m_Localized: Rip and Tear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26533089338
+    m_Localized: 'Instantly applies Rake and Rip to the target.
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2083855354814464
+    m_Localized: 'Lobby
+
+'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a94624af6a0ff7444a8e20817ced68f0, type: 3}
+  m_Name: Ragnaros Bossfight - Unit AI - Behaviour Graph
+  m_EditorClassIdentifier: Game.Core::Core.UnitBehaviourGraphSettings
+  <GraphPrefab>k__BackingField: {fileID: 4350477387507282971, guid: 803a8910e34c3f84e8e92cbfd3b8bfec,
+    type: 3}

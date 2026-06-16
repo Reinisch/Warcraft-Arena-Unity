@@ -29,7 +29,7 @@ namespace Client
         [Header("Event"), Space]
         [SerializeField, UsedImplicitly] private DropdownEvent onValueChanged = new DropdownEvent();
 
-        private static readonly OptionData NoOptionData = new OptionData();
+        private static readonly OptionData NoOptionData = new();
 
         private bool validTemplate;
         private GameObject dropdown;

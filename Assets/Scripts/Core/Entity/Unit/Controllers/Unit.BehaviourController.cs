@@ -7,9 +7,10 @@ namespace Core
     {
         protected class BehaviourController
         {
-            private readonly List<IUnitBehaviour> activeBehaviours = new List<IUnitBehaviour>();
-            private readonly Dictionary<Type, IUnitBehaviour> activeBehavioursByType = new Dictionary<Type, IUnitBehaviour>();
-            private Unit unit;
+            private readonly List<IUnitBehaviour> activeBehaviours = new();
+            private readonly Dictionary<Type, IUnitBehaviour> activeBehavioursByType = new();
+
+            private World world;
 
             internal void DoUpdate(int deltaTime)
             {
@@ -19,7 +20,7 @@ namespace Core
 
             internal void HandleUnitAttach(Unit unit)
             {
-                this.unit = unit;
+                world = unit.World;
 
                 unit.AddBehaviours(this);
 
@@ -37,8 +38,6 @@ namespace Core
 
                 activeBehaviours.Clear();
                 activeBehavioursByType.Clear();
-
-                unit = null;
             }
 
             internal TUnitBehaviour FindBehaviour<TUnitBehaviour>()
@@ -48,11 +47,19 @@ namespace Core
 
             internal void TryAddBehaviour(IUnitBehaviour unitBehaviour)
             {
-                if (unitBehaviour.HasServerLogic && unit.World.HasServerLogic || unitBehaviour.HasClientLogic && unit.World.HasClientLogic)
-                {
-                    activeBehaviours.Add(unitBehaviour);
-                    activeBehavioursByType.Add(unitBehaviour.GetType(), unitBehaviour);
-                }
+                // Skip behaviours whose declared logic doesn't run under this instance's role.
+                // Behaviours without ILogicBehaviour (e.g. local movement) always run.
+                if (world != null && unitBehaviour is ILogicBehaviour logic && !ShouldRun(logic))
+                    return;
+
+                activeBehaviours.Add(unitBehaviour);
+                activeBehavioursByType.Add(unitBehaviour.GetType(), unitBehaviour);
+            }
+
+            private bool ShouldRun(ILogicBehaviour behaviour)
+            {
+                return behaviour.HasServerLogic && world.HasServerLogic
+                    || behaviour.HasClientLogic && world.HasClientLogic;
             }
         }
     }

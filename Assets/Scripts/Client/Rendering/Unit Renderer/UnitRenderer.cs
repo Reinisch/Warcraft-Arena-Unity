@@ -1,14 +1,16 @@
-﻿using Bolt;
+﻿using Client.Sound;
 using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
+using Zenject;
 
 namespace Client
 {
-    public sealed partial class UnitRenderer : EntityEventListener<IUnitState>
+    public sealed partial class UnitRenderer : MonoBehaviour
     {
-        [SerializeField, UsedImplicitly] private RenderingReference rendering;
+        [Inject] private RenderingReference rendering;
+        [Inject] private EventBus eventBus;
         [SerializeField, UsedImplicitly] private TagContainer dummyTagContainer;
         [SerializeField, UsedImplicitly] private UnitSoundController soundController;
 
@@ -20,6 +22,7 @@ namespace Client
 
         public TagContainer TagContainer => model == null ? dummyTagContainer : model.TagContainer;
         public Unit Unit { get; private set; }
+        public UnitModel Model => model;
 
         public void Attach(Unit unit)
         {
@@ -29,14 +32,13 @@ namespace Client
             ReplaceModel(Unit.Model, UnitModelReplacementMode.ScopeIn);
             OnScaleChanged();
 
-            Unit.BoltEntity.AddEventListener(this);
-            Unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
-            Unit.AddCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
-            Unit.AddCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
-            Unit.AddCallback(nameof(IUnitState.EmoteFrame), OnEmoteFrameChanged);
-            EventHandler.RegisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
-            EventHandler.RegisterEvent(Unit, GameEvents.UnitScaleChanged, OnScaleChanged);
-            EventHandler.RegisterEvent(Unit, GameEvents.UnitVisualsChanged, OnVisualsChanged);
+            Unit.EventTeleported += OnTeleportation;
+            Unit.Attributes.EventDeathStateChanged += OnDeathStateChanged;
+            Unit.Attributes.EventEmoteStateChanged += OnEmoteTypeChanged;
+            Unit.SpellCast.EventSpellCastChanged += OnSpellCastChanged;
+            eventBus.RegisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
+            eventBus.RegisterEvent(Unit, GameEvents.UnitScaleChanged, OnScaleChanged);
+            eventBus.RegisterEvent(Unit, GameEvents.UnitVisualsChanged, OnVisualsChanged);
 
             auraEffectController.HandleAttach(this);
         }
@@ -45,19 +47,19 @@ namespace Client
         {
             auraEffectController.HandleDetach();
 
-            Unit.BoltEntity.RemoveEventListener(this);
-            Unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
-            Unit.RemoveCallback(nameof(IUnitState.SpellCast), OnSpellCastChanged);
-            Unit.RemoveCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
-            Unit.RemoveCallback(nameof(IUnitState.EmoteFrame), OnEmoteFrameChanged);
-            EventHandler.UnregisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
-            EventHandler.UnregisterEvent(Unit, GameEvents.UnitScaleChanged, OnScaleChanged);
-            EventHandler.UnregisterEvent(Unit, GameEvents.UnitVisualsChanged, OnVisualsChanged);
+            Unit.Attributes.EventDeathStateChanged -= OnDeathStateChanged;
+            Unit.Attributes.EventEmoteStateChanged -= OnEmoteTypeChanged;
+            Unit.SpellCast.EventSpellCastChanged -= OnSpellCastChanged;
+            Unit.EventTeleported -= OnTeleportation;
+            eventBus.UnregisterEvent(Unit, GameEvents.UnitModelChanged, OnModelChanged);
+            eventBus.UnregisterEvent(Unit, GameEvents.UnitScaleChanged, OnScaleChanged);
+            eventBus.UnregisterEvent(Unit, GameEvents.UnitVisualsChanged, OnVisualsChanged);
 
             CancelInvoke();
-            Unit = null;
 
-            return ReplaceModel(mode: mode);
+            UnitModel lastModel = ReplaceModel(mode: mode);
+            Unit = null;
+            return lastModel;
         }
 
         public void DoUpdate(float deltaTime)
@@ -69,38 +71,16 @@ namespace Client
             model?.DoUpdate(this, deltaTime);
         }
 
-        public override void OnEvent(UnitSpellLaunchEvent launchEvent)
-        {
-            base.OnEvent(launchEvent);
-
-            var token = launchEvent.ProcessingEntries as SpellProcessingToken;
-            EventHandler.ExecuteEvent(GameEvents.SpellLaunched, Unit, launchEvent.SpellId, token);
-        }
-
-        public override void OnEvent(UnitSpellDamageEvent spellDamageEvent)
-        {
-            base.OnEvent(spellDamageEvent);
-
-            if (canAnimate)
-            {
-                var hitType = (HitType)spellDamageEvent.HitType;
-                model?.Animator.SetBool("WoundedCrit", hitType.HasTargetFlag(HitType.CriticalHit));
-                model?.Animator.SetTrigger("Wound");
-            }
-        }
-
-        public override void OnEvent(UnitSpellHitEvent spellHitEvent)
-        {
-            base.OnEvent(spellHitEvent);
-
-            EventHandler.ExecuteEvent(GameEvents.SpellHit, Unit, spellHitEvent.SpellId);
-        }
-
         public void TriggerInstantCast(SpellInfo spellInfo)
         {
             if (canAnimate)
                 model?.TriggerInstantCast(spellInfo);
-        } 
+        }
+
+        public void PlayOneShot(SoundEntry soundEntry)
+        {
+            soundController.PlayOneShot(soundEntry);
+        }
 
         private void UpdateAnimationState(bool enabled)
         {
@@ -151,10 +131,10 @@ namespace Client
             soundController.HandleModelChange(model);
 
             if (oldModel != null)
-                EventHandler.ExecuteEvent(rendering, GameEvents.UnitModelAttached, oldModel, this, false);
+                eventBus.ExecuteEvent(rendering, GameEvents.UnitModelAttached, oldModel, this, false);
 
             if (newModel != null)
-                EventHandler.ExecuteEvent(rendering, GameEvents.UnitModelAttached, newModel, this, true);
+                eventBus.ExecuteEvent(rendering, GameEvents.UnitModelAttached, newModel, this, true);
 
             if (oldModel != null && mode != UnitModelReplacementMode.ScopeOut)
             {
@@ -172,8 +152,13 @@ namespace Client
             EmoteType emoteType = Unit.EmoteType;
             if (emoteType.IsState() || emoteType == EmoteType.None)
                 DoEmote();
-            else if (emoteType.IsOneShot() && BoltNetwork.Frame - Unit.EmoteFrame <= UnitUtils.EmoteOneShotFrameThreshold)
+            else if (emoteType.IsOneShot() && Time.time - Unit.EmoteFrame <= UnitUtils.EmoteOneShotFrameThreshold)
                 DoEmote();
+        }
+
+        private void OnTeleportation()
+        {
+            transform.position = Unit.Position;
         }
 
         private void DoEmote()
@@ -193,15 +178,10 @@ namespace Client
 
         private void OnSpellCastChanged()
         {
-            model?.Animator.SetBool("Casting", Unit.SpellCast.State.Id != 0);
+            model?.Animator.SetBool("Casting", Unit.SpellCast.IsCasting);
         }
 
         private void OnEmoteTypeChanged()
-        {
-            HandleEmoteUpdate();
-        }
-
-        private void OnEmoteFrameChanged()
         {
             HandleEmoteUpdate();
         }

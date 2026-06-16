@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09127a966f4ebb94497f5a6ef89427f7, type: 3}
   m_Name: Faction Definition - Neutrals
   m_EditorClassIdentifier: 
-  localizationId: FactionNeutrals
   factionId: 3
   team: 3
-  hostileFactions: []
+  hostileFactions:
+  - {fileID: 11400000, guid: 9dfbe50137f9a6a4bb56ec2768a53ae2, type: 2}
+  - {fileID: 11400000, guid: 2e4b7033c29048140a9c800d513e00a9, type: 2}
+  - {fileID: 11400000, guid: 77ea5f96cb7523d4a904fefc14363a6f, type: 2}
   friendlyFactions:
   - {fileID: 11400000}

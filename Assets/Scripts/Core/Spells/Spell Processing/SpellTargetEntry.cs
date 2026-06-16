@@ -3,7 +3,7 @@
     internal class SpellTargetEntry
     {
         public Unit Target { get; set; }
-        public int Delay { get; set; }
+        public float Delay { get; set; }
         public SpellMissType MissCondition { get; set; }
         public SpellMissType ReflectResult { get; set; }
         public int EffectMask { get; set; }

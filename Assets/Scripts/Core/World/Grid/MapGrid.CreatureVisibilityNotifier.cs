@@ -21,7 +21,6 @@
 
                 if (!player.IsVisibilityChanged)
                 {
-                    player.Visibility.UpdateVisibilityOf(creature);
                     mapGrid.visibilityChangedEntities.Add(player);
                 }
             }

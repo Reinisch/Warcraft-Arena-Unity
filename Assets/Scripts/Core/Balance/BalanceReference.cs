@@ -1,37 +1,42 @@
-﻿using System.Collections.Generic;
-using Common;
+﻿using Common;
 using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Core
 {
-    [CreateAssetMenu(fileName = "Balance Reference", menuName = "Game Data/Scriptable/Balance", order = 2)]
     public class BalanceReference : ScriptableReference
     {
         [SerializeField, UsedImplicitly]
         private BalanceDefinition definition;
 
-        private readonly List<MapDefinition> maps = new List<MapDefinition>();
-        private readonly List<ScenarioDefinition> scenarios = new List<ScenarioDefinition>();
-        private readonly Dictionary<int, SpellInfo> spellInfosById = new Dictionary<int, SpellInfo>();
-        private readonly Dictionary<int, AuraInfo> auraInfosById = new Dictionary<int, AuraInfo>();
-        private readonly Dictionary<int, FactionDefinition> factionsById = new Dictionary<int, FactionDefinition>();
-        private readonly Dictionary<int, UnitInfoAI> unitInfoAIById = new Dictionary<int, UnitInfoAI>();
-        private readonly Dictionary<ClassType, ClassInfo> classesByType = new Dictionary<ClassType, ClassInfo>();
+        private readonly List<MapDefinition> maps = new();
+        private readonly List<ScenarioDefinition> scenarios = new();
+        private readonly Dictionary<int, SpellInfo> spellInfosById = new();
+        private readonly Dictionary<int, FactionDefinition> factionsById = new();
+        private readonly Dictionary<int, UnitInfoAI> unitInfoAIById = new();
+        private readonly Dictionary<ClassType, ClassInfo> classesByType = new();
+        private readonly Dictionary<int, CreatureInfo> creatureInfoById = new();
+        private readonly Dictionary<int, VehicleInfo> vehicleInfoById = new();
 
-        internal IReadOnlyDictionary<int, CreatureInfo> CreatureInfoById => definition.CreatureInfoById;
-        internal IReadOnlyDictionary<int, VehicleInfo> VehicleInfoById => definition.VehicleInfoById;
+        internal IReadOnlyDictionary<int, CreatureInfo> CreatureInfoById => creatureInfoById;
+        internal IReadOnlyDictionary<int, VehicleInfo> VehicleInfoById => vehicleInfoById;
 
         public FactionDefinition DefaultFaction => definition.DefaultFaction;
         public UnitMovementDefinition UnitMovementDefinition => definition.UnitMovementDefinition;
         public IReadOnlyList<MapDefinition> Maps => maps;
         public IReadOnlyList<ScenarioDefinition> Scenarios => scenarios;
         public IReadOnlyDictionary<int, SpellInfo> SpellInfosById => spellInfosById;
-        public IReadOnlyDictionary<int, AuraInfo> AuraInfosById => auraInfosById;
         public IReadOnlyDictionary<int, FactionDefinition> FactionsById => factionsById;
         public IReadOnlyDictionary<int, UnitInfoAI> UnitInfoAIById => unitInfoAIById;
         public IReadOnlyDictionary<ClassType, ClassInfo> ClassesByType => classesByType;
         public SpellInfoContainer Spells => definition.Spells;
+
+        /// <summary>Returns <paramref name="requested"/> if it's a defined/playable class, otherwise falls back to
+        /// <see cref="ClassType.Mage"/>. Used to sanitise a class chosen in the lobby / sent by a joining client
+        /// so an unknown value can never reach the spellbook build (which indexes <see cref="ClassesByType"/>).</summary>
+        public ClassType ResolvePlayableClass(ClassType requested) =>
+            classesByType.ContainsKey(requested) ? requested : ClassType.Mage;
 
         protected override void OnRegistered()
         {
@@ -40,35 +45,37 @@ namespace Core
             maps.AddRange(definition.MapEntries);
             scenarios.AddRange(definition.ScenarioEntries);
 
-            for (int i = 0; i < definition.SpellInfos.Count; i++)
-                spellInfosById.Add(definition.SpellInfos[i].Id, definition.SpellInfos[i]);
+            foreach (SpellInfo spellInfo in definition.SpellInfos)
+                spellInfosById.Add(spellInfo.Id, spellInfo);
 
-            for (int i = 0; i < definition.AuraInfos.Count; i++)
-                auraInfosById.Add(definition.AuraInfos[i].Id, definition.AuraInfos[i]);
+            foreach (FactionDefinition faction in definition.FactionEntries)
+                factionsById.Add(faction.FactionId, faction);
 
-            for (int i = 0; i < definition.FactionEntries.Count; i++)
-                factionsById.Add(definition.FactionEntries[i].FactionId, definition.FactionEntries[i]);
+            foreach (ClassInfo classInfo in definition.ClassInfos)
+                classesByType.Add(classInfo.ClassType, classInfo);
 
-            for (int i = 0; i < definition.ClassInfos.Count; i++)
-                classesByType.Add(definition.ClassInfos[i].ClassType, definition.ClassInfos[i]);
+            foreach (UnitInfoAI unitAiInfo in definition.UnitAIEntries)
+                unitInfoAIById.Add(unitAiInfo.Id, unitAiInfo);
 
-            for (int i = 0; i < definition.UnitAIEntries.Count; i++)
-                unitInfoAIById.Add(definition.UnitAIEntries[i].Id, definition.UnitAIEntries[i]);
+            foreach (CreatureInfo creatureInfo in definition.CreatureEntries)
+                creatureInfoById.Add(creatureInfo.Id, creatureInfo);
+
+            foreach (VehicleInfo vehicleInfo in definition.VehicleEntries)
+                vehicleInfoById.Add(vehicleInfo.Id, vehicleInfo);
         }
 
         protected override void OnUnregister()
         {
             spellInfosById.Clear();
-            auraInfosById.Clear();
             factionsById.Clear();
             unitInfoAIById.Clear();
             classesByType.Clear();
+            creatureInfoById.Clear();
+            vehicleInfoById.Clear();
             maps.Clear();
             scenarios.Clear();
 
             definition.Unregister();
         }
-
-        public bool IsStealthAura(int auraId) => definition.IsStealthAura(auraId);
     }
 }

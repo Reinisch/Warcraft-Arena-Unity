@@ -1,62 +1,40 @@
-﻿using System;
 using System.Collections.Generic;
-using Core;
 using JetBrains.Annotations;
 using UnityEngine;
-using Common;
-
-using EventHandler = Common.EventHandler;
+using Zenject;
 
 namespace Client
 {
     public class ComboFrame : MonoBehaviour
     {
+        [Inject] private ComboFramePresenter presenter;
+
         [SerializeField, UsedImplicitly] private Canvas canvas;
         [SerializeField, UsedImplicitly] private CanvasGroup canvasGroup;
         [SerializeField, UsedImplicitly] private List<ComboPointSlot> comboPointSlots;
 
-        private readonly Action<EntityAttributes> onAttributeChangedAction;
-
-        private Unit unit;
-
-        private ComboFrame() => onAttributeChangedAction = OnAttributeChanged;
-
         public Canvas Canvas => canvas;
 
-        public void UpdateUnit(Unit newUnit)
+        public int ComboPointSlotCount => comboPointSlots.Count;
+
+        internal ComboFramePresenter Presenter => presenter;
+
+        [UsedImplicitly]
+        private void Awake()
         {
-            if (unit != null)
-                UnregisterUnit();
-
-            if (newUnit != null)
-                RegisterUnit(newUnit);
-
-            canvasGroup.blocksRaycasts = unit != null;
-            canvasGroup.interactable = unit != null;
-            canvasGroup.alpha = unit != null ? 1.0f : 0.0f;
+            presenter.Initialize(this);
         }
 
-        private void RegisterUnit(Unit unit)
+        public void SetVisible(bool visible)
         {
-            this.unit = unit;
-
-            OnAttributeChanged(EntityAttributes.ComboPoints);
-
-            EventHandler.RegisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
+            canvasGroup.blocksRaycasts = visible;
+            canvasGroup.interactable = visible;
+            canvasGroup.alpha = visible ? 1.0f : 0.0f;
         }
 
-        private void UnregisterUnit()
+        public void SetComboPointActive(int index, bool active)
         {
-            EventHandler.UnregisterEvent(unit, GameEvents.UnitAttributeChanged, onAttributeChangedAction);
-
-            unit = null;
-        }
-
-        private void OnAttributeChanged(EntityAttributes attributeType)
-        {
-            if (attributeType == EntityAttributes.ComboPoints)
-                for (int i = 0; i < comboPointSlots.Count; i++)
-                    comboPointSlots[i].ModifyState(i < unit.ComboPoints);
+            comboPointSlots[index].ModifyState(active);
         }
     }
 }

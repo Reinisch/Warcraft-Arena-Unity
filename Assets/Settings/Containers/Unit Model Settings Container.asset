@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 149a037a802d54047add26bef9fba60e, type: 3}
   m_Name: Unit Model Settings Container
   m_EditorClassIdentifier: 
-  modelSettings:
+  items:
   - {fileID: 11400000, guid: cee96f3e361be5e4eb3deb46c1c4a56b, type: 2}
   - {fileID: 11400000, guid: 0940a8a89a777c446b664af42eb6760a, type: 2}
   - {fileID: 11400000, guid: 57708be20d719c34abdec60d6b0b918a, type: 2}

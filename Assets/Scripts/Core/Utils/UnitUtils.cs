@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Behavior;
 using UnityEngine;
+using Action = Unity.Behavior.Action;
 
 namespace Core
 {
@@ -78,6 +80,22 @@ namespace Core
         public static bool HasTargetFlag(this UnitFlags baseFlags, UnitFlags flag)
         {
             return (baseFlags & flag) == flag;
+        }
+
+        public static void ExecuteRecursive(this Node currentNode, Action<Node> action)
+        {
+            action(currentNode);
+
+            switch(currentNode)
+            {
+                case Composite composite:
+                    foreach (Node child in composite.Children)
+                        ExecuteRecursive(child, action);
+                    break;
+                case Modifier modifier:
+                    ExecuteRecursive(modifier.Child, action);
+                    break;
+            }
         }
     }
 }

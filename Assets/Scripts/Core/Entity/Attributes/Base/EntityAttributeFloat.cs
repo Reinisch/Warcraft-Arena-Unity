@@ -1,13 +1,11 @@
-﻿using UnityEngine;
 using Common;
-
-using EventHandler = Common.EventHandler;
+using UnityEngine;
 
 namespace Core
 {
     internal class EntityAttributeFloat : EntityAttribute<float>
     {
-        public EntityAttributeFloat(Entity entity, float baseValue, float maxValue, EntityAttributes attributeType) : base(entity, baseValue, maxValue, attributeType)
+        public EntityAttributeFloat(Entity entity, EventBus eventBus, float baseValue, float maxValue, EntityAttributes attributeType) : base(entity, eventBus, baseValue, maxValue, attributeType)
         {
             CurrentValue = BaseValue;
         }
@@ -24,7 +22,7 @@ namespace Core
 
             if (!Mathf.Approximately(oldValue, newValue))
             {
-                EventHandler.ExecuteEvent(Entity, GameEvents.UnitAttributeChanged, AttributeType);
+                EventBus.ExecuteEvent(Entity, GameEvents.UnitAttributeChanged, AttributeType);
                 return 0.0f;
             }
 

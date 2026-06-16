@@ -1,0 +1,29 @@
+{
+    "name": "Game.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Game.Common",
+        "Game.Core",
+        "Game.Client",
+        "Game.Client.UI",
+        "Game.Client.Localization",
+        "Game.Client.Effects",
+        "Zenject",
+        "UniTask",
+        "Game.Core.CharacterController",
+        "BehaviorDesign",
+        "Unity.Localization",
+        "Unity.Localization.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

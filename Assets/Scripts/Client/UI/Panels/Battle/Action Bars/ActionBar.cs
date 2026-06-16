@@ -10,6 +10,16 @@ namespace Client
         [SerializeField, UsedImplicitly] private ActionBarSettingsContainer container;
         [SerializeField, UsedImplicitly] private List<ButtonSlot> buttonSlots;
         [SerializeField, UsedImplicitly] private ActionBarSettings actionBarSettings;
+        [SerializeField, UsedImplicitly] private MovementMode movementMode;
+
+        public MovementMode MovementMode => movementMode;
+
+        public bool IsActive => gameObject.activeSelf;
+
+        public void SetActive(bool active)
+        {
+            gameObject.SetActive(active);
+        }
 
         public void Initialize()
         {
@@ -30,9 +40,13 @@ namespace Client
 
         public void ModifyContent(ClassType classType)
         {
-            ActionBarSettings appliedSettings = container.SettingsByClassSlot.TryGetValue((classType, actionBarSettings.SlotId), out ActionBarSettings classSettings)
-                ? classSettings
-                : actionBarSettings;
+            ActionBarSettings appliedSettings = actionBarSettings;
+            foreach (ActionBarSettings settings in container.ItemList)
+                if (settings.ClassType == classType && settings.SlotId == actionBarSettings.SlotId)
+                {
+                    appliedSettings = settings;
+                    break;
+                }
 
             for (int i = 0; i < buttonSlots.Count; i++)
                 buttonSlots[i].ButtonContent.UpdateContent(appliedSettings.ActiveButtonPresets[i]);

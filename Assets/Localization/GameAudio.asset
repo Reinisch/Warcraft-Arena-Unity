@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db626ad063b13545924a9839ac5fa83, type: 3}
+  m_Name: GameAudio
+  m_EditorClassIdentifier: Unity.Localization.Editor::UnityEditor.Localization.AssetTableCollection
+  m_SharedTableData: {fileID: 11400000, guid: 0c5252edfaa488a4389a3ebe5035f8ce, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: 12011a343770a774285115a27ed5affc, type: 2}
+  - {fileID: 11400000, guid: 21fc2d1d9c674e749b2f6070a615c109, type: 2}
+  - {fileID: 11400000, guid: f7b33df26c3e805409285e243719e1d9, type: 2}
+  - {fileID: 11400000, guid: 43c7cc21c981f724bbf585ddbcf19d9c, type: 2}
+  m_Extensions: []
+  m_Group: Asset Table
+  references:
+    version: 2
+    RefIds: []

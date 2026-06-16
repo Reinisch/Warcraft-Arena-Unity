@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaf089595ea56f4a9fb0c3fdb00258c, type: 3}
   m_Name: Spell Visual Info Container
   m_EditorClassIdentifier: 
-  visualsInfos:
+  items:
   - {fileID: 11400000, guid: 7402b310fb35dcf4aa6373e0b360436b, type: 2}
   - {fileID: 11400000, guid: ba7a61305c5ca964293ee28932f70564, type: 2}
   - {fileID: 11400000, guid: 9f8631a0c71ef5b49a8aad690687982d, type: 2}
@@ -75,3 +75,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d1c988c43e79686489d0e6eb31ae816b, type: 2}
   - {fileID: 11400000, guid: f69c0d2ce790a51408956ae406f306f5, type: 2}
   - {fileID: 11400000, guid: ac5d0ed76c7f6c245b99165491a658ad, type: 2}
+  - {fileID: 11400000, guid: 1d689e6e5ebd3f8409719da9cbc45140, type: 2}
+  - {fileID: 11400000, guid: d46bc059ef5bd9d4ab24697b6cfd54bf, type: 2}
+  - {fileID: 11400000, guid: 5019ae995c440dd40aaaa5268e5d01e9, type: 2}
+  - {fileID: 11400000, guid: 8c3dcf1c84ddde74c92cf771aea0027c, type: 2}
+  - {fileID: 11400000, guid: 5199fea6935cc964481cc7b0179e7bed, type: 2}
+  - {fileID: 11400000, guid: 625d90fdcf8381d47821522694ff1d26, type: 2}
+  - {fileID: 11400000, guid: 449ff0ced27d09c46a6d60acf6e4a841, type: 2}
+  - {fileID: 11400000, guid: 51642b8581fc12f4b8ca1a4eec591bd7, type: 2}
+  - {fileID: 11400000, guid: 4e10384e703ccc0448ee0d8a0f80c78e, type: 2}

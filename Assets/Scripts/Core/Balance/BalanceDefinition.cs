@@ -30,13 +30,12 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private List<FactionDefinition> factionEntries;
 
-        internal IReadOnlyDictionary<int, CreatureInfo> CreatureInfoById => creatureContainer.CreatureInfoById;
-        internal IReadOnlyDictionary<int, VehicleInfo> VehicleInfoById => vehicleContainer.VehicleInfoById;
-
         public IReadOnlyList<SpellInfo> SpellInfos => spellContainer.ItemList;
         public IReadOnlyList<AuraInfo> AuraInfos => auraContainer.ItemList;
         public IReadOnlyList<ClassInfo> ClassInfos => classContainer.ItemList;
         public IReadOnlyList<UnitInfoAI> UnitAIEntries => unitAIContainer.ItemList;
+        public IReadOnlyList<CreatureInfo> CreatureEntries => creatureContainer.ItemList;
+        public IReadOnlyList<VehicleInfo> VehicleEntries => vehicleContainer.ItemList;
         public IReadOnlyList<MapDefinition> MapEntries => mapEntries;
         public IReadOnlyList<ScenarioDefinition> ScenarioEntries => scenarioEntries;
         public IReadOnlyList<FactionDefinition> FactionEntries => factionEntries;
@@ -63,7 +62,5 @@ namespace Core
             classContainer.Unregister();
             auraContainer.Unregister();
         }
-
-        public bool IsStealthAura(int auraId) => auraContainer.IsStealthAura(auraId);
     }
 }

@@ -1,58 +1,42 @@
-﻿using Bolt;
-using Common;
-using JetBrains.Annotations;
-using UdpKit;
-using UnityEngine;
+﻿using UnityEngine;
+using Zenject;
 
 namespace Core
 {
-    public abstract class Entity : EntityBehaviour
+    public abstract class Entity : MonoBehaviour
     {
-        public abstract class CreateToken : IProtocolToken
+        public abstract class CreateToken
         {
-            public abstract void Read(UdpPacket packet);
-
-            public abstract void Write(UdpPacket packet);
+            public ulong Id { get; set; }
         }
 
-        [SerializeField, UsedImplicitly, Header(nameof(Entity))] private BalanceReference balance;
+        public bool IsValid { get; private set; }
 
-        protected BalanceReference Balance => balance;
-        protected bool IsValid { get; private set; }
-
+        [Inject]
         internal World World { get; private set; }
-        internal abstract bool AutoScoped { get; }
 
-        public BoltEntity BoltEntity => entity;
-        public bool IsOwner => entity.IsOwner;
-        public bool IsController => entity.HasControl;
+        [Inject]
+        internal BalanceReference Balance { get; private set; }
+
+        public bool IsOwner => true;
+        public bool IsController { get; private set; } = true;
         public ulong Id { get; private set; }
 
-        [UsedImplicitly]
-        private void Awake() => EventHandler.RegisterEvent<bool, World>(gameObject, GameEvents.EntityPooled, OnEntityPooled);
-
-        [UsedImplicitly]
-        private void OnDestroy() => EventHandler.UnregisterEvent<bool, World>(gameObject, GameEvents.EntityPooled, OnEntityPooled);
-
-        public override void Attached()
+        public virtual void Attached(CreateToken token)
         {
-            base.Attached();
-
-            Id = entity.NetworkId.PackedValue;
+            Id = token.Id;
             IsValid = true;
+
+#if UNITY_EDITOR
+            name = $"{GetType().Name} ({Id})";
+#endif
         }
 
-        public override void Detached()
+        public virtual void Detached()
         {
             IsValid = false;
-
-            base.Detached();
         }
 
-        internal virtual void DoUpdate(int deltaTime)
-        {
-        }
-
-        private void OnEntityPooled(bool isTaken, World world) => World = isTaken ? world : null;
+        internal abstract void DoUpdate(int deltaTime);
     }
 }

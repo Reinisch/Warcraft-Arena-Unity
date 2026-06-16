@@ -1,0 +1,21 @@
+{
+    "name": "Game.Client.Effects",
+    "rootNamespace": "",
+    "references": [
+        "Game.Common",
+        "Game.Core",
+        "UniTask",
+        "Zenject",
+        "Game.Core.CharacterController",
+        "BehaviorDesign"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,25 +1,28 @@
-﻿using Common;
+using Common;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Client
 {
     public class LobbyClassSlot : MonoBehaviour
     {
+        [Inject] private EventBus eventBus;
+
         [SerializeField, UsedImplicitly] private Button slotButton;
         [SerializeField, UsedImplicitly] private Image selectedFrame;
         [SerializeField, UsedImplicitly] private Image classFrame;
         [SerializeField, UsedImplicitly] private ClassInfo classInfo;
 
-        private static object EventTarget { get; } = new object();
-
         [UsedImplicitly]
         private void Awake()
         {
             slotButton.onClick.AddListener(OnSlotClicked);
-            EventHandler.RegisterEvent(EventTarget, GameEvents.LobbyClassChanged, OnLobbyClassChanged);
+            // Global (untargeted) event so EVERY class slot refreshes when ANY one is picked — a scoped event
+            // only reaches the clicked slot, leaving the others' highlights stale (all-selected bug).
+            eventBus.RegisterEvent(GameEvents.LobbyClassChanged, OnLobbyClassChanged);
         }
 
         [UsedImplicitly]
@@ -31,22 +34,23 @@ namespace Client
         [UsedImplicitly]
         private void OnDestroy()
         {
-            EventHandler.UnregisterEvent(EventTarget, GameEvents.LobbyClassChanged, OnLobbyClassChanged);
+            eventBus.UnregisterEvent(GameEvents.LobbyClassChanged, OnLobbyClassChanged);
             slotButton.onClick.RemoveListener(OnSlotClicked);
         }
 
         private void UpdateSelection()
         {
-            bool isSelected = PlayerPrefs.GetInt(UnitUtils.PreferredClassPrefName, 0) == (int)classInfo.ClassType;
-            slotButton.interactable = classInfo.IsAvailable;
-            selectedFrame.enabled = isSelected;
+            // Default to Mage when nothing is chosen yet, so a slot is always highlighted (and matches the
+            // Mage fallback used at spawn).
+            int selectedClass = PlayerPrefs.GetInt(UnitUtils.PreferredClassPrefName, (int)ClassType.Mage);
+            selectedFrame.enabled = selectedClass == (int)classInfo.ClassType;
         }
 
         private void OnSlotClicked()
         {
             PlayerPrefs.SetInt(UnitUtils.PreferredClassPrefName, (int)classInfo.ClassType);
 
-            EventHandler.ExecuteEvent(EventTarget, GameEvents.LobbyClassChanged);
+            eventBus.ExecuteEvent(GameEvents.LobbyClassChanged);
         }
 
         private void OnLobbyClassChanged() => UpdateSelection();

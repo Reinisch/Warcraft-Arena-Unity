@@ -37,6 +37,10 @@ namespace Core
 
         public static bool IsMoving(this MovementFlags movementFlags) => (movementFlags & MovementFlags.MaskMoving) != 0;
 
+        /// <summary>Whether this movement state should interrupt an in-progress cast — deliberate locomotion or a
+        /// jump, ignoring the noisy grounding/gravity air flags (see <see cref="MovementFlags.MaskCastInterrupt"/>).</summary>
+        public static bool InterruptsCast(this MovementFlags movementFlags) => (movementFlags & MovementFlags.MaskCastInterrupt) != 0;
+
         internal static void Initialize()
         {
             WalkableAreaMask = 1 << NavMesh.GetAreaFromName("Walkable");

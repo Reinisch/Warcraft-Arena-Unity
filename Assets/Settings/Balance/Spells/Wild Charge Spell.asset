@@ -91,12 +91,14 @@ MonoBehaviour:
   categoryCooldownTime: 0
   globalCooldownTime: 500
   castTime: 0
+  charges: 0
   minCastTime: 0
   minRangeHostile: 4
   minRangeFriend: 0
   maxRangeHostile: 24
   maxRangeFriend: 0
   speed: 0
+  delay: 0
   spellEffectInfos:
   - {fileID: 7861814768659500303}
   - {fileID: -4032726531127785306}
@@ -133,3 +135,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targeting: {fileID: 11400000, guid: 82008ee63cb25d14696954953f0f679e, type: 2}
   chargeSpeed: 35
+  kind: 0

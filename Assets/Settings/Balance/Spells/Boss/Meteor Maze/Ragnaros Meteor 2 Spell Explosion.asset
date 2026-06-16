@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebb2f04d3879444a8fd7af3ace8a105, type: 3}
+  m_Name: Ragnaros Meteor 2 Spell Explosion
+  m_EditorClassIdentifier: 
+  id: 83
+  container: {fileID: 11400000, guid: 5004d00949900ed44ab6628f7e21fe20, type: 2}
+  explicitTargetType: 3
+  damageClass: 1
+  spellDispel: 0
+  mechanic: 0
+  explicitCastTargets: 4
+  schoolMask: 4
+  preventionType: -1
+  attributes: 64
+  attributesExtra: 0
+  attributesCustom: 68608
+  targetEntityTypeMask: 8
+  rangedFlags: 1
+  interruptFlags: 0
+  castIgnoringMechanics: 0
+  cooldownTime: 0
+  categoryCooldownTime: 0
+  globalCooldownTime: 0
+  castTime: 0
+  charges: 0
+  minCastTime: 0
+  minRangeHostile: 0
+  minRangeFriend: 0
+  maxRangeHostile: 100
+  maxRangeFriend: 0
+  speed: 0
+  delay: 0
+  spellEffectInfos:
+  - {fileID: 5573221772461597099}
+  spellPowerCostInfos:
+  - spellPowerType: 0
+    powerCostPercentage: 0
+    powerCost: 0
+  targetingConditions: []
+  shapeShiftAlwaysCastable: 
+  shapeShiftNeverCastable: 
+--- !u!114 &5573221772461597099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db7759aa5f1439c866944fa446c6728, type: 3}
+  m_Name: Ragnaros Meteor 2 Spell Explosion Effect Damage
+  m_EditorClassIdentifier: 
+  targeting: {fileID: 11400000, guid: 85c01526cecf10843a0a2d9ed11a9894, type: 2}
+  baseValue: 3000
+  baseVariance: 10
+  additionalValue: 0
+  usesComboPoints: 0
+  calculationType: 1
+  conditionalModifiers: []

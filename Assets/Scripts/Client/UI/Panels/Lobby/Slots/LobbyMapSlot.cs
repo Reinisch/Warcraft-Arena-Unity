@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -21,7 +21,7 @@ namespace Client
             gameObject.SetActive(true);
 
             ScenarioDefiniton = scenarioDefiniton;
-            mapFrame.sprite = scenarioDefiniton.Map.SlotBackground;
+            mapFrame.sprite = scenarioDefiniton.SlotBackground;
             slotButton.interactable = scenarioDefiniton.Map.IsAvailable;
 
             slotButton.onClick.AddListener(OnMapSlotClicked);

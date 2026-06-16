@@ -18,3 +18,4 @@ MonoBehaviour:
   vehicleInfo: {fileID: 0}
   creatureName: Wooden Dummy
   modelId: 2
+  nameplateSizeModifier: 1

@@ -4,25 +4,21 @@ using JetBrains.Annotations;
 
 namespace Client
 {
-    [CreateAssetMenu(fileName = "Tooltip Reference", menuName = "Game Data/Scriptable/Tooltips", order = 10)]
     public class TooltipReference : ScriptableReferenceClient
     {
-        [SerializeField, UsedImplicitly] TooltipSettingsBySizeDictionary tooltipSizeSettings;
-        [SerializeField, UsedImplicitly] TooltipSettingsByAlignmentDictionary tooltipAlignmentSettings;
-
-        private TooltipContainer container;
-        private TooltipSlot currentTooltip;
-
         private static readonly Vector3[] Corners = new Vector3[4];
 
-        private TooltipItemNormal TooltipNormal => container.TooltipNormal;
-        private TooltipItemSpell TooltipSpell => container.TooltipSpell;
+        [SerializeField, UsedImplicitly] private TooltipSettingsBySizeDictionary tooltipSizeSettings;
+        [SerializeField, UsedImplicitly] private TooltipSettingsByAlignmentDictionary tooltipAlignmentSettings;
+        [SerializeField, UsedImplicitly] private TooltipItemNormal tooltipNormal;
+        [SerializeField, UsedImplicitly] private TooltipItemSpell tooltipSpell;
+
+        private TooltipSlot currentTooltip;
 
         protected override void OnRegistered()
         {
             base.OnRegistered();
 
-            container = GameObject.FindGameObjectWithTag(TooltipContainer.ContainerTag).GetComponent<TooltipContainer>();
             tooltipSizeSettings.Register();
             tooltipAlignmentSettings.Register();
         }
@@ -46,13 +42,13 @@ namespace Client
                     Hide();
         }
 
-        public void Show(SpellInfo tooltipSpell, RectTransform targetRect, TooltipAlignment alignment, TooltipSize size)
+        public void Show(SpellInfo spellInfo, RectTransform targetRect, TooltipAlignment alignment, TooltipSize size)
         {
             if (currentTooltip != null && currentTooltip.Item is TooltipItemSpell == false)
                 currentTooltip.Hide();
 
-            if (TooltipSpell.ModifyContent(tooltipSpell))
-                Show(TooltipSpell.Slot, targetRect, alignment, size);
+            if (tooltipSpell.ModifyContent(spellInfo))
+                Show(tooltipSpell.Slot, targetRect, alignment, size);
         }
 
         public void Show(string tooltipText, RectTransform targetRect, TooltipAlignment alignment, TooltipSize size)
@@ -60,8 +56,8 @@ namespace Client
             if (currentTooltip != null && currentTooltip.Item is TooltipItemNormal == false)
                 currentTooltip.Hide();
 
-            if (TooltipNormal.ModifyContent(tooltipText))
-                Show(TooltipNormal.Slot, targetRect, alignment, size);
+            if (tooltipNormal.ModifyContent(tooltipText))
+                Show(tooltipNormal.Slot, targetRect, alignment, size);
         }
 
         public void Hide()
@@ -78,7 +74,7 @@ namespace Client
             tooltipSizeSettings.Value(size).Modify(newTooltip);
             tooltipAlignmentSettings.Value(alignment).Modify(newTooltip, Corners);
 
-            TooltipSpell.Slot.Show(targetRect);
+            tooltipSpell.Slot.Show(targetRect);
         }
     }
 }

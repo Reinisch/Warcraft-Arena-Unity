@@ -15,6 +15,4 @@ MonoBehaviour:
   id: 59
   container: {fileID: 11400000, guid: e491015be414e64429ddcd3681c67c82, type: 2}
   spellInfo: {fileID: 11400000, guid: 4285c998f5c63f549ab08a5e7de700d3, type: 2}
-  soundEntries:
-  - soundUsageType: 4
-    soundEntry: {fileID: 11400000, guid: faf8b4548e0ce4648ba538f9ccb76d1c, type: 2}
+  soundEntries: []

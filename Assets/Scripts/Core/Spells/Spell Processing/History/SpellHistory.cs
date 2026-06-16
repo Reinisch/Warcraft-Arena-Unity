@@ -10,26 +10,18 @@ namespace Core
         private readonly Dictionary<int, List<SpellChargeCooldown>> spellChargesById = new Dictionary<int, List<SpellChargeCooldown>>();
         private readonly List<SpellCooldown> spellCooldowns = new List< SpellCooldown>();
         private readonly Unit caster;
-        private readonly IUnitState casterState;
 
         public int GlobalCooldown { get; private set; }
         public int GlobalCooldownLeft { get; private set; }
         public bool HasGlobalCooldown => GlobalCooldownLeft > 0;
 
-        internal SpellHistory(Unit unit, IUnitState unitState)
+        internal SpellHistory(Unit unit)
         {
             caster = unit;
-            casterState = unitState;
-
-            if (!caster.IsOwner)
-                caster.AddCallback(nameof(IUnitState.GlobalCooldown), OnGlobalCooldownChanged);
         }
 
         internal void Detached()
         {
-            if (!caster.IsOwner)
-                caster.RemoveCallback(nameof(IUnitState.GlobalCooldown), OnGlobalCooldownChanged);
-
             spellCooldowns.Clear();
             spellCooldownsById.Clear();
         }
@@ -93,44 +85,7 @@ namespace Core
             return availableCharges > 0;
         }
 
-        public void Handle(SpellCooldownEvent cooldownEvent)
-        {
-            int expectedCooldownFrames = (int)(cooldownEvent.CooldownTime / BoltNetwork.FrameDeltaTime / 1000.0f);
-            int framesPassed = BoltNetwork.ServerFrame - cooldownEvent.ServerFrame;
-
-            if (framesPassed > expectedCooldownFrames || expectedCooldownFrames < 1)
-                return;
-
-            float cooldownProgressLeft = 1.0f - (float) framesPassed / expectedCooldownFrames;
-            int cooldownTimeLeft = Mathf.RoundToInt(cooldownEvent.CooldownTime * cooldownProgressLeft);
-
-            AddCooldown(cooldownEvent.SpellId, cooldownEvent.CooldownTime, cooldownTimeLeft);
-        }
-
-        public void Handle(SpellChargeEvent chargeEvent)
-        {
-            if (spellChargesById.TryGetValue(chargeEvent.SpellId, out List<SpellChargeCooldown> chargeCooldowns))
-            {
-                if (chargeCooldowns.Count > 0)
-                {
-                    AddCharge(chargeEvent.SpellId, chargeEvent.CooldownTime, chargeEvent.CooldownTime);
-                    return;
-                }
-            }
-
-            int expectedCooldownFrames = (int)(chargeEvent.CooldownTime / BoltNetwork.FrameDeltaTime / 1000.0f);
-            int framesPassed = BoltNetwork.ServerFrame - chargeEvent.ServerFrame;
-
-            if (framesPassed > expectedCooldownFrames || expectedCooldownFrames < 1)
-                return;
-
-            float cooldownProgressLeft = 1.0f - (float)framesPassed / expectedCooldownFrames;
-            int cooldownTimeLeft = Mathf.RoundToInt(chargeEvent.CooldownTime * cooldownProgressLeft);
-
-            AddCharge(chargeEvent.SpellId, chargeEvent.CooldownTime, cooldownTimeLeft);
-        }
-
-        internal void StartGlobalCooldown(SpellInfo spellInfo)
+        public void StartGlobalCooldown(SpellInfo spellInfo)
         {
             if (spellInfo.HasAttribute(SpellExtraAttributes.DoesNotTriggerGcd))
                 return;
@@ -138,11 +93,13 @@ namespace Core
             if (GlobalCooldownLeft > spellInfo.GlobalCooldownTime)
                 return;
 
-            GlobalCooldown = spellInfo.GlobalCooldownTime;
-            GlobalCooldownLeft = GlobalCooldown;
+            StartGlobalCooldown(spellInfo.GlobalCooldownTime);
+        }
 
-            casterState.GlobalCooldown.CooldownTime = GlobalCooldown;
-            casterState.GlobalCooldown.ServerFrame = BoltNetwork.ServerFrame;
+        public void StartGlobalCooldown(int cooldown)
+        {
+            GlobalCooldown = cooldown;
+            GlobalCooldownLeft = cooldown;
         }
 
         internal void HandleCooldown(SpellInfo spellInfo)
@@ -156,17 +113,11 @@ namespace Core
 
             if (spellInfo.IsUsingCharges)
             {
-                SpellChargeCooldown spellChargeCooldown = AddCharge(spellInfo.Id, cooldownLeft, cooldownLeft);
-
-                if (caster is Player player && player.BoltEntity.Controller != null)
-                    EventHandler.ExecuteEvent(GameEvents.ServerSpellCharge, player, spellChargeCooldown);
+                AddCharge(spellInfo.Id, cooldownLeft, cooldownLeft);
             }
             else
             {
-                SpellCooldown spellCooldown = AddCooldown(spellInfo.Id, cooldownLeft, cooldownLeft);
-
-                if (caster is Player player && player.BoltEntity.Controller != null)
-                    EventHandler.ExecuteEvent(GameEvents.ServerSpellCooldown, player, spellCooldown);
+                AddCooldown(spellInfo.Id, cooldownLeft, cooldownLeft);
             }
         }
 
@@ -197,25 +148,6 @@ namespace Core
             var newSpellCharge = new SpellChargeCooldown(chargeTime, chargeTimeLeft, spellId);
             spellCharges.Add(newSpellCharge);
             return newSpellCharge;
-        }
-
-        private void OnGlobalCooldownChanged()
-        {
-            if (!caster.IsController)
-                return;
-
-            GlobalCooldown = casterState.GlobalCooldown.CooldownTime;
-
-            int expectedGlobalFrames = (int)(GlobalCooldown / BoltNetwork.FrameDeltaTime / 1000.0f);
-            if (expectedGlobalFrames > 0)
-            {
-                int globalServerFrame = casterState.GlobalCooldown.ServerFrame;
-                float cooldownLeftRatio = 1 - Mathf.Clamp01((float) (BoltNetwork.ServerFrame - globalServerFrame) / expectedGlobalFrames);
-
-                GlobalCooldownLeft = Mathf.RoundToInt(cooldownLeftRatio * GlobalCooldown);
-            }
-            else
-                GlobalCooldownLeft = 0;
         }
     }
 }

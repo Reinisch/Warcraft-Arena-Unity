@@ -25,5 +25,9 @@ namespace Core
         MaskMoving = Forward | Backward | StrafeLeft | StrafeRight | Falling | Ascending | Descending | Charging,
         MaskAir = Falling | Ascending | Descending | Flying,
         MaskTurning = TurnLeft | TurnRight,
+        // Movement that interrupts a cast: deliberate locomotion only. Excludes Ascending/Descending/Falling,
+        // which flicker from KCC grounding probes/gravity even while standing (false interrupts). Flying IS
+        // included — it's set only on an actual jump, so a jump cleanly breaks the cast as it should.
+        MaskCastInterrupt = Forward | Backward | StrafeLeft | StrafeRight | Charging | Flying,
     }
 }

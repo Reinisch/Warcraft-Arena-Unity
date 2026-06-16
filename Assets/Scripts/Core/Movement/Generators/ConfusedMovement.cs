@@ -17,6 +17,7 @@ namespace Core
 
             unit.AI.NavMeshAgentEnabled = true;
             unit.AI.UpdatePosition = false;
+            unit.AI.UpdateRotation = false; // KCC owns rotation (it faces AI steering in UpdateRotation)
             unit.AI.Speed = unit.RunSpeed;
             unit.AI.AngularSpeed = MovementUtils.MoveRotationSpeed;
         }
@@ -39,7 +40,6 @@ namespace Core
         public override bool Update(Unit unit, int deltaTime)
         {
             bool cantMove = unit.HasAnyState(UnitControlState.Root | UnitControlState.Stunned | UnitControlState.Distracted);
-            unit.AI.UpdateRotation = !cantMove;
 
             if (cantMove)
             {
@@ -55,7 +55,7 @@ namespace Core
                 unit.SetMovementFlag(MovementFlags.StrafeLeft, localDirection.x < -MovementUtils.DirectionalMovementThreshold);
                 unit.SetMovementFlag(MovementFlags.StrafeRight, localDirection.x > MovementUtils.DirectionalMovementThreshold);
 
-                unit.Position = unit.AI.NextPosition;
+                unit.Teleport(unit.AI.NextPosition, notify: false);
             }
 
             if (cantMove)

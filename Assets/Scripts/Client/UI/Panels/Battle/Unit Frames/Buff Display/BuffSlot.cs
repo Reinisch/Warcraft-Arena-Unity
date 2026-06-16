@@ -3,12 +3,13 @@ using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Client
 {
     public class BuffSlot : MonoBehaviour
     {
-        [SerializeField, UsedImplicitly] private RenderingReference rendering;
+        [Inject] private RenderingReference rendering;
         [SerializeField, UsedImplicitly] private Image contentImage;
         [SerializeField, UsedImplicitly] private Image cooldownImage;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI cooldownText;
@@ -50,7 +51,7 @@ namespace Client
             if(currentAura == null)
                 return;
 
-            if (currentAura.MaxDuration == -1)
+            if (currentAura.DurationMax == -1)
             {
                 cooldownText.SetCharArray(timerText, 0, 0);
                 cooldownImage.fillAmount = 0.0f;
@@ -65,7 +66,7 @@ namespace Client
                         cooldownText.SetCharArray(emptyTimerText, 0, 0);
                 }
 
-                cooldownImage.fillAmount = 1.0f - (float)currentAura.DurationLeft / currentAura.MaxDuration;
+                cooldownImage.fillAmount = 1.0f - (float)currentAura.DurationLeft / currentAura.DurationMax;
             }
         }
     }

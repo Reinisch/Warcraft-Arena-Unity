@@ -14,6 +14,7 @@ namespace Client
         [SerializeField, UsedImplicitly] private bool hasFadeState;
         [SerializeField, UsedImplicitly] private bool hasIdleState;
         [SerializeField, UsedImplicitly] private bool replayPlayState;
+        [SerializeField, UsedImplicitly] private float overrideSpeed = 1.0f;
 
         private int playHash = -1;
         private int idleHash = -1;
@@ -22,6 +23,8 @@ namespace Client
         protected override void OnPlay()
         {
             base.OnPlay();
+
+            animator.speed = overrideSpeed;
 
             if (hasPlayState && playHash == -1)
                 playHash = Animator.StringToHash(playState);
@@ -55,9 +58,9 @@ namespace Client
             }
         }
 
-        protected override void OnUpdate(IEffectEntity effectEntity, ref bool keepAlive)
+        protected override void OnUpdate(IEffectEntity effectEntity, float deltaTime, ref bool keepAlive)
         {
-            base.OnUpdate(effectEntity, ref keepAlive);
+            base.OnUpdate(effectEntity, deltaTime, ref keepAlive);
 
             if (playWhileEnityActive)
             {

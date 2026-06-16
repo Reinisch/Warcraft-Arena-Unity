@@ -1,31 +1,33 @@
-﻿using System;
-using Common;
+﻿using Common;
 using Core;
 using JetBrains.Annotations;
+using System;
 using TMPro;
 using UnityEngine;
-
-using EventHandler = Common.EventHandler;
+using Zenject;
 
 namespace Client
 {
     public class Nameplate : MonoBehaviour
     {
+        [Inject] private RenderingReference renderReference;
+        [Inject] private CameraReference cameraReference;
+        [Inject] private InterfaceReference interfaceReference;
+        [Inject] private EventBus eventBus;
+
         [SerializeField, UsedImplicitly] private CanvasGroup combinedCanvasGroup;
         [SerializeField, UsedImplicitly] private CanvasGroup generalCanvasGroup;
         [SerializeField, UsedImplicitly] private HealthFrame healthFrame;
         [SerializeField, UsedImplicitly] private GameObject contentFrame;
         [SerializeField, UsedImplicitly] private CastFrame castFrame;
         [SerializeField, UsedImplicitly] private TextMeshProUGUI unitName;
-        [SerializeField, UsedImplicitly] private CameraReference cameraReference;
-        [SerializeField, UsedImplicitly] private RenderingReference renderReference;
-        [SerializeField, UsedImplicitly] private InterfaceReference interfaceReference;
         [SerializeField, UsedImplicitly] private NameplateSettings nameplateSettings;
         [SerializeField, UsedImplicitly] private GameOptionBool showDeselectedHealthOption;
 
         private readonly Action onFactionChangedAction;
 
         private bool InDetailRange { get; set; }
+        private Vector3 OriginalSize { get; set; }
         private NameplateSettings.HostilitySettings HostilitySettings { get; set; }
 
         public UnitRenderer UnitRenderer { get; private set; }
@@ -33,6 +35,12 @@ namespace Client
         private Nameplate()
         {
             onFactionChangedAction = OnFactionChanged;
+        }
+
+        [UsedImplicitly]
+        private void OnAwake()
+        {
+            OriginalSize = transform.localScale;
         }
 
         [UsedImplicitly]
@@ -108,6 +116,10 @@ namespace Client
             if (!HostilitySettings.ApplyScaling)
                 return;
 
+            float scaleMultiplider = 1.0f;
+            if (UnitRenderer.Unit is Creature creature)
+                scaleMultiplider *= creature.CreatureInfo.NameplateSizeModifier;
+
             WarcraftCamera warcraftCamera = cameraReference.WarcraftCamera;
             if (warcraftCamera != null)
             {
@@ -115,7 +127,7 @@ namespace Client
                 float distance = Vector3.Dot(direction, warcraftCamera.transform.forward);
 
                 transform.rotation = Quaternion.LookRotation(warcraftCamera.transform.forward);
-                contentFrame.transform.localScale = Vector3.one * nameplateSettings.ScaleOverDistance.Evaluate(distance);
+                contentFrame.transform.localScale = Vector3.one * nameplateSettings.ScaleOverDistance.Evaluate(distance) * scaleMultiplider;
             }
         }
 
@@ -123,7 +135,7 @@ namespace Client
         {
             UnitRenderer = unitRenderer;
 
-            transform.SetParent(interfaceReference.FindRoot(InterfaceCanvasType.Nameplate));
+            transform.SetParent(interfaceReference.NameplatesRoot);
             transform.position = UnitRenderer.TagContainer.FindNameplateTag();
             unitName.text = unitRenderer.Unit.Name;
             castFrame.UpdateCaster(unitRenderer.Unit);
@@ -132,12 +144,12 @@ namespace Client
 
             OnFactionChanged();
 
-            EventHandler.RegisterEvent(UnitRenderer.Unit, GameEvents.UnitFactionChanged, onFactionChangedAction);
+            eventBus.RegisterEvent(UnitRenderer.Unit, GameEvents.UnitFactionChanged, onFactionChangedAction);
         }
 
         private void Deinitialize()
         {
-            EventHandler.UnregisterEvent(UnitRenderer.Unit, GameEvents.UnitFactionChanged, onFactionChangedAction);
+            eventBus.UnregisterEvent(UnitRenderer.Unit, GameEvents.UnitFactionChanged, onFactionChangedAction);
 
             castFrame.UpdateCaster(null);
             healthFrame.Unit = null;
@@ -150,7 +162,11 @@ namespace Client
             Player referer = renderReference.Player;
             Unit target = UnitRenderer.Unit;
 
-            if (referer == target)
+            // A remote client may not have a local player yet (ownership not wired) — render as neutral
+            // rather than dereferencing a null referer.
+            if (referer == null)
+                HostilitySettings = nameplateSettings.Neutral;
+            else if (referer == target)
                 HostilitySettings = nameplateSettings.Self;
             else if (referer.IsHostileTo(target))
                 HostilitySettings = nameplateSettings.Enemy;
@@ -163,7 +179,7 @@ namespace Client
             healthFrame.HealthBar.FillImage.color = HostilitySettings.HealthColor;
             unitName.color = HostilitySettings.NameWithoutPlateColor;
 
-            InDetailRange = referer.ExactDistanceTo(target) < nameplateSettings.DetailedDistance;
+            InDetailRange = referer != null && referer.ExactDistanceTo(target) < nameplateSettings.DetailedDistance;
 
             UpdateSelection(true);
 

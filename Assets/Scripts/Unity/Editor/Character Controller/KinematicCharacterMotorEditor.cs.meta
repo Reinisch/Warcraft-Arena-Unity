@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7db3ed6d74cbf2b489cab5e1586bed7a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99131
+  packageName: Kinematic Character Controller
+  packageVersion: 3.4.4
+  assetPath: Assets/KinematicCharacterController/Core/Editor/KinematicCharacterMotorEditor.cs
+  uploadId: 505601
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

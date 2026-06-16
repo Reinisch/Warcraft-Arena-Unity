@@ -1,9 +1,8 @@
-﻿using System;
-using Common;
+﻿using Common;
 using JetBrains.Annotations;
+using System;
 using UnityEngine;
-
-using EventHandler = Common.EventHandler;
+using UnityEngine.Rendering.Universal;
 
 namespace Client
 {
@@ -12,13 +11,13 @@ namespace Client
         [Serializable]
         private partial class SelectionCircleController
         {
-            [SerializeField, UsedImplicitly] private Projector selectionCirclePrototype;
-            [SerializeField, UsedImplicitly] private RenderingReference rendering;
+            [SerializeField, UsedImplicitly] private DecalProjector selectionCirclePrototype;
             [SerializeField, UsedImplicitly] private SelectionCircleSettings playerCircleSettings;
             [SerializeField, UsedImplicitly] private SelectionCircleSettings targetCircleSettings;
 
             private SelectionCircle playerCircle;
             private SelectionCircle targetCircle;
+            private RenderingReference rendering;
 
             private readonly Action onPlayerTargetChanged;
 
@@ -27,8 +26,9 @@ namespace Client
                 onPlayerTargetChanged = OnPlayerTargetChanged;
             }
 
-            public void Initialize()
+            public void Initialize(RenderingReference rendering)
             {
+                this.rendering = rendering;
                 GameObjectPool.PreInstantiate(selectionCirclePrototype, 2);
 
                 playerCircle = new SelectionCircle(this, playerCircleSettings);
@@ -60,7 +60,7 @@ namespace Client
                 playerCircle.UpdateUnit(rendering.Player);
                 targetCircle.UpdateUnit(rendering.Player.Target);
 
-                EventHandler.RegisterEvent(rendering.Player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
+                rendering.eventBus.RegisterEvent(rendering.Player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
             }
 
             public void HandlePlayerControlLost()
@@ -68,7 +68,7 @@ namespace Client
                 playerCircle.UpdateUnit(null);
                 targetCircle.UpdateUnit(null);
 
-                EventHandler.UnregisterEvent(rendering.Player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
+                rendering.eventBus.UnregisterEvent(rendering.Player, GameEvents.UnitTargetChanged, onPlayerTargetChanged);
             }
 
             private void OnPlayerTargetChanged()

@@ -1,6 +1,4 @@
-﻿using Core.Scenario;
-using JetBrains.Annotations;
-using System.Collections.Generic;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core
@@ -13,24 +11,19 @@ namespace Core
         [SerializeField, UsedImplicitly] private string mapName;
         [SerializeField, UsedImplicitly] private int maxPlayers = 10;
         [SerializeField, UsedImplicitly] private float maxVisibilityRange = 10.0f;
+        [SerializeField, UsedImplicitly] private Vector2 footprintSize = new Vector2(100.0f, 100.0f);
         [SerializeField, UsedImplicitly] private MapType mapType;
         [SerializeField, UsedImplicitly] private Expansion expansion;
         [SerializeField, UsedImplicitly] private Sprite slotBackground;
-        [SerializeField, UsedImplicitly] private List<MapScenario> scenarioPrefabs;
 
         public int Id => id;
         public bool IsAvailable => isAvailable;
         public string MapName => mapName;
         public int MaxPlayers => maxPlayers;
         public float MaxVisibilityRange => maxVisibilityRange;
+        public Vector2 FootprintSize => footprintSize;
         public MapType MapType => mapType;
         public Expansion Expansion => expansion;
         public Sprite SlotBackground => slotBackground;
-        public List<MapScenario> ScenarioPrefabs => scenarioPrefabs;
-
-        public bool IsDungeon()
-        {
-            return MapType == MapType.Instance || MapType == MapType.Raid;
-        }
     }
 }

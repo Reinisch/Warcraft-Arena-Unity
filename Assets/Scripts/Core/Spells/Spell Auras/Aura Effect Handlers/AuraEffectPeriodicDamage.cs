@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.Numerics;
+using Common;
 
 namespace Core.AuraEffects
 {
@@ -20,7 +21,7 @@ namespace Core.AuraEffects
             if (target.HasState(UnitControlState.Isolated) || target.IsImmunedToDamage(Aura.SpellInfo, EffectInfo.SpellSchoolMask, Aura.Caster))
             {
                 SpellDamageInfo damageInfo = new SpellDamageInfo(caster, target, Aura.SpellInfo, SpellDamageType.Dot, HitType.Immune);
-                EventHandler.ExecuteEvent(GameEvents.ServerDamageDone, damageInfo);
+                caster.EventBus.ExecuteEvent(GameEvents.SpellDamageDone, damageInfo.Caster, damageInfo.Target, (int)damageInfo.Damage, damageInfo.HitType, (Vector3?)null);
             }
             else
             {

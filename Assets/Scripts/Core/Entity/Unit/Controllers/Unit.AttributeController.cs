@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using Common;
 using UnityEngine;
 
-using EventHandler = Common.EventHandler;
 
 namespace Core
 {
     public abstract partial class Unit
     {
-        internal class AttributeController : IUnitBehaviour
+        public class AttributeController : IUnitBehaviour, ILogicBehaviour
         {
             private const int RegenerationSyncTime = 2000;
 
@@ -21,19 +20,20 @@ namespace Core
             private MovementMode movementMode;
             private EmoteType emoteType;
             private ClassType classType;
-            private IUnitState unitState;
             private bool initialized;
             private bool freeForAll;
             private ulong targetId;
             private float scale;
             private int modelId;
+            private float emoteTime;
             private int accumulatedRegenerationTime;
+            private int slowFallSpeed;
 
             private readonly float[] accumulatedRegeneration = new float[UnitUtils.MaxUnitPowers];
             private readonly EntityAttributeInt[,] powers = new EntityAttributeInt[UnitUtils.MaxUnitPowers, 3];
-            private readonly Dictionary<UnitMoveType, float> speedRates = new Dictionary<UnitMoveType, float>();
-            private readonly Dictionary<SpellPowerType, (int, SpellPowerTypeInfo)> spellPowerIndexes = new Dictionary<SpellPowerType, (int, SpellPowerTypeInfo)>();
-            private readonly Dictionary<(UnitModifierType, StatModifierType), float> statModifiers = new Dictionary<(UnitModifierType, StatModifierType), float>();
+            private readonly Dictionary<UnitMoveType, float> speedRates = new();
+            private readonly Dictionary<SpellPowerType, (int, SpellPowerTypeInfo)> spellPowerIndexes = new();
+            private readonly Dictionary<(UnitModifierType, StatModifierType), float> statModifiers = new();
 
             internal EntityAttributeInt Health { get; private set; }
             internal EntityAttributeInt MaxHealth { get; private set; }
@@ -56,10 +56,7 @@ namespace Core
                 {
                     faction = value;
 
-                    if (unit.IsOwner)
-                        unitState.Faction.Id = value.FactionId;
-
-                    EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
+                    unit.EventBus.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
                 }
             }
 
@@ -68,10 +65,11 @@ namespace Core
                 get => deathState;
                 set
                 {
-                    deathState = value;
-
-                    if (unit.IsOwner)
-                        unitState.DeathState = (int)value;
+                    if (deathState != value)
+                    {
+                        deathState = value;
+                        EventDeathStateChanged?.Invoke();
+                    }
                 }
             }
 
@@ -82,10 +80,7 @@ namespace Core
                 {
                     classType = value;
 
-                    if (unit.IsOwner)
-                        unitState.ClassType = (int)value;
-
-                    EventHandler.ExecuteEvent(unit, GameEvents.UnitClassChanged);
+                    unit.EventBus.ExecuteEvent(unit, GameEvents.UnitClassChanged);
                 }
             }
 
@@ -95,27 +90,24 @@ namespace Core
                 set
                 {
                     emoteType = value;
+                    emoteTime = Time.frameCount;
 
-                    if (unit.IsOwner)
-                    {
-                        unitState.EmoteType = (int)value;
-                        unitState.EmoteFrame = BoltNetwork.ServerFrame;
-                    }
+                    EventEmoteStateChanged?.Invoke();
                 }
+            }
+
+            internal float EmoteTime => emoteTime;
+            
+            internal int SlowFallSpeed
+            {
+                get => slowFallSpeed;
+                set => slowFallSpeed = value;
             }
 
             internal MovementMode MovementMode
             {
                 get => movementMode;
-                set
-                {
-                    movementMode = value;
-
-                    if (unit.IsOwner)
-                    {
-                        unitState.MovementMode = (int)value;
-                    }
-                }
+                set => movementMode = value;
             }
 
             internal SpellPowerType DisplayPowerType
@@ -125,10 +117,7 @@ namespace Core
                 {
                     displayPowerType = value;
 
-                    if (unit.IsOwner)
-                        unitState.DisplayPowerType = (int)value;
-
-                    EventHandler.ExecuteEvent(unit, GameEvents.UnitDisplayPowerChanged);
+                    unit.EventBus.ExecuteEvent(unit, GameEvents.UnitDisplayPowerChanged);
                 }
             }
 
@@ -139,10 +128,7 @@ namespace Core
                 {
                     visualEffectFlags = value;
 
-                    if (unit.IsOwner)
-                        unitState.VisualEffects = (int)value;
-
-                    EventHandler.ExecuteEvent(unit, GameEvents.UnitVisualsChanged);
+                    unit.EventBus.ExecuteEvent(unit, GameEvents.UnitVisualsChanged);
                 }
             }
 
@@ -152,12 +138,8 @@ namespace Core
                 set
                 {
                     scale = value;
-                    unit.transform.localScale = new Vector3(scale, scale, scale);
 
-                    if (unit.IsOwner)
-                        unitState.Scale = value;
-
-                    EventHandler.ExecuteEvent(unit, GameEvents.UnitScaleChanged);
+                    unit.EventBus.ExecuteEvent(unit, GameEvents.UnitScaleChanged);
                 }
             }
 
@@ -168,10 +150,7 @@ namespace Core
                 {
                     modelId = value;
 
-                    if (unit.IsOwner)
-                        unitState.ModelId = value;
-
-                    EventHandler.ExecuteEvent(unit, GameEvents.UnitModelChanged);
+                    unit.EventBus.ExecuteEvent(unit, GameEvents.UnitModelChanged);
                 }
             }
 
@@ -182,20 +161,20 @@ namespace Core
                 {
                     freeForAll = value;
 
-                    if (unit.IsOwner)
-                        unitState.Faction.FreeForAll = value;
-
-                    EventHandler.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
+                    unit.EventBus.ExecuteEvent(unit, GameEvents.UnitFactionChanged);
                 }
             }
 
             public bool HasClientLogic => true;
             public bool HasServerLogic => true;
 
+            public event Action EventDeathStateChanged;
+            public event Action EventEmoteStateChanged;
+
             void IUnitBehaviour.DoUpdate(int deltaTime)
             {
                 if (EmoteType != EmoteType.None && EmoteType.IsState() && unit.Motion.IsMoving)
-                    if (BoltNetwork.ServerFrame - unit.entityState.EmoteFrame > UnitUtils.EmoteStateMovementFrameThreshold)
+                    if (Time.time - unit.EmoteFrame > UnitUtils.EmoteStateMovementFrameThreshold)
                         unit.ModifyEmoteState(EmoteType.None);
 
                 if (unit.IsAlive)
@@ -229,7 +208,6 @@ namespace Core
             void IUnitBehaviour.HandleUnitAttach(Unit unit)
             {
                 this.unit = unit;
-                unitState = unit.entityState;
 
                 foreach (UnitMoveType moveType in StatUtils.UnitMoveTypes)
                     speedRates[moveType] = 1.0f;
@@ -243,23 +221,6 @@ namespace Core
                 }
 
                 InitializeAttributes();
-
-                if (!unit.IsOwner)
-                {
-                    unit.AddCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
-                    unit.AddCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
-                    unit.AddCallback(nameof(IUnitState.Health), OnHealthStateChanged);
-                    unit.AddCallback(nameof(IUnitState.ComboPoints), OnComboPointsChanged);
-                    unit.AddCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
-                    unit.AddCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
-                    unit.AddCallback(nameof(IUnitState.ClassType), OnClassTypeChanged);
-                    unit.AddCallback(nameof(IUnitState.DisplayPowerType), OnDisplayPowerTypeChanged);
-                    unit.AddCallback(nameof(IUnitState.DisplayPower), OnDisplayPowerChanged);
-                    unit.AddCallback(nameof(IUnitState.DisplayPowerMax), OnDisplayPowerMaxChanged);
-                    unit.AddCallback(nameof(IUnitState.VisualEffects), OnUnitVisualEffectChanged);
-                    unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
-                    unit.AddCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
-                }
 
                 unit.World.UnitManager.EventEntityDetach += OnEntityDetach;
 
@@ -283,22 +244,22 @@ namespace Core
                     {
                         initialized = true;
 
-                        Health = new EntityAttributeInt(unit, unit.AttributeDefinition.BaseHealth, int.MaxValue, EntityAttributes.Health);
-                        MaxHealth = new EntityAttributeInt(unit, unit.AttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
+                        Health = new EntityAttributeInt(unit, unit.EventBus, unit.AttributeDefinition.BaseHealth, int.MaxValue, EntityAttributes.Health);
+                        MaxHealth = new EntityAttributeInt(unit, unit.EventBus, unit.AttributeDefinition.BaseMaxHealth, int.MaxValue, EntityAttributes.MaxHealth);
                         
-                        ComboPoints = new EntityAttributeInt(unit, 0, 5, EntityAttributes.ComboPoints);
-                        Level = new EntityAttributeInt(unit, 1, int.MaxValue, EntityAttributes.Level);
-                        SpellPower = new EntityAttributeInt(unit, unit.AttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
-                        Intellect = new EntityAttributeInt(unit, unit.AttributeDefinition.BaseIntellect, int.MaxValue, EntityAttributes.Intellect);
-                        ModHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModHaste);
-                        ModRegenHaste = new EntityAttributeFloat(unit, 1.0f, float.MaxValue, EntityAttributes.ModRegenHaste);
-                        CritPercentage = new EntityAttributeFloat(unit, unit.AttributeDefinition.CritPercentage, float.MaxValue, EntityAttributes.CritPercentage);
+                        ComboPoints = new EntityAttributeInt(unit, unit.EventBus, 0, 5, EntityAttributes.ComboPoints);
+                        Level = new EntityAttributeInt(unit, unit.EventBus, 1, int.MaxValue, EntityAttributes.Level);
+                        SpellPower = new EntityAttributeInt(unit, unit.EventBus, unit.AttributeDefinition.BaseSpellPower, int.MaxValue, EntityAttributes.SpellPower);
+                        Intellect = new EntityAttributeInt(unit, unit.EventBus, unit.AttributeDefinition.BaseIntellect, int.MaxValue, EntityAttributes.Intellect);
+                        ModHaste = new EntityAttributeFloat(unit, unit.EventBus, 1.0f, float.MaxValue, EntityAttributes.ModHaste);
+                        ModRegenHaste = new EntityAttributeFloat(unit, unit.EventBus, 1.0f, float.MaxValue, EntityAttributes.ModRegenHaste);
+                        CritPercentage = new EntityAttributeFloat(unit, unit.EventBus, unit.AttributeDefinition.CritPercentage, float.MaxValue, EntityAttributes.CritPercentage);
 
                         for (int i = 0; i < powers.GetLength(0); i++)
                         {
-                            powers[i, 0] = new EntityAttributeInt(unit, 0, int.MaxValue, 0);
-                            powers[i, 1] = new EntityAttributeInt(unit, 0, int.MaxValue, 0);
-                            powers[i, 2] = new EntityAttributeInt(unit, 0, int.MaxValue, 0);
+                            powers[i, 0] = new EntityAttributeInt(unit, unit.EventBus, 0, int.MaxValue, 0);
+                            powers[i, 1] = new EntityAttributeInt(unit, unit.EventBus, 0, int.MaxValue, 0);
+                            powers[i, 2] = new EntityAttributeInt(unit, unit.EventBus, 0, int.MaxValue, 0);
                         }
                     }
 
@@ -311,26 +272,7 @@ namespace Core
             void IUnitBehaviour.HandleUnitDetach()
             {
                 unit.World.UnitManager.EventEntityDetach -= OnEntityDetach;
-
-                if (!unit.IsOwner)
-                {
-                    unit.RemoveCallback(nameof(IUnitState.DeathState), OnDeathStateChanged);
-                    unit.RemoveCallback(nameof(IUnitState.EmoteType), OnEmoteTypeChanged);
-                    unit.RemoveCallback(nameof(IUnitState.Health), OnHealthStateChanged);
-                    unit.RemoveCallback(nameof(IUnitState.ComboPoints), OnComboPointsChanged);
-                    unit.RemoveCallback(nameof(IUnitState.TargetId), OnTargetIdChanged);
-                    unit.RemoveCallback(nameof(IUnitState.ModelId), OnModelIdChanged);
-                    unit.RemoveCallback(nameof(IUnitState.ClassType), OnClassTypeChanged);
-                    unit.RemoveCallback(nameof(IUnitState.DisplayPowerType), OnDisplayPowerTypeChanged);
-                    unit.RemoveCallback(nameof(IUnitState.DisplayPower), OnDisplayPowerChanged);
-                    unit.RemoveCallback(nameof(IUnitState.DisplayPowerMax), OnDisplayPowerMaxChanged);
-                    unit.RemoveCallback(nameof(IUnitState.VisualEffects), OnUnitVisualEffectChanged);
-                    unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.Id)}", OnFactionIdChanged);
-                    unit.RemoveCallback($"{nameof(IUnitState.Faction)}.{nameof(IUnitState.Faction.FreeForAll)}", OnFactionFreeForAllChanged);
-                }
-
                 VisualEffectFlags = 0;
-                unitState = null;
                 unit = null;
             }
 
@@ -345,10 +287,7 @@ namespace Core
                 targetId = newTarget?.Id ?? newTargetId;
                 Target = newTarget ?? unit.World.UnitManager.Find(targetId);
 
-                if (updateState)
-                    unitState.TargetId = Target?.BoltEntity.NetworkId ?? default;
-
-                EventHandler.ExecuteEvent(unit, GameEvents.UnitTargetChanged);
+                unit.EventBus.ExecuteEvent(unit, GameEvents.UnitTargetChanged);
             }
 
             internal void UpdateSpeed(UnitMoveType type)
@@ -403,8 +342,10 @@ namespace Core
                 {
                     speedRates[type] = rate;
 
-                    if (unit.IsOwner && unit is Player player)
-                        EventHandler.ExecuteEvent(GameEvents.ServerPlayerSpeedChanged, player, type, rate);
+                    // Server-authoritative: notify so the net layer replicates the new rate to the owning
+                    // client (its movement is client-authoritative, so it needs the rate to move at speed).
+                    if (unit.World.HasServerLogic)
+                        unit.EventBus.ExecuteEvent(Common.GameEvents.ServerPlayerSpeedChanged, unit, type, rate);
                 }
             }
 
@@ -536,13 +477,11 @@ namespace Core
             internal void SetHealth(int value)
             {
                 Health.Set(Mathf.Clamp(value, 0, MaxHealth.Value));
-                unitState.Health = Health.Value;
             }
 
             internal void SetComboPoints(int points)
             {
                 ComboPoints.Set(points);
-                unitState.ComboPoints = ComboPoints.Value;
             }
 
             internal int ModifyPower(SpellPowerType powerType, int delta)
@@ -559,10 +498,7 @@ namespace Core
 
                     if (powerType == DisplayPowerType && updateDisplayPower)
                     {
-                        if (unit.IsOwner)
-                            unitState.DisplayPower = newValue;
-
-                        EventHandler.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.Power);
+                        unit.EventBus.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.Power);
                     }
 
                     return delta;
@@ -579,80 +515,12 @@ namespace Core
 
                     if (powerType == DisplayPowerType)
                     {
-                        if (unit.IsOwner)
-                            unitState.DisplayPowerMax = newValue;
-
-                        EventHandler.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.MaxPower);
+                        unit.EventBus.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.MaxPower);
                     }
                 }
             }
 
             internal float Speed(UnitMoveType type) => SpeedRates[type] * unit.Balance.UnitMovementDefinition.BaseSpeedByType(type);
-
-            private void OnEmoteTypeChanged()
-            {
-                EmoteType = (EmoteType)unitState.EmoteType;
-            }
-
-            private void OnDeathStateChanged()
-            {
-                DeathState = (DeathState)unitState.DeathState;
-            }
-
-            private void OnHealthStateChanged()
-            {
-                Health.Set(unitState.Health);
-            }
-
-            private void OnComboPointsChanged()
-            {
-                ComboPoints.Set(unitState.ComboPoints);
-            }
-
-            private void OnDisplayPowerTypeChanged()
-            {
-                DisplayPowerType = (SpellPowerType)unitState.DisplayPowerType;
-            }
-
-            private void OnDisplayPowerMaxChanged()
-            {
-                SetMaxPower(DisplayPowerType, unitState.DisplayPowerMax);
-            }
-
-            private void OnDisplayPowerChanged()
-            {
-                SetPower(DisplayPowerType, unitState.DisplayPower);
-            }
-
-            private void OnUnitVisualEffectChanged()
-            {
-                VisualEffectFlags = (UnitVisualEffectFlags)unitState.VisualEffects;
-            }
-
-            private void OnClassTypeChanged()
-            {
-                ClassType = (ClassType) unitState.ClassType;
-            }
-
-            private void OnTargetIdChanged()
-            {
-                UpdateTarget(unitState.TargetId.PackedValue);
-            }
-
-            private void OnModelIdChanged()
-            {
-                ModelId = unitState.ModelId;
-            }
-
-            private void OnFactionIdChanged()
-            {
-                Faction = unit.Balance.FactionsById[unitState.Faction.Id];
-            }
-
-            private void OnFactionFreeForAllChanged()
-            {
-                FreeForAll = unitState.Faction.FreeForAll;
-            }
 
             private void OnEntityDetach(Unit entity)
             {

@@ -93,6 +93,7 @@ MonoBehaviour:
   maxRangeHostile: 40
   maxRangeFriend: 0
   speed: 30
+  delay: 0
   spellEffectInfos:
   - {fileID: -1962990047301306885}
   - {fileID: -7489870445627554668}

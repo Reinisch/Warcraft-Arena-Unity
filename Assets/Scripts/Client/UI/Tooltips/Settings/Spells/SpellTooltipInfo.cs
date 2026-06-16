@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Client.Localization;
 using Common;
 using Core;
@@ -10,14 +10,10 @@ namespace Client
     [UsedImplicitly, CreateAssetMenu(fileName = "Spell Tooltip Info", menuName = "Game Data/Tooltips/Spell Tooltip Info", order = 1)]
     public sealed class SpellTooltipInfo : ScriptableUniqueInfo<SpellTooltipInfo>
     {
-        [SerializeField, UsedImplicitly] private SpellTooltipInfoContainer container;
         [SerializeField, UsedImplicitly] private SpellInfo spellInfo;
         [SerializeField, UsedImplicitly] private LocalizedString spellNameString;
         [SerializeField, UsedImplicitly] private LocalizedString spellDescriptionString;
         [SerializeField, UsedImplicitly] private List<SpellTooltipArgumentSettings> argumentSettings;
-
-        protected override ScriptableUniqueInfoContainer<SpellTooltipInfo> Container => container;
-        protected override SpellTooltipInfo Data => this;
 
         public const int MaxArguments = 5;
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Common;
 using Core;
 using JetBrains.Annotations;
@@ -9,7 +9,6 @@ namespace Client
     [UsedImplicitly, CreateAssetMenu(fileName = "Action Bar Settings", menuName = "Player Data/Input/Action Bar", order = 1)]
     public class ActionBarSettings : ScriptableUniqueInfo<ActionBarSettings>
     {
-        [SerializeField, UsedImplicitly] private ActionBarSettingsContainer container;
         [SerializeField, UsedImplicitly] private bool saveChanges;
         [SerializeField, UsedImplicitly] private int actionBarSlot;
         [SerializeField, UsedImplicitly] private ClassType classType;
@@ -55,8 +54,5 @@ namespace Client
 
             base.OnUnregister();
         }
-
-        protected override ActionBarSettings Data => this;
-        protected override ScriptableUniqueInfoContainer<ActionBarSettings> Container => container;
     }
 }

@@ -1,14 +1,18 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
+using Client.Sound;
 using Common;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 namespace Client
 {
     public class ButtonSlot : UIBehaviour, IPointerDownHandler, IDropHandler
     {
+        [Inject] private EventBus eventBus;
+
         [SerializeField, UsedImplicitly] private HotkeyInputItem hotkeyInput;
         [SerializeField, UsedImplicitly] private RectTransform rectTransform;
         [SerializeField, UsedImplicitly] private ButtonContent buttonContent;
@@ -22,16 +26,16 @@ namespace Client
         {
             buttonContent.Initialize(this);
 
-            EventHandler.RegisterEvent<HotkeyState>(hotkeyInput, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
-            EventHandler.RegisterEvent(hotkeyInput, GameEvents.HotkeyBindingChanged, OnHotkeyBindingChanged);
+            eventBus.RegisterEvent<HotkeyState>(hotkeyInput, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
+            eventBus.RegisterEvent(hotkeyInput, GameEvents.HotkeyBindingChanged, OnHotkeyBindingChanged);
 
             OnHotkeyBindingChanged();
         }
 
         public void Denitialize()
         {
-            EventHandler.UnregisterEvent<HotkeyState>(hotkeyInput, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
-            EventHandler.UnregisterEvent(hotkeyInput, GameEvents.HotkeyBindingChanged, OnHotkeyBindingChanged);
+            eventBus.UnregisterEvent<HotkeyState>(hotkeyInput, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
+            eventBus.UnregisterEvent(hotkeyInput, GameEvents.HotkeyBindingChanged, OnHotkeyBindingChanged);
 
             buttonContent.Deinitialize();
         }
@@ -44,9 +48,12 @@ namespace Client
         [UsedImplicitly, Description("Also called from manually pressing button.")]
         public void Click()
         {
+            if (!isActiveAndEnabled)
+                return;
+
             if (!buttonContent.IsAlreadyPressed)
             {
-                pressSound?.Play();
+                pressSound?.Play(transform.position);
                 buttonContent.Activate();
             }
         }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0803d1c866e722c4f9d488b6cf3a0b7f, type: 3}
   m_Name: Player Circle Settings
   m_EditorClassIdentifier: 
-  friendlyColor: {r: 0.18324094, g: 0.9811321, b: 0.1018156, a: 0.039215688}
-  neutralColor: {r: 0.18431373, g: 0.98039216, b: 0.101960786, a: 0.039215688}
-  enemyColor: {r: 0.18431373, g: 0.98039216, b: 0.101960786, a: 0.039215688}
+  friendlyColor: {r: 0.18324094, g: 0.9811321, b: 0.1018156, a: 0.11764706}
+  neutralColor: {r: 0.18431373, g: 0.98039216, b: 0.101960786, a: 0.11764706}
+  enemyColor: {r: 0.18431373, g: 0.98039216, b: 0.101960786, a: 0.11764706}
   targetTag: 1

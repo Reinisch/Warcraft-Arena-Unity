@@ -13,5 +13,6 @@ namespace Client
         void Fade(long playId);
         void Stop(long playId);
         void Replay(long playId);
+        void ResetLocally(long playId);
     }
 }

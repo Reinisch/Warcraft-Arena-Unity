@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e83f5e0b2cdfc5142b49217263e6be0e, type: 3}
   m_Name: Camera Mode - Shooter
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  id: 2
+  container: {fileID: 11400000, guid: 928a41085114de74eb16ce505053d722, type: 2}

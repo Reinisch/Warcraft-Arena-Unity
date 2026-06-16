@@ -1,35 +1,41 @@
 ﻿using UnityEngine;
+using Zenject;
 
 namespace Common
 {
     /// <summary>
     /// Base class for game systems, that will be used to inject in behaviours.
     /// </summary>
-    public abstract class ScriptableReference : ScriptableObject
+    public abstract class ScriptableReference : MonoBehaviour
     {
-        internal void Register()
+        public void Register()
         {
             OnRegistered();
         }
 
-        internal void Unregister()
+        public void Unregister()
         {
             OnUnregister();
         }
 
-        internal void DoUpdate(float deltaTime)
+        public void DoUpdate(float deltaTime)
         {
             OnUpdate(deltaTime);
         }
 
-        internal void DoUpdate(int deltaTime)
+        public void DoUpdate(int deltaTime)
         {
             OnUpdate(deltaTime);
         }
 
-        protected abstract void OnRegistered();
+        [Inject]
+        protected virtual void QueueForInject(DiContainer container)
+        {
+        }
 
-        protected abstract void OnUnregister();
+        protected virtual void OnRegistered() { }
+
+        protected virtual void OnUnregister() { }
 
         protected virtual void OnUpdate(float deltaTime)
         {

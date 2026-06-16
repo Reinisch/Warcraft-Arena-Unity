@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Client.Spells;
 using Common;
 using UnityEngine;
@@ -11,28 +11,26 @@ namespace Client
         {
             private class SpellVisualAuraState
             {
-                private IEffectEntity EffectEntity { get; }
-                private long PlayId { get; }
+                private EffectHandle Handle { get; }
 
-                public SpellVisualAuraState(long playId, IEffectEntity effectEntity)
+                public SpellVisualAuraState(EffectHandle handle)
                 {
-                    PlayId = playId;
-                    EffectEntity = effectEntity;
+                    Handle = handle;
                 }
 
                 public void Fade()
                 {
-                    EffectEntity.Fade(PlayId);
+                    Handle.Fade();
                 }
 
                 public void Stop()
                 {
-                    EffectEntity.Stop(PlayId);
+                    Handle.Stop();
                 }
 
                 public void Replay()
                 {
-                    EffectEntity.Replay(PlayId);
+                    Handle.Replay();
                 }
             }
 
@@ -78,11 +76,11 @@ namespace Client
 
                 Vector3 effectDirection = Vector3.ProjectOnPlane(unitRenderer.transform.forward, Vector3.up);
                 Quaternion effectRotation = Quaternion.LookRotation(effectDirection);
-                IEffectEntity newEffect = settings.EffectSettings.PlayEffect(unitRenderer.transform.position, effectRotation, out long playId);
-                if (newEffect != null)
+                EffectHandle handle = settings.EffectSettings.PlayEffect(unitRenderer.transform.position, effectRotation);
+                if (handle.IsValid)
                 {
-                    unitRenderer.TagContainer.ApplyPositioning(newEffect, settings);
-                    effectByAuraId[visibleAura.AuraId] = new SpellVisualAuraState(playId, newEffect);
+                    unitRenderer.TagContainer.ApplyPositioning(handle.Entity, settings);
+                    effectByAuraId[visibleAura.AuraId] = new SpellVisualAuraState(handle);
                 }
             }
 

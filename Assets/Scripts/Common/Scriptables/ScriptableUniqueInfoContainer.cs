@@ -1,31 +1,42 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Common
 {
     public abstract class ScriptableUniqueInfoContainer<TUnique> : ScriptableObject, IScriptablePostProcess where TUnique : ScriptableUniqueInfo<TUnique>
     {
-        protected abstract List<TUnique> Items { get; }
+        [SerializeField]
+        private List<TUnique> items = new();
 
-        public IReadOnlyList<TUnique> ItemList => Items;
+        protected List<TUnique> Items => items;
+
+        public IReadOnlyList<TUnique> ItemList => items;
 
         public virtual void Register()
         {
-            Items.ForEach(item => item.Register());
+            items.ForEach(item => item.Register());
         }
 
         public virtual void Unregister()
         {
-            Items.ForEach(item => item.Unregister());
+            items.ForEach(item => item.Unregister());
+        }
+
+        public void QueueForInject(DiContainer container)
+        {
+            container.QueueForInject(this);
+
+            items.ForEach(container.QueueForInject);
         }
 
 #if UNITY_EDITOR
-        public List<TUnique> EditorList => Items;
+        internal List<TUnique> EditorList => items;
 #endif
 
         bool IScriptablePostProcess.OnPostProcess(bool isDeleted)
         {
-            if (Items == null)
+            if (items == null)
                 return false;
 
             bool hasChanges = false;
@@ -33,11 +44,11 @@ namespace Common
             if (isDeleted)
                 return false;
 
-            for(int i = Items.Count - 1; i >= 0; i--)
-                if (Items[i] == null)
+            for (int i = items.Count - 1; i >= 0; i--)
+                if (items[i] == null)
                 {
                     hasChanges = true;
-                    Items.RemoveAt(i);
+                    items.RemoveAt(i);
                 }
 #endif
             return hasChanges;

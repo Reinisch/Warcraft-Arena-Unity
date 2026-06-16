@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09127a966f4ebb94497f5a6ef89427f7, type: 3}
   m_Name: Faction Definition - Horde
   m_EditorClassIdentifier: 
-  localizationId: FactionHorde
   factionId: 2
   team: 1
   hostileFactions:

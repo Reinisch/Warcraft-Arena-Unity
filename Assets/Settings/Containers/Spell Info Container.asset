@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b7eaecf11fc243428269bbecbc1c6e8, type: 3}
   m_Name: Spell Info Container
   m_EditorClassIdentifier: 
-  spellInfo:
+  items:
   - {fileID: 11400000, guid: 61bea5aabb7db454cb7e24918a3e903d, type: 2}
   - {fileID: 11400000, guid: d0450f64f06f7b24aa8b9238f776c2a5, type: 2}
   - {fileID: 11400000, guid: 1260b6b3e47f7ff4ead8ab59f5fdae56, type: 2}
@@ -89,4 +89,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9d56225e1c6caa941bd1eb39e9296882, type: 2}
   - {fileID: 11400000, guid: fb16007c637890749bec9f0e2a9c82fe, type: 2}
   - {fileID: 11400000, guid: 930698b920afee04f8d813ee58a5a0e8, type: 2}
+  - {fileID: 11400000, guid: 856ecab0738f739468ddfacc09deafa3, type: 2}
+  - {fileID: 11400000, guid: bdac80a3eb2f33444bcc953fce599720, type: 2}
+  - {fileID: 11400000, guid: 3bceed7e0fd5e874296bda96c181da11, type: 2}
+  - {fileID: 11400000, guid: 9132c449fed9d004b9fca1ec678f9950, type: 2}
+  - {fileID: 11400000, guid: 4c480e4293b50ee45b0d1a1f894ef695, type: 2}
+  - {fileID: 11400000, guid: 8f5c60c3c9b12c74db5a1f977c0c8c66, type: 2}
+  - {fileID: 11400000, guid: 1dd9c8244fa24224a86684fc5ef137e6, type: 2}
+  - {fileID: 11400000, guid: e17dc6079fb673141ae88c4b918142f2, type: 2}
+  - {fileID: 11400000, guid: b8c7859f88daf734fa40556c64cbaad0, type: 2}
+  - {fileID: 11400000, guid: 9b5a43f1006c6464aa7d77582ace2e2f, type: 2}
+  - {fileID: 11400000, guid: 4a175db72eca14b4c83264a20beeca90, type: 2}
+  - {fileID: 11400000, guid: 4fcc7bb9a3b71ef4b912c951224fc97b, type: 2}
+  - {fileID: 11400000, guid: 7013420f8a56c4246acae18ed8371f0e, type: 2}
   controlVehicle: {fileID: 0}

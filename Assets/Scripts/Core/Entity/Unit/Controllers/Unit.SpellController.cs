@@ -12,7 +12,7 @@ namespace Core
 {
     public abstract partial class Unit
     {
-        internal class SpellController : IUnitBehaviour
+        public class SpellController : IUnitBehaviour, ILogicBehaviour
         {
             private readonly SpellModifierContainer spellModifiers = new SpellModifierContainer();
             private readonly SchoolImmunityContainer schoolImmunities = new SchoolImmunityContainer();
@@ -30,14 +30,15 @@ namespace Core
             void IUnitBehaviour.DoUpdate(int deltaTime)
             {
                 SpellHistory.DoUpdate(deltaTime);
+                Cast.DoNetworkUpdate(deltaTime);
             }
 
             void IUnitBehaviour.HandleUnitAttach(Unit unit)
             {
                 this.unit = unit;
 
-                SpellHistory = new SpellHistory(unit, unit.entityState);
-                Cast = new SpellCast(unit, unit.entityState);
+                SpellHistory = new SpellHistory(unit);
+                Cast = new SpellCast(unit);
             }
 
             void IUnitBehaviour.HandleUnitDetach()
@@ -51,9 +52,14 @@ namespace Core
                 unit = null;
             }
 
-            internal SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastingOptions castOptions)
+            public SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastingOptions castOptions = default)
             {
-                Spell spell = new Spell(unit, spellInfo, castOptions);
+                return CastSpell(spellInfo, castOptions, out _);
+            }
+
+            public SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastingOptions castOptions, out Spell spell)
+            {
+                spell = Spell.SpellPool.Take().Create(unit, spellInfo, castOptions);
 
                 ApplySpellModifier(spell, SpellModifierType.SpellValue, 1.0f);
 
@@ -81,12 +87,19 @@ namespace Core
                 return SpellCastResult.Success;
             }
 
-            internal void TriggerSpell(SpellInfo spellInfo, Unit target, SpellCastFlags extraCastFlags = 0)
+            public void TriggerSpell(SpellInfo spellInfo, SpellCastingOptions spellCastingOptions)
+            {
+                spellCastingOptions.SpellFlags |= SpellCastFlags.TriggeredByAura;
+
+                CastSpell(spellInfo, spellCastingOptions);
+            }
+
+            public void TriggerSpell(SpellInfo spellInfo, Unit target, SpellCastFlags extraCastFlags = 0)
             {
                 CastSpell(spellInfo, new SpellCastingOptions(new SpellExplicitTargets { Target = target }, SpellCastFlags.TriggeredByAura | extraCastFlags));
             }
 
-            internal void TriggerSpell(SpellInfo spellInfo, Vector3 destination, SpellCastFlags extraCastFlags = 0)
+            public void TriggerSpell(SpellInfo spellInfo, Vector3 destination, SpellCastFlags extraCastFlags = 0)
             {
                 CastSpell(spellInfo, new SpellCastingOptions(new SpellExplicitTargets { Destination = destination }, SpellCastFlags.TriggeredByAura | extraCastFlags));
             }
@@ -95,7 +108,7 @@ namespace Core
             {
                 unit.Spells.CalculateSpellDamageTaken(ref damageInfo, spell);
 
-                EventHandler.ExecuteEvent(GameEvents.ServerDamageDone, damageInfo);
+                unit.EventBus.ExecuteEvent(GameEvents.SpellDamageDone, damageInfo.Caster, damageInfo.Target, (int)damageInfo.Damage, damageInfo.HitType, spell?.ExplicitTargets.HitPosition);
 
                 for (int i = unit.Auras.AuraApplications.Count - 1; i >= 0; i--)
                 {
@@ -109,6 +122,9 @@ namespace Core
                     }
                 }
 
+                if (spell != null)
+                    spell.TotalDamage += (int)damageInfo.Damage;
+
                 unit.DealDamage(damageInfo.Target, (int)damageInfo.Damage, damageInfo.SpellDamageType);
             }
 
@@ -116,7 +132,7 @@ namespace Core
             {
                 unit.Spells.CalculateSpellHealingTaken(ref healInfo);
 
-                EventHandler.ExecuteEvent(GameEvents.ServerHealingDone, healInfo);
+                unit.EventBus.ExecuteEvent(GameEvents.SpellHealingDone, healInfo.Healer, healInfo.Target, (int)healInfo.Heal, healInfo.HasCrit);
 
                 unit.DealHeal(healInfo.Target, (int)healInfo.Heal);
             }
@@ -198,10 +214,13 @@ namespace Core
             internal uint SpellDamageBonusDone(Unit target, uint damage, SpellDamageType damageType, SpellInfo spellInfo, Spell spell = null)
             {
                 float damageMultiplier = unit.Auras.TotalAuraMultiplier(AuraEffectType.ModifyDamagePercentDone);
-                damage = (uint) (damage * damageMultiplier);
+                damage = (uint)(damage * damageMultiplier);
 
                 if (spell != null)
+                {
+                    damage = (uint)(damage * spell.EffectDamageMultiplier);
                     damage = (uint)unit.Spells.ApplySpellModifier(spell, SpellModifierType.DamageMultiplier, damage);
+                }
 
                 return damage;
             }

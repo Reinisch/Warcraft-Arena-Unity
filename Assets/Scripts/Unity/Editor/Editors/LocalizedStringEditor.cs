@@ -1,82 +1,83 @@
-﻿using System.Collections.Generic;
 using Client.Localization;
-using JetBrains.Annotations;
 using UnityEditor;
+using UnityEditor.Localization;
 using UnityEngine;
+using UnityEngine.Localization.Tables;
 
-namespace Arena.Editor
+namespace Game.Editor
 {
-    [CustomEditor(typeof(LocalizedString), true), UsedImplicitly]
+    [CustomEditor(typeof(LocalizedString), true)]
     internal class LocalizedStringEditor : UnityEditor.Editor
     {
-        private LocalizedString localizedString;
-        private List<(LocalizedLanguage, LocalizedLanguage.LocalizationEntry)> languageEntries;
-
-        [UsedImplicitly]
-        private void OnEnable()
-        {
-            localizedString = (LocalizedString)serializedObject.targetObject;
-            languageEntries = new List<(LocalizedLanguage, LocalizedLanguage.LocalizationEntry)>();
-
-            foreach (LocalizedLanguage language in Resources.LoadAll<LocalizedLanguage>("Languages/"))
-            {
-                LocalizedLanguage.LocalizationEntry entry = language.Entries.Find(item => item.StringReference == localizedString);
-                if (entry == null)
-                {
-                    entry = new LocalizedLanguage.LocalizationEntry {StringReference = localizedString, Value = string.Empty};
-                    language.Entries.Add(entry);
-
-                    EditorUtility.SetDirty(language);
-                }
-
-                languageEntries.Add((language, entry));
-            }
-        }
-
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
+            var localizedString = (LocalizedString)target;
+            
+            EditorGUILayout.LabelField("Localization Key", localizedString.name, EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("This asset's name is used as the key in the 'GameStrings' table collection.", MessageType.Info);
+            EditorGUILayout.Space();
 
-            foreach ((LocalizedLanguage, LocalizedLanguage.LocalizationEntry) entry in languageEntries)
+            var collection = LocalizationEditorSettings.GetStringTableCollection("GameStrings");
+            if (collection == null)
             {
-                EditorGUILayout.BeginVertical();
+                EditorGUILayout.HelpBox("String Table Collection 'GameStrings' not found. Please ensure the migration was successful and the collection exists.", MessageType.Error);
+                return;
+            }
 
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
+            EditorGUI.BeginChangeCheck();
+            
+            var locales = LocalizationEditorSettings.GetLocales();
+            foreach (var locale in locales)
+            {
+                var table = collection.GetTable(locale.Identifier) as StringTable;
+                if (table == null)
+                {
+                    EditorGUILayout.LabelField($"Locale: {locale.Identifier.Code}", EditorStyles.miniBoldLabel);
+                    EditorGUILayout.HelpBox($"Table for {locale.name} not found in collection.", MessageType.Warning);
+                    continue;
+                }
 
-                EditorGUILayout.LabelField($"Language: {entry.Item1.LanguageType}", new GUIStyle { fontStyle = FontStyle.Bold });
+                var entry = table.GetEntry(localizedString.name);
+                string value = entry != null ? entry.Value : string.Empty;
 
-                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField($"Language: {locale.name} ({locale.Identifier.Code})", EditorStyles.miniBoldLabel);
                 
-                entry.Item2.Value = EditorGUILayout.TextArea(entry.Item2.Value, GUI.skin.GetStyle("TextArea"));
-                EditorGUILayout.EndHorizontal();
+                GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea)
+                {
+                    wordWrap = true
+                };
 
-                EditorGUILayout.BeginHorizontal();
+                string newValue = EditorGUILayout.TextArea(value, textAreaStyle, GUILayout.MinHeight(40));
 
-                EditorGUILayout.EndHorizontal();
-
-                EditorGUILayout.EndVertical();
+                if (newValue != value)
+                {
+                    Undo.RecordObject(table, "Update Localization Entry");
+                    if (entry == null)
+                    {
+                        table.AddEntry(localizedString.name, newValue);
+                    }
+                    else
+                    {
+                        entry.Value = newValue;
+                    }
+                    EditorUtility.SetDirty(table);
+                    EditorUtility.SetDirty(table.SharedData);
+                }
+                
+                EditorGUILayout.Space(2);
             }
 
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
-
-            if (GUILayout.Button("Populate English Everywhere"))
+            if (EditorGUI.EndChangeCheck())
             {
-                var englishEntry = languageEntries.Find(entry => entry.Item1.LanguageType == LocalizedLanguageType.English);
-                if (englishEntry != default)
-                    foreach ((LocalizedLanguage, LocalizedLanguage.LocalizationEntry) entry in languageEntries)
-                        entry.Item2.Value = englishEntry.Item2.Value;
-            }
-
-            if (GUILayout.Button("Save Changes"))
-            {
-                foreach (LocalizedLanguage language in Resources.LoadAll<LocalizedLanguage>("Languages/"))
-                    EditorUtility.SetDirty(language.gameObject);
-
+                // Raise modified event to update other windows
+                LocalizationEditorSettings.EditorEvents.RaiseCollectionModified(this, collection);
                 AssetDatabase.SaveAssets();
+            }
+
+            EditorGUILayout.Space();
+            if (GUILayout.Button("Open Localization Tables Window"))
+            {
+                EditorApplication.ExecuteMenuItem("Window/Asset Management/Localization Tables");
             }
         }
     }

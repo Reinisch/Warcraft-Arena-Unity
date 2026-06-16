@@ -45,6 +45,9 @@ namespace Core
 
         protected virtual bool IsValidTargetForSpell(Unit target, Spell spell)
         {
+            if (!spell.Caster.IsOnSameMap(target))
+                return false;
+
             if (target.IsDead && !spell.SpellInfo.HasAttribute(SpellAttributes.CanTargetDead))
                 return false;
 

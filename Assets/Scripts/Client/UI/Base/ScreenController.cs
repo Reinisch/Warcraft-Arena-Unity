@@ -1,104 +1,149 @@
-﻿using System;
-using System.Collections.Generic;
 using Common;
+using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using Zenject;
 
 namespace Client.UI
 {
-    public sealed class ScreenController
+    public abstract class ScreenController: ScriptableReference
     {
-        private readonly List<UIPanelController> panelControllers = new List<UIPanelController>();
-        private readonly List<IScreenHandler> screenHandlers = new List<IScreenHandler>();
-        private readonly Dictionary<Type, UIPanelController> panelControllersByPanelType = new Dictionary<Type, UIPanelController>();
+        [SerializeField, UsedImplicitly] private RectTransform root;
+        [SerializeField, UsedImplicitly] private List<UIScreen> prototypes;
 
-        internal void RegisterScreen(UIPanelController panelController)
+        [Inject]
+        private DiContainer diContainer;
+
+        private readonly List<UIScreen> screens = new();
+        private readonly Dictionary<Type, UIScreen> screensByType = new();
+        private readonly Dictionary<Type, List<IScreenHandler>> screenHandlersByType = new();
+
+        public RectTransform Root => root;
+
+        protected override void OnRegistered()
         {
-            panelControllersByPanelType.Add(panelController.GetType(), panelController);
-            panelControllers.Add(panelController);
+            base.OnRegistered();
+
+            foreach(var screenPrototype in prototypes)
+            {
+                UIScreen screen = diContainer.InstantiatePrefab(screenPrototype, Root).GetComponent<UIScreen>();
+                screensByType.Add(screen.GetType(), screen);
+                screens.Add(screen);
+                screen.Register();
+            }
         }
 
-        internal void UnregisterScreen(UIPanelController panelController)
+        protected override void OnUnregister()
         {
-            panelControllers.Remove(panelController);
-            panelControllersByPanelType.Remove(panelController.GetType());
+            foreach (var screen in screens)
+            {
+                screen.Unregister();
+                Destroy(screen.gameObject);
+            }
+
+            screens.Clear();
+            screensByType.Clear();
+
+            base.OnUnregister();
         }
 
-        public void AddHandler<TScreen>(IScreenHandler<TScreen> handler) where TScreen : UIPanelController
+        protected override void OnUpdate(float deltaTime)
         {
-            screenHandlers.Add(handler);
-
-            if (panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelController basePanelController))
-                handler.OnScreenShown((TScreen)basePanelController);
+            foreach (var screen in screens)
+                screen.DoUpdate(deltaTime);
         }
 
-        public void RemoveHandler<TScreen>(IScreenHandler<TScreen> handler) where TScreen : UIPanelController
+        public void AddHandler<TScreen>(IScreenHandler<TScreen> handler) where TScreen : UIScreen<TScreen>
         {
-            screenHandlers.Remove(handler);
+            if (!screenHandlersByType.TryGetValue(typeof(TScreen), out List<IScreenHandler> handlers))
+            {
+                handlers = new List<IScreenHandler>();
+                screenHandlersByType.Add(typeof(TScreen), handlers);
+            }
 
-            if (panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelController basePanelController))
-                handler.OnScreenHide((TScreen)basePanelController);
+            handlers.Add(handler);
+
+            if (screensByType.TryGetValue(typeof(TScreen), out UIScreen screen))
+                handler.OnScreenShown((TScreen)screen);
         }
 
-        public void DoUpdate(float deltaTime)
+        public void RemoveHandler<TScreen>(IScreenHandler<TScreen> handler) where TScreen : UIScreen<TScreen>
         {
-            foreach (var panelController in panelControllers)
-                panelController.DoUpdate(deltaTime);
+            if (screenHandlersByType.TryGetValue(typeof(TScreen), out List<IScreenHandler> handlers))
+                handlers.Remove(handler);
+
+            if (screensByType.TryGetValue(typeof(TScreen), out UIScreen screen))
+                handler.OnScreenHide((TScreen)screen);
         }
-        
-        public void ShowScreen<TScreen, TShowPanel>() where TScreen : UIPanelController where TShowPanel : UIPanel, IPanel<TScreen>
+
+        public void ShowScreen<TScreen, TShowPanel>() where TScreen : UIScreen<TScreen> where TShowPanel : UIPanel<TScreen>
         {
-            Assert.IsTrue(panelControllersByPanelType.ContainsKey(typeof(TScreen)), $"Screen with panel type {typeof(TScreen)} not found when showing!");
-            if (!panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelController basePanelController))
+            Assert.IsTrue(screensByType.ContainsKey(typeof(TScreen)), $"Screen with panel type {typeof(TScreen)} not found when showing!");
+            if (!screensByType.TryGetValue(typeof(TScreen), out UIScreen baseScreen))
                 return;
 
-            if (basePanelController is TScreen panelController)
+            if (baseScreen is TScreen screen)
             {
-                panelController.gameObject.SetActive(true);
-                panelController.ShowPanelInternal<TShowPanel>();
+                screen.gameObject.SetActive(true);
+                screen.ShowPanel<TShowPanel>();
 
-                HandleScreenShown(panelController);
+                HandleScreenShown(screen);
             }
         }
 
         public void ShowScreen<TScreen, TShowPanel, TShowToken>(TShowToken token = default)
-            where TScreen : UIPanelController where TShowPanel : UIPanel where TShowToken : IPanelShowToken<TShowPanel>
+            where TScreen : UIScreen<TScreen> where TShowPanel : UIPanel<TScreen> where TShowToken : IPanelShowToken<TShowPanel>
         {
-            Assert.IsTrue(panelControllersByPanelType.ContainsKey(typeof(TScreen)), $"Screen with panel type {typeof(TScreen)} not found when showing!");
-            if (!panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelController basePanelController))
+            Assert.IsTrue(screensByType.ContainsKey(typeof(TScreen)), $"Screen with panel type {typeof(TScreen)} not found when showing!");
+            if (!screensByType.TryGetValue(typeof(TScreen), out UIScreen baseScreen))
                 return;
 
-            if (basePanelController is TScreen panelController)
+            if (baseScreen is TScreen screen)
             {
-                panelController.gameObject.SetActive(true);
-                panelController.ShowPanelInternal<TShowPanel, TShowToken>(token);
+                screen.gameObject.SetActive(true);
+                screen.ShowPanel<TShowPanel, TShowToken>(token);
 
-                HandleScreenShown(panelController);
+                HandleScreenShown(screen);
             }
         }
 
-        public void HideScreen<TScreen>() where TScreen : UIPanelController
+        public bool IsPanelShown<TScreen, TPanel>()
+            where TScreen : UIScreen<TScreen>
+            where TPanel : UIPanel<TScreen>
         {
-            Assert.IsTrue(panelControllersByPanelType.ContainsKey(typeof(TScreen)), $"Screen with panel type {typeof(TScreen)} not found when hiding!");
-            if (panelControllersByPanelType.TryGetValue(typeof(TScreen), out UIPanelController basePanelController))
-            {
-                basePanelController.HideAllPanels();
-                basePanelController.gameObject.SetActive(false);
+            return screensByType.TryGetValue(typeof(TScreen), out UIScreen screen) && screen.IsPanelShown<TPanel>();
+        }
 
-                HandleScreenHide(basePanelController);
+        public bool IsScreenShown<TScreen>() where TScreen : UIScreen<TScreen>
+        {
+            return screensByType.TryGetValue(typeof(TScreen), out UIScreen screen) && screen.gameObject.activeSelf;
+        }
+
+        public void HideScreen<TScreen>() where TScreen : UIScreen<TScreen>
+        {
+            Assert.IsTrue(screensByType.ContainsKey(typeof(TScreen)), $"Screen with panel type {typeof(TScreen)} not found when hiding!");
+            if (screensByType.TryGetValue(typeof(TScreen), out UIScreen baseScreen) && baseScreen is TScreen screen)
+            {
+                screen.HideAllPanels();
+                screen.gameObject.SetActive(false);
+
+                HandleScreenHide(screen);
             }
         }
 
-        private void HandleScreenShown<TScreen>(TScreen screen)
+        private void HandleScreenShown<TScreen>(TScreen screen) where TScreen : UIScreen
         {
-            foreach (var screenHandler in screenHandlers)
-                if (screenHandler is IScreenHandler<TScreen> targetScreenHandler)
-                    targetScreenHandler.OnScreenShown(screen);
+            if (screenHandlersByType.TryGetValue(typeof(TScreen), out List<IScreenHandler> handlers))
+                for (int i = 0; i < handlers.Count; i++)
+                    ((IScreenHandler<TScreen>)handlers[i]).OnScreenShown(screen);
         }
 
-        private void HandleScreenHide<TScreen>(TScreen screen)
+        private void HandleScreenHide<TScreen>(TScreen screen) where TScreen : UIScreen
         {
-            foreach (var screenHandler in screenHandlers)
-                if (screenHandler is IScreenHandler<TScreen> targetScreenHandler)
-                    targetScreenHandler.OnScreenHide(screen);
+            if (screenHandlersByType.TryGetValue(typeof(TScreen), out List<IScreenHandler> handlers))
+                for (int i = 0; i < handlers.Count; i++)
+                    ((IScreenHandler<TScreen>)handlers[i]).OnScreenHide(screen);
         }
     }
 }

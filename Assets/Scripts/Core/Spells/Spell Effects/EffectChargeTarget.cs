@@ -19,9 +19,13 @@ namespace Core
         private float chargeSpeed;
         [SerializeField, UsedImplicitly]
         private Kind kind = Kind.Charge;
+        [Tooltip("Pounce only: how far behind the target to land (the caster leaps over it and turns to face it).")]
+        [SerializeField, UsedImplicitly]
+        private float pounceBehindDistance = 2.5f;
 
         public float ChargeSpeed => chargeSpeed;
         public Kind ChargeKind => kind;
+        public float PounceBehindDistance => pounceBehindDistance;
 
         public override bool IgnoresSpellImmunity => true;
         public override float Value => 1.0f;
@@ -60,7 +64,15 @@ namespace Core
                     Caster.Motion.StartChargingMovement(chargePoint, effect.ChargeSpeed);
                     break;
                 case Core.EffectChargeTarget.Kind.Pounce:
-                    Caster.Motion.StartPounceMovement(chargePoint, effect.ChargeSpeed);
+                    // Leap to a point BEHIND the target (continuing the caster→target approach) and face the
+                    // target on landing. Clamp the landing spot to the navmesh so we don't end up in geometry.
+                    Vector3 approach = Vector3.ProjectOnPlane(chargePoint - Caster.Position, Vector3.up);
+                    Vector3 approachDir = approach.sqrMagnitude > 0.0001f ? approach.normalized : Caster.Rotation * Vector3.forward;
+                    Vector3 behindPoint = chargePoint + approachDir * effect.PounceBehindDistance;
+                    if (UnityEngine.AI.NavMesh.SamplePosition(behindPoint, out UnityEngine.AI.NavMeshHit hit,
+                            MovementUtils.MaxChargeSampleRange, MovementUtils.WalkableAreaMask))
+                        behindPoint = hit.position;
+                    Caster.Motion.StartPounceMovement(behindPoint, chargePoint, effect.ChargeSpeed);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

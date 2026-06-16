@@ -1,18 +1,22 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Common
 {
-    [CreateAssetMenu(fileName = "Pool Reference", menuName = "Game Data/Scriptable/Pool", order = 6)]
     public class GameObjectPool : ScriptableReference
     {
         private static GameObjectPool Instance;
 
-        [SerializeField, UsedImplicitly] private string containerTag;
+        [SerializeField, UsedImplicitly]
+        private string containerTag;
 
-        private readonly Dictionary<int, Stack<GameObject>> pooledGameObjectsByProtoId = new Dictionary<int, Stack<GameObject>>();
-        private readonly Dictionary<GameObject, int> takenObjectProtoIds = new Dictionary<GameObject, int>();
+        [Inject]
+        private GameObjectFactory objectFactory;
+
+        private readonly Dictionary<EntityId, Stack<GameObject>> pooledGameObjectsByProtoId = new();
+        private readonly Dictionary<GameObject, EntityId> takenObjectProtoIds = new();
         private Transform container;
 
         protected override void OnRegistered()
@@ -35,10 +39,9 @@ namespace Common
 
         private bool ProcessReturn(GameObject returnedObject, bool destroyed)
         {
-            if (!takenObjectProtoIds.TryGetValue(returnedObject, out int protoId))
+            if (!takenObjectProtoIds.Remove(returnedObject, out EntityId protoId))
                 return false;
 
-            takenObjectProtoIds.Remove(returnedObject);
             if (destroyed)
                 return false;
 
@@ -46,7 +49,23 @@ namespace Common
             return true;
         }
 
-        private void ProcessPooling(GameObject pooledObject, int protoId)
+        private void CreateAndPool(GameObject prefab, EntityId protoId)
+        {
+            GameObject pooledObject = objectFactory.Create(prefab, Vector3.zero, Quaternion.identity, container);
+            pooledObject.SetActive(false);
+            pooledObject.transform.SetParent(container);
+
+            if (pooledGameObjectsByProtoId.TryGetValue(protoId, out Stack<GameObject> pooledObjects))
+                pooledObjects.Push(pooledObject);
+            else
+            {
+                pooledObjects = new Stack<GameObject>();
+                pooledObjects.Push(pooledObject);
+                pooledGameObjectsByProtoId.Add(protoId, pooledObjects);
+            }
+        }
+
+        private void ProcessPooling(GameObject pooledObject, EntityId protoId)
         {
             pooledObject.SetActive(false);
             pooledObject.transform.SetParent(container);
@@ -68,18 +87,18 @@ namespace Common
 
         private GameObject TakeOrCreate(GameObject prototype, Vector3 position, Quaternion rotation, Transform parent)
         {
-            int protoId = prototype.GetInstanceID();
+            EntityId protoId = prototype.GetEntityId();
             GameObject newObject = TakeIfAvailable(protoId, position, rotation, parent);
             if (newObject == null)
             {
-                newObject = Instantiate(prototype, position, rotation, parent);
+                newObject = objectFactory.Create(prototype, position, rotation, parent);
                 takenObjectProtoIds.Add(newObject, protoId);
             }
 
             return newObject;
         }
         
-        private GameObject TakeIfAvailable(int protoId, Vector3 position, Quaternion rotation, Transform parent)
+        private GameObject TakeIfAvailable(EntityId protoId, Vector3 position, Quaternion rotation, Transform parent)
         {
             if (pooledGameObjectsByProtoId.TryGetValue(protoId, out Stack<GameObject> pooledObjects))
             {
@@ -106,14 +125,14 @@ namespace Common
             if (Instance == null)
                 return;
 
-            int protoId = prototype.GetInstanceID();
+            EntityId protoId = prototype.GetEntityId();
             int existingCount = 0;
 
             if (Instance.pooledGameObjectsByProtoId.TryGetValue(protoId, out Stack<GameObject> pooledObjects))
                 existingCount = pooledObjects.Count;
 
             for (int i = existingCount; i < preinstantiatedCount; i++)
-                Instance.ProcessPooling(Instantiate(prototype, Vector3.zero, Quaternion.identity), protoId);
+                Instance.CreateAndPool(prototype, protoId);
         }
 
         public static void PreInstantiate<T>(T prototypeBehaviour, int preinstantiatedCount) where T: Behaviour
@@ -123,19 +142,17 @@ namespace Common
 
         public static GameObject Take(GameObject prototype, Vector3 position, Quaternion rotation, Transform parent = null)
         {
-            return Instance != null ? Instance.TakeOrCreate(prototype, position, rotation, parent) : Instantiate(prototype, position, rotation, parent);
+            return Instance.TakeOrCreate(prototype, position, rotation, parent);
         }
 
         public static T Take<T>(T prototype, Vector3 position, Quaternion rotation, Transform parent = null) where T: Behaviour
         {
-            return Instance != null ? Instance.TakeOrCreate(prototype, position, rotation, parent) : Instantiate(prototype, position, rotation, parent);
+            return Instance.TakeOrCreate(prototype, position, rotation, parent);
         }
 
         public static T Take<T>(T prototype) where T : Behaviour
         {
-            return Instance != null 
-                ? Instance.TakeOrCreate(prototype, prototype.transform.localPosition, prototype.transform.rotation, null)
-                : Instantiate(prototype, prototype.transform.localPosition, prototype.transform.rotation, null);
+            return Instance.TakeOrCreate(prototype, prototype.transform.localPosition, prototype.transform.rotation, null);
         }
 
         public static void Return(GameObject takenObject, bool destroyed)

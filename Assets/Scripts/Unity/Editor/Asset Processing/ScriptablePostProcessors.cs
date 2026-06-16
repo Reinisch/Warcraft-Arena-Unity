@@ -1,9 +1,9 @@
-﻿using Common;
+using Common;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
-namespace Arena.Editor
+namespace Game.Editor
 {
     [UsedImplicitly]
     internal class ScriptableAssetPostProcessor : AssetPostprocessor
@@ -16,7 +16,13 @@ namespace Arena.Editor
             bool hasChanged = false;
             foreach (string path in importedAssets)
             {
-                if (path.StartsWith("Assets/Scenes/"))
+                var mainAssetType = AssetDatabase.GetMainAssetTypeAtPath(path);
+                if (mainAssetType == null)
+                {
+                    continue;
+                }
+
+                if (!mainAssetType.IsSubclassOf(typeof(ScriptableObject)))
                     continue;
 
                 foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(path))
@@ -36,7 +42,7 @@ namespace Arena.Editor
     }
 
     [UsedImplicitly]
-    internal class ScriptableAssetModificationProcessor : UnityEditor.AssetModificationProcessor
+    internal class ScriptableAssetModificationProcessor : AssetModificationProcessor
     {
         [UsedImplicitly]
         private static AssetDeleteResult OnWillDeleteAsset(string path, RemoveAssetOptions removeOptions)

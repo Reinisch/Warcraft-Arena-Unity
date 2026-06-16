@@ -1,0 +1,148 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: GameAudio Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: GameAudio
+  m_TableCollectionNameGuidString: 0c5252edfaa488a4389a3ebe5035f8ce
+  m_Entries:
+  - m_Id: 257186254848
+    m_Key: Sirus_TimingSpeech_01
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695449493504
+    m_Key: Sirus_Annigilated
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695713734656
+    m_Key: Sirus_BeSilent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695713734657
+    m_Key: Sirus_CityNothing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695713734658
+    m_Key: Sirus_Congratulations02
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695717928960
+    m_Key: Sirus_Congratulations
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695717928961
+    m_Key: Sirus_CreationItself
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695717928962
+    m_Key: Sirus_BeutyCrumble
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695717928963
+    m_Key: Sirus_Die
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695717928964
+    m_Key: Sirus_EmbraceNothingness
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695722123264
+    m_Key: Sirus_EverlastingFire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695722123265
+    m_Key: Sirus_FuryOfTheCosmos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695722123266
+    m_Key: Sirus_GiveIn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695722123267
+    m_Key: Sirus_GloriousFlames
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695722123268
+    m_Key: Sirus_LivesAreMeaningless
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695726317568
+    m_Key: Sirus_WhyRun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695726317569
+    m_Key: Sirus_Obliteration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695726317570
+    m_Key: Sirus_Phase1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695730511872
+    m_Key: Sirus_Phase2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695730511873
+    m_Key: Sirus_Phase3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695730511874
+    m_Key: Sirus_Pointless
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695730511875
+    m_Key: Sirus_RainOfStars
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695734706176
+    m_Key: Path of Exile (Original Game Soundtrack) - Orion (Conquerors of the Atlas)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695734706177
+    m_Key: Sirus_TimingSpeech_02
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695734706178
+    m_Key: Sirus_TimingSpeech_03
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695738900480
+    m_Key: Sirus_WhyResist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1067695738900481
+    m_Key: Sirus_YouAreNothing
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items:
+    - rid: 6102424967718371419
+  m_KeyGenerator:
+    rid: 6102424952043733169
+  references:
+    version: 2
+    RefIds:
+    - rid: 6102424952043733169
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1780866631506
+    - rid: 6102424967718371419
+      type: {class: AssetTypeMetadata, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries:
+        - m_KeyId: 257186254848
+          m_TableCodes:
+          - de
+          - en
+        m_TypeString: UnityEngine.AudioClip, UnityEngine.AudioModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null

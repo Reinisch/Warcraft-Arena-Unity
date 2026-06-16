@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56fb78e8fd653e943a426b6c21c2e123, type: 3}
   m_Name: Input Action - Toggle Healthbars
   m_EditorClassIdentifier: 
+  id: 29
+  container: {fileID: 11400000, guid: b7896a9ba72daf148b50f37e8843b69e, type: 2}
   gameOption: {fileID: 11400000, guid: 3ecb75c2f46c15241a6bb91c416d4332, type: 2}

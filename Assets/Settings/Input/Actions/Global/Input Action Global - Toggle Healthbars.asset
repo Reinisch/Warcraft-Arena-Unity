@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d738595b20e964785aa582a9648a67, type: 3}
   m_Name: Input Action Global - Toggle Healthbars
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 899dff3e7662461489d8d3e369ab42b3, type: 2}
+  id: 6
+  container: {fileID: 11400000, guid: 49d5c139756bedf4a94d6ca317bc2b58, type: 2}
   action: {fileID: 11400000, guid: ba6fd43755a65dc49b8e5c4ceab59309, type: 2}
   hotkey: {fileID: 11400000, guid: 206ac9f1a5580344cacc111dba2569a2, type: 2}
   blockedByActions: []

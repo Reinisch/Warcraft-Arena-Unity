@@ -2,9 +2,9 @@
 
 namespace Core
 {
-    public abstract class UnitBehaviour : MonoBehaviour, IUnitBehaviour
+    public abstract class UnitBehaviour : MonoBehaviour, IUnitBehaviour, ILogicBehaviour
     {
-        protected Unit Unit { get; private set; }
+        public Unit Unit { get; private set; }
 
         public abstract bool HasClientLogic { get; }
         public abstract bool HasServerLogic { get; }

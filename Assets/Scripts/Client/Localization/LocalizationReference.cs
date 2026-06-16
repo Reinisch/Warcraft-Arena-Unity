@@ -5,10 +5,10 @@ using Client.Localization;
 using Core;
 using JetBrains.Annotations;
 using UnityEngine;
+using Zenject;
 
 namespace Client
 {
-    [CreateAssetMenu(fileName = "Localization Reference", menuName = "Game Data/Scriptable/Localization", order = 2)]
     public partial class LocalizationReference : Localization.LocalizationReference
     {
         [SerializeField, UsedImplicitly] private LocalizedString missingStringPlaceholder;
@@ -18,21 +18,22 @@ namespace Client
         [SerializeField, UsedImplicitly] private List<KeyCodeLink> keyCodes;
         [SerializeField, UsedImplicitly] private List<SpellCastResultLink> spellCastResults;
         [SerializeField, UsedImplicitly] private List<SpellMissTypeLink> spellMissTypes;
-        [SerializeField, UsedImplicitly] private List<ClientConnectFailReasonLink> clientConnectFailReasons;
         [SerializeField, UsedImplicitly] private List<PowerTypeCostLink> powerTypeCosts;
 
-        private static readonly Dictionary<KeyCode, string> StringsByKeyCode = new Dictionary<KeyCode, string>();
-        private static readonly Dictionary<HotkeyModifier, string> StringsByHotkeyModifier = new Dictionary<HotkeyModifier, string>();
-        private static readonly Dictionary<SpellCastResult, LocalizedString> StringsBySpellCastResult = new Dictionary<SpellCastResult, LocalizedString>();
-        private static readonly Dictionary<SpellMissType, LocalizedString> StringsBySpellMissType = new Dictionary<SpellMissType, LocalizedString>();
-        private static readonly Dictionary<ClientConnectFailReason, LocalizedString> StringsByClientConnectFailReason = new Dictionary<ClientConnectFailReason, LocalizedString>();
-        private static readonly Dictionary<SpellPowerType, PowerTypeCostLink> StringsBySpellPowerType = new Dictionary<SpellPowerType, PowerTypeCostLink>();
+        private static readonly Dictionary<KeyCode, string> StringsByKeyCode = new();
+        private static readonly Dictionary<HotkeyModifier, string> StringsByHotkeyModifier = new();
+        private static readonly Dictionary<SpellCastResult, LocalizedString> StringsBySpellCastResult = new();
+        private static readonly Dictionary<SpellMissType, LocalizedString> StringsBySpellMissType = new();
+        private static readonly Dictionary<SpellPowerType, PowerTypeCostLink> StringsBySpellPowerType = new();
 
         private static LocalizedString MissingString;
         private static LocalizedString EmptyString;
 
-        public IReadOnlyDictionary<SpellInfo, SpellTooltipInfo> TooltipInfoBySpell => spellTooltipSettings.TooltipInfoBySpell;
-        public IReadOnlyDictionary<int, SpellTooltipInfo> TooltipInfoBySpellId => spellTooltipSettings.TooltipInfoBySpellId;
+        private readonly Dictionary<SpellInfo, SpellTooltipInfo> tooltipInfoBySpell = new();
+        private readonly Dictionary<int, SpellTooltipInfo> tooltipInfoBySpellId = new();
+
+        public IReadOnlyDictionary<SpellInfo, SpellTooltipInfo> TooltipInfoBySpell => tooltipInfoBySpell;
+        public IReadOnlyDictionary<int, SpellTooltipInfo> TooltipInfoBySpellId => tooltipInfoBySpellId;
 
         protected override void OnRegistered()
         {
@@ -42,11 +43,16 @@ namespace Client
             EmptyString = emptyStringPlaceholder;
 
             spellTooltipSettings.Register();
+            foreach (SpellTooltipInfo tooltipInfo in spellTooltipSettings.ItemList)
+            {
+                tooltipInfoBySpell.Add(tooltipInfo.SpellInfo, tooltipInfo);
+                tooltipInfoBySpellId.Add(tooltipInfo.SpellInfo.Id, tooltipInfo);
+            }
+
             keyCodes.ForEach(item => StringsByKeyCode.Add(item.KeyCode, item.String));
             hotkeyModifiers.ForEach(item => StringsByHotkeyModifier.Add(item.Modifier, item.String));
             spellCastResults.ForEach(item => StringsBySpellCastResult.Add(item.SpellCastResult, item.LocalizedString));
             spellMissTypes.ForEach(item => StringsBySpellMissType.Add(item.SpellMissType, item.LocalizedString));
-            clientConnectFailReasons.ForEach(item => StringsByClientConnectFailReason.Add(item.FailReason, item.LocalizedString));
             powerTypeCosts.ForEach(item => StringsBySpellPowerType.Add(item.PowerType, item));
 
             foreach (KeyCode item in Enum.GetValues(typeof(KeyCode)))
@@ -63,8 +69,9 @@ namespace Client
             StringsByKeyCode.Clear();
             StringsByHotkeyModifier.Clear();
             StringsBySpellCastResult.Clear();
-            StringsByClientConnectFailReason.Clear();
             StringsBySpellPowerType.Clear();
+            tooltipInfoBySpell.Clear();
+            tooltipInfoBySpellId.Clear();
             spellTooltipSettings.Unregister();
 
             MissingString = null;
@@ -73,32 +80,23 @@ namespace Client
             base.OnUnregister();
         }
 
+        protected override void QueueForInject(DiContainer container)
+        {
+            base.QueueForInject(container);
+
+            spellTooltipSettings.QueueForInject(container);
+        }
+
         public static LocalizedString Localize(SpellCastResult castResult)
         {
             Assert.IsTrue(StringsBySpellCastResult.ContainsKey(castResult), $"Missing localization for SpellCastResult: {castResult}");
 
-            if (StringsBySpellCastResult.TryGetValue(castResult, out LocalizedString localizedString))
-                return localizedString;
-
-            return MissingString;
+            return StringsBySpellCastResult.GetValueOrDefault(castResult, MissingString);
         }
 
         public static LocalizedString Localize(SpellMissType spellMissType)
         {
-            if (StringsBySpellMissType.TryGetValue(spellMissType, out LocalizedString localizedString))
-                return localizedString;
-
-            return EmptyString;
-        }
-
-        public static LocalizedString Localize(ClientConnectFailReason failReason)
-        {
-            Assert.IsTrue(StringsByClientConnectFailReason.ContainsKey(failReason), $"Missing localization for ClientConnectFailReason: {failReason}");
-
-            if (StringsByClientConnectFailReason.TryGetValue(failReason, out LocalizedString localizedString))
-                return localizedString;
-
-            return MissingString;
+            return StringsBySpellMissType.GetValueOrDefault(spellMissType, EmptyString);
         }
 
         public static LocalizedString Localize(SpellPowerType powerType, bool isPercentage)

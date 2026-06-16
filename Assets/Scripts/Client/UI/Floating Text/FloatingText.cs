@@ -4,13 +4,14 @@ using Core;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace Client
 {
     public class FloatingText : MonoBehaviour
     {
+        [Inject] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private TextMeshPro textMesh;
-        [SerializeField, UsedImplicitly] private CameraReference cameraReference;
         [SerializeField, UsedImplicitly] private FloatingTextSettings damageSettings;
         [SerializeField, UsedImplicitly] private FloatingTextSettings damageCritSettings;
         [SerializeField, UsedImplicitly] private FloatingTextSettings fullAbsorbSettings;
@@ -34,14 +35,14 @@ namespace Client
             SetText(missSettings, LocalizationReference.Localize(missType).Value);
         }
 
-        public void SetDamage(int damageAmount, HitType hitType)
+        public void SetDamage(int damageAmount, HitType hitType, float sizeMultiplier)
         {
             if (hitType == HitType.Immune)
-                SetText(missSettings, LocalizationReference.Localize(SpellMissType.Immune).Value);
+                SetText(missSettings, LocalizationReference.Localize(SpellMissType.Immune).Value, sizeMultiplier);
             else if (hitType.HasTargetFlag(HitType.FullAbsorb))
-                SetText(fullAbsorbSettings, fullAbsrobString.Value);
+                SetText(fullAbsorbSettings, fullAbsrobString.Value, sizeMultiplier);
             else
-                SetText(hitType.HasTargetFlag(HitType.CriticalHit) ? damageCritSettings : damageSettings, damageAmount.ToString());
+                SetText(hitType.HasTargetFlag(HitType.CriticalHit) ? damageCritSettings : damageSettings, damageAmount.ToString(), sizeMultiplier);
         }
 
         public void SetHealing(int healingAmount, bool isCrit)
@@ -70,12 +71,12 @@ namespace Client
             return currentLifeTime >= targetLifeTime;
         }
 
-        private void SetText(FloatingTextSettings newSettings, string value)
+        private void SetText(FloatingTextSettings newSettings, string value, float sizeMultiplier = 1)
         {
             currentSettings = newSettings;
             textMesh.text = value;
             textMesh.fontSharedMaterial = newSettings.FontMaterial;
-            textMesh.fontSize = currentSettings.FontSize;
+            textMesh.fontSize = currentSettings.FontSize * sizeMultiplier;
             textMesh.color = currentSettings.FontColor;
             targetLifeTime = currentSettings.LifeTime;
             transform.localScale = Vector3.one;

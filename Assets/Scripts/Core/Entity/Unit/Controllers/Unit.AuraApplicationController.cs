@@ -7,7 +7,7 @@ namespace Core
 {
     public abstract partial class Unit
     {
-        internal class AuraApplicationController : IUnitBehaviour
+        internal class AuraApplicationController : IUnitBehaviour, ILogicBehaviour
         {
             private AuraInterruptFlags auraInterruptFlags;
             private Unit unit;

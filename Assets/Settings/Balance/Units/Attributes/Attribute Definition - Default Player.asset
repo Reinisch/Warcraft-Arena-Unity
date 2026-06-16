@@ -12,11 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa0898825cc923d45a1fb4083a85e1cd, type: 3}
   m_Name: Attribute Definition - Default Player
   m_EditorClassIdentifier: 
-  baseModelId: 0
-  baseHealth: 30000
-  baseMaxHealth: 30000
-  baseMana: 100
-  baseMaxMana: 100
+  baseHealth: 80000
+  baseMaxHealth: 80000
   baseSpellPower: 100
   baseIntellect: 500
   critPercentage: 25

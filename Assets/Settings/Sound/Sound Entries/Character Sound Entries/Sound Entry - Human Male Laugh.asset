@@ -12,7 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a9f92409454067439c2e802923148cf, type: 3}
   m_Name: Sound Entry - Human Male Laugh
   m_EditorClassIdentifier: 
-  soundReference: {fileID: 11400000, guid: 9c01542db10d5bc46819a6f11752769e, type: 2}
+  id: 66
+  container: {fileID: 11400000, guid: f063bb6364b62024b8629f3065363123, type: 2}
   settings: {fileID: 11400000, guid: ee786aa39eb585e4484003f75910c3e9, type: 2}
   audioClip: {fileID: 8300000, guid: fe715b49ecf7b69479bf4198b7b0c32b, type: 3}
+  localizedAudioClip:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  delay: 0
+  speed: 1
+  startTime: 0
   volumeModifier: 1
+  extraEntries: []
+  alternativeEntries: []
+  alternativeClips: []

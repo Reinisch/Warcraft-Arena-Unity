@@ -1,6 +1,4 @@
-﻿using Common;
-using JetBrains.Annotations;
-using System.Collections.Generic;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core
@@ -21,7 +19,12 @@ namespace Core
 
             Vector3 direction = player.Position - Unit.Position;
             direction.y = 0;
-            Unit.Rotation = Quaternion.RotateTowards(Unit.Rotation, Quaternion.LookRotation(direction), rotationSpeed * deltaTime / 1000);
+
+            Unit.CharacterController.Motor.SetRotation(
+                Quaternion.RotateTowards(
+                    Unit.Rotation,
+                    Quaternion.LookRotation(direction),
+                    rotationSpeed * deltaTime / 1000));
         }
 
         private bool TargetPredicate(Player player)
