@@ -1,20 +1,13 @@
-﻿using System.Collections.Generic;
 using Unity.Behavior;
 using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Workflow
+namespace Assets.Scripts.Launcher
 {
     internal class Launcher: MonoBehaviour
     {
         [SerializeField]
         private string bossFightLevel;
-
-#if UNITY_EDITOR
-        [SerializeField]
-        [Tooltip("Editor only: Warmup graphs to avoid 'Aborting graph tick' auto pause on the first real tick.")]
-        private List<BehaviorGraph> editorWarmupGraphs = new();
-#endif
 
         [Inject]
         private ZenjectSceneLoader sceneLoader;
@@ -41,41 +34,48 @@ namespace Assets.Scripts.Workflow
 
             try
             {
-                foreach (BehaviorGraph graphAsset in editorWarmupGraphs)
+                // The runtime BehaviorGraph is a sub-asset of each BehaviorAuthoringGraph (the
+                // main .asset object), so search by the authoring type and pull the graph out.
+                foreach (string guid in UnityEditor.AssetDatabase.FindAssets("t:BehaviorAuthoringGraph"))
                 {
-                    if (graphAsset == null)
-                        continue;
+                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
 
-                    GameObject warmupObject = null;
-
-                    try
+                    foreach (Object asset in UnityEditor.AssetDatabase.LoadAllAssetsAtPath(path))
                     {
-                        warmupObject = new GameObject("Behaviour Graph Warmup (Editor Only)")
-                        {
-                            hideFlags = HideFlags.HideAndDontSave
-                        };
+                        if (asset is not BehaviorGraph graphAsset)
+                            continue;
 
-                        var agent = warmupObject.AddComponent<BehaviorGraphAgent>();
-                        agent.Graph = graphAsset;
-                        agent.Init();
-                        agent.Start();
+                        GameObject warmupObject = null;
 
-                        for (int i = 0; i < warmupTickCount; i++)
+                        try
                         {
-                            agent.Graph.Tick();
+                            warmupObject = new GameObject("Behaviour Graph Warmup (Editor Only)")
+                            {
+                                hideFlags = HideFlags.HideAndDontSave
+                            };
+
+                            var agent = warmupObject.AddComponent<BehaviorGraphAgent>();
+                            agent.Graph = graphAsset;
+                            agent.Init();
+                            agent.Start();
+
+                            for (int i = 0; i < warmupTickCount; i++)
+                            {
+                                agent.Graph.Tick();
+                            }
+
+                            agent.End();
                         }
-
-                        agent.End();
-                    }
-                    catch
-                    {
-                        // Expected: the warmup agent has no real DI container, so
-                        // nodes relying on those will throw. We only care about pre-JITting them.
-                    }
-                    finally
-                    {
-                        if (warmupObject != null)
-                            DestroyImmediate(warmupObject);
+                        catch
+                        {
+                            // Expected: the warmup agent has no real DI container, so
+                            // nodes relying on those will throw. We only care about pre-JITting them.
+                        }
+                        finally
+                        {
+                            if (warmupObject != null)
+                                DestroyImmediate(warmupObject);
+                        }
                     }
                 }
             }
