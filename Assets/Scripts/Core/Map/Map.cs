@@ -107,7 +107,27 @@ namespace Core
 
         public void VisitInRadius(WorldEntity referer, float radius, IUnitVisitor unitVisitor)
         {
-            mapGrid.VisitInRadius(referer, radius, unitVisitor);
+            if (World.HasServerLogic)
+                mapGrid.VisitInRadius(referer, radius, unitVisitor);
+            else
+                VisitInRadiusByPhysics(referer, radius, unitVisitor);
+        }
+
+        private void VisitInRadiusByPhysics(WorldEntity referer, float radius, IUnitVisitor unitVisitor)
+        {
+            int hitCount = Physics.OverlapSphereNonAlloc(referer.Position, radius, raycastResults, PhysicsReference.Mask.Characters);
+            Assert.IsFalse(hitCount == raycastResults.Length, "Raycast results reached maximum!");
+            for (int i = 0; i < hitCount; i++)
+            {
+                if (!World.UnitManager.TryFind(raycastResults[i], out Unit unit) || unit.Map != this)
+                    continue;
+
+                switch (unit)
+                {
+                    case Player player: player.Accept(unitVisitor); break;
+                    case Creature creature: creature.Accept(unitVisitor); break;
+                }
+            }
         }
 
         public void SearchAreaTargets(List<Unit> targets, float radius, Vector3 center, Unit referer, SpellTargetChecks checkType)
