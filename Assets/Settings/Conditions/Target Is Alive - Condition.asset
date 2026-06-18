@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 993c2957057e0284cad2506a0670290a, type: 3}
   m_Name: Target Is Alive - Condition
   m_EditorClassIdentifier: 
+  id: 15
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}

@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f80bc3c93b889a64eb19a392d1c5a106, type: 3}
   m_Name: Target Is Frozen - Spell Cast Condition
   m_EditorClassIdentifier: 
+  id: 14
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   failedResult: 24
   condition: {fileID: 11400000, guid: 42ad932369977e643988136a75670233, type: 2}

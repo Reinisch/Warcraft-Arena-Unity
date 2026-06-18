@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fee5ac75efebd6d49886172732864a1c, type: 3}
   m_Name: Condition - Spell Is Hot Streakable
   m_EditorClassIdentifier: 
+  id: 6
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   validSpells:
   - {fileID: 11400000, guid: 9f1abb6f8f5d45044bebb6287120da06, type: 2}
   - {fileID: 11400000, guid: 9f925a37e1e897e49bfa08c77027dc32, type: 2}

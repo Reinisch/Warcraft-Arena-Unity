@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fee5ac75efebd6d49886172732864a1c, type: 3}
   m_Name: Condition - Spell Is Benefitting From Predatory Swiftness
   m_EditorClassIdentifier: 
+  id: 29
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   validSpells:
   - {fileID: 11400000, guid: 32b00cc6de444c64a99e8d0638f5a03c, type: 2}
   - {fileID: 11400000, guid: 4660076e1f704404cabbdd3f11b3ee81, type: 2}

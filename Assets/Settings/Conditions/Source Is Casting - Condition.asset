@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16e6e1f02aafce5448c9e0a51f33084b, type: 3}
   m_Name: Source Is Casting - Condition
   m_EditorClassIdentifier: 
+  id: 18
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}

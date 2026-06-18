@@ -31,6 +31,7 @@ public class ChatFrame : MonoBehaviour
     private void Awake()
     {
         eventBus.RegisterEvent<Unit, string>(GameEvents.UnitChat, OnUnitChat);
+        eventBus.RegisterEvent<string>(GameEvents.SystemMessage, OnSystemMessage);
         eventBus.RegisterEvent<HotkeyState>(chatFocusHotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
         inputField.onSubmit.AddListener(OnSubmit);
         inputField.onDeselect.AddListener(OnDeselect);
@@ -48,6 +49,7 @@ public class ChatFrame : MonoBehaviour
         inputField.onSubmit.RemoveListener(OnSubmit);
         inputField.onDeselect.RemoveListener(OnDeselect);
         eventBus.UnregisterEvent<Unit, string>(GameEvents.UnitChat, OnUnitChat);
+        eventBus.UnregisterEvent<string>(GameEvents.SystemMessage, OnSystemMessage);
         eventBus.UnregisterEvent<HotkeyState>(chatFocusHotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
     }
 
@@ -74,7 +76,11 @@ public class ChatFrame : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(null);
     }
 
-    private void OnUnitChat(Unit unit, string text)
+    private void OnUnitChat(Unit unit, string text) => Append(message => message.Modify(unit, text));
+
+    private void OnSystemMessage(string text) => Append(message => message.ModifySystem(text));
+
+    private void Append(System.Action<ChatFrameMessage> fill)
     {
         ChatFrameMessage chatFrameMessage;
         if (chatMessages.Count >= maxMessageCount)
@@ -89,7 +95,7 @@ public class ChatFrame : MonoBehaviour
         }
 
         chatMessages.Add(chatFrameMessage);
-        chatFrameMessage.Modify(unit, text);
+        fill(chatFrameMessage);
         chatFrameMessage.MoveToBottom();
 
         if (scrollRect.verticalNormalizedPosition < BottomSnapThreshold)

@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a607ba8d9aff3c448988bb59363ec04f, type: 3}
   m_Name: Target Is Player - Condition
   m_EditorClassIdentifier: 
+  id: 10
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}

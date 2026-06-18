@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -11,21 +10,16 @@ using UnityEngine;
 namespace Net.Ngo
 {
     /// <summary>
-    /// UDP-broadcast LAN session discovery, independent of NGO. A host periodically broadcasts a beacon
-    /// describing its session on <see cref="DiscoveryPort"/>; browsing clients bind that port, capture the
-    /// host's address from the packet, and expose the live list via <see cref="Sessions"/> /
-    /// <see cref="SessionsUpdated"/>. Stale sessions (host gone) expire after <see cref="SessionTimeoutSeconds"/>.
-    ///
-    /// Receives run on the thread pool; all state mutation + events are marshalled to the main thread (via
-    /// <see cref="UniTask.SwitchToMainThread()"/>) so Unity UI can consume them directly. The listener sets
-    /// SO_REUSEADDR so multiple instances on one machine (MPPM clones) can all bind the port for testing.
+    /// UDP-broadcast LAN session discovery, independent of NGO./>.
+    /// Receives run on the thread pool; all events are marshalled to the main thread (via UniTask.SwitchToMainThread)
     /// </summary>
     internal sealed class LanSessionDiscovery : IDisposable
     {
         private const int DiscoveryPort = 47777;
         private const int BroadcastIntervalMs = 1000;
         private const double SessionTimeoutSeconds = 4.0;
-        private const int Magic = 0x57424631; // "WBF1"
+        private const int Magic = 0x57424631; // "WBF1" — cheap foreign-packet reject
+        private const int BeaconFormat = 1;   // beacon JSON schema version; bump only on a BREAKING change
 
         private readonly List<SessionInfo> sessions = new();
         private readonly Dictionary<string, SessionInfo> byKey = new();
@@ -218,43 +212,49 @@ namespace Net.Ngo
 
         private static bool SameDisplay(SessionInfo a, SessionInfo b) =>
             a.HostName == b.HostName && a.Map == b.Map && a.Version == b.Version &&
-            a.PlayerCount == b.PlayerCount && a.MaxPlayers == b.MaxPlayers;
+            a.PlayerCount == b.PlayerCount && a.MaxPlayers == b.MaxPlayers && a.TeamSize == b.TeamSize;
 
-        // ---- Wire format -----------------------------------------------------------------------------------
-
-        private static byte[] Encode(SessionInfo s)
+        // ---- Wire format: versioned JSON -------------------------------------------------------------------
+        
+        [Serializable]
+        private struct BeaconPayload
         {
-            using var ms = new MemoryStream();
-            using var w = new BinaryWriter(ms, Encoding.UTF8);
-            w.Write(Magic);
-            w.Write(s.Id ?? string.Empty);
-            w.Write(s.HostName ?? string.Empty);
-            w.Write(s.Map ?? string.Empty);
-            w.Write(s.Version ?? string.Empty);
-            w.Write(s.PlayerCount);
-            w.Write(s.MaxPlayers);
-            w.Write(s.Port);
-            return ms.ToArray();
+            public int magic;
+            public int format;
+            public string id;
+            public string host;
+            public string map;
+            public string version;
+            public int players;
+            public int max;
+            public int port;
+            public int teamSize;
         }
+
+        private static byte[] Encode(SessionInfo s) => Encoding.UTF8.GetBytes(JsonUtility.ToJson(new BeaconPayload
+        {
+            magic = Magic,
+            format = BeaconFormat,
+            id = s.Id ?? string.Empty,
+            host = s.HostName ?? string.Empty,
+            map = s.Map ?? string.Empty,
+            version = s.Version ?? string.Empty,
+            players = s.PlayerCount,
+            max = s.MaxPlayers,
+            port = s.Port,
+            teamSize = s.TeamSize,
+        }));
 
         private static SessionInfo? TryDecode(byte[] data, IPEndPoint sender)
         {
             try
             {
-                using var ms = new MemoryStream(data);
-                using var r = new BinaryReader(ms, Encoding.UTF8);
-                if (r.ReadInt32() != Magic)
-                    return null;
+                BeaconPayload p = JsonUtility.FromJson<BeaconPayload>(Encoding.UTF8.GetString(data));
+                if (p.magic != Magic)
+                    return null; // foreign / malformed packet
 
-                string id = r.ReadString();
-                string host = r.ReadString();
-                string map = r.ReadString();
-                string version = r.ReadString();
-                int players = r.ReadInt32();
-                int max = r.ReadInt32();
-                int port = r.ReadInt32();
-
-                return new SessionInfo(id, host, map, version, players, max, sender.Address.ToString(), port);
+                return new SessionInfo(p.id, p.host, p.map, p.version, p.players, p.max,
+                    sender.Address.ToString(), p.port, teamSize: p.teamSize);
             }
             catch (Exception)
             {

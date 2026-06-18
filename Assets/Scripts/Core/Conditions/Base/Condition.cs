@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using Common;
 
 namespace Core.Conditions
 {
     /// <summary>
     /// Base for any game condition.
     /// </summary>
-    public abstract class Condition : ScriptableObject
+    public abstract class Condition : ScriptableUniqueInfo<Condition>
     {
         protected Unit SourceUnit { get; private set; }
         protected Unit TargetUnit { get; private set; }

@@ -7,11 +7,6 @@ using UnityEngine.UI;
 
 namespace Client
 {
-    /// <summary>
-    /// One discoverable session row in the lobby's session list — display + a select/Join button. Mirrors
-    /// <see cref="LobbyMapSlot"/>: instantiated from a disabled prototype and bound to a <see cref="SessionInfo"/>.
-    /// Labels are null-guarded so the prefab can show as much or as little of the session as it likes.
-    /// </summary>
     public class LobbySessionSlot : MonoBehaviour
     {
         [SerializeField, UsedImplicitly] private Button slotButton;
@@ -29,12 +24,14 @@ namespace Client
             gameObject.SetActive(true);
 
             Session = session;
-            // Tag the name with its source so a single list distinguishes LAN hosts from Unity Lobby hosts.
             string sourceTag = session.Source == SessionSource.UnityServices ? "Online" : "LAN";
             if (serverNameLabel != null) serverNameLabel.text = $"{session.HostName} [{sourceTag}]";
             if (mapNameLabel != null) mapNameLabel.text = session.Map;
             if (versionNameLabel != null) versionNameLabel.text = session.Version;
-            if (playerCountLabel != null) playerCountLabel.text = $"{session.PlayerCount}/{session.MaxPlayers}";
+            if (playerCountLabel != null)
+                playerCountLabel.text = session.TeamSize > 0
+                    ? $"{session.PlayerCount}/{session.MaxPlayers}   {session.TeamSize} vs {session.TeamSize}"
+                    : $"{session.PlayerCount}/{session.MaxPlayers}";
 
             slotButton.onClick.AddListener(OnSessionSlotClicked);
         }

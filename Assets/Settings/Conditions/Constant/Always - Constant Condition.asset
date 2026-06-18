@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c64a388ceab5b848a15f0663dd4fa01, type: 3}
   m_Name: Always - Constant Condition
   m_EditorClassIdentifier: 
+  id: 17
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}

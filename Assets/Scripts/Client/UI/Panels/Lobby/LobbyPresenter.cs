@@ -11,7 +11,6 @@ namespace Client
 {
     public class LobbyPresenter : Presenter<LobbyPanel>
     {
-        // Indeterminate connect bar sweep period (seconds) — there's no real % to show, just "working".
         private const float ConnectSweepSeconds = 1.25f;
 
         [Inject] private BalanceReference balance;
@@ -22,7 +21,6 @@ namespace Client
 
         private LobbyMapSlot selectedMapSlot;
         private float connectProgress;
-        // Set when the connection drops; shown the next time the lobby appears (the HUD graph shows it).
         private string pendingDisconnectReason;
 
         public override void Initialize(LobbyPanel view)
@@ -55,7 +53,7 @@ namespace Client
             view.RegionDropdown.gameObject.SetActive(false);
             view.StartClientTooltip.SetActive(false);
             view.NoSessionsFoundTooltip.SetActive(false);
-            view.VersionName.text = string.Empty;
+            view.VersionName.text = $"v{gameSession.Version}";
             view.StatusLabel.SetEmpty();
 
             for (int i = 0; i < balance.Scenarios.Count; i++)
@@ -71,8 +69,6 @@ namespace Client
             if (mapSlots.Count > 0)
                 mapSlots[0].Select();
 
-            // Note: selecting the default map above (mapSlots[0].Select()) already set the host source from that
-            // scenario's multiplayer support, so we don't force a source here.
             RefreshSessions();
             UpdateSessionTabs();
             RefreshActions();
@@ -117,8 +113,6 @@ namespace Client
             View.StartClientTooltip.SetActive(false);
             View.NoSessionsFoundTooltip.SetActive(false);
 
-            // Opening the lobby fresh: show a pending disconnect reason if we just dropped, else clear stale
-            // status. Then reflect the current session state.
             if (pendingDisconnectReason != null)
             {
                 View.StatusLabel.SetString(View.DisconnectedReasonString, pendingDisconnectReason);
@@ -129,8 +123,6 @@ namespace Client
                 View.StatusLabel.SetEmpty();
             }
 
-            // Opening the lobby forces a clean re-scan (recovers a discovery source that died while we were in a
-            // session); the list then repopulates via EventSessionsChanged. Rebuild now from whatever's cached.
             gameSession.RefreshSessions();
             RefreshSessions();
             RefreshActions();
@@ -164,9 +156,6 @@ namespace Client
             foreach (var mapSlot in mapSlots)
                 mapSlot.SetSelectState(mapSlot == selectedMapSlot);
 
-            // Auto-pick the host target for the scenario: Online for multiplayer-ready maps, LAN for solo-only
-            // ones (LAN keeps Single Player available, since that's a Local-target action, while Create Server
-            // stays blocked). RefreshActions reflects the new tab + button states.
             gameSession.SetSessionSource(selectedMapSlot.ScenarioDefiniton.SupportsMultiplayer
                 ? SessionSource.UnityServices
                 : SessionSource.Lan);
@@ -178,9 +167,6 @@ namespace Client
         {
         }
 
-        // Rebuild the session list from the discoverable sessions (currently the local-network source, empty
-        // until the discovery backend is wired). Mirrors the map-slot pattern: instantiate one slot per session
-        // from the disabled prototype. The "no sessions found" tooltip doubles as the empty-state placeholder.
         private void RefreshSessions()
         {
             ClearSessionSlots();
@@ -201,12 +187,10 @@ namespace Client
                 View.NoSessionsFoundTooltip.SetActive(sessions.Count == 0);
         }
 
-        // The list shows both LAN and Unity sessions together (tagged by name). These buttons only choose where
-        // a NEW host is created (LAN broadcast vs Unity Lobby); the chosen one is shown "pressed".
         private void OnLocalSessionsTabClicked()
         {
             gameSession.SetSessionSource(SessionSource.Lan);
-            RefreshActions(); // refreshes Single Player availability + the tab pressed/locked state
+            RefreshActions();
         }
 
         private void OnOnlineSessionsTabClicked()
@@ -215,8 +199,6 @@ namespace Client
             RefreshActions();
         }
 
-        // Manual refresh: kick a clean re-scan of both discovery sources. The list updates via
-        // EventSessionsChanged once results arrive; clear the empty-state tooltip in the meantime.
         private void OnRefreshSessionsClicked()
         {
             gameSession.RefreshSessions();
@@ -225,9 +207,6 @@ namespace Client
 
         private void UpdateSessionTabs()
         {
-            // The host-target switch only applies when starting a fresh session; lock it while connecting or in
-            // a session (switching it then does nothing useful / has unclear behaviour). The non-selected tab is
-            // otherwise enabled, the selected one shown as "pressed" (non-interactable).
             bool canSwitch = gameSession.CanStartNewSession;
             View.LocalSessionsTabButton.interactable = canSwitch && gameSession.SessionSource != SessionSource.Lan;
             View.OnlineSessionsTabButton.interactable = canSwitch && gameSession.SessionSource != SessionSource.UnityServices;
@@ -250,16 +229,12 @@ namespace Client
             if (gameSession.IsConnecting)
                 return;
 
-            // Join the discovered session at its advertised LAN address.
             View.StatusLabel.SetEmpty();
             await gameSession.JoinAsync(slot.Session);
             if (gameSession.State == GameSessionState.Client)
                 View.Hide();
         }
 
-        // All session lifecycle goes through GameSession, which knows the current world state and only allows
-        // valid transitions (start only from None; leave to get back). The lobby is hidden only once we're
-        // actually IN the new session (on success) — a failed start/join keeps it open with feedback.
         private async void OnServerButtonClicked()
         {
             if (selectedMapSlot == null)
@@ -296,8 +271,6 @@ namespace Client
             View.Hide();
         }
 
-        // Direct Connect: join a typed address (sessions are otherwise joined from the list). Doubles as Cancel
-        // while connecting (see RefreshActions for the label swap).
         private async void OnClientButtonClicked()
         {
             if (gameSession.IsConnecting)
@@ -313,8 +286,6 @@ namespace Client
                 View.Hide();
         }
 
-        // A direct connection to a typed "ip" or "ip:port" (defaults to localhost / the default port). Always a
-        // LAN-style direct connect regardless of the host-target selection.
         private SessionInfo BuildDirectSession()
         {
             string raw = View.DirectConnectAddressInput != null ? View.DirectConnectAddressInput.text : null;
@@ -340,9 +311,6 @@ namespace Client
             gameSession.LeaveAsync().Forget();
         }
 
-        // Enable each action only when it's valid for the current session state (strict gating): new sessions
-        // only from a clean state, additive maps only while we own the world, leave only while in a session.
-        // While connecting, everything is locked except the Join button, which becomes Cancel.
         private void RefreshActions()
         {
             bool hasMap = selectedMapSlot != null;
@@ -351,8 +319,6 @@ namespace Client
             // Single-player is a LOCAL host; under the Online (Unity services) host target it would create a
             // public cloud session instead, so disable it there to avoid confusion — it's only a Local-target action.
             bool localHostTarget = gameSession.SessionSource == SessionSource.Lan;
-            // Some scenarios (e.g. the bossfight) aren't multiplayer-ready — they can't be hosted for others, but
-            // single-player is still fine.
             bool scenarioSupportsMp = hasMap && selectedMapSlot.ScenarioDefiniton.SupportsMultiplayer;
 
             View.StartServerButton.interactable = gameSession.CanStartNewSession && scenarioSupportsMp;
@@ -374,11 +340,9 @@ namespace Client
                 View.StatusLabel.SetString(View.ClientStartString);
             }
 
-            // Connecting/in-session state also gates the host-target switch — keep it in sync on every refresh.
             UpdateSessionTabs();
         }
 
-        // Animate the indeterminate connect bar while a join is in flight (PanelUpdated drives this each frame).
         public override void Tick(float deltaTime)
         {
             if (View == null || !gameSession.IsConnecting || View.ConnectingProgressBar == null)
@@ -396,8 +360,6 @@ namespace Client
             bar.offsetMax = Vector2.zero;
         }
 
-        // Show the server's specific refusal (version mismatch / server full) when it gave one; otherwise the
-        // generic "couldn't connect" message.
         private void OnJoinFailed(string reason)
         {
             if (!string.IsNullOrEmpty(reason))
@@ -406,9 +368,6 @@ namespace Client
                 View.StatusLabel.SetString(View.ClientStartFailedString);
         }
 
-        // Involuntary disconnect: GameSession tears the world down → the HUD graph shows the lobby. We can't
-        // set the status now (the graph's lobby-show would wipe it via Shown), so stash the reason and let
-        // Shown() display it once the lobby actually appears.
         private void OnSessionLost(string reason)
         {
             pendingDisconnectReason = reason;

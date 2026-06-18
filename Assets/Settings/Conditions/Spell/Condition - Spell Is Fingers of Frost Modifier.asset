@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fee5ac75efebd6d49886172732864a1c, type: 3}
   m_Name: Condition - Spell Is Fingers of Frost Modifier
   m_EditorClassIdentifier: 
+  id: 28
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   validSpells:
   - {fileID: 11400000, guid: 1bac46fbaf1ad4d43b80c1a91990b96f, type: 2}
   - {fileID: 11400000, guid: f9b96553606ffe349b7f310d89d1f3e7, type: 2}

@@ -1,4 +1,5 @@
 using Assets.Scripts.Core;
+using Common;
 using Core;
 using Unity.Netcode;
 using UnityEngine;
@@ -8,12 +9,8 @@ namespace Net.Ngo
 {
     /// <summary>
     /// Network shadow for a Core entity — a SEPARATE NetworkObject representing a Core <see cref="Unit"/>
-    /// (Player.prefab / Creature.prefab) over the network, keeping the Core prefabs framework-free.
-    ///
     /// Server: linked to the authoritative unit via <see cref="Bind"/>; publishes its spawn snapshot.
-    /// Client: recreates a Core unit from the replicated snapshot — but only once the client has its own
-    /// map (the client owns map lifecycle), buffering until then. Registers (NetworkObjectId ↔ Unit) with
-    /// <see cref="NgoEntityRegistry"/>. Instantiated via the Zenject prefab handler so [Inject] works.
+    /// Client: recreates a Core unit from the replicated snapshot — but only once the client has its own map.
     /// </summary>
     [RequireComponent(typeof(NetworkObject))]
     public sealed class EntityNetworkView : NetworkBehaviour
@@ -23,20 +20,21 @@ namespace Net.Ngo
         [Inject] private NgoEntityRegistry registry;
         [Inject] private World world;
         [Inject] private BalanceReference balance;
-
-        /// <summary>The Core entity prefab this shadow recreates — also used server-side to spawn a
-        /// per-connection player of the matching kind.</summary>
-        public WorldEntityPrefab CoreEntityPrefab => coreEntityPrefab;
+        [Inject] private EventBus eventBus;
 
         // Spawn-time snapshot used to recreate the unit on clients (read once at spawn). Kept as a reliable
         // NetworkVariable; it's the ONLY per-unit state in the connection-approval burst now, so the burst stays
         // small enough for many-unit scenarios to finish joining.
         private readonly NetworkVariable<NgoUnitSnapshot> state = new NetworkVariable<NgoUnitSnapshot>();
 
-        // Continuous state (transform + vitals + target + cast) is streamed UNRELIABLY at SendRateHz instead of
-        // through NetworkVariables: full state every send (latest-wins, self-correcting), no reliable retransmit
-        // storm, and nothing extra bundled into the spawn burst. RPCs only reach a NetworkObject's observers, so
-        // map-bound visibility still applies.
+        // The connection this entity LOGICALLY belongs to (its controlling client, or the server for AI/NPCs),
+        // captured at spawn and never touched by movement-control ownership flips. A client decides "is this MY
+        // player" from this, not the live NetworkObject owner — so a player the server took movement control of
+        // (e.g. an arena player rooted during warmup) is still recognised as local and keeps its camera/HUD.
+        private readonly NetworkVariable<ulong> ownerClient = new NetworkVariable<ulong>();
+
+        // Continuous state (transform + vitals + target + cast) is streamed UNRELIABLY at SendRateHz. RPCs only
+        // reach a NetworkObject's observers, so map-scoped visibility still applies to this channel.
         private const float SendRateHz = 20f;
         private const float SendIntervalSeconds = 1f / SendRateHz;
         private float sendAccumulator;
@@ -60,10 +58,13 @@ namespace Net.Ngo
         private bool createdLocally;
         private bool waitingForMap;
 
+        private bool IsLogicalOwner => NetworkManager != null && ownerClient.Value == NetworkManager.LocalClientId;
+
+        public WorldEntityPrefab CoreEntityPrefab => coreEntityPrefab;
+
         /// <summary>
-        /// Server: link the authoritative unit. Call BEFORE spawning. The replicated snapshot is captured in
-        /// <see cref="OnNetworkSpawn"/> (writing a NetworkVariable before spawn is unsupported — NGO hasn't
-        /// initialised it yet), which still runs before observers are notified via NetworkShow.
+        /// Server: link the authoritative unit. Call BEFORE spawning — the snapshot is captured in
+        /// <see cref="OnNetworkSpawn"/> (a NetworkVariable can't be written before spawn).
         /// </summary>
         public void Bind(Unit boundUnit)
         {
@@ -79,15 +80,38 @@ namespace Net.Ngo
                 if (unit != null)
                 {
                     state.Value = NgoUnitSnapshot.From(unit.CaptureState());
+                    // OwnerClientId here is the spawn-time (intended) owner — OnNetworkSpawn runs synchronously
+                    // inside Spawn, before any later root/polymorph re-owns the shadow to the server.
+                    ownerClient.Value = OwnerClientId;
                     ApplyAuthority();
+
+                    // Runtime faction/FFA changes (e.g. arena team assignment) re-publish the reliable snapshot
+                    // so current observers AND late-revealed clients get the corrected value — without a per-tick
+                    // send (the change is rare).
+                    eventBus.RegisterEvent(unit, GameEvents.UnitFactionChanged, OnServerFactionChanged);
                 }
 
                 Register();
                 return;
             }
 
+            state.OnValueChanged += OnSnapshotChanged;
             netAuras.OnListChanged += OnAurasChanged;
             TryCreateClientUnit();
+        }
+
+        // Server: this unit's faction (or free-for-all) changed — re-publish the snapshot NetworkVariable.
+        private void OnServerFactionChanged()
+        {
+            if (unit != null)
+                state.Value = NgoUnitSnapshot.From(unit.CaptureState());
+        }
+
+        // Client: apply a replicated faction/FFA change once the unit exists (recolours nameplates/selection).
+        private void OnSnapshotChanged(NgoUnitSnapshot previous, NgoUnitSnapshot current)
+        {
+            if (unit != null)
+                unit.SetNetworkFaction(current.FactionId, current.FreeForAll);
         }
 
         // A unit runs its own physics only on its owner; everyone else puppets it from netTransform.
@@ -99,6 +123,7 @@ namespace Net.Ngo
                 unit.SetNetworkControlled(!IsOwner);
         }
 
+        
         private void Update()
         {
             if (unit == null || !IsSpawned)
@@ -267,6 +292,7 @@ namespace Net.Ngo
 
         public override void OnNetworkDespawn()
         {
+            state.OnValueChanged -= OnSnapshotChanged; // client subscription (no-op on server)
             netAuras.OnListChanged -= OnAurasChanged;
 
             if (waitingForMap)
@@ -277,6 +303,7 @@ namespace Net.Ngo
 
             if (unit != null)
             {
+                eventBus.UnregisterEvent(unit, GameEvents.UnitFactionChanged, OnServerFactionChanged); // server subscription (no-op on client)
                 registry?.Unregister(new NetId(NetworkObjectId), unit);
 
                 // On a WHOLE-session shutdown (leave / lost connection) don't destroy here — GameSession tears
@@ -314,7 +341,7 @@ namespace Net.Ngo
 
         private void CreateClientUnit(Map map)
         {
-            unit = world.SpawnFromState(state.Value.To(), coreEntityPrefab, map, asLocalPlayer: IsOwner);
+            unit = world.SpawnFromState(state.Value.To(), coreEntityPrefab, map, asLocalPlayer: IsLogicalOwner);
             createdLocally = true;
             ApplyAuthority();
             ApplyClientAuras(); // auras already replicated before the unit materialised (buffering)

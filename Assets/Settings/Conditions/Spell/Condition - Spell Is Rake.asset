@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 734517574db5ef84680d4b523563c596, type: 3}
   m_Name: Condition - Spell Is Rake
   m_EditorClassIdentifier: 
+  id: 4
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   targetSpell: {fileID: 11400000, guid: 0fcbec3231a266244bb039eaa2ac68cf, type: 2}

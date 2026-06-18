@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 734517574db5ef84680d4b523563c596, type: 3}
   m_Name: Condition - Spell Is Ferocious Bite
   m_EditorClassIdentifier: 
+  id: 3
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   targetSpell: {fileID: 11400000, guid: c6dd6fcb1014f2f4287eb92fcb1f64b1, type: 2}

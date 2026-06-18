@@ -170,7 +170,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  defaultScenario: {fileID: 11400000, guid: 97e5f3f001bd3804890918cfc00f3a06, type: 2}
 --- !u!1 &2198094408250766968
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,3 +347,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   definition: {fileID: 11400000, guid: 5ec2699e37cfdf1408d093af8671a31a, type: 2}
+  conditionContainer: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}

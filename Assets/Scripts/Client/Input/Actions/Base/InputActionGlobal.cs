@@ -43,12 +43,12 @@ namespace Client
             }
         }
 
-        public void Register()
+        protected override void OnRegister()
         {
             eventBus.RegisterEvent<HotkeyState>(hotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
         }
 
-        public void Unregister()
+        protected override void OnUnregister()
         {
             eventBus.UnregisterEvent<HotkeyState>(hotkey, GameEvents.HotkeyStateChanged, OnHotkeyStateChanged);
         }

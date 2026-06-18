@@ -144,12 +144,12 @@ public HotkeyModifier Modifier => modifier;
                 Modify(key, modifier);
         }
 
-        public void Register()
+        protected override void OnRegister()
         {
             hotkeyState = HotkeyState.Released;
         }
 
-        public void Unregister()
+        protected override void OnUnregister()
         {
             hotkeyState = HotkeyState.Released;
         }

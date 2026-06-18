@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27d56ae704e090489d1ec741dd19af9, type: 3}
   m_Name: Player Has Selected Inputable Element
   m_EditorClassIdentifier: 
+  id: 25
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   targetTag: Input Field

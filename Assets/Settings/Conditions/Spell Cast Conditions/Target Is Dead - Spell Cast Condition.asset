@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f80bc3c93b889a64eb19a392d1c5a106, type: 3}
   m_Name: Target Is Dead - Spell Cast Condition
   m_EditorClassIdentifier: 
+  id: 20
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   failedResult: 54
   condition: {fileID: 11400000, guid: b3232bf3744726746b30ba9ff579951a, type: 2}

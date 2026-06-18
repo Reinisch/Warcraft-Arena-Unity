@@ -11,6 +11,7 @@ namespace Net.Ngo
     internal struct NgoUnitVitals : INetworkSerializable, IEquatable<NgoUnitVitals>
     {
         public int Health;
+        public int MaxHealth;
         public int Power;
         public int DeathState;
         public int EmoteType;
@@ -23,6 +24,7 @@ namespace Net.Ngo
         public static NgoUnitVitals From(in UnitVitals v) => new NgoUnitVitals
         {
             Health = v.Health,
+            MaxHealth = v.MaxHealth,
             Power = v.Power,
             DeathState = (int)v.DeathState,
             EmoteType = (int)v.EmoteType,
@@ -36,6 +38,7 @@ namespace Net.Ngo
         public UnitVitals To() => new UnitVitals
         {
             Health = Health,
+            MaxHealth = MaxHealth,
             Power = Power,
             DeathState = (DeathState)DeathState,
             EmoteType = (EmoteType)EmoteType,
@@ -49,6 +52,7 @@ namespace Net.Ngo
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref Health);
+            serializer.SerializeValue(ref MaxHealth);
             serializer.SerializeValue(ref Power);
             serializer.SerializeValue(ref DeathState);
             serializer.SerializeValue(ref EmoteType);
@@ -60,14 +64,14 @@ namespace Net.Ngo
         }
 
         public bool Equals(NgoUnitVitals other) =>
-            Health == other.Health && Power == other.Power &&
+            Health == other.Health && MaxHealth == other.MaxHealth && Power == other.Power &&
             DeathState == other.DeathState && EmoteType == other.EmoteType &&
             ModelId == other.ModelId && ClassType == other.ClassType &&
             DisplayPowerType == other.DisplayPowerType && ComboPoints == other.ComboPoints &&
             VisualEffects == other.VisualEffects;
 
         public override bool Equals(object obj) => obj is NgoUnitVitals other && Equals(other);
-        public override int GetHashCode() => HashCode.Combine(Health, Power, DeathState, EmoteType, ModelId, ClassType, DisplayPowerType,
-            HashCode.Combine(ComboPoints, VisualEffects));
+        public override int GetHashCode() => HashCode.Combine(Health, MaxHealth, Power, DeathState, EmoteType, ModelId, ClassType,
+            HashCode.Combine(DisplayPowerType, ComboPoints, VisualEffects));
     }
 }

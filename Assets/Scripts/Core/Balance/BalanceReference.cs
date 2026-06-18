@@ -1,7 +1,9 @@
 ﻿using Common;
+using Core.Conditions;
 using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Core
 {
@@ -9,6 +11,9 @@ namespace Core
     {
         [SerializeField, UsedImplicitly]
         private BalanceDefinition definition;
+
+        [SerializeField, UsedImplicitly]
+        private ConditionContainer conditionContainer;
 
         private readonly List<MapDefinition> maps = new();
         private readonly List<ScenarioDefinition> scenarios = new();
@@ -41,6 +46,7 @@ namespace Core
         protected override void OnRegistered()
         {
             definition.Register();
+            conditionContainer.Register();
 
             maps.AddRange(definition.MapEntries);
             scenarios.AddRange(definition.ScenarioEntries);
@@ -75,7 +81,15 @@ namespace Core
             maps.Clear();
             scenarios.Clear();
 
+            conditionContainer.Unregister();
             definition.Unregister();
+        }
+
+        protected override void QueueForInject(DiContainer container)
+        {
+            base.QueueForInject(container);
+
+            conditionContainer.QueueForInject(container);
         }
     }
 }

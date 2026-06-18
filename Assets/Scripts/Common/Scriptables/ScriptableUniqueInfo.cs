@@ -70,7 +70,7 @@ namespace Common
 
             if (id <= 0)
             {
-                foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{GetType()}", null))
+                foreach (string guid in UnityEditor.AssetDatabase.FindAssets($"t:{typeof(TUnique)}", null))
                 {
                     string infoAssetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
                     ScriptableUniqueInfo<TUnique> anotherInfo = UnityEditor.AssetDatabase.LoadAssetAtPath<ScriptableUniqueInfo<TUnique>>(infoAssetPath);

@@ -12,15 +12,13 @@ namespace Net
         public string Version { get; }
         public int PlayerCount { get; }
         public int MaxPlayers { get; }
-        // Where to connect to join this session. For LAN discovery, Address is captured from the beacon
-        // packet's sender and Port is carried in the beacon payload (the host's game port).
+        public int TeamSize { get; }
         public string Address { get; }
         public int Port { get; }
-        // Which backend this session came from — joining routes to the matching one, and the UI tags the name.
         public SessionSource Source { get; }
 
         public SessionInfo(string id, string hostName, string map, string version, int playerCount, int maxPlayers,
-            string address = null, int port = 0, SessionSource source = SessionSource.Lan)
+            string address = null, int port = 0, SessionSource source = SessionSource.Lan, int teamSize = 0)
         {
             Id = id;
             HostName = hostName;
@@ -28,6 +26,7 @@ namespace Net
             Version = version;
             PlayerCount = playerCount;
             MaxPlayers = maxPlayers;
+            TeamSize = teamSize;
             Address = address;
             Port = port;
             Source = source;

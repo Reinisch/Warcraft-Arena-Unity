@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 734517574db5ef84680d4b523563c596, type: 3}
   m_Name: Condition - Spell Is Pyroblast
   m_EditorClassIdentifier: 
+  id: 22
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   targetSpell: {fileID: 11400000, guid: 9f1abb6f8f5d45044bebb6287120da06, type: 2}

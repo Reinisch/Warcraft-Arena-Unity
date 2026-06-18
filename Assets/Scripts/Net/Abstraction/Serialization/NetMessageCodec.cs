@@ -5,11 +5,7 @@ using Core;
 namespace Net
 {
     /// <summary>
-    /// Framework-neutral serialization for every <see cref="INetMessage"/>: maps a message type to a
-    /// stable id and an explicit write/read pair over <see cref="INetWriter"/>/<see cref="INetReader"/>.
-    /// Adapters reuse this and only provide the reader/writer + transport, so message serialization is
-    /// written once for all SDKs.
-    ///
+    /// Framework-neutral serialization for every <see cref="INetMessage"/>
     /// NOTE: ids are assigned by registration order — keep the order stable across builds, and only
     /// append new messages at the end. <see cref="UnitSpellLaunch"/> carries NetIds (the server translates
     /// the Core SpellProcessingToken on send; a client rebuilds it on receive), so it serializes here.
@@ -178,6 +174,47 @@ namespace Net
                     for (int i = 0; i < count; i++)
                         targets[i] = new SpellLaunchTarget(r.ReadNetId(), r.ReadFloat());
                     return new UnitSpellLaunch(caster, spellId, source, destination, targets);
+                });
+
+            // ---- Arena ----
+            Register<ArenaStateNotification>(
+                (w, m) =>
+                {
+                    w.WriteByte(m.Phase);
+                    w.WriteFloat(m.Countdown);
+                    w.WriteByte(m.AliveTeamA);
+                    w.WriteByte(m.TotalTeamA);
+                    w.WriteByte(m.AliveTeamB);
+                    w.WriteByte(m.TotalTeamB);
+                },
+                r => new ArenaStateNotification(r.ReadByte(), r.ReadFloat(),
+                    r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte()));
+
+            Register<ArenaMatchResultNotification>(
+                (w, m) =>
+                {
+                    w.WriteByte(m.Result);
+                    int count = m.Participants?.Length ?? 0;
+                    w.WriteInt(count);
+                    for (int i = 0; i < count; i++)
+                    {
+                        ArenaParticipantResult p = m.Participants[i];
+                        w.WriteNetId(p.Id);
+                        w.WriteString(p.Name);
+                        w.WriteByte(p.Team);
+                        w.WriteInt(p.DamageDone);
+                        w.WriteInt(p.HealingDone);
+                    }
+                },
+                r =>
+                {
+                    byte result = r.ReadByte();
+                    int count = r.ReadInt();
+                    var participants = new ArenaParticipantResult[count];
+                    for (int i = 0; i < count; i++)
+                        participants[i] = new ArenaParticipantResult(
+                            r.ReadNetId(), r.ReadString(), r.ReadByte(), r.ReadInt(), r.ReadInt());
+                    return new ArenaMatchResultNotification(result, participants);
                 });
         }
     }

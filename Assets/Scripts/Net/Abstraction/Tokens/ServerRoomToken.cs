@@ -1,9 +1,5 @@
 namespace Net
 {
-    /// <summary>
-    /// Session-creation payload sent when starting a host/server and carried into the loaded map.
-    /// (Bolt: ServerRoomToken, an IProtocolToken.)
-    /// </summary>
     public sealed class ServerRoomToken : INetSerializable
     {
         public string LocalPlayerName { get; private set; }
@@ -11,6 +7,7 @@ namespace Net
         public string Map { get; private set; }
         public string Version { get; set; }
         public int Scenario { get; set; }
+        public int TeamSize { get; set; }
 
         public ServerRoomToken()
         {
@@ -34,6 +31,7 @@ namespace Net
             writer.WriteString(Map);
             writer.WriteString(Version);
             writer.WriteInt(Scenario);
+            writer.WriteInt(TeamSize);
         }
 
         public void Read(INetReader reader)
@@ -43,6 +41,7 @@ namespace Net
             Map = reader.ReadString();
             Version = reader.ReadString();
             Scenario = reader.ReadInt();
+            TeamSize = reader.ReadInt();
         }
     }
 }

@@ -210,6 +210,9 @@ namespace Core
             if (auraEffect.Aura.SpellInfo.HasAttribute(SpellAttributes.UnaffectedByInvulnerability))
                 return false;
 
+            if (auraEffect.Aura.SpellInfo.IsPassive)
+                return false;
+
             foreach (SpellEffectInfo effectInfo in spellEffectInfos)
             {
                 if (!(effectInfo is EffectApplyAura applyAuraEffect))

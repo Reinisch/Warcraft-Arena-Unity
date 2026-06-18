@@ -10,19 +10,13 @@ using UnityEngine;
 namespace Net.Ngo
 {
     /// <summary>
-    /// Unity Gaming Services session backend (Lobby + Relay) via the Multiplayer Services Sessions API. Hosting
-    /// creates a Relay-backed session; joining connects through Relay; browsing polls the session list. The
-    /// Sessions API's default Netcode integration configures the transport (Relay) and starts
-    /// <c>NetworkManager.Singleton</c> itself, so the existing replication layer (which hooks NetworkManager
-    /// directly) works unchanged — the controller only has to prepare the NetworkManager first.
-    ///
-    /// Requires the project to be linked to a Unity cloud project (Project Settings → Services) with Lobby +
-    /// Relay enabled; failures (no project / offline) are caught and surfaced as an empty list / failed host.
+    /// Unity Gaming Services session backend (Lobby + Relay) via the Multiplayer Services Sessions API.
     /// </summary>
     internal sealed class UnityServicesSessionBackend
     {
         private const string MapProperty = "map";
         private const string VersionProperty = "version";
+        private const string TeamSizeProperty = "teamSize";
         private const int MaxPlayers = 8;
         private const int BrowsePollSeconds = 5;
 
@@ -39,11 +33,6 @@ namespace Net.Ngo
         public UnityServicesSessionBackend()
         {
 #if UNITY_EDITOR
-            // The NRE is Editor-only: exiting play mode force-shuts NetworkManager.Singleton, and if we still hold a
-            // Unity session its default Netcode handler trips a NullReferenceException in
-            // NetworkManagerSession.OnStopCompleted (the NM was stopped WITHOUT going through ISession.LeaveAsync).
-            // Application.quitting fires before the NM's OnApplicationQuit, so leaving here registers the session
-            // stop synchronously first, which steers OnStopCompleted onto its safe path.
             Application.quitting += OnEditorQuitting;
 #endif
         }
@@ -56,10 +45,8 @@ namespace Net.Ngo
 
             ISession session = activeSession;
             activeSession = null;
-            // Fire-and-forget: LeaveAsync's synchronous prefix registers the session stop before NM is torn down;
-            // the async tail needn't finish during exit to prevent the NRE.
             try { _ = session.LeaveAsync(); }
-            catch (Exception) { /* already gone / nothing we can do during quit */ }
+            catch (Exception) { /* best effort, app is quitting */ }
         }
 #endif
 
@@ -140,10 +127,12 @@ namespace Net.Ngo
             {
                 string map = GetProperty(info, MapProperty);
                 string version = GetProperty(info, VersionProperty);
+                int.TryParse(GetProperty(info, TeamSizeProperty), out int teamSize);
 
                 // Id is what JoinAsync joins by; address/port are unused for Relay-backed sessions.
                 sessions.Add(new SessionInfo(info.Id, info.Name, map, version,
-                    info.MaxPlayers - info.AvailableSlots, info.MaxPlayers, source: SessionSource.UnityServices));
+                    info.MaxPlayers - info.AvailableSlots, info.MaxPlayers, source: SessionSource.UnityServices,
+                    teamSize: teamSize));
             }
 
             SessionsChanged?.Invoke();
@@ -171,6 +160,8 @@ namespace Net.Ngo
                     new SessionProperty(token?.Map ?? string.Empty, VisibilityPropertyOptions.Public);
                 options.SessionProperties[VersionProperty] =
                     new SessionProperty(token?.Version ?? string.Empty, VisibilityPropertyOptions.Public);
+                options.SessionProperties[TeamSizeProperty] =
+                    new SessionProperty((token?.TeamSize ?? 0).ToString(), VisibilityPropertyOptions.Public);
 
                 // The default Netcode handler configures Relay + starts the NGO host before this returns.
                 activeSession = await MultiplayerService.Instance.CreateSessionAsync(options);

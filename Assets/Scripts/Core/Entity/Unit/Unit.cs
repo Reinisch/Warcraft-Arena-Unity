@@ -371,6 +371,12 @@ namespace Core
             Attributes.SetHealth(Health + delta);
         }
 
+        public void ApplyAttributeDefinition(UnitAttributeDefinition definition)
+        {
+            if (definition != null)
+                Attributes.ApplyAttributeDefinition(definition);
+        }
+
         internal void ModifyComboPoints(int delta)
         {
             Attributes.SetComboPoints(ComboPoints + delta);

@@ -1,0 +1,1803 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5806785446803922109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b27bb6d9a2c8d540a10dff10acc543e, type: 3}
+  m_Name: Scenario - Arena - Graph - Lordaeron Debug Info
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphDebugInfo
+  m_CodeBreakPointsList: []
+--- !u!114 &-4876901810892279886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db920e62f70f420bb33c771449926fa4, type: 3}
+  m_Name: Scenario - Arena - Graph - Lordaeron
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraph
+  Graphs:
+  - rid: 6102424922087227793
+  m_DebugInfo: {fileID: -5806785446803922109}
+  m_WasCompileWithPlaceholderNode: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6102424922087227793
+      type: {class: BehaviorGraphModule, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        AuthoringAssetID:
+          m_Value0: 16633417075911680164
+          m_Value1: 72273869835667703
+        m_DebugInfo: {fileID: -5806785446803922109}
+        BlackboardReference:
+          rid: 6102424922087227794
+        BlackboardGroupReferences: []
+        Root:
+          rid: 6102425177244565635
+        m_VersionTimestamp: 639173319117921728
+    - rid: 6102424922087227794
+      type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        m_Blackboard:
+          rid: 6102424922087227796
+        m_Source: {fileID: 7298795340229027577}
+    - rid: 6102424922087227796
+      type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        m_Variables:
+        - rid: 6102425177244565637
+        - rid: 6102425177244565638
+        - rid: 6102425177244565639
+        - rid: 6102425177244565640
+        - rid: 6102425177244565641
+        - rid: 6102425177244565642
+        - rid: 6102425177244565643
+        - rid: 6102425177244565644
+        - rid: 6102425177244565645
+        - rid: 6102425177244565646
+        - rid: 6102425177244565647
+        - rid: 6102425177244565648
+        - rid: 6102425177244565649
+        - rid: 6102425177244565650
+    - rid: 6102425177244565635
+      type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 3360340082958412815
+          m_Value1: 17851715648421294675
+        Graph:
+          rid: 6102424922087227793
+        m_Parent:
+          rid: -2
+        m_Child:
+          rid: 6102425177244565636
+        Repeat: 0
+        AllowMultipleRepeatsPerTick: 0
+    - rid: 6102425177244565636
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 11011043968898754079
+          m_Value1: 51087546923827332
+        Graph:
+          rid: 6102424922087227793
+        m_Parent:
+          rid: 6102425177244565635
+        m_Children:
+        - rid: 6102425177244565651
+        - rid: 6102425177244565652
+        m_RegisteredObservers: []
+    - rid: 6102425177244565637
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 0}
+    - rid: 6102425177244565638
+      type: {class: 'BlackboardVariable`1[[Core.Scenario.BehaviourTreeInjector, Game.Core]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 9972183683914415659
+          m_Value1: 508160695665121577
+        Name: Injector
+        m_Value: {fileID: 0}
+    - rid: 6102425177244565639
+      type: {class: 'BlackboardVariable`1[[Core.FactionDefinition, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071869354148
+          m_Value1: 16633417074560534775
+        Name: Faction A
+        m_Value: {fileID: 0}
+    - rid: 6102425177244565640
+      type: {class: 'BlackboardVariable`1[[Core.FactionDefinition, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071886131364
+          m_Value1: 16633417074560534775
+        Name: Faction B
+        m_Value: {fileID: 0}
+    - rid: 6102425177244565641
+      type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071902908580
+          m_Value1: 16633417074560534775
+        Name: Spawn Points A
+        m_Value: []
+    - rid: 6102425177244565642
+      type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071919685796
+          m_Value1: 16633417074560534775
+        Name: Spawn Points B
+        m_Value: []
+    - rid: 6102425177244565643
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071953240228
+          m_Value1: 16633417074560534775
+        Name: Warmup Seconds
+        m_Value: 60
+    - rid: 6102425177244565644
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071970017444
+          m_Value1: 16633417074560534775
+        Name: Post Match Seconds
+        m_Value: 5
+    - rid: 6102425177244565645
+      type: {class: 'BlackboardVariable`1[[Core.SpellInfo, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071986794660
+          m_Value1: 16633417074560534775
+        Name: Preparation Spell
+        m_Value: {fileID: 0}
+    - rid: 6102425177244565646
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417072003571876
+          m_Value1: 16633417074560534775
+        Name: Player Spawn
+        m_Value: {fileID: 0}
+    - rid: 6102425177244565647
+      type: {class: 'BlackboardVariable`1[[Core.ArenaController, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417072020349092
+          m_Value1: 16633417074560534775
+        Name: Arena
+        m_Value: {fileID: 0}
+    - rid: 6102425177244565648
+      type: {class: 'BlackboardVariable`1[[Assets.Scripts.Core.WorldEntityPrefab, Game.Core]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417072037126308
+          m_Value1: 16633417074560534775
+        Name: Player AI Prefab
+        m_Value: {fileID: 0}
+    - rid: 6102425177244565649
+      type: {class: 'BlackboardVariable`1[[Core.UnitInfoAI, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417072053903524
+          m_Value1: 16633417074560534775
+        Name: Player AI Info
+        m_Value: {fileID: 0}
+    - rid: 6102425177244565650
+      type: {class: 'BlackboardVariable`1[[Core.UnitAttributeDefinition, Game.Core]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 3130265336418352201
+          m_Value1: 15811643290021865008
+        Name: Player Attributes
+        m_Value: {fileID: 0}
+    - rid: 6102425177244565651
+      type: {class: ZenjectRootNodeAction, ns: , asm: Game.Core}
+      data:
+        ID:
+          m_Value0: 1360114185853591747
+          m_Value1: 11169073701640353422
+        Graph:
+          rid: 6102424922087227793
+        m_Parent:
+          rid: 6102425177244565636
+        Container:
+          rid: 6102425177244565638
+    - rid: 6102425177244565652
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 3088421314817683240
+          m_Value1: 15741501118267430244
+        Graph:
+          rid: 6102424922087227793
+        m_Parent:
+          rid: 6102425177244565636
+        m_Children:
+        - rid: 6102425177244565653
+        m_RegisteredObservers: []
+    - rid: 6102425177244565653
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 7064471364290141881
+          m_Value1: 5489191118680459033
+        Graph:
+          rid: 6102424922087227793
+        m_Parent:
+          rid: 6102425177244565652
+        m_Children:
+        - rid: 6102425177244565654
+        - rid: 6102425177244565655
+        - rid: 6102425177244565656
+        - rid: 6102425177244565657
+        - rid: 6102425177244565658
+        m_RegisteredObservers: []
+    - rid: 6102425177244565654
+      type: {class: SpawnPlayer, ns: Core.Scenario.UnityBehavior, asm: Game.Core}
+      data:
+        ID:
+          m_Value0: 7929328971358679260
+          m_Value1: 11304439688814429118
+        Graph:
+          rid: 6102424922087227793
+        m_Parent:
+          rid: 6102425177244565653
+        SpawnPoint:
+          rid: 6102425177244565646
+        ModelId:
+          rid: 6102425177244565659
+    - rid: 6102425177244565655
+      type: {class: InitializeArenaAction, ns: Core.BehaviorGraph, asm: Game.Core}
+      data:
+        ID:
+          m_Value0: 8332825399406750534
+          m_Value1: 10631414471022388681
+        Graph:
+          rid: 6102424922087227793
+        m_Parent:
+          rid: 6102425177244565653
+        FactionA:
+          rid: 6102425177244565639
+        FactionB:
+          rid: 6102425177244565640
+        SpawnPointsA:
+          rid: 6102425177244565641
+        SpawnPointsB:
+          rid: 6102425177244565642
+        WarmupSeconds:
+          rid: 6102425177244565643
+        PreparationSpell:
+          rid: 6102425177244565645
+        PlayerAiPrefab:
+          rid: 6102425177244565648
+        PlayerAiInfo:
+          rid: 6102425177244565649
+        ArenaAttributes:
+          rid: 6102425177244565650
+        Arena:
+          rid: 6102425177244565647
+    - rid: 6102425177244565656
+      type: {class: WaitForArenaStartAction, ns: Core.BehaviorGraph, asm: Game.Core}
+      data:
+        ID:
+          m_Value0: 771127885696720365
+          m_Value1: 11284114507114025297
+        Graph:
+          rid: 6102424922087227793
+        m_Parent:
+          rid: 6102425177244565653
+        Arena:
+          rid: 6102425177244565647
+    - rid: 6102425177244565657
+      type: {class: WaitForArenaEndAction, ns: Core.BehaviorGraph, asm: Game.Core}
+      data:
+        ID:
+          m_Value0: 3911702399088581957
+          m_Value1: 15967779050701259655
+        Graph:
+          rid: 6102424922087227793
+        m_Parent:
+          rid: 6102425177244565653
+        Arena:
+          rid: 6102425177244565647
+    - rid: 6102425177244565658
+      type: {class: EndArenaMatchAction, ns: Core.BehaviorGraph, asm: Game.Core}
+      data:
+        ID:
+          m_Value0: 2053320006429259499
+          m_Value1: 10197274974353482580
+        Graph:
+          rid: 6102424922087227793
+        m_Parent:
+          rid: 6102425177244565653
+        Arena:
+          rid: 6102425177244565647
+        PostMatchSeconds:
+          rid: 6102425177244565644
+    - rid: 6102425177244565659
+      type: {class: 'BlackboardVariable`1[[System.Int32, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 1
+--- !u!114 &-1704613202672590682
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
+  m_Name: Scenario - Arena - Graph - Lordaeron Blackboard
+  m_EditorClassIdentifier: Unity.Behavior.Authoring::Unity.Behavior.BehaviorBlackboardAuthoringAsset
+  AssetID:
+    m_Value0: 16633417075911680164
+    m_Value1: 72273869835667703
+  m_Variables:
+  - rid: 6102424922087227798
+  - rid: 6102424922087227814
+  - rid: 6102424922087227840
+  - rid: 6102424922087227841
+  - rid: 6102424922087227842
+  - rid: 6102424922087227843
+  - rid: 6102424922087227845
+  - rid: 6102424922087227846
+  - rid: 6102424922087227847
+  - rid: 6102424922087227848
+  - rid: 6102424922087227849
+  - rid: 6102424922087227850
+  - rid: 6102424922087227851
+  - rid: 6102425172981579971
+  m_VersionTimestamp: 639173319108373128
+  m_CommandBuffer:
+    m_Commands: []
+  m_RuntimeBlackboardAsset: {fileID: 7298795340229027577}
+  references:
+    version: 2
+    RefIds:
+    - rid: 6102424922087227798
+      type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227814
+      type: {class: 'TypedVariableModel`1[[Core.Scenario.BehaviourTreeInjector, Game.Core]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 9972183683914415659
+          m_Value1: 508160695665121577
+        Name: Injector
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227840
+      type: {class: 'TypedVariableModel`1[[Core.FactionDefinition, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071869354148
+          m_Value1: 16633417074560534775
+        Name: Faction A
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227841
+      type: {class: 'TypedVariableModel`1[[Core.FactionDefinition, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071886131364
+          m_Value1: 16633417074560534775
+        Name: Faction B
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227842
+      type: {class: 'TypedVariableModel`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071902908580
+          m_Value1: 16633417074560534775
+        Name: Spawn Points A
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: []
+    - rid: 6102424922087227843
+      type: {class: 'TypedVariableModel`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071919685796
+          m_Value1: 16633417074560534775
+        Name: Spawn Points B
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: []
+    - rid: 6102424922087227845
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071953240228
+          m_Value1: 16633417074560534775
+        Name: Warmup Seconds
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 60
+    - rid: 6102424922087227846
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071970017444
+          m_Value1: 16633417074560534775
+        Name: Post Match Seconds
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 5
+    - rid: 6102424922087227847
+      type: {class: 'TypedVariableModel`1[[Core.SpellInfo, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071986794660
+          m_Value1: 16633417074560534775
+        Name: Preparation Spell
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227848
+      type: {class: 'TypedVariableModel`1[[UnityEngine.Transform, UnityEngine.CoreModule]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417072003571876
+          m_Value1: 16633417074560534775
+        Name: Player Spawn
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227849
+      type: {class: 'TypedVariableModel`1[[Core.ArenaController, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417072020349092
+          m_Value1: 16633417074560534775
+        Name: Arena
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227850
+      type: {class: 'TypedVariableModel`1[[Assets.Scripts.Core.WorldEntityPrefab, Game.Core]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417072037126308
+          m_Value1: 16633417074560534775
+        Name: Player AI Prefab
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227851
+      type: {class: 'TypedVariableModel`1[[Core.UnitInfoAI, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417072053903524
+          m_Value1: 16633417074560534775
+        Name: Player AI Info
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102425172981579971
+      type: {class: 'TypedVariableModel`1[[Core.UnitAttributeDefinition, Game.Core]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 3130265336418352201
+          m_Value1: 15811643290021865008
+        Name: Player Attributes
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bad8f2220607dac4db5082ff333fafb8, type: 3}
+  m_Name: Scenario - Arena - Graph - Lordaeron
+  m_EditorClassIdentifier: Unity.Behavior.Authoring::Unity.Behavior.BehaviorAuthoringGraph
+  Blackboard: {fileID: -1704613202672590682}
+  m_Description: 
+  m_Nodes:
+  - rid: 6102424922087227799
+  - rid: 6102424922087227802
+  - rid: 6102425075903103190
+  - rid: 6102425163829084322
+  - rid: 6102425163829084332
+  - rid: 6102425163829084354
+  - rid: 6102425163829084393
+  - rid: 6102425163829084458
+  - rid: 6102425163829084485
+  - rid: 6102425163829084551
+  m_VersionTimestamp: 639173319117921728
+  m_SerializedVersion: 3
+  m_DebugInfo: {fileID: -5806785446803922109}
+  m_RuntimeGraph: {fileID: -4876901810892279886}
+  AssetID:
+    m_Value0: 16633417075911680164
+    m_Value1: 72273869835667703
+  Story:
+    Story: 
+    StoryVariableNames: []
+    Variables: []
+  m_NodeModelsInfo:
+  - Name: On Start
+    Story: 
+    RuntimeTypeString: Unity.Behavior.Start, Unity.Behavior, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 3335272451348827663
+      m_Value1: 11549843281177505721
+    Variables: []
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: Zenject Root Node
+    Story: Ensures that tree is injected.
+    RuntimeTypeString: ZenjectRootNodeAction, Game.Core, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 1084953873799769207
+      m_Value1: 4548908197760934513
+    Variables:
+    - Name: Container
+      Type:
+        m_SerializableType: Core.Scenario.BehaviourTreeInjector, Game.Core, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      Tooltip: 
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: Sequence
+    Story: 
+    RuntimeTypeString: Unity.Behavior.SequenceComposite, Unity.Behavior, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 10181448252506100447
+      m_Value1: 8737116843063128493
+    Variables: []
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: Spawn Player
+    Story: 'Spawn player at [SpawnPoint] with model [ModelId]'
+    RuntimeTypeString: Core.Scenario.UnityBehavior.SpawnPlayer, Game.Core, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 14535552476197995442
+      m_Value1: 16705757247412822480
+    Variables:
+    - Name: SpawnPoint
+      Type:
+        m_SerializableType: UnityEngine.Transform, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      Tooltip: 
+    - Name: ModelId
+      Type:
+        m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      Tooltip: 
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: Initialize Arena
+    Story: Initialize arena
+    RuntimeTypeString: Core.BehaviorGraph.InitializeArenaAction, Game.Core, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 16633417075911680164
+      m_Value1: 16633417074560534775
+    Variables:
+    - Name: FactionA
+      Type:
+        m_SerializableType: Core.FactionDefinition, Game.Core, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+      Tooltip: 
+    - Name: FactionB
+      Type:
+        m_SerializableType: Core.FactionDefinition, Game.Core, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+      Tooltip: 
+    - Name: SpawnPointsA
+      Type:
+        m_SerializableType: System.Collections.Generic.List`1[[UnityEngine.GameObject,
+          UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
+          mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      Tooltip: 
+    - Name: SpawnPointsB
+      Type:
+        m_SerializableType: System.Collections.Generic.List`1[[UnityEngine.GameObject,
+          UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
+          mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      Tooltip: 
+    - Name: WarmupSeconds
+      Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      Tooltip: 
+    - Name: PreparationSpell
+      Type:
+        m_SerializableType: Core.SpellInfo, Game.Core, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+      Tooltip: 
+    - Name: PlayerAiPrefab
+      Type:
+        m_SerializableType: Assets.Scripts.Core.WorldEntityPrefab, Game.Core, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      Tooltip: 
+    - Name: PlayerAiInfo
+      Type:
+        m_SerializableType: Core.UnitInfoAI, Game.Core, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+      Tooltip: 
+    - Name: ArenaAttributes
+      Type:
+        m_SerializableType: Core.UnitAttributeDefinition, Game.Core, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      Tooltip: 
+    - Name: Arena
+      Type:
+        m_SerializableType: Core.ArenaController, Game.Core, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+      Tooltip: 
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: Wait For Arena Start
+    Story: Wait for arena match to start
+    RuntimeTypeString: Core.BehaviorGraph.WaitForArenaStartAction, Game.Core, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 16633417075911680164
+      m_Value1: 16705474668598462711
+    Variables:
+    - Name: Arena
+      Type:
+        m_SerializableType: Core.ArenaController, Game.Core, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+      Tooltip: 
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: Wait For Arena End
+    Story: Wait for arena match to end
+    RuntimeTypeString: Core.BehaviorGraph.WaitForArenaEndAction, Game.Core, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 16633417075911680164
+      m_Value1: 16921647450712246519
+    Variables:
+    - Name: Arena
+      Type:
+        m_SerializableType: Core.ArenaController, Game.Core, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+      Tooltip: 
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: End Arena Match
+    Story: End arena match after [PostMatchSeconds]s
+    RuntimeTypeString: Core.BehaviorGraph.EndArenaMatchAction, Game.Core, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 16633417075911680164
+      m_Value1: 16777532262636390647
+    Variables:
+    - Name: Arena
+      Type:
+        m_SerializableType: Core.ArenaController, Game.Core, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+      Tooltip: 
+    - Name: PostMatchSeconds
+      Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      Tooltip: 
+    NamedChildren: []
+    IsPlaceholder: 0
+  m_Blackboards: []
+  m_MainBlackboardAuthoringAsset: {fileID: -1704613202672590682}
+  m_CommandBuffer:
+    m_Commands: []
+  m_SubgraphsInfo: []
+  m_BlackboardMissingManagedRef: 0
+  m_GraphMissingManagedRef: 0
+  m_HasMissingTypeInManagedRef: 0
+  m_EnumDependencyCache:
+    Entries: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6102424922087227799
+      type: {class: StartNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -0.73201734, y: -2.9279804}
+        ID:
+          m_Value0: 3360340082958412815
+          m_Value1: 17851715648421294675
+        Parents: []
+        PortModels:
+        - rid: 6102424922087227800
+        NodeType:
+          m_SerializableType: Unity.Behavior.Start, Unity.Behavior, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 3335272451348827663
+          m_Value1: 11549843281177505721
+        m_FieldValues: []
+        Repeat: 0
+        AllowMultipleRepeatsPerTick: 0
+    - rid: 6102424922087227800
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102424922087227799
+        m_Connections:
+        - rid: 6102425075903103191
+    - rid: 6102424922087227802
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 0, y: 120}
+        ID:
+          m_Value0: 1360114185853591747
+          m_Value1: 11169073701640353422
+        Parents:
+        - rid: 6102425075903103190
+        PortModels:
+        - rid: 6102424922087227803
+        - rid: 6102424922087227804
+        NodeType:
+          m_SerializableType: ZenjectRootNodeAction, Game.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 1084953873799769207
+          m_Value1: 4548908197760934513
+        m_FieldValues:
+        - rid: 6102424922087227805
+    - rid: 6102424922087227803
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102424922087227802
+        m_Connections: []
+    - rid: 6102424922087227804
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102424922087227802
+        m_Connections: []
+    - rid: 6102424922087227805
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Container
+        Type:
+          m_SerializableType: Core.Scenario.BehaviourTreeInjector, Game.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 6102424922087227806
+        LinkedVariable:
+          rid: 6102424922087227822
+    - rid: 6102424922087227806
+      type: {class: 'BlackboardVariable`1[[Core.Scenario.BehaviourTreeInjector, Game.Core]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227822
+      type: {class: 'TypedVariableModel`1[[Core.Scenario.BehaviourTreeInjector, Game.Core]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 9972183683914415659
+          m_Value1: 508160695665121577
+        Name: Injector
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102425075903103190
+      type: {class: SequenceNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        Position: {x: -0.53334963, y: 106.733345}
+        ID:
+          m_Value0: 11011043968898754079
+          m_Value1: 51087546923827332
+        Parents: []
+        PortModels:
+        - rid: 6102425075903103191
+        - rid: 6102425075903103192
+        Nodes:
+        - rid: 6102424922087227802
+    - rid: 6102425075903103191
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425075903103190
+        m_Connections:
+        - rid: 6102424922087227800
+    - rid: 6102425075903103192
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425075903103190
+        m_Connections:
+        - rid: 6102425163829084323
+    - rid: 6102425163829084322
+      type: {class: CompositeNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -1.5212274, y: 261.73746}
+        ID:
+          m_Value0: 3088421314817683240
+          m_Value1: 15741501118267430244
+        Parents: []
+        PortModels:
+        - rid: 6102425163829084323
+        - rid: 6102425163829084324
+        NodeType:
+          m_SerializableType: Unity.Behavior.SequenceComposite, Unity.Behavior, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 10181448252506100447
+          m_Value1: 8737116843063128493
+        m_FieldValues: []
+    - rid: 6102425163829084323
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084322
+        m_Connections:
+        - rid: 6102425075903103192
+    - rid: 6102425163829084324
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084322
+        m_Connections:
+        - rid: 6102425163829084394
+    - rid: 6102425163829084332
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -13.961468, y: 346.98193}
+        ID:
+          m_Value0: 7929328971358679260
+          m_Value1: 11304439688814429118
+        Parents:
+        - rid: 6102425163829084393
+        PortModels:
+        - rid: 6102425163829084333
+        - rid: 6102425163829084334
+        NodeType:
+          m_SerializableType: Core.Scenario.UnityBehavior.SpawnPlayer, Game.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 14535552476197995442
+          m_Value1: 16705757247412822480
+        m_FieldValues:
+        - rid: 6102425163829084335
+        - rid: 6102425163829084336
+    - rid: 6102425163829084333
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084332
+        m_Connections: []
+    - rid: 6102425163829084334
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084332
+        m_Connections: []
+    - rid: 6102425163829084335
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: SpawnPoint
+        Type:
+          m_SerializableType: UnityEngine.Transform, UnityEngine.CoreModule, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 6102425163829084337
+        LinkedVariable:
+          rid: 6102425163829084343
+    - rid: 6102425163829084336
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: ModelId
+        Type:
+          m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        LocalValue:
+          rid: 6102425163829084338
+        LinkedVariable:
+          rid: -2
+    - rid: 6102425163829084337
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084338
+      type: {class: 'BlackboardVariable`1[[System.Int32, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 1
+    - rid: 6102425163829084343
+      type: {class: 'TypedVariableModel`1[[UnityEngine.Transform, UnityEngine.CoreModule]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417072003571876
+          m_Value1: 16633417074560534775
+        Name: Player Spawn
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084354
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: 4.3072557, y: 373.8355}
+        ID:
+          m_Value0: 8332825399406750534
+          m_Value1: 10631414471022388681
+        Parents:
+        - rid: 6102425163829084393
+        PortModels:
+        - rid: 6102425163829084355
+        - rid: 6102425163829084356
+        NodeType:
+          m_SerializableType: Core.BehaviorGraph.InitializeArenaAction, Game.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 16633417075911680164
+          m_Value1: 16633417074560534775
+        m_FieldValues:
+        - rid: 6102425163829084357
+        - rid: 6102425163829084358
+        - rid: 6102425163829084359
+        - rid: 6102425163829084360
+        - rid: 6102425163829084362
+        - rid: 6102425163829084363
+        - rid: 6102425163829084741
+        - rid: 6102425163829084742
+        - rid: 6102425172981579957
+        - rid: 6102425163829084364
+    - rid: 6102425163829084355
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084354
+        m_Connections: []
+    - rid: 6102425163829084356
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084354
+        m_Connections: []
+    - rid: 6102425163829084357
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: FactionA
+        Type:
+          m_SerializableType: Core.FactionDefinition, Game.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 6102425163829084365
+        LinkedVariable:
+          rid: 6102425163829084403
+    - rid: 6102425163829084358
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: FactionB
+        Type:
+          m_SerializableType: Core.FactionDefinition, Game.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 6102425163829084366
+        LinkedVariable:
+          rid: 6102425163829084411
+    - rid: 6102425163829084359
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: SpawnPointsA
+        Type:
+          m_SerializableType: System.Collections.Generic.List`1[[UnityEngine.GameObject,
+            UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+        LocalValue:
+          rid: 6102425163829084367
+        LinkedVariable:
+          rid: 6102425163829084419
+    - rid: 6102425163829084360
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: SpawnPointsB
+        Type:
+          m_SerializableType: System.Collections.Generic.List`1[[UnityEngine.GameObject,
+            UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+        LocalValue:
+          rid: 6102425163829084368
+        LinkedVariable:
+          rid: 6102425163829084427
+    - rid: 6102425163829084362
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: WarmupSeconds
+        Type:
+          m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        LocalValue:
+          rid: 6102425163829084370
+        LinkedVariable:
+          rid: 6102425172981579921
+    - rid: 6102425163829084363
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: PreparationSpell
+        Type:
+          m_SerializableType: Core.SpellInfo, Game.Core, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+        LocalValue:
+          rid: 6102425163829084371
+        LinkedVariable:
+          rid: 6102425163829084435
+    - rid: 6102425163829084364
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Arena
+        Type:
+          m_SerializableType: Core.ArenaController, Game.Core, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+        LocalValue:
+          rid: 6102425163829084372
+        LinkedVariable:
+          rid: 6102425163829084443
+    - rid: 6102425163829084365
+      type: {class: 'BlackboardVariable`1[[Core.FactionDefinition, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084366
+      type: {class: 'BlackboardVariable`1[[Core.FactionDefinition, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084367
+      type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: []
+    - rid: 6102425163829084368
+      type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: []
+    - rid: 6102425163829084370
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 30
+    - rid: 6102425163829084371
+      type: {class: 'BlackboardVariable`1[[Core.SpellInfo, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084372
+      type: {class: 'BlackboardVariable`1[[Core.ArenaController, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084393
+      type: {class: SequenceNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        Position: {x: -2.249579, y: 346.2499}
+        ID:
+          m_Value0: 7064471364290141881
+          m_Value1: 5489191118680459033
+        Parents: []
+        PortModels:
+        - rid: 6102425163829084394
+        - rid: 6102425163829084395
+        Nodes:
+        - rid: 6102425163829084332
+        - rid: 6102425163829084354
+        - rid: 6102425163829084458
+        - rid: 6102425163829084485
+        - rid: 6102425163829084551
+    - rid: 6102425163829084394
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084393
+        m_Connections:
+        - rid: 6102425163829084324
+    - rid: 6102425163829084395
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084393
+        m_Connections: []
+    - rid: 6102425163829084403
+      type: {class: 'TypedVariableModel`1[[Core.FactionDefinition, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071869354148
+          m_Value1: 16633417074560534775
+        Name: Faction A
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084411
+      type: {class: 'TypedVariableModel`1[[Core.FactionDefinition, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071886131364
+          m_Value1: 16633417074560534775
+        Name: Faction B
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084419
+      type: {class: 'TypedVariableModel`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071902908580
+          m_Value1: 16633417074560534775
+        Name: Spawn Points A
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: []
+    - rid: 6102425163829084427
+      type: {class: 'TypedVariableModel`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071919685796
+          m_Value1: 16633417074560534775
+        Name: Spawn Points B
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: []
+    - rid: 6102425163829084435
+      type: {class: 'TypedVariableModel`1[[Core.SpellInfo, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071986794660
+          m_Value1: 16633417074560534775
+        Name: Preparation Spell
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084443
+      type: {class: 'TypedVariableModel`1[[Core.ArenaController, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417072020349092
+          m_Value1: 16633417074560534775
+        Name: Arena
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084458
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -5.8925653, y: 446.79037}
+        ID:
+          m_Value0: 771127885696720365
+          m_Value1: 11284114507114025297
+        Parents:
+        - rid: 6102425163829084393
+        PortModels:
+        - rid: 6102425163829084459
+        - rid: 6102425163829084460
+        NodeType:
+          m_SerializableType: Core.BehaviorGraph.WaitForArenaStartAction, Game.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 16633417075911680164
+          m_Value1: 16705474668598462711
+        m_FieldValues:
+        - rid: 6102425163829084461
+    - rid: 6102425163829084459
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084458
+        m_Connections: []
+    - rid: 6102425163829084460
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084458
+        m_Connections: []
+    - rid: 6102425163829084461
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Arena
+        Type:
+          m_SerializableType: Core.ArenaController, Game.Core, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+        LocalValue:
+          rid: 6102425163829084462
+        LinkedVariable:
+          rid: 6102425163829084443
+    - rid: 6102425163829084462
+      type: {class: 'BlackboardVariable`1[[Core.ArenaController, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084485
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -14.635189, y: 486.1323}
+        ID:
+          m_Value0: 3911702399088581957
+          m_Value1: 15967779050701259655
+        Parents:
+        - rid: 6102425163829084393
+        PortModels:
+        - rid: 6102425163829084486
+        - rid: 6102425163829084487
+        NodeType:
+          m_SerializableType: Core.BehaviorGraph.WaitForArenaEndAction, Game.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 16633417075911680164
+          m_Value1: 16921647450712246519
+        m_FieldValues:
+        - rid: 6102425163829084488
+    - rid: 6102425163829084486
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084485
+        m_Connections: []
+    - rid: 6102425163829084487
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084485
+        m_Connections: []
+    - rid: 6102425163829084488
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Arena
+        Type:
+          m_SerializableType: Core.ArenaController, Game.Core, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+        LocalValue:
+          rid: 6102425163829084489
+        LinkedVariable:
+          rid: 6102425163829084443
+    - rid: 6102425163829084489
+      type: {class: 'BlackboardVariable`1[[Core.ArenaController, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084551
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -25.563477, y: 564.8164}
+        ID:
+          m_Value0: 2053320006429259499
+          m_Value1: 10197274974353482580
+        Parents:
+        - rid: 6102425163829084393
+        PortModels:
+        - rid: 6102425163829084552
+        - rid: 6102425163829084553
+        NodeType:
+          m_SerializableType: Core.BehaviorGraph.EndArenaMatchAction, Game.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 16633417075911680164
+          m_Value1: 16777532262636390647
+        m_FieldValues:
+        - rid: 6102425163829084554
+        - rid: 6102425163829084555
+    - rid: 6102425163829084552
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084551
+        m_Connections: []
+    - rid: 6102425163829084553
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 6102425163829084551
+        m_Connections: []
+    - rid: 6102425163829084554
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Arena
+        Type:
+          m_SerializableType: Core.ArenaController, Game.Core, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+        LocalValue:
+          rid: 6102425163829084556
+        LinkedVariable:
+          rid: 6102425163829084678
+    - rid: 6102425163829084555
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: PostMatchSeconds
+        Type:
+          m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        LocalValue:
+          rid: 6102425163829084557
+        LinkedVariable:
+          rid: 6102425163829084819
+    - rid: 6102425163829084556
+      type: {class: 'BlackboardVariable`1[[Core.ArenaController, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084557
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 20
+    - rid: 6102425163829084678
+      type: {class: 'TypedVariableModel`1[[Core.ArenaController, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417072020349092
+          m_Value1: 16633417074560534775
+        Name: Arena
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084741
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: PlayerAiPrefab
+        Type:
+          m_SerializableType: Assets.Scripts.Core.WorldEntityPrefab, Game.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 6102425163829084743
+        LinkedVariable:
+          rid: 6102425163829084745
+    - rid: 6102425163829084742
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: PlayerAiInfo
+        Type:
+          m_SerializableType: Core.UnitInfoAI, Game.Core, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+        LocalValue:
+          rid: 6102425163829084744
+        LinkedVariable:
+          rid: 6102425163829084761
+    - rid: 6102425163829084743
+      type: {class: 'BlackboardVariable`1[[Assets.Scripts.Core.WorldEntityPrefab, Game.Core]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084744
+      type: {class: 'BlackboardVariable`1[[Core.UnitInfoAI, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084745
+      type: {class: 'TypedVariableModel`1[[Assets.Scripts.Core.WorldEntityPrefab, Game.Core]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417072037126308
+          m_Value1: 16633417074560534775
+        Name: Player AI Prefab
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084761
+      type: {class: 'TypedVariableModel`1[[Core.UnitInfoAI, Game.Core]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417072053903524
+          m_Value1: 16633417074560534775
+        Name: Player AI Info
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6102425163829084819
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071970017444
+          m_Value1: 16633417074560534775
+        Name: Post Match Seconds
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 5
+    - rid: 6102425172981579921
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16633417071953240228
+          m_Value1: 16633417074560534775
+        Name: Warmup Seconds
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 60
+    - rid: 6102425172981579957
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: ArenaAttributes
+        Type:
+          m_SerializableType: Core.UnitAttributeDefinition, Game.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 6102425172981579958
+        LinkedVariable:
+          rid: 6102425172981580023
+    - rid: 6102425172981579958
+      type: {class: 'BlackboardVariable`1[[Core.UnitAttributeDefinition, Game.Core]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 6102425172981580023
+      type: {class: 'TypedVariableModel`1[[Core.UnitAttributeDefinition, Game.Core]]',
+        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 3130265336418352201
+          m_Value1: 15811643290021865008
+        Name: Player Attributes
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+--- !u!114 &7298795340229027577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
+  m_Name: Scenario - Arena - Graph - Lordaeron Blackboard
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.RuntimeBlackboardAsset
+  VersionTimestamp: 639173319108373128
+  AssetID:
+    m_Value0: 16633417075911680164
+    m_Value1: 72273869835667703
+  m_Blackboard:
+    m_Variables:
+    - rid: 6102424922087227801
+    - rid: 6102424922087227818
+    - rid: 6102424922087227860
+    - rid: 6102424922087227861
+    - rid: 6102424922087227862
+    - rid: 6102424922087227863
+    - rid: 6102424922087227865
+    - rid: 6102424922087227866
+    - rid: 6102424922087227867
+    - rid: 6102424922087227868
+    - rid: 6102424922087227869
+    - rid: 6102424922087227870
+    - rid: 6102424922087227871
+    - rid: 6102425172981579997
+  m_SharedBlackboardVariableGuids: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6102424922087227801
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227818
+      type: {class: 'BlackboardVariable`1[[Core.Scenario.BehaviourTreeInjector, Game.Core]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 9972183683914415659
+          m_Value1: 508160695665121577
+        Name: Injector
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227860
+      type: {class: 'BlackboardVariable`1[[Core.FactionDefinition, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071869354148
+          m_Value1: 16633417074560534775
+        Name: Faction A
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227861
+      type: {class: 'BlackboardVariable`1[[Core.FactionDefinition, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071886131364
+          m_Value1: 16633417074560534775
+        Name: Faction B
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227862
+      type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071902908580
+          m_Value1: 16633417074560534775
+        Name: Spawn Points A
+        m_Value: []
+    - rid: 6102424922087227863
+      type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071919685796
+          m_Value1: 16633417074560534775
+        Name: Spawn Points B
+        m_Value: []
+    - rid: 6102424922087227865
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071953240228
+          m_Value1: 16633417074560534775
+        Name: Warmup Seconds
+        m_Value: 60
+    - rid: 6102424922087227866
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071970017444
+          m_Value1: 16633417074560534775
+        Name: Post Match Seconds
+        m_Value: 5
+    - rid: 6102424922087227867
+      type: {class: 'BlackboardVariable`1[[Core.SpellInfo, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417071986794660
+          m_Value1: 16633417074560534775
+        Name: Preparation Spell
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227868
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417072003571876
+          m_Value1: 16633417074560534775
+        Name: Player Spawn
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227869
+      type: {class: 'BlackboardVariable`1[[Core.ArenaController, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417072020349092
+          m_Value1: 16633417074560534775
+        Name: Arena
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227870
+      type: {class: 'BlackboardVariable`1[[Assets.Scripts.Core.WorldEntityPrefab, Game.Core]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417072037126308
+          m_Value1: 16633417074560534775
+        Name: Player AI Prefab
+        m_Value: {fileID: 0}
+    - rid: 6102424922087227871
+      type: {class: 'BlackboardVariable`1[[Core.UnitInfoAI, Game.Core]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16633417072053903524
+          m_Value1: 16633417074560534775
+        Name: Player AI Info
+        m_Value: {fileID: 0}
+    - rid: 6102425172981579997
+      type: {class: 'BlackboardVariable`1[[Core.UnitAttributeDefinition, Game.Core]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 3130265336418352201
+          m_Value1: 15811643290021865008
+        Name: Player Attributes
+        m_Value: {fileID: 0}

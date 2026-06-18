@@ -6,13 +6,6 @@ using Zenject;
 
 namespace Assets.Scripts.Workflow
 {
-    /// <summary>
-    /// Binds the networking layer. Currently the dummy in-process adapter for single-player / host;
-    /// swapping these bindings for a real adapter (FishNet, …) is the only change needed to go online —
-    /// callers depend only on the Net.* abstraction interfaces.
-    ///
-    /// Composed from <see cref="CoreInstaller"/> via <c>NetworkInstaller.Install(Container)</c>.
-    /// </summary>
     internal class NetworkInstaller : Installer<NetworkInstaller>
     {
         public override void InstallBindings()
@@ -52,6 +45,10 @@ namespace Assets.Scripts.Workflow
             // Server→owning-client player movement (speed rate / teleport) the client can't derive itself.
             Container.BindInterfacesAndSelfTo<ServerPlayerBroadcaster>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<ClientPlayerHandler>().AsSingle().NonLazy();
+
+            // Arena scenario: server broadcasts match state/result; the client mirrors it for the HUD.
+            Container.BindInterfacesAndSelfTo<ServerArenaBroadcaster>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<ClientArenaController>().AsSingle().NonLazy();
         }
     }
 }

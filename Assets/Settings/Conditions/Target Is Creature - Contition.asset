@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f99c4a93e5f7c4ca0ac43065a97959, type: 3}
   m_Name: Target Is Creature - Contition
   m_EditorClassIdentifier: 
+  id: 9
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}

@@ -5,7 +5,6 @@ using Assets.Scripts.Core;
 using Common;
 using Core;
 using Cysharp.Threading.Tasks;
-using Net;
 using Unity.Netcode;
 using UnityEngine;
 using Zenject;
@@ -14,11 +13,8 @@ namespace Net.Ngo
 {
     /// <summary>
     /// Server-side: mirrors each authoritative Core unit with a network shadow. Reacts to the
-    /// <see cref="UnitManager"/> attach/detach events. Only the server spawns shadows — clients receive
-    /// them and recreate units via <see cref="EntityNetworkView"/>, so the client's own
-    /// <c>UnitManager.Create</c> (driven by a shadow) is correctly ignored here via the IsServer gate.
-    /// Prefab instantiation handlers (for client-side spawn) are registered by <see cref="NgoNetworkController"/>;
-    /// the server instantiates manually here so it can set the snapshot + owner BEFORE spawning.
+    /// <see cref="UnitManager"/> attach/detach events. Only the server spawns shadows,
+    /// clients receive them and recreate units via <see cref="EntityNetworkView"/>.
     /// </summary>
     public sealed class NgoEntitySpawner : IDisposable, INetConnectionPlayers
     {
@@ -32,6 +28,15 @@ namespace Net.Ngo
         private readonly Dictionary<Unit, NetworkObject> shadows = new Dictionary<Unit, NetworkObject>();
         private readonly Dictionary<ulong, Player> playersByClient = new Dictionary<ulong, Player>();
         private readonly Dictionary<ulong, CancellationTokenSource> streamCts = new Dictionary<ulong, CancellationTokenSource>();
+
+        // Units that attached while clients are already connected wait here to be revealed (next frame, then
+        // rate-limited) instead of NetworkShow-ing synchronously inside Spawn (which NGO drops) or all-at-once
+        // (which floods the transport for a bursty scenario). Drained by a single RevealPump.
+        private readonly Queue<Unit> pendingReveal = new Queue<Unit>();
+        private bool revealPumpRunning;
+
+        // Cancels in-flight reveal/stream awaits when the spawner is torn down.
+        private readonly CancellationTokenSource lifetimeCts = new CancellationTokenSource();
 
         // While set, the next shadow spawned (synchronously, by SpawnConnectionPlayer) is owned by this
         // client instead of the server — so it becomes that client's local PlayerManager.Player.
@@ -195,11 +200,9 @@ namespace Net.Ngo
             instance.GetComponent<EntityNetworkView>().Bind(unit);
 
             // Don't auto-add observers at spawn or on client connect — otherwise a connecting client gets EVERY
-            // same-map unit crammed into its connection burst (the many-unit join stall). We reveal units
-            // ourselves via NetworkShow: the owner still gets its own object automatically, and our manual Show
-            // paths enforce map-scoping (a unit only ever reaches clients on its map).
-            // TODO(map-visibility): runtime map changes (cross-map teleport) need a manual NetworkShow/Hide at
-            // the point of the change — visibility is otherwise only established when we reveal a unit.
+            // same-map unit crammed into its connection burst (the many-unit join stall). We reveal via NetworkShow.
+            // TODO(map-visibility): runtime map changes (cross-map teleport) need a manual NetworkShow/Hide at the
+            // point of the change — visibility is otherwise only established when we reveal a unit.
             shadow.SpawnWithObservers = false;
 
             ulong owner = pendingOwnerClientId ?? NetworkManager.ServerClientId;
@@ -213,8 +216,7 @@ namespace Net.Ngo
             // With SpawnWithObservers off, NGO never adds the SERVER to a shadow's observer list (it only does
             // so for SpawnWithObservers=true). But movement-control ownership flips (root/polymorph re-own the
             // shadow to the server via ChangeOwnership) silently no-op if the target isn't an observer — so the
-            // server must observe its own shadows. Showing to the server is a no-op send in client-server mode,
-            // so this is purely the observer-list bookkeeping ChangeOwnership(server) depends on.
+            // server must observe its own shadows.
             Show(shadow, NetworkManager.ServerClientId);
 
             // Track ONLY connection-controlled players (pendingOwnerClientId set) so the command router can
@@ -224,12 +226,61 @@ namespace Net.Ngo
             if (unit is Player player && pendingOwnerClientId.HasValue)
                 playersByClient[pendingOwnerClientId.Value] = player;
 
-            // Show to already-connected clients that share this unit's map (no-op if they already observe it).
-            // Keeps replication map-bound: a unit spawned on an additive (server-only) map isn't sent to
-            // clients on the primary map.
-            foreach (ulong clientId in nm.ConnectedClientsIds)
-                if (clientId != nm.LocalClientId && unit.Map == ClientMap(clientId))
-                    Show(shadow, clientId);
+            // Reveal to already-connected clients that share this unit's map — NOT synchronously here. A
+            // NetworkShow issued in the same frame as Spawn() is dropped by NGO (the CreateObject is never
+            // sent), so a unit that attaches while a client is already connected (e.g. arena bots spawned at
+            // match start) would otherwise stay invisible to that client while still receiving its unreliable
+            // state RPCs (→ "Deferred OnSpawn ... NetworkObject was not received"). The pump defers one frame
+            // and then rate-limits, so a scenario that spawns a burst of units can't flood the transport.
+            EnqueueReveal(unit);
+        }
+
+        // Queue a freshly-spawned unit for batched reveal and make sure the pump is running.
+        private void EnqueueReveal(Unit unit)
+        {
+            pendingReveal.Enqueue(unit);
+            if (!revealPumpRunning)
+                RevealPumpAsync().Forget();
+        }
+
+        // Single drain loop for post-attach reveals. Waits one frame (a same-frame NetworkShow is dropped by
+        // NGO), then shows queued units to every eligible client, pausing every ShowBatchSize reveals so a
+        // burst of spawns spreads across ticks instead of overflowing the transport — the same budget the
+        // join-time stream uses. Picks up units enqueued while it runs; exits (and is restartable) when drained.
+        private async UniTaskVoid RevealPumpAsync()
+        {
+            revealPumpRunning = true;
+            CancellationToken token = lifetimeCts.Token;
+            try
+            {
+                await UniTask.NextFrame(token);
+
+                int inBatch = 0;
+                while (pendingReveal.Count > 0)
+                {
+                    NetworkManager nm = Manager;
+                    if (nm == null || !nm.IsServer)
+                        break;
+
+                    Unit unit = pendingReveal.Dequeue();
+                    // Despawned/detached before we got to it — its shadow is no longer tracked.
+                    if (!shadows.TryGetValue(unit, out NetworkObject shadow) || shadow == null || !shadow.IsSpawned)
+                        continue;
+
+                    bool shown = false;
+                    foreach (ulong clientId in nm.ConnectedClientsIds)
+                        if (clientId != nm.LocalClientId && unit.Map == ClientMap(clientId))
+                            shown |= Show(shadow, clientId);
+
+                    if (shown && ++inBatch >= ShowBatchSize)
+                    {
+                        inBatch = 0;
+                        await UniTask.Delay(ShowBatchIntervalMs, cancellationToken: token);
+                    }
+                }
+            }
+            catch (OperationCanceledException) { /* spawner torn down mid-reveal */ }
+            finally { revealPumpRunning = false; }
         }
 
         private static bool Show(NetworkObject shadow, ulong clientId)
@@ -333,6 +384,10 @@ namespace Net.Ngo
                 cts.Dispose();
             }
             streamCts.Clear();
+
+            lifetimeCts.Cancel();
+            lifetimeCts.Dispose();
+            pendingReveal.Clear();
         }
     }
 }

@@ -12,31 +12,14 @@ namespace Net.Ngo
     /// <summary>
     /// <see cref="INetworkController"/> backed by Netcode for GameObjects' <see cref="NetworkManager"/>.
     /// Host / DedicatedServer / RemoteClient map onto StartHost / StartServer / StartClient.
-    ///
-    /// Requires a <c>NetworkManager</c> in the scene. Sessions come from one of two interchangeable sources
-    /// (selected via <see cref="SetSessionSource"/>, surfaced as the lobby's tabs):
-    /// <list type="bullet">
-    /// <item><see cref="SessionSource.Lan"/> — <see cref="LanSessionDiscovery"/> UDP broadcast: the controller
-    /// advertises a beacon while hosting and browses while session-less; the IP transport is configured here.</item>
-    /// <item><see cref="SessionSource.UnityServices"/> — <see cref="UnityServicesSessionBackend"/> (Lobby + Relay):
-    /// the Sessions API configures the Relay transport and starts NGO itself; we only prepare the NetworkManager.</item>
-    /// </list>
-    /// Either way the same replication layer (which hooks NetworkManager directly) drives the world.
     /// </summary>
     public sealed class NgoNetworkController : INetworkController, IDisposable
     {
-        // Advertised max players in the beacon (display only; real cap is enforced by connection approval).
         private const int MaxPlayersPerSession = 8;
-
-        // Transport send/receive queue capacity (packets). Raised from UTP's default 128 because a map's worth
-        // of entities spawning at once bursts past it ("Receive queue is full…"); spawns/state are reliable, so
-        // overflow means retransmits/hitching rather than loss, but the extra headroom absorbs the burst.
         private const int MaxPacketQueueSize = 256;
 
         private bool subscribed;
         private bool handlersRegistered;
-
-        // The shared server port the transport was configured with (captured before single-player overrides it).
         private bool serverPortCaptured;
         private ushort serverPort = 7777;
 
@@ -66,7 +49,7 @@ namespace Net.Ngo
             StartBrowsing(); // session-less at boot → browse both sources for hosts
         }
 
-        public string Version => "1.0.0";
+        public string Version => "1.3.0";
         public IReadOnlyList<SessionInfo> Sessions => mergedSessions;
 
         public bool IsRunning => Manager != null && Manager.IsListening;
@@ -235,7 +218,8 @@ namespace Net.Ngo
             string map = room?.Map ?? string.Empty;
             NetworkManager nm = Manager;
             int players = nm != null ? nm.ConnectedClientsIds.Count : 0;
-            return new SessionInfo(name, name, map, Version, players, MaxPlayersPerSession, address: null, port: serverPort);
+            return new SessionInfo(name, name, map, Version, players, MaxPlayersPerSession,
+                address: null, port: serverPort, teamSize: room?.TeamSize ?? 0);
         }
 
         public async UniTask ShutdownAsync()
@@ -262,9 +246,7 @@ namespace Net.Ngo
             if (nm == null)
                 return null;
 
-            // We drive scene loading ourselves (client loads its own World + map, framework-free). NGO's
-            // scene synchronization would additionally load the server's scenes onto the client, producing
-            // duplicate World/map scenes. Dynamically-spawned shadows still replicate without it.
+            // We drive scene loading ourselves; NGO's scene sync would duplicate the server's World/map onto the client.
             nm.NetworkConfig.EnableSceneManagement = false;
 
             // Gate incoming connections: the host approves/refuses each client by version + player cap (below).
@@ -277,9 +259,6 @@ namespace Net.Ngo
             return nm;
         }
 
-        // Server-side gate for an incoming connection: approve the host itself, then enforce the player cap and a
-        // matching build version. On approval we stash the client's token (for the spawner's class choice); on
-        // refusal we set a message NGO relays to the client (surfaced in its lobby via LastDisconnectReason).
         private void HandleConnectionApproval(NetworkManager.ConnectionApprovalRequest request,
             NetworkManager.ConnectionApprovalResponse response)
         {

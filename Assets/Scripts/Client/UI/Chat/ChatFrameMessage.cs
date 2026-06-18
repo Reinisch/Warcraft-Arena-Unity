@@ -17,6 +17,11 @@ public class ChatFrameMessage : MonoBehaviour
         messageLabel.text = $"[{chatGeneralString.Value}] [{unit.Name}]: {message}";
     }
 
+    public void ModifySystem(string message)
+    {
+        messageLabel.text = message;
+    }
+
     public void MoveToBottom()
     {
         rectTransform.SetAsLastSibling();

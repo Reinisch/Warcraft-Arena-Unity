@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b650716647b98b94f882e9b104fa04cd, type: 3}
   m_Name: Target Is Frozen - Condition
   m_EditorClassIdentifier: 
+  id: 26
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   auraStateType: 1

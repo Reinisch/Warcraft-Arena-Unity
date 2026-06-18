@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843af9078ee88e742b0548167afab33b, type: 3}
   m_Name: Condition - Spell Has Less Then 10 sec Cast Time
   m_EditorClassIdentifier: 
+  id: 5
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   comparisonOperator: 2
   castTime: 10000

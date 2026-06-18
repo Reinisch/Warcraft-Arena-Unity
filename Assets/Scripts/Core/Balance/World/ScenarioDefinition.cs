@@ -3,6 +3,12 @@ using UnityEngine;
 
 namespace Core
 {
+    public enum ScenarioType
+    {
+        Standard,
+        Arena
+    }
+
     [CreateAssetMenu(fileName = "Map Definition", menuName = "Game Data/World/Scenario Definition", order = 3)]
     public class ScenarioDefinition: ScriptableObject
     {
@@ -10,17 +16,19 @@ namespace Core
         [SerializeField, UsedImplicitly] private string scenarioName;
         [SerializeField, UsedImplicitly] private Sprite slotBackground;
         [SerializeField, UsedImplicitly] private MapScenarioGraphSettings scenarioSettings;
-
-        [Tooltip("Whether this scenario can be hosted for other players. Disable for scenarios whose mechanics " +
-                 "aren't multiplayer-ready (e.g. the bossfight) — Create Server is then blocked; single-player still works.")]
         [SerializeField, UsedImplicitly] private bool supportsMultiplayer = true;
+        [SerializeField, UsedImplicitly] private ScenarioType type = ScenarioType.Standard;
+        [SerializeField, UsedImplicitly] private int teamSize = 2;
+        [SerializeField, UsedImplicitly] private float minArenaWaitTime = 15;
 
         public MapDefinition Map => map;
         public string ScenarioName => scenarioName;
         public Sprite SlotBackground => slotBackground;
         public MapScenarioGraphSettings ScenarioSettings => scenarioSettings;
-
-        /// <summary>False for scenarios whose mechanics aren't multiplayer-ready; gates the lobby's Create Server.</summary>
+        public float MinArenaWaitTime => minArenaWaitTime;
         public bool SupportsMultiplayer => supportsMultiplayer;
+        public ScenarioType Type => type;
+        public bool IsArena => type == ScenarioType.Arena;
+        public int TeamSize => teamSize;
     }
 }

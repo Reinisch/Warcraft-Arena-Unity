@@ -73,6 +73,7 @@ namespace Assets.Scripts.Workflow
             Container.Bind<BuffDisplayPresenter>().AsTransient();
             Container.Bind<ActionErrorDisplayPresenter>().AsTransient();
             Container.Bind<LobbyPresenter>().AsTransient();
+            Container.Bind<ArenaResultPresenter>().AsTransient();
         }
     }
 }

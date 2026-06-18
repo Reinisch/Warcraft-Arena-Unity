@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Common;
 using UnityEngine;
 
-
 namespace Core
 {
     public abstract partial class Unit
@@ -342,8 +341,6 @@ namespace Core
                 {
                     speedRates[type] = rate;
 
-                    // Server-authoritative: notify so the net layer replicates the new rate to the owning
-                    // client (its movement is client-authoritative, so it needs the rate to move at speed).
                     if (unit.World.HasServerLogic)
                         unit.EventBus.ExecuteEvent(Common.GameEvents.ServerPlayerSpeedChanged, unit, type, rate);
                 }
@@ -477,6 +474,27 @@ namespace Core
             internal void SetHealth(int value)
             {
                 Health.Set(Mathf.Clamp(value, 0, MaxHealth.Value));
+            }
+
+            internal void SetMaxHealth(int value)
+            {
+                MaxHealth.Set(value);
+            }
+
+            internal void ApplyAttributeDefinition(UnitAttributeDefinition definition)
+            {
+                MaxHealth.ModifyAttribute(definition.BaseMaxHealth, definition.BaseMaxHealth, 0, int.MaxValue, EntityAttributes.MaxHealth);
+                Health.ModifyAttribute(definition.BaseHealth, Mathf.Min(definition.BaseHealth, definition.BaseMaxHealth), 0, int.MaxValue, EntityAttributes.Health);
+
+                Intellect.ModifyAttribute(definition.BaseIntellect, definition.BaseIntellect, 0, int.MaxValue, EntityAttributes.Intellect);
+                SpellPower.ModifyAttribute(definition.BaseSpellPower, definition.BaseSpellPower, 0, int.MaxValue, EntityAttributes.SpellPower);
+                statModifiers[(UnitModifierType.Intellect, StatModifierType.BaseValue)] = Intellect.Base;
+                UpdateIntellect();
+
+                CritPercentage.ModifyAttribute(definition.CritPercentage, definition.CritPercentage, 0f, float.MaxValue, EntityAttributes.CritPercentage);
+
+                unit.EventBus.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.MaxHealth);
+                unit.EventBus.ExecuteEvent(unit, GameEvents.UnitAttributeChanged, EntityAttributes.Health);
             }
 
             internal void SetComboPoints(int points)

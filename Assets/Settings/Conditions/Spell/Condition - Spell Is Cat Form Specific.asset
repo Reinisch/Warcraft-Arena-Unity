@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fee5ac75efebd6d49886172732864a1c, type: 3}
   m_Name: Condition - Spell Is Cat Form Specific
   m_EditorClassIdentifier: 
+  id: 30
+  container: {fileID: 11400000, guid: 74ee68149bc86594ea3bf3eadc8e3034, type: 2}
   validSpells:
   - {fileID: 11400000, guid: 3c8635791c95b6b4d95cdb9b8384b4ee, type: 2}
   - {fileID: 11400000, guid: 0fcbec3231a266244bb039eaa2ac68cf, type: 2}

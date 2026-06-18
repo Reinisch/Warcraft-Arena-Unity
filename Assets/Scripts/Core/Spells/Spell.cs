@@ -8,12 +8,25 @@ namespace Core
 {
     public partial class Spell
     {
+        private struct SpellRuntime
+        {
+            public SpellExecutionState ExecutionState;
+            public int CastTime;
+            public int CastTimeLeft;
+            public int EffectDamage;
+            public int EffectHealing;
+            public int TotalDamage;
+            public int ConsumedComboPoints;
+            public float EffectDamageMultiplier;
+        }
+
         public static readonly ObjectPool<Spell> SpellPool = new();
 
         private static int SpellAliveCount;
 
         private bool isActive;
         private SpellValue spellValue;
+        private SpellRuntime runtime;
         private SpellManager spellManager;
         private MovementFlags casterMovementFlags;
         private readonly HashSet<Aura> appliedModifierAuras = new();
@@ -24,22 +37,22 @@ namespace Core
 
         internal bool IsTriggered { get; private set; }
         internal bool CanReflect { get; private set; }
-        internal int ConsumedComboPoints { get; set; }
         internal SpellSchoolMask SchoolMask { get; private set; }
-        internal int CastTimeLeft { get; set; }
-        internal int CastTime { get; private set; }
         internal Unit Caster { get; private set; }
         internal SpellImplicitTargets ImplicitTargets { get; }
         internal SpellState SpellState { get; set; }
-        internal SpellExecutionState ExecutionState { get; private set; }
-        internal float EffectDamageMultiplier { get; set; }
-
         public SpellInfo SpellInfo { get; private set; }
         public SpellExplicitTargets ExplicitTargets { get; private set; }
         public Unit OriginalCaster { get; private set; }
-        public int EffectDamage { get; private set; }
-        public int EffectHealing { get; private set; }
-        public int TotalDamage { get; internal set; }
+
+        internal int ConsumedComboPoints { get => runtime.ConsumedComboPoints; set => runtime.ConsumedComboPoints = value; }
+        internal int CastTimeLeft { get => runtime.CastTimeLeft; set => runtime.CastTimeLeft = value; }
+        internal int CastTime { get => runtime.CastTime; private set => runtime.CastTime = value; }
+        internal SpellExecutionState ExecutionState { get => runtime.ExecutionState; private set => runtime.ExecutionState = value; }
+        internal float EffectDamageMultiplier { get => runtime.EffectDamageMultiplier; set => runtime.EffectDamageMultiplier = value; }
+        public int EffectDamage { get => runtime.EffectDamage; private set => runtime.EffectDamage = value; }
+        public int EffectHealing { get => runtime.EffectHealing; private set => runtime.EffectHealing = value; }
+        public int TotalDamage { get => runtime.TotalDamage; internal set => runtime.TotalDamage = value; }
 
         public Spell()
         {
@@ -56,7 +69,6 @@ namespace Core
             casterMovementFlags = options.MovementFlags ?? caster.Motion.MovementFlags;
             SchoolMask = info.SchoolMask;
 
-            CastTime = CastTimeLeft = EffectDamage = EffectHealing = 0;
             Caster = OriginalCaster = caster;
             SpellInfo = info;
 
@@ -64,7 +76,8 @@ namespace Core
 
             if (IsTriggered)
                 spellValue.CastFlags |= SpellCastFlags.IgnoreTargetCheck | SpellCastFlags.IgnoreRangeCheck |
-                    SpellCastFlags.IgnoreShapeShift | SpellCastFlags.IgnoreAuraInterruptFlags | SpellCastFlags.IgnoreCasterState;
+                    SpellCastFlags.IgnoreShapeShift | SpellCastFlags.IgnoreAuraInterruptFlags |
+                    SpellCastFlags.IgnoreCasterState | SpellCastFlags.IgnoreCasterAuras;
 
             if (info.HasAttribute(SpellExtraAttributes.CanCastWhileCasting))
                 spellValue.CastFlags |= SpellCastFlags.IgnoreCastInProgress | SpellCastFlags.CastDirectly;
@@ -97,7 +110,21 @@ namespace Core
         {
             SpellState = SpellState.Disposed;
 
+            ResetState();
+
+            if (isActive)
+            {
+                isActive = false;
+                SpellPool.Return(this);
+            }
+        }
+
+        private void ResetState()
+        {
             SpellInfo = null;
+            spellValue = default;
+            runtime = default;
+            
             Caster = OriginalCaster = null;
             powerCosts.Clear();
             appliedModifierAuras.Clear();
@@ -106,13 +133,9 @@ namespace Core
             unappliedModifiers.Clear();
             ImplicitTargets.Dispose();
             ExplicitTargets.Dispose();
-
-            if (isActive)
-            {
-                isActive = false;
-                SpellPool.Return(this);
-            }
         }
+
+        
 
         internal void Cancel()
         {

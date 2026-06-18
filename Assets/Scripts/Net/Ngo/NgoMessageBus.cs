@@ -10,10 +10,6 @@ namespace Net.Ngo
     /// "<see cref="MessageName"/>" carrying [ushort typeId][payload], serialized by the shared
     /// <see cref="NetMessageCodec"/>. <see cref="NetTarget"/> is resolved to NGO client ids; recipients
     /// that are the local peer are dispatched in-process (so host doesn't rely on loopback).
-    ///
-    /// Limitations (basic pass): EntityObservers falls back to all clients (proper interest management
-    /// comes with the spawn/replication step), and messages the codec hasn't registered yet
-    /// (UnitSpellLaunch) are skipped.
     /// </summary>
     public sealed class NgoMessageBus : INetworkMessageBus, IInitializable, IDisposable
     {
@@ -34,11 +30,6 @@ namespace Net.Ngo
             EnsureHooked();
         }
 
-        // Runs in Zenject's Start phase — AFTER every MonoBehaviour Awake, so NetworkManager.Singleton is
-        // guaranteed to exist. This is the reliable hook point: without an early bus.Send to trigger
-        // EnsureHooked (e.g. when booting straight into the session-less lobby), the ctor call above may have
-        // run before the NetworkManager existed, leaving the bus unhooked so it never registers its named
-        // message handler on Start — and a freshly-joined client would silently receive nothing.
         void IInitializable.Initialize() => EnsureHooked();
 
         // NetworkManager.Singleton may not exist yet when this is constructed (script order vs the
@@ -145,8 +136,25 @@ namespace Net.Ngo
                     break;
 
                 case NetTarget.TargetKind.EntityObservers:
-                    // TODO: filter by the entity's observers + EntityScope. Falls back to all clients.
-                    if (nm.IsServer) local = AddClients(nm, localId);
+                    // Send only to clients that actually observe the entity. A message referencing a unit a
+                    // client hasn't been shown — or one not yet network-registered, so its id is NetId.None
+                    // (e.g. a class passive cast during unit construction, before the shadow spawns) — must
+                    // NOT reach that client: it can't resolve the caster/target and mis-applies the effect
+                    // (a stray launch snapping the local player), and the bare NetworkObject id only piles up
+                    // as deferred RPCs. Unresolvable id → no recipients.
+                    if (nm.IsServer &&
+                        nm.SpawnManager.SpawnedObjects.TryGetValue(target.Id.Value, out NetworkObject entity))
+                    {
+                        IReadOnlyList<ulong> observerIds = nm.ConnectedClientsIds;
+                        for (int i = 0; i < observerIds.Count; i++)
+                        {
+                            ulong id = observerIds[i];
+                            if (!entity.IsNetworkVisibleTo(id))
+                                continue;
+                            if (id == localId) local = true;
+                            else remipients.Add(id);
+                        }
+                    }
                     break;
             }
 

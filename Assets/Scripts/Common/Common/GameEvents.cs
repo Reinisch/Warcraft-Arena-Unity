@@ -24,6 +24,7 @@
         ServerPlayerMovementControlChanged,
 
         UnitChat,
+        SystemMessage,
         UnitAttributeChanged,
         UnitTargetChanged,
         UnitFactionChanged,
@@ -38,6 +39,11 @@
         HotkeyBindingChanged,
         LobbyClassChanged,
         GameOptionChanged,
-        EntityPooled
+        EntityPooled,
+
+        ServerArenaStateChanged,
+        ServerArenaMatchEnded,
+
+        SessionLeaveRequested
     }
 }
