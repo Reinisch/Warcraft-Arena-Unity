@@ -52,14 +52,9 @@ namespace Core
                 unit = null;
             }
 
-            public SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastingOptions castOptions = default)
+            public SpellCastHandle CastSpell(SpellInfo spellInfo, SpellCastingOptions castOptions = default)
             {
-                return CastSpell(spellInfo, castOptions, out _);
-            }
-
-            public SpellCastResult CastSpell(SpellInfo spellInfo, SpellCastingOptions castOptions, out Spell spell)
-            {
-                spell = Spell.SpellPool.Take().Create(unit, spellInfo, castOptions);
+                Spell spell = Spell.SpellPool.Take().Create(unit, spellInfo, castOptions);
 
                 ApplySpellModifier(spell, SpellModifierType.SpellValue, 1.0f);
 
@@ -67,24 +62,18 @@ namespace Core
                 if (castResult != SpellCastResult.Success)
                 {
                     unit.World.SpellManager.Remove(spell);
-                    return castResult;
+                    return spell.AsCastHandle(castResult);
                 }
 
-                switch (spell.ExecutionState)
+                if (spell.ExecutionState == SpellExecutionState.Casting)
                 {
-                    case SpellExecutionState.Casting:
-                        unit.SpellCast.HandleSpellCast(spell, SpellCast.HandleMode.Started);
-                        break;
-                    case SpellExecutionState.Processing:
-                        return castResult;
-                    case SpellExecutionState.Completed:
-                        return castResult;
+                    unit.SpellCast.HandleSpellCast(spell, SpellCast.HandleMode.Started);
+
+                    if (!spellInfo.HasAttribute(SpellCustomAttributes.DontCancelEmotes))
+                        unit.ModifyEmoteState(EmoteType.None);
                 }
 
-                if (!spellInfo.HasAttribute(SpellCustomAttributes.DontCancelEmotes))
-                    unit.ModifyEmoteState(EmoteType.None);
-
-                return SpellCastResult.Success;
+                return spell.AsCastHandle(SpellCastResult.Success);
             }
 
             public void TriggerSpell(SpellInfo spellInfo, SpellCastingOptions spellCastingOptions)

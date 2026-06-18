@@ -8,7 +8,7 @@ namespace Core
 {
     public partial class Spell
     {
-        private struct SpellRuntime
+        internal struct SpellRuntime
         {
             public SpellExecutionState ExecutionState;
             public int CastTime;
@@ -105,6 +105,8 @@ namespace Core
         {
             Logging.LogSpell($"Finalized another spell, current count: {--SpellAliveCount}");
         }
+
+        internal SpellCastHandle AsCastHandle(SpellCastResult result) => new SpellCastHandle(result, runtime);
 
         internal void Dispose()
         {

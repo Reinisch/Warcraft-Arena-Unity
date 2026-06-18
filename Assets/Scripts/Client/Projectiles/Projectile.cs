@@ -204,17 +204,16 @@ namespace Client
 
             if (unitRenderer != null)
             {
-                 var result = Caster.Spells.CastSpell(ProjectileInfo.OnHitInfo,
+                 SpellCastHandle castHandle = Caster.Spells.CastSpell(ProjectileInfo.OnHitInfo,
                     new SpellCastingOptions(
                         new SpellExplicitTargets
                         { Target = unitRenderer.Unit },
                         SpellCastFlags.TriggeredByAura,
                         hitPosition: hit.point,
-                        hitBoxMultiplider: hitBoxMultiplider),
-                    out Spell spell);
+                        hitBoxMultiplider: hitBoxMultiplider));
 
-                if (result == SpellCastResult.Success && hitBox != null)
-                    hitBox.ReceiveDamage(spell.TotalDamage);
+                if (castHandle.IsSuccess && hitBox != null)
+                    hitBox.ReceiveDamage(castHandle.TotalDamage);
             }
             else if (ProjectileInfo.HitsGround)
             {

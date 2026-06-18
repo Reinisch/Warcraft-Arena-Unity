@@ -18,7 +18,6 @@ namespace Core
         private void Setup()
         {
             unitManager.EventEntityDetach += OnEntityDetach;
-
         }
 
         internal void Dispose()
@@ -46,8 +45,8 @@ namespace Core
 
             for (int i = spellsToRemove.Count - 1; i >= 0; i--)
             {
-                spellsToRemove[i].SpellState = SpellState.Active;
-                Remove(spellsToRemove[i]);
+                activeSpells.Remove(spellsToRemove[i]);
+                spellsToRemove[i].Dispose();
             }
 
             for (int i = spellsToAdd.Count - 1; i >= 0; i--)
@@ -79,19 +78,8 @@ namespace Core
             if (spell.SpellState == SpellState.Adding)
                 spellsToAdd.Remove(spell);
 
-            if (spell.SpellState == SpellState.Active)
-            {
-                if (IsProcessing)
-                {
-                    spellsToRemove.Add(spell);
-                    spell.SpellState = SpellState.Removing;
-                    return;
-                }
-
-                activeSpells.Remove(spell);
-            }
-
-            spell.Dispose();
+            spellsToRemove.Add(spell);
+            spell.SpellState = SpellState.Removing;
         }
 
         private void OnEntityDetach(Unit unit)
